@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+}
+
+html, body, #root {
+  height: 100%;
+  background: #09090b;
+  color: #e4e4e7;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 8px; border: 2px solid #09090b; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+.mono { font-family: var(--font-mono); }
+
+.desktop-grid-bg {
+  background-color: #0c0d10;
+  background-image:
+    radial-gradient(circle at 70% 20%, rgba(52, 211, 153, 0.07), transparent 55%),
+    radial-gradient(circle at 15% 85%, rgba(251, 191, 36, 0.05), transparent 50%),
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: auto, auto, 28px 28px, 28px 28px;
+}
+
+.window-shadow {
+  box-shadow: 0 24px 64px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.titlebar-grip { cursor: grab; }
+.titlebar-grip:active { cursor: grabbing; }
+
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+.live-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
+
+@keyframes scanline { 0% { transform: translateY(-100%);} 100% { transform: translateY(400%);} }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+.fade-up { animation: fadeUp 0.25s ease-out both; }
+
+.no-select { user-select: none; -webkit-user-select: none; }
+
+.code-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.code-scroll::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+
+input[type="range"] { accent-color: #34d399; }

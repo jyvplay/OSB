@@ -1,0 +1,72 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "FusionShell"
+include(
+    ":app",
+    // core
+    ":core:windowing",
+    ":core:files",
+    ":core:capabilities",
+    ":core:model",
+    ":core:commands",
+    ":core:settings",
+    ":core:security",
+    ":core:perf",
+    ":core:hw",
+    ":core:index",
+    ":core:storage",
+    ":core:designsystem",
+    // features
+    ":feature:editor",
+    ":feature:launcher",
+    ":feature:find",
+    ":feature:files",
+    ":feature:browser",
+    ":feature:terminal",
+    ":feature:vault",
+    ":feature:notes",
+    ":feature:calc",
+    ":feature:settings",
+    ":feature:media",
+    ":feature:beam",
+    ":feature:alerts",
+    ":feature:capture",
+    ":feature:backup",
+    ":feature:continuity",
+    ":feature:accessibility",
+    ":feature:together",
+    ":feature:lens",
+    ":feature:messages",
+    ":feature:automation",
+    // formats
+    ":format:native",
+    ":format:archive",
+    ":format:ooxml",
+    ":format:pdf",
+    ":format:image",
+    ":format:psd",
+    ":format:lok",
+    // cast
+    ":cast:dlna",
+    ":cast:airplay",
+    ":cast:castv2",
+    // performance
+    ":benchmark",
+    ":baselineprofile",
+    // shared test fixtures
+    ":testing"
+)

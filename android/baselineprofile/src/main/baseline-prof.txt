@@ -1,0 +1,3 @@
+# Empty baseline profile — replace with generated output.
+# Generate via :benchmark:BaselineProfileGenerator on device, then copy here.
+# Until then this file intentionally contains no rules.

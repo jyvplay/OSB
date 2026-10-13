@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- UiAutomator needs to see the target package while benchmarking. -->
+    <queries>
+        <package android:name="dev.fusion.shell" />
+    </queries>
+</manifest>

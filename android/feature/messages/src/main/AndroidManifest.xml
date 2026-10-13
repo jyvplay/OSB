@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      SMS access is Tier B (special access). Requested at runtime only when the
+      user opens the SMS tab. The app does NOT hold the SMS role and is NOT the
+      default SMS app, so it receives no SMS_DELIVER broadcasts and no MMS.
+    -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+</manifest>

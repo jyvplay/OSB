@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      Library modules contribute their own permissions via manifest merge:
+        :feature:capture  -> FOREGROUND_SERVICE, FOREGROUND_SERVICE_MEDIA_PROJECTION, POST_NOTIFICATIONS
+        :feature:lens     -> CAMERA
+        :feature:messages -> READ_SMS, SEND_SMS
+        :cast:dlna        -> ACCESS_WIFI_STATE, CHANGE_WIFI_MULTICAST_STATE
+      Declared here: networking (browser, cast, media server) and the image list.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.FusionShell"
+        android:usesCleartextTraffic="true">
+        <!--
+          usesCleartextTraffic is required and intentional: the embedded
+          LocalMediaServer serves http:// on the LAN so Chromecast / DLNA
+          receivers can fetch media, and DLNA control URLs are plain http.
+          No cleartext traffic leaves the local network.
+        -->
+        <!--
+          No launchMode="singleTask": ActivityScenario (used by the instrumented
+          smoke test) is unreliable with singleTask. Home-role relaunch still
+          behaves correctly because the activity restores its own state.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|density|uiMode">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Optional Home role: the user must explicitly choose it. -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- Receive text shared from other apps (Continuity window). -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

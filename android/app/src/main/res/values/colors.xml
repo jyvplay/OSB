@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Matches the Compose palette in MainActivity (bg / panel / mint). -->
+    <color name="fusion_bg">#FF0C1011</color>
+    <color name="fusion_panel">#FF191E20</color>
+    <color name="fusion_mint">#FF65DDB4</color>
+</resources>
