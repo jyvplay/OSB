@@ -34,3 +34,16 @@ class AnnotationChecks(unittest.TestCase):
 
     def test_missing_log_is_an_error(self):
         with self.assertRaises(FileNotFoundError): annotation('/file-that-does-not-exist-ci.log')
+
+    def test_github_truncation_budget_and_task_noise(self):
+        text=self.render(('> Task :noise UP-TO-DATE\n'*2000+'e: actual-file.kt: REAL COMPILER ERROR\n> fatal tail\n').encode())
+        self.assertIn('REAL COMPILER ERROR',text)
+        self.assertIn('fatal tail',text)
+        decoded=text.removeprefix('::error::').replace('%0A','\n').replace('%0D','\r').replace('%25','%')
+        self.assertLessEqual(len(decoded.encode()),3000)
+
+    def test_unicode_budget_is_bytes_not_characters(self):
+        text=self.render(('e: '+'漢😀'*4000+'\n> actual tail').encode())
+        decoded=text.removeprefix('::error::').replace('%0A','\n').replace('%0D','\r').replace('%25','%')
+        self.assertLessEqual(len(decoded.encode()),3000)
+        self.assertIn('actual tail',text)
