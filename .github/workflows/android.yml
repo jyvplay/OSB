@@ -44,7 +44,7 @@ jobs:
         run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assemblePlayDebug
       - name: Run all JVM unit tests (not device evidence)
         run: >
-          bash tools/run_gradle_ci.sh unit-tests
+          bash tools/run_gradle_ci.sh unit-tests --continue
           :core:documents:test :core:windowing:test :core:index:test :core:commands:test
           :core:security:testDebugUnitTest
           :format:native:test :format:archive:test :format:ooxml:test :format:psd:testDebugUnitTest
