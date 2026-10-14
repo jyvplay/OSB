@@ -16,7 +16,7 @@ data class Peripheral(val name: String, val detail: String)
  */
 object Peripherals {
 
-    fun inputDevices(): List<Peripheral> = InputDevice.getDeviceIds().mapNotNull { id ->
+    fun inputDevices(): List<Peripheral> = InputDevice.getDeviceIds().asIterable().mapNotNull { id ->
         val device = InputDevice.getDevice(id) ?: return@mapNotNull null
         if (device.isVirtual) return@mapNotNull null
         val sources = device.sources

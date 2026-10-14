@@ -589,7 +589,7 @@
       "path": "feature/continuity/src/main/java/dev/fusion/continuity/Peripherals.kt",
       "module": ":feature:continuity",
       "package": "dev.fusion.continuity",
-      "sha256": "29ca08093b8e4173c6eba46b01874bc5ca1c2a866e80082e9fbe9171ab6c0d7d"
+      "sha256": "d9e1410c114b36d0b22d00dea4c8bc8cd431d4275e80f5912a673b42efe1f8ba"
     },
     {
       "path": "feature/accessibility/src/main/java/dev/fusion/a11y/Adaptation.kt",
