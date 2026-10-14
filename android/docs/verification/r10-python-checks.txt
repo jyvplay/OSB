@@ -31,6 +31,7 @@ test_keystore_read_paths_do_not_regenerate_keys (test_native_source_audit.Native
 test_native_actions_and_capture_evidence_remain_real (test_native_source_audit.NativeSourceAuditChecks.test_native_actions_and_capture_evidence_remain_real) ... ok
 test_native_encryption_obligation_is_in_real_lab (test_native_source_audit.NativeSourceAuditChecks.test_native_encryption_obligation_is_in_real_lab) ... ok
 test_notes_adapter_and_ui_do_not_use_unchecked_filename_io (test_native_source_audit.NativeSourceAuditChecks.test_notes_adapter_and_ui_do_not_use_unchecked_filename_io) ... ok
+test_pro_sms_keeps_telephony_hardware_optional (test_native_source_audit.NativeSourceAuditChecks.test_pro_sms_keeps_telephony_hardware_optional) ... ok
 test_removed_real_notes_dependency_is_detected (test_native_source_audit.NativeSourceAuditChecks.test_removed_real_notes_dependency_is_detected) ... ok
 test_stale_picker_results_cannot_bypass_module_gates (test_native_source_audit.NativeSourceAuditChecks.test_stale_picker_results_cannot_bypass_module_gates) ... ok
 test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
@@ -56,6 +57,6 @@ test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike
 test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 56 tests in 0.341s
+Ran 57 tests in 0.389s
 
 OK

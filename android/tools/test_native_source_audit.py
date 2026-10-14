@@ -90,3 +90,10 @@ class NativeSourceAuditChecks(unittest.TestCase):
         self.assertIn('fun tree(uri: Uri): DocumentFile?',source)
         self.assertIn('api(libs.androidx.documentfile.documentfile)',gradle)
         self.assertNotIn('implementation(libs.androidx.documentfile.documentfile)',gradle)
+
+    def test_pro_sms_keeps_telephony_hardware_optional(self):
+        import xml.etree.ElementTree as ET
+        manifest=ET.parse(audit.ROOT/'app/src/pro/AndroidManifest.xml').getroot()
+        ns='{http://schemas.android.com/apk/res/android}'
+        features={node.get(ns+'name'):node.get(ns+'required') for node in manifest.findall('uses-feature')}
+        self.assertEqual('false',features.get('android.hardware.telephony'))

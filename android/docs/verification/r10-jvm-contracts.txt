@@ -62,7 +62,7 @@ f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75  format/archive
 ff969fbe23631460c98031653f39e8929b11fe3f68a17b4cf7a294440a5f2fd0  cast/airplay/src/main/kotlin/dev/fusion/airplay/AirPlayUrlSender.kt
 84040f8065d19b1ce06abe1cfc6dbca156919525271b8cdf97c962c99e644d64  cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt
 d9a533767e9d94cadaf7a53e5bbb89d43dfd73e97744c10952ab7cbbe0b4d0cf  cast/castv2/src/main/kotlin/dev/fusion/castv2/CastJson.kt
-0f8d1430054373881f76470d30dfd41311c7dad39327ed90338fe6e89970a689  cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Client.kt
+21871cc6eb6e97bf3dda4dff234a4c02d122bb546e2575fe67813608dc90cd9a  cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Client.kt
 0ef260b857681162388c20512c2b736302e7282bcf58463379967e7e0b5f98a7  cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt
 56ce1ed852ac9640fa2d001b3d22792115a4f69120dea5a87926cb02259bf056  cast/castv2/src/main/kotlin/dev/fusion/castv2/Proto.kt
 049b18efbc9258276cb8f9ac9866dacd0a1c1f3d2c7c9d5a77723bcad2bc5fcf  feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt
