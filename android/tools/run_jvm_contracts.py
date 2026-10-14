@@ -40,7 +40,8 @@ subprocess.run([compiler, '-jvm-target', '17', '-classpath', boundary_cp,
     '\nStable-local positive consumer: compilation passed. Neither fixture is an Android UI build.\n'+
     '\n'.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(root)) for p in (negative,positive))+'\n')
 sources.append(positive)
-contracts = [root/'core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt',
+contracts = [root/'core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt',
+             root/'core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt',
              root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NotesChecks.kt',
              root/'core/files/src/main/kotlin/dev/fusion/files/FileMutationPolicy.kt',
              root/'testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt',
@@ -58,7 +59,7 @@ stdout = 'Two negative module-boundary attacks rejected; stable-local consumer c
 for main, args in [('dev.fusion.testing.PilotCoreChecks', []), ('dev.fusion.calc.CalculatorChecks', []),
                    ('dev.fusion.documents.EditorChecks', []),
                    ('dev.fusion.documents.CopyChecks', [str(root/'core/documents/src/contract/resources')]),
-                   ('dev.fusion.notes.NotesChecks', []), ('dev.fusion.testing.SearchAndGateChecks', []),
+                   ('dev.fusion.notes.NotesChecks', []), ('dev.fusion.index.EncryptedIndexChecks', []), ('dev.fusion.testing.SearchAndGateChecks', []),
                    ('dev.fusion.windowing.WindowRestoreChecks', [str(root/'core/windowing/src/contract/resources')])]:
     result = subprocess.run([java, '-cp', os.pathsep.join([str(jar),classpath]), main, *args], check=True, text=True, capture_output=True)
     stdout += result.stdout+'\n'

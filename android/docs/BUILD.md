@@ -127,3 +127,20 @@ moves the active window to that workspace. Mouse menu equivalents are provided.
 Notes currently support Markdown source, not rendered Markdown, backlinks,
 attachments, autosave, encryption or process-death draft recovery. Deletion is
 explicitly confirmed/permanent, not a reversible Notes trash implementation.
+
+## R8 encrypted-index and independent host checks
+
+```sh
+# Linux/POSIX contract; native Android test remains a separate obligation:
+./gradlew :testing:encryptedIndexContracts
+# Full genuine standalone JVM suite, when JAVA_HOME/KOTLINC are configured:
+python3 tools/run_jvm_contracts.py
+# Optional external implementations (install cryptography46.0.3/Pillow12.0.0 yourself):
+python3 tools/run_independent_checks.py --report pilot-reports/cross-verifiers.json
+```
+
+The optional script downloads nothing. It compares SunJCE and OpenSSL in both
+directions and checks parser fixture PNGs with Pillow. Those fixtures are not
+native screenshots. No new APK dependency was introduced. See `R8-ENGINEERING.md`
+for actual results, bounds and unimplemented product scope. Encrypted Find is not
+wired to live sources; no feature/spike is promoted by this kernel work.

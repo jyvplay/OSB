@@ -9,14 +9,15 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 /**
- * Real Android Keystore AES-256-GCM. Keys never leave TEE/StrongBox.
- * No password derivation here: biometric gate lives in the UI layer.
+ * Android Keystore AES-256-GCM. Hardware backing is NOT guaranteed.
+ * No biometric authentication is required by this key policy; not a verified vault lifecycle.
  */
 class VaultCrypto(private val alias: String = "fusion_vault") {
     private val ks: KeyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
 
-    private fun key(): SecretKey {
+    private fun key(create: Boolean): SecretKey {
         (ks.getEntry(alias, null) as? KeyStore.SecretKeyEntry)?.let { return it.secretKey }
+        check(create) { "Vault key unavailable; ciphertext retained. No key regenerated during decryption." }
         val gen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
         val spec = KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
@@ -30,13 +31,13 @@ class VaultCrypto(private val alias: String = "fusion_vault") {
 
     fun seal(plain: ByteArray): Pair<ByteArray, ByteArray> {
         val c = Cipher.getInstance("AES/GCM/NoPadding")
-        c.init(Cipher.ENCRYPT_MODE, key())
+        c.init(Cipher.ENCRYPT_MODE, key(create = true))
         return c.iv to c.doFinal(plain)
     }
 
     fun open(iv: ByteArray, cipher: ByteArray): ByteArray {
         val c = Cipher.getInstance("AES/GCM/NoPadding")
-        c.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, iv))
+        c.init(Cipher.DECRYPT_MODE, key(create = false), GCMParameterSpec(128, iv))
         return c.doFinal(cipher)
     }
 }

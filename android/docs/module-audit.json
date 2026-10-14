@@ -70,7 +70,7 @@
     {
       "module": ":core:security",
       "status": "incomplete",
-      "present_scope": "Password and vault crypto source",
+      "present_scope": "Password/vault crypto source plus Android index-key adapter; decrypt/read refuses missing keys without regeneration; hardware backing not assumed",
       "remaining_gap": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
       "evidence_level": "android_uncompiled"
     },
@@ -91,8 +91,8 @@
     {
       "module": ":core:index",
       "status": "incomplete",
-      "present_scope": "Bounded local literal index; entry/payload limits, serialized updates and explicit refusal tests executed; no crawler/FTS",
-      "remaining_gap": "Complete incremental/provider index, cancellation, privacy, latency and Android integration",
+      "present_scope": "Bounded literal index plus executed encrypted whole-snapshot store, strict authenticated codec, optimistic revision/file-lock publication and locked-session search; no crawler/FTS or native source integration",
+      "remaining_gap": "S4 FTS/source/latency/battery decisions; explicit source consent/Vault/private-data exclusions, Android Keystore/filesystem/lifecycle integration, rollback/key lifecycle policy, native Find integration and device security acceptance",
       "evidence_level": "partial_kernel_contracts"
     },
     {
@@ -671,5 +671,5 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R8 draft-PR checkpoint \u2014 ordered command stream and release-record checks; incomplete"
+  "revision": "R8 continuation \u2014 encrypted index kernel and native-lab integrity; incomplete"
 }

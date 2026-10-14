@@ -1,4 +1,4 @@
-# Native module completion audit — R8 draft-PR checkpoint — ordered command stream and release-record checks; incomplete
+# Native module completion audit — R8 continuation — encrypted index kernel and native-lab integrity; incomplete
 
 **Included Gradle modules: 48. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 48 (100.00%).**
 
@@ -25,10 +25,10 @@ This is not a time/effort estimate. A module is complete only after its entire a
 | `:core:model` | Shared types and fail-closed pilot admission policy | partial kernel contracts | Complete immutable cross-module models, schema/compatibility and full product integration |
 | `:core:commands` | Bounded immutable command snapshots and locale-stable literal ranking; mutation/aliasing regression tests executed | partial kernel contracts | Complete command routing, conflict/remap/keyboard/a11y contracts and integration |
 | `:core:settings` | Settings graph source | android uncompiled | DataStore, migrations, full settings/apply semantics and persistence acceptance |
-| `:core:security` | Password and vault crypto source | android uncompiled | Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure |
+| `:core:security` | Password/vault crypto source plus Android index-key adapter; decrypt/read refuses missing keys without regeneration; hardware backing not assumed | android uncompiled | Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure |
 | `:core:perf` | PSS/thermal/frame-statistics source; pure policy tested | partial kernel contracts | ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings |
 | `:core:hw` | Nullable hardware inventory/probe source | android uncompiled | Verified hardware capabilities/initialization, Compat admission, reference device matrix |
-| `:core:index` | Bounded local literal index; entry/payload limits, serialized updates and explicit refusal tests executed; no crawler/FTS | partial kernel contracts | Complete incremental/provider index, cancellation, privacy, latency and Android integration |
+| `:core:index` | Bounded literal index plus executed encrypted whole-snapshot store, strict authenticated codec, optimistic revision/file-lock publication and locked-session search; no crawler/FTS or native source integration | partial kernel contracts | S4 FTS/source/latency/battery decisions; explicit source consent/Vault/private-data exclusions, Android Keystore/filesystem/lifecycle integration, rollback/key lifecycle policy, native Find integration and device security acceptance |
 | `:core:storage` | Checked AtomicFile plus legacy SQLite source; unsupported upgrades now refuse without DROP and failed inserts propagate | android uncompiled | Specified Room/migrations, no destructive upgrades, process-death/disk-failure acceptance; adapter uncompiled |
 | `:core:designsystem` | Compose theme source | android uncompiled | Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance |
 | `:feature:editor` | Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts | android uncompiled | Native adapter/broker uncompiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending |

@@ -10,25 +10,36 @@ permissions:
 jobs:
   build-and-test:
     name: Traceability, assemble both flavors, JVM tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: android
     steps:
       - uses: actions/checkout@v4
       - uses: gradle/actions/wrapper-validation@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
-      - name: Install pinned Android platform
-        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0'
       - name: Check source contracts and generated traceability
         run: |
           python3 tools/check_project.py
           python3 -m unittest discover -s tools -p 'test_*.py' -v
+      - name: Inspect runner SDK and install pinned platform
+        run: |
+          SDK_MANAGER="${ANDROID_HOME:?Runner did not expose ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDK_MANAGER" ]; then
+            echo "::error::Runner SDK command-line tools missing; Android compilation has not started."
+            exit 1
+          fi
+          "$SDK_MANAGER" --version
+          if ! "$SDK_MANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
+            cat sdk-setup.log
+            echo "::error::SDK component installation failed before Android compilation. See sdk-setup.log artifact."
+            exit 1
+          fi
+          python3 tools/native_lab.py doctor
       - name: Assemble both flavors
         run: ./gradlew --no-daemon :app:assembleProDebug :app:assemblePlayDebug
       - name: Run all JVM unit tests (not device evidence)
@@ -40,7 +51,7 @@ jobs:
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: ./gradlew --no-daemon :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts
+        run: ./gradlew --no-daemon :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts
       - name: Lint both manifests and Android sources
         run: ./gradlew --no-daemon :app:lintProDebug :app:lintPlayDebug
       - name: Upload debug APKs
@@ -49,6 +60,13 @@ jobs:
           name: fusion-native-debug
           path: android/app/build/outputs/apk/*/debug/*.apk
           if-no-files-found: error
+      - name: Upload SDK setup diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdk-setup-diagnostics
+          path: android/sdk-setup.log
+          if-no-files-found: ignore
       - name: Upload test and lint reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -58,7 +76,7 @@ jobs:
           if-no-files-found: ignore
   instrumented:
     name: API34 managed-device checks (not physical-device spike passes)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: github.event_name == 'workflow_dispatch'
     defaults:
       run:
@@ -66,11 +84,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: gradle/actions/wrapper-validation@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
       - name: Enable KVM
         run: |

@@ -1,3 +1,23 @@
+# Latest: R8 continuation
+
+- **171,082 JVM assertions / 47 Python tests passed**, plus SunJCE↔OpenSSL and
+  13 Pillow/parser cross-checks. Actual logs/hashes, not Android evidence.
+- New bounded encrypted-index store and locked-session literal search; no source
+  discovery, consent/exclusion adapter or live Find UI integration. S4 stays blocked.
+- PNG pixel/CRC/deflate validation and bounded binary acquisition now replace the
+  earlier framing-only check. Parser fixtures are not native screenshots.
+- Native Keystore adapter/test authored; missing keys do not regenerate on read.
+  Native code remains uncompiled/unrun; no hardware-backing assertion.
+- Existing CI failed during SDK setup, before compilation. Candidate workflow
+  repair is authored and **unrun**. No new CI dispatch, commit or push this pass.
+- **0/48 specification-complete modules (0%);48 outstanding (100%).** 231 recorded
+  requirements and36 explicit cross-cutting obligations;30 unpassed spikes.
+- [Full A–J record and remaining feature gaps](docs/R8-ENGINEERING.md).
+
+Earlier sections below record historical checkpoints, not current-source results.
+
+---
+
 # Latest: R8 draft-PR checkpoint
 
 **170,728 JVM assertions and 35 Python tests passed.** Android build/device/visual

@@ -1,4 +1,10 @@
-> **Latest checkpoint:** [R8 draft-PR notes](docs/R8-PR-CHECKPOINT.md): 170,728 JVM
+> **Latest: [R8 continuation](docs/R8-ENGINEERING.md).** 171,082 JVM assertions,
+> 47 Python tests and cross-implementation crypto/PNG checks passed. Added a bounded
+> encrypted-index persistence/search kernel and repaired capture integrity checks.
+> Android/Keystore integration and visual inspection remain unrun; encrypted Find
+> is not wired to live sources. **0/48 complete modules. Substantial coding remains.**
+
+> **Previous merged checkpoint:** [R8 draft-PR notes](docs/R8-PR-CHECKPOINT.md): 170,728 JVM
 > assertions / 35 Python tests passed; Android build and visual inspection unrun.
 > Full system remains incomplete (0/48 accepted modules). R7 evidence below is historical.
 

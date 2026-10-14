@@ -1,0 +1,288 @@
+Actual continuation checks; Android compilation/visual/physical acceptance NOT established.
+
+$ /usr/bin/python -m unittest discover -s android/tools -p test_*.py -v
+
+test_nonzero_timeout_and_bad_limits (test_bounded_process.BoundedProcessChecks.test_nonzero_timeout_and_bad_limits) ... ok
+test_overflow_both_pipes (test_bounded_process.BoundedProcessChecks.test_overflow_both_pipes) ... ok
+test_success_exact_byte_boundary_and_stderr (test_bounded_process.BoundedProcessChecks.test_success_exact_byte_boundary_and_stderr) ... ok
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_apk_metadata_identity_path_and_split_guards (test_native_lab.NativeLabChecks.test_apk_metadata_identity_path_and_split_guards) ... ok
+test_explicit_serial_and_consent (test_native_lab.NativeLabChecks.test_explicit_serial_and_consent) ... ok
+test_font_restore_input_bounds (test_native_lab.NativeLabChecks.test_font_restore_input_bounds) ... ok
+test_instrumentation_requires_exact_completion (test_native_lab.NativeLabChecks.test_instrumentation_requires_exact_completion) ... ok
+test_missing_or_truncated_capture_refused (test_native_lab.NativeLabChecks.test_missing_or_truncated_capture_refused) ... ok
+test_titlebar_and_pending_copy_source_regressions (test_native_lab.NativeLabChecks.test_titlebar_and_pending_copy_source_regressions) ... ok
+test_backend_denial_replaces_dangerous_legacy_bodies (test_native_source_audit.NativeSourceAuditChecks.test_backend_denial_replaces_dangerous_legacy_bodies) ... ok
+test_complete_scope_register_and_foundations_accounted_for (test_native_source_audit.NativeSourceAuditChecks.test_complete_scope_register_and_foundations_accounted_for) ... ok
+test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible) ... ok
+test_database_upgrade_and_write_failures_are_not_hidden (test_native_source_audit.NativeSourceAuditChecks.test_database_upgrade_and_write_failures_are_not_hidden) ... ok
+test_implementation_is_not_blindly_exported (test_native_source_audit.NativeSourceAuditChecks.test_implementation_is_not_blindly_exported) ... ok
+test_keystore_read_paths_do_not_regenerate_keys (test_native_source_audit.NativeSourceAuditChecks.test_keystore_read_paths_do_not_regenerate_keys) ... ok
+test_native_actions_and_capture_evidence_remain_real (test_native_source_audit.NativeSourceAuditChecks.test_native_actions_and_capture_evidence_remain_real) ... ok
+test_native_encryption_obligation_is_in_real_lab (test_native_source_audit.NativeSourceAuditChecks.test_native_encryption_obligation_is_in_real_lab) ... ok
+test_notes_adapter_and_ui_do_not_use_unchecked_filename_io (test_native_source_audit.NativeSourceAuditChecks.test_notes_adapter_and_ui_do_not_use_unchecked_filename_io) ... ok
+test_removed_real_notes_dependency_is_detected (test_native_source_audit.NativeSourceAuditChecks.test_removed_real_notes_dependency_is_detected) ... ok
+test_stale_picker_results_cannot_bypass_module_gates (test_native_source_audit.NativeSourceAuditChecks.test_stale_picker_results_cannot_bypass_module_gates) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_deflate_length_end_extra_stream_and_filter_attacks (test_png_capture.PngCaptureChecks.test_deflate_length_end_extra_stream_and_filter_attacks) ... ok
+test_every_single_byte_corruption_and_truncation_refused (test_png_capture.PngCaptureChecks.test_every_single_byte_corruption_and_truncation_refused) ... ok
+test_idat_order_unknown_critical_and_animation (test_png_capture.PngCaptureChecks.test_idat_order_unknown_critical_and_animation) ... ok
+test_parameter_and_chunk_count_bounds (test_png_capture.PngCaptureChecks.test_parameter_and_chunk_count_bounds) ... ok
+test_recorded_header_only_counterexample (test_png_capture.PngCaptureChecks.test_recorded_header_only_counterexample) ... ok
+test_small_color_metadata_and_profile_refusal (test_png_capture.PngCaptureChecks.test_small_color_metadata_and_profile_refusal) ... ok
+test_supported_rgb_rgba_and_all_row_filters (test_png_capture.PngCaptureChecks.test_supported_rgb_rgba_and_all_row_filters) ... ok
+test_p1_only_flags_do_not_authorize_release (test_release_gate.ReleaseGateChecks.test_p1_only_flags_do_not_authorize_release) ... ok
+test_real_file_digest_tampering_and_symlink (test_release_gate.ReleaseGateChecks.test_real_file_digest_tampering_and_symlink) ... ok
+test_source_binding_without_attestation_hash_cycle (test_release_gate.ReleaseGateChecks.test_source_binding_without_attestation_hash_cycle) ... ok
+test_traceability_validation_survives_python_optimization (test_release_gate.ReleaseGateChecks.test_traceability_validation_survives_python_optimization) ... ok
+test_truthy_evidence_missing_and_outside_paths_refused (test_release_gate.ReleaseGateChecks.test_truthy_evidence_missing_and_outside_paths_refused) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 0.303s
+
+OK
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/check_project.py
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+48 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/native_source_audit.py --check
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/module_audit.py --check
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+
+RELEASE BLOCKED: Every in-scope requirement, not just P1, must be verified; exclusions cannot expand silently
+
+Exit: 1; expected: 1
+
+$ /usr/bin/python -O android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+
+RELEASE BLOCKED: Every in-scope requirement, not just P1, must be verified; exclusions cannot expand silently
+
+Exit: 1; expected: 1
+
+$ /usr/bin/python android/tools/native_lab.py doctor
+{
+  "checks": {
+    "java17": false,
+    "javac17": false,
+    "platform36": false,
+    "buildTools35": false,
+    "buildTools36": false,
+    "wrapper": true
+  },
+  "versions": {
+    "java": "not found",
+    "javac": "not found"
+  },
+  "sdk": "/SDK-NOT-CONFIGURED",
+  "adb": "/SDK-NOT-CONFIGURED/platform-tools/adb",
+  "adbPresent": false,
+  "buildPrerequisitesPresent": false,
+  "limitations": "No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Distribution SHA-256 remains unpinned; release supply-chain gate open."
+}
+
+
+Exit: 1; expected: 1
+
+$ /usr/bin/python android/tools/native_lab.py visual --serial emulator-5554
+
+Requires --allow-disposable-reset and an exact emulator-NNNN --serial; physical/network devices refused.
+
+Exit: 2; expected: 2
+
+$ git diff --check
+
+
+Exit: 0; expected: 0
+
+Compiled source hashes match final JVM evidence; actual assertion sum=171082.
+Current source-only fingerprints (NOT Android compilation):
+e4d1448746edd3e91b3dbef76b201b2cccef27e4b378c7c4174ba9f5f239a549  .github/workflows/android.yml
+5d121553b5d8662f07661c0d3f311c434f54c740fbbf475f51d788df255bae3c  android/app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt
+9b37635bdb5fd5b552160a4d79d0b28b5d14b25400dbefaf845d8f0519fcf261  android/app/src/androidTest/java/dev/fusion/shell/CopyContractDeviceTest.kt
+b927934892e7c63ca911899c655b800d84f31ef7b95b23a8fcdefd0fab2c71e4  android/app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt
+f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0  android/app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt
+14c27dace40dbec9ddf490dc96841c03f6862134ad73d8157d75f6ce6d6e18bb  android/app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt
+a33d9484ad5959ce279fd54dc9d51d0ddd71818518b64bb27f2d77def57e2fec  android/app/src/androidTest/java/dev/fusion/shell/StorageBoundaryDeviceTest.kt
+c625ff8010aa25ccd35fdd86a70d925e66c179d9eef5243cfbaf743ef47f9915  android/app/src/androidTest/java/dev/fusion/shell/VisualCaptureTest.kt
+9ea9c6494e8b057aca5c24e70bca47cdeef6af1a7e96c688ed7f37e836fccbc1  android/app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt
+9ef73f20dde541fd36395bddf5296a265bbb058807551e285dcc650470c0a56b  android/app/src/main/java/dev/fusion/shell/ExternalDesktopScreen.kt
+3a15dfe52d16c60f279a2eeb2ffba82952a33e118c266872037085f23ba8b8c2  android/app/src/main/java/dev/fusion/shell/ExternalDisplay.kt
+9e3b3be152a1b45020ab7d1da8144cce6d7be215c6cc93ebfdb99ac237c03261  android/app/src/main/java/dev/fusion/shell/MainActivity.kt
+88dd4b5af4bcd019f77057782ab101581991c76160f47079a8592618d8169086  android/benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt
+620382ee3546cb8cadffe7366f9252fa40ea9ad244286ea595e56814d903a8db  android/benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt
+ff969fbe23631460c98031653f39e8929b11fe3f68a17b4cf7a294440a5f2fd0  android/cast/airplay/src/main/kotlin/dev/fusion/airplay/AirPlayUrlSender.kt
+84040f8065d19b1ce06abe1cfc6dbca156919525271b8cdf97c962c99e644d64  android/cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt
+bad0982dd24cfa073e94df5e11869cacecd694f6b611eee6333cdd5cf2cce9c8  android/cast/airplay/src/test/kotlin/dev/fusion/airplay/AirPlayUrlSenderTest.kt
+e6a99e6eeef10399ff8616dbf51e16a1120a4ddb9b0fa6ab843125133e922a93  android/cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt
+d9a533767e9d94cadaf7a53e5bbb89d43dfd73e97744c10952ab7cbbe0b4d0cf  android/cast/castv2/src/main/kotlin/dev/fusion/castv2/CastJson.kt
+0f8d1430054373881f76470d30dfd41311c7dad39327ed90338fe6e89970a689  android/cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Client.kt
+0ef260b857681162388c20512c2b736302e7282bcf58463379967e7e0b5f98a7  android/cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt
+56ce1ed852ac9640fa2d001b3d22792115a4f69120dea5a87926cb02259bf056  android/cast/castv2/src/main/kotlin/dev/fusion/castv2/Proto.kt
+537e296179df287daac7278047130ddea81973798deeb0fe693f56b42c5c65b6  android/cast/castv2/src/test/kotlin/dev/fusion/castv2/CastJsonTest.kt
+6073ec61ec1cbef13268876c082ecff9877413d3e868e79fd81d0f0b0cc4f48f  android/cast/castv2/src/test/kotlin/dev/fusion/castv2/CastV2ClientTest.kt
+abc506fbaa5ad2da55b4e93160e4494194a209b9cf813037d219da9b587f87af  android/cast/castv2/src/test/kotlin/dev/fusion/castv2/JsonTest.kt
+26e35f7ddaadc1d4951c7144542de488ed586c242514c38ca89f81c260e995ab  android/cast/castv2/src/test/kotlin/dev/fusion/castv2/ProtoTest.kt
+d30946116fbc6e87903b182c25d855fa266d951482dde3db34e00195710e22fb  android/cast/dlna/src/main/java/dev/fusion/cast/dlna/DlnaClient.kt
+deb211e997fb1b6f1e965fdf2abc9a98f281abeede97df54cd2ada5487804d80  android/cast/dlna/src/main/java/dev/fusion/cast/dlna/DlnaScreen.kt
+ecaeba866a60db19a3b70634e0555c211e1112ccca2b617139e5ff38d915e945  android/cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt
+26e80485a21f6ed25db56ab751d22447702c668ef7bec3895db723116bced7e1  android/cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt
+9118012424e9b28ebf5cf7cf008734ad12a40a411c607d91f427588aaf140812  android/core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt
+f984f73585bf67e9b1dc8a36335e5410c87eaadeabaac5abb25a3d483aab3938  android/core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt
+5064ef922c5a694770eb25fec2d34a4f638c3c0dcd088a53e3e92c028379bb9d  android/core/commands/src/test/kotlin/dev/fusion/commands/RegistryTest.kt
+6c8a81fc3caa8dd00efc56255ca4eac88b4acd9d8a00e78161d729d5a9e089dc  android/core/designsystem/src/main/java/dev/fusion/designsystem/Theme.kt
+c3c9d1a9cee2247dd22e14aef8316c0a543d78d53ba2882ae3b7d0a599ce898a  android/core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt
+9094bd74e582b73646da4af377be22cb331c309c31d4b792d1905cba7acddc0b  android/core/documents/src/contract/kotlin/dev/fusion/documents/EditorChecks.kt
+a19bdec5596c931de2545ff98b053c4528aa4c075a34de787fc356857b85e905  android/core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt
+dd5714a3653761d8a269f8f329d82c86f60b5793b6861b6c57871a539c1cb048  android/core/documents/src/main/kotlin/dev/fusion/documents/SessionCodec.kt
+c424b71f3fafb52cc75a268ce64a10102d499a3de460917262e7d4749162fbdc  android/core/documents/src/main/kotlin/dev/fusion/documents/TextDocument.kt
+fad3876be614a07603202a11aecf30bdca85659ef66f8502df556037fccdcf60  android/core/documents/src/main/kotlin/dev/fusion/documents/TextEditing.kt
+18085b09c0d5ff2a2b7a7b137b590b3c0ac849208970e1fb371fe7875dba591e  android/core/documents/src/main/kotlin/dev/fusion/documents/VerifiedCopy.kt
+ff2bd845f0432cef1bac9bba9a9bdfe1f26ee2e97323fedfac92e64b9172d1c6  android/core/documents/src/test/kotlin/dev/fusion/documents/DocumentSafetyTest.kt
+003bbf71c72a1e1ce9e60a8ac5ee1ef87925ae71a4ab6c92640f3a3acaf48c79  android/core/files/src/main/java/dev/fusion/files/SafRepository.kt
+271b01e374834c3e678063facc1944bb7cacceedfc9901c91c247825498843c0  android/core/files/src/main/java/dev/fusion/files/TrashRepository.kt
+df62538077dfb964af85e401d9422d51c8bd1ddb9e737d9a59d1dff2791f5a83  android/core/files/src/main/kotlin/dev/fusion/files/FileMutationPolicy.kt
+4f09fcf0da21f0c5492b71a395664f12aa14158b9f08999eed750e65d82159f6  android/core/hw/src/main/java/dev/fusion/hw/HwProbe.kt
+85d70aa92b40a5727f576febabae618eecefa0bf0a97a66670227a4c32b121f7  android/core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt
+7a0b503102f0870b761353586708dbff9e12e57d5b44a21f19d4e1bfb40d230b  android/core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexCodec.kt
+cfd1fc18855633cde0f712752abf0eb824cea718afcf453e82e7582fd3a33d90  android/core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt
+62d5d8db0a2cbe90513f8169bda26555e8942a339ec8dcdc587d4513b398eb82  android/core/index/src/main/kotlin/dev/fusion/index/LocalIndex.kt
+7560b5ee0139e76e8ed896b7c4a98686de561eebbaee13efda267749672fc9ff  android/core/index/src/test/kotlin/dev/fusion/index/LocalIndexTest.kt
+67e53e6202dcf5570e49816063f60513f64242b8fc03440dbef2e35eaf692ef2  android/core/model/src/main/kotlin/dev/fusion/model/Models.kt
+371ae6e411c13b4716ec8bf88fcfb9d766c5ad8adf8a32f68eaae708deb2afe3  android/core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt
+f3599cbdcd91c966ed2ab097c93107aa0d9bf8a7ad341d14196e936e433d2527  android/core/perf/src/main/java/dev/fusion/perf/Perf.kt
+8943c5233fe5bc3b565b463b4930961514c1f96a5d52a0abdf89a9f6810a6cd3  android/core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt
+3ac11bb42295d9552e997fe3d17fd25ece8872144e580c5400e9e3fba16bddf7  android/core/security/src/main/java/dev/fusion/security/IndexKeys.kt
+3dc5bb0d72e76da2d4b8f851fd36237e5d0094a4a78ebb0baf71442dce3ab044  android/core/security/src/main/java/dev/fusion/security/PasswordCrypto.kt
+8c4a53326accaad319686ae6597d81ea0904bcd66666208826399513a2b65dcb  android/core/security/src/main/java/dev/fusion/security/VaultCrypto.kt
+1d68d35c1e811ba6fb63557185848cb15a16d5ffa5beaa4c4b0fe3018b118846  android/core/security/src/test/java/dev/fusion/security/PasswordCryptoTest.kt
+8ce622275b1b806f03e2212f48cdb72b3f6c1c375547dd2d734282d5f53fabdd  android/core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt
+7b8f454f8ad2b8e8b4c8b3354122ec24431649c86bbcf5afbd940e384622cd36  android/core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt
+d58f8070ca85162b40ffd180c10cd5ba532c4f2c5d61cbb6bb598f0137ce6acc  android/core/storage/src/main/java/dev/fusion/storage/FusionDb.kt
+44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074  android/core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt
+896d340f943888ef976874a0e822c499a26938527e98dbba503c465387620718  android/core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCodec.kt
+befbf7132bd65ae982f954588b98ca83efbba0451985b6140be5f7e38fe2e295  android/core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCommandStream.kt
+80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574  android/core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt
+c35a70361cde94f3870eb559c101cb4bbf9acc324bff232888e8ba67c799a8f2  android/core/windowing/src/test/kotlin/dev/fusion/windowing/WindowEngineTest.kt
+9ab93b91db2f0947eaacb2f8bc87006ddf587766556e0eadd60b945ab7ea1939  android/feature/accessibility/src/main/java/dev/fusion/a11y/Adaptation.kt
+372c663e4000ab3f7206426ff852c124eabcd9036b191bcec8f05e905f316c4f  android/feature/alerts/src/main/java/dev/fusion/alerts/AlertsScreen.kt
+aca724f65481e1e0c8e04ce7d56ea96b972b4ad5ab732a8daa46f04e87e88433  android/feature/alerts/src/main/java/dev/fusion/alerts/FusionNotificationListener.kt
+3780931bc468c0ec44f41bf6f9ebf13e616babca234a5dd06ed7c3aa88412c3b  android/feature/automation/src/main/java/dev/fusion/automation/Routines.kt
+a9abed4bb1c83d2b94b191c1476d5c2ec9bf4f51c003c80d607c1ee8b0e88a32  android/feature/backup/src/main/java/dev/fusion/backup/BackupEngine.kt
+bd978a2b2c37810473be2126b80bab1984f4e776bf68f4cc6cb4c6a32a64c0b9  android/feature/backup/src/main/java/dev/fusion/backup/BackupScreen.kt
+50d6bddf4b141737d090a3aef84a5b508fef88197b45573aeffe0b56b09b0cf2  android/feature/beam/src/main/java/dev/fusion/beam/CastSendPanel.kt
+084b11b4d4fd1adb44810085e3d278475c1227006382b7dbadeeffa181a9ce7a  android/feature/beam/src/main/java/dev/fusion/beam/Discovery.kt
+b2decf763ff5c14e8819dfec985cbf4dba17867979e3121be66960c895f644c9  android/feature/beam/src/main/java/dev/fusion/beam/LocalMediaServer.kt
+89eee07b9a1c21651e1f85e939a14809618d6569b05b0afcd9abc093d1d5468e  android/feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt
+e0da78f4670a2b1cb75e532c3ca0f86fd1e690de796d20c32830d3f9f15c3f78  android/feature/beam/src/test/java/dev/fusion/beam/LocalMediaServerTest.kt
+1305688195b7587010dcf8c730acfaa4b1a8c61a16480f2e5a582abddcf51875  android/feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt
+29b18d7590efb582a308fbd2f55a565b59912aa3394bf930054eef343f81f57a  android/feature/browser/src/main/java/dev/fusion/browser/BrowserScreen.kt
+a3d71c977661945024e7fa8704b563aabcde37345ab35faba29457046d5a6ecb  android/feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt
+2fada58607b12e63b967e6eae489a0b964c6c481ab3c1b309b8183be5314faf1  android/feature/calc/src/main/java/dev/fusion/calc/Calc.kt
+be0288b347766c5716d6f4006a406db9438c2aa30f77ef32c44c116d276ace8b  android/feature/calc/src/main/java/dev/fusion/calc/CalculatorViewModel.kt
+049b18efbc9258276cb8f9ac9866dacd0a1c1f3d2c7c9d5a77723bcad2bc5fcf  android/feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt
+2fd0140c7aa07e07dcf7467d458f7c0ff3f02d36b99546cfc88302e673546164  android/feature/calc/src/main/kotlin/dev/fusion/calc/CalculatorHistory.kt
+c502ab4320d9fb65e6afc4b18524c46910255ee1e25825835ac83d8a00738f50  android/feature/calc/src/main/kotlin/dev/fusion/calc/Programmer.kt
+e71f046b25950086a4bef6d3e96cce4d38e46a109d73cfba541c2a9672112b9b  android/feature/calc/src/main/kotlin/dev/fusion/calc/Units.kt
+c954d32af42c5667654ce280cd6fe647622e26ff279763d54b8349dc9a93050b  android/feature/capture/src/main/java/dev/fusion/capture/CaptureScreen.kt
+c9d3ca90577d87f3925df1a67ed433b919dc33a4a0b65287981dae0dd43448c9  android/feature/capture/src/main/java/dev/fusion/capture/ScreenRecordService.kt
+908a2450f6517296ea7fb961563d1bbb4506edc745d950779d032b016e2df0c7  android/feature/continuity/src/main/java/dev/fusion/continuity/ContinuityScreen.kt
+29ca08093b8e4173c6eba46b01874bc5ca1c2a866e80082e9fbe9171ab6c0d7d  android/feature/continuity/src/main/java/dev/fusion/continuity/Peripherals.kt
+8884fc36ec22597e07f5a99221fb81fe32453d79173b5967cfea87a5d8239bca  android/feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt
+e9a41eecb7d5c6f0e265261c49de7cd8d5f30484f071d7892933768a0abcaafe  android/feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt
+886cfab287b952d178819c31a46ee62b4a20986df2633437178c01f04977607f  android/feature/editor/src/main/java/dev/fusion/editor/EditorTools.kt
+be3f8d2e5fb4784a1a7373170b257b7769fbd1db6dc52353f6879d220b4f107c  android/feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt
+3766c2455e14cb517a967ac34c053de4a2437194050681e73959c0bbbdea8c77  android/feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt
+672de4fc84aa889897e1accad04c69ff41c25b9ded177d9a6fcdc4b82330261a  android/feature/find/src/main/java/dev/fusion/find/Palette.kt
+e632c40bd5ada5ed2d2802e96dee13f114aeefe7fca843b75836b0852306b267  android/feature/launcher/src/main/java/dev/fusion/launcher/Shelf.kt
+5fd9a9d5a6129dddaa5c2248e197b68cdaec7978887b13364fdff72e438bf657  android/feature/lens/src/main/java/dev/fusion/lens/LensScreen.kt
+96c9a5e45f75a7ac06964ffb4a76c6fb88f2ae6e763840db53fe01a8167012dd  android/feature/media/src/main/java/dev/fusion/media/MediaLibrary.kt
+961e3c9a6d180ac6c484c5fd68fba9a73146ef9d81ad082a78cdf65a3484be16  android/feature/messages/src/main/java/dev/fusion/messages/MessagesScreen.kt
+a1ccfbb563e18cea6f5f084dd947ee425d9620ecb0d7e543f7a23f8ef1242650  android/feature/messages/src/main/java/dev/fusion/messages/SmsRepository.kt
+38341281d058ffe2672a56b56c8fb1ae606eb259b0c60dbc6dd5546d52ea41e4  android/feature/notes/src/contract/kotlin/dev/fusion/notes/NotesChecks.kt
+71cf358f280f7d5c2a746f80ad544b71341c4dc4e3a8ebd99a9b60f723a982cf  android/feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt
+f5631816034e43cb7ebffa8e7ca0fbc471600b023c5f66c06ca070c65a4d96e6  android/feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt
+2ee969c7b562eb1c9f614b37d307993a8bf61f5455831445fc8f0f19f056508f  android/feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt
+60e8e4a43e72aa7f5db3e4db4af357ba9cc28145bd9db90a08902dba1215a6b4  android/feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt
+b26ba49802d180e73e8ad5b5110e4cff24e754f5541e97704b4ee067031cbcee  android/feature/settings/src/main/java/dev/fusion/settingsui/SettingsScreen.kt
+eaa96ae583fc4503ff7a6ccdcd460108ad98328c515405d63fc30c1a2cf7f06c  android/feature/terminal/src/main/java/dev/fusion/terminal/LocalShell.kt
+b9cd2f1dd3ee705cafb1ae4cd27d42fe39d88aecda2e111d49234b84b8f5eab1  android/feature/terminal/src/main/java/dev/fusion/terminal/TerminalScreen.kt
+13966e993e622b4a6f2ffb36ca02230f7d2ff3f1d77d8ed70ef1c2e30da11ffb  android/feature/together/src/main/java/dev/fusion/together/TogetherSession.kt
+ce6d706ec4468d426835c1d292b41c7157b8446122ee2087028dc21294219b25  android/feature/together/src/test/java/dev/fusion/together/TogetherSessionTest.kt
+9cb6da848a725c470514026fcc5af7cf22cef259f6aeefd73d0064d5629d7c06  android/feature/vault/src/main/java/dev/fusion/vault/VaultScreen.kt
+f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75  android/format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt
+1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260  android/format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt
+52418a1bbbf17e4317b8450deba88c186698cc2cf1530a5b5beafe079577fea1  android/format/image/src/main/java/dev/fusion/format/image/ImageOps.kt
+272c35c3ad2b795312aa460ac1975430e6bc50f2a40eb899a0737caeab1b5167  android/format/lok/src/main/java/dev/fusion/lok/LokBridge.kt
+6c258b92e8ad4f714e262d260adeed6b64dce80da9ebf35a05be77faaf2f3b6f  android/format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt
+2473284ae33a50cb333e597ecec9639cd6158c508261a2ddcee56a1a3255a4af  android/format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt
+52faca91b8e672b514169125c8b514e04e1930327792a655a1a8f7f062dd4786  android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt
+46b061724b81657498093eb0fa6915381e37f1171bb64b81c79bf85c5be5504d  android/format/ooxml/src/test/kotlin/dev/fusion/ooxml/OoxmlTest.kt
+27466266f12e47832597554b3add7c05de9c9d546099a46fcdc4b0154d35575a  android/format/pdf/src/main/java/dev/fusion/format/pdf/PdfDocument.kt
+5449bfc92c99f12d2992ef618b52b06b403e760fc45fa9d28e1564171e32f606  android/format/pdf/src/main/java/dev/fusion/format/pdf/PdfScreen.kt
+69c387a4addc20cb39fe4e275bee129805423ea7b02708539fdc9bee237b768c  android/format/psd/src/main/java/dev/fusion/psd/PsdBitmaps.kt
+258ea2d1c89ae5e0d89ef818650ab44363b7e71f2c634f2b922a33dc08e797a9  android/format/psd/src/main/java/dev/fusion/psd/PsdScreen.kt
+41650dffd6fb21d8f937750f42b7f1a39cb94f9a5812f01e59d47fd8cb403712  android/format/psd/src/main/kotlin/dev/fusion/psd/PsdCompositeEngine.kt
+c96c40b7dca610aed8d63ce29662fbcab8462b96c8bfd14d9f0ef1ea9fc9c599  android/format/psd/src/main/kotlin/dev/fusion/psd/PsdInfo.kt
+ff2aa8f547172d8f0534ed80f4ae8b691b79621fb24f8feed520deec2eeb1968  android/format/psd/src/test/kotlin/dev/fusion/psd/PsdCompositeEngineTest.kt
+cd123b32608342a5956176845fdddb2300169a85c34711da987c4a4fdc978115  android/format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt
+930d88eddbb69f09ba0c450dd282fd6edd9892215106fb6a6e67459b26b04be0  android/testing/src/boundary/negative/PendingCopyBefore.kt
+63a4a9807f74fdd3dfd6a82c34aa76f74abd3f4f964d43d72db2b44289675d5d  android/testing/src/boundary/positive/PendingCopyAfter.kt
+4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5  android/testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt
+b7aecce4afc12eec430cfd6a0d441a55a18ea72fc96af57adb805b6903a85347  android/testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt
+a80eb6b3f6b32e900381dac9ddbc5593230d7dd0ba149ab4b34305ebe61632bf  android/testing/src/main/kotlin/dev/fusion/testing/Fixtures.kt
+6829b12a2384b7aac39f110d187474dec386b221750b75f2510b0d9c3f97c7af  android/testing/src/test/kotlin/dev/fusion/testing/FixturesTest.kt
+7781bfeb83d3df603b6945cda5e057b2147628b3f18c378ce675d19bd9b251c5  android/tools/bounded_process.py
+3dc6ea8c320d66770478d6a74e1437fd58d33ec787090e2b740073cced65ca1b  android/tools/check_project.py
+86cb91415ec30c4edbc7db42b1b6ffccd42a26314b0a4915451989024eb84895  android/tools/module_audit.py
+51a9fac91e5bca968682d19709ce131cecfacc0283bf0f7703b09bfca8b10434  android/tools/native_lab.py
+a04e55997fc02d23519071d75eb951ff771d40a7b75c08fa4afc90644bd34375  android/tools/native_source_audit.py
+afb28d49b8ce0a7e20c22d0976d043dbb3bab1b01ba66b75f6a0434990011b7c  android/tools/pilot_device_report.py
+1f9a89e3875812ebec306b30b4270cc87a5d560054e69cdb8e9d8bd06f3597e1  android/tools/png_capture.py
+2aab67bd5dfb993fc42a935ba3e55017ecbbe08be577fa6f6989450d7e29ba05  android/tools/release_gate.py
+878739bc44d7d127a3c892e6e93c3726b19a4015db0fe9d4d10fa10aae63e701  android/tools/requirements.py
+33ae5740731e19474b35f7dfc7449308d6e2360017f309f4748903c4a181ca70  android/tools/run_independent_checks.py
+5f62550bb18131ca4e74765babe9d5703fe97f7d459d04fcf16d2b7e119466ef  android/tools/run_jvm_contracts.py
+045aebd89421c18884061cd6760a4ecffd8d91a9d8906215de50487a1cbcaa95  android/tools/test_bounded_process.py
+0026cedb0b75455a872c5bc9b3b9388146a4e5038d95dc15d09f2b0b1cfe3c56  android/tools/test_module_audit.py
+a14e08aede3eafe9dba86956077199f613775aa2eaced56d85ad1ed1d2aebd5e  android/tools/test_native_lab.py
+b295ffa87f30a14a9da926a9bc6b87069cbfbb7ed93b0c9636811b8c5566ccdc  android/tools/test_native_source_audit.py
+4ef01b5bf3c90c23d34d4255570383501398f128cb9c0d108351aaa2cfeefb80  android/tools/test_pilot_reporting.py
+cb9d0706eafad6dd6f7b673fc2a3ae10bc21c609585c6f5e5d14ed15130deccd  android/tools/test_png_capture.py
+9ae563cdc6ece457ffeb85a34123239e689832ab5f2a02672f77151cd929c3a8  android/tools/test_release_gate.py
+1636c2aed08c9446cc6a7fbba4672bd267db861fcb47924aded6e925200c00f1  android/tools/test_requirements.py

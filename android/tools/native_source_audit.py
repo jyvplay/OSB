@@ -25,7 +25,7 @@ FOUNDATIONS=[
  ('API34 minimum / compile37 / target36→37','min34/compile36/target36; compile37 deviation remains.'),
  ('arm64 and 4K/16K native pages','No linked native/transitive APK audit or physical page-size test.'),
  ('Immutable deterministic WindowEngine / effects / versioned restore','Published list snapshots protected, deterministic kernel tests; full effect/session integration incomplete.'),
- ('Open idempotency / command replay','Open-key suppression only while its window exists; unbounded post-close replay protection NOT implemented.'),
+ ('Open idempotency / command replay','Ordered epoch/sequence stream and codec v3 tested across Close/recovery; raw Open keys still deduplicate only live windows. No durable acknowledgement or multi-writer log.'),
  ('48dp title / Compact240×180 / Touch320×240','Kernel geometry and authored Compose minima; rendered/AX acceptance unrun.'),
  ('Room restore / debounce≤500ms','AtomicFile geometry still used, not Room. No500ms device persistence bound proved.'),
  ('Hilt / Flow / DataStore / WorkManager / KSP','Flow/coroutines partially used; requested architecture stack incomplete.'),
@@ -46,12 +46,13 @@ FOUNDATIONS=[
  ('Lens LN-01–15 / Meet / per-site / PC webcam / recording','Physical camera preview only; S25–28 and processed-track routes absent.'),
  ('No native third-party Android virtual camera/mic claim','Boundary maintained; does not implement own Meet/browser/PC alternatives.'),
  ('Own-Mac Messages / SMS role / Matrix/XMPP / RCS handoff','Transport/role scope incomplete; no no-Mac iMessage, hosted Apple relay or fake RCS API.'),
+ ('Encrypted search / source consent / secure-content exclusion','Executed bounded AES-GCM snapshot and locked-session kernel; Android keys/tests authored. No FTS/crawler/source consent integration, Vault/private-content exclusion adapter, key lifecycle or S4 acceptance.'),
  ('Local-first / no default telemetry / opt-in Home / permission-light','Source defaults partly enforced; full privacy/security review unpassed.'),
  ('Keyboard complete / visible focus / TalkBack/Switch/Voice /200%','Native improvements and tests authored; no whole-product interaction review.'),
  ('Density changes dimensions, not capability set','Tile geometric impossibility explicitly disabled; full density/AX matrix unrun.'),
  ('$19.99 + $14.99 Pro /14day / signed offline entitlement','Commerce and signed entitlement absent; no fabricated trial/ownership state.'),
  ('Offline no feature loss/no wipe / expiry read-only Files/Find','No remote wipe path introduced; complete entitlement lifecycle absent.'),
- ('Permissive main APK / isolated MPL / no forbidden copyleft assets','No new external library added this pass; full transitive/legal audit still required.'),
+ ('Permissive main APK / isolated MPL / no forbidden copyleft assets','No new APK dependency added this pass; optional external host verifiers are not bundled. Full transitive/legal audit still required.'),
  ('Two reference devices / E0 budgets / no invented measurements','No reference-device measurements; budgets remain E0.'),
  ('Requested47 slots vs included48 / dedicated modules','41 exact,2 partial owners,4 absent (quickpanel/office/photos/ime); Meet/GPL ownership also unresolved.'),
  ('Actual Android build and native visual inspection','Not executed; SDK/JDK/ADB/emulator/access prerequisites absent in this sandbox.')]
@@ -102,8 +103,8 @@ def report(root=ROOT):
     missing=missing_edges(edges,exports,sources,packages)
     if missing: raise ValueError(json.dumps(missing,indent=2))
     rows=json.loads((root/'docs/feature-register.json').read_text())
-    lines=['# Full recorded v2/v2.1 scope review — R7','',
-      '**231 requirement records and35 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**',
+    lines=['# Full recorded v2/v2.1 scope review — R8 continuation','',
+      '**231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**',
       'This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.',
       '',f'{len(modules)} included modules; {len(sources)} main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.',
       '', '## Cross-cutting contract (v2.1 supersedes conflicting v2.0 clauses)','', '| Obligation | Actual frontier / remaining gap |','|---|---|']
@@ -116,7 +117,7 @@ def report(root=ROOT):
         owners=', '.join('`:'+p.replace('/',':')+'`'+(' (absent)' if ':'+p.replace('/',':') not in modules else '') for p in candidates)
         lines.append(f"| {row['id']} | {row['feature'].replace('|','/')} | {row['status']} | {owners} | {', '.join(row['gates']) or 'No spike named here; integration/security/AX gates still apply'} |")
     lines += ['', 'Status counts: '+json.dumps(dict(sorted(Counter(r['status'] for r in rows).items())))+'.', '',
-      'Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r7-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R7-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.', '']
+      'Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r8-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R8-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.', '']
     data={'kind':'source ownership only; NOT Android compilation','modules':modules,
           'production_project_edges':{k:sorted(v) for k,v in edges.items()},'missing_internal_edges':missing,
           'source_inventory':[{k:v for k,v in s.items() if k!='text'} for s in sources]}
@@ -125,10 +126,10 @@ def report(root=ROOT):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
     text,data=report()
-    for name,content in [('docs/FULL-SPEC-REVIEW.md',text),('docs/verification/r7-source-inventory.json',data)]:
+    for name,content in [('docs/FULL-SPEC-REVIEW.md',text),('docs/verification/r8-source-inventory.json',data)]:
         path=ROOT/name
         if args.check:
             if path.read_text()!=content: raise ValueError('Stale scope/source review: '+name)
         else: path.write_text(content)
-    print('231 recorded requirements,35 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.')
+    print('231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.')
 if __name__=='__main__': main()

@@ -1,3 +1,5 @@
+> Historical merged checkpoint. See [R8 continuation](R8-ENGINEERING.md) for current changes and evidence; the PNG defect recorded below has now been repaired within a declared subset.
+
 # R8 work-in-progress pull-request checkpoint
 
 This checkpoint follows R7 and was prepared when the owner requested a pull

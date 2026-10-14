@@ -8,12 +8,12 @@ import native_source_audit as audit
 class NativeSourceAuditChecks(unittest.TestCase):
     def test_complete_scope_register_and_foundations_accounted_for(self):
         rows=json.loads((audit.ROOT/'docs/feature-register.json').read_text())
-        self.assertEqual(231,len(rows)); self.assertEqual(35,len(audit.FOUNDATIONS))
+        self.assertEqual(231,len(rows)); self.assertEqual(36,len(audit.FOUNDATIONS))
         self.assertEqual(set(r['id'].split('-')[0] for r in rows),set(audit.FAMILIES))
     def test_current_source_report_is_reproducible(self):
         text,data=audit.report()
         self.assertEqual(text,(audit.ROOT/'docs/FULL-SPEC-REVIEW.md').read_text())
-        self.assertEqual(data,(audit.ROOT/'docs/verification/r7-source-inventory.json').read_text())
+        self.assertEqual(data,(audit.ROOT/'docs/verification/r8-source-inventory.json').read_text())
     def test_removed_real_notes_dependency_is_detected(self):
         _,edges,exports,sources,packages=audit.inventory()
         edges[':app'].remove(':feature:notes')
@@ -64,3 +64,22 @@ class NativeSourceAuditChecks(unittest.TestCase):
         files=(audit.ROOT/'feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt').read_text()
         section=files.split('LaunchedEffect(dir?.uri, refresh) {',1)[1]
         self.assertLess(section.index('entries = emptyList()'),section.index('repo.list(dir)'))
+
+    def test_keystore_read_paths_do_not_regenerate_keys(self):
+        source=(audit.ROOT/'core/security/src/main/java/dev/fusion/security/IndexKeys.kt').read_text()
+        read=source.split('fun existing(): SecretKey {',1)[1].split('fun createForNewIndex',1)[0]
+        self.assertNotIn('generateKey()',read)
+        self.assertIn('throw IllegalStateException',read)
+        self.assertIn('synchronized(creationLock)',source)
+        vault=(audit.ROOT/'core/security/src/main/java/dev/fusion/security/VaultCrypto.kt').read_text()
+        self.assertIn('Cipher.DECRYPT_MODE, key(create = false)',vault)
+        self.assertNotIn('Keys never leave TEE',vault)
+
+    def test_native_encryption_obligation_is_in_real_lab(self):
+        native=(audit.ROOT/'app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt').read_text()
+        for operation in ('IndexKeys(alias)','store.save(documents,key,null)','session.unlock(store,freshKey)','keyStore.deleteEntry(alias)'):
+            self.assertIn(operation,native)
+        lab=(audit.ROOT/'tools/native_lab.py').read_text()
+        self.assertIn("'EncryptedIndexDeviceTest'",lab)
+        self.assertIn('return capture_binary(command, cwd=ROOT',lab)
+        self.assertIn('from png_capture import dimensions as png_dimensions',lab)

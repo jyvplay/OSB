@@ -1,0 +1,16 @@
+{
+  "crypto": "SunJCE to OpenSSL and OpenSSL to production Kotlin codec both executed successfully; independently serialized UTF-8 payload equal",
+  "cryptography_version": "46.0.3",
+  "openssl": "OpenSSL 3.5.4 30 Sep 2025",
+  "pillow_version": "12.0.0",
+  "png_cross_checks": 13,
+  "limitations": "Parser fixtures only; no native screenshots, UI review, Android Keystore or formal security proof",
+  "source_sha256": {
+    "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexCodec.kt": "7a0b503102f0870b761353586708dbff9e12e57d5b44a21f19d4e1bfb40d230b",
+    "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt": "cfd1fc18855633cde0f712752abf0eb824cea718afcf453e82e7582fd3a33d90",
+    "core/index/src/main/kotlin/dev/fusion/index/LocalIndex.kt": "62d5d8db0a2cbe90513f8169bda26555e8942a339ec8dcdc587d4513b398eb82",
+    "core/index/src/interop/IndexInterop.kt.txt": "d7eacf929ce249701cdfb6f57cee1ea7d04c8f85afbcd2a0eb5ac7c82215dc74",
+    "tools/run_independent_checks.py": "33ae5740731e19474b35f7dfc7449308d6e2360017f309f4748903c4a181ca70",
+    "tools/png_capture.py": "1f9a89e3875812ebec306b30b4270cc87a5d560054e69cdb8e9d8bd06f3597e1"
+  }
+}
