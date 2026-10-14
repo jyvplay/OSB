@@ -37,8 +37,9 @@ object CopyProtocol {
     fun start(s: EditorSession, documentId: String, epochIfNew: String): EditorSession {
         require(s.pendingCopy==null) { "A frozen copy is already pending" }
         val doc=s.documents.singleOrNull { it.id==documentId } ?: error("Document is no longer open")
+        TextEncodingCodec.encode(doc.content,doc.encoding) // Refuse unrepresentable output before reserving an identity.
         val (epoch,sequence)=next(s,epochIfNew)
-        val pending=PendingCopy(doc.id,doc.name,doc.sourceUri,doc.content,"$epoch-$sequence",CopyStage.AWAITING_PICKER)
+        val pending=PendingCopy(doc.id,doc.name,doc.sourceUri,doc.content,"$epoch-$sequence",CopyStage.AWAITING_PICKER,encoding=doc.encoding)
         return s.copy(pendingCopy=pending,copyEpoch=epoch,copySequence=sequence)
     }
     fun retry(s: EditorSession, expectedId: String?, epochIfNew: String): EditorSession {
@@ -88,7 +89,8 @@ object CopyProtocol {
         require(evidence.binding==VerifiedCopy.Binding(requestId,requireNotNull(p.destinationUri))) {
             "Readback evidence belongs to a different request or destination"
         }
-        require(evidence.digest==TextBytes.digest(p.content) && evidence.bytes==TextBytes.encodedSize(p.content)) {
+        val encoded=TextEncodingCodec.encode(p.content,p.encoding)
+        require(evidence.digest==TextBytes.digest(encoded) && evidence.bytes==encoded.size) {
             "Readback evidence does not describe the frozen payload"
         }
         val receipt=CopyReceipt(requestId,p.documentId,p.destinationUri,CopyOutcome.VERIFIED,evidence.digest,evidence.bytes)

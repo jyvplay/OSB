@@ -13,7 +13,7 @@ class NativeSourceAuditChecks(unittest.TestCase):
     def test_current_source_report_is_reproducible(self):
         text,data=audit.report()
         self.assertEqual(text,(audit.ROOT/'docs/FULL-SPEC-REVIEW.md').read_text())
-        self.assertEqual(data,(audit.ROOT/'docs/verification/r8-source-inventory.json').read_text())
+        self.assertEqual(data,(audit.ROOT/'docs/verification/r10-source-inventory.json').read_text())
     def test_removed_real_notes_dependency_is_detected(self):
         _,edges,exports,sources,packages=audit.inventory()
         edges[':app'].remove(':feature:notes')

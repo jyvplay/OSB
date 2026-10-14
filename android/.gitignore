@@ -12,3 +12,7 @@ pilot-reports/
 docs/release-artifacts/
 
 sdk-setup.log
+
+# Runner diagnostics are artifacts, not product sources.
+assemble.log
+sdk-setup.log

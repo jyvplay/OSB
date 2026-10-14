@@ -10,6 +10,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -61,8 +65,11 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
     var abandoningCopy by remember { mutableStateOf(false) }
     var abandoningCopyId by remember { mutableStateOf<String?>(null) }
     var closingId by remember { mutableStateOf<String?>(null) }
+    var openingEncoding by rememberSaveable { mutableStateOf<dev.fusion.documents.TextEncoding?>(null) }
+    var pickerEncoding by rememberSaveable { mutableStateOf<dev.fusion.documents.TextEncoding?>(null) }
+    var encodingMenu by remember { mutableStateOf(false) }
     val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) model.open(uri)
+        if (uri != null) model.open(uri,encoding=pickerEncoding)
     }
     val ready = !state.loading && !state.recoveryBlocked && !state.busy && !state.toolsBusy
 
@@ -74,14 +81,14 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                 Key.Y -> { model.undo(redo=true); true }
                 Key.F, Key.H, Key.G -> if(active != null) { toolsOpen=true; true } else false
                 Key.S -> if(active != null && pendingCopy==null) { copyConfirmId=active.id; true } else false
-                Key.O -> { openDocument.launch(arrayOf("text/*", "application/json")); true }
+                Key.O -> { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")); true }
                 Key.N -> { model.newDocument(); true }
                 else -> false
             }
         }, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
-            OutlinedButton(enabled = ready, onClick = { openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open UTF-8") }
+            OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
             Button(enabled = ready && active != null && pendingCopy == null,
                 onClick = { copyConfirmId=active?.id }) { Text("Save a Copy") }
             OutlinedButton(enabled = ready && active != null && pendingCopy?.documentId != active?.id,
@@ -119,7 +126,17 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         session.copyReceipts.firstOrNull()?.let { receipt ->
             Text("Last copy receipt: ${receipt.outcome} · ${receipt.destinationUri?.take(180) ?: "No destination returned"}. Readback is not cloud sync or power-loss durability. Last 16 receipts retained locally.")
         }
-        Text("UTF-8 only • 2 MiB/document • 8 tabs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
+        Box {
+            OutlinedButton(onClick={ encodingMenu=true },enabled=ready) { Text("Open encoding: ${openingEncoding?.label ?: "BOM detection / UTF-8"}") }
+            DropdownMenu(expanded=encodingMenu,onDismissRequest={ encodingMenu=false }) {
+                DropdownMenuItem(text={ Text("BOM detection / strict UTF-8") },onClick={ openingEncoding=null;encodingMenu=false })
+                dev.fusion.documents.TextEncoding.entries.forEach { encoding ->
+                    DropdownMenuItem(text={ Text(encoding.label) },onClick={ openingEncoding=encoding;encodingMenu=false })
+                }
+            }
+        }
+        active?.let { Text("Draft encoding: ${it.encoding.label}. Unrepresentable export characters are refused, not replaced.") }
+        Text("Strict UTF-8 / UTF-16 / explicit Windows-1252 • 2 MiB/document • 8 tabs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
     }
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",

@@ -1,9 +1,9 @@
-# Full recorded v2/v2.1 scope review — R8 continuation
+# Full recorded v2/v2.1 scope review — R10 continuation
 
 **231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**
 This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.
 
-48 included modules; 96 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
+48 included modules; 98 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
 
 ## Cross-cutting contract (v2.1 supersedes conflicting v2.0 clauses)
 
@@ -26,7 +26,7 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | BlackTop60min / own FGS / hotplug / OEM throttling | SH-10/12 implementation and S23/reference-device evidence absent. |
 | Mouse learn / controller / external-keyboard IME / confinement | Native keyboard subset only; IN/WM-16 scope incomplete. |
 | Five-state thermal / ADPF→sustained→own fallback | Pure policy tested; complete measurement/governor integration absent. |
-| Forge registry / macros-off / lifecycle / explicit fidelity loss | Editor lifecycle subset; complete registry/isolated engines/loss reports absent. |
+| Forge registry / macros-off / lifecycle / explicit fidelity loss | Editor bounded encoding/copy/recovery/diff kernels; OOXML container guards only. Complete registry/isolated engines/loss reports absent. |
 | SAF safe-save and file-move journal | Editor Save a Copy limited protocol; Files mutations now refuse in backend. No full journal/provider acceptance. |
 | Real browser z-order/extensions/security S29/S30 | Blocked; no generic WebView substituted as completed browser. |
 | Own Beam / trust / secure exclusion / stop / codec/latency indicator | Blocked pending S17–21 and security/hardware review; no delegated system-cast equivalence. |
@@ -286,4 +286,4 @@ Owner candidates below identify where work belongs, not implementation completen
 
 Status counts: {"excluded": 3, "not_implemented": 171, "partial_unverified": 56, "superseded": 1}.
 
-Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r8-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R8-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.
+Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r10-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R10-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.

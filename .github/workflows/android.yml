@@ -41,7 +41,15 @@ jobs:
           fi
           python3 tools/native_lab.py doctor
       - name: Assemble both flavors
-        run: ./gradlew --no-daemon :app:assembleProDebug :app:assemblePlayDebug
+        run: |
+          set +e
+          ./gradlew --no-daemon --console=plain :app:assembleProDebug :app:assemblePlayDebug > assemble.log 2>&1
+          result=$?
+          cat assemble.log
+          if [ "$result" -ne 0 ]; then
+            python3 tools/ci_annotations.py assemble.log
+          fi
+          exit "$result"
       - name: Run all JVM unit tests (not device evidence)
         run: >
           ./gradlew --no-daemon
@@ -51,7 +59,7 @@ jobs:
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: ./gradlew --no-daemon :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts
+        run: ./gradlew --no-daemon :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts
       - name: Lint both manifests and Android sources
         run: ./gradlew --no-daemon :app:lintProDebug :app:lintPlayDebug
       - name: Upload debug APKs
@@ -65,7 +73,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sdk-setup-diagnostics
-          path: android/sdk-setup.log
+          path: |
+            android/sdk-setup.log
+            android/assemble.log
           if-no-files-found: ignore
       - name: Upload test and lint reports
         if: always()

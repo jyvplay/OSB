@@ -37,7 +37,7 @@ FOUNDATIONS=[
  ('BlackTop60min / own FGS / hotplug / OEM throttling','SH-10/12 implementation and S23/reference-device evidence absent.'),
  ('Mouse learn / controller / external-keyboard IME / confinement','Native keyboard subset only; IN/WM-16 scope incomplete.'),
  ('Five-state thermal / ADPF→sustained→own fallback','Pure policy tested; complete measurement/governor integration absent.'),
- ('Forge registry / macros-off / lifecycle / explicit fidelity loss','Editor lifecycle subset; complete registry/isolated engines/loss reports absent.'),
+ ('Forge registry / macros-off / lifecycle / explicit fidelity loss','Editor bounded encoding/copy/recovery/diff kernels; OOXML container guards only. Complete registry/isolated engines/loss reports absent.'),
  ('SAF safe-save and file-move journal','Editor Save a Copy limited protocol; Files mutations now refuse in backend. No full journal/provider acceptance.'),
  ('Real browser z-order/extensions/security S29/S30','Blocked; no generic WebView substituted as completed browser.'),
  ('Own Beam / trust / secure exclusion / stop / codec/latency indicator','Blocked pending S17–21 and security/hardware review; no delegated system-cast equivalence.'),
@@ -103,7 +103,7 @@ def report(root=ROOT):
     missing=missing_edges(edges,exports,sources,packages)
     if missing: raise ValueError(json.dumps(missing,indent=2))
     rows=json.loads((root/'docs/feature-register.json').read_text())
-    lines=['# Full recorded v2/v2.1 scope review — R8 continuation','',
+    lines=['# Full recorded v2/v2.1 scope review — R10 continuation','',
       '**231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**',
       'This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.',
       '',f'{len(modules)} included modules; {len(sources)} main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.',
@@ -117,7 +117,7 @@ def report(root=ROOT):
         owners=', '.join('`:'+p.replace('/',':')+'`'+(' (absent)' if ':'+p.replace('/',':') not in modules else '') for p in candidates)
         lines.append(f"| {row['id']} | {row['feature'].replace('|','/')} | {row['status']} | {owners} | {', '.join(row['gates']) or 'No spike named here; integration/security/AX gates still apply'} |")
     lines += ['', 'Status counts: '+json.dumps(dict(sorted(Counter(r['status'] for r in rows).items())))+'.', '',
-      'Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r8-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R8-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.', '']
+      'Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r10-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R10-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.', '']
     data={'kind':'source ownership only; NOT Android compilation','modules':modules,
           'production_project_edges':{k:sorted(v) for k,v in edges.items()},'missing_internal_edges':missing,
           'source_inventory':[{k:v for k,v in s.items() if k!='text'} for s in sources]}
@@ -126,7 +126,7 @@ def report(root=ROOT):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
     text,data=report()
-    for name,content in [('docs/FULL-SPEC-REVIEW.md',text),('docs/verification/r8-source-inventory.json',data)]:
+    for name,content in [('docs/FULL-SPEC-REVIEW.md',text),('docs/verification/r10-source-inventory.json',data)]:
         path=ROOT/name
         if args.check:
             if path.read_text()!=content: raise ValueError('Stale scope/source review: '+name)

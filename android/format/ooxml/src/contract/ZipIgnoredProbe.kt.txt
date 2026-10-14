@@ -1,0 +1,14 @@
+import dev.fusion.ooxml.Ooxml
+import java.io.*
+import java.util.zip.*
+fun main(args:Array<String>) {
+ val bytes=ByteArrayOutputStream()
+ ZipOutputStream(bytes).use { zip ->
+  zip.putNextEntry(ZipEntry("word/document.xml"));zip.write("<w:p><w:t>Read me</w:t></w:p>".toByteArray());zip.closeEntry()
+  zip.putNextEntry(ZipEntry("ignored.bin"));repeat(4096) { zip.write(ByteArray(8192)) };zip.write(0);zip.closeEntry()
+ }
+ val result=Ooxml.extractDocxText(ByteArrayInputStream(bytes.toByteArray()))
+ println("Actual ZIP bytes: ${bytes.size()}; ignored expanded bytes: ${32*1024*1024+1}")
+ println("Extraction success=${result.isSuccess}; reason=${result.exceptionOrNull()?.message ?: result.getOrNull()}")
+ check(result.isSuccess==(args.single()=="baseline"))
+}

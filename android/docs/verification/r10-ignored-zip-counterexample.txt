@@ -1,0 +1,11 @@
+baseline exit 0
+Actual ZIP bytes: 32905; ignored expanded bytes: 33554433
+Extraction success=true; reason=Read me
+
+repaired exit 0
+Actual ZIP bytes: 32905; ignored expanded bytes: 33554433
+Extraction success=false; reason=Expanded ZIP budget exceeded
+
+52faca91b8e672b514169125c8b514e04e1930327792a655a1a8f7f062dd4786  /home/user/.cache/fusion-tools/r10/OoxmlBefore.kt
+0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c  android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt
+55bf10933df27e62a518ea42380b003a898cf898ce2840b153819ccfb0dba15f  /home/user/.cache/fusion-tools/r10/ZipIgnoredProbe.kt

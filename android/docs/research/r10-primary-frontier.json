@@ -1,0 +1,36 @@
+[
+  {
+    "url": "https://github.com/openjdk/jdk17u/blob/3b0480102f8595deb241a666498f77644d5ec376/src/java.base/share/classes/java/util/zip/ZipInputStream.java",
+    "git_blob": "4c1eac3204c0fe9153db69b69fbb9cdc93d7c504",
+    "sha256": "29b6ebf18e23a9052c097c3e7154c6d188b6870639ffd9d39419862bd5774916",
+    "excerpts": [
+      {
+        "line": 140,
+        "text": "     * @throws    IOException if an I/O error has occurred\n     */\n    public void closeEntry() throws IOException {\n        ensureOpen();\n        while (read(tmpbuf, 0, tmpbuf.length) != -1) ;\n        entryEOF = true;\n    }\n"
+      },
+      {
+        "line": 142,
+        "text": "    public void closeEntry() throws IOException {\n        ensureOpen();\n        while (read(tmpbuf, 0, tmpbuf.length) != -1) ;\n        entryEOF = true;\n    }\n\n    /**\n     * Returns 0 after EOF has reached for the current entry data,"
+      }
+    ]
+  },
+  {
+    "url": "https://github.com/openjdk/jdk17u/blob/3b0480102f8595deb241a666498f77644d5ec376/src/java.base/share/classes/java/nio/charset/Charset-X-Coder.java.template",
+    "git_blob": "4d728d586b34ae724754c3d3c0243fb0e2a5854a",
+    "sha256": "d3faa69df6ef3e2dd9c444056593d208df0b3fea2bdce99761b28d2d1393262d",
+    "excerpts": [
+      {
+        "line": 92,
+        "text": " * CodingErrorAction} class.  The possible error actions are to {@linkplain\n * CodingErrorAction#IGNORE ignore} the erroneous input, {@linkplain\n * CodingErrorAction#REPORT report} the error to the invoker via\n * the returned {@link CoderResult} object, or {@linkplain CodingErrorAction#REPLACE\n * replace} the erroneous input with the current value of the\n * replacement $replTypeName$.  The replacement\n *\n#if[encoder]"
+      },
+      {
+        "line": 108,
+        "text": " * replaceWith} method.\n *\n * <p> The default action for malformed-input and unmappable-character errors\n * is to {@linkplain CodingErrorAction#REPORT report} them.  The\n * malformed-input error action may be changed via the {@link\n * #onMalformedInput(CodingErrorAction) onMalformedInput} method; the\n * unmappable-character action may be changed via the {@link\n * #onUnmappableCharacter(CodingErrorAction) onUnmappableCharacter} method."
+      },
+      {
+        "line": 108,
+        "text": " * replaceWith} method.\n *\n * <p> The default action for malformed-input and unmappable-character errors\n * is to {@linkplain CodingErrorAction#REPORT report} them.  The\n * malformed-input error action may be changed via the {@link\n * #onMalformedInput(CodingErrorAction) onMalformedInput} method; the\n * unmappable-character action may be changed via the {@link\n * #onUnmappableCharacter(CodingErrorAction) onUnmappableCharacter} method."
+      }
+    ]
+  }
+]

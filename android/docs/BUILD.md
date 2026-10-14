@@ -1,3 +1,27 @@
+## R10 verification additions
+
+Current acceptance remains0/48 modules. See [R10 engineering record](R10-ENGINEERING.md).
+With a real JDK/Android SDK use the existing both-flavor build/lint/device commands;
+the current host JRE/Kotlin setup only compiles the pure libraries.
+
+```sh
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+# Host Kotlin2.2.21 + Java17 runtime; JAVA_HOME and KOTLINC must point to real tools:
+python3 tools/run_jvm_contracts.py
+python3 tools/run_text_interop.py --report docs/verification/r10-text-interop.json
+# With Gradle prerequisites/dependencies available:
+./gradlew :testing:encodingDiffContracts :testing:ooxmlGuardContracts
+```
+
+The encoding/diff/ZIP contracts do not execute Android providers, process isolation,
+UI or Office engines. `ci_annotations.py` exposes bounded failed-assembly excerpts
+through GitHub Checks; full `assemble.log` is also uploaded. Existing run38648345516
+failed assembly after successful SDK setup. No compiler cause is inferred from the
+Node-action warning, and no successful assembly is claimed by this documentation.
+
+---
+
 # Native build and verification
 
 ## Toolchain and deliberate deviations

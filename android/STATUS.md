@@ -1,4 +1,28 @@
-# Latest: R8 continuation
+# Latest: R10 productivity / Forge continuation
+
+- **0/48 accepted modules (0%);48 outstanding (100%).** Requested Productivity
+  parents0/13; Forge0/13; nested browser subfeatures0/19. No acceptance promotion.
+- **177,198 JVM assertions /52 Python methods /707 independent-implementation
+  and oracle checks passed.** [A–J record](docs/R10-ENGINEERING.md) distinguishes
+  host execution, native source and mandatory unrun device/legal acceptance.
+- Encoding/BOM-preserving bounded text open, copy verification and schema3
+  recovery; genuine v1/v2 migration. Added bounded exact current-source line diff.
+- OOXML scanner now counts ignored/directory/aggregate expanded bytes; compact
+  empty-cell budget failure was reproduced, repaired and regression-tested.
+  This remains a lossy text extractor, not Office editing or process isolation.
+- Android encoding picker/diff UI authored, not compiled/run here. No full JDK,
+  Android SDK or ADB. No APK, native visual/AX, latency or production-beta clearance.
+- Existing PR#2 CI passed SDK setup, failed assembly; compiler cause unknown.
+  Workflow now retains assembly logs and emits bounded escaped failure annotations
+  for the next actual run. This instrumentation is not a compiler fix.
+- Historical R8 remote commit/index discrepancy reconciled with working bytes
+  preserved. Old R8 evidence/inventory retained; current inventory98 main sources.
+
+Earlier sections below are historical and do not describe current CI phases.
+
+---
+
+# Historical: R8 continuation
 
 - **171,082 JVM assertions / 47 Python tests passed**, plus SunJCE↔OpenSSL and
   13 Pillow/parser cross-checks. Actual logs/hashes, not Android evidence.
