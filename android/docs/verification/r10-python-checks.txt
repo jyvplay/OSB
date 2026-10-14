@@ -24,6 +24,7 @@ test_backend_denial_replaces_dangerous_legacy_bodies (test_native_source_audit.N
 test_complete_scope_register_and_foundations_accounted_for (test_native_source_audit.NativeSourceAuditChecks.test_complete_scope_register_and_foundations_accounted_for) ... ok
 test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible) ... ok
 test_database_upgrade_and_write_failures_are_not_hidden (test_native_source_audit.NativeSourceAuditChecks.test_database_upgrade_and_write_failures_are_not_hidden) ... ok
+test_external_documentfile_public_signature_is_exported (test_native_source_audit.NativeSourceAuditChecks.test_external_documentfile_public_signature_is_exported) ... ok
 test_implementation_is_not_blindly_exported (test_native_source_audit.NativeSourceAuditChecks.test_implementation_is_not_blindly_exported) ... ok
 test_keystore_read_paths_do_not_regenerate_keys (test_native_source_audit.NativeSourceAuditChecks.test_keystore_read_paths_do_not_regenerate_keys) ... ok
 test_native_actions_and_capture_evidence_remain_real (test_native_source_audit.NativeSourceAuditChecks.test_native_actions_and_capture_evidence_remain_real) ... ok
@@ -54,6 +55,6 @@ test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike
 test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 54 tests in 0.384s
+Ran 55 tests in 0.377s
 
 OK

@@ -83,3 +83,10 @@ class NativeSourceAuditChecks(unittest.TestCase):
         self.assertIn("'EncryptedIndexDeviceTest'",lab)
         self.assertIn('return capture_binary(command, cwd=ROOT',lab)
         self.assertIn('from png_capture import dimensions as png_dimensions',lab)
+
+    def test_external_documentfile_public_signature_is_exported(self):
+        source=(audit.ROOT/'core/files/src/main/java/dev/fusion/files/SafRepository.kt').read_text()
+        gradle=(audit.ROOT/'core/files/build.gradle.kts').read_text()
+        self.assertIn('fun tree(uri: Uri): DocumentFile?',source)
+        self.assertIn('api(libs.androidx.documentfile.documentfile)',gradle)
+        self.assertNotIn('implementation(libs.androidx.documentfile.documentfile)',gradle)
