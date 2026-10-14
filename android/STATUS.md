@@ -2,7 +2,7 @@
 
 - **0/48 accepted modules (0%);48 outstanding (100%).** Requested Productivity
   parents0/13; Forge0/13; nested browser subfeatures0/19. No acceptance promotion.
-- **177,198 JVM assertions /52 Python methods /707 independent-implementation
+- **177,198 JVM assertions /57 Python methods /707 independent-implementation
   and oracle checks passed.** [A–J record](docs/R10-ENGINEERING.md) distinguishes
   host execution, native source and mandatory unrun device/legal acceptance.
 - Encoding/BOM-preserving bounded text open, copy verification and schema3
@@ -10,11 +10,15 @@
 - OOXML scanner now counts ignored/directory/aggregate expanded bytes; compact
   empty-cell budget failure was reproduced, repaired and regression-tested.
   This remains a lossy text extractor, not Office editing or process isolation.
-- Android encoding picker/diff UI authored, not compiled/run here. No full JDK,
-  Android SDK or ADB. No APK, native visual/AX, latency or production-beta clearance.
-- Existing PR#2 CI passed SDK setup, failed assembly; compiler cause unknown.
-  Workflow now retains assembly logs and emits bounded escaped failure annotations
-  for the next actual run. This instrumentation is not a compiler fix.
+- **CI run38656329782 at86b4621 passed both-flavor assembly, all invoked JVM
+  unit tests, contract tasks, both-flavor lint and debug APK upload.**
+  [Run/artifacts](https://github.com/jyvplay/OSB/actions/runs/38656329782).
+  Fixed primitive-array mapping, DocumentFile API exposure, malformed Cast LOAD
+  JSON, two stale test fixtures and optional telephony manifest declaration.
+  Managed-device job skipped; no physical Cast/Beam acceptance inferred.
+- Local full JDK/SDK/ADB remain absent. No installed APK, native visual/AX, device
+  latency or production-beta clearance. Diagnostic capture now covers all Gradle
+  CI phases and uses an executed GitHub-safe message byte budget.
 - Historical R8 remote commit/index discrepancy reconciled with working bytes
   preserved. Old R8 evidence/inventory retained; current inventory98 main sources.
 

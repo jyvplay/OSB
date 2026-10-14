@@ -18,7 +18,14 @@ The encoding/diff/ZIP contracts do not execute Android providers, process isolat
 UI or Office engines. `ci_annotations.py` exposes bounded failed-assembly excerpts
 through GitHub Checks; full `assemble.log` is also uploaded. Existing run38648345516
 failed assembly after successful SDK setup. No compiler cause is inferred from the
-Node-action warning, and no successful assembly is claimed by this documentation.
+Node-action warning. Subsequent run38652913588 passed both-flavor assembly after
+two compiler repairs, but failed the unit-test step; contracts/lint/upload skipped.
+All Gradle CI phases now use `tools/run_gradle_ci.sh` for bounded API-visible errors.
+Final run38656329782 at86b4621 passed both-flavor assembly, all invoked JVM tests,
+contracts, both-flavor lint and debug APK upload. Download `fusion-native-debug`
+from https://github.com/jyvplay/OSB/actions/runs/38656329782 . These are debug builds
+of an incomplete product, not release/beta clearance. Managed-device job skipped;
+no artifact was installed or visually inspected here.
 
 ---
 

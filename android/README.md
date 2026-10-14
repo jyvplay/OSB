@@ -1,8 +1,8 @@
 > **Latest: [R10 productivity / Forge engineering](docs/R10-ENGINEERING.md).**
-> **177,198 JVM assertions,52 Python methods and707 cross-implementation/oracle
+> **177,198 JVM assertions,57 Python methods and707 cross-implementation/oracle
 > checks passed.** Added encoding-preserving editor recovery/copy, bounded
-> current-source line diff and repaired ignored-ZIP expansion guards. Native UI
-> remains uncompiled here; existing CI reached assembly and failed. Browser,
+> current-source line diff and repaired ignored-ZIP expansion guards. **Both Android
+> flavors now assemble; unit tests, contracts, lint and APK upload pass in CI.** Browser,
 > Office engines and format isolation are still missing/blocked.
 > **0/48 accepted modules (0%); not a production-ready beta.**
 
