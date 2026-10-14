@@ -41,27 +41,19 @@ jobs:
           fi
           python3 tools/native_lab.py doctor
       - name: Assemble both flavors
-        run: |
-          set +e
-          ./gradlew --no-daemon --console=plain :app:assembleProDebug :app:assemblePlayDebug > assemble.log 2>&1
-          result=$?
-          cat assemble.log
-          if [ "$result" -ne 0 ]; then
-            python3 tools/ci_annotations.py assemble.log
-          fi
-          exit "$result"
+        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assemblePlayDebug
       - name: Run all JVM unit tests (not device evidence)
         run: >
-          ./gradlew --no-daemon
+          bash tools/run_gradle_ci.sh unit-tests
           :core:documents:test :core:windowing:test :core:index:test :core:commands:test
           :core:security:testDebugUnitTest
           :format:native:test :format:archive:test :format:ooxml:test :format:psd:testDebugUnitTest
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: ./gradlew --no-daemon :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts
       - name: Lint both manifests and Android sources
-        run: ./gradlew --no-daemon :app:lintProDebug :app:lintPlayDebug
+        run: bash tools/run_gradle_ci.sh lint :app:lintProDebug :app:lintPlayDebug
       - name: Upload debug APKs
         uses: actions/upload-artifact@v4
         with:
@@ -76,6 +68,9 @@ jobs:
           path: |
             android/sdk-setup.log
             android/assemble.log
+            android/unit-tests.log
+            android/contracts.log
+            android/lint.log
           if-no-files-found: ignore
       - name: Upload test and lint reports
         if: always()

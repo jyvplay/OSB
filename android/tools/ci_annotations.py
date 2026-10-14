@@ -8,7 +8,7 @@ import sys
 LIMIT = 3000
 READ_LIMIT = 1024 * 1024
 
-def annotation(path):
+def annotation(path, phase="Assembly"):
     with Path(path).open('rb') as log:
         head = log.read(READ_LIMIT)
         log.seek(0, 2)
@@ -23,9 +23,9 @@ def annotation(path):
     # Reserve room for failure context even if compiler lines fill their budget.
     clip = lambda value, size: value.encode('utf-8')[:size].decode('utf-8', 'ignore')
     excerpt = clip('\n'.join(errors), 1200) + '\nBuild tail (not a root-cause diagnosis):\n' + '\n'.join(lines[-35:]).encode('utf-8')[-1500:].decode('utf-8', 'ignore')
-    value = clip('Assembly failed. Full output is in assemble.log.\n' + excerpt, LIMIT)
+    value = clip(f'{phase[:80]} failed. Full output is in {Path(path).name[:120]}.\n' + excerpt, LIMIT)
     # Workflow command escaping: untrusted compiler paths/messages cannot create another command.
     return '::error::' + value.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
 
 if __name__ == '__main__':
-    print(annotation(sys.argv[1]))
+    print(annotation(sys.argv[1],sys.argv[2] if len(sys.argv)>2 else "Assembly"))

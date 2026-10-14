@@ -47,3 +47,11 @@ class AnnotationChecks(unittest.TestCase):
         decoded=text.removeprefix('::error::').replace('%0A','\n').replace('%0D','\r').replace('%25','%')
         self.assertLessEqual(len(decoded.encode()),3000)
         self.assertIn('actual tail',text)
+
+    def test_phase_does_not_mislabel_unit_failures_as_assembly(self):
+        with tempfile.TemporaryDirectory() as root:
+            path=Path(root)/'unit-tests.log';path.write_text('Execution failed for task :tests')
+            text=annotation(path,'unit-tests')
+            self.assertIn('unit-tests failed',text)
+            self.assertIn('unit-tests.log',text)
+            self.assertNotIn('Assembly failed',text)
