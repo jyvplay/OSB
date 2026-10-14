@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-14",
+  "tools": {
+    "java": null,
+    "javac": null,
+    "gradle": null,
+    "adb": null,
+    "sdkmanager": null,
+    "emulator": null,
+    "gh": "/usr/bin/gh",
+    "git": "/usr/bin/git",
+    "python": "/usr/bin/python",
+    "gcc": "/usr/bin/gcc",
+    "qemu-system-x86_64": null,
+    "z3": null,
+    "lean": null,
+    "coqc": null,
+    "chromium": null
+  },
+  "kvm": false,
+  "sdk_env": {
+    "JAVA_HOME": null,
+    "ANDROID_HOME": null,
+    "ANDROID_SDK_ROOT": null
+  },
+  "independent_agents": 0,
+  "android_builds": 0,
+  "native_visual_inspections": 0,
+  "cached_java": "openjdk version \"17.0.9\" 2023-10-17\nOpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)\nOpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)\n",
+  "cached_modules": "java.base@17.0.9\njava.compiler@17.0.9\njava.datatransfer@17.0.9\njava.desktop@17.0.9\njava.instrument@17.0.9\njava.logging@17.0.9\njava.management@17.0.9\njava.management.rmi@17.0.9\njava.naming@17.0.9\njava.net.http@17.0.9\njava.prefs@17.0.9\njava.rmi@17.0.9\njava.scripting@17.0.9\njava.se@17.0.9\njava.security.jgss@17.0.9\njava.security.sasl@17.0.9\njava.sql@17.0.9\njava.sql.rowset@17.0.9\njava.transaction.xa@17.0.9\njava.xml@17.0.9\njava.xml.crypto@17.0.9\njdk.attach@17.0.9\njdk.crypto.ec@17.0.9\njdk.httpserver@17.0.9\njdk.internal.jvmstat@17.0.9\njdk.jcmd@17.0.9\njdk.jfr@17.0.9\njdk.localedata@17.0.9\njdk.management@17.0.9\njdk.management.agent@17.0.9\njdk.management.jfr@17.0.9\njdk.security.auth@17.0.9\njdk.unsupported@17.0.9\njdk.zipfs@17.0.9\n",
+  "doctor": {
+    "exit": 1,
+    "stdout": "{\n  \"checks\": {\n    \"java17\": false,\n    \"javac17\": false,\n    \"platform36\": false,\n    \"buildTools35\": false,\n    \"buildTools36\": false,\n    \"wrapper\": true\n  },\n  \"versions\": {\n    \"java\": \"not found\",\n    \"javac\": \"not found\"\n  },\n  \"sdk\": \"/SDK-NOT-CONFIGURED\",\n  \"adb\": \"/SDK-NOT-CONFIGURED/platform-tools/adb\",\n  \"adbPresent\": false,\n  \"buildPrerequisitesPresent\": false,\n  \"limitations\": \"No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Distribution SHA-256 remains unpinned; release supply-chain gate open.\"\n}\n",
+    "stderr": ""
+  }
+}

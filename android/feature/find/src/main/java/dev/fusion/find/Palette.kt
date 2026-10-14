@@ -1,41 +1,56 @@
 package dev.fusion.find
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import dev.fusion.commands.Command
 import dev.fusion.commands.CommandRegistry
-import dev.fusion.index.LocalIndex
 
-data class PaletteHit(val kind: String, val title: String, val sub: String, val key: String?)
-
-/** Local-first palette: commands + local index. Provenance always shown. */
+/** SR-01 partial: real local module/window/workspace actions. No file/index coverage is implied. */
 @Composable
-fun PaletteBox(commands: CommandRegistry, index: LocalIndex, onOpenModule: (String) -> Unit) {
-    var q by remember { mutableStateOf("") }
-    val cmdHits = remember(q) { commands.search(q, 6).map { PaletteHit("cmd", it.title, it.hint, null) } }
-    val idxHits = remember(q) { if (q.length >= 2) index.search(q, 6).map { PaletteHit("local", it.doc.title, it.doc.source, null) } else emptyList() }
-    val modules = remember(q) {
-        listOf("files", "editor", "browser", "terminal", "vault", "notes", "settings", "media")
-            .filter { q.isBlank() || it.contains(q, true) }.map { PaletteHit("app", it, "module", it) }
-    }
-    Column(Modifier.width(340.dp).padding(12.dp)) {
-        OutlinedTextField(q, { q = it }, label = { Text("Find (local only)") }, modifier = Modifier.fillMaxWidth())
-        (modules + cmdHits + idxHits).take(12).forEach { h ->
-            Text("[${h.kind}] ${h.title} — ${h.sub}", Modifier.fillMaxWidth().clickable {
-                if (h.key != null) onOpenModule(h.key)
-            }.padding(8.dp))
-        }
-        Text("No web results. No private app data.", Modifier.padding(8.dp))
-    }
+fun CommandPalette(commands:List<Command>,onSelect:(String)->Unit,onDismiss:()->Unit) {
+    var query by remember { mutableStateOf("") }
+    var position by remember { mutableIntStateOf(0) }
+    val registry=remember(commands) { CommandRegistry(commands) }
+    val hits=remember(registry,query) { registry.search(query,32) }
+    val selectedIndex=position.coerceIn(0,maxOf(0,hits.lastIndex))
+    val inputFocus=remember { FocusRequester() }
+    val scroll=rememberLazyListState()
+    LaunchedEffect(Unit) { inputFocus.requestFocus() }
+    LaunchedEffect(query) { position=0 }
+    LaunchedEffect(selectedIndex,hits) { if(hits.isNotEmpty()) scroll.animateScrollToItem(selectedIndex) }
+    AlertDialog(onDismissRequest=onDismiss,title={ Text("Find local actions") },
+        text={ Column(Modifier.fillMaxWidth().onPreviewKeyEvent { event ->
+            if(event.type!=KeyEventType.KeyDown) false else when(event.key) {
+                Key.Escape -> { onDismiss(); true }
+                Key.DirectionDown -> { if(hits.isNotEmpty()) position=(selectedIndex+1)%hits.size; true }
+                Key.DirectionUp -> { if(hits.isNotEmpty()) position=(selectedIndex+hits.size-1)%hits.size; true }
+                Key.Enter,Key.NumPadEnter -> { hits.getOrNull(selectedIndex)?.let { onSelect(it.id) }; true }
+                else -> false
+            }
+        }) {
+            OutlinedTextField(query,{ if(it.length<=CommandRegistry.MAX_QUERY) query=it },singleLine=true,
+                label={ Text("Search modules, open windows and workspaces") },modifier=Modifier.fillMaxWidth().focusRequester(inputFocus).testTag("palette-query"))
+            Text("Local literal search • ↑/↓ select, Enter opens, Esc closes • 1024-character limit. No files, contacts, private-app or web index is searched.")
+            LazyColumn(Modifier.fillMaxWidth().heightIn(max=280.dp),state=scroll) {
+                itemsIndexed(hits,key={ _,command -> command.id }) { index,command ->
+                    TextButton(onClick={ onSelect(command.id) },modifier=Modifier.fillMaxWidth().heightIn(min=48.dp)
+                        .semantics { this.selected=index==selectedIndex }.testTag("palette-hit-${command.id}")) {
+                        Column(Modifier.fillMaxWidth()) { Text(command.title); Text(command.hint,style=MaterialTheme.typography.bodySmall) }
+                    }
+                }
+            }
+            if(hits.isEmpty()) Text("No matching local action. Other sources are not indexed.")
+        } },confirmButton={ TextButton(onClick=onDismiss) { Text("Close Find") } })
 }

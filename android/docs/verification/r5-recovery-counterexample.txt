@@ -1,0 +1,7 @@
+Pre-repair production kernel: recovered AWAITING_PICKER state can authorize a result after an uncheckpointed abandonment. Not an Android crash test.
+Exception in thread "main" java.lang.IllegalStateException: recovered waiting snapshot must not resurrect an uncheckpointed abandonment
+	at dev.fusion.documents.CopyChecks.verify(CopyChecks.kt:12)
+	at dev.fusion.documents.CopyChecks.run(CopyChecks.kt:79)
+	at dev.fusion.documents.CopyChecks.main(CopyChecks.kt:136)
+
+Exit: 1

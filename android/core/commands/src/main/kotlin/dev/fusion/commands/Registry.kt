@@ -1,26 +1,36 @@
 package dev.fusion.commands
 
-/** Searchable command with explicit provenance. No execution side effects here. */
-data class Command(
-    val id: String,
-    val title: String,
-    val hint: String,
-    val keywords: List<String> = emptyList()
-)
+import java.util.Collections
+import java.util.Locale
+
+/** Declarative action identity/provenance only; execution stays in the owning UI. */
+data class Command(val id: String, val title: String, val hint: String, val keywords: List<String> = emptyList())
 
 class CommandRegistry(cmds: List<Command> = emptyList()) {
-    private val all = cmds.toList()
+    companion object { const val MAX_COMMANDS=4096; const val MAX_QUERY=1024; const val MAX_RESULTS=100 }
+    private val all: List<Command>
+    init {
+        require(cmds.size<=MAX_COMMANDS)
+        require(cmds.map { it.id }.distinct().size==cmds.size) { "Duplicate action identities" }
+        all=Collections.unmodifiableList(cmds.map { command ->
+            require(command.id.isNotBlank() && command.id.length<=128 && command.title.length<=512 && command.hint.length<=1024)
+            require(command.keywords.size<=32 && command.keywords.all { it.length<=128 })
+            command.copy(keywords=Collections.unmodifiableList(ArrayList(command.keywords)))
+        })
+    }
     fun search(query: String, limit: Int = 12): List<Command> {
-        if (query.isBlank()) return all.take(limit)
-        val q = query.lowercase()
+        require(query.length<=MAX_QUERY && limit in 0..MAX_RESULTS)
+        val q=query.trim().lowercase(Locale.ROOT)
+        if(q.isEmpty()) return all.take(limit)
         return all.map { c ->
-            var s = 0
-            if (c.title.lowercase().contains(q)) s += 10
-            if (c.hint.lowercase().contains(q)) s += 4
-            s += c.keywords.count { it.lowercase().contains(q) } * 3
-            if (c.title.lowercase().startsWith(q)) s += 6
-            c to s
-        }.filter { it.second > 0 }.sortedByDescending { it.second }.take(limit).map { it.first }
+            val title=c.title.lowercase(Locale.ROOT)
+            var score=0
+            if(title.contains(q)) score+=10
+            if(title.startsWith(q)) score+=6
+            if(c.hint.lowercase(Locale.ROOT).contains(q)) score+=4
+            score+=c.keywords.count { it.lowercase(Locale.ROOT).contains(q) }*3
+            c to score
+        }.filter { it.second>0 }.sortedByDescending { it.second }.take(limit).map { it.first }
     }
     fun all(): List<Command> = all
 }

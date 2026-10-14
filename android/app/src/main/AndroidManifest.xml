@@ -4,7 +4,7 @@
       Library modules contribute their own permissions via manifest merge:
         :feature:capture  -> FOREGROUND_SERVICE, FOREGROUND_SERVICE_MEDIA_PROJECTION, POST_NOTIFICATIONS
         :feature:lens     -> CAMERA
-        :feature:messages -> READ_SMS, SEND_SMS
+        app/src/pro      -> READ_SMS, SEND_SMS (not in play)
         :cast:dlna        -> ACCESS_WIFI_STATE, CHANGE_WIFI_MULTICAST_STATE
       Declared here: networking (browser, cast, media server) and the image list.
     -->
@@ -26,10 +26,10 @@
         android:theme="@style/Theme.FusionShell"
         android:usesCleartextTraffic="true">
         <!--
-          usesCleartextTraffic is required and intentional: the embedded
-          LocalMediaServer serves http:// on the LAN so Chromecast / DLNA
-          receivers can fetch media, and DLNA control URLs are plain http.
-          No cleartext traffic leaves the local network.
+          Existing experimental AirPlay/DLNA control paths require plain HTTP.
+          This manifest flag is application-wide, NOT a LAN-only security boundary.
+          The automatic SAF HTTP server is disabled. A per-transport LAN allowlist,
+          receiver trust UI and network security review remain release blockers.
         -->
         <!--
           No launchMode="singleTask": ActivityScenario (used by the instrumented

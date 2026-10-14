@@ -1,20 +1,32 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "dev.fusion.shell"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "dev.fusion.shell"
-        minSdk = 34
-        targetSdk = 35
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "0.6.0"
+        versionName = "0.7.0-dev"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("play") {
+            dimension = "distribution"
+            applicationIdSuffix = ".play"
+        }
+        create("pro") {
+            dimension = "distribution"
+            applicationIdSuffix = ".pro"
+        }
     }
 
     buildTypes {
@@ -104,23 +116,34 @@ dependencies {
     // Ships the (currently empty) baseline profile via ProfileInstaller.
     implementation(project(":baselineprofile"))
 
-    implementation(platform("androidx.compose:compose-bom:2024.12.01"))
-    implementation("androidx.activity:activity-compose:1.9.3")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation(platform(libs.androidx.compose.compose.bom))
+    implementation(libs.androidx.activity.activity.compose)
+    implementation(libs.androidx.compose.ui.ui)
+    implementation(libs.androidx.compose.foundation.foundation)
+    implementation(libs.androidx.compose.material3.material3)
+    implementation(libs.androidx.lifecycle.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.ktx)
     // ViewTree owners for the external-display Presentation's ComposeView.
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    implementation("androidx.savedstate:savedstate-ktx:1.2.1")
-    implementation("androidx.documentfile:documentfile:1.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation(libs.androidx.lifecycle.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.savedstate.savedstate.ktx)
+    implementation(libs.androidx.documentfile.documentfile)
+    implementation(libs.kotlinx.kotlinx.coroutines.android)
 
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("androidx.test:core-ktx:1.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.12.01"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.core.ktx)
+    androidTestImplementation(platform(libs.androidx.compose.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.ui.test.manifest)
+}
+
+// Unknown licenses and unpassed device gates cannot silently become a release APK.
+// Debug/benchmark source evaluation remains available; no release entitlement is fabricated.
+val verifyReleaseReadiness by tasks.registering(Exec::class) {
+    workingDir(rootDir)
+    commandLine(providers.gradleProperty("fusionPython").getOrElse("python3"),
+        "tools/requirements.py", "--release")
+}
+tasks.configureEach {
+    if (name == "prePlayReleaseBuild" || name == "preProReleaseBuild") dependsOn(verifyReleaseReadiness)
 }

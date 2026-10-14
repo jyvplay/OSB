@@ -36,11 +36,8 @@ import dev.fusion.files.TrashEntry
 import dev.fusion.files.TrashRepository
 import kotlinx.coroutines.launch
 
-/**
- * SAF browser. Delete is reversible: files go to an app-private trash with a
- * journal, and can be restored into a folder you choose. Cross-provider MOVE is
- * still not offered, because a verified move needs the same journal work plus a
- * destination picker contract that is not built yet.
+/** Read-only SAF browser. Legacy mutation APIs also refuse in the backend until S6.
+ * Trash receipts are historical metadata, not verified reversible-delete support.
  */
 @Composable
 fun FilesScreen(
@@ -49,7 +46,8 @@ fun FilesScreen(
     treeUri: Uri?,
     onChooseFolder: () -> Unit,
     onOpenText: (FileEntry) -> Unit,
-    onMessage: (String) -> Unit
+    onMessage: (String) -> Unit,
+    mutationsAllowed: Boolean = false
 ) {
     val scope = rememberCoroutineScope()
     var stack by remember(treeUri) { mutableStateOf(emptyList<DocumentFile>()) }
@@ -64,15 +62,26 @@ fun FilesScreen(
 
     LaunchedEffect(treeUri) { stack = treeUri?.let(repo::tree)?.let(::listOf) ?: emptyList() }
     LaunchedEffect(dir?.uri, refresh) {
+        // A failed new-folder query must not leave old-folder entries under its breadcrumb.
+        entries = emptyList()
+        selected = null
         if (dir != null) {
             repo.list(dir).fold({ entries = it }, { onMessage("Listing failed: ${it.message}") })
         } else entries = emptyList()
     }
     LaunchedEffect(trashRefresh, showTrash) {
-        if (showTrash) trashEntries = trash.list()
+        if (showTrash) {
+            trashEntries = emptyList()
+            try { trashEntries = trash.list() }
+            catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                onMessage("Legacy trash receipts could not be read; existing bytes retained (${e.javaClass.simpleName}).")
+            }
+        }
     }
 
     Column(Modifier.fillMaxSize().padding(10.dp)) {
+        if (!mutationsAllowed) Text("Pilot read-only Files: browse/open only. Copy, creation and trash need the S6 fault matrix.")
         if (treeUri == null) {
             Text("No folder access. Only folders you choose are visible.")
             Button(onClick = onChooseFolder) { Text("Choose a folder") }
@@ -86,12 +95,12 @@ fun FilesScreen(
                 enabled = stack.size > 1
             ) { Text("Up") }
             OutlinedButton(onClick = onChooseFolder) { Text("Folder") }
-            OutlinedButton(onClick = { showTrash = !showTrash; trashRefresh++ }) {
+            OutlinedButton(enabled = mutationsAllowed, onClick = { if (mutationsAllowed) { showTrash = !showTrash; trashRefresh++ } }) {
                 Text(if (showTrash) "Files" else "Trash")
             }
         }
 
-        if (showTrash) {
+        if (showTrash && mutationsAllowed) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 OutlinedButton(onClick = {
                     scope.launch {
@@ -112,8 +121,7 @@ fun FilesScreen(
                     Column(Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
                         Text(e.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Text(
-                            "${e.size} bytes" +
-                                if (e.sourceRemoved) "" else "  ·  original still in place (copy only)",
+                            "Legacy receipt: ${e.size} bytes; source removal recorded=${e.sourceRemoved}. Not reverified.",
                             style = MaterialTheme.typography.labelSmall
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -148,7 +156,7 @@ fun FilesScreen(
             return@Column
         }
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        if (mutationsAllowed) Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 folderName, { folderName = it }, Modifier.weight(1f),
                 label = { Text("New folder") }, singleLine = true
@@ -164,7 +172,7 @@ fun FilesScreen(
             }) { Text("Create") }
         }
 
-        if (selected != null && selected?.isDirectory == false) {
+        if (mutationsAllowed && selected != null && selected?.isDirectory == false) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 OutlinedButton(onClick = {
                     val e = selected ?: return@OutlinedButton
@@ -228,7 +236,7 @@ fun FilesScreen(
             }
         }
         Text(
-            "Delete is reversible via trash. Cross-folder move is still not offered.",
+            if (mutationsAllowed) "Experimental file operations; cross-folder move is not offered." else "Original documents cannot be modified from this Files panel.",
             style = MaterialTheme.typography.labelSmall
         )
     }

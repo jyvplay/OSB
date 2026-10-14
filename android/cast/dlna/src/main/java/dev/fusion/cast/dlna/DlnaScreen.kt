@@ -45,7 +45,7 @@ fun DlnaScreen(
         Text(
             "Local Media Server: " +
                 if (localMediaServerAlive) "ACTIVE on port $serverPort (Ready to cast phone documents)"
-                else "INACTIVE (Ready to stream external http/https URLs)",
+                else "DISABLED (Files grants do not share files; only existing URLs can be sent)",
             style = MaterialTheme.typography.labelSmall
         )
 
@@ -85,7 +85,7 @@ fun DlnaScreen(
 
         OutlinedTextField(
             value = url, onValueChange = { url = it }, singleLine = true,
-            label = { Text("Stream URL (e.g. http://192.168.1.5:$serverPort/video.mp4)") },
+            label = { Text("Existing media http(s) URL") },
             modifier = Modifier.fillMaxWidth()
         )
 

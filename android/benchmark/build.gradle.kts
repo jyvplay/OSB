@@ -1,15 +1,16 @@
 plugins {
-    id("com.android.test")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.test)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "dev.fusion.benchmark"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 34
-        targetSdk = 35
+        missingDimensionStrategy("distribution", "pro")
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,8 +34,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.test.ext:junit:1.2.1")
-    implementation("androidx.test.espresso:espresso-core:3.6.1")
-    implementation("androidx.test.uiautomator:uiautomator:2.3.0")
-    implementation("androidx.benchmark:benchmark-macro-junit4:1.3.3")
+    implementation(libs.androidx.test.ext.junit)
+    implementation(libs.androidx.test.espresso.espresso.core)
+    implementation(libs.androidx.test.uiautomator.uiautomator)
+    implementation(libs.androidx.benchmark.benchmark.macro.junit4)
 }

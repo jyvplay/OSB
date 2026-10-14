@@ -1,94 +1,86 @@
-name: Android
-
+name: Android native
 on:
   push:
-    paths:
-      - 'android/**'
-      - '.github/workflows/android.yml'
+    paths: ['android/**', '.github/workflows/android.yml']
   pull_request:
-    paths:
-      - 'android/**'
-      - '.github/workflows/android.yml'
+    paths: ['android/**', '.github/workflows/android.yml']
   workflow_dispatch:
-
+permissions:
+  contents: read
 jobs:
   build-and-test:
-    name: Assemble + JVM tests
+    name: Traceability, assemble both flavors, JVM tests
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: android
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: gradle/actions/wrapper-validation@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
-      # The Gradle wrapper jar is intentionally not committed, so CI supplies
-      # the matching Gradle distribution directly.
-      - name: Set up Gradle 8.9
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
-
-      - name: Assemble debug APK
-        run: gradle --no-daemon :app:assembleDebug
-
-      - name: Run JVM unit tests
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install pinned Android platform
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0'
+      - name: Check source contracts and generated traceability
+        run: |
+          python3 tools/check_project.py
+          python3 -m unittest discover -s tools -p 'test_*.py' -v
+      - name: Assemble both flavors
+        run: ./gradlew --no-daemon :app:assembleProDebug :app:assemblePlayDebug
+      - name: Run all JVM unit tests (not device evidence)
         run: >
-          gradle --no-daemon
-          :core:windowing:test
-          :core:index:test
-          :core:commands:test
-          :core:security:test
-          :format:native:test
-          :format:ooxml:test
-          :format:psd:test
-          :cast:dlna:test
-          :cast:airplay:test
-          :cast:castv2:test
-          :feature:together:test
-
-      - name: Upload APK
+          ./gradlew --no-daemon
+          :core:documents:test :core:windowing:test :core:index:test :core:commands:test
+          :core:security:testDebugUnitTest
+          :format:native:test :format:archive:test :format:ooxml:test :format:psd:testDebugUnitTest
+          :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
+          :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
+      - name: Production Kotlin pilot contracts
+        run: ./gradlew --no-daemon :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts
+      - name: Lint both manifests and Android sources
+        run: ./gradlew --no-daemon :app:lintProDebug :app:lintPlayDebug
+      - name: Upload debug APKs
         uses: actions/upload-artifact@v4
         with:
-          name: fusion-shell-debug
-          path: android/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: warn
-
-      - name: Upload test reports
+          name: fusion-native-debug
+          path: android/app/build/outputs/apk/*/debug/*.apk
+          if-no-files-found: error
+      - name: Upload test and lint reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
-          path: android/**/build/reports/tests/**
+          name: native-test-reports
+          path: android/**/build/reports/**
           if-no-files-found: ignore
-
   instrumented:
-    name: Gradle Managed Device (Pixel 6 / API 34)
+    name: API34 managed-device checks (not physical-device spike passes)
     runs-on: ubuntu-latest
-    # Emulator jobs need nested virtualisation and are slow; run on demand only.
     if: github.event_name == 'workflow_dispatch'
     defaults:
       run:
         working-directory: android
     steps:
       - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
+      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
       - name: Enable KVM
         run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
-            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Run managed-device tests
-        run: gradle --no-daemon :app:pixel6Api34DebugAndroidTest
+      - name: Run pro managed-device tests
+        run: ./gradlew --no-daemon :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-reports
+          path: android/app/build/reports/**

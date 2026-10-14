@@ -1,0 +1,11 @@
+COUNTEREXAMPLE: caller cleared WindowEngine's published windows through a MutableList cast; state is not deeply read-only.
+
+Executed against the actual pre-immutability-patch production windowing JAR (after tile/restore additions). Not an Android test.
+
+import dev.fusion.windowing.*
+fun main() {
+ val state=WindowEngine.reduce(DesktopState(),WindowCommand.Open("editor","Editor",Bounds(0f,0f,400f,300f)))
+ (state.windows as MutableList<ShellWindow>).clear()
+ check(state.windows.isEmpty())
+ println("COUNTEREXAMPLE: caller cleared WindowEngine's published windows through a MutableList cast; state is not deeply read-only.")
+}

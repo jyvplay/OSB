@@ -1,0 +1,252 @@
+[
+  {
+    "repository": "openjdk/jdk17u",
+    "ref": "jdk-17.0.9+9",
+    "path": "src/java.base/share/classes/java/math/BigDecimal.java",
+    "git_blob": "73138d5f3639b159f3af82a8fbdd2df8b083f94b",
+    "sha256": "d012c8c20e87615bda9aea647bb6338e5e9aed5245f7c9618e91fb7ac183baa0",
+    "url": "https://github.com/openjdk/jdk17u/blob/jdk-17.0.9+9/src/java.base/share/classes/java/math/BigDecimal.java",
+    "excerpts": [
+      {
+        "line": 42,
+        "text": "* Immutable, arbitrary-precision signed decimal numbers.  A {@code"
+      },
+      {
+        "line": 43,
+        "text": "* BigDecimal} consists of an arbitrary precision integer"
+      },
+      {
+        "line": 58,
+        "text": "* over rounding behavior.  If no rounding mode is specified and the"
+      },
+      {
+        "line": 61,
+        "text": "* precision and rounding mode by supplying an appropriate {@link"
+      },
+      {
+        "line": 63,
+        "text": "* <em>rounding modes</em> are provided for the control of rounding."
+      },
+      {
+        "line": 65,
+        "text": "* #ROUND_HALF_UP}) to represent rounding mode is deprecated; the"
+      },
+      {
+        "line": 69,
+        "text": "* <p>When a {@code MathContext} object is supplied with a precision"
+      },
+      {
+        "line": 73,
+        "text": "* computing the exact result, the rounding mode setting of a {@code"
+      },
+      {
+        "line": 74,
+        "text": "* MathContext} object with a precision setting of 0 is not used and"
+      },
+      {
+        "line": 82,
+        "text": "* <p>When the precision setting is not 0, the rules of {@code"
+      },
+      {
+        "line": 86,
+        "text": "* {@code BigDecimal} includes many rounding modes.  Any conflicts"
+      },
+      {
+        "line": 105,
+        "text": "* <p>In general the rounding modes and precision setting determine"
+      },
+      {
+        "line": 111,
+        "text": "* {@code MathContext}'s {@code precision} setting; this determines"
+      },
+      {
+        "line": 112,
+        "text": "* the result's <i>precision</i>.  The digit count starts from the"
+      },
+      {
+        "line": 113,
+        "text": "* leftmost nonzero digit of the exact result.  The rounding mode"
+      },
+      {
+        "line": 119,
+        "text": "* rounded to the number of digits specified by the precision setting"
+      },
+      {
+        "line": 120,
+        "text": "* (if necessary), using the selected rounding mode.  If the exact"
+      },
+      {
+        "line": 131,
+        "text": "* parameter, if the result is inexact but the rounding mode is {@link"
+      },
+      {
+        "line": 161,
+        "text": "* numerical result cannot be represented in {@code precision}"
+      },
+      {
+        "line": 164,
+        "text": "* to the least scale which can represent the {@code precision}"
+      },
+      {
+        "line": 166,
+        "text": "* with at most {@code precision} digits, the representation"
+      },
+      {
+        "line": 169,
+        "text": "* represented in fewer than {@code precision} digits by removing"
+      },
+      {
+        "line": 172,
+        "text": "* rounding mode, <br>"
+      },
+      {
+        "line": 197,
+        "text": "* to that of the operand, but whose scale or precision is the"
+      }
+    ]
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "ref": "android-14.0.0_r1",
+    "path": "core/java/android/util/AtomicFile.java",
+    "git_blob": "be8e2c2d745c16e62d0b80e7f841c4a67524ad16",
+    "sha256": "fd8e9350b0d12648e9886162e4cbd2fb64311a3a4c9bcf7144ceaaaa145fc8fe",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/android-14.0.0_r1/core/java/android/util/AtomicFile.java",
+    "excerpts": [
+      {
+        "line": 42,
+        "text": "* sync'd to disk before renaming it to the original file. Previously this is done by renaming the"
+      },
+      {
+        "line": 47,
+        "text": "* Atomic file does not confer any file locking semantics. Do not use this class when the file may"
+      },
+      {
+        "line": 48,
+        "text": "* be accessed or modified concurrently by multiple threads or processes. The caller is responsible"
+      },
+      {
+        "line": 112,
+        "text": "* FileOutputStream; instead call either {@link #finishWrite(FileOutputStream)}"
+      },
+      {
+        "line": 115,
+        "text": "* <p>Note that if another thread is currently performing"
+      },
+      {
+        "line": 116,
+        "text": "* a write, this will simply replace whatever that thread is writing"
+      },
+      {
+        "line": 117,
+        "text": "* with the new file being written by this thread, and when the other"
+      },
+      {
+        "line": 118,
+        "text": "* thread finishes the write the new write operation will no longer be"
+      },
+      {
+        "line": 119,
+        "text": "* safe (or will be lost).  You must do your own threading protection for"
+      },
+      {
+        "line": 168,
+        "text": "* returned by {@link #startWrite()}.  This will close, sync, and"
+      },
+      {
+        "line": 172,
+        "text": "public void finishWrite(FileOutputStream str) {"
+      },
+      {
+        "line": 176,
+        "text": "if (!FileUtils.sync(str)) {"
+      },
+      {
+        "line": 177,
+        "text": "Log.e(LOG_TAG, \"Failed to sync file output stream\");"
+      },
+      {
+        "line": 199,
+        "text": "if (!FileUtils.sync(str)) {"
+      },
+      {
+        "line": 200,
+        "text": "Log.e(LOG_TAG, \"Failed to sync file output stream\");"
+      },
+      {
+        "line": 218,
+        "text": "FileUtils.sync(fos);"
+      },
+      {
+        "line": 241,
+        "text": "* You must do your own threading protection for access to AtomicFile."
+      },
+      {
+        "line": 248,
+        "text": "// It was okay to call openRead() between startWrite() and finishWrite() for the first time"
+      },
+      {
+        "line": 250,
+        "text": "// which makes no sense, but finishWrite() would still persist the write properly. For all"
+      },
+      {
+        "line": 254,
+        "text": "// that finishWrite() can still work."
+      },
+      {
+        "line": 324,
+        "text": "finishWrite(out);"
+      }
+    ]
+  },
+  {
+    "repository": "scipy/scipy",
+    "ref": "v1.14.1",
+    "path": "scipy/constants/_constants.py",
+    "git_blob": "7163518c0c15ffb95858ba57fcac44267ee6ac6b",
+    "sha256": "988ec9b0a9d0247ec1f9f47f9b38aa9723ec92a90cdcccf1377e41ff54bb054f",
+    "url": "https://github.com/scipy/scipy/blob/v1.14.1/scipy/constants/_constants.py",
+    "excerpts": [
+      {
+        "line": 131,
+        "text": "lb = pound = 7000 * grain  # avoirdupois"
+      },
+      {
+        "line": 132,
+        "text": "blob = slinch = pound * g / 0.0254  # lbf*s**2/in (added in 1.0.0)"
+      },
+      {
+        "line": 140,
+        "text": "troy_pound = 12 * troy_ounce"
+      },
+      {
+        "line": 162,
+        "text": "inch = 0.0254"
+      },
+      {
+        "line": 163,
+        "text": "foot = 12 * inch"
+      },
+      {
+        "line": 165,
+        "text": "mile = 1760 * yard"
+      },
+      {
+        "line": 168,
+        "text": "survey_foot = 1200.0 / 3937"
+      },
+      {
+        "line": 169,
+        "text": "survey_mile = 5280 * survey_foot"
+      },
+      {
+        "line": 170,
+        "text": "nautical_mile = 1852.0"
+      },
+      {
+        "line": 206,
+        "text": "zero_Celsius = 273.15"
+      }
+    ]
+  }
+]

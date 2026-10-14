@@ -1,0 +1,5 @@
+import dev.fusion.windowing.*
+fun main(args:Array<String>) {
+ val state=WindowEngine.reduce(DesktopState(screenWidth=1200f,screenHeight=900f),WindowCommand.Open("editor","Legacy editor",Bounds(23f,41f,400f,300f),"legacy-open"))
+ java.io.File(args[0]).outputStream().use { DesktopCodec.write(state,it) }
+}

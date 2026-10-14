@@ -18,6 +18,7 @@ rootProject.name = "FusionShell"
 include(
     ":app",
     // core
+    ":core:documents",
     ":core:windowing",
     ":core:files",
     ":core:capabilities",

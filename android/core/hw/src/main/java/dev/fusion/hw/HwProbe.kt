@@ -8,8 +8,9 @@ import dev.fusion.model.CodecInfo
 data class HwReport(
     val encoders: List<CodecInfo>,
     val decoders: List<CodecInfo>,
-    val lowLatencyAudio: Boolean,
-    val preferredCastCodec: String
+    val lowLatencyAudio: Boolean?,
+    val preferredCastCodec: String?,
+    val errors: List<String> = emptyList()
 )
 
 /** Real MediaCodec + PackageManager probe. Never infers NPU from SoC name. */
@@ -17,6 +18,7 @@ object HwProbe {
     fun inspect(context: Context): HwReport {
         val enc = mutableListOf<CodecInfo>()
         val dec = mutableListOf<CodecInfo>()
+        val errors = mutableListOf<String>()
         try {
             for (info in MediaCodecList(MediaCodecList.ALL_CODECS).codecInfos) {
                 for (type in info.supportedTypes) {
@@ -26,13 +28,13 @@ object HwProbe {
                     if (info.isEncoder) enc.add(e) else dec.add(e)
                 }
             }
-        } catch (_: Exception) { }
+        } catch (e: Exception) { errors += "Codec probe incomplete (${e.javaClass.simpleName})" }
         val pm = context.packageManager
-        val lowLatency = try { pm.hasSystemFeature(PackageManager.FEATURE_AUDIO_LOW_LATENCY) } catch (_: Exception) { false }
+        val lowLatency = try { pm.hasSystemFeature(PackageManager.FEATURE_AUDIO_LOW_LATENCY) } catch (e: Exception) { errors += "Audio probe unavailable (${e.javaClass.simpleName})"; null }
         val hevc = enc.any { it.mime.equals("video/hevc", true) && it.hardwareAccelerated }
         return HwReport(
-            enc.distinctBy { it.mime }, dec.distinctBy { it.mime },
-            lowLatency, if (hevc) "HEVC" else "AVC"
+            enc.distinctBy { it.mime to it.hardwareAccelerated }, dec.distinctBy { it.mime to it.hardwareAccelerated },
+            lowLatency, when { hevc -> "HEVC"; enc.any { it.mime.equals("video/avc", true) && it.hardwareAccelerated } -> "AVC"; else -> null }, errors.toList()
         )
     }
 }

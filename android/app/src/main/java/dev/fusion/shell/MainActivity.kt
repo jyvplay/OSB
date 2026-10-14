@@ -1,11 +1,15 @@
 package dev.fusion.shell
 
+import dev.fusion.commands.Command
+import dev.fusion.find.CommandPalette
 import android.app.Activity
 import android.content.Intent
 import android.hardware.display.DisplayManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -23,8 +27,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +38,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -44,24 +52,39 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.key
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.key.isAltPressed
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import dev.fusion.editor.EditorViewModel
 import dev.fusion.a11y.AccessibilityScreen
 import dev.fusion.alerts.AlertsScreen
 import dev.fusion.alerts.FusionNotificationListener
@@ -72,12 +95,14 @@ import dev.fusion.beam.BeamDiscovery
 import dev.fusion.beam.BeamScreen
 import dev.fusion.browser.BrowserScreen
 import dev.fusion.calc.CalcScreen
+import dev.fusion.calc.CalculatorViewModel
 import dev.fusion.capabilities.CapabilityProbe
 import dev.fusion.capture.CaptureScreen
 import dev.fusion.capture.ScreenRecordService
 import dev.fusion.cast.dlna.DlnaScreen
 import dev.fusion.continuity.ContinuityScreen
 import dev.fusion.editor.EditorScreen
+import dev.fusion.editor.CopyDestinationContract
 import dev.fusion.filesui.FilesScreen
 import dev.fusion.files.SafRepository
 import dev.fusion.files.TrashRepository
@@ -86,7 +111,7 @@ import dev.fusion.format.pdf.PdfScreen
 import dev.fusion.hw.HwProbe
 import dev.fusion.messages.MessagesScreen
 import dev.fusion.notes.NotesScreen
-import dev.fusion.notes.NotesStore
+import dev.fusion.notes.NotesViewModel
 import dev.fusion.ooxml.Ooxml
 import dev.fusion.perf.MemoryProbe
 import dev.fusion.perf.ThermalProbe
@@ -96,6 +121,10 @@ import dev.fusion.terminal.LocalShell
 import dev.fusion.terminal.TerminalScreen
 import dev.fusion.together.TogetherScreen
 import dev.fusion.vault.VaultScreen
+import dev.fusion.model.PilotAccess
+import dev.fusion.model.PilotPolicy
+import dev.fusion.capture.RecorderState
+import dev.fusion.windowing.WindowDensity
 import dev.fusion.windowing.Bounds
 import dev.fusion.automation.AutomationScreen
 import dev.fusion.lens.LensScreen
@@ -116,31 +145,30 @@ private val panel = Color(0xFF191E20)
 private val border = Color(0xFF384044)
 private val mint = Color(0xFF65DDB4)
 
-private val MODULES = listOf(
-    "files", "editor", "docs", "pdf", "image", "psd", "browser", "terminal",
-    "vault", "notes", "media", "beam", "dlna", "alerts", "capture",
-    "backup", "continuity", "a11y", "settings", "apps", "calculator",
-    "together", "lens", "messages", "automation"
-)
+private val MODULES = PilotPolicy.modules.map { it.id }
 
 class MainActivity : ComponentActivity() {
 
     private val repository by lazy { SafRepository(this) }
     private val prefs by lazy { getSharedPreferences("fusion", MODE_PRIVATE) }
     private val settingsGraph by lazy { SettingsGraph(this) }
-    private val notesStore by lazy { NotesStore(this) }
+    private val notesModel by lazy { ViewModelProvider(this)[NotesViewModel::class.java] }
     private val localShell by lazy { LocalShell(this) }
     private val beamDiscovery by lazy { BeamDiscovery(this) }
     private val backupEngine by lazy { BackupEngine(this) }
     private val trashRepository by lazy { TrashRepository(this) }
-    private var localMediaServer: dev.fusion.beam.LocalMediaServer? = null
 
-    private var desktop by mutableStateOf(DesktopState())
+    private val desktopModel by lazy { ViewModelProvider(this)[DesktopSessionModel::class.java] }
+    private val desktop get() = desktopModel.desktop
+    private var acknowledgedExperiments by mutableStateOf(emptySet<String>())
+    private var pilotIntro by mutableStateOf(false)
+    private var resetLayoutPrompt by mutableStateOf(false)
     private var treeUri by mutableStateOf<Uri?>(null)
     private var message by mutableStateOf("Local-first. Nothing leaves this device unless you share it.")
-    private var editorText by mutableStateOf("")
-    private var editorName by mutableStateOf("Untitled.txt")
-    private var pendingSaveText = ""
+    private val calculatorModel by lazy { ViewModelProvider(this)[CalculatorViewModel::class.java] }
+    private val editorModel by lazy { ViewModelProvider(this)[EditorViewModel::class.java] }
+    private var closingEditorWindow by mutableStateOf<Long?>(null)
+    private var closingNotesWindow by mutableStateOf<Long?>(null)
     private var pendingBackupPassword: CharArray? = null
     private var backupStatus by mutableStateOf("No export or restore run yet.")
     private var pdfUri by mutableStateOf<Uri?>(null)
@@ -158,30 +186,30 @@ class MainActivity : ComponentActivity() {
         if (uri == null) return@registerForActivityResult
         try {
             contentResolver.takePersistableUriPermission(
-                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
             treeUri = uri
             prefs.edit().putString("tree", uri.toString()).apply()
-            message = "Folder access granted. Only this tree is visible."
+            message = "Read-only folder access retained. Only this tree is visible."
         } catch (e: SecurityException) {
             message = "Folder permission was not retained: ${e.localizedMessage}"
         }
     }
 
-    private val saveCopy = registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
-        if (uri == null) return@registerForActivityResult
-        lifecycleScope.launch {
-            repository.writeNewText(uri, pendingSaveText).fold(
-                onSuccess = { message = "New document saved. Original untouched." },
-                onFailure = { message = "Save failed: ${it.localizedMessage}" }
-            )
-        }
+    private val saveCopy = registerForActivityResult(CopyDestinationContract()) { result ->
+        editorModel.completeCopy(result)
+    }
+
+    private val captureNotificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted && PilotPolicy.mayRun("capture", acknowledgedExperiments)) captureConsent.launch(ScreenRecordService.consentIntent(this))
+        else message = "Capture requires a visible stop notification and session consent. Nothing recorded."
     }
 
     private val captureConsent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data = result.data
-        if (result.resultCode == Activity.RESULT_OK && data != null) {
-            ScreenRecordService.start(this, result.resultCode, data)
+        if (result.resultCode == Activity.RESULT_OK && data != null && PilotPolicy.mayRun("capture", acknowledgedExperiments)) {
+            runCatching { ScreenRecordService.start(this, result.resultCode, data) }
+                .onFailure { message = "Capture did not start: ${it.javaClass.simpleName}" }
         } else {
             message = "Screen capture consent was declined. Nothing recorded."
         }
@@ -190,42 +218,47 @@ class MainActivity : ComponentActivity() {
     private val exportBackup = registerForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
         val password = pendingBackupPassword
         pendingBackupPassword = null
-        if (uri == null || password == null) return@registerForActivityResult
+        if (uri == null || password == null || !PilotPolicy.mayRun("backup", acknowledgedExperiments)) {
+            password?.fill('\u0000'); backupStatus = "Backup unavailable or cancelled; no password retained."; return@registerForActivityResult
+        }
         lifecycleScope.launch {
-            backupEngine.export(uri, password).fold(
+            try { backupEngine.export(uri, password).fold(
                 onSuccess = {
                     backupStatus = "Exported ${it.fileCount} note(s): ${it.plainBytes}B -> ${it.sealedBytes}B " +
                         "sealed, sha256 ${it.sha256}..."
                 },
                 onFailure = { backupStatus = "Export failed: ${it.message}" }
             )
-            password.fill('\u0000')
+            } finally { password.fill('\u0000') }
         }
     }
 
     private val importBackup = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         val password = pendingBackupPassword
         pendingBackupPassword = null
-        if (uri == null || password == null) return@registerForActivityResult
+        if (uri == null || password == null || !PilotPolicy.mayRun("backup", acknowledgedExperiments)) {
+            password?.fill('\u0000'); backupStatus = "Backup unavailable or cancelled; no password retained."; return@registerForActivityResult
+        }
         lifecycleScope.launch {
-            backupEngine.restore(uri, password).fold(
+            try { backupEngine.restore(uri, password).fold(
                 onSuccess = { backupStatus = "Restored $it note file(s). Existing files were kept." },
                 onFailure = { backupStatus = "Restore failed (wrong password or not a Fusion backup): ${it.message}" }
             )
-            password.fill('\u0000')
+            } finally { password.fill('\u0000') }
         }
     }
 
     private val openPdf = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) pdfUri = uri
+        if (uri != null && PilotPolicy.mayRun("pdf", acknowledgedExperiments)) pdfUri = uri
     }
 
     private val openPsd = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) psdUri = uri
+        if (uri != null && PilotPolicy.mayRun("psd", acknowledgedExperiments)) psdUri = uri
     }
 
     private val openImage = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri == null) return@registerForActivityResult
+        // A restored/stale picker result is not permission to bypass an unavailable module.
+        if (uri == null || !PilotPolicy.mayRun("image", acknowledgedExperiments)) return@registerForActivityResult
         lifecycleScope.launch {
             ImageOps.probe(this@MainActivity, uri).fold(
                 onSuccess = { imageSummary = "${it.mime} ${it.width}x${it.height}, ${it.bytes} bytes on disk." },
@@ -235,7 +268,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private val openDoc = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri == null) return@registerForActivityResult
+        if (uri == null || !PilotPolicy.mayRun("docs", acknowledgedExperiments)) return@registerForActivityResult
         lifecycleScope.launch { inspectDocument(uri) }
     }
 
@@ -243,14 +276,23 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        desktop = restoreDesktop()
+        // [U] verify on API 34/36/37: system bars, cutouts and IME inset reflow on real UI.
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+        )
+        editorModel // Begin recovery before file/picker events.
+        desktopModel // Recover geometry off main before accepting window commands.
+        pilotIntro = !prefs.getBoolean("pilot-notice-v2", false)
         treeUri = prefs.getString("tree", null)?.let(Uri::parse)?.takeIf { selected ->
             contentResolver.persistedUriPermissions.any { it.uri == selected && it.isReadPermission }
         }
         handleShare(intent)
         setContent {
             MaterialTheme(colorScheme = darkColorScheme(primary = mint, background = bg, surface = panel)) {
-                Surface(Modifier.fillMaxSize(), color = bg) { ShellScreen() }
+                Surface(Modifier.fillMaxSize(), color = bg) {
+                    Box(Modifier.fillMaxSize().safeDrawingPadding()) { ShellScreen() }
+                }
             }
         }
     }
@@ -262,9 +304,9 @@ class MainActivity : ComponentActivity() {
 
     private fun handleShare(intent: Intent?) {
         if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
-            incomingShare = intent.getStringExtra(Intent.EXTRA_TEXT)
+            incomingShare = intent.getStringExtra(Intent.EXTRA_TEXT)?.take(64 * 1024)
             if (incomingShare != null) {
-                open("continuity")
+                openModule("continuity")
                 message = "Received shared text from another app."
             }
         }
@@ -272,32 +314,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (localMediaServer == null) {
-            localMediaServer = dev.fusion.beam.LocalMediaServer(port = 8080) { cleanPath ->
-                // Strict SAF lookup: traverse the granted tree segment by segment.
-                // No Uri.withAppendedPath guessing — providers reject fabricated URIs.
-                val root = treeUri?.let { androidx.documentfile.provider.DocumentFile.fromTreeUri(this, it) }
-                    ?: return@LocalMediaServer null
-                var node: androidx.documentfile.provider.DocumentFile? = root
-                for (segment in cleanPath.split("/")) {
-                    node = node?.findFile(segment) ?: return@LocalMediaServer null
-                }
-                val file = node
-                if (file == null || !file.isFile) return@LocalMediaServer null
-                try {
-                    val stream = contentResolver.openInputStream(file.uri) ?: return@LocalMediaServer null
-                    val length = contentResolver.openAssetFileDescriptor(file.uri, "r")?.use { it.length } ?: -1L
-                    val mime = file.type
-                        ?: contentResolver.getType(file.uri)
-                        ?: "application/octet-stream"
-                    dev.fusion.beam.MediaStream(stream, length, mime)
-                } catch (_: Exception) { null }
-            }.also {
-                if (!it.start()) {
-                    message = "Media server could not bind port 8080: ${it.bindError ?: "in use"}. DLNA URLs will fail."
-                }
-            }
-        }
+        // SC-08 / CA-14: granting Files access is NOT consent to publish a tree on LAN.
+        // Local sharing remains disabled until a per-file token/session and stop indicator exist.
         val manager = getSystemService(DisplayManager::class.java)
         val listener = object : DisplayManager.DisplayListener {
             override fun onDisplayAdded(displayId: Int) = syncExternalDisplay()
@@ -311,9 +329,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         super.onStop()
-        localMediaServer?.stop()
-        localMediaServer = null
-        persistDesktop()
+        lifecycleScope.launch { editorModel.flush() }
+        lifecycleScope.launch { calculatorModel.flush() }
+        lifecycleScope.launch { desktopModel.flush() }
         // A Presentation is owned by this Activity; tearing it down avoids a leaked window.
         displayListener?.let { getSystemService(DisplayManager::class.java).unregisterDisplayListener(it) }
         displayListener = null
@@ -356,66 +374,28 @@ class MainActivity : ComponentActivity() {
     // ---- window plumbing ---------------------------------------------------
 
     private fun dispatch(command: WindowCommand) {
-        desktop = WindowEngine.reduce(desktop, command)
+        if (command is WindowCommand.Close && desktop.windows.any { it.id == command.id && it.module == "editor" } &&
+            editorModel.state.value.session.documents.any { it.dirty }) {
+            closingEditorWindow = command.id
+            return
+        }
+        if(command is WindowCommand.Close && desktop.windows.any { it.id==command.id && it.module=="notes" } && notesModel.state.value.dirty) {
+            closingNotesWindow=command.id
+            return
+        }
+        desktopModel.dispatch(command)
     }
 
-    private fun titleFor(module: String) = when (module) {
-        "files" -> "Files"; "editor" -> "Editor"; "docs" -> "Documents (text extract)"
-        "pdf" -> "PDF viewer"; "image" -> "Image tools"; "psd" -> "PSD viewer"
-        "browser" -> "Browser"
-        "terminal" -> "Local shell"; "vault" -> "Vault"; "notes" -> "Notes"
-        "media" -> "Media"; "beam" -> "Beam discovery"; "dlna" -> "DLNA cast"
-        "alerts" -> "Alerts"; "capture" -> "Screen capture"; "backup" -> "Encrypted backup"
-        "continuity" -> "Peripherals and sharing"; "a11y" -> "Accessibility"
-        "settings" -> "Settings and probe"; "apps" -> "Installed apps"
-        "calculator" -> "Calculator"; "together" -> "Together"
-        "lens" -> "Lens (preview only)"; "messages" -> "Messages"
-        "automation" -> "Automation"; else -> module
-    }
+    private fun titleFor(module: String) = PilotPolicy.module(module).title
 
-    private fun open(module: String) {
+    private fun openModule(module: String) {
+        if (desktopModel.loading || desktopModel.blocked) { message = desktopModel.status; return }
         val existing = desktop.windows.firstOrNull { it.module == module && it.workspace == desktop.workspace }
         if (existing != null) {
             dispatch(WindowCommand.Focus(existing.id)); return
         }
-        dispatch(WindowCommand.Open(module, titleFor(module), Bounds(42f, 46f, 600f, 430f)))
-    }
-
-    private fun persistDesktop() {
-        val array = JSONArray()
-        desktop.windows.forEach { w ->
-            array.put(JSONObject().apply {
-                put("id", w.id); put("module", w.module); put("title", w.title)
-                put("x", w.bounds.x); put("y", w.bounds.y)
-                put("w", w.bounds.width); put("h", w.bounds.height)
-                put("z", w.z); put("min", w.minimized); put("ws", w.workspace)
-            })
-        }
-        prefs.edit().putString("windows", array.toString()).putInt("workspace", desktop.workspace).apply()
-    }
-
-    private fun restoreDesktop(): DesktopState = try {
-        val array = JSONArray(prefs.getString("windows", "[]"))
-        val list = (0 until array.length()).mapNotNull { i ->
-            val o = array.getJSONObject(i)
-            val module = o.getString("module")
-            if (module !in MODULES) null else ShellWindow(
-                id = o.getLong("id"), module = module, title = o.getString("title"),
-                bounds = Bounds(
-                    o.getDouble("x").toFloat(), o.getDouble("y").toFloat(),
-                    o.getDouble("w").toFloat(), o.getDouble("h").toFloat()
-                ),
-                z = o.getInt("z"), minimized = o.optBoolean("min"), workspace = o.optInt("ws")
-            )
-        }
-        val workspace = prefs.getInt("workspace", 0).coerceIn(0, 2)
-        DesktopState(
-            list, workspace,
-            list.filter { it.workspace == workspace && !it.minimized }.maxByOrNull { it.z }?.id,
-            (list.maxOfOrNull { it.id } ?: 0L) + 1L
-        )
-    } catch (_: Exception) {
-        DesktopState()
+        if (desktop.windows.size >= WindowEngine.MAX_WINDOWS) { message = "Pilot window limit reached; close a window first."; return }
+        dispatch(WindowCommand.Open(module, titleFor(module), Bounds(0f, 0f, 600f, 430f), java.util.UUID.randomUUID().toString()))
     }
 
     private suspend fun inspectDocument(uri: Uri) = withContext(Dispatchers.IO) {
@@ -468,9 +448,72 @@ class MainActivity : ComponentActivity() {
         var paletteVisible by remember { mutableStateOf(false) }
         val focusRequester = remember { FocusRequester() }
         LaunchedEffect(Unit) { runCatching { focusRequester.requestFocus() } }
+        LaunchedEffect(desktopModel.loading, incomingShare) {
+            if (!desktopModel.loading && incomingShare != null) openModule("continuity")
+        }
 
+        if (pilotIntro) AlertDialog(onDismissRequest = {}, title = { Text("Fusion pilot — evaluation only") },
+            text = { Text("This is not a release-ready desktop. Use disposable documents and test accounts only. Hardware, accessibility and protocol gates are not passed. No billing or license entitlement is implied. No telemetry is sent.") },
+            confirmButton = { TextButton(onClick = {
+                prefs.edit().putBoolean("pilot-notice-v2", true).apply(); pilotIntro = false
+            }) { Text("I understand — evaluation only") } })
+        if (resetLayoutPrompt) AlertDialog(onDismissRequest = { resetLayoutPrompt = false }, title = { Text("Reset only the window layout?") },
+            text = { Text("All windows will close. Editor drafts remain. Old layout bytes are retained locally for inspection; this does not reset permissions or erase files.") },
+            confirmButton = { TextButton(onClick = { desktopModel.resetLayout(); resetLayoutPrompt = false }) { Text("Reset layout") } },
+            dismissButton = { TextButton(onClick = { resetLayoutPrompt = false }) { Text("Cancel") } })
+        closingEditorWindow?.let { id ->
+            AlertDialog(onDismissRequest = { closingEditorWindow = null },
+                title = { Text("Keep unsaved editor drafts?") },
+                text = { Text("Closing hides the editor. Drafts will be kept locally, not saved to the original documents. Reopen Editor to continue.") },
+                confirmButton = { TextButton(onClick = {
+                    lifecycleScope.launch {
+                        if (editorModel.flush()) {
+                            desktopModel.dispatch(WindowCommand.Close(id))
+                            closingEditorWindow = null
+                        }
+                    }
+                }) { Text("Keep drafts and close") } },
+                dismissButton = { TextButton(onClick = { closingEditorWindow = null }) { Text("Keep editing") } })
+        }
+        closingNotesWindow?.let { id ->
+            AlertDialog(onDismissRequest={ closingNotesWindow=null },title={ Text("Close with an unsaved note?") },
+                text={ Text("The draft remains only in memory while this Activity's ViewModel lives. It is NOT recovered after process death. Keep editing and save first if you need to retain it.") },
+                confirmButton={ TextButton(onClick={ desktopModel.dispatch(WindowCommand.Close(id)); closingNotesWindow=null }) { Text("Hide memory draft") } },
+                dismissButton={ TextButton(onClick={ closingNotesWindow=null }) { Text("Keep editing") } })
+        }
         Column(
             Modifier.fillMaxSize().focusRequester(focusRequester).onPreviewKeyEvent { event ->
+                if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                if (event.isCtrlPressed && event.isAltPressed) {
+                    val active = desktop.activeId
+                    val sw = desktop.screenWidth; val sh = desktop.screenHeight
+                    val step = 16f
+                    val delta = when (event.key) {
+                        Key.DirectionLeft -> -step to 0f; Key.DirectionRight -> step to 0f
+                        Key.DirectionUp -> 0f to -step; Key.DirectionDown -> 0f to step
+                        else -> null
+                    }
+                    when {
+                        delta != null && active != null -> {
+                            dispatch(if (event.isShiftPressed) WindowCommand.Resize(active, delta.first, delta.second, sw, sh)
+                                else WindowCommand.Move(active, delta.first, delta.second, sw, sh)); return@onPreviewKeyEvent true
+                        }
+                        event.key == Key.Tab -> { dispatch(WindowCommand.FocusNext(event.isShiftPressed)); return@onPreviewKeyEvent true }
+                        event.key == Key.M && active != null -> { dispatch(WindowCommand.Minimize(active)); return@onPreviewKeyEvent true }
+                        event.key == Key.W && active != null -> { dispatch(WindowCommand.Close(active)); return@onPreviewKeyEvent true }
+                        event.key == Key.PageUp -> { dispatch(WindowCommand.SwitchWorkspace(desktop.workspace - 1)); return@onPreviewKeyEvent true }
+                        event.key == Key.PageDown -> { dispatch(WindowCommand.SwitchWorkspace(desktop.workspace + 1)); return@onPreviewKeyEvent true }
+                        event.key == Key.R && active != null -> { dispatch(WindowCommand.RestoreBounds(active)); return@onPreviewKeyEvent true }
+                        event.isShiftPressed && event.key in listOf(Key.One,Key.Two,Key.Three) && active != null -> {
+                            val workspace=when(event.key) { Key.One -> 0; Key.Two -> 1; else -> 2 }
+                            dispatch(WindowCommand.MoveToWorkspace(active,workspace)); return@onPreviewKeyEvent true
+                        }
+                        event.key in listOf(Key.One, Key.Two, Key.Zero) && active != null -> {
+                            val tile = when(event.key) { Key.One -> Tile.LEFT; Key.Two -> Tile.RIGHT; else -> Tile.MAXIMIZE }
+                            dispatch(WindowCommand.TileWindow(active, tile, sw, sh)); return@onPreviewKeyEvent true
+                        }
+                    }
+                }
                 when {
                     event.isCtrlPressed && event.key == Key.K -> { paletteVisible = true; true }
                     event.key == Key.Escape && paletteVisible -> { paletteVisible = false; true }
@@ -479,13 +522,14 @@ class MainActivity : ComponentActivity() {
             }.focusable()
         ) {
             Row(
-                Modifier.fillMaxWidth().height(48.dp).background(panel).padding(horizontal = 12.dp),
+                Modifier.fillMaxWidth().heightIn(min = 48.dp).background(panel).horizontalScroll(rememberScrollState()).padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                TextButton(onClick = { openModule("pilot") }, enabled = !desktopModel.loading && !desktopModel.blocked) { Text("Pilot safety") }
                 Text("F / FUSION", color = mint, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.width(20.dp))
                 Text("Find", Modifier.clickable { paletteVisible = true }, color = Color.LightGray)
-                Spacer(Modifier.weight(1f))
+                Spacer(Modifier.width(20.dp))
                 Text("WORKSPACE ${desktop.workspace + 1}", fontSize = 11.sp, color = Color.Gray)
             }
 
@@ -493,6 +537,9 @@ class MainActivity : ComponentActivity() {
                 val sw = maxWidth.value
                 val sh = maxHeight.value
                 val scale = LocalDensity.current.density
+                LaunchedEffect(sw, sh, desktopModel.loading) {
+                    if (!desktopModel.loading) dispatch(WindowCommand.SetViewport(sw, sh))
+                }
 
                 Column(Modifier.padding(20.dp)) {
                     Text("Fusion Shell", fontSize = 34.sp, color = mint, fontWeight = FontWeight.Bold)
@@ -502,18 +549,44 @@ class MainActivity : ComponentActivity() {
                 }
 
                 desktop.windows.filter { it.workspace == desktop.workspace && !it.minimized }
-                    .sortedBy { it.z }.forEach { w ->
-                        val adjusted = w.bounds.constrained(sw, sh)
+                    .sortedBy { it.z }.forEach { w -> key(w.id) {
+                        val adjusted = w.bounds.constrained(sw, sh, desktop.density)
+                        val windowFocus = remember { FocusRequester() }
+                        LaunchedEffect(desktop.activeId) {
+                            if (desktop.activeId == w.id) runCatching { windowFocus.requestFocus() }
+                        }
                         Column(
                             Modifier.offset(adjusted.x.dp, adjusted.y.dp)
                                 .size(adjusted.width.dp, adjusted.height.dp)
                                 .zIndex(w.z.toFloat())
                                 .border(1.dp, if (desktop.activeId == w.id) mint else border)
                                 .background(panel)
+                                .focusRequester(windowFocus)
+                                .onFocusChanged { if (it.hasFocus && desktop.activeId != w.id) dispatch(WindowCommand.Focus(w.id)) }
+                                .focusable()
+                                .semantics {
+                                    paneTitle = w.title
+                                    customActions = listOf(
+                                        CustomAccessibilityAction("Focus") { dispatch(WindowCommand.Focus(w.id)); true },
+                                        CustomAccessibilityAction("Move left") { dispatch(WindowCommand.Move(w.id, -16f, 0f, sw, sh)); true },
+                                        CustomAccessibilityAction("Move right") { dispatch(WindowCommand.Move(w.id, 16f, 0f, sw, sh)); true },
+                                        CustomAccessibilityAction("Move up") { dispatch(WindowCommand.Move(w.id, 0f, -16f, sw, sh)); true },
+                                        CustomAccessibilityAction("Move down") { dispatch(WindowCommand.Move(w.id, 0f, 16f, sw, sh)); true },
+                                        CustomAccessibilityAction("Increase width") { dispatch(WindowCommand.Resize(w.id, 16f, 0f, sw, sh)); true },
+                                        CustomAccessibilityAction("Decrease width") { dispatch(WindowCommand.Resize(w.id, -16f, 0f, sw, sh)); true },
+                                        CustomAccessibilityAction("Increase height") { dispatch(WindowCommand.Resize(w.id, 0f, 16f, sw, sh)); true },
+                                        CustomAccessibilityAction("Decrease height") { dispatch(WindowCommand.Resize(w.id, 0f, -16f, sw, sh)); true },
+                                        CustomAccessibilityAction("Maximize") { dispatch(WindowCommand.TileWindow(w.id, Tile.MAXIMIZE, sw, sh)); true },
+                                        CustomAccessibilityAction("Restore previous size") { dispatch(WindowCommand.RestoreBounds(w.id)); true },
+                                        CustomAccessibilityAction("Move to next workspace") { dispatch(WindowCommand.MoveToWorkspace(w.id,(w.workspace+1)%WindowEngine.WORKSPACES)); true },
+                                        CustomAccessibilityAction("Minimize") { dispatch(WindowCommand.Minimize(w.id)); true },
+                                        CustomAccessibilityAction("Close") { dispatch(WindowCommand.Close(w.id)); true }
+                                    )
+                                }
                                 .clickable { dispatch(WindowCommand.Focus(w.id)) }
                         ) {
                             Row(
-                                Modifier.fillMaxWidth().height(38.dp).background(Color(0xFF252C2D))
+                                Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("window-title-${w.module}").background(Color(0xFF252C2D))
                                     .pointerInput(w.id, sw, sh) {
                                         detectDragGestures { change, drag ->
                                             change.consume()
@@ -523,9 +596,30 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(w.title, Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                TitleAction("L") { dispatch(WindowCommand.TileWindow(w.id, Tile.LEFT, sw, sh)) }
-                                TitleAction("R") { dispatch(WindowCommand.TileWindow(w.id, Tile.RIGHT, sw, sh)) }
-                                TitleAction("[]") { dispatch(WindowCommand.TileWindow(w.id, Tile.MAXIMIZE, sw, sh)) }
+                                // Three 48dp controls leave a title/drag region even at 240dp.
+                                // Density changes layout, never which window actions are available.
+                                var actionsOpen by remember(w.id) { mutableStateOf(false) }
+                                Box {
+                                    TitleAction("⋮", Modifier.testTag("window-actions-${w.module}")) { actionsOpen = true }
+                                    DropdownMenu(expanded = actionsOpen, onDismissRequest = { actionsOpen = false }) {
+                                        listOf("Tile left" to Tile.LEFT, "Tile right" to Tile.RIGHT, "Maximize" to Tile.MAXIMIZE).forEach { (label, tile) ->
+                                            DropdownMenuItem(text = { Text(if(WindowEngine.canTile(desktop,tile)) label else "$label — viewport too small") },
+                                                enabled=WindowEngine.canTile(desktop,tile), onClick = {
+                                                actionsOpen = false
+                                                dispatch(WindowCommand.TileWindow(w.id, tile, sw, sh))
+                                            })
+                                        }
+                                        DropdownMenuItem(text={ Text("Restore previous size") },enabled=w.restoreBounds!=null,onClick={
+                                            actionsOpen=false; dispatch(WindowCommand.RestoreBounds(w.id))
+                                        })
+                                        repeat(WindowEngine.WORKSPACES) { workspace ->
+                                            DropdownMenuItem(text={ Text("Move to workspace ${workspace+1}") },enabled=w.workspace!=workspace,onClick={
+                                                actionsOpen=false; dispatch(WindowCommand.MoveToWorkspace(w.id,workspace))
+                                                message="Moved ${w.title} to workspace ${workspace+1}."
+                                            })
+                                        }
+                                    }
+                                }
                                 TitleAction("_") { dispatch(WindowCommand.Minimize(w.id)) }
                                 TitleAction("X") { dispatch(WindowCommand.Close(w.id)) }
                             }
@@ -543,36 +637,54 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                    }
+                    } }
 
                 if (paletteVisible) {
-                    Column(
-                        Modifier.align(Alignment.TopCenter).padding(top = 24.dp)
-                            .width(330.dp).background(Color(0xFF262F30)).padding(12.dp)
-                    ) {
-                        var query by remember { mutableStateOf("") }
-                        OutlinedTextField(query, { query = it }, label = { Text("Search modules (local only)") })
-                        Column(Modifier.height(260.dp).verticalScroll(rememberScrollState())) {
-                            MODULES.filter { query.isBlank() || it.contains(query, true) }.forEach { key ->
-                                Text(
-                                    titleFor(key),
-                                    Modifier.fillMaxWidth()
-                                        .clickable { open(key); paletteVisible = false }
-                                        .padding(8.dp)
-                                )
-                            }
-                        }
+                    val commands=MODULES.map { module ->
+                        Command("module:$module",titleFor(module),"Module • ${PilotPolicy.module(module).boundary}",listOf(module))
+                    } + desktop.windows.map { window ->
+                        Command("window:${window.id}","${if(window.minimized) "Restore" else "Focus"}: ${window.title}",
+                            "Open window • workspace ${window.workspace+1}",listOf(window.module))
+                    } + (0 until WindowEngine.WORKSPACES).map { workspace ->
+                        Command("workspace:$workspace","Switch to workspace ${workspace+1}","Desktop workspace")
                     }
+                    CommandPalette(commands,onDismiss={ paletteVisible=false },onSelect={ id ->
+                        when {
+                            id.startsWith("module:") -> id.removePrefix("module:").takeIf { it in MODULES }?.let(::openModule)
+                            id.startsWith("window:") -> id.removePrefix("window:").toLongOrNull()?.let { dispatch(WindowCommand.Focus(it)) }
+                            id.startsWith("workspace:") -> id.removePrefix("workspace:").toIntOrNull()?.takeIf { it in 0 until WindowEngine.WORKSPACES }
+                                ?.let { dispatch(WindowCommand.SwitchWorkspace(it)) }
+                        }
+                        paletteVisible=false
+                    })
                 }
             }
 
+            val recording by RecorderState.recording.collectAsState()
+            if (recording) Row(Modifier.fillMaxWidth().background(Color(0xFF6E1822)).padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text("Recording selected screen/app • local MP4 • AVC • hardware/latency unmeasured", Modifier.weight(1f), color = Color.White)
+                Button(onClick = { ScreenRecordService.stop(this@MainActivity) }) { Text("Stop recording") }
+            }
+            if (desktopModel.loading || desktopModel.blocked) {
+                Text(desktopModel.status, Modifier.padding(8.dp).semantics { liveRegion = LiveRegionMode.Polite })
+                if (desktopModel.blocked) Button(onClick = { resetLayoutPrompt = true }) { Text("Reset window layout…") }
+            }
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+                desktop.windows.filter { it.workspace == desktop.workspace }.forEach { w ->
+                    OutlinedButton(onClick = { dispatch(WindowCommand.Focus(w.id)) }) {
+                        Text((if (w.minimized) "Restore: " else "Focus: ") + w.title)
+                    }
+                }
+            }
             Row(
                 Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).background(panel).padding(4.dp),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 MODULES.forEach { module ->
                     Button(
-                        onClick = { open(module) },
+                        modifier = Modifier.testTag("shelf-$module"),
+                        enabled = !desktopModel.loading && !desktopModel.blocked,
+                        onClick = { openModule(module) },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF303A39))
                     ) { Text(module.replaceFirstChar { it.uppercase() }) }
                 }
@@ -591,33 +703,43 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun TitleAction(label: String, onClick: () -> Unit) {
-        Text(label, Modifier.clickable(onClick = onClick).padding(horizontal = 5.dp), color = mint, fontSize = 12.sp)
+    private fun TitleAction(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+        val name = when(label) { "⋮" -> "Window actions"; "L" -> "Tile left"; "R" -> "Tile right"; "[]" -> "Maximize"; "_" -> "Minimize"; "X" -> "Close window"; else -> label }
+        TextButton(onClick = onClick, contentPadding = androidx.compose.foundation.layout.PaddingValues(2.dp),
+            modifier = modifier.width(48.dp).heightIn(min = 48.dp).semantics { contentDescription = name }) { Text(label, color = mint, fontSize = 12.sp) }
     }
 
     @Composable
     private fun ModuleContent(module: String) {
+        val policy = PilotPolicy.module(module)
+        if (!PilotPolicy.mayRun(module, acknowledgedExperiments)) {
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+                Text(policy.title, style = MaterialTheme.typography.titleLarge)
+                Text(if (policy.access == PilotAccess.BLOCKED) "Unavailable in this pilot" else "Experimental — explicit consent required")
+                Text(policy.boundary)
+                if (policy.access == PilotAccess.CONSENT_REQUIRED) Button(onClick = {
+                    acknowledgedExperiments = acknowledgedExperiments + module
+                }) { Text("Enable for this session with test data") }
+                Text("Code presence is not a passed capability test. No permissions or network operations have been started by this panel.")
+            }
+            return
+        }
         when (module) {
+            "pilot" -> PilotContent()
             "files" -> FilesScreen(
                 repo = repository,
                 trash = trashRepository,
+                mutationsAllowed = false,
                 treeUri = treeUri,
                 onChooseFolder = { chooseFolder.launch(null) },
                 onOpenText = { entry ->
-                    lifecycleScope.launch {
-                        repository.readText(entry.uri).fold(
-                            onSuccess = { editorText = it; editorName = entry.name; open("editor") },
-                            onFailure = { message = it.localizedMessage ?: "Read failed" }
-                        )
-                    }
+                    editorModel.open(entry.uri, entry.name)
+                    openModule("editor")
                 },
                 onMessage = { message = it }
             )
 
-            "editor" -> EditorScreen(editorText, editorName) { name, text ->
-                pendingSaveText = text
-                saveCopy.launch(name.substringBeforeLast('.') + "-copy.txt")
-            }
+            "editor" -> EditorScreen(editorModel) { request -> saveCopy.launch(request) }
 
             "docs" -> DocsContent()
             "pdf" -> PdfScreen(this, pdfUri) { openPdf.launch(arrayOf("application/pdf")) }
@@ -626,7 +748,7 @@ class MainActivity : ComponentActivity() {
             "browser" -> BrowserScreen()
             "terminal" -> TerminalScreen(localShell)
             "vault" -> VaultScreen()
-            "notes" -> NotesScreen(notesStore)
+            "notes" -> NotesScreen(notesModel)
             "media" -> dev.fusion.media.MediaScreen(this) { uri, mime ->
                 runCatching {
                     startActivity(
@@ -641,14 +763,12 @@ class MainActivity : ComponentActivity() {
             }
             "beam" -> BeamScreen(
                 discovery = beamDiscovery,
-                localMediaServerAlive = localMediaServer?.isAlive == true,
-                serverPort = 8080,
-                currentThermal = ThermalProbe.current(this),
-                linkSpeedMbps = 100
+                localMediaServerAlive = false,
+                serverPort = 8080
             )
             "dlna" -> DlnaScreen(
                 context = this,
-                localMediaServerAlive = localMediaServer?.isAlive == true,
+                localMediaServerAlive = false,
                 serverPort = 8080
             )
             "alerts" -> AlertsScreen(this) {
@@ -656,7 +776,11 @@ class MainActivity : ComponentActivity() {
                     .onFailure { message = "Could not open notification settings: ${it.message}" }
             }
             "capture" -> CaptureScreen(
-                onRequestConsent = { captureConsent.launch(ScreenRecordService.consentIntent(this)) },
+                onRequestConsent = {
+                    if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED)
+                        captureNotificationPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    else captureConsent.launch(ScreenRecordService.consentIntent(this))
+                },
                 onStop = { ScreenRecordService.stop(this) }
             )
             "backup" -> BackupScreen(
@@ -668,12 +792,29 @@ class MainActivity : ComponentActivity() {
             "a11y" -> AccessibilityScreen(this)
             "settings" -> SettingsContent()
             "apps" -> AppsContent()
-            "calculator" -> CalcScreen()
+            "calculator" -> CalcScreen(calculatorModel)
             "together" -> TogetherScreen()
             "lens" -> LensScreen()
             "messages" -> MessagesScreen(this)
             "automation" -> AutomationScreen(this)
             else -> Text("Module not available in this build.", Modifier.padding(16.dp))
+        }
+    }
+
+    @Composable
+    private fun PilotContent() {
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Pilot safety and recovery", style = MaterialTheme.typography.titleLarge)
+            Text("No feature acceptance is implied. Do not use real secrets or your only copy of a document. Release gates remain blocked.")
+            Text(desktopModel.status)
+            Text("Keyboard (inside Fusion): Ctrl+Alt+arrows move; add Shift to resize; Ctrl+Alt+1/2/0 tile; Ctrl+Alt+Tab cycles windows; M minimizes; W closes; PageUp/PageDown changes workspace. OEM conflicts need S1 testing.")
+            Text("Window geometry density is configured in Settings; full density profiles are not yet implemented.")
+            Button(onClick = { resetLayoutPrompt = true }) { Text("Reset window layout…") }
+            Text("Reset retains editor drafts. Pending saves are verified separately; local recovery is not a backup.")
+            PilotPolicy.modules.forEach { module ->
+                Text("${module.title}: ${module.access.name}")
+                Text(module.boundary, style = MaterialTheme.typography.bodySmall)
+            }
         }
     }
 
@@ -707,27 +848,40 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun SettingsContent() {
-        val report = remember { CapabilityProbe.inspect(this@MainActivity) }
-        val hw = remember { HwProbe.inspect(this@MainActivity) }
-        val thermal = remember { ThermalProbe.current(this@MainActivity).name }
-        val pss = remember { MemoryProbe.pssMb(this@MainActivity) }
-        val probeText = remember(report, hw) {
-            buildString {
-                appendLine("API ${report.sdk} / ${report.deviceClass}")
-                appendLine("SoC ${report.soc} / RAM ${report.ramGb} GB")
-                appendLine(
-                    "Presentation displays: ${report.presentationDisplays} · " +
-                        (externalDisplayLabel?.let { "live session mirror on $it" }
-                            ?: "no external window attached")
-                )
-                appendLine("HW encoders: ${report.videoEncoders.joinToString().ifEmpty { "none" }}")
-                appendLine("Preferred cast codec if casting existed: ${hw.preferredCastCodec}")
-                appendLine("Thermal $thermal / PSS ${if (pss >= 0) "$pss MB" else "unknown"}")
-                appendLine("NPU: ${report.npuStatus}")
-                append("Fingerprint: ${report.fingerprint.take(64)}")
+        var probeText by remember { mutableStateOf("Collecting local observations…") }
+        LaunchedEffect(Unit) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    probeText = withContext(Dispatchers.IO) {
+                        val report = CapabilityProbe.inspect(this@MainActivity)
+                        val hw = HwProbe.inspect(this@MainActivity)
+                        val thermal = ThermalProbe.current(this@MainActivity).name
+                        val pss = MemoryProbe.pssMb(this@MainActivity)
+                        buildString {
+                            appendLine("Fusion pilot • API ${report.sdk} • all performance budgets unmeasured")
+                            appendLine("SoC: ${report.soc}; RAM: ${report.ramGb?.let { String.format(java.util.Locale.ROOT, "%.2f", it) } ?: "unknown"} GiB")
+                            appendLine(report.deviceClass)
+                            appendLine("Presentation displays: ${report.presentationDisplays ?: "unknown"} (not evidence of physical DP-out)")
+                            appendLine("Home role: ${report.homeRoleHeld}; freeform declared: ${report.freeformDeclared}; desktop session: unknown")
+                            appendLine("Advertised HW encoders: ${report.videoEncoders?.joinToString()?.ifEmpty { "none advertised" } ?: "unknown"}")
+                            appendLine("HW codec candidate: ${hw.preferredCastCodec ?: "none verified/advertised"} — no encoder initialized by this probe")
+                            appendLine("Thermal: $thermal; own-process total PSS: ${if (pss >= 0) "$pss MiB" else "unknown"}")
+                            appendLine("NPU: ${report.npuStatus}; low-latency audio flag: ${hw.lowLatencyAudio}")
+                            appendLine("Polling while Settings is visible and the Activity is started; measurements are point-in-time.")
+                            (report.errors + hw.errors).forEach { appendLine(it) }
+                        }
+                    }
+                    kotlinx.coroutines.delay(5_000)
+                }
             }
         }
-        SettingsScreen(settingsGraph, probeText)
+        SettingsScreen(settingsGraph, probeText, desktop.density.name,
+            onDensity = { dispatch(WindowCommand.SetDensity(WindowDensity.valueOf(it))) },
+            onShareReport = {
+                runCatching { startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"; putExtra(Intent.EXTRA_TEXT, probeText)
+                }, "Share redacted pilot observations")) }.onFailure { message = "No share target available." }
+            })
     }
 
     @Composable

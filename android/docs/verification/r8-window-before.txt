@@ -1,0 +1,2 @@
+Post-close keyed replay: closed=0, replayed=1, newId=2
+Stale viewport relative move: current=800.0x600.0, command=1200x900, x=20.0->30.0

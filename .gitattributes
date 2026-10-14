@@ -1,0 +1,3 @@
+
+# Preserve upstream license bytes, including their final blank line.
+android/docs/licenses/* whitespace=-blank-at-eof

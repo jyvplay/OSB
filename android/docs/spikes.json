@@ -1,0 +1,212 @@
+[
+  {
+    "id": "S1",
+    "question": "External displays, shortcut conflicts, H1/H2 decision on reference devices",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S2",
+    "question": "Reversible HOME-role coexistence stock and One UI",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S3",
+    "question": "Six-window 120 Hz Compose compositor frame measurements",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S4",
+    "question": "FTS scale/latency/battery and source choice",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S5",
+    "question": "Read-only/16KB packaged PTY and Linux payload",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S6",
+    "question": "Journalled FileOps crash/power/revoke/provider fault matrix",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S7",
+    "question": "Backup engine decision and verified sampled restore",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S8",
+    "question": "API37 memory limiter two-hour soak",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S9",
+    "question": "Pointer-free compositor with TalkBack/Switch/Voice",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S10",
+    "question": "LOKit license closure/payload/thermal/fidelity/latency",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S11",
+    "question": "POI Android shading and workbook budgets",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S12",
+    "question": "HEIC decode and HeifWriter on three OEMs (canonical v2.0 ID)",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S13",
+    "question": "PSD composite fidelity (canonical v2.0 ID)",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S14",
+    "question": "Split browser memory/renderer sleeping",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S15",
+    "question": "Mouse event matrix across three devices and mice",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S16",
+    "question": "IME clipboard behavior and sensitive data",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S17",
+    "question": "Real HW encoder loopback/latency/thermal",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S18",
+    "question": "AirPlay audio and URL on Apple TV/HomePod/speaker; F-17 soak",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S19",
+    "question": "AirPlay sender mirroring legal review and physical receiver evidence",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S20",
+    "question": "GPL receiver APK boundary/surface handoff/audio",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S21",
+    "question": "Cast SDK/castv2 receiver interoperability and trust",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S22",
+    "question": "Together two-four peer clock drift",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S23",
+    "question": "BlackTop 60-minute survival on five OEM families",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S24",
+    "question": "Multi-receiver synchronized casting drift",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S25",
+    "question": "Browser Lens injection with second participant on real conferencing sites",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S26",
+    "question": "Lens GPU/thermal/latency on Standard and Studio hardware",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S27",
+    "question": "Signed PC companion webcam seen by desktop conferencing clients",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S28",
+    "question": "Generative model license/RAM/time admission",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S29",
+    "question": "Gecko Compose surface Z-order (v2.1 \u03948 calls this S12; collision resolved here)",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  },
+  {
+    "id": "S30",
+    "question": "Gecko WebExtension loading (v2.1 \u03948 calls this S13; collision resolved here)",
+    "status": "blocked",
+    "evidence": [],
+    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+  }
+]

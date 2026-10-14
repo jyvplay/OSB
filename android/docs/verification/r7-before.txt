@@ -1,0 +1,8 @@
+Actual R6 production commands/windowing JAR execution; notes example executes the exact legacy File path expression, NOT the Android NotesStore adapter.
+Registry caller-owned keyword mutation changes results: true
+Tile overwrote original window bounds: Bounds(x=23.0, y=41.0, width=400.0, height=300.0) -> Bounds(x=0.0, y=0.0, width=1200.0, height=900.0); original geometry is absent from the old state schema.
+Legacy NotesStore File(dir, name + .md) expression reads ../victim: outside note directory
+
+0d70f1437a4dbb5a5a9e8ad532971ec4856a6993e5d2e254e9014bab899bd42e  android/testing/build/contracts/core_commands.jar
+44c390a94e83d911269ff0f074c6b868e8062705de8c4b8479772f1bedfba509  android/testing/build/contracts/core_windowing.jar
+3a5356222b28828fc11a95317d3c4c8766af824f37ebd6d76be8c64bbb753d5d  android/core/windowing/src/contract/resources/desktop-v1.bin

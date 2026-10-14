@@ -1,0 +1,9 @@
+Pre-binding-repair production kernel: equal payload bytes allow evidence from a different destination. Uses actual temporary files, not an Android provider.
+PASS copy identities/recovery: late selection/cancel, retry/abandon races, historical v1 migration, actual phase-file roundtrip and no replay
+Exception in thread "main" java.lang.IllegalStateException: readback evidence must bind the destination, not just payload bytes
+	at dev.fusion.documents.CopyChecks.verify(CopyChecks.kt:12)
+	at dev.fusion.documents.CopyChecks.reject(CopyChecks.kt:16)
+	at dev.fusion.documents.CopyChecks.run(CopyChecks.kt:97)
+	at dev.fusion.documents.CopyChecks.main(CopyChecks.kt:136)
+
+Exit: 1

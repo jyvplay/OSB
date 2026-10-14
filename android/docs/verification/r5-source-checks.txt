@@ -1,0 +1,59 @@
+R5 current compiled-source hashes match. Android adapter entries below are source audit only.
+
+$ /usr/bin/python android/tools/check_project.py
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+48 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+EXIT 0; expected 0
+
+$ /usr/bin/python -m unittest discover -s android/tools -p test_*.py -v
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.012s
+
+OK
+EXIT 0; expected 0
+
+$ /usr/bin/python android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+P1 not verified: SH-01, SH-02, SH-03, SH-04, SH-07, SH-08, SH-09, SH-10, SH-12, WM-01, WM-02, WM-05, WM-09, SR-01, SR-02, SR-03, SR-04, SR-05, FM-01, FM-02, FM-03, FM-04, FM-06, FM-11, FM-13, FM-15, FM-16, FM-18, NC-01, NC-03, NC-05, ST-01, ST-02, ST-04, ST-05, AP-01, TD-01, TD-02, PR-01, PR-09, FF-05, FF-06, FF-12, SC-08, BK-03, CT-01, AX-01, AX-02, AX-03, AX-04, AX-08, RG-01, RG-03, RG-04, RG-08, BL-01, BL-02, BL-03, BL-04, BL-05, IN-01
+Spikes not passed: S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S30
+RELEASE BLOCKED: no performance/accessibility/protocol/license claim is authorized.
+EXIT 1; expected 1
+
+$ git diff --check
+EXIT 0; expected 0
+
+Source SHA-256:
+6644a013887b5a424841a071d903220b8cd0f366e0dd397ea1dfd7a8a6bf322b  android/tools/check_project.py
+0f419a963e9f47a37dbffc1a070bf32204e87373193033c74b502c6a236ba5c2  android/tools/module_audit.py
+afb28d49b8ce0a7e20c22d0976d043dbb3bab1b01ba66b75f6a0434990011b7c  android/tools/pilot_device_report.py
+c0115fd0077bbc07d08dae6166f6f5a7e56be6e0c4f053ea70cdf8e20e10b6dc  android/tools/requirements.py
+a69ae020aec78450b659b42a23ff6407bc24ace29a5a3316354db5ca87814948  android/tools/run_jvm_contracts.py
+0026cedb0b75455a872c5bc9b3b9388146a4e5038d95dc15d09f2b0b1cfe3c56  android/tools/test_module_audit.py
+4ef01b5bf3c90c23d34d4255570383501398f128cb9c0d108351aaa2cfeefb80  android/tools/test_pilot_reporting.py
+1636c2aed08c9446cc6a7fbba4672bd267db861fcb47924aded6e925200c00f1  android/tools/test_requirements.py
+ddf8121cfa67a556fc94dd4023c93a911d6393b7c779854bc5885f293e27cffa  android/docs/module-audit.json
+a36cc99661164e0b64cf5a39b7d4873aae36cff6f132915432cf7721f745ce8a  android/feature/editor/src/main/AndroidManifest.xml
+8884fc36ec22597e07f5a99221fb81fe32453d79173b5967cfea87a5d8239bca  android/feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt
+a6e6e8994d55878c3f87bed0b11d31b9a829df487f72f83c2c3e486acb150b10  android/feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt
+886cfab287b952d178819c31a46ee62b4a20986df2633437178c01f04977607f  android/feature/editor/src/main/java/dev/fusion/editor/EditorTools.kt
+be3f8d2e5fb4784a1a7373170b257b7769fbd1db6dc52353f6879d220b4f107c  android/feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt

@@ -1,45 +1,47 @@
 package dev.fusion.notes
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun NotesScreen(store: NotesStore) {
-    var names by remember { mutableStateOf(store.list()) }
-    var active by remember { mutableStateOf("") }
-    var text by remember { mutableStateOf("") }
-    var status by remember { mutableStateOf("") }
-    Column(Modifier.fillMaxSize().padding(10.dp)) {
-        Row {
-            OutlinedTextField(active, { active = it }, Modifier.weight(1f), singleLine = true, label = { Text("Note name") })
-            Button(onClick = {
-                try { text = store.load(active); status = "Loaded." } catch (e: Exception) { status = e.message ?: "Failed" }
-            }) { Text("Open") }
+fun NotesScreen(model: NotesViewModel) {
+    val state by model.state.collectAsStateWithLifecycle()
+    val ready=!state.busy && state.pending==null
+    val revision=state.revision
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp).semantics { paneTitle="Local Markdown notes" },
+        verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Text("Local Markdown • ${if(state.dirty) "Unsaved memory draft" else "No unsaved changes"}")
+        Text("256 KiB/note • 256 notes. Save explicitly. Draft survives Activity recreation but NOT process death. No encryption, backlinks, attachment support, autosave or backup is claimed.")
+        OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
+        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
+            Button(onClick=model::save,enabled=ready && state.name.isNotBlank(),modifier=Modifier.testTag("notes-save")) { Text("Save note") }
+            OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
+            if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Delete note…") }
         }
-        OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().weight(1f), label = { Text("Markdown") })
-        Row {
-            Button(onClick = {
-                try { store.save(active, text); names = store.list(); status = "Saved locally." } catch (e: Exception) { status = e.message ?: "Failed" }
-            }) { Text("Save") }
-            Button(onClick = {
-                if (store.delete(active)) { names = store.list(); text = ""; status = "Deleted." } else status = "Delete failed."
-            }) { Text("Delete") }
-        }
-        names.forEach { n -> Text(n, Modifier.fillMaxWidth().clickable { active = n; text = store.load(n) }.padding(6.dp)) }
-        if (status.isNotEmpty()) Text(status)
+        OutlinedTextField(state.text,model::edit,Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).testTag("notes-text"),enabled=ready,label={ Text("Markdown source") })
+        if(state.busy) CircularProgressIndicator()
+        Text(state.status,Modifier.semantics { liveRegion=LiveRegionMode.Polite })
+        Text("Saved notes (selecting another note prompts before discarding a draft)")
+        state.names.forEach { name -> TextButton(onClick={ model.request(NoteAction.Open(name)) },enabled=ready,modifier=Modifier.fillMaxWidth()) { Text("Open note: $name") } }
+    }
+    state.pending?.let { action ->
+        val deleting=action is NoteAction.Delete
+        AlertDialog(onDismissRequest=model::cancel,title={ Text(if(deleting) "Delete note permanently?" else "Discard this memory draft?") },
+            text={ Text(if(deleting) "Deletes the saved note and discards its memory draft. There is no trash or undo. A changed on-disk revision will be refused." else "Unsaved text will be discarded. Previously saved files are not changed.") },
+            confirmButton={ TextButton(onClick=model::confirm) { Text(if(deleting) "Delete permanently" else "Discard draft") } },
+            dismissButton={ TextButton(onClick=model::cancel) { Text("Keep editing") } })
     }
 }

@@ -1,0 +1,27 @@
+OBSERVED GAP: replaying a closed window's Open key creates a new window. Only live-window Open-key idempotency is implemented.
+OBSERVED BOUNDARY: note revision is name+content digest, not generation identity; identical-content delete/recreate ABA is not detected.
+
+Actual latest production libraries executed. These are unresolved boundaries, not accepted feature tests.
+
+import dev.fusion.windowing.*
+import dev.fusion.notes.*
+fun main() {
+ val open=WindowCommand.Open("editor","Editor",Bounds(0f,0f,400f,300f),"old-request")
+ val first=WindowEngine.reduce(DesktopState(),open)
+ val closed=WindowEngine.reduce(first,WindowCommand.Close(1))
+ val replayed=WindowEngine.reduce(closed,open)
+ check(replayed.windows.size==1 && replayed.windows.single().id==2L)
+ println("OBSERVED GAP: replaying a closed window's Open key creates a new window. Only live-window Open-key idempotency is implemented.")
+ val root=java.nio.file.Files.createTempDirectory("notes-aba-boundary-")
+ try {
+  val notes=NoteFiles(root)
+  val old=notes.save("same","original",null)
+  notes.delete("same",old.revision)
+  val recreated=notes.save("same","original",null)
+  check(old.revision==recreated.revision)
+  println("OBSERVED BOUNDARY: note revision is name+content digest, not generation identity; identical-content delete/recreate ABA is not detected.")
+ } finally { root.toFile().deleteRecursively() }
+}
+
+9342bc67094b8007760030b4476aae170b413dcc1a998be1e575905057c793d8  core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt
+60e8e4a43e72aa7f5db3e4db4af357ba9cc28145bd9db90a08902dba1215a6b4  feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt

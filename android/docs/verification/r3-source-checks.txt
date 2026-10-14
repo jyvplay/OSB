@@ -1,0 +1,51 @@
+$ /usr/bin/python android/tools/check_project.py
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+48 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+EXIT 0; expected 0
+
+$ /usr/bin/python -m unittest discover -s android/tools -p test_*.py -v
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.009s
+
+OK
+EXIT 0; expected 0
+
+$ /usr/bin/python android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+P1 not verified: SH-01, SH-02, SH-03, SH-04, SH-07, SH-08, SH-09, SH-10, SH-12, WM-01, WM-02, WM-05, WM-09, SR-01, SR-02, SR-03, SR-04, SR-05, FM-01, FM-02, FM-03, FM-04, FM-06, FM-11, FM-13, FM-15, FM-16, FM-18, NC-01, NC-03, NC-05, ST-01, ST-02, ST-04, ST-05, AP-01, TD-01, TD-02, PR-01, PR-09, FF-05, FF-06, FF-12, SC-08, BK-03, CT-01, AX-01, AX-02, AX-03, AX-04, AX-08, RG-01, RG-03, RG-04, RG-08, BL-01, BL-02, BL-03, BL-04, BL-05, IN-01
+Spikes not passed: S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S30
+RELEASE BLOCKED: no performance/accessibility/protocol/license claim is authorized.
+EXIT 1; expected 1
+
+$ git diff --check
+EXIT 0; expected 0
+
+Audited source SHA-256:
+4a1e2baf7a612a8654672d7cd6e8068d73ec572b8321ec8d3278b9f852496b58  android/tools/check_project.py
+4f78224d59d2528b2f1e958f84fadb4aa26ab0f1b94949012914eaaccc16ca72  android/tools/module_audit.py
+afb28d49b8ce0a7e20c22d0976d043dbb3bab1b01ba66b75f6a0434990011b7c  android/tools/pilot_device_report.py
+c0115fd0077bbc07d08dae6166f6f5a7e56be6e0c4f053ea70cdf8e20e10b6dc  android/tools/requirements.py
+cd58df48200596ca32bdb4403ebc64eef8598bf69ab7d7f2fd65a99510af54fc  android/tools/run_jvm_contracts.py
+0026cedb0b75455a872c5bc9b3b9388146a4e5038d95dc15d09f2b0b1cfe3c56  android/tools/test_module_audit.py
+4ef01b5bf3c90c23d34d4255570383501398f128cb9c0d108351aaa2cfeefb80  android/tools/test_pilot_reporting.py
+1636c2aed08c9446cc6a7fbba4672bd267db861fcb47924aded6e925200c00f1  android/tools/test_requirements.py
+d79b392266e0b8c397b2152ec50bdbf11a5477c18c11f9e7f143be1a0671c6b7  android/docs/module-audit.json

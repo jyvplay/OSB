@@ -1,0 +1,232 @@
+id,tier,phase,sources,route,tests,status,gates,feature
+SH-01,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-01,partial_unverified,S2,Launcher pinned/all-apps/folders/recents/search
+SH-02,A/B,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-02,partial_unverified,,Shelf pinned/running/badges/previews/edges
+SH-03,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-03,partial_unverified,,Top bar menus/status/clock/Beam indicator
+SH-04,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-04,not_implemented,,Desktop wallpaper/icons/folders/widgets/context menu/layouts
+SH-05,A,P2,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-05,not_implemented,,Widget host with suspend and crash isolation
+SH-06,A,P2,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-06,not_implemented,,Hot corners/edge triggers/mouse gestures
+SH-07,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance,partial_unverified,,Local-first onboarding/permission explainers/config/license
+SH-08,A,P1,owner:v2.0 §7.1,Bounded versioned checksummed geometry snapshot; single-writer AtomicFile; legacy migration and explicit retained-byte reset. Room migration remains deferred.,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance,partial_unverified,,Session restore after death/reboot
+SH-09,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-09,not_implemented,S15,Configurable mouse navigation buttons (alias IN-01 contract)
+SH-10,A,P1,owner:v2.1 §1.3/§4,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-10,not_implemented,S23,BlackTop external compositor/phone blackout/foreground session
+SH-11,A,P2,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-11,not_implemented,S23,Phone-as-touchpad/keyboard for own compositor
+SH-12,A,P1,owner:v2.1 §1.3/§4,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-12,not_implemented,S23,OEM throttle detector and guidance
+WM-01,A,P1,owner:v2.0 §7.2,Own native H1 host; JVM snapshot ownership plus maximize/tile/restore geometry. Android UI/AX unrun.,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance; jvm:WindowRestoreChecks,partial_unverified,S3,Move/resize/minimize/maximize/close/z/focus/title/menu compositor
+WM-02,A,P1,owner:v2.0 §7.2,Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent.,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance; jvm:WindowRestoreChecks,partial_unverified,S3,Half/third/quarter/custom tiling/edge drag/named groups
+WM-03,A,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-03,partial_unverified,,Named/reorderable/per-window workspaces
+WM-04,A,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-04,not_implemented,,Overview grid/search/live own-window thumbnails
+WM-05,A,P1,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance,partial_unverified,,App/window/workspace switcher modes
+WM-06,B,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-06,not_implemented,S1,Probe-chosen S1-S4 external-app broker and display pinning
+WM-07,A/B,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-07,not_implemented,S1,Multi-display layouts/hotplug/open-where-acted
+WM-08,A,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-08,not_implemented,,Window rules and remembered geometry
+WM-09,A,P1,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance,partial_unverified,S9,Keyboard-only move/resize/tile
+WM-10,A,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-10,not_implemented,,Distraction-free focus mode
+WM-11,A,P3,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-11,not_implemented,,Always-on-top mini windows
+WM-12,B,P2,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-12,not_implemented,S1,Per-app density override with limits label
+WM-13,A,P2,owner:v2.0 §7.2,Native workspace menu and Ctrl+Alt+Shift+1/2/3 wiring; pure reducer checked. Drag and native acceptance incomplete.,plan:T-WM-13; jvm:WindowRestoreChecks,partial_unverified,,Move windows across workspaces with drag/menu/keyboard
+WM-14,B,P4,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-14,not_implemented,,Key-to-touch mapper overlay
+WM-15,A,P3,owner:v2.0 §7.2,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-15,not_implemented,S17,Fusion window-to-cast render-to-Surface
+WM-16,A,P2,owner:v2.1 §1.3/§4,Pure Kotlin window reducer; Compose H1; platform broker only where allowed,plan:T-WM-16,not_implemented,S1,Cursor confinement on external display
+SR-01,A,P1,owner:v2.0 §7.3,Native module/window/workspace command palette wired. File/contact/event/note/target index integration remains absent.,plan:T-SR-01; jvm:SearchAndGateChecks,partial_unverified,S4,Palette apps/commands/windows/settings/files/contacts/events/notes/targets
+SR-02,A/B,P1,owner:v2.0 §7.3,Local index/command registry; opt-in provider adapters,plan:T-SR-02,not_implemented,S4,Index health/exclusions/rebuild/churn quarantine
+SR-03,A,P1/P3,owner:v2.0 §7.3,"Bounded local literal index only, locale-stable ranking and capacity refusal. No fuzzy/semantic engine.",plan:T-SR-03; jvm:SearchAndGateChecks,partial_unverified,S4,Exact/fuzzy search then opt-in semantic embeddings
+SR-04,A,P1,owner:v2.0 §7.3,Local index/command registry; opt-in provider adapters,plan:T-SR-04,not_implemented,,Opt-in web results below local results
+SR-05,A,P1,owner:v2.0 §7.3,Local index/command registry; opt-in provider adapters,plan:T-SR-05,not_implemented,S4,In-folder scoped search
+SR-06,A,P2,owner:v2.0 §7.3,Local index/command registry; opt-in provider adapters,plan:T-SR-06,not_implemented,,Palette calculator/conversion/notes/focus/settings/routines/casting
+SR-07,B,P4,owner:v2.0 §7.3,Local index/command registry; opt-in provider adapters,plan:T-SR-07,not_implemented,,Opt-in external app content via AppSearch/AppFunctions
+SR-08,A,P2,owner:v2.0 §7.3,Local index/command registry; opt-in provider adapters,plan:T-SR-08,not_implemented,,Search coverage and missing-result diagnostics
+FM-01,B,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-01,partial_unverified,,Tabbed file browser/list/grid/column/gallery/tree/tags/favorites/F2
+FM-02,A,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-02,not_implemented,,Dual pane/split and optional terminal pane
+FM-03,B,P1,owner:v2.0 §7.4,Backend mutation entry points explicitly unavailable until S6; unsafe legacy provider copy/delete paths removed. Full journal unimplemented.,plan:T-FM-03; jvm:SearchAndGateChecks,not_implemented,S6,Journaled copy/move/delete/rename/batch/conflicts/undo/pause/checksums
+FM-04,A,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-04,not_implemented,,Isolated Forge Peek for image/PDF/text/media/archive/Office/PSD/HEIC
+FM-05,A,P2,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-05,not_implemented,,Archive browse/read/write/encrypted ZIP/slip-bomb guards
+FM-06,A,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-06,not_implemented,,Concise/full/custom context menus/terminal/path/cast
+FM-07,B,P3,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-07,not_implemented,,Storage overview/cleanup/duplicates/large files
+FM-08,A/B,P2,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-08,not_implemented,,USB/SD/SMB/SFTP/WebDAV/FTP and reconnect diagnostics
+FM-09,A,P3,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-09,not_implemented,,Cloud/placeholder state badges
+FM-10,A,P2,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-10,not_implemented,,DocumentsProvider for network/cloud/archive
+FM-11,B,P1,owner:v2.0 §7.4,"Legacy receipt inspection only, bounded and corruption-visible; trash/restore/purge backend refuses pending S6.",plan:T-FM-11; jvm:SearchAndGateChecks,partial_unverified,S6,Trash with origin/date/size/retention
+FM-12,B,P4,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-12,not_implemented,,Android data/obb via Shizuku/ADB
+FM-13,A,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-13,not_implemented,,New-file templates and context-menu New
+FM-14,A,P2,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-14,not_implemented,,Cross-window/app ClipData drag-drop with URI grants
+FM-15,A,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-15,partial_unverified,,Selection count/size/batch toolbar
+FM-16,A,P1,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-16,partial_unverified,,Quick filter bar
+FM-17,A,P2,owner:v2.0 §7.4,SAF/MediaStore; isolated preview and journaled file operations,plan:T-FM-17,not_implemented,,Cached background folder sizes
+FM-18,A,P1,owner:v2.1 §1.3/§4,"Strict UTF-8 session; durable picker snapshot; new SAF copy only; closed-output exact readback; never claims atomic replacement; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",core:documents/DocumentSafetyTest; plan:SAF-provider-and-editor-device-matrix; jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt; androidTest:CopyContractDeviceTest (unrun); plan:R5 picker/grant/process-recovery/provider-alias matrix,partial_unverified,,SAF session-copy safe-save/reopen verification/Save a Copy fallback
+NC-01,B,P1,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-01,partial_unverified,,Grouped alerts/history/snooze/reply/rules/pin/search/batch dismiss
+NC-02,B,P2,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-02,not_implemented,,Focus modes by workspace/time/app/display with reason
+NC-03,A/B,P1,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-03,not_implemented,,Quick panel audio/brightness/media/DND/light/battery/Beam/radio panels
+NC-04,B,P2,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-04,not_implemented,,Notification diagnostics
+NC-05,A,P1,owner:v2.0 §7.5,Capture foreground Stop action and finalization status; universal long-operation service layer still pending,plan:T-NC-05,partial_unverified,,Observable own-operation progress/live updates
+NC-06,A,P2,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-06,not_implemented,,Volume/brightness/layout OSD
+ST-01,A,P1,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-01,partial_unverified,,Settings graph IDs/aliases/lock reasons/history/undo/export/import
+ST-02,A,P1,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-02,not_implemented,,Curated system-settings deep links per OEM
+ST-03,A,P2,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-03,not_implemented,,Default-apps guide
+ST-04,A,P1,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-04,partial_unverified,,Capabilities/fingerprint/thermal/memory/codec/redacted diagnostics
+ST-05,A,P1,owner:v2.0 §7.6,"Window geometry density only (minimum size/title controls), not full theme/font/spacing profiles",plan:T-ST-05,partial_unverified,,Theme/dynamic color/accent/density/motion/font scale
+ST-06,A,P2,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-06,not_implemented,,Shortcut presets/conflict detection/per-device profiles
+ST-07,A,P2,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-07,not_implemented,,External-display UI scale independent of system
+ST-08,A,P4,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-08,not_implemented,,RestrictionsManager managed configuration
+ST-09,A,P2,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-09,not_implemented,,Phone/desktop per-context profiles
+AP-01,A,P1,owner:v2.0 §7.7,PackageManager/LauncherApps and explicit system intents,plan:T-AP-01,partial_unverified,,App info hub
+AP-02,A,P3,owner:v2.0 §7.7,PackageManager/LauncherApps and explicit system intents,plan:T-AP-02,not_implemented,,Own-data uninstall assistant
+AP-03,B,P4,owner:v2.0 §7.7,PackageManager/LauncherApps and explicit system intents,plan:T-AP-03,not_implemented,,Pro APK install manager
+AP-04,A,P4,owner:v2.0 §7.7,PackageManager/LauncherApps and explicit system intents,plan:T-AP-04,not_implemented,,App update links/inventory
+AP-05,B,P4,owner:v2.0 §7.7,PackageManager/LauncherApps and explicit system intents,plan:T-AP-05,not_implemented,,Own background/startup inventory; Shizuku for others
+TD-01,A,P1,owner:v2.0 §7.8,Permissive terminal libraries; JNI PTY; opt-in payloads,plan:T-TD-01,not_implemented,S5,Terminal emulator tabs/profiles/true color/mouse/search/safe paste
+TD-02,A,P1,owner:v2.0 §7.8,Permissive terminal libraries; JNI PTY; opt-in payloads,plan:T-TD-02,partial_unverified,S5,Local shell plus PTY
+TD-03,A,P2,owner:v2.0 §7.8,Permissive terminal libraries; JNI PTY; opt-in payloads,plan:T-TD-03,not_implemented,,SSH/SFTP/USB serial
+TD-04,B,P3,owner:v2.0 §7.8,Permissive terminal libraries; JNI PTY; opt-in payloads,plan:T-TD-04,not_implemented,S5,Read-only 16KB-compatible Linux proot payload
+TD-05,C,P4,owner:v2.0 §7.8,Permissive terminal libraries; JNI PTY; opt-in payloads,plan:T-TD-05,not_implemented,,Non-protected AVF VM where available
+TD-06,B,P4,owner:v2.0 §7.8,Permissive terminal libraries; JNI PTY; opt-in payloads,plan:T-TD-06,not_implemented,,Pro wireless-debugging helper
+PR-01,A,P1,owner:v2.0 §7.9,"Native bounded UTF-8 editor; per-tab delta undo/redo, code-point literal KMP search, reviewed revision-bound replacement, mixed-newline navigation, immutable pending copy and checkpoints; Android/IME/AX unverified; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",core:documents/DocumentSafetyTest; plan:SAF-provider-and-editor-device-matrix; jvm:core/documents/src/contract/kotlin/dev/fusion/documents/EditorChecks.kt; androidTest:ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit (unrun); jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt; androidTest:CopyContractDeviceTest (unrun); plan:R5 picker/grant/process-recovery/provider-alias matrix,partial_unverified,,Text/Markdown editor encodings/large files/autosave/diff/regex
+PR-02,A,P2,owner:v2.0 §7.9,"Bounded Markdown note files with name/revision checks, locks, atomic publication/readback and native memory-draft UI. Android unrun; attachments/backlinks/OCR/export/recovery incomplete.",plan:T-PR-02; jvm:NotesChecks,partial_unverified,,Local Markdown notes/attachments/backlinks/OCR/export
+PR-03,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-03,not_implemented,,Tasks/reminders without exact alarms
+PR-04,B,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-04,not_implemented,,CalendarContract calendar
+PR-05,A/B,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-05,not_implemented,,ContactsContract/API37 picker
+PR-06,A,P2/P4,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-06,not_implemented,,Mail handoff/triage then native IMAP
+PR-07,A,P2/P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07,partial_unverified,S29; S30,Desktop-class browser (parent requirement)
+PR-07a,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07a,partial_unverified,,Visible horizontal browser tab strip
+PR-07b,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07b,not_implemented,,Vertical tab sidebar/reorder/groups/pins/search
+PR-07c,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07c,not_implemented,,Named/colored/collapsible tab groups
+PR-07d,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07d,not_implemented,S14,Horizontal split tab view with independent navigation
+PR-07e,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07e,not_implemented,S14,Vertical split tab view
+PR-07f,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07f,not_implemented,,Pinned browser tabs
+PR-07g,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07g,not_implemented,S14,Sleeping tabs and restore by URL
+PR-07h,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07h,partial_unverified,,Desktop UA on display/keyboard with per-site override
+PR-07i,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07i,not_implemented,,Full browser keyboard shortcuts
+PR-07j,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07j,not_implemented,,Tab drag-out/drag-in between compositor windows
+PR-07k,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07k,not_implemented,,Reader mode
+PR-07l,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07l,not_implemented,,Per-site camera/mic/location/notification/popup/JS permissions
+PR-07m,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07m,not_implemented,,Downloads integrated with Files
+PR-07n,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07n,not_implemented,,Find in page
+PR-07o,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07o,not_implemented,,Separate-data-directory browser profiles
+PR-07p,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07p,not_implemented,S30,License-verified content/tracker filtering with per-site disable
+PR-07q,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07q,not_implemented,,Batch tab close/bookmark/select/group/window/send actions
+PR-07r,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07r,not_implemented,,Named browser sessions restoring windows/tabs/groups/splits
+PR-07s,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-07s,not_implemented,,Page-media cast to Beam
+PR-08,A,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-08,not_implemented,,PDF/image viewer annotations/signing
+PR-09,A,P1,owner:v2.0 §7.9,Native Compose + bounded Kotlin decimal34/scientific binary64/64-bit programmer/dimension-checked units; checksummed 100-entry local history; Android integration uncompiled,jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt; androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun); plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery,partial_unverified,,Basic/scientific/programmer/unit calculator with history
+PR-10,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-10,not_implemented,,Clock/timers/inexact alarms
+PR-11,A/B,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-11,not_implemented,S10,Native Office via Forge with optional external open
+PR-12,A/B,P2,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-12,not_implemented,S16,Optional IME global clipboard; in-module history/sensitive/expiry/remap
+PR-13,A,P3,owner:v2.0 §7.9,Native Compose productivity modules; browser engine selected by spikes,plan:T-PR-13,not_implemented,,Desktop sticky notes
+FF-01,B,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-01,not_implemented,S10,LOKit Office open/render/edit/save
+FF-02,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-02,not_implemented,S11,Shaded POI headless Office read/write/convert/extract
+FF-03,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-03,partial_unverified,,PDF render/annotate/sign/export
+FF-04,A/B,P3,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-04,not_implemented,,PDF-compatible AI; non-PDF AI boundary
+FF-05,A,P1,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-05,partial_unverified,,Raster open/edit/export
+FF-06,A/B,P1,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-06,partial_unverified,S12,HEIC/HEIF/AVIF decode via platform/audited fallback
+FF-07,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-07,not_implemented,S12,Platform hardware HEIC encode/export
+FF-08,B,P3,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-08,partial_unverified,S13,PSD/PSB layers/composite/export
+FF-09,A,P2/P3,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-09,not_implemented,,SVG render/export and text/Markdown/CSV/RTF edit; vector editor later
+FF-10,A,P4,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-10,not_implemented,,EPUB reader
+FF-11,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-11,not_implemented,,Save-As/export fidelity warning
+FF-12,A,P1,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-12,not_implemented,,Isolated format sandbox/watchdogs/bomb guards
+FF-13,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-13,not_implemented,,Thumbnail/metadata service
+FF-14,A,P2,owner:v2.1 §1.3/§4,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-14,not_implemented,,formats.yaml engine/grade/boundary registry
+FF-15,A,P2,owner:v2.1 §1.3/§4,"Activity-scoped text sessions; bounded versioned AtomicFile recovery; tabs; discard confirmation; other Forge formats deferred; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",core:documents/DocumentSafetyTest; plan:SAF-provider-and-editor-device-matrix; jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt; androidTest:CopyContractDeviceTest (unrun); plan:R5 picker/grant/process-recovery/provider-alias matrix,partial_unverified,,Open/dirty/save/recovery/close-confirm document lifecycle
+FF-16,A,P2,owner:v2.1 §1.3/§4,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-16,not_implemented,,Conversion/loss report before lossy save
+FF-17,A,P2,owner:v2.1 §1.3/§4,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-17,not_implemented,,Macros disabled by default
+MD-01,A,P2,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-01,partial_unverified,S17,Capture recording/audio/annotation/blur/redact/OCR/commit-first
+MD-02,A,P2,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-02,not_implemented,,Hardware media player/subtitles/PiP/gapless/Beam
+MD-03,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-03,partial_unverified,,Photos with non-destructive edits/HEIC
+MD-04,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-04,not_implemented,,Voice recorder
+MD-05,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-05,not_implemented,,Camera/scan/QR hooks
+MD-06,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-06,not_implemented,,Audio devices panel
+MD-07,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-07,not_implemented,,API37 color picker
+MD-08,A,P4,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-08,not_implemented,,Hardware video trim/export
+MD-09,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-09,not_implemented,,Own-module audio focus/volume dashboard
+SC-01,A/B,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-01,partial_unverified,,Passwords/passkeys/TOTP/notes/provider/autofill/StrongBox/import/export
+SC-02,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-02,not_implemented,,Module app lock
+SC-03,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-03,not_implemented,,Permission/special-access audit
+SC-04,B,P3,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-04,not_implemented,,Pro VpnService per-app firewall/DNS filter
+SC-05,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-05,not_implemented,,Privacy dashboard
+SC-06,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-06,not_implemented,,FLAG_SECURE per window
+SC-07,A,P3,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-07,not_implemented,,Tink encrypted containers
+SC-08,A,P1,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-08,partial_unverified,,Telemetry off/local logs/redacted export
+SC-09,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-09,not_implemented,,Cast excludes Vault/secure surfaces; red indicator; stop on lock
+BK-01,B,P2,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-01,partial_unverified,S7,Timeline encrypted incremental backup/remote targets/restore browser
+BK-02,B,P3,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-02,not_implemented,,Folder sync with conflict inbox
+BK-03,A,P1,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-03,not_implemented,,Configuration export/import
+BK-04,A,P3,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-04,not_implemented,,New-device checklist
+BK-05,A,P2,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-05,not_implemented,S7,Backup health and monthly sampled restore drill
+BK-06,A,P2,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-06,not_implemented,S7,User-held recovery keys/no default cloud escrow
+CT-01,A,P1,owner:v2.0 §7.14,Android sharing/intents and clean-room continuity protocols,plan:T-CT-01,partial_unverified,,Share-sheet send/receive and Quick Share
+CT-02,B,P3,owner:v2.0 §7.14,Android sharing/intents and clean-room continuity protocols,plan:T-CT-02,not_implemented,,Clean-room KDE-Connect-protocol PC bridge
+CT-03,A,P4,owner:v2.0 §7.14,Android sharing/intents and clean-room continuity protocols,plan:T-CT-03,not_implemented,,API37 Handoff/Continue-On
+CT-04,A,P2,owner:v2.0 §7.14,CA-01 through CA-15; not an additional transport,plan:T-CT-04,superseded,,Cast/present superseded by CA family
+CT-05,A,P3,owner:v2.0 §7.14,Android sharing/intents and clean-room continuity protocols,plan:T-CT-05,not_implemented,,RDP/VNC/SSH remote desktop clients
+CT-06,A,P3,owner:v2.0 §7.14,Android sharing/intents and clean-room continuity protocols,plan:T-CT-06,partial_unverified,,Peripheral manager
+CA-01,A,P2,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-01,not_implemented,S18,RAOP/AirPlay2 audio sender/pairing/sync/volume/metadata
+CA-02,A,P2,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-02,partial_unverified,S18,AirPlay URL video/pairing/Range server/HW transcode/scrub
+CA-03,A,P3,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-03,not_implemented,,AirPlay photo/slideshow
+CA-04,B,P4,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-04,not_implemented,S19,Pro legal-gated AirPlay screen mirror/FairPlay client
+CA-05,A,P2,owner:v2.0 §7.15; owner:v2.1 §1.3,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-05,partial_unverified,,Beam discovery/source/route chooser/indicator/quality/latency/audio routes
+CA-06,B,P3,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-06,not_implemented,S20,Separate GPL APK AirPlay audio receiver
+CA-07,B,P3,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-07,not_implemented,S20,Separate GPL APK AirPlay mirroring/video receiver
+CA-08,A,P2,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-08,partial_unverified,S21,Cast SDK play/own castv2 pro; files/URLs/queue/scrub/volume
+CA-09,A/B,P3,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-09,not_implemented,S17,Custom Cast web receiver plus WebRTC screen/window mirror
+CA-10,A,P3,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-10,partial_unverified,,Own DLNA SSDP/AVTransport/RenderingControl sender and renderer
+CA-11,A,P3,owner:v2.0 §7.15; owner:v2.1 §1.3,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-11,not_implemented,S22,Together sync/controls/chat/presence/QR; Syncplay/own-copy mode
+CA-12,C,P2,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-12,not_implemented,,Miracast settings panel and active-session adaptation
+CA-13,A,P2,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-13,partial_unverified,S17,Measured-link/thermal/receiver-aware cast quality ladder
+CA-14,A,P2,owner:v2.0 §7.15,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-14,not_implemented,,Cast exclusions/lock-critical stop/trust/no default relay
+CA-15,A,P3,owner:v2.1 §1.3/§4,Beam owned transports; receiver GPL separate APK; explicit target trust,plan:T-CA-15,not_implemented,S24,Shared-clock multi-receiver synchronized casting
+AX-01,A,P1,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-01,partial_unverified,S9,Semantics/panes and TalkBack/Switch/Voice release gate
+AX-02,A,P1,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-02,partial_unverified,S9,Keyboard-complete shell
+AX-03,A,P1,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-03,partial_unverified,,Font scale/contrast/reduced motion adaptation
+AX-04,A,P1,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-04,not_implemented,S15,Pointer/touch/touchpad/focus rings
+AX-05,A,P2,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-05,not_implemented,S16,Fusion IME input remap
+AX-06,A,P3,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-06,not_implemented,,Voice palette input
+AX-07,A,P3,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-07,not_implemented,,Player captions
+AX-08,A,P1,owner:v2.0 §7.16,Compose semantics and keyboard/pointer/assistive-technology validation,plan:T-AX-08,not_implemented,S9,Accessibility test automation
+AU-01,A/B,P3,owner:v2.0 §7.17,Own local automation registry with dry-run/permission/audit boundaries,plan:T-AU-01,partial_unverified,,Routines triggers/actions/dry-run/audit/per-action permissions
+AU-02,A,P2,owner:v2.0 §7.17,Own local automation registry with dry-run/permission/audit boundaries,plan:T-AU-02,not_implemented,,Workspace presets
+AU-03,A,P4,owner:v2.0 §7.17,Own local automation registry with dry-run/permission/audit boundaries,plan:T-AU-03,not_implemented,,AppFunctions exposure
+AU-04,A/B,P4,owner:v2.0 §7.17,Own local automation registry with dry-run/permission/audit boundaries,plan:T-AU-04,not_implemented,,Opt-in local assistant/visible tool calls/memory/no idle process
+AU-05,A,P3,owner:v2.0 §7.17,Own local automation registry with dry-run/permission/audit boundaries,plan:T-AU-05,not_implemented,,Third-party automation Intent API
+RG-01,A,P1,owner:v2.0 §7.18; owner:v2.1 §1.3,Capability-led thermal/performance governor and platform probes,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance,partial_unverified,,Five-state thermal governor for index/effects/backup/cast
+RG-02,A,P2,owner:v2.0 §7.18; owner:v2.1 §1.3,Capability-led thermal/performance governor and platform probes,plan:T-RG-02,not_implemented,,ADPF then sustained-performance then own-governor fallback
+RG-03,A,P1,owner:v2.0 §7.18,Capability-led thermal/performance governor and platform probes,plan:T-RG-03,not_implemented,,Interaction/idle refresh policy
+RG-04,A/B,P1,owner:v2.0 §7.18,Capability-led thermal/performance governor and platform probes,testing/contract/PilotCoreChecks; plan:physical-device-and-Android-acceptance,partial_unverified,,Own-process PSS/CPU/wakeups/IO/net/exit/memory-limiter monitor
+RG-05,C,P3,owner:v2.0 §7.18,Capability-led thermal/performance governor and platform probes,plan:T-RG-05,not_implemented,,OEM game overlay/cooler coexistence spike
+RG-06,A,P2,owner:v2.0 §7.18,Capability-led thermal/performance governor and platform probes,plan:T-RG-06,not_implemented,,Charging/battery/metered-aware work
+RG-07,A,P2,owner:v2.0 §7.18,Capability-led thermal/performance governor and platform probes,plan:T-RG-07,not_implemented,S8,Low-RAM mode
+RG-08,A,P1,owner:v2.0 §7.18,Capability-led thermal/performance governor and platform probes,plan:T-RG-08,partial_unverified,,Hardware codec/NPU/Vulkan report and routing
+CM-01,B,P4,owner:v2.0 §7.19,"Optional compatibility boundary, never part of main APK",plan:T-CM-01,not_implemented,,Separate Wine/Box64 APK with user installers
+CM-02,A,P3,owner:v2.0 §7.19,"Optional compatibility boundary, never part of main APK",plan:T-CM-02,not_implemented,,Web-app windows
+CM-03,X,—,owner:v2.0 §7.19,"Optional compatibility boundary, never part of main APK",plan:T-CM-03,excluded,,No macOS application execution
+BL-01,A,P1,owner:v2.0 §7.20; owner:v2.1 §1.3,Play Billing play; signed offline-tolerant own entitlements pro,plan:T-BL-01,not_implemented,,One-time purchase $19.99 and optional $14.99 Pro pack
+BL-02,A,P1,owner:v2.0 §7.20,Play Billing play; signed offline-tolerant own entitlements pro,plan:T-BL-02,not_implemented,,Signed Keystore-bound offline/grace entitlement cache
+BL-03,A,P1,owner:v2.0 §7.20,Play Billing play; signed offline-tolerant own entitlements pro,plan:T-BL-03,not_implemented,,Pro Ed25519 license keys/optional device binding/transfers
+BL-04,A,P1,owner:v2.0 §7.20,Play Billing play; signed offline-tolerant own entitlements pro,plan:T-BL-04,not_implemented,,14-day full trial then read-only Files/Find and nag-free state
+BL-05,A,P1,owner:v2.0 §7.20,Play Billing play; signed offline-tolerant own entitlements pro,plan:T-BL-05,not_implemented,,Refund-safe revocation/no user-data wipe
+IN-01,A,P1,owner:v2.1 Δ3,Compose desktopMouse/per-device learning; own input routing only,plan:T-IN-01,not_implemented,S15,Mouse press-release/scroll mapping/hover/Learn my mouse
+IN-07,A,P3,owner:v2.1 Δ3,Compose desktopMouse/per-device learning; own input routing only,plan:T-IN-07,not_implemented,,Game-controller pointer mode
+IN-08,A,P2,owner:v2.1 Δ3,Compose desktopMouse/per-device learning; own input routing only,plan:T-IN-08,not_implemented,,External-keyboard IME switcher
+LN-01,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-01,not_implemented,S26,Segmented background blur/replace/remove
+LN-02,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-02,not_implemented,S26,Smoothed auto-frame/multi-person crop
+LN-03,A,P4,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-03,not_implemented,,Gaze-aware framing; eye-contact redirect research only
+LN-04,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-04,not_implemented,S26,Video denoise/low-light shaders
+LN-05,A,P3,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-05,not_implemented,,License-verified FSR1 upscale
+LN-06,A,P3,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-06,not_implemented,S26,Studio face-normal virtual relight
+LN-07,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-07,not_implemented,S26,WebRTC APM/RNNoise microphone noise removal
+LN-08,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-08,not_implemented,S26,AEC3 room echo removal
+LN-09,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-09,not_implemented,,Vignette/LUT/color/.cube import
+LN-10,A,P3,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-10,not_implemented,,Hand-landmark gesture actions
+LN-11,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-11,not_implemented,,Procedural/parallax/user-image scenes
+LN-12,A/B,P4,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-12,not_implemented,S28,License/RAM-gated on-device generative scenes
+LN-13,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-13,not_implemented,S26,Presenter person/slides/screen/pointer/ink composition
+LN-14,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-14,not_implemented,,Lens presets/hotkeys/per-app memory
+LN-15,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-15,not_implemented,S26,Thermal/quality ladder
+LN-20,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-20,not_implemented,S26,Fusion Meet owned WebRTC processed tracks/screen share
+LN-21,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-21,not_implemented,S25; S30,Browser per-site processed camera/mic/display route
+LN-22,A,P3,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-22,not_implemented,S27,PC companion webcam route
+LN-23,A,P2,owner:v2.1 §2.3,Camera2/CameraX GPU+inference/audio pipeline; owned output routes only,plan:T-LN-23,not_implemented,S26,Lens recording/RTMP/SRT route
+MS-01,A/B,P3,owner:v2.1 §3,Own Compose clients; explicit platform/license/hardware boundaries,plan:T-MS-01,not_implemented,,BlueBubbles-compatible client requires user-owned Mac and Apple ID
+MS-02,X,—,owner:v2.1 §3,Own Compose clients; explicit platform/license/hardware boundaries,plan:T-MS-02,excluded,,No on-phone no-Mac iMessage/rustpush/private FairPlay certificates
+MS-03,X,—,owner:v2.1 §3,Own Compose clients; explicit platform/license/hardware boundaries,plan:T-MS-03,excluded,,No hosted Apple-account relay sold by Fusion
+MS-04,C,—,owner:v2.1 §3,Own Compose clients; explicit platform/license/hardware boundaries,plan:T-MS-04,not_implemented,,RCS system-app handoff only
+MS-05,B,P3,owner:v2.1 §3,Own Compose clients; explicit platform/license/hardware boundaries,plan:T-MS-05,partial_unverified,,SMS/MMS with SMS role
+MS-06,A,P3/P4,owner:v2.1 §3,Own Compose clients; explicit platform/license/hardware boundaries,plan:T-MS-06,not_implemented,,Permissive Matrix/XMPP clients; no AGPL Signal client

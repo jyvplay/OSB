@@ -1,0 +1,12 @@
+import dev.fusion.windowing.*
+import java.io.File
+fun main(args:Array<String>) {
+    val open=WindowCommand.Open("editor","Editor",Bounds(20f,30f,400f,300f),"retry")
+    val initial=WindowEngine.reduce(DesktopState(),open)
+    val closed=WindowEngine.reduce(initial,WindowCommand.Close(1))
+    val replayed=WindowEngine.reduce(closed,open)
+    println("Post-close keyed replay: closed=${closed.windows.size}, replayed=${replayed.windows.size}, newId=${replayed.activeId}")
+    val stale=WindowEngine.reduce(initial,WindowCommand.Move(1,10f,0f,1200f,900f))
+    println("Stale viewport relative move: current=${initial.screenWidth}x${initial.screenHeight}, command=1200x900, x=${initial.windows.single().bounds.x}->${stale.windows.single().bounds.x}")
+    File(args.single()).outputStream().use { DesktopCodec.write(initial,it) }
+}

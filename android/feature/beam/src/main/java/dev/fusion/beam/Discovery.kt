@@ -13,11 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import dev.fusion.perf.ThermalState
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -41,64 +41,72 @@ class BeamDiscovery(context: Context) {
 
     val airplayFound = mutableStateListOf<NsdServiceInfo>()
     val castFound = mutableStateListOf<NsdServiceInfo>()
-    private val resolved = mutableMapOf<String, ResolvedTarget>()
-    private var listening = false
+    private val main = android.os.Handler(android.os.Looper.getMainLooper())
+    private var generation = 0
+    private val listeners = mutableListOf<NsdManager.DiscoveryListener>()
+    var diagnostic by androidx.compose.runtime.mutableStateOf("Discovery is stopped.")
+        private set
 
-    private val listener = object : NsdManager.DiscoveryListener {
-        override fun onDiscoveryStarted(t: String) {}
-        override fun onDiscoveryStopped(t: String) {}
-        override fun onServiceFound(s: NsdServiceInfo) {
-            when (s.serviceType) {
-                "_airplay._tcp." -> if (airplayFound.none { it.serviceName == s.serviceName }) airplayFound.add(s)
-                "_googlecast._tcp." -> if (castFound.none { it.serviceName == s.serviceName }) castFound.add(s)
-            }
-        }
-        override fun onServiceLost(s: NsdServiceInfo) {
-            airplayFound.removeAll { it.serviceName == s.serviceName }
-            castFound.removeAll { it.serviceName == s.serviceName }
-        }
-        override fun onStartDiscoveryFailed(t: String, e: Int) {}
-        override fun onStopDiscoveryFailed(t: String, e: Int) {}
-    }
-
+    // Android requires a distinct DiscoveryListener per outstanding registration.
     fun start() {
-        if (listening) return
-        listening = true
-        try { nsd.discoverServices("_airplay._tcp", NsdManager.PROTOCOL_DNS_SD, listener) } catch (_: Exception) {}
-        try { nsd.discoverServices("_googlecast._tcp", NsdManager.PROTOCOL_DNS_SD, listener) } catch (_: Exception) {}
+        if (listeners.isNotEmpty()) return
+        val epoch = ++generation
+        diagnostic = "Scanning on this network; receiver compatibility is not verified."
+        for ((type, found) in listOf("_airplay._tcp" to airplayFound, "_googlecast._tcp" to castFound)) {
+            val callback = object : NsdManager.DiscoveryListener {
+                override fun onDiscoveryStarted(t: String) = Unit
+                override fun onDiscoveryStopped(t: String) = Unit
+                override fun onServiceFound(s: NsdServiceInfo) {
+                    main.post {
+                        if (epoch == generation && found.size < 128 && found.none { it.serviceName == s.serviceName }) found.add(s)
+                    }
+                }
+                override fun onServiceLost(s: NsdServiceInfo) {
+                    main.post { if (epoch == generation) found.removeAll { it.serviceName == s.serviceName } }
+                }
+                override fun onStartDiscoveryFailed(t: String, e: Int) {
+                    main.post { if (epoch == generation) diagnostic = "Discovery failed for $t (Android code $e). No availability inferred." }
+                }
+                override fun onStopDiscoveryFailed(t: String, e: Int) {
+                    main.post { if (epoch == generation) diagnostic = "Stopping discovery failed ($e)." }
+                }
+            }
+            listeners.add(callback)
+            try { nsd.discoverServices(type, NsdManager.PROTOCOL_DNS_SD, callback) }
+            catch (e: Exception) { diagnostic = "Discovery unavailable: ${e.message}" }
+        }
     }
 
     fun stop() {
-        if (!listening) return
-        try { nsd.stopServiceDiscovery(listener) } catch (_: Exception) {}
-        listening = false
+        generation++
+        listeners.forEach { runCatching { nsd.stopServiceDiscovery(it) } }
+        listeners.clear()
+        airplayFound.clear(); castFound.clear()
+        diagnostic = "Discovery is stopped."
     }
 
-    /** Resolve a discovered service to a host/port. Cached after first success. */
+    /** Resolve afresh; stale addresses must not survive service loss or a network change. */
     suspend fun resolveSuspend(info: NsdServiceInfo, type: String): ResolvedTarget? =
-        suspendCancellableCoroutine { cont ->
-            val key = type + ":" + info.serviceName
-            resolved[key]?.let { cont.resume(it); return@suspendCancellableCoroutine }
-            try {
-                nsd.resolveService(info, object : NsdManager.ResolveListener {
-                    override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) {
-                        cont.resume(null)
-                    }
-                    override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
-                        val target = ResolvedTarget(
-                            name = serviceInfo.serviceName,
-                            host = serviceInfo.host?.hostAddress ?: "",
-                            port = serviceInfo.port,
-                            type = type
-                        )
-                        if (target.host.isNotEmpty()) resolved[key] = target
-                        cont.resume(target.takeIf { it.host.isNotEmpty() })
-                    }
-                })
-            } catch (_: Exception) {
-                cont.resume(null)
+        kotlinx.coroutines.withTimeoutOrNull(10_000) {
+            val epoch = generation
+            suspendCancellableCoroutine { cont ->
+                fun finish(target: ResolvedTarget?) {
+                    main.post { if (cont.isActive) cont.resume(target.takeIf { epoch == generation }) }
+                }
+                try {
+                    // [U] verify on API 34/36/37: legacy resolution is deprecated but retained.
+                    nsd.resolveService(info, object : NsdManager.ResolveListener {
+                        override fun onResolveFailed(serviceInfo: NsdServiceInfo, errorCode: Int) = finish(null)
+                        override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
+                            val host = serviceInfo.host?.hostAddress
+                            finish(if (host.isNullOrEmpty() || serviceInfo.port !in 1..65535) null else
+                                ResolvedTarget(serviceInfo.serviceName, host, serviceInfo.port, type))
+                        }
+                    })
+                } catch (_: Exception) { finish(null) }
             }
         }
+
 }
 
 /**
@@ -109,22 +117,12 @@ class BeamDiscovery(context: Context) {
 fun BeamScreen(
     discovery: BeamDiscovery,
     localMediaServerAlive: Boolean = false,
-    serverPort: Int = 8080,
-    currentThermal: ThermalState = ThermalState.COOL,
-    linkSpeedMbps: Int = 100
+    serverPort: Int = 8080
 ) {
     val context = LocalContext.current
     DisposableEffect(Unit) {
         discovery.start()
         onDispose { discovery.stop() }
-    }
-
-    val ladder = remember(currentThermal, linkSpeedMbps) {
-        QualityGovernor.selectQuality(
-            linkSpeedMbps = linkSpeedMbps,
-            thermalState = currentThermal,
-            receiverSupportsHevc = true
-        )
     }
 
     Column(
@@ -136,16 +134,15 @@ fun BeamScreen(
         Text(
             "Local HTTP Media Server (CA-02/CA-10): " +
                 if (localMediaServerAlive) "RUNNING on port $serverPort (byte-range streaming ready)"
-                else "OFF (no SAF folder granted)",
+                else "DISABLED — granting a Files folder does not share it over LAN",
             color = if (localMediaServerAlive) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSurface
         )
 
-        Text(
-            "Quality Governor (CA-13): ${ladder.resolutionLabel} @ ${ladder.fps}fps · ${ladder.codec}",
-            style = MaterialTheme.typography.labelMedium
-        )
-        Text(ladder.reason, style = MaterialTheme.typography.labelSmall)
+        Text("No screen encoder is active. Codec, receiver latency and link quality have not been measured.",
+            style = MaterialTheme.typography.labelSmall)
+
+        Text(discovery.diagnostic, style = MaterialTheme.typography.labelSmall)
 
         Text("AirPlay targets (_airplay._tcp):", style = MaterialTheme.typography.labelMedium)
         if (discovery.airplayFound.isEmpty()) {

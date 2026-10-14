@@ -1,0 +1,1556 @@
+[
+  {
+    "repository": "androidx/androidx",
+    "commit": "733872dcca4e10eb35a3486e5a5cd739ade89255",
+    "path": "activity/activity/src/main/java/androidx/activity/result/contract/ActivityResultContracts.kt",
+    "git_blob": "261cc9f47d66ca920304d482421ea62591d5e916",
+    "sha256": "eec7dcc8d97d2daccf1c3d88f0f46ac65d8ef1e3d5aa8f59782cd27b47d42889",
+    "url": "https://github.com/androidx/androidx/blob/733872dcca4e10eb35a3486e5a5cd739ade89255/activity/activity/src/main/java/androidx/activity/result/contract/ActivityResultContracts.kt",
+    "excerpts": [
+      {
+        "line": 61,
+        "text": "     *"
+      },
+      {
+        "line": 62,
+        "text": "     * Can be used with [androidx.activity.result.ActivityResultCaller.registerForActivityResult] to"
+      },
+      {
+        "line": 63,
+        "text": "     * avoid having to manage request codes when calling an activity API for which a type-safe"
+      },
+      {
+        "line": 64,
+        "text": "     * contract is not available."
+      },
+      {
+        "line": 65,
+        "text": "     */"
+      },
+      {
+        "line": 66,
+        "text": "    public class StartActivityForResult : ActivityResultContract<Intent, ActivityResult>() {"
+      },
+      {
+        "line": 67,
+        "text": ""
+      },
+      {
+        "line": 68,
+        "text": "        public companion object {"
+      },
+      {
+        "line": 69,
+        "text": "            /**"
+      },
+      {
+        "line": 70,
+        "text": "             * Key for the extra containing a [android.os.Bundle] generated from"
+      },
+      {
+        "line": 71,
+        "text": "             * [androidx.core.app.ActivityOptionsCompat.toBundle] or"
+      },
+      {
+        "line": 72,
+        "text": "             * [android.app.ActivityOptions.toBundle]."
+      },
+      {
+        "line": 73,
+        "text": "             *"
+      },
+      {
+        "line": 74,
+        "text": "             * This will override any [androidx.core.app.ActivityOptionsCompat] passed to"
+      },
+      {
+        "line": 75,
+        "text": "             * [androidx.activity.result.ActivityResultLauncher.launch]"
+      },
+      {
+        "line": 76,
+        "text": "             */"
+      },
+      {
+        "line": 77,
+        "text": "            public const val EXTRA_ACTIVITY_OPTIONS_BUNDLE: String ="
+      },
+      {
+        "line": 78,
+        "text": "                \"androidx.activity.result.contract.extra.ACTIVITY_OPTIONS_BUNDLE\""
+      },
+      {
+        "line": 79,
+        "text": "        }"
+      },
+      {
+        "line": 555,
+        "text": "     * The input is the suggested name for the new file."
+      },
+      {
+        "line": 556,
+        "text": "     *"
+      },
+      {
+        "line": 557,
+        "text": "     * This can be extended to override [createIntent] if you wish to pass additional extras to the"
+      },
+      {
+        "line": 558,
+        "text": "     * Intent created by `super.createIntent()`."
+      },
+      {
+        "line": 559,
+        "text": "     */"
+      },
+      {
+        "line": 560,
+        "text": "    public open class CreateDocument(private val mimeType: String) :"
+      },
+      {
+        "line": 561,
+        "text": "        ActivityResultContract<String, Uri?>() {"
+      },
+      {
+        "line": 562,
+        "text": ""
+      },
+      {
+        "line": 563,
+        "text": "        @Deprecated("
+      },
+      {
+        "line": 564,
+        "text": "            \"Using a wildcard mime type with CreateDocument is not recommended as it breaks \" +"
+      },
+      {
+        "line": 565,
+        "text": "                \"the automatic handling of file extensions. Instead, specify the mime type by \" +"
+      },
+      {
+        "line": 566,
+        "text": "                \"using the constructor that takes an concrete mime type (e.g.., \" +"
+      },
+      {
+        "line": 567,
+        "text": "                \"CreateDocument(\\\"image/png\\\")).\","
+      },
+      {
+        "line": 568,
+        "text": "            ReplaceWith(\"CreateDocument(\\\"todo/todo\\\")\"),"
+      },
+      {
+        "line": 569,
+        "text": "        )"
+      },
+      {
+        "line": 570,
+        "text": "        public constructor() : this(\"*/*\")"
+      },
+      {
+        "line": 571,
+        "text": ""
+      },
+      {
+        "line": 572,
+        "text": "        @CallSuper"
+      },
+      {
+        "line": 573,
+        "text": "        override fun createIntent(context: Context, input: String): Intent {"
+      },
+      {
+        "line": 574,
+        "text": "            return Intent(Intent.ACTION_CREATE_DOCUMENT)"
+      },
+      {
+        "line": 575,
+        "text": "                .setType(mimeType)"
+      },
+      {
+        "line": 576,
+        "text": "                .putExtra(Intent.EXTRA_TITLE, input)"
+      },
+      {
+        "line": 577,
+        "text": "        }"
+      },
+      {
+        "line": 578,
+        "text": ""
+      },
+      {
+        "line": 579,
+        "text": "        final override fun getSynchronousResult("
+      },
+      {
+        "line": 580,
+        "text": "            context: Context,"
+      },
+      {
+        "line": 581,
+        "text": "            input: String,"
+      },
+      {
+        "line": 582,
+        "text": "        ): SynchronousResult<Uri?>? = null"
+      },
+      {
+        "line": 583,
+        "text": ""
+      },
+      {
+        "line": 584,
+        "text": "        final override fun parseResult(resultCode: Int, intent: Intent?): Uri? {"
+      },
+      {
+        "line": 585,
+        "text": "            return intent.takeIf { resultCode == Activity.RESULT_OK }?.data"
+      },
+      {
+        "line": 586,
+        "text": "        }"
+      },
+      {
+        "line": 587,
+        "text": "    }"
+      }
+    ]
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/content/Intent.java",
+    "git_blob": "e763e951fbc12db524bae8db6218b67488d89144",
+    "sha256": "b3786b07ee9c9bba26c875e931024d35d9757ff00842869408fbad19e31c3020",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/content/Intent.java",
+    "excerpts": [
+      {
+        "line": 981,
+        "text": "     * If you need to grant URI permissions through a chooser, you must specify"
+      },
+      {
+        "line": 982,
+        "text": "     * the permissions to be granted on the ACTION_CHOOSER Intent"
+      },
+      {
+        "line": 983,
+        "text": "     * <em>in addition</em> to the EXTRA_INTENT inside.  This means using"
+      },
+      {
+        "line": 984,
+        "text": "     * {@link #setClipData} to specify the URIs to be granted as well as"
+      },
+      {
+        "line": 985,
+        "text": "     * {@link #FLAG_GRANT_READ_URI_PERMISSION} and/or"
+      },
+      {
+        "line": 986,
+        "text": "     * {@link #FLAG_GRANT_WRITE_URI_PERMISSION} as appropriate."
+      },
+      {
+        "line": 987,
+        "text": "     * <p>"
+      },
+      {
+        "line": 988,
+        "text": "     * As a convenience, an Intent of this form can be created with the"
+      },
+      {
+        "line": 989,
+        "text": "     * {@link #createChooser} function."
+      },
+      {
+        "line": 990,
+        "text": "     * <p>"
+      },
+      {
+        "line": 991,
+        "text": "     * Input: No data should be specified.  get*Extra must have"
+      },
+      {
+        "line": 992,
+        "text": "     * a {@link #EXTRA_INTENT} field containing the Intent being executed,"
+      },
+      {
+        "line": 993,
+        "text": "     * and can optionally have a {@link #EXTRA_TITLE} field containing the"
+      },
+      {
+        "line": 994,
+        "text": "     * title text to display in the chooser."
+      },
+      {
+        "line": 995,
+        "text": "     * <p>"
+      },
+      {
+        "line": 996,
+        "text": "     * Output: Depends on the protocol of {@link #EXTRA_INTENT}."
+      },
+      {
+        "line": 997,
+        "text": "     */"
+      },
+      {
+        "line": 998,
+        "text": "    @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)"
+      },
+      {
+        "line": 999,
+        "text": "    public static final String ACTION_CHOOSER = \"android.intent.action.CHOOSER\";"
+      },
+      {
+        "line": 1002,
+        "text": "     * Convenience function for creating a {@link #ACTION_CHOOSER} Intent."
+      },
+      {
+        "line": 1003,
+        "text": "     *"
+      },
+      {
+        "line": 1004,
+        "text": "     * <p>Builds a new {@link #ACTION_CHOOSER} Intent that wraps the given"
+      },
+      {
+        "line": 1005,
+        "text": "     * target intent, also optionally supplying a title.  If the target"
+      },
+      {
+        "line": 1006,
+        "text": "     * intent has specified {@link #FLAG_GRANT_READ_URI_PERMISSION} or"
+      },
+      {
+        "line": 1007,
+        "text": "     * {@link #FLAG_GRANT_WRITE_URI_PERMISSION}, then these flags will also be"
+      },
+      {
+        "line": 1008,
+        "text": "     * set in the returned chooser intent, with its ClipData set appropriately:"
+      },
+      {
+        "line": 1009,
+        "text": "     * either a direct reflection of {@link #getClipData()} if that is non-null,"
+      },
+      {
+        "line": 1010,
+        "text": "     * or a new ClipData built from {@link #getData()}."
+      },
+      {
+        "line": 1011,
+        "text": "     *"
+      },
+      {
+        "line": 1012,
+        "text": "     * @param target The Intent that the user will be selecting an activity"
+      },
+      {
+        "line": 1013,
+        "text": "     * to perform."
+      },
+      {
+        "line": 1014,
+        "text": "     * @param title Optional title that will be displayed in the chooser,"
+      },
+      {
+        "line": 1015,
+        "text": "     * only when the target action is not ACTION_SEND or ACTION_SEND_MULTIPLE."
+      },
+      {
+        "line": 1016,
+        "text": "     * @return Return a new Intent object that you can hand to"
+      },
+      {
+        "line": 1017,
+        "text": "     * {@link Context#startActivity(Intent) Context.startActivity()} and"
+      },
+      {
+        "line": 1018,
+        "text": "     * related methods."
+      },
+      {
+        "line": 1019,
+        "text": "     */"
+      },
+      {
+        "line": 1020,
+        "text": "    public static Intent createChooser(Intent target, CharSequence title) {"
+      },
+      {
+        "line": 1025,
+        "text": "     * Convenience function for creating a {@link #ACTION_CHOOSER} Intent."
+      },
+      {
+        "line": 1026,
+        "text": "     *"
+      },
+      {
+        "line": 1027,
+        "text": "     * <p>Builds a new {@link #ACTION_CHOOSER} Intent that wraps the given"
+      },
+      {
+        "line": 1028,
+        "text": "     * target intent, also optionally supplying a title.  If the target"
+      },
+      {
+        "line": 1029,
+        "text": "     * intent has specified {@link #FLAG_GRANT_READ_URI_PERMISSION} or"
+      },
+      {
+        "line": 1030,
+        "text": "     * {@link #FLAG_GRANT_WRITE_URI_PERMISSION}, then these flags will also be"
+      },
+      {
+        "line": 1031,
+        "text": "     * set in the returned chooser intent, with its ClipData set appropriately:"
+      },
+      {
+        "line": 1032,
+        "text": "     * either a direct reflection of {@link #getClipData()} if that is non-null,"
+      },
+      {
+        "line": 1033,
+        "text": "     * or a new ClipData built from {@link #getData()}.</p>"
+      },
+      {
+        "line": 1034,
+        "text": "     *"
+      },
+      {
+        "line": 1035,
+        "text": "     * <p>The caller may optionally supply an {@link IntentSender} to receive a callback"
+      },
+      {
+        "line": 1036,
+        "text": "     * when the user makes a choice. This can be useful if the calling application wants"
+      },
+      {
+        "line": 1037,
+        "text": "     * to remember the last chosen target and surface it as a more prominent or one-touch"
+      },
+      {
+        "line": 1038,
+        "text": "     * affordance elsewhere in the UI for next time.</p>"
+      },
+      {
+        "line": 1039,
+        "text": "     *"
+      },
+      {
+        "line": 1040,
+        "text": "     * @param target The Intent that the user will be selecting an activity"
+      },
+      {
+        "line": 1041,
+        "text": "     * to perform."
+      },
+      {
+        "line": 1042,
+        "text": "     * @param title Optional title that will be displayed in the chooser,"
+      },
+      {
+        "line": 1043,
+        "text": "     * only when the target action is not ACTION_SEND or ACTION_SEND_MULTIPLE."
+      },
+      {
+        "line": 1057,
+        "text": "            intent.putExtra(EXTRA_CHOSEN_COMPONENT_INTENT_SENDER, sender);"
+      },
+      {
+        "line": 1058,
+        "text": "        }"
+      },
+      {
+        "line": 1059,
+        "text": ""
+      },
+      {
+        "line": 1060,
+        "text": "        // Migrate any clip data and flags from target."
+      },
+      {
+        "line": 1061,
+        "text": "        int permFlags = target.getFlags() & (FLAG_GRANT_READ_URI_PERMISSION"
+      },
+      {
+        "line": 1062,
+        "text": "                | FLAG_GRANT_WRITE_URI_PERMISSION | FLAG_GRANT_PERSISTABLE_URI_PERMISSION"
+      },
+      {
+        "line": 1063,
+        "text": "                | FLAG_GRANT_PREFIX_URI_PERMISSION);"
+      },
+      {
+        "line": 1064,
+        "text": "        if (permFlags != 0) {"
+      },
+      {
+        "line": 1065,
+        "text": "            ClipData targetClipData = target.getClipData();"
+      },
+      {
+        "line": 1066,
+        "text": "            if (targetClipData == null && target.getData() != null) {"
+      },
+      {
+        "line": 1067,
+        "text": "                ClipData.Item item = new ClipData.Item(target.getData());"
+      },
+      {
+        "line": 1068,
+        "text": "                String[] mimeTypes;"
+      },
+      {
+        "line": 1069,
+        "text": "                if (target.getType() != null) {"
+      },
+      {
+        "line": 1070,
+        "text": "                    mimeTypes = new String[] { target.getType() };"
+      },
+      {
+        "line": 1071,
+        "text": "                } else {"
+      },
+      {
+        "line": 1072,
+        "text": "                    mimeTypes = new String[] { };"
+      },
+      {
+        "line": 1073,
+        "text": "                }"
+      },
+      {
+        "line": 1074,
+        "text": "                targetClipData = new ClipData(null, mimeTypes, item);"
+      },
+      {
+        "line": 1075,
+        "text": "            }"
+      },
+      {
+        "line": 4322,
+        "text": "     * receiver can access it. If multiple documents were selected, they are"
+      },
+      {
+        "line": 4323,
+        "text": "     * returned in {@link #getClipData()}."
+      },
+      {
+        "line": 4324,
+        "text": "     *"
+      },
+      {
+        "line": 4325,
+        "text": "     * @see DocumentsContract"
+      },
+      {
+        "line": 4326,
+        "text": "     * @see #ACTION_OPEN_DOCUMENT_TREE"
+      },
+      {
+        "line": 4327,
+        "text": "     * @see #ACTION_CREATE_DOCUMENT"
+      },
+      {
+        "line": 4328,
+        "text": "     * @see #FLAG_GRANT_PERSISTABLE_URI_PERMISSION"
+      },
+      {
+        "line": 4329,
+        "text": "     */"
+      },
+      {
+        "line": 4330,
+        "text": "    @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)"
+      },
+      {
+        "line": 4331,
+        "text": "    public static final String ACTION_OPEN_DOCUMENT = \"android.intent.action.OPEN_DOCUMENT\";"
+      },
+      {
+        "line": 4332,
+        "text": ""
+      },
+      {
+        "line": 4333,
+        "text": "    /**"
+      },
+      {
+        "line": 4334,
+        "text": "     * Activity Action: Allow the user to create a new document. When invoked,"
+      },
+      {
+        "line": 4335,
+        "text": "     * the system will display the various {@link DocumentsProvider} instances"
+      },
+      {
+        "line": 4336,
+        "text": "     * installed on the device, letting the user navigate through them. The"
+      },
+      {
+        "line": 4337,
+        "text": "     * returned document may be a newly created document with no content, or it"
+      },
+      {
+        "line": 4338,
+        "text": "     * may be an existing document with the requested MIME type."
+      },
+      {
+        "line": 4339,
+        "text": "     * <p>"
+      },
+      {
+        "line": 4340,
+        "text": "     * Each document is represented as a {@code content://} URI backed by a"
+      },
+      {
+        "line": 4366,
+        "text": "     * @see #ACTION_OPEN_DOCUMENT"
+      },
+      {
+        "line": 4367,
+        "text": "     * @see #ACTION_OPEN_DOCUMENT_TREE"
+      },
+      {
+        "line": 4368,
+        "text": "     * @see #FLAG_GRANT_PERSISTABLE_URI_PERMISSION"
+      },
+      {
+        "line": 4369,
+        "text": "     */"
+      },
+      {
+        "line": 4370,
+        "text": "    @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)"
+      },
+      {
+        "line": 4371,
+        "text": "    public static final String ACTION_CREATE_DOCUMENT = \"android.intent.action.CREATE_DOCUMENT\";"
+      },
+      {
+        "line": 4372,
+        "text": ""
+      },
+      {
+        "line": 4373,
+        "text": "    /**"
+      },
+      {
+        "line": 4374,
+        "text": "     * Activity Action: Allow the user to pick a directory subtree. When"
+      },
+      {
+        "line": 4375,
+        "text": "     * invoked, the system will display the various {@link DocumentsProvider}"
+      },
+      {
+        "line": 4376,
+        "text": "     * instances installed on the device, letting the user navigate through"
+      },
+      {
+        "line": 4377,
+        "text": "     * them. Apps can fully manage documents within the returned directory."
+      },
+      {
+        "line": 4378,
+        "text": "     * <p>"
+      },
+      {
+        "line": 4379,
+        "text": "     * To gain access to descendant (child, grandchild, etc) documents, use"
+      },
+      {
+        "line": 4380,
+        "text": "     * {@link DocumentsContract#buildDocumentUriUsingTree(Uri, String)} and"
+      },
+      {
+        "line": 4381,
+        "text": "     * {@link DocumentsContract#buildChildDocumentsUriUsingTree(Uri, String)}"
+      },
+      {
+        "line": 4382,
+        "text": "     * with the returned URI."
+      },
+      {
+        "line": 4383,
+        "text": "     * <p>"
+      },
+      {
+        "line": 4384,
+        "text": "     * Callers can set a document URI through"
+      },
+      {
+        "line": 5456,
+        "text": "     * must support at least the columns defined in {@link OpenableColumns} when"
+      },
+      {
+        "line": 5457,
+        "text": "     * queried."
+      },
+      {
+        "line": 5458,
+        "text": "     *"
+      },
+      {
+        "line": 5459,
+        "text": "     * @see #ACTION_GET_CONTENT"
+      },
+      {
+        "line": 5460,
+        "text": "     * @see #ACTION_OPEN_DOCUMENT"
+      },
+      {
+        "line": 5461,
+        "text": "     * @see #ACTION_CREATE_DOCUMENT"
+      },
+      {
+        "line": 5462,
+        "text": "     */"
+      },
+      {
+        "line": 5463,
+        "text": "    @SdkConstant(SdkConstantType.INTENT_CATEGORY)"
+      },
+      {
+        "line": 5464,
+        "text": "    public static final String CATEGORY_OPENABLE = \"android.intent.category.OPENABLE\";"
+      },
+      {
+        "line": 5465,
+        "text": ""
+      },
+      {
+        "line": 5466,
+        "text": "    /**"
+      },
+      {
+        "line": 5467,
+        "text": "     * Used to indicate that an intent filter can accept files which are not necessarily"
+      },
+      {
+        "line": 5468,
+        "text": "     * openable by {@link ContentResolver#openFileDescriptor(Uri, String)}, but"
+      },
+      {
+        "line": 5469,
+        "text": "     * at least streamable via"
+      },
+      {
+        "line": 5470,
+        "text": "     * {@link ContentResolver#openTypedAssetFileDescriptor(Uri, String, Bundle)}"
+      },
+      {
+        "line": 5471,
+        "text": "     * using one of the stream types exposed via"
+      },
+      {
+        "line": 5472,
+        "text": "     * {@link ContentResolver#getStreamTypes(Uri, String)}."
+      },
+      {
+        "line": 5473,
+        "text": "     *"
+      },
+      {
+        "line": 5474,
+        "text": "     * @see #ACTION_SEND"
+      },
+      {
+        "line": 6416,
+        "text": "     * service when opened."
+      },
+      {
+        "line": 6417,
+        "text": "     *"
+      },
+      {
+        "line": 6418,
+        "text": "     * @see #ACTION_GET_CONTENT"
+      },
+      {
+        "line": 6419,
+        "text": "     * @see #ACTION_OPEN_DOCUMENT"
+      },
+      {
+        "line": 6420,
+        "text": "     * @see #ACTION_OPEN_DOCUMENT_TREE"
+      },
+      {
+        "line": 6421,
+        "text": "     * @see #ACTION_CREATE_DOCUMENT"
+      },
+      {
+        "line": 6422,
+        "text": "     */"
+      },
+      {
+        "line": 6423,
+        "text": "    public static final String EXTRA_LOCAL_ONLY ="
+      },
+      {
+        "line": 6424,
+        "text": "            \"android.intent.extra.LOCAL_ONLY\";"
+      },
+      {
+        "line": 6425,
+        "text": ""
+      },
+      {
+        "line": 6426,
+        "text": "    /**"
+      },
+      {
+        "line": 6427,
+        "text": "     * Extra used to indicate that an intent can allow the user to select and"
+      },
+      {
+        "line": 6428,
+        "text": "     * return multiple items. This is a boolean extra; the default is false. If"
+      },
+      {
+        "line": 6429,
+        "text": "     * true, an implementation is allowed to present the user with a UI where"
+      },
+      {
+        "line": 6430,
+        "text": "     * they can pick multiple items that are all returned to the caller. When"
+      },
+      {
+        "line": 6431,
+        "text": "     * this happens, they should be returned as the {@link #getClipData()} part"
+      },
+      {
+        "line": 6432,
+        "text": "     * of the result Intent."
+      },
+      {
+        "line": 6433,
+        "text": "     *"
+      },
+      {
+        "line": 6434,
+        "text": "     * @see #ACTION_GET_CONTENT"
+      },
+      {
+        "line": 7022,
+        "text": "    public static final int FLAG_ACTIVITY_CLEAR_TOP = 0x04000000;"
+      },
+      {
+        "line": 7023,
+        "text": "    /**"
+      },
+      {
+        "line": 7024,
+        "text": "     * If set and this intent is being used to launch a new activity from an"
+      },
+      {
+        "line": 7025,
+        "text": "     * existing one, then the reply target of the existing activity will be"
+      },
+      {
+        "line": 7026,
+        "text": "     * transferred to the new activity.  This way, the new activity can call"
+      },
+      {
+        "line": 7027,
+        "text": "     * {@link android.app.Activity#setResult} and have that result sent back to"
+      },
+      {
+        "line": 7028,
+        "text": "     * the reply target of the original activity."
+      },
+      {
+        "line": 7029,
+        "text": "     */"
+      },
+      {
+        "line": 7030,
+        "text": "    public static final int FLAG_ACTIVITY_FORWARD_RESULT = 0x02000000;"
+      },
+      {
+        "line": 7031,
+        "text": "    /**"
+      },
+      {
+        "line": 7032,
+        "text": "     * If set and this intent is being used to launch a new activity from an"
+      },
+      {
+        "line": 7033,
+        "text": "     * existing one, the current activity will not be counted as the top"
+      },
+      {
+        "line": 7034,
+        "text": "     * activity for deciding whether the new intent should be delivered to"
+      },
+      {
+        "line": 7035,
+        "text": "     * the top instead of starting a new one.  The previous activity will"
+      },
+      {
+        "line": 7036,
+        "text": "     * be used as the top, with the assumption being that the current activity"
+      },
+      {
+        "line": 7037,
+        "text": "     * will finish itself immediately."
+      },
+      {
+        "line": 7038,
+        "text": "     */"
+      },
+      {
+        "line": 7039,
+        "text": "    public static final int FLAG_ACTIVITY_PREVIOUS_IS_TOP = 0x01000000;"
+      },
+      {
+        "line": 7040,
+        "text": "    /**"
+      }
+    ]
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/provider/DocumentsContract.java",
+    "git_blob": "1884d569adc3a89a5b6a4ec92784f98e99eb0e1d",
+    "sha256": "331c59a6b90f359549eecb6c3be2d594bed906838ccad25406718b94e34df7a8",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/provider/DocumentsContract.java",
+    "excerpts": [
+      {
+        "line": 450,
+        "text": "         * Flag indicating that a document is a directory that supports creation"
+      },
+      {
+        "line": 451,
+        "text": "         * of new files within it. Only valid when {@link #COLUMN_MIME_TYPE} is"
+      },
+      {
+        "line": 452,
+        "text": "         * {@link #MIME_TYPE_DIR}."
+      },
+      {
+        "line": 453,
+        "text": "         *"
+      },
+      {
+        "line": 454,
+        "text": "         * @see #COLUMN_FLAGS"
+      },
+      {
+        "line": 455,
+        "text": "         * @see DocumentsProvider#createDocument(String, String, String)"
+      },
+      {
+        "line": 456,
+        "text": "         */"
+      },
+      {
+        "line": 457,
+        "text": "        public static final int FLAG_DIR_SUPPORTS_CREATE = 1 << 3;"
+      },
+      {
+        "line": 458,
+        "text": ""
+      },
+      {
+        "line": 459,
+        "text": "        /**"
+      },
+      {
+        "line": 460,
+        "text": "         * Flag indicating that a directory prefers its contents be shown in a"
+      },
+      {
+        "line": 461,
+        "text": "         * larger format grid. Usually suitable when a directory contains mostly"
+      },
+      {
+        "line": 462,
+        "text": "         * pictures. Only valid when {@link #COLUMN_MIME_TYPE} is"
+      },
+      {
+        "line": 463,
+        "text": "         * {@link #MIME_TYPE_DIR}."
+      },
+      {
+        "line": 464,
+        "text": "         *"
+      },
+      {
+        "line": 465,
+        "text": "         * @see #COLUMN_FLAGS"
+      },
+      {
+        "line": 466,
+        "text": "         */"
+      },
+      {
+        "line": 467,
+        "text": "        public static final int FLAG_DIR_PREFERS_GRID = 1 << 4;"
+      },
+      {
+        "line": 468,
+        "text": ""
+      },
+      {
+        "line": 852,
+        "text": "     */"
+      },
+      {
+        "line": 853,
+        "text": "    public static final String EXTRA_RESULT = \"result\";"
+      },
+      {
+        "line": 854,
+        "text": ""
+      },
+      {
+        "line": 855,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 856,
+        "text": "    @UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)"
+      },
+      {
+        "line": 857,
+        "text": "    public static final String METHOD_CREATE_DOCUMENT = \"android:createDocument\";"
+      },
+      {
+        "line": 858,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 859,
+        "text": "    public static final String METHOD_RENAME_DOCUMENT = \"android:renameDocument\";"
+      },
+      {
+        "line": 860,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 861,
+        "text": "    public static final String METHOD_DELETE_DOCUMENT = \"android:deleteDocument\";"
+      },
+      {
+        "line": 862,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 863,
+        "text": "    public static final String METHOD_COPY_DOCUMENT = \"android:copyDocument\";"
+      },
+      {
+        "line": 864,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 865,
+        "text": "    public static final String METHOD_MOVE_DOCUMENT = \"android:moveDocument\";"
+      },
+      {
+        "line": 866,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 867,
+        "text": "    public static final String METHOD_IS_CHILD_DOCUMENT = \"android:isChildDocument\";"
+      },
+      {
+        "line": 868,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 869,
+        "text": "    public static final String METHOD_REMOVE_DOCUMENT = \"android:removeDocument\";"
+      },
+      {
+        "line": 870,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 950,
+        "text": "     * Build URI representing the target {@link Document#COLUMN_DOCUMENT_ID} in"
+      },
+      {
+        "line": 951,
+        "text": "     * a document provider. When queried, a provider will return a single row"
+      },
+      {
+        "line": 952,
+        "text": "     * with columns defined by {@link Document}."
+      },
+      {
+        "line": 953,
+        "text": "     *"
+      },
+      {
+        "line": 954,
+        "text": "     * @see DocumentsProvider#queryDocument(String, String[])"
+      },
+      {
+        "line": 955,
+        "text": "     * @see #getDocumentId(Uri)"
+      },
+      {
+        "line": 956,
+        "text": "     */"
+      },
+      {
+        "line": 957,
+        "text": "    public static Uri buildDocumentUri(String authority, String documentId) {"
+      },
+      {
+        "line": 958,
+        "text": "        return getBaseDocumentUriBuilder(authority).appendPath(documentId).build();"
+      },
+      {
+        "line": 959,
+        "text": "    }"
+      },
+      {
+        "line": 960,
+        "text": ""
+      },
+      {
+        "line": 961,
+        "text": "    /**"
+      },
+      {
+        "line": 962,
+        "text": "     * Builds URI as described in {@link #buildDocumentUri(String, String)}, but such that it will"
+      },
+      {
+        "line": 963,
+        "text": "     * be associated with the given user."
+      },
+      {
+        "line": 964,
+        "text": "     *"
+      },
+      {
+        "line": 965,
+        "text": "     * @hide"
+      },
+      {
+        "line": 966,
+        "text": "     */"
+      },
+      {
+        "line": 967,
+        "text": "    @SystemApi"
+      },
+      {
+        "line": 968,
+        "text": "    @NonNull"
+      },
+      {
+        "line": 1003,
+        "text": "     *            direct access to."
+      },
+      {
+        "line": 1004,
+        "text": "     * @see Intent#ACTION_OPEN_DOCUMENT_TREE"
+      },
+      {
+        "line": 1005,
+        "text": "     * @see DocumentsProvider#isChildDocument(String, String)"
+      },
+      {
+        "line": 1006,
+        "text": "     * @see #buildDocumentUri(String, String)"
+      },
+      {
+        "line": 1007,
+        "text": "     */"
+      },
+      {
+        "line": 1008,
+        "text": "    public static Uri buildDocumentUriUsingTree(Uri treeUri, String documentId) {"
+      },
+      {
+        "line": 1009,
+        "text": "        return new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT)"
+      },
+      {
+        "line": 1010,
+        "text": "                .authority(treeUri.getAuthority()).appendPath(PATH_TREE)"
+      },
+      {
+        "line": 1011,
+        "text": "                .appendPath(getTreeDocumentId(treeUri)).appendPath(PATH_DOCUMENT)"
+      },
+      {
+        "line": 1012,
+        "text": "                .appendPath(documentId).build();"
+      },
+      {
+        "line": 1013,
+        "text": "    }"
+      },
+      {
+        "line": 1014,
+        "text": ""
+      },
+      {
+        "line": 1015,
+        "text": "    /** {@hide} */"
+      },
+      {
+        "line": 1016,
+        "text": "    public static Uri buildDocumentUriMaybeUsingTree(Uri baseUri, String documentId) {"
+      },
+      {
+        "line": 1017,
+        "text": "        if (isTreeUri(baseUri)) {"
+      },
+      {
+        "line": 1018,
+        "text": "            return buildDocumentUriUsingTree(baseUri, documentId);"
+      },
+      {
+        "line": 1019,
+        "text": "        } else {"
+      },
+      {
+        "line": 1020,
+        "text": "            return buildDocumentUri(baseUri.getAuthority(), documentId);"
+      },
+      {
+        "line": 1021,
+        "text": "        }"
+      },
+      {
+        "line": 1022,
+        "text": "    }"
+      },
+      {
+        "line": 1023,
+        "text": ""
+      },
+      {
+        "line": 1024,
+        "text": "    /**"
+      },
+      {
+        "line": 1025,
+        "text": "     * Build URI representing the children of the target directory in a document"
+      },
+      {
+        "line": 1026,
+        "text": "     * provider. When queried, a provider will return zero or more rows with"
+      },
+      {
+        "line": 1027,
+        "text": "     * columns defined by {@link Document}."
+      },
+      {
+        "line": 1028,
+        "text": "     *"
+      },
+      {
+        "line": 1029,
+        "text": "     * @param parentDocumentId the document to return children for, which must"
+      },
+      {
+        "line": 1030,
+        "text": "     *            be a directory with MIME type of"
+      },
+      {
+        "line": 1031,
+        "text": "     *            {@link Document#MIME_TYPE_DIR}."
+      },
+      {
+        "line": 1032,
+        "text": "     * @see DocumentsProvider#queryChildDocuments(String, String[], String)"
+      },
+      {
+        "line": 1033,
+        "text": "     * @see #getDocumentId(Uri)"
+      },
+      {
+        "line": 1034,
+        "text": "     */"
+      },
+      {
+        "line": 1035,
+        "text": "    public static Uri buildChildDocumentsUri(String authority, String parentDocumentId) {"
+      },
+      {
+        "line": 1036,
+        "text": "        return new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(authority)"
+      },
+      {
+        "line": 1037,
+        "text": "                .appendPath(PATH_DOCUMENT).appendPath(parentDocumentId).appendPath(PATH_CHILDREN)"
+      },
+      {
+        "line": 1038,
+        "text": "                .build();"
+      },
+      {
+        "line": 1039,
+        "text": "    }"
+      },
+      {
+        "line": 1040,
+        "text": ""
+      },
+      {
+        "line": 1041,
+        "text": "    /**"
+      },
+      {
+        "line": 1042,
+        "text": "     * Build URI representing the children of the target directory in a document"
+      },
+      {
+        "line": 1043,
+        "text": "     * provider. When queried, a provider will return zero or more rows with"
+      },
+      {
+        "line": 1044,
+        "text": "     * columns defined by {@link Document}."
+      },
+      {
+        "line": 1045,
+        "text": "     * <p>"
+      },
+      {
+        "line": 1046,
+        "text": "     * However, instead of directly accessing the target directory, the returned"
+      },
+      {
+        "line": 1177,
+        "text": "    /**"
+      },
+      {
+        "line": 1178,
+        "text": "     * Test if the given URI represents a {@link Document} backed by a"
+      },
+      {
+        "line": 1179,
+        "text": "     * {@link DocumentsProvider}."
+      },
+      {
+        "line": 1180,
+        "text": "     *"
+      },
+      {
+        "line": 1181,
+        "text": "     * @see #buildDocumentUri(String, String)"
+      },
+      {
+        "line": 1182,
+        "text": "     * @see #buildDocumentUriUsingTree(Uri, String)"
+      },
+      {
+        "line": 1183,
+        "text": "     */"
+      },
+      {
+        "line": 1184,
+        "text": "    public static boolean isDocumentUri(Context context, @Nullable Uri uri) {"
+      },
+      {
+        "line": 1185,
+        "text": "        if (isContentUri(uri) && isDocumentsProvider(context, uri.getAuthority())) {"
+      },
+      {
+        "line": 1186,
+        "text": "            final List<String> paths = uri.getPathSegments();"
+      },
+      {
+        "line": 1187,
+        "text": "            if (paths.size() == 2) {"
+      },
+      {
+        "line": 1188,
+        "text": "                return PATH_DOCUMENT.equals(paths.get(0));"
+      },
+      {
+        "line": 1189,
+        "text": "            } else if (paths.size() == 4) {"
+      },
+      {
+        "line": 1190,
+        "text": "                return PATH_TREE.equals(paths.get(0)) && PATH_DOCUMENT.equals(paths.get(2));"
+      },
+      {
+        "line": 1191,
+        "text": "            }"
+      },
+      {
+        "line": 1192,
+        "text": "        }"
+      },
+      {
+        "line": 1193,
+        "text": "        return false;"
+      },
+      {
+        "line": 1194,
+        "text": "    }"
+      },
+      {
+        "line": 1195,
+        "text": ""
+      },
+      {
+        "line": 1264,
+        "text": "    /**"
+      },
+      {
+        "line": 1265,
+        "text": "     * Extract the {@link Document#COLUMN_DOCUMENT_ID} from the given URI."
+      },
+      {
+        "line": 1266,
+        "text": "     *"
+      },
+      {
+        "line": 1267,
+        "text": "     * @see #isDocumentUri(Context, Uri)"
+      },
+      {
+        "line": 1268,
+        "text": "     */"
+      },
+      {
+        "line": 1269,
+        "text": "    public static String getDocumentId(Uri documentUri) {"
+      },
+      {
+        "line": 1270,
+        "text": "        final List<String> paths = documentUri.getPathSegments();"
+      },
+      {
+        "line": 1271,
+        "text": "        if (paths.size() >= 2 && PATH_DOCUMENT.equals(paths.get(0))) {"
+      },
+      {
+        "line": 1272,
+        "text": "            return paths.get(1);"
+      },
+      {
+        "line": 1273,
+        "text": "        }"
+      },
+      {
+        "line": 1274,
+        "text": "        if (paths.size() >= 4 && PATH_TREE.equals(paths.get(0))"
+      },
+      {
+        "line": 1275,
+        "text": "                && PATH_DOCUMENT.equals(paths.get(2))) {"
+      },
+      {
+        "line": 1276,
+        "text": "            return paths.get(3);"
+      },
+      {
+        "line": 1277,
+        "text": "        }"
+      },
+      {
+        "line": 1278,
+        "text": "        throw new IllegalArgumentException(\"Invalid URI: \" + documentUri);"
+      },
+      {
+        "line": 1279,
+        "text": "    }"
+      },
+      {
+        "line": 1280,
+        "text": ""
+      },
+      {
+        "line": 1281,
+        "text": "    /**"
+      },
+      {
+        "line": 1282,
+        "text": "     * Extract the via {@link Document#COLUMN_DOCUMENT_ID} from the given URI."
+      },
+      {
+        "line": 1366,
+        "text": "     * @param parentDocumentUri directory with {@link Document#FLAG_DIR_SUPPORTS_CREATE}"
+      },
+      {
+        "line": 1367,
+        "text": "     * @param mimeType MIME type of new document"
+      },
+      {
+        "line": 1368,
+        "text": "     * @param displayName name of new document"
+      },
+      {
+        "line": 1369,
+        "text": "     * @return newly created document, or {@code null} if failed"
+      },
+      {
+        "line": 1370,
+        "text": "     */"
+      },
+      {
+        "line": 1371,
+        "text": "    public static @Nullable Uri createDocument(@NonNull ContentResolver content,"
+      },
+      {
+        "line": 1372,
+        "text": "            @NonNull Uri parentDocumentUri, @NonNull String mimeType, @NonNull String displayName)"
+      },
+      {
+        "line": 1373,
+        "text": "            throws FileNotFoundException {"
+      },
+      {
+        "line": 1374,
+        "text": "        try {"
+      },
+      {
+        "line": 1375,
+        "text": "            final Bundle in = new Bundle();"
+      },
+      {
+        "line": 1376,
+        "text": "            in.putParcelable(DocumentsContract.EXTRA_URI, parentDocumentUri);"
+      },
+      {
+        "line": 1377,
+        "text": "            in.putString(Document.COLUMN_MIME_TYPE, mimeType);"
+      },
+      {
+        "line": 1378,
+        "text": "            in.putString(Document.COLUMN_DISPLAY_NAME, displayName);"
+      },
+      {
+        "line": 1379,
+        "text": ""
+      },
+      {
+        "line": 1380,
+        "text": "            final Bundle out = content.call(parentDocumentUri.getAuthority(),"
+      },
+      {
+        "line": 1381,
+        "text": "                    METHOD_CREATE_DOCUMENT, null, in);"
+      },
+      {
+        "line": 1382,
+        "text": "            return out.getParcelable(DocumentsContract.EXTRA_URI, android.net.Uri.class);"
+      },
+      {
+        "line": 1383,
+        "text": "        } catch (Exception e) {"
+      },
+      {
+        "line": 1384,
+        "text": "            Log.w(TAG, \"Failed to create document\", e);"
+      }
+    ]
+  }
+]

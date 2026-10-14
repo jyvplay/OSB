@@ -30,10 +30,8 @@ class FusionDb(context: Context) : SQLiteOpenHelper(context.applicationContext, 
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // No migration path published yet: drop and rebuild rather than pretend.
-        db.execSQL("DROP TABLE IF EXISTS session")
-        db.execSQL("DROP TABLE IF EXISTS alerts")
-        onCreate(db)
+        // Never destroy owner data to make an unsupported schema appear usable.
+        throw android.database.sqlite.SQLiteException("Unsupported Fusion database migration $oldVersion -> $newVersion; existing database retained")
     }
 
     companion object {
@@ -48,7 +46,7 @@ class SessionStore(private val db: FusionDb) {
         val cv = ContentValues().apply {
             put("key", key); put("value", value); put("updated", System.currentTimeMillis())
         }
-        db.writableDatabase.insertWithOnConflict("session", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
+        check(db.writableDatabase.insertWithOnConflict("session", null, cv, SQLiteDatabase.CONFLICT_REPLACE) != -1L) { "Session write failed" }
     }
 
     fun get(key: String): String? =
@@ -82,7 +80,7 @@ class AlertStore(private val db: FusionDb) {
             put("key", row.key); put("pkg", row.pkg)
             put("title", row.title); put("body", row.body); put("posted", row.posted)
         }
-        db.writableDatabase.insertWithOnConflict("alerts", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
+        check(db.writableDatabase.insertWithOnConflict("alerts", null, cv, SQLiteDatabase.CONFLICT_REPLACE) != -1L) { "Alert write failed" }
     }
 
     fun recent(limit: Int = 200): List<AlertRow> =

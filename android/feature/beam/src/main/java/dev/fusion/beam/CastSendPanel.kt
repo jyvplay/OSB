@@ -64,13 +64,13 @@ fun CastSendPanel(
             value = mediaInput,
             onValueChange = { mediaInput = it },
             singleLine = true,
-            label = { Text("Media URL or path under your folder") },
+            label = { Text(if (serverAlive) "Media URL or shared path" else "Media http(s) URL (local sharing disabled)") },
             modifier = Modifier.fillMaxWidth()
         )
         if (mediaUrl.isNotBlank()) {
             Text("Will cast: $mediaUrl", style = MaterialTheme.typography.labelSmall)
         } else if (mediaInput.isNotBlank()) {
-            Text("No SAF folder granted, so a bare path has nowhere to be served from. Use a full http(s) URL.",
+            Text("Local file sharing is disabled. A Files folder grant does not publish files. Use an existing http(s) URL.",
                 style = MaterialTheme.typography.labelSmall)
         }
 

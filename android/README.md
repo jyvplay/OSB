@@ -1,105 +1,178 @@
-# Fusion Shell — Android source (work in progress)
+> **Latest checkpoint:** [R8 draft-PR notes](docs/R8-PR-CHECKPOINT.md): 170,728 JVM
+> assertions / 35 Python tests passed; Android build and visual inspection unrun.
+> Full system remains incomplete (0/48 accepted modules). R7 evidence below is historical.
 
-A real Android Studio project. Open the `android/` directory (not the repo
-root). It is a working desktop-style shell core; it is **not** the full v2.1
-product.
+# Fusion Shell — native Kotlin / Compose
 
-## What actually runs (R13)
+Open this directory in Android Studio. Do **not** open the repository root as a
+web project. This source tree is a partial implementation, not the complete
+v2.1 product. There is no verified APK from this sandbox.
 
-**Shell** — optional Home activity, first-party windows (drag, resize, tile
-left/right/maximise, minimise, close), three workspaces, geometry restored on
-relaunch, shelf, Ctrl+K palette. A connected secondary display shows a **live
-session mirror** (titles, focus, geometry, workspace) — not an interactive
-second compositor.
+## Current R7 — full recorded-scope review and native hardening
 
-**Real casting (upgraded in R12)**
-- **Google Cast (CA-08)**: a real, dependency-free castv2 client — TLS to :8009,
-  hand-rolled protobuf `CastMessage` codec, CONNECT + heartbeat, LAUNCH the
-  Default Media Receiver (CC1AD845), LOAD a media URL, PLAY/PAUSE/STOP/SEEK.
-  No proprietary Cast SDK. Loopback-tested against a fake Chromecast.
-- **AirPlay video-by-URL (CA-02)**: a real HTTP client — POST /play, /scrub,
-  /rate, /stop, GET /playback-info. Loopback-tested. tvOS pairing not
-  implemented; FairPlay mirroring not implemented.
-- **DLNA (CA-10)**: SSDP discovery + AVTransport Play/Stop for an http(s) URL.
-- **LocalMediaServer**: embedded HTTP server with RFC 7233 byte-range support,
-  serving files under your granted SAF folder, so receivers can fetch media
-  from `http://<phone>:8080/<path>`.
-- Beam Hub discovers `_airplay._tcp` and `_googlecast._tcp`, resolves targets,
-  and sends via the real clients.
+**0/48 fully specification-complete modules (0%);48/48 still require implementation
+or acceptance (100%).** There is substantial missing code, not just missing tests.
+The [full scope review](docs/FULL-SPEC-REVIEW.md) covers231 recorded requirements
+and35 cross-cutting obligations.171 rows remain unimplemented and56 partial.
 
-**Storage and documents**
-- SAF Files: granted tree only, browse, create folder, copy to a distinct name.
-- **Delete to trash is reversible**: copy → verify → journal → delete. Restore
-  writes a new document into the open folder; purge deletes forever. Files only,
-  256 MB cap, app-private blobs.
-- UTF-8 editor (≤2 MB) with Save-a-copy through the system picker.
-- Documents window: own `.docx`/`.xlsx` text + cell scanner, `.zip` listing with
-  slip/bomb guards (now tested via shared fixtures).
-- PDF viewer (platform `PdfRenderer`), image probe/decode/export (JPEG/PNG/WebP),
-  PSD composite preview (8-bit RGB raw + PackBits RLE).
+New production code adds revision-checked bounded note files and native note
+lifecycle UI, immutable published window lists, saved tile/normal geometry with
+v1→v2 restore migration, workspace movement controls, and an executable native
+module/window/workspace Find dialog. Unsafe legacy Files mutations now refuse
+in the backend; unsupported SQLite upgrades no longer drop owner data.
 
-**Messages (upgraded in R12)**
-- **Real SMS**: reads inbox + sent via `Telephony.Sms`, sends SMS text via
-  `SmsManager`, gated on READ_SMS / SEND_SMS runtime permissions. No SMS role,
-  no MMS, no RCS, no iMessage/Matrix — stated in the UI.
+**169,801 JVM assertions and30 Python tests passed.** Twelve pure libraries were
+compiled independently. Actual counterexamples and remaining limits are retained
+in the [R7 engineering record](docs/R7-ENGINEERING.md). **No Android compile, APK,
+lint/device execution or visual review occurred.** No TypeScript or mock UI added.
 
-**System**
-- Screen recording: `MediaProjection` + `MediaRecorder` foreground service,
-  MP4 to app-specific storage, video only, one consent per recording.
-- Alerts: `NotificationListenerService` + SQLite log, 7-day retention, flood
-  limit, wipe on disconnect. Enable it in system settings first.
-- Encrypted backup: PBKDF2(210k) + AES-256-GCM export/restore of app-private
-  notes. Wrong password fails closed; restore never overwrites.
-- Peripherals: physical keyboard/mouse/touchpad + USB inventory, share-sheet
-  out, shared-text in. No Bluetooth pairing reads.
-- Accessibility state is read-only. Settings graph has undo plus a live probe.
+Open this directory in Studio with JDK17/SDK36; first run
+`python3 tools/native_lab.py doctor`. The [native lab guide](docs/NATIVE-LAB.md)
+covers real both-flavor builds and guarded disposable-emulator captures of seven
+views at100%/200%. That Android workflow remains authored, unrun here.
 
-**Other** — Keystore vault, private notes, calculator, MediaStore list,
-launchable-app list, built-in shell (not a PTY), Together local model, Lens
-preview, Automation durable drafts.
+## R6 record — pre-Studio native pass
 
-## What is NOT implemented
+**0/48 modules fully accepted (0%); 48/48 still require completion/acceptance (100%).**
+Native module-boundary smart casts were repaired and the real JVM runner now
+compiles libraries separately. All **169,576 assertions** and **21 Python tests**
+passed. Two bad module-boundary consumers were rejected; the repaired pattern
+compiled. These are not Android build results.
 
-AirPlay RAOP audio streaming and FairPlay screen mirroring, Chromecast screen
-mirroring, any cast receiver, interactive external compositor, Lens effects or
-virtual camera, LibreOfficeKit editing, PSD layers/export, HEIC encoding,
-MMS/RCS/iMessage/Matrix transports, scheduled automation, file move, benchmark
-numbers. See `STATUS.md`.
+Native title controls now have48dp minima and retain tiling in an actions menu.
+The [real native lab guide](docs/NATIVE-LAB.md) explains both-flavor builds,
+explicitly consented disposable-emulator tests, and actual screenshot collection
+at100%/200% font settings. **That Android workflow is authored, unrun.** No native
+screenshots, APK, visual review or release clearance were produced here.
 
-## Build it on your laptop
+Start with `python3 tools/native_lab.py doctor` from this directory after installing
+the prerequisites. See the [R6 evidence/gap record](docs/R6-PRE-STUDIO.md) and
+[per-module completion audit](docs/MODULE-COMPLETION.md).
 
-This environment has **no Android SDK or Gradle runtime**, so no APK, sync,
-unit-test run or emulator session has been executed here. Treat the first sync
-as the real verification step.
+## R5 record — correlated native save/recovery
 
-1. Android Studio (Ladybug/Rabbit+), JDK 17, SDK Platform 35, Android 14+
-   emulator image.
-2. `File > Open` → select `android/`.
-3. **The Gradle wrapper jar is not vendored** (binary files cannot be authored
-   here), so `./gradlew` will not exist yet. Do one of these first:
-   - In Studio: it will offer to use a local/bundled Gradle — accept **8.9**; or
-   - With Gradle 8.9 installed: run `gradle wrapper --gradle-version 8.9`
-     inside `android/` once, which generates `gradlew` + the wrapper jar.
-4. Sync (AGP 8.7.3, Kotlin 2.0.21, Compose Compiler 2.0.21).
-5. `:app:assembleDebug`, then run `app`.
-6. JVM tests (cast clients, codec, JSON, SMS-independent logic, fixtures):
-   `:core:windowing:test :core:index:test :core:commands:test
-    :core:security:test :format:native:test :format:archive:test
-    :format:ooxml:test :format:psd:test :cast:dlna:test :cast:airplay:test
-    :cast:castv2:test :feature:beam:test :feature:together:test :testing:test`
-7. Instrumented smoke (needs emulator): `:app:pixel6Api34DebugAndroidTest`
-8. Emulator secondary display: Extended Controls → Displays → Add secondary
-   display, then relaunch the app.
+**48 included modules; 0 specification-complete (0%); 48 still need completion or
+mandatory acceptance (100%).** [Module audit](docs/MODULE-COMPLETION.md).
 
-## Permissions actually requested
+Save a Copy now has per-attempt identities, a native non-exported picker broker,
+checkpoint-before-output reservation, request/destination-bound byte readback and
+bounded receipts. Restored unfinished attempts require explicit review and a new
+picker; they are never automatically replayed. Historical v1 drafts migrate to v2.
 
-`INTERNET` (browser, DLNA, cast, media server) · `READ_MEDIA_IMAGES` (media
-list) · `ACCESS_WIFI_STATE` + `CHANGE_WIFI_MULTICAST_STATE` (SSDP) ·
-`FOREGROUND_SERVICE` + `FOREGROUND_SERVICE_MEDIA_PROJECTION` +
-`POST_NOTIFICATIONS` (recording) · `CAMERA` (Lens preview, asked in context) ·
-`READ_SMS` + `SEND_SMS` (Messages SMS tab, asked in context) · one SAF tree
-grant you choose.
+**169,576 JVM assertions and 15 Python tests passed.** The
+[R5 engineering record](docs/R5-COPY-ENGINEERING.md) preserves two real failing
+counterexamples and the repaired verification results. Android broker/adapters
+remain uncompiled; no APK or pilot clearance is claimed.
 
-Not requested: `MANAGE_EXTERNAL_STORAGE`, `QUERY_ALL_PACKAGES`, location,
-contacts, microphone, Bluetooth, accessibility service. Notification access
-stays off until you enable it.
+## R4 record (historical)
+
+**48 included modules; 0 specification-complete (0%); 48 still need completion or
+mandatory acceptance (100%).** See the [module audit](docs/MODULE-COMPLETION.md).
+
+The editor now has bounded per-tab undo/redo, Unicode-aware literal find/replace
+with stale-confirmation protection, and mixed-newline line/column navigation.
+Native integration preserves ordinary IME composition values; actual Android/IME
+acceptance remains unrun. Undo history is in-memory only, not restored after a kill.
+
+**164,188 JVM assertions and 15 Python tests passed.** Native UI/adapters have not
+been Android-compiled; no APK or cleared pilot is claimed. The
+[R4 engineering record](docs/R4-EDITOR-ENGINEERING.md) contains the actual failed
+counterexample, repair, executable evidence and remaining gates.
+
+## R3 record (historical)
+
+**48 included Gradle modules; 0 specification-complete (0%); 48 unfinished or
+awaiting mandatory acceptance (100%).** Source existence is not completion.
+Read the [full module audit](docs/MODULE-COMPLETION.md) and
+[A–J engineering/evidence record](docs/R3-ENGINEERING.md).
+
+The native calculator now has bounded decimal expressions, approximate scientific
+functions, 64-bit programmer arithmetic, dimension-checked units and local history.
+Its pure kernels passed **2,056 assertions**; existing contracts passed **153,216**.
+**15 Python tests** passed. No Android compilation/APK/device acceptance is claimed.
+Calculator/editor/layout checkpoints add explicit sync and decoded readback; their
+Android lifecycle/durability gates remain open. No module is promoted to complete.
+
+## Pilot hardening status (R2)
+
+Read [PILOT.md](docs/PILOT.md) before evaluation. Pure Kotlin production contracts
+now compile and pass (153,216 assertions; no Android/receiver evidence). The
+native host adds geometry recovery, keyboard window controls and minimized-window
+restore. A runtime policy blocks unsafe/incomplete modules before composition,
+including on restore. Files is read-only; experimental modules need session
+consent. Capture stop/privacy/finalization and capability reporting were hardened
+but still require Android/device testing. No public pilot is cleared yet.
+
+## Run on your laptop
+
+1. Open `OSB/android` in Android Studio (Rabbit 1 or a compatible stable release).
+2. Select a **JDK 17** Gradle JVM; install **SDK Platform 36** via SDK Manager.
+   Gradle 8.13, AGP 8.13.2 and Kotlin 2.2.21 are pinned. The wrapper is included.
+3. Sync. In **Build Variants**, select **`proDebug`** for `app`.
+4. Create/start an Android 14+ tablet or resizable emulator and Run `app`.
+   A laptop x86_64 emulator can exercise the Kotlin/Android UI; it is not a
+   substitute for Snapdragon/ARM64 codec, NPU, 16KB or display testing.
+5. Open Editor from the shelf. New/Open UTF-8 → edit → Save a Copy using Android's
+   document picker. Reopen Editor after closing or relaunching to recover drafts.
+
+Terminal equivalent (Windows: replace `./gradlew` with `gradlew.bat`):
+
+```sh
+./gradlew :app:assembleProDebug :app:assemblePlayDebug
+./gradlew :core:documents:test :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts
+./gradlew :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+```
+
+APKs, **after a successful local build**:
+`app/build/outputs/apk/pro/debug/app-pro-debug.apk` and
+`app/build/outputs/apk/play/debug/app-play-debug.apk`.
+
+[Detailed build/troubleshooting](docs/BUILD.md) · [Verification report](STATUS.md)
+
+## Implemented source in this pass
+
+- Native editor: multiple document tabs (8 max), independent drafts, strict
+  UTF-8 (2 MiB per document), no silent replacement of malformed input, Ctrl+O/N/S.
+- Versioned, bounded, checksummed local recovery stored with Android `AtomicFile`
+  under `no_backup`. The source URI is not overwritten. Recovery is **not** a
+  backup or encryption feature. Recent edits inside the debounce interval may
+  not survive sudden process termination.
+- Immutable pending-save payload persisted **before** launching the system
+  picker; Activity/process recreation cannot substitute an empty string for it.
+- Save a Copy closes the output, reopens it, compares exact bytes, and only then
+  updates the saved state. Edits made after the picker snapshot remain dirty.
+  Unknown/failed provider outcomes retain the draft and warn about partial copies.
+- Tab discard confirmation; closing the editor window offers to retain drafts
+  locally instead of silently losing them.
+- `play` and `pro` application flavors with distinct IDs; SMS permissions are
+  absent from `play`. Billing/entitlements remain **unimplemented**.
+- Removed automatic LAN publication of the Files tree. Local HTTP sharing is
+  disabled until a per-file capability/expiry/stop-indicator design is verified.
+- Beam discovery uses distinct mDNS listeners and drops stale callbacks; a
+  fabricated 100 Mbps link/HEVC quality display was removed.
+- Gradle wrapper, one version catalog, structural checks, JVM/device test sources,
+  CI for both debug flavors, and a release gate that currently fails closed.
+
+## Existing source — not newly verified
+
+The shell has first-party windows, basic tiling, workspaces, a module shelf,
+module-name palette and geometry persistence. A secondary display is only a
+session mirror, **not BlackTop or an interactive compositor**. Files uses SAF;
+trash/copy, notes, calculator, shell command execution (not PTY), PDF/image/PSD
+preview, notification logging and capture have partial implementations.
+
+Cast URL clients exist, but no Apple TV, HomePod, Chromecast or DLNA receiver
+has been tested here. A transport accepting a request is not proof of playback.
+Lens is camera preview only; Together is a local model, not a network watch party.
+Neither is claimed as the requested finished subsystem.
+
+## Not delivered yet
+
+Complete P1; actual BlackTop; keyboard/a11y release pass; multi-process parser
+isolation; encrypted search; journaled fault-safe moves; terminal PTY; Office
+editing; RAOP; any mirroring/receiver; Lens processing/Meet/browser injection;
+Mac-backed iMessage; full browser requirements; timeline backup; paid licensing;
+API37 migration; resolved transitive-license SBOM; performance measurements.
+
+See the [normalized register](docs/feature-register.json) and
+[spike ledger](docs/spikes.json). No spike is marked passed without evidence.
