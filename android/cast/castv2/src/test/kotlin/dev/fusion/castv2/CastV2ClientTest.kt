@@ -118,7 +118,7 @@ class CastV2ClientTest {
             assertEquals("web-1", client.transportId)
             assertEquals("sess-1", client.sessionId)
 
-            val mediaSessionId = client.load("http://192.168.1.10:8080/video.mp4", "video/mp4", "Demo")
+            val mediaSessionId = client.load("http://192.168.1.10:8080/video.mp4", "video/mp4", "Quoted \"title\" 漢\n")
             assertEquals(7L, mediaSessionId)
             assertEquals(7L, client.mediaSessionId)
 
@@ -144,6 +144,9 @@ class CastV2ClientTest {
             val loadPayload = fake.received.first { it.payloadUtf8?.contains("LOAD") == true }.payloadUtf8!!
             assertTrue(loadPayload.contains("http://192.168.1.10:8080/video.mp4"))
             assertTrue(loadPayload.contains("sess-1"))
+            val decodedLoad=Json.parseObject(loadPayload)
+            assertEquals("sess-1",decodedLoad.str("sessionId"))
+            assertEquals("Quoted \"title\" 漢\n",decodedLoad.obj("media")?.obj("metadata")?.str("title"))
         } finally {
             fake.close()
         }

@@ -56,6 +56,6 @@ test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike
 test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 56 tests in 0.348s
+Ran 56 tests in 0.341s
 
 OK

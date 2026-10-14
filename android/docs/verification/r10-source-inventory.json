@@ -733,7 +733,7 @@
       "path": "cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Client.kt",
       "module": ":cast:castv2",
       "package": "dev.fusion.castv2",
-      "sha256": "0f8d1430054373881f76470d30dfd41311c7dad39327ed90338fe6e89970a689"
+      "sha256": "21871cc6eb6e97bf3dda4dff234a4c02d122bb546e2575fe67813608dc90cd9a"
     },
     {
       "path": "cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt",

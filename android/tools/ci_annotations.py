@@ -19,7 +19,10 @@ def annotation(path, phase="Assembly"):
     if size > READ_LIMIT:
         text += '\n[bounded tail; middle omitted; overlap possible]\n' + tail.decode('utf-8', 'replace')
     lines = text.splitlines()
-    errors = [line for line in lines if line.startswith(('e: ', 'error: ', '* What went wrong:', 'Execution failed for task')) or line.endswith(' FAILED')]
+    errors = []
+    for index, line in enumerate(lines):
+        if line.startswith(('e: ', 'error: ', '* What went wrong:', 'Execution failed for task')) or line.endswith(' FAILED'):
+            errors.extend(lines[index:index+4] if line.endswith(' FAILED') else [line])
     # Reserve room for failure context even if compiler lines fill their budget.
     clip = lambda value, size: value.encode('utf-8')[:size].decode('utf-8', 'ignore')
     excerpt = clip('\n'.join(errors), 1200) + '\nBuild tail (not a root-cause diagnosis):\n' + '\n'.join(lines[-35:]).encode('utf-8')[-1500:].decode('utf-8', 'ignore')
