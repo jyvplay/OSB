@@ -1,0 +1,28 @@
+{
+  "url": "https://github.com/androidx/androidx/blob/733872dcca4e10eb35a3486e5a5cd739ade89255/activity/activity/src/main/java/androidx/activity/EdgeToEdge.kt",
+  "blob": "365c0c664c077bd106307367f6287552278bf230",
+  "sha256": "27fb0be5055242523f4f0c6cab6811b09fc9b9c80d31a84b39b184bd933d72ed",
+  "line": 94,
+  "excerpt": [
+    "        ),",
+    ")",
+    "@JvmName(\"enable\")",
+    "@JvmOverloads",
+    "public fun ComponentActivity.enableEdgeToEdge(",
+    "    statusBarStyle: SystemBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),",
+    "    navigationBarStyle: SystemBarStyle = SystemBarStyle.auto(DefaultLightScrim, DefaultDarkScrim),",
+    ") {",
+    "    val view = window.decorView",
+    "    val impl =",
+    "        Impl",
+    "            ?: when {",
+    "                Build.VERSION.SDK_INT >= 35 -> EdgeToEdgeApi35()",
+    "                Build.VERSION.SDK_INT >= 30 -> EdgeToEdgeApi30()",
+    "                Build.VERSION.SDK_INT >= 29 -> EdgeToEdgeApi29()",
+    "                Build.VERSION.SDK_INT >= 28 -> EdgeToEdgeApi28()",
+    "                Build.VERSION.SDK_INT >= 26 -> EdgeToEdgeApi26()",
+    "                else -> EdgeToEdgeApi23()",
+    "            }.also { Impl = it }"
+  ],
+  "limit": "Pinned source confirms edge-to-edge API shape; not exact resolved1.9.3 artifact, Android compilation or visual/inset acceptance."
+}

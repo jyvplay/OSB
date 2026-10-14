@@ -29,7 +29,7 @@ class BaselineProfileGenerator {
     val rule = BaselineProfileRule()
 
     @Test
-    fun generate() = rule.collect(packageName = "dev.fusion.shell") {
+    fun generate() = rule.collect(packageName = "dev.fusion.shell.pro") {
         pressHome()
         startActivityAndWait()
         // Exercise the startup-critical surfaces so they are pre-compiled.

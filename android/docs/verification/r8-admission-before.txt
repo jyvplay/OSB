@@ -1,0 +1,6 @@
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+P1 not verified:
+Spikes not passed:
+Actual checker exit: 0; unfinished non-P1 rows: 166; no evidence files supplied.
+Actual PNG parser accepted dimensions: (10, 10); no IDAT or pixel data. Input hex: 89504e470d0a1a0a0000000d494844520000000a0000000a0000000000000000000000000049454e44ae426082
+These are adversarial host-parser input experiments, NOT an Android build, release, or screenshot. Temporary assertion/evidence fields were test inputs only and were deleted.

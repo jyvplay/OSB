@@ -3,3 +3,10 @@
 **/build/
 local.properties
 *.iml
+.kotlin/
+**/__pycache__/
+device-observations*.json
+pilot-reports/
+
+# Owner/device release reports may contain sensitive data; keep out of source control.
+docs/release-artifacts/

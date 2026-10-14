@@ -1,0 +1,3175 @@
+[
+  {
+    "id": "SH-01",
+    "feature": "Launcher pinned/all-apps/folders/recents/search",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-01"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S2"
+    ]
+  },
+  {
+    "id": "SH-02",
+    "feature": "Shelf pinned/running/badges/previews/edges",
+    "tier": "A/B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-02"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "SH-03",
+    "feature": "Top bar menus/status/clock/Beam indicator",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-03"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "SH-04",
+    "feature": "Desktop wallpaper/icons/folders/widgets/context menu/layouts",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SH-05",
+    "feature": "Widget host with suspend and crash isolation",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SH-06",
+    "feature": "Hot corners/edge triggers/mouse gestures",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SH-07",
+    "feature": "Local-first onboarding/permission explainers/config/license",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "SH-08",
+    "feature": "Session restore after death/reboot",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Bounded versioned checksummed geometry snapshot; single-writer AtomicFile; legacy migration and explicit retained-byte reset. Room migration remains deferred.",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "SH-09",
+    "feature": "Configurable mouse navigation buttons (alias IN-01 contract)",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-09"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S15"
+    ]
+  },
+  {
+    "id": "SH-10",
+    "feature": "BlackTop external compositor/phone blackout/foreground session",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-10"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S23"
+    ]
+  },
+  {
+    "id": "SH-11",
+    "feature": "Phone-as-touchpad/keyboard for own compositor",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.1",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-11"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S23"
+    ]
+  },
+  {
+    "id": "SH-12",
+    "feature": "OEM throttle detector and guidance",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "tests": [
+      "plan:T-SH-12"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S23"
+    ]
+  },
+  {
+    "id": "WM-01",
+    "feature": "Move/resize/minimize/maximize/close/z/focus/title/menu compositor",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Own native H1 host; JVM snapshot ownership plus maximize/tile/restore geometry. Android UI/AX unrun.",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance",
+      "jvm:WindowRestoreChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S3"
+    ]
+  },
+  {
+    "id": "WM-02",
+    "feature": "Half/third/quarter/custom tiling/edge drag/named groups",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent.",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance",
+      "jvm:WindowRestoreChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S3"
+    ]
+  },
+  {
+    "id": "WM-03",
+    "feature": "Named/reorderable/per-window workspaces",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-03"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "WM-04",
+    "feature": "Overview grid/search/live own-window thumbnails",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "WM-05",
+    "feature": "App/window/workspace switcher modes",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "WM-06",
+    "feature": "Probe-chosen S1-S4 external-app broker and display pinning",
+    "tier": "B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-06"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S1"
+    ]
+  },
+  {
+    "id": "WM-07",
+    "feature": "Multi-display layouts/hotplug/open-where-acted",
+    "tier": "A/B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-07"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S1"
+    ]
+  },
+  {
+    "id": "WM-08",
+    "feature": "Window rules and remembered geometry",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "WM-09",
+    "feature": "Keyboard-only move/resize/tile",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S9"
+    ]
+  },
+  {
+    "id": "WM-10",
+    "feature": "Distraction-free focus mode",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-10"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "WM-11",
+    "feature": "Always-on-top mini windows",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-11"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "WM-12",
+    "feature": "Per-app density override with limits label",
+    "tier": "B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-12"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S1"
+    ]
+  },
+  {
+    "id": "WM-13",
+    "feature": "Move windows across workspaces with drag/menu/keyboard",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Native workspace menu and Ctrl+Alt+Shift+1/2/3 wiring; pure reducer checked. Drag and native acceptance incomplete.",
+    "tests": [
+      "plan:T-WM-13",
+      "jvm:WindowRestoreChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "WM-14",
+    "feature": "Key-to-touch mapper overlay",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-14"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "WM-15",
+    "feature": "Fusion window-to-cast render-to-Surface",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.2",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-15"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S17"
+    ]
+  },
+  {
+    "id": "WM-16",
+    "feature": "Cursor confinement on external display",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "tests": [
+      "plan:T-WM-16"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S1"
+    ]
+  },
+  {
+    "id": "SR-01",
+    "feature": "Palette apps/commands/windows/settings/files/contacts/events/notes/targets",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Native module/window/workspace command palette wired. File/contact/event/note/target index integration remains absent.",
+    "tests": [
+      "plan:T-SR-01",
+      "jvm:SearchAndGateChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S4"
+    ]
+  },
+  {
+    "id": "SR-02",
+    "feature": "Index health/exclusions/rebuild/churn quarantine",
+    "tier": "A/B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Local index/command registry; opt-in provider adapters",
+    "tests": [
+      "plan:T-SR-02"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S4"
+    ]
+  },
+  {
+    "id": "SR-03",
+    "feature": "Exact/fuzzy search then opt-in semantic embeddings",
+    "tier": "A",
+    "phase": "P1/P3",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Bounded local literal index only, locale-stable ranking and capacity refusal. No fuzzy/semantic engine.",
+    "tests": [
+      "plan:T-SR-03",
+      "jvm:SearchAndGateChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S4"
+    ]
+  },
+  {
+    "id": "SR-04",
+    "feature": "Opt-in web results below local results",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Local index/command registry; opt-in provider adapters",
+    "tests": [
+      "plan:T-SR-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SR-05",
+    "feature": "In-folder scoped search",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Local index/command registry; opt-in provider adapters",
+    "tests": [
+      "plan:T-SR-05"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S4"
+    ]
+  },
+  {
+    "id": "SR-06",
+    "feature": "Palette calculator/conversion/notes/focus/settings/routines/casting",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Local index/command registry; opt-in provider adapters",
+    "tests": [
+      "plan:T-SR-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SR-07",
+    "feature": "Opt-in external app content via AppSearch/AppFunctions",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Local index/command registry; opt-in provider adapters",
+    "tests": [
+      "plan:T-SR-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SR-08",
+    "feature": "Search coverage and missing-result diagnostics",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.3",
+    "route": "Local index/command registry; opt-in provider adapters",
+    "tests": [
+      "plan:T-SR-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-01",
+    "feature": "Tabbed file browser/list/grid/column/gallery/tree/tags/favorites/F2",
+    "tier": "B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "FM-02",
+    "feature": "Dual pane/split and optional terminal pane",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-03",
+    "feature": "Journaled copy/move/delete/rename/batch/conflicts/undo/pause/checksums",
+    "tier": "B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "Backend mutation entry points explicitly unavailable until S6; unsafe legacy provider copy/delete paths removed. Full journal unimplemented.",
+    "tests": [
+      "plan:T-FM-03",
+      "jvm:SearchAndGateChecks"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S6"
+    ]
+  },
+  {
+    "id": "FM-04",
+    "feature": "Isolated Forge Peek for image/PDF/text/media/archive/Office/PSD/HEIC",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-05",
+    "feature": "Archive browse/read/write/encrypted ZIP/slip-bomb guards",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-06",
+    "feature": "Concise/full/custom context menus/terminal/path/cast",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-07",
+    "feature": "Storage overview/cleanup/duplicates/large files",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-08",
+    "feature": "USB/SD/SMB/SFTP/WebDAV/FTP and reconnect diagnostics",
+    "tier": "A/B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-09",
+    "feature": "Cloud/placeholder state badges",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-09"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-10",
+    "feature": "DocumentsProvider for network/cloud/archive",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-10"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-11",
+    "feature": "Trash with origin/date/size/retention",
+    "tier": "B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "Legacy receipt inspection only, bounded and corruption-visible; trash/restore/purge backend refuses pending S6.",
+    "tests": [
+      "plan:T-FM-11",
+      "jvm:SearchAndGateChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S6"
+    ]
+  },
+  {
+    "id": "FM-12",
+    "feature": "Android data/obb via Shizuku/ADB",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-12"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-13",
+    "feature": "New-file templates and context-menu New",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-13"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-14",
+    "feature": "Cross-window/app ClipData drag-drop with URI grants",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-14"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-15",
+    "feature": "Selection count/size/batch toolbar",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-15"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "FM-16",
+    "feature": "Quick filter bar",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-16"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "FM-17",
+    "feature": "Cached background folder sizes",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.4",
+    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "tests": [
+      "plan:T-FM-17"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FM-18",
+    "feature": "SAF session-copy safe-save/reopen verification/Save a Copy fallback",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Strict UTF-8 session; durable picker snapshot; new SAF copy only; closed-output exact readback; never claims atomic replacement; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "tests": [
+      "core:documents/DocumentSafetyTest",
+      "plan:SAF-provider-and-editor-device-matrix",
+      "jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt",
+      "androidTest:CopyContractDeviceTest (unrun)",
+      "plan:R5 picker/grant/process-recovery/provider-alias matrix"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "NC-01",
+    "feature": "Grouped alerts/history/snooze/reply/rules/pin/search/batch dismiss",
+    "tier": "B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.5",
+    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "tests": [
+      "plan:T-NC-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "NC-02",
+    "feature": "Focus modes by workspace/time/app/display with reason",
+    "tier": "B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.5",
+    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "tests": [
+      "plan:T-NC-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "NC-03",
+    "feature": "Quick panel audio/brightness/media/DND/light/battery/Beam/radio panels",
+    "tier": "A/B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.5",
+    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "tests": [
+      "plan:T-NC-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "NC-04",
+    "feature": "Notification diagnostics",
+    "tier": "B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.5",
+    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "tests": [
+      "plan:T-NC-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "NC-05",
+    "feature": "Observable own-operation progress/live updates",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.5",
+    "route": "Capture foreground Stop action and finalization status; universal long-operation service layer still pending",
+    "tests": [
+      "plan:T-NC-05"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "NC-06",
+    "feature": "Volume/brightness/layout OSD",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.5",
+    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "tests": [
+      "plan:T-NC-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "ST-01",
+    "feature": "Settings graph IDs/aliases/lock reasons/history/undo/export/import",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "ST-02",
+    "feature": "Curated system-settings deep links per OEM",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "ST-03",
+    "feature": "Default-apps guide",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "ST-04",
+    "feature": "Capabilities/fingerprint/thermal/memory/codec/redacted diagnostics",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-04"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "ST-05",
+    "feature": "Theme/dynamic color/accent/density/motion/font scale",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Window geometry density only (minimum size/title controls), not full theme/font/spacing profiles",
+    "tests": [
+      "plan:T-ST-05"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "ST-06",
+    "feature": "Shortcut presets/conflict detection/per-device profiles",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "ST-07",
+    "feature": "External-display UI scale independent of system",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "ST-08",
+    "feature": "RestrictionsManager managed configuration",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "ST-09",
+    "feature": "Phone/desktop per-context profiles",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.6",
+    "route": "Settings registry/history and capability/system-settings adapters",
+    "tests": [
+      "plan:T-ST-09"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AP-01",
+    "feature": "App info hub",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.7",
+    "route": "PackageManager/LauncherApps and explicit system intents",
+    "tests": [
+      "plan:T-AP-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "AP-02",
+    "feature": "Own-data uninstall assistant",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.7",
+    "route": "PackageManager/LauncherApps and explicit system intents",
+    "tests": [
+      "plan:T-AP-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AP-03",
+    "feature": "Pro APK install manager",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.7",
+    "route": "PackageManager/LauncherApps and explicit system intents",
+    "tests": [
+      "plan:T-AP-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AP-04",
+    "feature": "App update links/inventory",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.7",
+    "route": "PackageManager/LauncherApps and explicit system intents",
+    "tests": [
+      "plan:T-AP-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AP-05",
+    "feature": "Own background/startup inventory; Shizuku for others",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.7",
+    "route": "PackageManager/LauncherApps and explicit system intents",
+    "tests": [
+      "plan:T-AP-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "TD-01",
+    "feature": "Terminal emulator tabs/profiles/true color/mouse/search/safe paste",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.8",
+    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "tests": [
+      "plan:T-TD-01"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S5"
+    ]
+  },
+  {
+    "id": "TD-02",
+    "feature": "Local shell plus PTY",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.8",
+    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "tests": [
+      "plan:T-TD-02"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S5"
+    ]
+  },
+  {
+    "id": "TD-03",
+    "feature": "SSH/SFTP/USB serial",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.8",
+    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "tests": [
+      "plan:T-TD-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "TD-04",
+    "feature": "Read-only 16KB-compatible Linux proot payload",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.8",
+    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "tests": [
+      "plan:T-TD-04"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S5"
+    ]
+  },
+  {
+    "id": "TD-05",
+    "feature": "Non-protected AVF VM where available",
+    "tier": "C",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.8",
+    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "tests": [
+      "plan:T-TD-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "TD-06",
+    "feature": "Pro wireless-debugging helper",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.8",
+    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "tests": [
+      "plan:T-TD-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-01",
+    "feature": "Text/Markdown editor encodings/large files/autosave/diff/regex",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native bounded UTF-8 editor; per-tab delta undo/redo, code-point literal KMP search, reviewed revision-bound replacement, mixed-newline navigation, immutable pending copy and checkpoints; Android/IME/AX unverified; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "tests": [
+      "core:documents/DocumentSafetyTest",
+      "plan:SAF-provider-and-editor-device-matrix",
+      "jvm:core/documents/src/contract/kotlin/dev/fusion/documents/EditorChecks.kt",
+      "androidTest:ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit (unrun)",
+      "jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt",
+      "androidTest:CopyContractDeviceTest (unrun)",
+      "plan:R5 picker/grant/process-recovery/provider-alias matrix"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "PR-02",
+    "feature": "Local Markdown notes/attachments/backlinks/OCR/export",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Bounded Markdown note files with name/revision checks, locks, atomic publication/readback and native memory-draft UI. Android unrun; attachments/backlinks/OCR/export/recovery incomplete.",
+    "tests": [
+      "plan:T-PR-02",
+      "jvm:NotesChecks"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "PR-03",
+    "feature": "Tasks/reminders without exact alarms",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-04",
+    "feature": "CalendarContract calendar",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-05",
+    "feature": "ContactsContract/API37 picker",
+    "tier": "A/B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-06",
+    "feature": "Mail handoff/triage then native IMAP",
+    "tier": "A",
+    "phase": "P2/P4",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07",
+    "feature": "Desktop-class browser (parent requirement)",
+    "tier": "A",
+    "phase": "P2/P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S29",
+      "S30"
+    ]
+  },
+  {
+    "id": "PR-07a",
+    "feature": "Visible horizontal browser tab strip",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07a"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "PR-07b",
+    "feature": "Vertical tab sidebar/reorder/groups/pins/search",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07b"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07c",
+    "feature": "Named/colored/collapsible tab groups",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07c"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07d",
+    "feature": "Horizontal split tab view with independent navigation",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07d"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S14"
+    ]
+  },
+  {
+    "id": "PR-07e",
+    "feature": "Vertical split tab view",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07e"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S14"
+    ]
+  },
+  {
+    "id": "PR-07f",
+    "feature": "Pinned browser tabs",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07f"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07g",
+    "feature": "Sleeping tabs and restore by URL",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07g"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S14"
+    ]
+  },
+  {
+    "id": "PR-07h",
+    "feature": "Desktop UA on display/keyboard with per-site override",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07h"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "PR-07i",
+    "feature": "Full browser keyboard shortcuts",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07i"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07j",
+    "feature": "Tab drag-out/drag-in between compositor windows",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07j"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07k",
+    "feature": "Reader mode",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07k"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07l",
+    "feature": "Per-site camera/mic/location/notification/popup/JS permissions",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07l"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07m",
+    "feature": "Downloads integrated with Files",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07m"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07n",
+    "feature": "Find in page",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07n"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07o",
+    "feature": "Separate-data-directory browser profiles",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07o"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07p",
+    "feature": "License-verified content/tracker filtering with per-site disable",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07p"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S30"
+    ]
+  },
+  {
+    "id": "PR-07q",
+    "feature": "Batch tab close/bookmark/select/group/window/send actions",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07q"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07r",
+    "feature": "Named browser sessions restoring windows/tabs/groups/splits",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07r"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-07s",
+    "feature": "Page-media cast to Beam",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-07s"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-08",
+    "feature": "PDF/image viewer annotations/signing",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-09",
+    "feature": "Basic/scientific/programmer/unit calculator with history",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose + bounded Kotlin decimal34/scientific binary64/64-bit programmer/dimension-checked units; checksummed 100-entry local history; Android integration uncompiled",
+    "tests": [
+      "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
+      "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
+      "plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "PR-10",
+    "feature": "Clock/timers/inexact alarms",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-10"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "PR-11",
+    "feature": "Native Office via Forge with optional external open",
+    "tier": "A/B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-11"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S10"
+    ]
+  },
+  {
+    "id": "PR-12",
+    "feature": "Optional IME global clipboard; in-module history/sensitive/expiry/remap",
+    "tier": "A/B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-12"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S16"
+    ]
+  },
+  {
+    "id": "PR-13",
+    "feature": "Desktop sticky notes",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.9",
+    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "tests": [
+      "plan:T-PR-13"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-01",
+    "feature": "LOKit Office open/render/edit/save",
+    "tier": "B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-01"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S10"
+    ]
+  },
+  {
+    "id": "FF-02",
+    "feature": "Shaded POI headless Office read/write/convert/extract",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-02"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S11"
+    ]
+  },
+  {
+    "id": "FF-03",
+    "feature": "PDF render/annotate/sign/export",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-03"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "FF-04",
+    "feature": "PDF-compatible AI; non-PDF AI boundary",
+    "tier": "A/B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-05",
+    "feature": "Raster open/edit/export",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-05"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "FF-06",
+    "feature": "HEIC/HEIF/AVIF decode via platform/audited fallback",
+    "tier": "A/B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-06"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S12"
+    ]
+  },
+  {
+    "id": "FF-07",
+    "feature": "Platform hardware HEIC encode/export",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-07"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S12"
+    ]
+  },
+  {
+    "id": "FF-08",
+    "feature": "PSD/PSB layers/composite/export",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-08"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S13"
+    ]
+  },
+  {
+    "id": "FF-09",
+    "feature": "SVG render/export and text/Markdown/CSV/RTF edit; vector editor later",
+    "tier": "A",
+    "phase": "P2/P3",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-09"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-10",
+    "feature": "EPUB reader",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-10"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-11",
+    "feature": "Save-As/export fidelity warning",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-11"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-12",
+    "feature": "Isolated format sandbox/watchdogs/bomb guards",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-12"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-13",
+    "feature": "Thumbnail/metadata service",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-13"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-14",
+    "feature": "formats.yaml engine/grade/boundary registry",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-14"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-15",
+    "feature": "Open/dirty/save/recovery/close-confirm document lifecycle",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Activity-scoped text sessions; bounded versioned AtomicFile recovery; tabs; discard confirmation; other Forge formats deferred; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "tests": [
+      "core:documents/DocumentSafetyTest",
+      "plan:SAF-provider-and-editor-device-matrix",
+      "jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt",
+      "androidTest:CopyContractDeviceTest (unrun)",
+      "plan:R5 picker/grant/process-recovery/provider-alias matrix"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "FF-16",
+    "feature": "Conversion/loss report before lossy save",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-16"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "FF-17",
+    "feature": "Macros disabled by default",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "tests": [
+      "plan:T-FF-17"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-01",
+    "feature": "Capture recording/audio/annotation/blur/redact/OCR/commit-first",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-01"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S17"
+    ]
+  },
+  {
+    "id": "MD-02",
+    "feature": "Hardware media player/subtitles/PiP/gapless/Beam",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-03",
+    "feature": "Photos with non-destructive edits/HEIC",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-03"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "MD-04",
+    "feature": "Voice recorder",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-05",
+    "feature": "Camera/scan/QR hooks",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-06",
+    "feature": "Audio devices panel",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-07",
+    "feature": "API37 color picker",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-08",
+    "feature": "Hardware video trim/export",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MD-09",
+    "feature": "Own-module audio focus/volume dashboard",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "tests": [
+      "plan:T-MD-09"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-01",
+    "feature": "Passwords/passkeys/TOTP/notes/provider/autofill/StrongBox/import/export",
+    "tier": "A/B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "SC-02",
+    "feature": "Module app lock",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-03",
+    "feature": "Permission/special-access audit",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-04",
+    "feature": "Pro VpnService per-app firewall/DNS filter",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-05",
+    "feature": "Privacy dashboard",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-06",
+    "feature": "FLAG_SECURE per window",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-07",
+    "feature": "Tink encrypted containers",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "SC-08",
+    "feature": "Telemetry off/local logs/redacted export",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-08"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "SC-09",
+    "feature": "Cast excludes Vault/secure surfaces; red indicator; stop on lock",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.12",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "tests": [
+      "plan:T-SC-09"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BK-01",
+    "feature": "Timeline encrypted incremental backup/remote targets/restore browser",
+    "tier": "B",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.13",
+    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "tests": [
+      "plan:T-BK-01"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S7"
+    ]
+  },
+  {
+    "id": "BK-02",
+    "feature": "Folder sync with conflict inbox",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.13",
+    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "tests": [
+      "plan:T-BK-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BK-03",
+    "feature": "Configuration export/import",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.13",
+    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "tests": [
+      "plan:T-BK-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BK-04",
+    "feature": "New-device checklist",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.13",
+    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "tests": [
+      "plan:T-BK-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BK-05",
+    "feature": "Backup health and monthly sampled restore drill",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.13",
+    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "tests": [
+      "plan:T-BK-05"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S7"
+    ]
+  },
+  {
+    "id": "BK-06",
+    "feature": "User-held recovery keys/no default cloud escrow",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.13",
+    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "tests": [
+      "plan:T-BK-06"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S7"
+    ]
+  },
+  {
+    "id": "CT-01",
+    "feature": "Share-sheet send/receive and Quick Share",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.14",
+    "route": "Android sharing/intents and clean-room continuity protocols",
+    "tests": [
+      "plan:T-CT-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "CT-02",
+    "feature": "Clean-room KDE-Connect-protocol PC bridge",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.14",
+    "route": "Android sharing/intents and clean-room continuity protocols",
+    "tests": [
+      "plan:T-CT-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CT-03",
+    "feature": "API37 Handoff/Continue-On",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.14",
+    "route": "Android sharing/intents and clean-room continuity protocols",
+    "tests": [
+      "plan:T-CT-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CT-04",
+    "feature": "Cast/present superseded by CA family",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.14",
+    "route": "CA-01 through CA-15; not an additional transport",
+    "tests": [
+      "plan:T-CT-04"
+    ],
+    "status": "superseded",
+    "gates": []
+  },
+  {
+    "id": "CT-05",
+    "feature": "RDP/VNC/SSH remote desktop clients",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.14",
+    "route": "Android sharing/intents and clean-room continuity protocols",
+    "tests": [
+      "plan:T-CT-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CT-06",
+    "feature": "Peripheral manager",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.14",
+    "route": "Android sharing/intents and clean-room continuity protocols",
+    "tests": [
+      "plan:T-CT-06"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "CA-01",
+    "feature": "RAOP/AirPlay2 audio sender/pairing/sync/volume/metadata",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-01"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S18"
+    ]
+  },
+  {
+    "id": "CA-02",
+    "feature": "AirPlay URL video/pairing/Range server/HW transcode/scrub",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-02"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S18"
+    ]
+  },
+  {
+    "id": "CA-03",
+    "feature": "AirPlay photo/slideshow",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CA-04",
+    "feature": "Pro legal-gated AirPlay screen mirror/FairPlay client",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-04"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S19"
+    ]
+  },
+  {
+    "id": "CA-05",
+    "feature": "Beam discovery/source/route chooser/indicator/quality/latency/audio routes",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15; owner:v2.1 \u00a71.3",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-05"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "CA-06",
+    "feature": "Separate GPL APK AirPlay audio receiver",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-06"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S20"
+    ]
+  },
+  {
+    "id": "CA-07",
+    "feature": "Separate GPL APK AirPlay mirroring/video receiver",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-07"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S20"
+    ]
+  },
+  {
+    "id": "CA-08",
+    "feature": "Cast SDK play/own castv2 pro; files/URLs/queue/scrub/volume",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-08"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S21"
+    ]
+  },
+  {
+    "id": "CA-09",
+    "feature": "Custom Cast web receiver plus WebRTC screen/window mirror",
+    "tier": "A/B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-09"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S17"
+    ]
+  },
+  {
+    "id": "CA-10",
+    "feature": "Own DLNA SSDP/AVTransport/RenderingControl sender and renderer",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-10"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "CA-11",
+    "feature": "Together sync/controls/chat/presence/QR; Syncplay/own-copy mode",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.15; owner:v2.1 \u00a71.3",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-11"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S22"
+    ]
+  },
+  {
+    "id": "CA-12",
+    "feature": "Miracast settings panel and active-session adaptation",
+    "tier": "C",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-12"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CA-13",
+    "feature": "Measured-link/thermal/receiver-aware cast quality ladder",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-13"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S17"
+    ]
+  },
+  {
+    "id": "CA-14",
+    "feature": "Cast exclusions/lock-critical stop/trust/no default relay",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.15",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-14"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CA-15",
+    "feature": "Shared-clock multi-receiver synchronized casting",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "tests": [
+      "plan:T-CA-15"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S24"
+    ]
+  },
+  {
+    "id": "AX-01",
+    "feature": "Semantics/panes and TalkBack/Switch/Voice release gate",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-01"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S9"
+    ]
+  },
+  {
+    "id": "AX-02",
+    "feature": "Keyboard-complete shell",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-02"
+    ],
+    "status": "partial_unverified",
+    "gates": [
+      "S9"
+    ]
+  },
+  {
+    "id": "AX-03",
+    "feature": "Font scale/contrast/reduced motion adaptation",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-03"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "AX-04",
+    "feature": "Pointer/touch/touchpad/focus rings",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-04"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S15"
+    ]
+  },
+  {
+    "id": "AX-05",
+    "feature": "Fusion IME input remap",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-05"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S16"
+    ]
+  },
+  {
+    "id": "AX-06",
+    "feature": "Voice palette input",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AX-07",
+    "feature": "Player captions",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AX-08",
+    "feature": "Accessibility test automation",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.16",
+    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "tests": [
+      "plan:T-AX-08"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S9"
+    ]
+  },
+  {
+    "id": "AU-01",
+    "feature": "Routines triggers/actions/dry-run/audit/per-action permissions",
+    "tier": "A/B",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.17",
+    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "tests": [
+      "plan:T-AU-01"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "AU-02",
+    "feature": "Workspace presets",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.17",
+    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "tests": [
+      "plan:T-AU-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AU-03",
+    "feature": "AppFunctions exposure",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.17",
+    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "tests": [
+      "plan:T-AU-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AU-04",
+    "feature": "Opt-in local assistant/visible tool calls/memory/no idle process",
+    "tier": "A/B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.17",
+    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "tests": [
+      "plan:T-AU-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "AU-05",
+    "feature": "Third-party automation Intent API",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.17",
+    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "tests": [
+      "plan:T-AU-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "RG-01",
+    "feature": "Five-state thermal governor for index/effects/backup/cast",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.18; owner:v2.1 \u00a71.3",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "RG-02",
+    "feature": "ADPF then sustained-performance then own-governor fallback",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.18; owner:v2.1 \u00a71.3",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "plan:T-RG-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "RG-03",
+    "feature": "Interaction/idle refresh policy",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.18",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "plan:T-RG-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "RG-04",
+    "feature": "Own-process PSS/CPU/wakeups/IO/net/exit/memory-limiter monitor",
+    "tier": "A/B",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.18",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "testing/contract/PilotCoreChecks",
+      "plan:physical-device-and-Android-acceptance"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "RG-05",
+    "feature": "OEM game overlay/cooler coexistence spike",
+    "tier": "C",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.18",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "plan:T-RG-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "RG-06",
+    "feature": "Charging/battery/metered-aware work",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.18",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "plan:T-RG-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "RG-07",
+    "feature": "Low-RAM mode",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.0 \u00a77.18",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "plan:T-RG-07"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S8"
+    ]
+  },
+  {
+    "id": "RG-08",
+    "feature": "Hardware codec/NPU/Vulkan report and routing",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.18",
+    "route": "Capability-led thermal/performance governor and platform probes",
+    "tests": [
+      "plan:T-RG-08"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "CM-01",
+    "feature": "Separate Wine/Box64 APK with user installers",
+    "tier": "B",
+    "phase": "P4",
+    "sources": "owner:v2.0 \u00a77.19",
+    "route": "Optional compatibility boundary, never part of main APK",
+    "tests": [
+      "plan:T-CM-01"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CM-02",
+    "feature": "Web-app windows",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.0 \u00a77.19",
+    "route": "Optional compatibility boundary, never part of main APK",
+    "tests": [
+      "plan:T-CM-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "CM-03",
+    "feature": "No macOS application execution",
+    "tier": "X",
+    "phase": "\u2014",
+    "sources": "owner:v2.0 \u00a77.19",
+    "route": "Optional compatibility boundary, never part of main APK",
+    "tests": [
+      "plan:T-CM-03"
+    ],
+    "status": "excluded",
+    "gates": []
+  },
+  {
+    "id": "BL-01",
+    "feature": "One-time purchase $19.99 and optional $14.99 Pro pack",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.20; owner:v2.1 \u00a71.3",
+    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "tests": [
+      "plan:T-BL-01"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BL-02",
+    "feature": "Signed Keystore-bound offline/grace entitlement cache",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.20",
+    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "tests": [
+      "plan:T-BL-02"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BL-03",
+    "feature": "Pro Ed25519 license keys/optional device binding/transfers",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.20",
+    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "tests": [
+      "plan:T-BL-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BL-04",
+    "feature": "14-day full trial then read-only Files/Find and nag-free state",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.20",
+    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "tests": [
+      "plan:T-BL-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "BL-05",
+    "feature": "Refund-safe revocation/no user-data wipe",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.0 \u00a77.20",
+    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "tests": [
+      "plan:T-BL-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "IN-01",
+    "feature": "Mouse press-release/scroll mapping/hover/Learn my mouse",
+    "tier": "A",
+    "phase": "P1",
+    "sources": "owner:v2.1 \u03943",
+    "route": "Compose desktopMouse/per-device learning; own input routing only",
+    "tests": [
+      "plan:T-IN-01"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S15"
+    ]
+  },
+  {
+    "id": "IN-07",
+    "feature": "Game-controller pointer mode",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u03943",
+    "route": "Compose desktopMouse/per-device learning; own input routing only",
+    "tests": [
+      "plan:T-IN-07"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "IN-08",
+    "feature": "External-keyboard IME switcher",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u03943",
+    "route": "Compose desktopMouse/per-device learning; own input routing only",
+    "tests": [
+      "plan:T-IN-08"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-01",
+    "feature": "Segmented background blur/replace/remove",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-01"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-02",
+    "feature": "Smoothed auto-frame/multi-person crop",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-02"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-03",
+    "feature": "Gaze-aware framing; eye-contact redirect research only",
+    "tier": "A",
+    "phase": "P4",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-03"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-04",
+    "feature": "Video denoise/low-light shaders",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-04"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-05",
+    "feature": "License-verified FSR1 upscale",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-05"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-06",
+    "feature": "Studio face-normal virtual relight",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-06"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-07",
+    "feature": "WebRTC APM/RNNoise microphone noise removal",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-07"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-08",
+    "feature": "AEC3 room echo removal",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-08"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-09",
+    "feature": "Vignette/LUT/color/.cube import",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-09"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-10",
+    "feature": "Hand-landmark gesture actions",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-10"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-11",
+    "feature": "Procedural/parallax/user-image scenes",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-11"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-12",
+    "feature": "License/RAM-gated on-device generative scenes",
+    "tier": "A/B",
+    "phase": "P4",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-12"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S28"
+    ]
+  },
+  {
+    "id": "LN-13",
+    "feature": "Presenter person/slides/screen/pointer/ink composition",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-13"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-14",
+    "feature": "Lens presets/hotkeys/per-app memory",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-14"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "LN-15",
+    "feature": "Thermal/quality ladder",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-15"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-20",
+    "feature": "Fusion Meet owned WebRTC processed tracks/screen share",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-20"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "LN-21",
+    "feature": "Browser per-site processed camera/mic/display route",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-21"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S25",
+      "S30"
+    ]
+  },
+  {
+    "id": "LN-22",
+    "feature": "PC companion webcam route",
+    "tier": "A",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-22"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S27"
+    ]
+  },
+  {
+    "id": "LN-23",
+    "feature": "Lens recording/RTMP/SRT route",
+    "tier": "A",
+    "phase": "P2",
+    "sources": "owner:v2.1 \u00a72.3",
+    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "tests": [
+      "plan:T-LN-23"
+    ],
+    "status": "not_implemented",
+    "gates": [
+      "S26"
+    ]
+  },
+  {
+    "id": "MS-01",
+    "feature": "BlueBubbles-compatible client requires user-owned Mac and Apple ID",
+    "tier": "A/B",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a73",
+    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "tests": [
+      "plan:T-MS-01"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MS-02",
+    "feature": "No on-phone no-Mac iMessage/rustpush/private FairPlay certificates",
+    "tier": "X",
+    "phase": "\u2014",
+    "sources": "owner:v2.1 \u00a73",
+    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "tests": [
+      "plan:T-MS-02"
+    ],
+    "status": "excluded",
+    "gates": []
+  },
+  {
+    "id": "MS-03",
+    "feature": "No hosted Apple-account relay sold by Fusion",
+    "tier": "X",
+    "phase": "\u2014",
+    "sources": "owner:v2.1 \u00a73",
+    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "tests": [
+      "plan:T-MS-03"
+    ],
+    "status": "excluded",
+    "gates": []
+  },
+  {
+    "id": "MS-04",
+    "feature": "RCS system-app handoff only",
+    "tier": "C",
+    "phase": "\u2014",
+    "sources": "owner:v2.1 \u00a73",
+    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "tests": [
+      "plan:T-MS-04"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  },
+  {
+    "id": "MS-05",
+    "feature": "SMS/MMS with SMS role",
+    "tier": "B",
+    "phase": "P3",
+    "sources": "owner:v2.1 \u00a73",
+    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "tests": [
+      "plan:T-MS-05"
+    ],
+    "status": "partial_unverified",
+    "gates": []
+  },
+  {
+    "id": "MS-06",
+    "feature": "Permissive Matrix/XMPP clients; no AGPL Signal client",
+    "tier": "A",
+    "phase": "P3/P4",
+    "sources": "owner:v2.1 \u00a73",
+    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "tests": [
+      "plan:T-MS-06"
+    ],
+    "status": "not_implemented",
+    "gates": []
+  }
+]

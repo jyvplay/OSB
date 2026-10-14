@@ -1,0 +1,214 @@
+[
+  {
+    "repository": "openjdk/jdk17u",
+    "commit": "9c16e89d275654cee98f5374434bea2097dda91e",
+    "path": "src/java.base/share/classes/java/lang/Character.java",
+    "git_blob": "251cd6011698788116fd14ae700005eff1f10f4f",
+    "sha256": "677de6733b920f36a78ff8542cb4d605fb61a47dc610c24bc7b98e2b1de95c59",
+    "url": "https://github.com/openjdk/jdk17u/blob/9c16e89d275654cee98f5374434bea2097dda91e/src/java.base/share/classes/java/lang/Character.java",
+    "excerpts": [
+      {
+        "line": 119,
+        "text": " * sometimes referred to as the <em>Basic Multilingual Plane (BMP)</em>.\n * <a id=\"supplementary\">Characters</a> whose code points are greater\n * than U+FFFF are called <em>supplementary character</em>s.  The Java\n * platform uses the UTF-16 representation in {@code char} arrays and"
+      },
+      {
+        "line": 120,
+        "text": " * <a id=\"supplementary\">Characters</a> whose code points are greater\n * than U+FFFF are called <em>supplementary character</em>s.  The Java\n * platform uses the UTF-16 representation in {@code char} arrays and\n * in the {@code String} and {@code StringBuffer} classes. In"
+      },
+      {
+        "line": 123,
+        "text": " * in the {@code String} and {@code StringBuffer} classes. In\n * this representation, supplementary characters are represented as a pair\n * of {@code char} values, the first from the <em>high-surrogates</em>\n * range, (&#92;uD800-&#92;uDBFF), the second from the"
+      },
+      {
+        "line": 132,
+        "text": " * {@code int} value represents all Unicode code points,\n * including supplementary code points. The lower (least significant)\n * 21 bits of {@code int} are used to represent Unicode code\n * points and the upper (most significant) 11 bits must be zero."
+      },
+      {
+        "line": 136,
+        "text": " * Unless otherwise specified, the behavior with respect to\n * supplementary characters and surrogate {@code char} values is\n * as follows:\n *"
+      },
+      {
+        "line": 141,
+        "text": " * <li>The methods that only accept a {@code char} value cannot support\n * supplementary characters. They treat {@code char} values from the\n * surrogate ranges as undefined characters. For example,\n * {@code Character.isLetter('\\u005CuD840')} returns {@code false}, even though"
+      },
+      {
+        "line": 148,
+        "text": " * <li>The methods that accept an {@code int} value support all\n * Unicode characters, including supplementary characters. For\n * example, {@code Character.isLetter(0x2F81A)} returns\n * {@code true} because the code point value represents a letter"
+      },
+      {
+        "line": 631,
+        "text": "     * The minimum value of a\n     * <a href=\"http://www.unicode.org/glossary/#supplementary_code_point\">\n     * Unicode supplementary code point</a>, constant {@code U+10000}.\n     *"
+      },
+      {
+        "line": 632,
+        "text": "     * <a href=\"http://www.unicode.org/glossary/#supplementary_code_point\">\n     * Unicode supplementary code point</a>, constant {@code U+10000}.\n     *\n     * @since 1.5"
+      },
+      {
+        "line": 4163,
+        "text": "         * <p><b>Note:</b> This method cannot handle\n         * <a href=\"Character.html#supplementary\"> supplementary\n         * characters</a>.  To support all Unicode characters, including\n         * supplementary characters, use the {@link #of(int)} method."
+      },
+      {
+        "line": 4165,
+        "text": "         * characters</a>.  To support all Unicode characters, including\n         * supplementary characters, use the {@link #of(int)} method.\n         *\n         * @param   c  The character in question"
+      },
+      {
+        "line": 8669,
+        "text": "     * @apiNote This method cannot handle <a\n     * href=\"#supplementary\"> supplementary characters</a>. To support\n     * all Unicode characters, including supplementary characters, use\n     * the {@link #toString(int)} method."
+      },
+      {
+        "line": 8670,
+        "text": "     * href=\"#supplementary\"> supplementary characters</a>. To support\n     * all Unicode characters, including supplementary characters, use\n     * the {@link #toString(int)} method.\n     *"
+      },
+      {
+        "line": 8737,
+        "text": "     * Determines whether the specified character (Unicode code point)\n     * is in the <a href=\"#supplementary\">supplementary character</a> range.\n     *\n     * @param  codePoint the character (Unicode code point) to be tested"
+      },
+      {
+        "line": 8759,
+        "text": "     * but are used in the representation of\n     * <a href=\"#supplementary\">supplementary characters</a>\n     * in the UTF-16 encoding.\n     *"
+      },
+      {
+        "line": 8784,
+        "text": "     * but are used in the representation of\n     * <a href=\"#supplementary\">supplementary characters</a>\n     * in the UTF-16 encoding.\n     *"
+      },
+      {
+        "line": 8805,
+        "text": "     * but are used in the representation of\n     * <a href=\"#supplementary\">supplementary characters</a>\n     * in the UTF-16 encoding.\n     *"
+      },
+      {
+        "line": 8857,
+        "text": "     * @param   codePoint the character (Unicode code point) to be tested.\n     * @return  2 if the character is a valid supplementary character; 1 otherwise.\n     * @see     Character#isSupplementaryCodePoint(int)\n     * @since   1.5"
+      },
+      {
+        "line": 8866,
+        "text": "    /**\n     * Converts the specified surrogate pair to its supplementary code\n     * point value. This method does not validate the specified\n     * surrogate pair. The caller must validate it using {@link"
+      },
+      {
+        "line": 8873,
+        "text": "     * @param  low the low-surrogate code unit\n     * @return the supplementary code point composed from the\n     *         specified surrogate pair.\n     * @since  1.5"
+      },
+      {
+        "line": 8894,
+        "text": "     * {@code char} value at the following index is in the\n     * low-surrogate range, then the supplementary code point\n     * corresponding to this surrogate pair is returned. Otherwise,\n     * the {@code char} value at the given index is returned."
+      },
+      {
+        "line": 8927,
+        "text": "     * {@code char} value at the following index is in the\n     * low-surrogate range, then the supplementary code point\n     * corresponding to this surrogate pair is returned. Otherwise,\n     * the {@code char} value at the given index is returned."
+      },
+      {
+        "line": 8953,
+        "text": "     * {@code char} value at the following index is in the\n     * low-surrogate range, then the supplementary code point\n     * corresponding to this surrogate pair is returned. Otherwise,\n     * the {@code char} value at the given index is returned."
+      },
+      {
+        "line": 8996,
+        "text": "     * in the {@code CharSequence} is in the\n     * high-surrogate range, then the supplementary code point\n     * corresponding to this surrogate pair is returned. Otherwise,\n     * the {@code char} value at {@code (index - 1)} is"
+      }
+    ]
+  },
+  {
+    "repository": "androidx/androidx",
+    "commit": "ce68e589c35e8b172d9b5d469e837d7af268c112",
+    "path": "compose/ui/ui-text/src/commonMain/kotlin/androidx/compose/ui/text/input/TextFieldValue.kt",
+    "git_blob": "4ae2fb556f5528db621400d944caee0e16369d2d",
+    "sha256": "1e9a71e5c2c0a44bf6441637a5abe2373b543fc3f3bc2130bfe8ad108caa23bb",
+    "url": "https://github.com/androidx/androidx/blob/ce68e589c35e8b172d9b5d469e837d7af268c112/compose/ui/ui-text/src/commonMain/kotlin/androidx/compose/ui/text/input/TextFieldValue.kt",
+    "excerpts": [
+      {
+        "line": 34,
+        "text": " *\n * The input service updates text selection, cursor, text and text composition. This class\n * represents those values and it is possible to observe changes to those values in the text editing\n * composables."
+      },
+      {
+        "line": 41,
+        "text": " *\n * Input service composition is an instance of text produced by IME. An example visual for the\n * composition is that the currently composed word is visually separated from others with underline,\n * or text background. For description of composition please check"
+      },
+      {
+        "line": 42,
+        "text": " * Input service composition is an instance of text produced by IME. An example visual for the\n * composition is that the currently composed word is visually separated from others with underline,\n * or text background. For description of composition please check\n * [W3C IME Composition](https://www.w3.org/TR/ime-api/#ime-composition)."
+      },
+      {
+        "line": 43,
+        "text": " * composition is that the currently composed word is visually separated from others with underline,\n * or text background. For description of composition please check\n * [W3C IME Composition](https://www.w3.org/TR/ime-api/#ime-composition).\n *"
+      },
+      {
+        "line": 44,
+        "text": " * or text background. For description of composition please check\n * [W3C IME Composition](https://www.w3.org/TR/ime-api/#ime-composition).\n *\n * IME composition is defined by [composition] parameter and function. When a [TextFieldValue] with"
+      },
+      {
+        "line": 46,
+        "text": " *\n * IME composition is defined by [composition] parameter and function. When a [TextFieldValue] with\n * null [composition] is passed to a TextField, if there was an active [composition] on the text,\n * the changes will be applied. Applying a composition will accept the changes that were still being"
+      },
+      {
+        "line": 47,
+        "text": " * IME composition is defined by [composition] parameter and function. When a [TextFieldValue] with\n * null [composition] is passed to a TextField, if there was an active [composition] on the text,\n * the changes will be applied. Applying a composition will accept the changes that were still being\n * composed by IME. Please use [copy] functions if you do not want to intentionally apply the"
+      },
+      {
+        "line": 48,
+        "text": " * null [composition] is passed to a TextField, if there was an active [composition] on the text,\n * the changes will be applied. Applying a composition will accept the changes that were still being\n * composed by IME. Please use [copy] functions if you do not want to intentionally apply the\n * ongoing IME composition."
+      },
+      {
+        "line": 50,
+        "text": " * composed by IME. Please use [copy] functions if you do not want to intentionally apply the\n * ongoing IME composition.\n *\n * @param annotatedString the text to be rendered."
+      },
+      {
+        "line": 53,
+        "text": " * @param annotatedString the text to be rendered.\n * @param selection the selection range. If the selection is collapsed, it represents cursor\n *   location. When selection range is out of bounds, it is constrained with the text length.\n * @param composition the composition range, null means empty composition or apply if a composition"
+      },
+      {
+        "line": 54,
+        "text": " * @param selection the selection range. If the selection is collapsed, it represents cursor\n *   location. When selection range is out of bounds, it is constrained with the text length.\n * @param composition the composition range, null means empty composition or apply if a composition\n *   exists on the text. Owned by IME, and if you have an instance of [TextFieldValue] please use"
+      },
+      {
+        "line": 55,
+        "text": " *   location. When selection range is out of bounds, it is constrained with the text length.\n * @param composition the composition range, null means empty composition or apply if a composition\n *   exists on the text. Owned by IME, and if you have an instance of [TextFieldValue] please use\n *   [copy] functions if you do not want to intentionally change the value of this field."
+      },
+      {
+        "line": 63,
+        "text": "    public val annotatedString: AnnotatedString,\n    selection: TextRange = TextRange.Zero,\n    composition: TextRange? = null,\n) {"
+      },
+      {
+        "line": 64,
+        "text": "    selection: TextRange = TextRange.Zero,\n    composition: TextRange? = null,\n) {\n    /**"
+      },
+      {
+        "line": 68,
+        "text": "     * @param text the text to be rendered.\n     * @param selection the selection range. If the selection is collapsed, it represents cursor\n     *   location. When selection range is out of bounds, it is constrained with the text length.\n     * @param composition the composition range, null means empty composition or apply if a"
+      },
+      {
+        "line": 69,
+        "text": "     * @param selection the selection range. If the selection is collapsed, it represents cursor\n     *   location. When selection range is out of bounds, it is constrained with the text length.\n     * @param composition the composition range, null means empty composition or apply if a\n     *   composition exists on the text. Owned by IME, and if you have an instance of"
+      },
+      {
+        "line": 70,
+        "text": "     *   location. When selection range is out of bounds, it is constrained with the text length.\n     * @param composition the composition range, null means empty composition or apply if a\n     *   composition exists on the text. Owned by IME, and if you have an instance of\n     *   [TextFieldValue] please use [copy] functions if you do not want to intentionally change the"
+      },
+      {
+        "line": 71,
+        "text": "     * @param composition the composition range, null means empty composition or apply if a\n     *   composition exists on the text. Owned by IME, and if you have an instance of\n     *   [TextFieldValue] please use [copy] functions if you do not want to intentionally change the\n     *   value of this field."
+      },
+      {
+        "line": 77,
+        "text": "        text: String = \"\",\n        selection: TextRange = TextRange.Zero,\n        composition: TextRange? = null,\n    ) : this(AnnotatedString(text), selection, composition)"
+      },
+      {
+        "line": 78,
+        "text": "        selection: TextRange = TextRange.Zero,\n        composition: TextRange? = null,\n    ) : this(AnnotatedString(text), selection, composition)\n"
+      },
+      {
+        "line": 79,
+        "text": "        composition: TextRange? = null,\n    ) : this(AnnotatedString(text), selection, composition)\n\n    public val text: String"
+      },
+      {
+        "line": 85,
+        "text": "    /**\n     * The selection range. If the selection is collapsed, it represents cursor location. When\n     * selection range is out of bounds, it is constrained with the text length.\n     */"
+      },
+      {
+        "line": 86,
+        "text": "     * The selection range. If the selection is collapsed, it represents cursor location. When\n     * selection range is out of bounds, it is constrained with the text length.\n     */\n    public val selection: TextRange = selection.coerceIn(0, text.length)"
+      },
+      {
+        "line": 88,
+        "text": "     */\n    public val selection: TextRange = selection.coerceIn(0, text.length)\n\n    /**"
+      }
+    ]
+  }
+]

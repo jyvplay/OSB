@@ -1,0 +1,138 @@
+$ /home/user/.cache/fusion-tools/java/jdk4py/java-runtime/bin/java -version
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+Exit: 0; expected: 0
+
+$ /home/user/.cache/fusion-tools/kotlin/package/bin/kotlinc -version
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/check_project.py
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+231 recorded requirements,35 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+48 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+Exit: 0; expected: 0
+
+$ /usr/bin/python -m unittest discover -s android/tools -p test_*.py -v
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_apk_metadata_identity_path_and_split_guards (test_native_lab.NativeLabChecks.test_apk_metadata_identity_path_and_split_guards) ... ok
+test_explicit_serial_and_consent (test_native_lab.NativeLabChecks.test_explicit_serial_and_consent) ... ok
+test_font_restore_input_bounds (test_native_lab.NativeLabChecks.test_font_restore_input_bounds) ... ok
+test_instrumentation_requires_exact_completion (test_native_lab.NativeLabChecks.test_instrumentation_requires_exact_completion) ... ok
+test_missing_or_truncated_capture_refused (test_native_lab.NativeLabChecks.test_missing_or_truncated_capture_refused) ... ok
+test_titlebar_and_pending_copy_source_regressions (test_native_lab.NativeLabChecks.test_titlebar_and_pending_copy_source_regressions) ... ok
+test_backend_denial_replaces_dangerous_legacy_bodies (test_native_source_audit.NativeSourceAuditChecks.test_backend_denial_replaces_dangerous_legacy_bodies) ... ok
+test_complete_scope_register_and_foundations_accounted_for (test_native_source_audit.NativeSourceAuditChecks.test_complete_scope_register_and_foundations_accounted_for) ... ok
+test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible) ... ok
+test_database_upgrade_and_write_failures_are_not_hidden (test_native_source_audit.NativeSourceAuditChecks.test_database_upgrade_and_write_failures_are_not_hidden) ... ok
+test_implementation_is_not_blindly_exported (test_native_source_audit.NativeSourceAuditChecks.test_implementation_is_not_blindly_exported) ... ok
+test_native_actions_and_capture_evidence_remain_real (test_native_source_audit.NativeSourceAuditChecks.test_native_actions_and_capture_evidence_remain_real) ... ok
+test_notes_adapter_and_ui_do_not_use_unchecked_filename_io (test_native_source_audit.NativeSourceAuditChecks.test_notes_adapter_and_ui_do_not_use_unchecked_filename_io) ... ok
+test_removed_real_notes_dependency_is_detected (test_native_source_audit.NativeSourceAuditChecks.test_removed_real_notes_dependency_is_detected) ... ok
+test_stale_picker_results_cannot_bypass_module_gates (test_native_source_audit.NativeSourceAuditChecks.test_stale_picker_results_cannot_bypass_module_gates) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.076s
+
+OK
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/native_lab.py doctor
+{
+  "checks": {
+    "java17": false,
+    "javac17": false,
+    "platform36": false,
+    "buildTools35": false,
+    "buildTools36": false,
+    "wrapper": true
+  },
+  "versions": {
+    "java": "not found",
+    "javac": "not found"
+  },
+  "sdk": "/SDK-NOT-CONFIGURED",
+  "adb": "/SDK-NOT-CONFIGURED/platform-tools/adb",
+  "adbPresent": false,
+  "buildPrerequisitesPresent": false,
+  "limitations": "No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Distribution SHA-256 remains unpinned; release supply-chain gate open."
+}
+Exit: 1; expected: 1
+
+$ /usr/bin/python android/tools/native_lab.py visual --serial emulator-5554
+Requires --allow-disposable-reset and an exact emulator-NNNN --serial; physical/network devices refused.
+Exit: 2; expected: 2
+
+$ /usr/bin/python android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+P1 not verified: SH-01, SH-02, SH-03, SH-04, SH-07, SH-08, SH-09, SH-10, SH-12, WM-01, WM-02, WM-05, WM-09, SR-01, SR-02, SR-03, SR-04, SR-05, FM-01, FM-02, FM-03, FM-04, FM-06, FM-11, FM-13, FM-15, FM-16, FM-18, NC-01, NC-03, NC-05, ST-01, ST-02, ST-04, ST-05, AP-01, TD-01, TD-02, PR-01, PR-09, FF-05, FF-06, FF-12, SC-08, BK-03, CT-01, AX-01, AX-02, AX-03, AX-04, AX-08, RG-01, RG-03, RG-04, RG-08, BL-01, BL-02, BL-03, BL-04, BL-05, IN-01
+Spikes not passed: S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S30
+RELEASE BLOCKED: no performance/accessibility/protocol/license claim is authorized.
+Exit: 1; expected: 1
+
+$ git diff --check
+Exit: 0; expected: 0
+
+Cached Java runtime module inspection: java.compiler present=True; jdk.compiler present=False
+
+PATH inventory: {"java": null, "javac": null, "gradle": null, "adb": null, "emulator": null, "sdkmanager": null, "qemu-system-x86_64": null, "chromium": null, "google-chrome": null, "gcc": "/usr/bin/gcc", "gh": "/usr/bin/gh", "z3": null, "lean": null, "coqc": null}
+/dev/kvm exists: False
+
+Current compiled-source hashes match final actual JVM evidence. Assertion sum: 169801
+
+Supplementary syntax scan: 128 Kotlin files; grammar flags ['cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Client.kt', 'core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt', 'feature/notes/src/contract/kotlin/dev/fusion/notes/NotesChecks.kt']. All three exact sources passed the real Kotlin compiler. All Android-dependent files parsed without grammar errors; NONE Android-compiled.
+
+Source-audit-only SHA-256 (NOT Android compile evidence):
+5d121553b5d8662f07661c0d3f311c434f54c740fbbf475f51d788df255bae3c  app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt
+9b37635bdb5fd5b552160a4d79d0b28b5d14b25400dbefaf845d8f0519fcf261  app/src/androidTest/java/dev/fusion/shell/CopyContractDeviceTest.kt
+b927934892e7c63ca911899c655b800d84f31ef7b95b23a8fcdefd0fab2c71e4  app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt
+14c27dace40dbec9ddf490dc96841c03f6862134ad73d8157d75f6ce6d6e18bb  app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt
+a33d9484ad5959ce279fd54dc9d51d0ddd71818518b64bb27f2d77def57e2fec  app/src/androidTest/java/dev/fusion/shell/StorageBoundaryDeviceTest.kt
+c625ff8010aa25ccd35fdd86a70d925e66c179d9eef5243cfbaf743ef47f9915  app/src/androidTest/java/dev/fusion/shell/VisualCaptureTest.kt
+33924f8cb9fab3659987c542ccf5d0c6d5f84a05c6455936b795d17bb4d5c44a  app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt
+9ef73f20dde541fd36395bddf5296a265bbb058807551e285dcc650470c0a56b  app/src/main/java/dev/fusion/shell/ExternalDesktopScreen.kt
+3a15dfe52d16c60f279a2eeb2ffba82952a33e118c266872037085f23ba8b8c2  app/src/main/java/dev/fusion/shell/ExternalDisplay.kt
+9e3b3be152a1b45020ab7d1da8144cce6d7be215c6cc93ebfdb99ac237c03261  app/src/main/java/dev/fusion/shell/MainActivity.kt
+003bbf71c72a1e1ce9e60a8ac5ee1ef87925ae71a4ab6c92640f3a3acaf48c79  core/files/src/main/java/dev/fusion/files/SafRepository.kt
+271b01e374834c3e678063facc1944bb7cacceedfc9901c91c247825498843c0  core/files/src/main/java/dev/fusion/files/TrashRepository.kt
+7b8f454f8ad2b8e8b4c8b3354122ec24431649c86bbcf5afbd940e384622cd36  core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt
+d58f8070ca85162b40ffd180c10cd5ba532c4f2c5d61cbb6bb598f0137ce6acc  core/storage/src/main/java/dev/fusion/storage/FusionDb.kt
+672de4fc84aa889897e1accad04c69ff41c25b9ded177d9a6fcdc4b82330261a  feature/find/src/main/java/dev/fusion/find/Palette.kt
+71cf358f280f7d5c2a746f80ad544b71341c4dc4e3a8ebd99a9b60f723a982cf  feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt
+f5631816034e43cb7ebffa8e7ca0fbc471600b023c5f66c06ca070c65a4d96e6  feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt
+2ee969c7b562eb1c9f614b37d307993a8bf61f5455831445fc8f0f19f056508f  feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt
+3dc6ea8c320d66770478d6a74e1437fd58d33ec787090e2b740073cced65ca1b  tools/check_project.py
+86cb91415ec30c4edbc7db42b1b6ffccd42a26314b0a4915451989024eb84895  tools/module_audit.py
+a6fca95da6d4e17cb226577800de185d925b1ebf03a1ec1fae6bfa99a2ccd89b  tools/native_lab.py
+af3946f51fefcb1bdb095b0bd47331742d9eb85327a81c4a9ef944fc0ed1a890  tools/native_source_audit.py
+afb28d49b8ce0a7e20c22d0976d043dbb3bab1b01ba66b75f6a0434990011b7c  tools/pilot_device_report.py
+c0115fd0077bbc07d08dae6166f6f5a7e56be6e0c4f053ea70cdf8e20e10b6dc  tools/requirements.py
+424618954df34b5db35fab375b626e654be4e9e0d13b267f1a2cfe3f74230792  tools/run_jvm_contracts.py
+0026cedb0b75455a872c5bc9b3b9388146a4e5038d95dc15d09f2b0b1cfe3c56  tools/test_module_audit.py
+a14e08aede3eafe9dba86956077199f613775aa2eaced56d85ad1ed1d2aebd5e  tools/test_native_lab.py
+b7f75658ed74389e783150fdcdfe532ae7ea60dbd6bd031a28896d261f97dbde  tools/test_native_source_audit.py
+4ef01b5bf3c90c23d34d4255570383501398f128cb9c0d108351aaa2cfeefb80  tools/test_pilot_reporting.py
+1636c2aed08c9446cc6a7fbba4672bd267db861fcb47924aded6e925200c00f1  tools/test_requirements.py
+
+$ /usr/bin/python android/tools/native_source_audit.py --check
+231 recorded requirements,35 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+Exit: 0; expected: 0

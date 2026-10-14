@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CaptureScreen(onRequestConsent: () -> Unit, onStop: () -> Unit) {
     val recording by RecorderState.recording.collectAsState()
+    val finishing by RecorderState.finishing.collectAsState()
     val message by RecorderState.message.collectAsState()
     val lastFile by RecorderState.lastFile.collectAsState()
 
@@ -29,7 +30,7 @@ fun CaptureScreen(onRequestConsent: () -> Unit, onStop: () -> Unit) {
         Text("Screen recording", style = MaterialTheme.typography.titleSmall)
         Text("Video only. No audio capture, no annotation, no OCR in this build.")
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = onRequestConsent, enabled = !recording) {
+            Button(onClick = onRequestConsent, enabled = !recording && !finishing) {
                 Text(if (recording) "Recording..." else "Start (asks consent)")
             }
             OutlinedButton(onClick = onStop, enabled = recording) { Text("Stop") }

@@ -1,0 +1,99 @@
+{
+  "repository": "Kotlin/kotlin-spec",
+  "commit": "0f762a2314a9304e4b3fc386b1aceef1d56c7e4c",
+  "path": "docs/src/md/kotlin.core/type-inference.md",
+  "blob": "0acec8f7042888e95a7f578d16d13d89100555bd",
+  "sha256": "2a977cf4c77f30c6b374180e727475304c25237f670cc16dc0666268d353ad8a",
+  "url": "https://github.com/Kotlin/kotlin-spec/blob/0f762a2314a9304e4b3fc386b1aceef1d56c7e4c/docs/src/md/kotlin.core/type-inference.md",
+  "excerpt": [
+    {
+      "line": 246,
+      "text": "A smart cast sink is *stable* for smart casting if its value cannot be changed via means external to the CFG; this guarantees the smart cast conditions calculated by the data-flow analysis still hold at the sink."
+    },
+    {
+      "line": 247,
+      "text": "This is one of the necessary conditions for smart cast to be applicable to an expression."
+    },
+    {
+      "line": 248,
+      "text": ""
+    },
+    {
+      "line": 249,
+      "text": "Smart cast sink stability breaks in the presence of the following aspects."
+    },
+    {
+      "line": 250,
+      "text": ""
+    },
+    {
+      "line": 251,
+      "text": "* concurrent writes;"
+    },
+    {
+      "line": 252,
+      "text": "* mutable value capturing;"
+    },
+    {
+      "line": 253,
+      "text": "* separate module compilation;"
+    },
+    {
+      "line": 254,
+      "text": "* custom getters;"
+    },
+    {
+      "line": 255,
+      "text": "* delegation."
+    },
+    {
+      "line": 256,
+      "text": ""
+    },
+    {
+      "line": 257,
+      "text": "The following smart cast sinks are considered stable."
+    },
+    {
+      "line": 258,
+      "text": ""
+    },
+    {
+      "line": 259,
+      "text": "1. Immutable local or classifier-scope properties without delegation or custom getters;"
+    },
+    {
+      "line": 260,
+      "text": "1. Mutable local properties without delegation or custom getters, if the compiler can prove that they are [effectively immutable][Effectively immutable smart cast sinks], i.e., cannot be changed by external means;"
+    },
+    {
+      "line": 261,
+      "text": "1. Immutable properties of immutable stable properties without delegation or custom getters, if they are declared in the current [module][Modules]."
+    },
+    {
+      "line": 262,
+      "text": ""
+    },
+    {
+      "line": 263,
+      "text": "##### Effectively immutable smart cast sinks"
+    },
+    {
+      "line": 264,
+      "text": ""
+    },
+    {
+      "line": 265,
+      "text": "We will call redefinition of $e$ ***direct*** redefinition, if it happens in the same declaration scope as the definition of $e$."
+    },
+    {
+      "line": 266,
+      "text": "If $e$ is redefined in a nested declaration scope (w.r.t. its definition), this is a ***nested*** redefinition."
+    },
+    {
+      "line": 267,
+      "text": ""
+    }
+  ],
+  "scope": "Separate module compilation breaks smart-cast sink stability. Supports compiler counterexample only; not an Android build or UI pass."
+}

@@ -1,9 +1,9 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    alias(libs.plugins.kotlin.jvm)
 }
 kotlin { jvmToolchain(17) }
 tasks.withType<Test> { useJUnit() }
 dependencies {
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit.junit)
     testImplementation(project(":testing"))
 }

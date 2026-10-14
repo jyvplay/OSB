@@ -1,0 +1,5 @@
+Actual separate-module Kotlin compilation using the production documents JAR. Not an Android build.
+/home/user/.cache/fusion-tools/BoundaryBefore.kt:3:38: error: smart cast to 'PendingCopy' is impossible, because 'pendingCopy' is a public API property declared in different module.
+    if (session.pendingCopy != null) session.pendingCopy.name else ""
+                                     ^^^^^^^^^^^^^^^^^^^
+Exit: 1

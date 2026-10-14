@@ -1,0 +1,10 @@
+COUNTEREXAMPLE: an in-process caller can mutate the published Kotlin List and change Beam admission. Not a remote exploit or Android execution.
+
+import dev.fusion.model.*
+fun main() {
+ val index=PilotPolicy.modules.indexOfFirst { it.id=="beam" }
+ check(!PilotPolicy.mayRun("beam",emptySet()))
+ (PilotPolicy.modules as MutableList<PilotModule>)[index]=PilotPolicy.modules[index].copy(access=PilotAccess.CANDIDATE)
+ check(PilotPolicy.mayRun("beam",emptySet()))
+ println("COUNTEREXAMPLE: an in-process caller can mutate the published Kotlin List and change Beam admission. Not a remote exploit or Android execution.")
+}

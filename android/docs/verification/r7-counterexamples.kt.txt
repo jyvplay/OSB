@@ -1,0 +1,18 @@
+import dev.fusion.commands.*
+import dev.fusion.windowing.*
+fun main() {
+    val keywords=mutableListOf("safe")
+    val registry=CommandRegistry(listOf(Command("test","Title","Hint",keywords)))
+    check(registry.search("intruder").isEmpty())
+    keywords.add("intruder")
+    println("Registry caller-owned keyword mutation changes results: ${registry.search("intruder").isNotEmpty()}")
+    val s=WindowEngine.reduce(DesktopState(screenWidth=1200f,screenHeight=900f),WindowCommand.Open("editor","Editor",Bounds(23f,41f,400f,300f)))
+    val tiled=WindowEngine.reduce(s,WindowCommand.TileWindow(1,Tile.MAXIMIZE,1200f,900f))
+    println("Tile overwrote original window bounds: ${s.windows[0].bounds} -> ${tiled.windows[0].bounds}; original geometry is absent from the old state schema.")
+    val dir=java.nio.file.Files.createTempDirectory("legacy-note-path-")
+    try {
+        val notes=java.nio.file.Files.createDirectory(dir.resolve("notes")).toFile()
+        java.nio.file.Files.writeString(dir.resolve("victim.md"),"outside note directory")
+        println("Legacy NotesStore File(dir, name + .md) expression reads ../victim: ${java.io.File(notes,"../victim.md").readText()}")
+    } finally { dir.toFile().deleteRecursively() }
+}

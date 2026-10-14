@@ -1,0 +1,83 @@
+$ /usr/bin/python -m unittest discover -s android/tools -p test_*.py -v
+
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_apk_metadata_identity_path_and_split_guards (test_native_lab.NativeLabChecks.test_apk_metadata_identity_path_and_split_guards) ... ok
+test_explicit_serial_and_consent (test_native_lab.NativeLabChecks.test_explicit_serial_and_consent) ... ok
+test_font_restore_input_bounds (test_native_lab.NativeLabChecks.test_font_restore_input_bounds) ... ok
+test_instrumentation_requires_exact_completion (test_native_lab.NativeLabChecks.test_instrumentation_requires_exact_completion) ... ok
+test_missing_or_truncated_capture_refused (test_native_lab.NativeLabChecks.test_missing_or_truncated_capture_refused) ... ok
+test_titlebar_and_pending_copy_source_regressions (test_native_lab.NativeLabChecks.test_titlebar_and_pending_copy_source_regressions) ... ok
+test_backend_denial_replaces_dangerous_legacy_bodies (test_native_source_audit.NativeSourceAuditChecks.test_backend_denial_replaces_dangerous_legacy_bodies) ... ok
+test_complete_scope_register_and_foundations_accounted_for (test_native_source_audit.NativeSourceAuditChecks.test_complete_scope_register_and_foundations_accounted_for) ... ok
+test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible) ... ok
+test_database_upgrade_and_write_failures_are_not_hidden (test_native_source_audit.NativeSourceAuditChecks.test_database_upgrade_and_write_failures_are_not_hidden) ... ok
+test_implementation_is_not_blindly_exported (test_native_source_audit.NativeSourceAuditChecks.test_implementation_is_not_blindly_exported) ... ok
+test_native_actions_and_capture_evidence_remain_real (test_native_source_audit.NativeSourceAuditChecks.test_native_actions_and_capture_evidence_remain_real) ... ok
+test_notes_adapter_and_ui_do_not_use_unchecked_filename_io (test_native_source_audit.NativeSourceAuditChecks.test_notes_adapter_and_ui_do_not_use_unchecked_filename_io) ... ok
+test_removed_real_notes_dependency_is_detected (test_native_source_audit.NativeSourceAuditChecks.test_removed_real_notes_dependency_is_detected) ... ok
+test_stale_picker_results_cannot_bypass_module_gates (test_native_source_audit.NativeSourceAuditChecks.test_stale_picker_results_cannot_bypass_module_gates) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_p1_only_flags_do_not_authorize_release (test_release_gate.ReleaseGateChecks.test_p1_only_flags_do_not_authorize_release) ... ok
+test_real_file_digest_tampering_and_symlink (test_release_gate.ReleaseGateChecks.test_real_file_digest_tampering_and_symlink) ... ok
+test_source_binding_without_attestation_hash_cycle (test_release_gate.ReleaseGateChecks.test_source_binding_without_attestation_hash_cycle) ... ok
+test_traceability_validation_survives_python_optimization (test_release_gate.ReleaseGateChecks.test_traceability_validation_survives_python_optimization) ... ok
+test_truthy_evidence_missing_and_outside_paths_refused (test_release_gate.ReleaseGateChecks.test_truthy_evidence_missing_and_outside_paths_refused) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 0.238s
+
+OK
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/check_project.py
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+231 recorded requirements,35 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+48 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/native_source_audit.py --check
+231 recorded requirements,35 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+
+
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+
+RELEASE BLOCKED: Every in-scope requirement, not just P1, must be verified; exclusions cannot expand silently
+
+Exit: 1; expected: 1
+
+$ /usr/bin/python -O android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+
+RELEASE BLOCKED: Every in-scope requirement, not just P1, must be verified; exclusions cannot expand silently
+
+Exit: 1; expected: 1
+
+$ git diff --check
+
+
+Exit: 0; expected: 0
+
+Latest JVM sum: 170728. Every recorded compiled source hash matches current input. Android build/visual checks remain unrun.

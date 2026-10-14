@@ -1,0 +1,89 @@
+$ /usr/bin/python android/tools/check_project.py
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 48, "unfinished": 48, "unfinished_percent": 100.0}
+48 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+Exit: 0; expected: 0
+
+$ /usr/bin/python -m unittest discover -s android/tools -p test_*.py -v
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_apk_metadata_identity_path_and_split_guards (test_native_lab.NativeLabChecks.test_apk_metadata_identity_path_and_split_guards) ... ok
+test_explicit_serial_and_consent (test_native_lab.NativeLabChecks.test_explicit_serial_and_consent) ... ok
+test_font_restore_input_bounds (test_native_lab.NativeLabChecks.test_font_restore_input_bounds) ... ok
+test_instrumentation_requires_exact_completion (test_native_lab.NativeLabChecks.test_instrumentation_requires_exact_completion) ... ok
+test_missing_or_truncated_capture_refused (test_native_lab.NativeLabChecks.test_missing_or_truncated_capture_refused) ... ok
+test_titlebar_and_pending_copy_source_regressions (test_native_lab.NativeLabChecks.test_titlebar_and_pending_copy_source_regressions) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.025s
+
+OK
+Exit: 0; expected: 0
+
+$ /usr/bin/python android/tools/native_lab.py doctor
+{
+  "checks": {
+    "java17": false,
+    "javac17": false,
+    "platform36": false,
+    "buildTools35": false,
+    "buildTools36": false,
+    "wrapper": true
+  },
+  "versions": {
+    "java": "not found",
+    "javac": "not found"
+  },
+  "sdk": "/SDK-NOT-CONFIGURED",
+  "adb": "/SDK-NOT-CONFIGURED/platform-tools/adb",
+  "adbPresent": false,
+  "buildPrerequisitesPresent": false,
+  "limitations": "No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Distribution SHA-256 remains unpinned; release supply-chain gate open."
+}
+Exit: 1; expected: 1
+
+$ /usr/bin/python android/tools/native_lab.py visual --serial emulator-5554
+Requires --allow-disposable-reset and an exact emulator-NNNN --serial; physical/network devices refused.
+Exit: 2; expected: 2
+
+$ /usr/bin/python android/tools/requirements.py --release
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+P1 not verified: SH-01, SH-02, SH-03, SH-04, SH-07, SH-08, SH-09, SH-10, SH-12, WM-01, WM-02, WM-05, WM-09, SR-01, SR-02, SR-03, SR-04, SR-05, FM-01, FM-02, FM-03, FM-04, FM-06, FM-11, FM-13, FM-15, FM-16, FM-18, NC-01, NC-03, NC-05, ST-01, ST-02, ST-04, ST-05, AP-01, TD-01, TD-02, PR-01, PR-09, FF-05, FF-06, FF-12, SC-08, BK-03, CT-01, AX-01, AX-02, AX-03, AX-04, AX-08, RG-01, RG-03, RG-04, RG-08, BL-01, BL-02, BL-03, BL-04, BL-05, IN-01
+Spikes not passed: S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S30
+RELEASE BLOCKED: no performance/accessibility/protocol/license claim is authorized.
+Exit: 1; expected: 1
+
+$ git diff --check
+Exit: 0; expected: 0
+
+Current compiled-source fingerprints match actual R6 JVM evidence.
+
+Source-audit-only SHA-256 (Android not compiled):
+723aa064885377ade056f204dc39a012899e1e240e4e17dc736372939361ef9c  tools/native_lab.py
+a14e08aede3eafe9dba86956077199f613775aa2eaced56d85ad1ed1d2aebd5e  tools/test_native_lab.py
+d158a8c349740897c25f34c19e7662dff0d4136764c8a864eb3070ad8746ac0b  tools/run_jvm_contracts.py
+e2ec1a78d2cc3075521b9f01b47dbba65d9ed46de065d02da30f649bab1c7216  app/src/main/java/dev/fusion/shell/MainActivity.kt
+e9a41eecb7d5c6f0e265261c49de7cd8d5f30484f071d7892933768a0abcaafe  feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt
+5d121553b5d8662f07661c0d3f311c434f54c740fbbf475f51d788df255bae3c  app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt
+9b37635bdb5fd5b552160a4d79d0b28b5d14b25400dbefaf845d8f0519fcf261  app/src/androidTest/java/dev/fusion/shell/CopyContractDeviceTest.kt
+b927934892e7c63ca911899c655b800d84f31ef7b95b23a8fcdefd0fab2c71e4  app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt
+43d95dfe5756aef6412746c3ae35da84233b3c46692a3dd9a481e96fdae39b46  app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt
+8876a09f46e99805c1beffe4c1c5f36d7c2c71badd460d79f5b1d1bd5a347194  app/src/androidTest/java/dev/fusion/shell/VisualCaptureTest.kt
+
+Supplementary Kotlin tree-sitter scan: 121 files; only CastV2Client.kt flagged. That exact source compiled successfully with Kotlin2.2.21 in the recorded isolated-library run; grammar limitation, not an Android compilation claim. All new/changed Android files parsed without grammar errors.

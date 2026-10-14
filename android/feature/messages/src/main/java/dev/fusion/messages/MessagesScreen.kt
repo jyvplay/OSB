@@ -42,6 +42,10 @@ import java.util.Locale
  */
 @Composable
 fun MessagesScreen(context: Context) {
+    val smsDeclared = remember(context) {
+        context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_PERMISSIONS)
+            .requestedPermissions?.contains(Manifest.permission.READ_SMS) == true
+    }
     val repo = remember(context) { SmsRepository(context) }
     val scope = rememberCoroutineScope()
     var tab by remember { mutableStateOf("SMS") }
@@ -91,7 +95,9 @@ fun MessagesScreen(context: Context) {
 
         when (tab) {
             "SMS" -> {
-                if (!smsGranted) {
+                if (!smsDeclared) {
+                    Text("SMS access is not included in this flavor. The default-SMS role and Play policy review have not passed. Use your system messaging app.")
+                } else if (!smsGranted) {
                     Text("SMS access is off. Grant READ_SMS to see your inbox and SEND_SMS to send.")
                     Button(onClick = {
                         permissionLauncher.launch(
@@ -110,7 +116,7 @@ fun MessagesScreen(context: Context) {
                             scope.launch {
                                 repo.send(recipient.trim(), body).fold(
                                     onSuccess = {
-                                        status = "SMS sent."
+                                        status = "Submitted to Android. Sending/delivery has not been confirmed."
                                         body = ""
                                         repo.inbox().fold(
                                             { messages.clear(); messages.addAll(it) },

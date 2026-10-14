@@ -7,25 +7,28 @@ data class LadderQuality(
     val bitrateBps: Int,
     val fps: Int,
     val resolutionLabel: String,
-    val reason: String
+    val reason: String,
+    val mustStop: Boolean = false
 )
 
-/**
- * QualityGovernor (CA-13):
- * Dynamically computes encoding bitrate, frame rate, and codec ladder
- * based on Wi-Fi link speed (RSSI/negotiated link rate) and hardware thermal headroom.
- * Steps down gracefully BEFORE critical states occur.
+/** CA-13/14: proposed policy only, not an active encoder or a measured throughput claim.
+ * Unknown capabilities or critical thermal status fail closed. Transports must obey mustStop.
  */
 object QualityGovernor {
     fun selectQuality(
         linkSpeedMbps: Int,
         thermalState: ThermalState,
-        receiverSupportsHevc: Boolean
+        receiverSupportsHevc: Boolean,
+        hardwareHevcAvailable: Boolean = false,
+        hardwareAvcAvailable: Boolean = false
     ): LadderQuality {
-        val codec = if (receiverSupportsHevc && linkSpeedMbps >= 50) "HEVC" else "AVC"
+        if (thermalState == ThermalState.CRITICAL || thermalState == ThermalState.UNKNOWN || linkSpeedMbps <= 0 || !hardwareAvcAvailable) {
+            return LadderQuality("none", 0, 0, "stopped", "Critical/unknown thermal, missing link observation or unverified hardware AVC fallback; stop rather than invent a working encoder.", mustStop = true)
+        }
+        val codec = if (receiverSupportsHevc && hardwareHevcAvailable && linkSpeedMbps >= 50) "HEVC" else "AVC"
 
         return when {
-            thermalState == ThermalState.CRITICAL || thermalState == ThermalState.THROTTLED ->
+            thermalState == ThermalState.THROTTLED ->
                 LadderQuality(
                     codec = "AVC",
                     bitrateBps = 1_500_000,
@@ -39,7 +42,7 @@ object QualityGovernor {
                     bitrateBps = 3_000_000,
                     fps = 30,
                     resolutionLabel = "1080p",
-                    reason = "Thermal severe warning -> capped at 3 Mbps"
+                    reason = "Thermal moderate warning -> capped at 3 Mbps"
                 )
             linkSpeedMbps < 20 ->
                 LadderQuality(
@@ -63,7 +66,7 @@ object QualityGovernor {
                     bitrateBps = 8_000_000,
                     fps = 60,
                     resolutionLabel = "1080p",
-                    reason = "Optimal link ($linkSpeedMbps Mbps) and thermals ($thermalState) -> 1080p@60fps"
+                    reason = "Proposed tier from observed link ($linkSpeedMbps Mbps) and thermal status ($thermalState) -> 1080p@60fps"
                 )
         }
     }

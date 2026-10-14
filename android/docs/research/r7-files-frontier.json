@@ -1,0 +1,58 @@
+{
+  "repository": "openjdk/jdk17u",
+  "commit": "9c16e89d275654cee98f5374434bea2097dda91e",
+  "path": "src/java.base/share/classes/java/nio/file/Files.java",
+  "blob": "6270f00be2641e2cc7da361cd10aafbf31f59e85",
+  "sha256": "c2c9313fa054f24f6ec4b6bf4d140952f8460e9c7e1dd33c809f1d9cd6f82d45",
+  "url": "https://github.com/openjdk/jdk17u/blob/9c16e89d275654cee98f5374434bea2097dda91e/src/java.base/share/classes/java/nio/file/Files.java",
+  "excerpts": [
+    {
+      "start_line": 1349,
+      "lines": [
+        "     * </tr>",
+        "     * <tr>",
+        "     *   <th scope=\"row\"> {@link StandardCopyOption#ATOMIC_MOVE ATOMIC_MOVE} </th>",
+        "     *   <td> The move is performed as an atomic file system operation and all",
+        "     *     other options are ignored. If the target file exists then it is",
+        "     *     implementation specific if the existing file is replaced or this method",
+        "     *     fails by throwing an {@link IOException}. If the move cannot be",
+        "     *     performed as an atomic file system operation then {@link",
+        "     *     AtomicMoveNotSupportedException} is thrown. This can arise, for",
+        "     *     example, when the target location is on a different {@code FileStore}",
+        "     *     and would require that the file be copied, or target location is",
+        "     *     associated with a different provider to this object. </td>",
+        "     * </tbody>",
+        "     * </table>",
+        "     *",
+        "     * <p> An implementation of this interface may support additional",
+        "     * implementation specific options."
+      ]
+    },
+    {
+      "start_line": 815,
+      "lines": [
+        "     * Creates a new empty file in the specified directory, using the given",
+        "     * prefix and suffix strings to generate its name. The resulting",
+        "     * {@code Path} is associated with the same {@code FileSystem} as the given",
+        "     * directory.",
+        "     *",
+        "     * <p> The details as to how the name of the file is constructed is",
+        "     * implementation dependent and therefore not specified. Where possible",
+        "     * the {@code prefix} and {@code suffix} are used to construct candidate",
+        "     * names in the same manner as the {@link",
+        "     * java.io.File#createTempFile(String,String,File)} method.",
+        "     *",
+        "     * <p> As with the {@code File.createTempFile} methods, this method is only",
+        "     * part of a temporary-file facility. Where used as a <em>work files</em>,",
+        "     * the resulting file may be opened using the {@link",
+        "     * StandardOpenOption#DELETE_ON_CLOSE DELETE_ON_CLOSE} option so that the",
+        "     * file is deleted when the appropriate {@code close} method is invoked.",
+        "     * Alternatively, a {@link Runtime#addShutdownHook shutdown-hook}, or the",
+        "     * {@link java.io.File#deleteOnExit} mechanism may be used to delete the",
+        "     * file automatically.",
+        "     *"
+      ]
+    }
+  ],
+  "boundary": "Imported Java atomic-move contract only. Does not verify Android provider/filesystem behavior, exclusive creation, physical durability or app build."
+}

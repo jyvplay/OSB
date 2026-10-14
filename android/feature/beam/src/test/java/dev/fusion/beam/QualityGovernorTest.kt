@@ -8,15 +8,16 @@ import org.junit.Test
 class QualityGovernorTest {
 
     @Test
-    fun testThrottledThermalForcesAVC720p() {
+    fun testCriticalThermalStops() {
         val q = QualityGovernor.selectQuality(
             linkSpeedMbps = 500,
             thermalState = ThermalState.CRITICAL,
-            receiverSupportsHevc = true
+            receiverSupportsHevc = true,
+            hardwareHevcAvailable = true, hardwareAvcAvailable = true
         )
-        assertEquals("AVC", q.codec)
-        assertEquals("720p", q.resolutionLabel)
-        assertEquals(24, q.fps)
+        assertTrue(q.mustStop)
+        assertEquals(0, q.fps)
+        assertEquals(0, q.bitrateBps)
     }
 
     @Test
@@ -24,7 +25,8 @@ class QualityGovernorTest {
         val q = QualityGovernor.selectQuality(
             linkSpeedMbps = 15,
             thermalState = ThermalState.COOL,
-            receiverSupportsHevc = true
+            receiverSupportsHevc = true,
+            hardwareHevcAvailable = true, hardwareAvcAvailable = true
         )
         assertEquals("AVC", q.codec)
         assertEquals("720p", q.resolutionLabel)
@@ -36,7 +38,8 @@ class QualityGovernorTest {
         val q = QualityGovernor.selectQuality(
             linkSpeedMbps = 180,
             thermalState = ThermalState.COOL,
-            receiverSupportsHevc = true
+            receiverSupportsHevc = true,
+            hardwareHevcAvailable = true, hardwareAvcAvailable = true
         )
         assertEquals("HEVC", q.codec)
         assertEquals("1080p", q.resolutionLabel)

@@ -1,0 +1,56 @@
+PASS WM-01/02/05/09 SH-08: reducer invariants, replay, reachability, density, recovery (5,000 transitions)
+PASS DP-10 SH-07: all module gates, default state, explicit consent, unknown module
+PASS RG-01/04 CA-13/14: fail-closed codec/thermal policy, thermal mapping and honest empty/percentile statistics
+PASS PR-01 FF-15 FM-18: strict text, durable pending payload, actual temporary-file write/readback and rejection paths
+PASS: 153216 assertions. JVM contracts only; no Android, physical device, network receiver, or latency claim.
+
+PASS calculator decimal: precedence, right powers, finite bounds, exact short decimals, 400 independent integer-oracle cases
+PASS calculator scientific: independent constants/identities, declared tolerances, domains, underflow and patched repeated-factorial attacks
+PASS calculator programmer: signed/logical shifts, literal bounds, wrap semantics, 400 arbitrary-width oracle cases
+PASS calculator units: exact standard factors, decimal/binary data distinction, temperature offset/domain and all same-dimension roundtrips
+PASS calculator history: bound/context integrity, corruption/truncation/size rejection, actual filesystem roundtrip, locale attack
+PASS: 2056 calculator assertions. No Android UI, AtomicFile, accessibility or physical-device acceptance inferred.
+
+PASS editor deltas: exact Unicode/newline reversal, branch invalidation, saved-state semantics, step/payload limits, 300 varied string pairs
+PASS editor literal search: exhaustive short binary oracle, repetitive long input, Unicode/locale/non-overlap semantics and hard limits
+PASS editor replacement: one-step reversibility, stale/cross-tab/ABA rejection, literal replacement, empty deletion, byte expansion and codec compatibility
+PASS editor navigation: explicit code-point columns, mixed line endings, EOF and invalid coordinate guards
+PASS: 8916 editor assertions. No Android UI, IME, accessibility, provider or frame-time acceptance inferred.
+
+PASS copy identities/recovery: late selection/cancel, retry/abandon races, historical v1 migration, actual phase-file roundtrip and no replay
+PASS copy readback: actual files, failure retention, immutable caller bytes and content/destination-bound evidence
+PASS copy event corpus: 1,500 transitions, 50 event/phase pairs, 3 actual file writes/readbacks
+PASS copy admission/schema: known-source and recent-target refusal, receipt bounds, sequence exhaustion and malformed-state rejection
+PASS: 5388 copy assertions. JVM/file evidence only; no Android picker, SAF provider, device crash or physical durability acceptance.
+
+Compiled source SHA-256:
+ff969fbe23631460c98031653f39e8929b11fe3f68a17b4cf7a294440a5f2fd0  cast/airplay/src/main/kotlin/dev/fusion/airplay/AirPlayUrlSender.kt
+84040f8065d19b1ce06abe1cfc6dbca156919525271b8cdf97c962c99e644d64  cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt
+d9a533767e9d94cadaf7a53e5bbb89d43dfd73e97744c10952ab7cbbe0b4d0cf  cast/castv2/src/main/kotlin/dev/fusion/castv2/CastJson.kt
+0f8d1430054373881f76470d30dfd41311c7dad39327ed90338fe6e89970a689  cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Client.kt
+0ef260b857681162388c20512c2b736302e7282bcf58463379967e7e0b5f98a7  cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt
+56ce1ed852ac9640fa2d001b3d22792115a4f69120dea5a87926cb02259bf056  cast/castv2/src/main/kotlin/dev/fusion/castv2/Proto.kt
+201ebaa1366864941695cc965b4869d2f5e0088004cd8aa706274f833821a001  core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt
+a19bdec5596c931de2545ff98b053c4528aa4c075a34de787fc356857b85e905  core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt
+dd5714a3653761d8a269f8f329d82c86f60b5793b6861b6c57871a539c1cb048  core/documents/src/main/kotlin/dev/fusion/documents/SessionCodec.kt
+c424b71f3fafb52cc75a268ce64a10102d499a3de460917262e7d4749162fbdc  core/documents/src/main/kotlin/dev/fusion/documents/TextDocument.kt
+fad3876be614a07603202a11aecf30bdca85659ef66f8502df556037fccdcf60  core/documents/src/main/kotlin/dev/fusion/documents/TextEditing.kt
+18085b09c0d5ff2a2b7a7b137b590b3c0ac849208970e1fb371fe7875dba591e  core/documents/src/main/kotlin/dev/fusion/documents/VerifiedCopy.kt
+18378866d2f924faabfa58f20bac816161b3f8ab136f9c8988bc66b61eaa7e18  core/index/src/main/kotlin/dev/fusion/index/LocalIndex.kt
+67e53e6202dcf5570e49816063f60513f64242b8fc03440dbef2e35eaf692ef2  core/model/src/main/kotlin/dev/fusion/model/Models.kt
+0b5efe45766c14d4218c4198ab7e1391796ec18a17b23022a9af2269b04037d5  core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt
+58d1ce08d7398f840b3989bbbba074abd20ce588c847d93640d421d4e71c1320  core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCodec.kt
+08b0f559eb881571db8af870e86e476b2b8eb7d7f741b42000cb6c847cb98339  core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt
+f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75  format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt
+6c258b92e8ad4f714e262d260adeed6b64dce80da9ebf35a05be77faaf2f3b6f  format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt
+52faca91b8e672b514169125c8b514e04e1930327792a655a1a8f7f062dd4786  format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt
+049b18efbc9258276cb8f9ac9866dacd0a1c1f3d2c7c9d5a77723bcad2bc5fcf  feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt
+2fd0140c7aa07e07dcf7467d458f7c0ff3f02d36b99546cfc88302e673546164  feature/calc/src/main/kotlin/dev/fusion/calc/CalculatorHistory.kt
+c502ab4320d9fb65e6afc4b18524c46910255ee1e25825835ac83d8a00738f50  feature/calc/src/main/kotlin/dev/fusion/calc/Programmer.kt
+e71f046b25950086a4bef6d3e96cce4d38e46a109d73cfba541c2a9672112b9b  feature/calc/src/main/kotlin/dev/fusion/calc/Units.kt
+9094bd74e582b73646da4af377be22cb331c309c31d4b792d1905cba7acddc0b  core/documents/src/contract/kotlin/dev/fusion/documents/EditorChecks.kt
+a4a6857d7cfc90bfa386c41f236ff4db02b3fe3b4eacdb3420fa9feffe68bfdd  core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt
+a3d71c977661945024e7fa8704b563aabcde37345ab35faba29457046d5a6ecb  feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt
+89eee07b9a1c21651e1f85e939a14809618d6569b05b0afcd9abc093d1d5468e  feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt
+8943c5233fe5bc3b565b463b4930961514c1f96a5d52a0abdf89a9f6810a6cd3  core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt
+4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5  testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt

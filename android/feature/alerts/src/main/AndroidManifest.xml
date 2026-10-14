@@ -4,11 +4,12 @@
         <!--
           Declaration per NotificationListenerService docs: exported=false plus the
           BIND_NOTIFICATION_LISTENER_SERVICE permission and the SERVICE_INTERFACE filter.
-          The user must still enable it manually in system settings.
+          Pilot: component disabled until encrypted history and privacy review pass.
         -->
         <service
             android:name="dev.fusion.alerts.FusionNotificationListener"
             android:exported="false"
+            android:enabled="false"
             android:label="Fusion Alerts"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>

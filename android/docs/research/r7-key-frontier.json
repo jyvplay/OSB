@@ -1,0 +1,15 @@
+{
+  "url": "https://github.com/androidx/androidx/blob/733872dcca4e10eb35a3486e5a5cd739ade89255/compose/ui/ui/src/commonMain/kotlin/androidx/compose/ui/input/key/Key.kt",
+  "blob": "b3d194e67c7599512cc74b80e7dab77b608d75f8",
+  "sha256": "7749d8ac67205ce8687862610a40406e5ab503493bef9e86c84661e2ea44ec28",
+  "line": 782,
+  "excerpt": [
+    "        /** Numeric keypad ',' key (for decimals or digit grouping). */",
+    "        public val NumPadComma: Key",
+    "",
+    "        /** Numeric keypad Enter key. */",
+    "        public val NumPadEnter: Key",
+    ""
+  ],
+  "limit": "Pinned AndroidX source confirms key symbol; exact Compose BOM artifacts and Android compilation remain unverified."
+}

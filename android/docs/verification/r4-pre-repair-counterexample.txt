@@ -1,0 +1,11 @@
+Historical pre-repair isolated compilation, rerun after repair only to preserve the observed counterexample. NOT current-source verification.
+Artifact SHA-256: eb629f8b889077ef8dab7165c53ce8b1e27d41f6ed52bfd0a486931970190c85
+PASS editor deltas: exact Unicode/newline reversal, branch invalidation, saved-state semantics, step/payload limits, 300 varied string pairs
+PASS editor literal search: exhaustive short binary oracle, repetitive long input, Unicode/locale/non-overlap semantics and hard limits
+Exception in thread "main" java.lang.IllegalStateException: selection moved after selected-match confirmation was prepared
+	at dev.fusion.documents.EditorChecks.verify(EditorChecks.kt:11)
+	at dev.fusion.documents.EditorChecks.rejects(EditorChecks.kt:15)
+	at dev.fusion.documents.EditorChecks.run(EditorChecks.kt:106)
+	at dev.fusion.documents.EditorChecks.main(EditorChecks.kt:128)
+
+Exit: 1 (expected failing attack)

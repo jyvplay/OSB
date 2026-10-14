@@ -1,0 +1,8 @@
+// Executed against the previously compiled R4 production JAR, not the v2 writer.
+import dev.fusion.documents.*
+import java.io.File
+fun main(args: Array<String>) {
+    val doc=TextDocument("legacy-doc","legacy.txt","content://test.documents/document/source","Later edit 😀\r\n",TextBytes.digest("Original"))
+    val s=EditorSession(listOf(doc),doc.id,PendingCopy(doc.id,doc.name,doc.sourceUri,"Frozen BOM \uFEFF漢\r\n"))
+    File(args.single()).outputStream().use { SessionCodec.write(s,it) }
+}

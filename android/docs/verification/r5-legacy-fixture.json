@@ -1,0 +1,10 @@
+{
+  "producer": "R4 production SessionCodec.write in previously compiled pilot-contracts.jar",
+  "producer_jar_sha256": "bdb1fb8796aeeb71a9f6c36bf1246bb9cd07141b894e005aded2797a33a30932",
+  "producer_source_evidence": "docs/verification/r4-jvm-contracts.txt",
+  "generator": "core/documents/src/contract/resources/LegacyFixture.kt.txt",
+  "fixture_sha256": "225712d0e470b2ff9706b49fb8c1f6c344608cebd3a39ef983c601f50a6088a0",
+  "fixture_bytes": 356,
+  "format_version": 1,
+  "contains": "Deliberately constructed local test document/URI identifiers; no provider or device claimed"
+}

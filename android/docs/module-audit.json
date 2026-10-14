@@ -1,0 +1,675 @@
+{
+  "schema": 1,
+  "date": "2026-10-14",
+  "denominator": "included Gradle modules, not features/flavors/services/effort",
+  "common_acceptance_gates": {
+    "android_build_lint_and_both_flavors": false,
+    "whole_assigned_scope_implemented": false,
+    "mandatory_spike_and_device_acceptance": false,
+    "security_privacy_accessibility_review": false,
+    "api37_16k_and_reference_performance": false,
+    "license_sbom_closure": false
+  },
+  "modules": [
+    {
+      "module": ":app",
+      "status": "incomplete",
+      "present_scope": "Native own-window host with restore/workspace actions, Find and notes integration; API/Compose/UI execution unverified",
+      "remaining_gap": "Android build/install, complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":core:documents",
+      "status": "incomplete",
+      "present_scope": "Strict text/editor kernels plus correlated copy protocol, v1\u2192v2 recovery migration, monotonic attempts and request/destination-bound byte readback",
+      "remaining_gap": "Android/provider/IME integration and physical persistence acceptance; regex, encodings, large-file/diff and universal Forge lifecycle remain incomplete",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:windowing",
+      "status": "incomplete",
+      "present_scope": "Immutable published window lists, deterministic reducer, bounded tile/normal restoration, ordered epoch/sequence command stream and codec v3 with historical v1/v2 migration",
+      "remaining_gap": "Full WM-01\u201316 semantics, Compose host/input/display integration, Room, physical a11y/perf",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:files",
+      "status": "incomplete",
+      "present_scope": "Read-only SAF browsing; all eight Files/trash mutation entry points refuse via tested pure denial policy; Android adapters uncompiled",
+      "remaining_gap": "Not the specified journaled fileops; ordered publish/verify/retire, provider crash/undo matrix S6",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:capabilities",
+      "status": "incomplete",
+      "present_scope": "Nullable runtime observations and probe source",
+      "remaining_gap": "Android probe execution, OEM/API34/36/37 matrix, hardware initialization evidence",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":core:model",
+      "status": "incomplete",
+      "present_scope": "Shared types and fail-closed pilot admission policy",
+      "remaining_gap": "Complete immutable cross-module models, schema/compatibility and full product integration",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:commands",
+      "status": "incomplete",
+      "present_scope": "Bounded immutable command snapshots and locale-stable literal ranking; mutation/aliasing regression tests executed",
+      "remaining_gap": "Complete command routing, conflict/remap/keyboard/a11y contracts and integration",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:settings",
+      "status": "incomplete",
+      "present_scope": "Settings graph source",
+      "remaining_gap": "DataStore, migrations, full settings/apply semantics and persistence acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":core:security",
+      "status": "incomplete",
+      "present_scope": "Password and vault crypto source",
+      "remaining_gap": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":core:perf",
+      "status": "incomplete",
+      "present_scope": "PSS/thermal/frame-statistics source; pure policy tested",
+      "remaining_gap": "ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:hw",
+      "status": "incomplete",
+      "present_scope": "Nullable hardware inventory/probe source",
+      "remaining_gap": "Verified hardware capabilities/initialization, Compat admission, reference device matrix",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":core:index",
+      "status": "incomplete",
+      "present_scope": "Bounded local literal index; entry/payload limits, serialized updates and explicit refusal tests executed; no crawler/FTS",
+      "remaining_gap": "Complete incremental/provider index, cancellation, privacy, latency and Android integration",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:storage",
+      "status": "incomplete",
+      "present_scope": "Checked AtomicFile plus legacy SQLite source; unsupported upgrades now refuse without DROP and failed inserts propagate",
+      "remaining_gap": "Specified Room/migrations, no destructive upgrades, process-death/disk-failure acceptance; adapter uncompiled",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":core:designsystem",
+      "status": "incomplete",
+      "present_scope": "Compose theme source",
+      "remaining_gap": "Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:editor",
+      "status": "incomplete",
+      "present_scope": "Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts",
+      "remaining_gap": "Native adapter/broker uncompiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:launcher",
+      "status": "incomplete",
+      "present_scope": "Shelf/launcher UI source",
+      "remaining_gap": "Full pinned/folders/recents/search/Home/widget behavior, keyboard/device acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:find",
+      "status": "incomplete",
+      "present_scope": "Native keyboard-navigable module/window/workspace command palette wired to actual actions; Android uncompiled",
+      "remaining_gap": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:files",
+      "status": "incomplete",
+      "present_scope": "Read-only SAF browsing pilot and explicit mutation gate",
+      "remaining_gap": "Full FM operations/journaling/undo/Peek, verified providers, accessibility and S6",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:browser",
+      "status": "incomplete",
+      "present_scope": "Browser surface source; pilot blocked",
+      "remaining_gap": "S29/S30 before engine work; process/origin/permissions/download/security/extension acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:terminal",
+      "status": "incomplete",
+      "present_scope": "App-UID local command execution source; explicit experimental consent",
+      "remaining_gap": "Isolated PTY process, terminal emulation, lifecycle/input/security and P1 acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:vault",
+      "status": "incomplete",
+      "present_scope": "Vault UI/storage source; pilot blocked",
+      "remaining_gap": "Reviewed secure lifecycle, exclusion/lock/key recovery, no data-loss paths, device/security tests",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:notes",
+      "status": "incomplete",
+      "present_scope": "Executed bounded UTF-8 file store, OS lock/revision checks, atomic publication/readback; native ViewModel/confirmation UI authored and unrun",
+      "remaining_gap": "Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, versioning/reversible delete, attachments/backlinks/OCR/export and full PR-02 scope",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:calc",
+      "status": "incomplete",
+      "present_scope": "Native decimal/scientific/programmer/units/history kernel, Compose and checkpoint integration",
+      "remaining_gap": "PR-09 Android build, actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:settings",
+      "status": "incomplete",
+      "present_scope": "Read-only diagnostics/redacted sharing; geometry density setting",
+      "remaining_gap": "Complete functional setting groups/migrations, runtime verification and accessible full-density behavior",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:media",
+      "status": "incomplete",
+      "present_scope": "Local media library/playback source; explicit experimental consent",
+      "remaining_gap": "Full codec/license/fidelity/metadata/library/device requirements and measured playback acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:beam",
+      "status": "incomplete",
+      "present_scope": "Discovery/sender surface source; pure fail-closed quality policy tested; pilot blocked",
+      "remaining_gap": "S17\u201321 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:alerts",
+      "status": "incomplete",
+      "present_scope": "Alerts UI/listener source; listener disabled",
+      "remaining_gap": "Opt-in/permission/privacy/deletion/migration and NC acceptance; disabled source is not completion",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:capture",
+      "status": "incomplete",
+      "present_scope": "MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards",
+      "remaining_gap": "Android build/playback/revocation/exclusion/power-loss and hardware encoder measurement",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:backup",
+      "status": "incomplete",
+      "present_scope": "Archive/export/restore source; pilot blocked",
+      "remaining_gap": "Reviewed encryption, transactional restore/rollback, versions/large-data/crash tests and BK acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:continuity",
+      "status": "incomplete",
+      "present_scope": "Android explicit share/peripheral inventory source",
+      "remaining_gap": "Full CT handoff/desktop/peripheral behaviors, no PC bridge claimed, device acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:accessibility",
+      "status": "incomplete",
+      "present_scope": "System accessibility observation/adaptation source",
+      "remaining_gap": "Whole-product AX release gates; system state inspection does not establish usable UI",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:together",
+      "status": "incomplete",
+      "present_scope": "Pre-existing local room/drift model only; pilot blocked",
+      "remaining_gap": "Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:lens",
+      "status": "incomplete",
+      "present_scope": "Camera preview only; explicit experimental consent",
+      "remaining_gap": "S25\u201328 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:messages",
+      "status": "incomplete",
+      "present_scope": "SMS repository/surface source, role/transport gaps; pilot blocked",
+      "remaining_gap": "Own-Mac client, SMS role/MMS, Matrix/XMPP, delivery states, security/device/legal acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":feature:automation",
+      "status": "incomplete",
+      "present_scope": "App-local routine source; explicit experimental consent",
+      "remaining_gap": "Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":format:native",
+      "status": "incomplete",
+      "present_scope": "Small text/CSV helper source",
+      "remaining_gap": "Strict safe bounded parsers/CSV fidelity and Forge registration; legacy UTF-8 heuristic not a validator",
+      "evidence_level": "compiled_only"
+    },
+    {
+      "module": ":format:archive",
+      "status": "incomplete",
+      "present_scope": "ZIP guard source",
+      "remaining_gap": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
+      "evidence_level": "compiled_only"
+    },
+    {
+      "module": ":format:ooxml",
+      "status": "incomplete",
+      "present_scope": "OOXML text extraction kernel source; no POI equivalence claim",
+      "remaining_gap": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
+      "evidence_level": "compiled_only"
+    },
+    {
+      "module": ":format:pdf",
+      "status": "incomplete",
+      "present_scope": "Platform PDF preview source; pilot blocked",
+      "remaining_gap": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":format:image",
+      "status": "incomplete",
+      "present_scope": "Image operations source; pilot blocked",
+      "remaining_gap": "FM/FF format registry, fidelity/loss reporting, HEIC platform gate and codec/device tests",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":format:psd",
+      "status": "incomplete",
+      "present_scope": "Bounded PSD parsing source; pilot blocked",
+      "remaining_gap": "S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":format:lok",
+      "status": "incomplete",
+      "present_scope": "LibreOffice route/gate source; not a shipping Office engine",
+      "remaining_gap": "Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":cast:dlna",
+      "status": "incomplete",
+      "present_scope": "UPnP/DLNA client and parser source; pilot blocked",
+      "remaining_gap": "Real receiver interoperability, transport trust/lifecycle/security and S20 evidence",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":cast:airplay",
+      "status": "incomplete",
+      "present_scope": "URL sender/SDP source compiled; no receiver tests",
+      "remaining_gap": "S18 hardware and S19 counsel/hardware gates; no mirroring or FairPlay bypass claim",
+      "evidence_level": "compiled_only"
+    },
+    {
+      "module": ":cast:castv2",
+      "status": "incomplete",
+      "present_scope": "CastV2 protocol/client source compiled with unchecked-cast warnings",
+      "remaining_gap": "S21 receiver/auth/session/Stop/exclusion/latency and protocol/security acceptance",
+      "evidence_level": "compiled_only"
+    },
+    {
+      "module": ":benchmark",
+      "status": "incomplete",
+      "present_scope": "Startup/baseline generator test source",
+      "remaining_gap": "Actual device runs on at least two reference devices, reproducible budgets and reports",
+      "evidence_level": "android_uncompiled"
+    },
+    {
+      "module": ":baselineprofile",
+      "status": "incomplete",
+      "present_scope": "Intentionally empty baseline profile; no generated rules",
+      "remaining_gap": "Generate from measured user journeys on devices, verify packaging/effect",
+      "evidence_level": "empty_profile"
+    },
+    {
+      "module": ":testing",
+      "status": "incomplete",
+      "present_scope": "Executed twelve-library JVM contracts including notes, window restore and search/backend denials; host/source audits; Android tests authored",
+      "remaining_gap": "Full module/device/provider/security/AX suites, CI build/lint/instrumentation and reviewed acceptance records",
+      "evidence_level": "runner_executed"
+    }
+  ],
+  "architecture_mapping": [
+    {
+      "slot": ":app",
+      "candidates": [
+        ":app"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:model",
+      "candidates": [
+        ":core:model"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:designsystem",
+      "candidates": [
+        ":core:designsystem"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:windowing",
+      "candidates": [
+        ":core:windowing"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:commands",
+      "candidates": [
+        ":core:commands"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:settings",
+      "candidates": [
+        ":core:settings"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:capabilities",
+      "candidates": [
+        ":core:capabilities"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:storage",
+      "candidates": [
+        ":core:storage"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:index",
+      "candidates": [
+        ":core:index"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:fileops",
+      "candidates": [
+        ":core:files"
+      ],
+      "kind": "partial_owner_not_equivalent"
+    },
+    {
+      "slot": ":core:security",
+      "candidates": [
+        ":core:security"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:perf",
+      "candidates": [
+        ":core:perf"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":core:hw",
+      "candidates": [
+        ":core:hw"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:launcher",
+      "candidates": [
+        ":feature:launcher"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:find",
+      "candidates": [
+        ":feature:find"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:files",
+      "candidates": [
+        ":feature:files"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:alerts",
+      "candidates": [
+        ":feature:alerts"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:quickpanel",
+      "candidates": [],
+      "kind": "absent"
+    },
+    {
+      "slot": ":feature:terminal",
+      "candidates": [
+        ":feature:terminal"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:editor",
+      "candidates": [
+        ":feature:editor"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:office",
+      "candidates": [],
+      "kind": "absent"
+    },
+    {
+      "slot": ":feature:notes",
+      "candidates": [
+        ":feature:notes"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:browser",
+      "candidates": [
+        ":feature:browser"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:capture",
+      "candidates": [
+        ":feature:capture"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:media",
+      "candidates": [
+        ":feature:media"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:photos",
+      "candidates": [],
+      "kind": "absent"
+    },
+    {
+      "slot": ":feature:vault",
+      "candidates": [
+        ":feature:vault"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:backup",
+      "candidates": [
+        ":feature:backup"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:beam",
+      "candidates": [
+        ":feature:beam"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:together",
+      "candidates": [
+        ":feature:together"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:settings",
+      "candidates": [
+        ":feature:settings"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:ime",
+      "candidates": [],
+      "kind": "absent"
+    },
+    {
+      "slot": ":feature:lens",
+      "candidates": [
+        ":feature:lens"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":feature:messages",
+      "candidates": [
+        ":feature:messages"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":format:lok",
+      "candidates": [
+        ":format:lok"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":format:poi",
+      "candidates": [
+        ":format:ooxml"
+      ],
+      "kind": "partial_owner_not_equivalent"
+    },
+    {
+      "slot": ":format:pdf",
+      "candidates": [
+        ":format:pdf"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":format:image",
+      "candidates": [
+        ":format:image"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":format:psd",
+      "candidates": [
+        ":format:psd"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":format:archive",
+      "candidates": [
+        ":format:archive"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":format:native",
+      "candidates": [
+        ":format:native"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":cast:airplay",
+      "candidates": [
+        ":cast:airplay"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":cast:castv2",
+      "candidates": [
+        ":cast:castv2"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":cast:dlna",
+      "candidates": [
+        ":cast:dlna"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":benchmark",
+      "candidates": [
+        ":benchmark"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":baselineprofile",
+      "candidates": [
+        ":baselineprofile"
+      ],
+      "kind": "exact_name"
+    },
+    {
+      "slot": ":testing",
+      "candidates": [
+        ":testing"
+      ],
+      "kind": "exact_name"
+    }
+  ],
+  "revision": "R8 draft-PR checkpoint \u2014 ordered command stream and release-record checks; incomplete"
+}

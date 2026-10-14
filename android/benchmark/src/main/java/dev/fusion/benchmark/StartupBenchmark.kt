@@ -59,6 +59,6 @@ class StartupBenchmark {
     }
 
     private companion object {
-        const val TARGET = "dev.fusion.shell"
+        const val TARGET = "dev.fusion.shell.pro"
     }
 }
