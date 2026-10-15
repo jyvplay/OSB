@@ -3,7 +3,7 @@
   "date": "2026-10-14",
   "denominator": "included Gradle modules, not features/flavors/services/effort",
   "common_acceptance_gates": {
-    "android_build_lint_and_both_flavors": false,
+    "android_build_lint_and_both_flavors": true,
     "whole_assigned_scope_implemented": false,
     "mandatory_spike_and_device_acceptance": false,
     "security_privacy_accessibility_review": false,
@@ -14,15 +14,15 @@
     {
       "module": ":app",
       "status": "incomplete",
-      "present_scope": "Native own-window host with restore/workspace actions, Find and notes integration; API/Compose/UI execution unverified",
-      "remaining_gap": "Android build/install, complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
-      "evidence_level": "android_uncompiled"
+      "present_scope": "Native own-window host with restore/workspace actions, Find and notes integration; partial API34 smoke execution; full UI/AX unverified",
+      "remaining_gap": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":core:documents",
       "status": "incomplete",
-      "present_scope": "Strict text/editor kernels plus correlated copy protocol, v1\u2192v2 recovery migration, monotonic attempts and request/destination-bound byte readback",
-      "remaining_gap": "Android/provider/IME integration and physical persistence acceptance; regex, encodings, large-file/diff and universal Forge lifecycle remain incomplete",
+      "present_scope": "Strict bounded multi-encoding editor, current-source line diff, correlated copy protocol, historical recovery and bound readback receipts; executed host contracts",
+      "remaining_gap": "Streaming large files, regex, full autosave/recovery, provider/IME/AX/process-death and physical persistence acceptance; complete Forge lifecycle absent",
       "evidence_level": "partial_kernel_contracts"
     },
     {
@@ -35,7 +35,7 @@
     {
       "module": ":core:files",
       "status": "incomplete",
-      "present_scope": "Read-only SAF browsing; all eight Files/trash mutation entry points refuse via tested pure denial policy; Android adapters uncompiled",
+      "present_scope": "Read-only SAF browsing; all eight Files/trash mutation entry points refuse via tested pure denial policy; Android adapters compiled",
       "remaining_gap": "Not the specified journaled fileops; ordered publish/verify/retire, provider crash/undo matrix S6",
       "evidence_level": "partial_kernel_contracts"
     },
@@ -44,7 +44,7 @@
       "status": "incomplete",
       "present_scope": "Nullable runtime observations and probe source",
       "remaining_gap": "Android probe execution, OEM/API34/36/37 matrix, hardware initialization evidence",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":core:model",
@@ -65,14 +65,14 @@
       "status": "incomplete",
       "present_scope": "Settings graph source",
       "remaining_gap": "DataStore, migrations, full settings/apply semantics and persistence acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":core:security",
       "status": "incomplete",
       "present_scope": "Password/vault crypto source plus Android index-key adapter; decrypt/read refuses missing keys without regeneration; hardware backing not assumed",
       "remaining_gap": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":core:perf",
@@ -86,7 +86,7 @@
       "status": "incomplete",
       "present_scope": "Nullable hardware inventory/probe source",
       "remaining_gap": "Verified hardware capabilities/initialization, Compat admission, reference device matrix",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":core:index",
@@ -99,77 +99,77 @@
       "module": ":core:storage",
       "status": "incomplete",
       "present_scope": "Checked AtomicFile plus legacy SQLite source; unsupported upgrades now refuse without DROP and failed inserts propagate",
-      "remaining_gap": "Specified Room/migrations, no destructive upgrades, process-death/disk-failure acceptance; adapter uncompiled",
-      "evidence_level": "android_uncompiled"
+      "remaining_gap": "Specified Room/migrations, process-death/disk-failure/power-loss acceptance and complete recovery lifecycle",
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":core:designsystem",
       "status": "incomplete",
       "present_scope": "Compose theme source",
       "remaining_gap": "Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:editor",
       "status": "incomplete",
       "present_scope": "Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts",
-      "remaining_gap": "Native adapter/broker uncompiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
-      "evidence_level": "android_uncompiled"
+      "remaining_gap": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:launcher",
       "status": "incomplete",
       "present_scope": "Shelf/launcher UI source",
       "remaining_gap": "Full pinned/folders/recents/search/Home/widget behavior, keyboard/device acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:find",
       "status": "incomplete",
-      "present_scope": "Native keyboard-navigable module/window/workspace command palette wired to actual actions; Android uncompiled",
+      "present_scope": "Actual module/window/workspace palette; dialog focus lifetime repaired and native Enter-action case passed at1ee1589",
       "remaining_gap": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:files",
       "status": "incomplete",
       "present_scope": "Read-only SAF browsing pilot and explicit mutation gate",
       "remaining_gap": "Full FM operations/journaling/undo/Peek, verified providers, accessibility and S6",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:browser",
       "status": "incomplete",
-      "present_scope": "Browser surface source; pilot blocked",
-      "remaining_gap": "S29/S30 before engine work; process/origin/permissions/download/security/extension acceptance",
-      "evidence_level": "android_uncompiled"
+      "present_scope": "Executed immutable bounded tab/window/group/split metadata kernel and named-session codec; no renderer/disk/UI adapter; old browser surface remains blocked",
+      "remaining_gap": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":feature:terminal",
       "status": "incomplete",
       "present_scope": "App-UID local command execution source; explicit experimental consent",
       "remaining_gap": "Isolated PTY process, terminal emulation, lifecycle/input/security and P1 acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:vault",
       "status": "incomplete",
       "present_scope": "Vault UI/storage source; pilot blocked",
       "remaining_gap": "Reviewed secure lifecycle, exclusion/lock/key recovery, no data-loss paths, device/security tests",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:notes",
       "status": "incomplete",
-      "present_scope": "Executed bounded UTF-8 file store, OS lock/revision checks, atomic publication/readback; native ViewModel/confirmation UI authored and unrun",
-      "remaining_gap": "Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, versioning/reversible delete, attachments/backlinks/OCR/export and full PR-02 scope",
+      "present_scope": "Real bounded locked/revision-checked Markdown files and immutable saved-note wiki-link graph; explicit native scan and two Notes UI tests passed at ea9766d",
+      "remaining_gap": "Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, versioning/reversible delete, attachments/OCR/export and full PR-02 scope",
       "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":feature:calc",
       "status": "incomplete",
       "present_scope": "Native decimal/scientific/programmer/units/history kernel, Compose and checkpoint integration",
-      "remaining_gap": "PR-09 Android build, actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance",
+      "remaining_gap": "PR-09 complete actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance",
       "evidence_level": "partial_kernel_contracts"
     },
     {
@@ -177,14 +177,14 @@
       "status": "incomplete",
       "present_scope": "Read-only diagnostics/redacted sharing; geometry density setting",
       "remaining_gap": "Complete functional setting groups/migrations, runtime verification and accessible full-density behavior",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:media",
       "status": "incomplete",
       "present_scope": "Local media library/playback source; explicit experimental consent",
       "remaining_gap": "Full codec/license/fidelity/metadata/library/device requirements and measured playback acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:beam",
@@ -198,63 +198,63 @@
       "status": "incomplete",
       "present_scope": "Alerts UI/listener source; listener disabled",
       "remaining_gap": "Opt-in/permission/privacy/deletion/migration and NC acceptance; disabled source is not completion",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:capture",
       "status": "incomplete",
       "present_scope": "MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards",
-      "remaining_gap": "Android build/playback/revocation/exclusion/power-loss and hardware encoder measurement",
-      "evidence_level": "android_uncompiled"
+      "remaining_gap": "Native playback/revocation/exclusion/power-loss and hardware encoder measurement",
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:backup",
       "status": "incomplete",
       "present_scope": "Archive/export/restore source; pilot blocked",
       "remaining_gap": "Reviewed encryption, transactional restore/rollback, versions/large-data/crash tests and BK acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:continuity",
       "status": "incomplete",
       "present_scope": "Android explicit share/peripheral inventory source",
       "remaining_gap": "Full CT handoff/desktop/peripheral behaviors, no PC bridge claimed, device acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:accessibility",
       "status": "incomplete",
       "present_scope": "System accessibility observation/adaptation source",
       "remaining_gap": "Whole-product AX release gates; system state inspection does not establish usable UI",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:together",
       "status": "incomplete",
       "present_scope": "Pre-existing local room/drift model only; pilot blocked",
       "remaining_gap": "Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:lens",
       "status": "incomplete",
       "present_scope": "Camera preview only; explicit experimental consent",
       "remaining_gap": "S25\u201328 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:messages",
       "status": "incomplete",
       "present_scope": "SMS repository/surface source, role/transport gaps; pilot blocked",
       "remaining_gap": "Own-Mac client, SMS role/MMS, Matrix/XMPP, delivery states, security/device/legal acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":feature:automation",
       "status": "incomplete",
       "present_scope": "App-local routine source; explicit experimental consent",
       "remaining_gap": "Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":format:native",
@@ -273,44 +273,44 @@
     {
       "module": ":format:ooxml",
       "status": "incomplete",
-      "present_scope": "OOXML text extraction kernel source; no POI equivalence claim",
+      "present_scope": "Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence",
       "remaining_gap": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
-      "evidence_level": "compiled_only"
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":format:pdf",
       "status": "incomplete",
-      "present_scope": "Platform PDF preview source; pilot blocked",
+      "present_scope": "Platform preview source; isolated UID/read-only FD digest spike:5/5 API34 boundary cases passed at1ee1589 with exact-path/inode controls; not a PDF parser boundary",
       "remaining_gap": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":format:image",
       "status": "incomplete",
       "present_scope": "Image operations source; pilot blocked",
       "remaining_gap": "FM/FF format registry, fidelity/loss reporting, HEIC platform gate and codec/device tests",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":format:psd",
       "status": "incomplete",
       "present_scope": "Bounded PSD parsing source; pilot blocked",
       "remaining_gap": "S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":format:lok",
       "status": "incomplete",
       "present_scope": "LibreOffice route/gate source; not a shipping Office engine",
       "remaining_gap": "Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":cast:dlna",
       "status": "incomplete",
       "present_scope": "UPnP/DLNA client and parser source; pilot blocked",
       "remaining_gap": "Real receiver interoperability, transport trust/lifecycle/security and S20 evidence",
-      "evidence_level": "android_uncompiled"
+      "evidence_level": "android_compiled"
     },
     {
       "module": ":cast:airplay",
@@ -343,8 +343,8 @@
     {
       "module": ":testing",
       "status": "incomplete",
-      "present_scope": "Executed twelve-library JVM contracts including notes, window restore and search/backend denials; host/source audits; Android tests authored",
-      "remaining_gap": "Full module/device/provider/security/AX suites, CI build/lint/instrumentation and reviewed acceptance records",
+      "present_scope": "Executed13-library/182829-assertion Kotlin contracts,61 Python methods,323 cross-language checks and actual API34 named cases; reporting tools distinguish missing/failed results",
+      "remaining_gap": "Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records",
       "evidence_level": "runner_executed"
     }
   ],
@@ -671,5 +671,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R8 continuation \u2014 encrypted index kernel and native-lab integrity; incomplete"
+  "revision": "R11 \u2014 executable subsets, real native failures and missing engines; incomplete",
+  "build_evidence": "Native code at1ee1589: run38662585401 passed both-flavor assembly, invoked unit/contracts, lint and APK upload; API34 actual24/24 named cases PASS including5 elementary isolated-FD cases. These are not full assigned-scope, parser/security/AX, physical-device or license acceptance. Later R11 documentation/tooling changes do not alter that recorded native-source result."
 }

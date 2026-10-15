@@ -1,4 +1,31 @@
-# Latest: R10 productivity / Forge continuation
+# Latest: R11 executable subsets and actual Android verification
+
+- **0/48 accepted (0%);48 outstanding (100%)**. Productivity0/13, Forge0/13,
+  nested browser0/19. No engine/device/legal spike promoted.
+- **182,829 host Kotlin assertions /13 libraries;61 Python tests;323 independent-
+  implementation checks.** Browser metadata/codec5,202; Notes saved-link graph429.
+- Added native explicit saved-note backlink scanning; bounded browser metadata is
+  not connected to renderer/UI/disk. No Office engine, browser renderer, full parser
+  sandbox, PTY, own Beam or other missing platform substituted with a demo.
+- **Run38662585401 @1ee1589:** both-flavor assembly, invoked unit/contracts/lint
+  and APK upload PASS. API34 **24/24 named cases PASS**, including all5 elementary
+  isolated-FD boundary cases. [Run/artifacts](https://github.com/jyvplay/OSB/actions/runs/38662585401).
+- Reproduced and repaired window PaneTitle merging and dialog focus lifecycle.
+  The private probe observed ENOENT, not assumed EACCES; revised experiment adds
+  exact path/inode and positive-FD controls. Prior failures preserved. No full
+  parser/saturated-watchdog/security/AX acceptance follows from these passes.
+  [Full A–J report and testability](docs/R11-ENGINEERING.md).
+- Alternatives researched from pinned upstream interfaces/licenses: WebView profile
+  feature detection, remote native surface embedding, MPL GeckoView/LOK islands,
+  POI headless subset and isolated platform PDF route. None is a shipped engine or
+  audited transitive payload. [All-module0/1 acceptance table](docs/MODULE-COMPLETION.md).
+- Local full SDK/JDK/ADB and physical/AX/latency/API37/16K acceptance remain absent.
+
+Older sections are historical, not evidence for the current source revision.
+
+---
+
+# Historical: R10 productivity / Forge continuation
 
 - **0/48 accepted modules (0%);48 outstanding (100%).** Requested Productivity
   parents0/13; Forge0/13; nested browser subfeatures0/19. No acceptance promotion.

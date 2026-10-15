@@ -1,4 +1,14 @@
-> **Latest: [R10 productivity / Forge engineering](docs/R10-ENGINEERING.md).**
+> **Latest: [R11 implementation/testability/alternatives](docs/R11-ENGINEERING.md).**
+> **182,829 JVM assertions /13 libraries;61 Python methods;323 cross-language
+> checks passed.** Added bounded browser session metadata/codec and real saved-note
+> backlinks, plus an isolated-service FD spike. Browser renderer and Office engines
+> remain absent/blocked. Both-flavor build/unit/contracts/lint passed at1ee1589;
+> API34 **24/24 named cases passed**, including5 boundary cases—not full FF12.
+> **0/48 accepted modules (0%); not a complete product or production beta.**
+>
+> Older sections below are historical; use R11 for current evidence and gaps.
+
+> **Historical: [R10 productivity / Forge engineering](docs/R10-ENGINEERING.md).**
 > **177,198 JVM assertions,57 Python methods and707 cross-implementation/oracle
 > checks passed.** Added encoding-preserving editor recovery/copy, bounded
 > current-source line diff and repaired ignored-ZIP expansion guards. **Both Android
@@ -20,9 +30,9 @@
 
 Open this directory in Android Studio. Do **not** open the repository root as a
 web project. This source tree is a partial implementation, not the complete
-v2.1 product. There is no verified APK from this sandbox.
+v2.1 product. CI debug APKs are incomplete test builds, not certified releases.
 
-## Current R7 — full recorded-scope review and native hardening
+## Historical R7 — full recorded-scope review and native hardening
 
 **0/48 fully specification-complete modules (0%);48/48 still require implementation
 or acceptance (100%).** There is substantial missing code, not just missing tests.

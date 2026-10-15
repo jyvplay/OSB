@@ -1106,7 +1106,7 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Native bounded UTF-8 editor; per-tab delta undo/redo, code-point literal KMP search, reviewed revision-bound replacement, mixed-newline navigation, immutable pending copy and checkpoints; Android/IME/AX unverified; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "route": "Bounded8-draft encoding-preserving native editor, undo/literal tools, current-source line diff and correlated Save-a-Copy/recovery. Host contracts and selected API34 UI cases executed; streaming large files, regex, autosave/provider/process-death/IME/AX acceptance incomplete.",
     "tests": [
       "core:documents/DocumentSafetyTest",
       "plan:SAF-provider-and-editor-device-matrix",
@@ -1125,7 +1125,7 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Bounded Markdown note files with name/revision checks, locks, atomic publication/readback and native memory-draft UI. Android unrun; attachments/backlinks/OCR/export/recovery incomplete.",
+    "route": "Real locked/revision-checked Markdown files, saved-note wiki backlink graph and explicit native scan. Host contracts and two API34 UI cases passed at ea9766d; attachments/OCR/export/recovery/reversible deletion and full Markdown remain absent.",
     "tests": [
       "plan:T-PR-02",
       "jvm:NotesChecks"
@@ -1191,7 +1191,7 @@
     "tier": "A",
     "phase": "P2/P3",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "New bounded immutable browser session metadata/codec, executed host contracts only; old in-process BrowserScreen blocked and not connected. Renderer/profile/process/native UI integrations absent; S29/S30 unpassed.",
     "tests": [
       "plan:T-PR-07"
     ],
@@ -1475,7 +1475,7 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Native Compose + bounded Kotlin decimal34/scientific binary64/64-bit programmer/dimension-checked units; checksummed 100-entry local history; Android integration uncompiled",
+    "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted.",
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
       "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
@@ -1699,7 +1699,7 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Real isolated UID/read-only FD opaque-digest precursor:5/5 elementary API34 boundary cases passed at1ee1589, including exact-path/inode and positive-FD controls after ENOENT counterexample. Full parser sandbox, parent watchdog/RSS/CPU/socket/output guards absent; no S-gate promoted.",
     "tests": [
       "plan:T-FF-12"
     ],

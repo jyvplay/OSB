@@ -1,4 +1,41 @@
-## R10 verification additions
+# R11 current build and test entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with compatible AGP/JDK17 and SDK36.
+The IDE name is not a compatibility proof. Current min/compile/target34/36/36 is an
+explicit deviation from the requested compile37/target37 migration. No native
+arm64/4K+16K engine payload has been validated.
+
+Run38662585401 at1ee1589 passed both debug flavors, invoked JVM unit/contracts,
+lint and APK upload; API34 **24/24 named cases passed**, including5 elementary
+isolated-FD cases. This is not full FF12 or a working Office/browser engine. See [R11](R11-ENGINEERING.md)
+for precise case outcomes, gaps, bounds and alternatives; do not mistake debug
+APK availability for a complete beta.
+
+```sh
+python3 tools/native_lab.py doctor
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+# Set JAVA_HOME and KOTLINC to actual Java17/Kotlin2.2.21 installations:
+python3 tools/run_jvm_contracts.py
+python3 tools/run_r11_interop.py
+# Full Android prerequisites required:
+./gradlew :app:assembleProDebug :app:assemblePlayDebug
+./gradlew :testing:browserSessionContracts :testing:noteLinkContracts
+./gradlew :app:lintProDebug :app:lintPlayDebug
+# Disposable opted-in managed device only; mutates fresh test-owned app files:
+./gradlew :app:pixel6Api34ProDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
+  -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+python3 tools/report_device_results.py
+```
+
+The reporter reads generated JUnit XML and emits named cases through Checks even
+when tests fail; missing XML is **NO_EXECUTION_EVIDENCE**, never a pass. Visual
+capture/human AX, physical-device performance and legal/license gates remain open.
+
+---
+
+## Historical R10 verification additions
 
 Current acceptance remains0/48 modules. See [R10 engineering record](R10-ENGINEERING.md).
 With a real JDK/Android SDK use the existing both-flavor build/lint/device commands;

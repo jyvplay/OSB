@@ -1,72 +1,74 @@
-# Native module completion audit — R8 continuation — encrypted index kernel and native-lab integrity; incomplete
+# Native module completion audit — R11 — executable subsets, real native failures and missing engines; incomplete
 
 **Included Gradle modules: 48. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 48 (100.00%).**
 
 This is not a time/effort estimate. A module is complete only after its entire assigned scope, integration, mandatory safety/accessibility/device tests and license/build gates have reviewed acceptance. A source file, successful compilation or many assertions is insufficient.
 
-## Common gates (all currently unpassed)
+## Common gates (build evidence is narrower than acceptance)
 
-- android build lint and both flavors: unpassed
+- android build lint and both flavors: passed
 - whole assigned scope implemented: unpassed
 - mandatory spike and device acceptance: unpassed
 - security privacy accessibility review: unpassed
 - api37 16k and reference performance: unpassed
 - license sbom closure: unpassed
 
+Native code at1ee1589: run38662585401 passed both-flavor assembly, invoked unit/contracts, lint and APK upload; API34 actual24/24 named cases PASS including5 elementary isolated-FD cases. These are not full assigned-scope, parser/security/AX, physical-device or license acceptance. Later R11 documentation/tooling changes do not alter that recorded native-source result.
+
 ## All included modules
 
-| Module | Present source scope | Current evidence | Exact remaining gap |
-|---|---|---|---|
-| `:app` | Native own-window host with restore/workspace actions, Find and notes integration; API/Compose/UI execution unverified | android uncompiled | Android build/install, complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates |
-| `:core:documents` | Strict text/editor kernels plus correlated copy protocol, v1→v2 recovery migration, monotonic attempts and request/destination-bound byte readback | partial kernel contracts | Android/provider/IME integration and physical persistence acceptance; regex, encodings, large-file/diff and universal Forge lifecycle remain incomplete |
-| `:core:windowing` | Immutable published window lists, deterministic reducer, bounded tile/normal restoration, ordered epoch/sequence command stream and codec v3 with historical v1/v2 migration | partial kernel contracts | Full WM-01–16 semantics, Compose host/input/display integration, Room, physical a11y/perf |
-| `:core:files` | Read-only SAF browsing; all eight Files/trash mutation entry points refuse via tested pure denial policy; Android adapters uncompiled | partial kernel contracts | Not the specified journaled fileops; ordered publish/verify/retire, provider crash/undo matrix S6 |
-| `:core:capabilities` | Nullable runtime observations and probe source | android uncompiled | Android probe execution, OEM/API34/36/37 matrix, hardware initialization evidence |
-| `:core:model` | Shared types and fail-closed pilot admission policy | partial kernel contracts | Complete immutable cross-module models, schema/compatibility and full product integration |
-| `:core:commands` | Bounded immutable command snapshots and locale-stable literal ranking; mutation/aliasing regression tests executed | partial kernel contracts | Complete command routing, conflict/remap/keyboard/a11y contracts and integration |
-| `:core:settings` | Settings graph source | android uncompiled | DataStore, migrations, full settings/apply semantics and persistence acceptance |
-| `:core:security` | Password/vault crypto source plus Android index-key adapter; decrypt/read refuses missing keys without regeneration; hardware backing not assumed | android uncompiled | Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure |
-| `:core:perf` | PSS/thermal/frame-statistics source; pure policy tested | partial kernel contracts | ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings |
-| `:core:hw` | Nullable hardware inventory/probe source | android uncompiled | Verified hardware capabilities/initialization, Compat admission, reference device matrix |
-| `:core:index` | Bounded literal index plus executed encrypted whole-snapshot store, strict authenticated codec, optimistic revision/file-lock publication and locked-session search; no crawler/FTS or native source integration | partial kernel contracts | S4 FTS/source/latency/battery decisions; explicit source consent/Vault/private-data exclusions, Android Keystore/filesystem/lifecycle integration, rollback/key lifecycle policy, native Find integration and device security acceptance |
-| `:core:storage` | Checked AtomicFile plus legacy SQLite source; unsupported upgrades now refuse without DROP and failed inserts propagate | android uncompiled | Specified Room/migrations, no destructive upgrades, process-death/disk-failure acceptance; adapter uncompiled |
-| `:core:designsystem` | Compose theme source | android uncompiled | Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance |
-| `:feature:editor` | Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts | android uncompiled | Native adapter/broker uncompiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending |
-| `:feature:launcher` | Shelf/launcher UI source | android uncompiled | Full pinned/folders/recents/search/Home/widget behavior, keyboard/device acceptance |
-| `:feature:find` | Native keyboard-navigable module/window/workspace command palette wired to actual actions; Android uncompiled | android uncompiled | Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests |
-| `:feature:files` | Read-only SAF browsing pilot and explicit mutation gate | android uncompiled | Full FM operations/journaling/undo/Peek, verified providers, accessibility and S6 |
-| `:feature:browser` | Browser surface source; pilot blocked | android uncompiled | S29/S30 before engine work; process/origin/permissions/download/security/extension acceptance |
-| `:feature:terminal` | App-UID local command execution source; explicit experimental consent | android uncompiled | Isolated PTY process, terminal emulation, lifecycle/input/security and P1 acceptance |
-| `:feature:vault` | Vault UI/storage source; pilot blocked | android uncompiled | Reviewed secure lifecycle, exclusion/lock/key recovery, no data-loss paths, device/security tests |
-| `:feature:notes` | Executed bounded UTF-8 file store, OS lock/revision checks, atomic publication/readback; native ViewModel/confirmation UI authored and unrun | partial kernel contracts | Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, versioning/reversible delete, attachments/backlinks/OCR/export and full PR-02 scope |
-| `:feature:calc` | Native decimal/scientific/programmer/units/history kernel, Compose and checkpoint integration | partial kernel contracts | PR-09 Android build, actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance |
-| `:feature:settings` | Read-only diagnostics/redacted sharing; geometry density setting | android uncompiled | Complete functional setting groups/migrations, runtime verification and accessible full-density behavior |
-| `:feature:media` | Local media library/playback source; explicit experimental consent | android uncompiled | Full codec/license/fidelity/metadata/library/device requirements and measured playback acceptance |
-| `:feature:beam` | Discovery/sender surface source; pure fail-closed quality policy tested; pilot blocked | partial kernel contracts | S17–21 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting |
-| `:feature:alerts` | Alerts UI/listener source; listener disabled | android uncompiled | Opt-in/permission/privacy/deletion/migration and NC acceptance; disabled source is not completion |
-| `:feature:capture` | MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards | android uncompiled | Android build/playback/revocation/exclusion/power-loss and hardware encoder measurement |
-| `:feature:backup` | Archive/export/restore source; pilot blocked | android uncompiled | Reviewed encryption, transactional restore/rollback, versions/large-data/crash tests and BK acceptance |
-| `:feature:continuity` | Android explicit share/peripheral inventory source | android uncompiled | Full CT handoff/desktop/peripheral behaviors, no PC bridge claimed, device acceptance |
-| `:feature:accessibility` | System accessibility observation/adaptation source | android uncompiled | Whole-product AX release gates; system state inspection does not establish usable UI |
-| `:feature:together` | Pre-existing local room/drift model only; pilot blocked | android uncompiled | Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22 |
-| `:feature:lens` | Camera preview only; explicit experimental consent | android uncompiled | S25–28 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported |
-| `:feature:messages` | SMS repository/surface source, role/transport gaps; pilot blocked | android uncompiled | Own-Mac client, SMS role/MMS, Matrix/XMPP, delivery states, security/device/legal acceptance |
-| `:feature:automation` | App-local routine source; explicit experimental consent | android uncompiled | Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance |
-| `:format:native` | Small text/CSV helper source | compiled only | Strict safe bounded parsers/CSV fidelity and Forge registration; legacy UTF-8 heuristic not a validator |
-| `:format:archive` | ZIP guard source | compiled only | Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure |
-| `:format:ooxml` | OOXML text extraction kernel source; no POI equivalence claim | compiled only | Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit |
-| `:format:pdf` | Platform PDF preview source; pilot blocked | android uncompiled | Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance |
-| `:format:image` | Image operations source; pilot blocked | android uncompiled | FM/FF format registry, fidelity/loss reporting, HEIC platform gate and codec/device tests |
-| `:format:psd` | Bounded PSD parsing source; pilot blocked | android uncompiled | S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance |
-| `:format:lok` | LibreOffice route/gate source; not a shipping Office engine | android uncompiled | Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance |
-| `:cast:dlna` | UPnP/DLNA client and parser source; pilot blocked | android uncompiled | Real receiver interoperability, transport trust/lifecycle/security and S20 evidence |
-| `:cast:airplay` | URL sender/SDP source compiled; no receiver tests | compiled only | S18 hardware and S19 counsel/hardware gates; no mirroring or FairPlay bypass claim |
-| `:cast:castv2` | CastV2 protocol/client source compiled with unchecked-cast warnings | compiled only | S21 receiver/auth/session/Stop/exclusion/latency and protocol/security acceptance |
-| `:benchmark` | Startup/baseline generator test source | android uncompiled | Actual device runs on at least two reference devices, reproducible budgets and reports |
-| `:baselineprofile` | Intentionally empty baseline profile; no generated rules | empty profile | Generate from measured user journeys on devices, verify packaging/effect |
-| `:testing` | Executed twelve-library JVM contracts including notes, window restore and search/backend denials; host/source audits; Android tests authored | runner executed | Full module/device/provider/security/AX suites, CI build/lint/instrumentation and reviewed acceptance records |
+| Module | Present source scope | Current evidence | Accepted | Exact remaining gap |
+|---|---|---|---|---|
+| `:app` | Native own-window host with restore/workspace actions, Find and notes integration; partial API34 smoke execution; full UI/AX unverified | partial android execution | 0/1 (0%) | complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates |
+| `:core:documents` | Strict bounded multi-encoding editor, current-source line diff, correlated copy protocol, historical recovery and bound readback receipts; executed host contracts | partial kernel contracts | 0/1 (0%) | Streaming large files, regex, full autosave/recovery, provider/IME/AX/process-death and physical persistence acceptance; complete Forge lifecycle absent |
+| `:core:windowing` | Immutable published window lists, deterministic reducer, bounded tile/normal restoration, ordered epoch/sequence command stream and codec v3 with historical v1/v2 migration | partial kernel contracts | 0/1 (0%) | Full WM-01–16 semantics, Compose host/input/display integration, Room, physical a11y/perf |
+| `:core:files` | Read-only SAF browsing; all eight Files/trash mutation entry points refuse via tested pure denial policy; Android adapters compiled | partial kernel contracts | 0/1 (0%) | Not the specified journaled fileops; ordered publish/verify/retire, provider crash/undo matrix S6 |
+| `:core:capabilities` | Nullable runtime observations and probe source | android compiled | 0/1 (0%) | Android probe execution, OEM/API34/36/37 matrix, hardware initialization evidence |
+| `:core:model` | Shared types and fail-closed pilot admission policy | partial kernel contracts | 0/1 (0%) | Complete immutable cross-module models, schema/compatibility and full product integration |
+| `:core:commands` | Bounded immutable command snapshots and locale-stable literal ranking; mutation/aliasing regression tests executed | partial kernel contracts | 0/1 (0%) | Complete command routing, conflict/remap/keyboard/a11y contracts and integration |
+| `:core:settings` | Settings graph source | android compiled | 0/1 (0%) | DataStore, migrations, full settings/apply semantics and persistence acceptance |
+| `:core:security` | Password/vault crypto source plus Android index-key adapter; decrypt/read refuses missing keys without regeneration; hardware backing not assumed | partial android execution | 0/1 (0%) | Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure |
+| `:core:perf` | PSS/thermal/frame-statistics source; pure policy tested | partial kernel contracts | 0/1 (0%) | ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings |
+| `:core:hw` | Nullable hardware inventory/probe source | android compiled | 0/1 (0%) | Verified hardware capabilities/initialization, Compat admission, reference device matrix |
+| `:core:index` | Bounded literal index plus executed encrypted whole-snapshot store, strict authenticated codec, optimistic revision/file-lock publication and locked-session search; no crawler/FTS or native source integration | partial kernel contracts | 0/1 (0%) | S4 FTS/source/latency/battery decisions; explicit source consent/Vault/private-data exclusions, Android Keystore/filesystem/lifecycle integration, rollback/key lifecycle policy, native Find integration and device security acceptance |
+| `:core:storage` | Checked AtomicFile plus legacy SQLite source; unsupported upgrades now refuse without DROP and failed inserts propagate | partial android execution | 0/1 (0%) | Specified Room/migrations, process-death/disk-failure/power-loss acceptance and complete recovery lifecycle |
+| `:core:designsystem` | Compose theme source | android compiled | 0/1 (0%) | Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance |
+| `:feature:editor` | Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts | partial android execution | 0/1 (0%) | Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending |
+| `:feature:launcher` | Shelf/launcher UI source | android compiled | 0/1 (0%) | Full pinned/folders/recents/search/Home/widget behavior, keyboard/device acceptance |
+| `:feature:find` | Actual module/window/workspace palette; dialog focus lifetime repaired and native Enter-action case passed at1ee1589 | partial android execution | 0/1 (0%) | Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests |
+| `:feature:files` | Read-only SAF browsing pilot and explicit mutation gate | android compiled | 0/1 (0%) | Full FM operations/journaling/undo/Peek, verified providers, accessibility and S6 |
+| `:feature:browser` | Executed immutable bounded tab/window/group/split metadata kernel and named-session codec; no renderer/disk/UI adapter; old browser surface remains blocked | partial kernel contracts | 0/1 (0%) | Complete PR07 a–s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30 |
+| `:feature:terminal` | App-UID local command execution source; explicit experimental consent | android compiled | 0/1 (0%) | Isolated PTY process, terminal emulation, lifecycle/input/security and P1 acceptance |
+| `:feature:vault` | Vault UI/storage source; pilot blocked | android compiled | 0/1 (0%) | Reviewed secure lifecycle, exclusion/lock/key recovery, no data-loss paths, device/security tests |
+| `:feature:notes` | Real bounded locked/revision-checked Markdown files and immutable saved-note wiki-link graph; explicit native scan and two Notes UI tests passed at ea9766d | partial kernel contracts | 0/1 (0%) | Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, versioning/reversible delete, attachments/OCR/export and full PR-02 scope |
+| `:feature:calc` | Native decimal/scientific/programmer/units/history kernel, Compose and checkpoint integration | partial kernel contracts | 0/1 (0%) | PR-09 complete actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance |
+| `:feature:settings` | Read-only diagnostics/redacted sharing; geometry density setting | android compiled | 0/1 (0%) | Complete functional setting groups/migrations, runtime verification and accessible full-density behavior |
+| `:feature:media` | Local media library/playback source; explicit experimental consent | android compiled | 0/1 (0%) | Full codec/license/fidelity/metadata/library/device requirements and measured playback acceptance |
+| `:feature:beam` | Discovery/sender surface source; pure fail-closed quality policy tested; pilot blocked | partial kernel contracts | 0/1 (0%) | S17–21 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting |
+| `:feature:alerts` | Alerts UI/listener source; listener disabled | android compiled | 0/1 (0%) | Opt-in/permission/privacy/deletion/migration and NC acceptance; disabled source is not completion |
+| `:feature:capture` | MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards | android compiled | 0/1 (0%) | Native playback/revocation/exclusion/power-loss and hardware encoder measurement |
+| `:feature:backup` | Archive/export/restore source; pilot blocked | android compiled | 0/1 (0%) | Reviewed encryption, transactional restore/rollback, versions/large-data/crash tests and BK acceptance |
+| `:feature:continuity` | Android explicit share/peripheral inventory source | android compiled | 0/1 (0%) | Full CT handoff/desktop/peripheral behaviors, no PC bridge claimed, device acceptance |
+| `:feature:accessibility` | System accessibility observation/adaptation source | android compiled | 0/1 (0%) | Whole-product AX release gates; system state inspection does not establish usable UI |
+| `:feature:together` | Pre-existing local room/drift model only; pilot blocked | android compiled | 0/1 (0%) | Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22 |
+| `:feature:lens` | Camera preview only; explicit experimental consent | android compiled | 0/1 (0%) | S25–28 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported |
+| `:feature:messages` | SMS repository/surface source, role/transport gaps; pilot blocked | android compiled | 0/1 (0%) | Own-Mac client, SMS role/MMS, Matrix/XMPP, delivery states, security/device/legal acceptance |
+| `:feature:automation` | App-local routine source; explicit experimental consent | android compiled | 0/1 (0%) | Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance |
+| `:format:native` | Small text/CSV helper source | compiled only | 0/1 (0%) | Strict safe bounded parsers/CSV fidelity and Forge registration; legacy UTF-8 heuristic not a validator |
+| `:format:archive` | ZIP guard source | compiled only | 0/1 (0%) | Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure |
+| `:format:ooxml` | Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence | partial kernel contracts | 0/1 (0%) | Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit |
+| `:format:pdf` | Platform preview source; isolated UID/read-only FD digest spike:5/5 API34 boundary cases passed at1ee1589 with exact-path/inode controls; not a PDF parser boundary | partial android execution | 0/1 (0%) | Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance |
+| `:format:image` | Image operations source; pilot blocked | android compiled | 0/1 (0%) | FM/FF format registry, fidelity/loss reporting, HEIC platform gate and codec/device tests |
+| `:format:psd` | Bounded PSD parsing source; pilot blocked | android compiled | 0/1 (0%) | S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance |
+| `:format:lok` | LibreOffice route/gate source; not a shipping Office engine | android compiled | 0/1 (0%) | Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance |
+| `:cast:dlna` | UPnP/DLNA client and parser source; pilot blocked | android compiled | 0/1 (0%) | Real receiver interoperability, transport trust/lifecycle/security and S20 evidence |
+| `:cast:airplay` | URL sender/SDP source compiled; no receiver tests | compiled only | 0/1 (0%) | S18 hardware and S19 counsel/hardware gates; no mirroring or FairPlay bypass claim |
+| `:cast:castv2` | CastV2 protocol/client source compiled with unchecked-cast warnings | compiled only | 0/1 (0%) | S21 receiver/auth/session/Stop/exclusion/latency and protocol/security acceptance |
+| `:benchmark` | Startup/baseline generator test source | android uncompiled | 0/1 (0%) | Actual device runs on at least two reference devices, reproducible budgets and reports |
+| `:baselineprofile` | Intentionally empty baseline profile; no generated rules | empty profile | 0/1 (0%) | Generate from measured user journeys on devices, verify packaging/effect |
+| `:testing` | Executed13-library/182829-assertion Kotlin contracts,61 Python methods,323 cross-language checks and actual API34 named cases; reporting tools distinguish missing/failed results | runner executed | 0/1 (0%) | Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records |
 
-The 10 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 5 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. Android adapters and UI remain uncompiled.
+The 12 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 4 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. See R11-ENGINEERING.md for exact runtime results. No row is a full feature pass.
 
 ## Specification architecture reconciliation
 
@@ -126,4 +128,4 @@ Additional/alternative current names: `:core:documents`, `:core:files`, `:featur
 
 **Separate obligations, not falsely added to the 48-module denominator:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.
 
-Sources: `settings.gradle.kts`, per-module source review, `docs/feature-register.json`, `docs/verification/r7-jvm-contracts.txt`. Reproduce with `python3 tools/module_audit.py --check`. Review data lives in `docs/module-audit.json`; this report is generated.
+Sources: `settings.gradle.kts`, per-module source review, `docs/feature-register.json`, `docs/verification/r11-jvm-contracts.txt` and `docs/R11-ENGINEERING.md`. Reproduce with `python3 tools/module_audit.py --check`. Review data lives in `docs/module-audit.json`; this report is generated.

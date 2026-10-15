@@ -37,14 +37,14 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | Own-Mac Messages / SMS role / Matrix/XMPP / RCS handoff | Transport/role scope incomplete; no no-Mac iMessage, hosted Apple relay or fake RCS API. |
 | Encrypted search / source consent / secure-content exclusion | Executed bounded AES-GCM snapshot and locked-session kernel; Android keys/tests authored. No FTS/crawler/source consent integration, Vault/private-content exclusion adapter, key lifecycle or S4 acceptance. |
 | Local-first / no default telemetry / opt-in Home / permission-light | Source defaults partly enforced; full privacy/security review unpassed. |
-| Keyboard complete / visible focus / TalkBack/Switch/Voice /200% | Native improvements and tests authored; no whole-product interaction review. |
+| Keyboard complete / visible focus / TalkBack/Switch/Voice /200% | Selected native interaction regressions pass on API34; no whole-product keyboard/TalkBack/Switch/Voice review. |
 | Density changes dimensions, not capability set | Tile geometric impossibility explicitly disabled; full density/AX matrix unrun. |
 | $19.99 + $14.99 Pro /14day / signed offline entitlement | Commerce and signed entitlement absent; no fabricated trial/ownership state. |
 | Offline no feature loss/no wipe / expiry read-only Files/Find | No remote wipe path introduced; complete entitlement lifecycle absent. |
 | Permissive main APK / isolated MPL / no forbidden copyleft assets | No new APK dependency added this pass; optional external host verifiers are not bundled. Full transitive/legal audit still required. |
 | Two reference devices / E0 budgets / no invented measurements | No reference-device measurements; budgets remain E0. |
 | Requested47 slots vs included48 / dedicated modules | 41 exact,2 partial owners,4 absent (quickpanel/office/photos/ime); Meet/GPL ownership also unresolved. |
-| Actual Android build and native visual inspection | R10 both-flavor build/tests/lint passed remotely. New R11 isolated-UID spike is not yet device-verified; visual/physical acceptance absent. |
+| Actual Android build and native visual inspection | R11 both-flavor build/tests/lint and24 API34 named cases passed remotely at1ee1589, including5 elementary isolated-FD cases. Full parser isolation, visual/AX/physical acceptance absent. |
 
 ## Every recorded requirement
 

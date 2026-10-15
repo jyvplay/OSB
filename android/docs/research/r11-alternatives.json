@@ -1,0 +1,414 @@
+[
+  {
+    "repository": "LibreOffice/core",
+    "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+    "path": "COPYING.MPL",
+    "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING.MPL",
+    "blob": "a612ad9813b006ce81d1ee438dd784da99a54007",
+    "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+    "bytes": 16725,
+    "excerpts": [
+      {
+        "term": "Mozilla Public License",
+        "line": 1,
+        "text": "Mozilla Public License Version 2.0\n==================================\n\n1. Definitions\n--------------\n\n1.1. \"Contributor\""
+      },
+      {
+        "term": "Mozilla Public License",
+        "line": 373,
+        "text": "\n  This Source Code Form is \"Incompatible With Secondary Licenses\", as\n  defined by the Mozilla Public License, v. 2.0."
+      },
+      {
+        "term": "Larger Work",
+        "line": 37,
+        "text": "    means any form of the work other than Source Code Form.\n\n1.7. \"Larger Work\"\n    means a work that combines Covered Software with other material, in\n    a separate file or files, that is not Covered Software.\n\n1.8. \"License\"\n    means this document.\n"
+      },
+      {
+        "term": "Larger Work",
+        "line": 98,
+        "text": "    modify, display, perform, distribute, and otherwise exploit its\n    Contributions, either on an unmodified basis, with Modifications, or\n    as part of a Larger Work; and\n\n(b) under Patent Claims of such Contributor to make, use, sell, offer\n    for sale, have made, import, and otherwise transfer either its\n    Contributions or its Contributor Version.\n\n2.2. Effective Date"
+      },
+      {
+        "term": "Executable Form",
+        "line": 20,
+        "text": "1.4. \"Covered Software\"\n    means Source Code Form to which the initial Contributor has attached\n    the notice in Exhibit A, the Executable Form of such Source Code\n    Form, and Modifications of such Source Code Form, in each case\n    including portions thereof.\n\n1.5. \"Incompatible With Secondary Licenses\"\n    means\n"
+      },
+      {
+        "term": "Executable Form",
+        "line": 34,
+        "text": "        terms of a Secondary License.\n\n1.6. \"Executable Form\"\n    means any form of the work other than Source Code Form.\n\n1.7. \"Larger Work\"\n    means a work that combines Covered Software with other material, in\n    a separate file or files, that is not Covered Software.\n"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "LibreOffice/core",
+    "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+    "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+    "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+    "blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+    "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+    "bytes": 23020,
+    "excerpts": [
+      {
+        "term": "MPL",
+        "line": 6,
+        "text": " *\n * This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/.\n */\n\n#ifndef INCLUDED_LIBREOFFICEKIT_LIBREOFFICEKIT_H\n#define INCLUDED_LIBREOFFICEKIT_LIBREOFFICEKIT_H\n"
+      },
+      {
+        "term": "MPL",
+        "line": 7,
+        "text": " * This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/.\n */\n\n#ifndef INCLUDED_LIBREOFFICEKIT_LIBREOFFICEKIT_H\n#define INCLUDED_LIBREOFFICEKIT_LIBREOFFICEKIT_H\n\n#include <stddef.h>"
+      },
+      {
+        "term": "documentLoad",
+        "line": 58,
+        "text": "    void (*destroy) (LibreOfficeKit* pThis);\n\n    LibreOfficeKitDocument* (*documentLoad) (LibreOfficeKit* pThis,\n                                             const char* pURL);\n\n    char* (*getError) (LibreOfficeKit* pThis);\n\n    /// @since LibreOffice 5.0\n    LibreOfficeKitDocument* (*documentLoadWithOptions) (LibreOfficeKit* pThis,"
+      },
+      {
+        "term": "documentLoad",
+        "line": 64,
+        "text": "\n    /// @since LibreOffice 5.0\n    LibreOfficeKitDocument* (*documentLoadWithOptions) (LibreOfficeKit* pThis,\n                                                        const char* pURL,\n                                                        const char* pOptions);\n    /// @since LibreOffice 5.2\n\n    /// The name \"freeError\" is a historical accident, actually this\n    /// is a generic deallocation function for dynamically allocated"
+      },
+      {
+        "term": "saveAs",
+        "line": 196,
+        "text": "    void (*destroy) (LibreOfficeKitDocument* pThis);\n\n    int (*saveAs) (LibreOfficeKitDocument* pThis,\n                   const char* pUrl,\n                   const char* pFormat,\n                   const char* pFilterOptions);\n\n    /** @see lok::Document::getDocumentType().\n        @since LibreOffice 6.0"
+      },
+      {
+        "term": "paintTile",
+        "line": 228,
+        "text": "                         int nMode);\n\n    /// @see lok::Document::paintTile().\n    void (*paintTile) (LibreOfficeKitDocument* pThis,\n                       unsigned char* pBuffer,\n                       const int nCanvasWidth,\n                       const int nCanvasHeight,\n                       const int nTilePosX,\n                       const int nTilePosY,"
+      },
+      {
+        "term": "paintTile",
+        "line": 229,
+        "text": "\n    /// @see lok::Document::paintTile().\n    void (*paintTile) (LibreOfficeKitDocument* pThis,\n                       unsigned char* pBuffer,\n                       const int nCanvasWidth,\n                       const int nCanvasHeight,\n                       const int nTilePosX,\n                       const int nTilePosY,\n                       const int nTileWidth,"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "apache/poi",
+    "commit": "df7d70faa13003593f272259c7fe8ed787f507df",
+    "path": "poi-ooxml/src/main/java/org/apache/poi/xssf/usermodel/XSSFWorkbook.java",
+    "url": "https://github.com/apache/poi/blob/df7d70faa13003593f272259c7fe8ed787f507df/poi-ooxml/src/main/java/org/apache/poi/xssf/usermodel/XSSFWorkbook.java",
+    "blob": "b1f98b2579ba2811fb6603cfcbb4a47928f07676",
+    "sha256": "459206032bddcde99c8cbf3b15b2955bf1597e77c7fb9c3ea1dedf379157ff77",
+    "bytes": 96573,
+    "excerpts": [
+      {
+        "term": "Apache",
+        "line": 2,
+        "text": "/* ====================================================================\n   Licensed to the Apache Software Foundation (ASF) under one or more\n   contributor license agreements.  See the NOTICE file distributed with\n   this work for additional information regarding copyright ownership.\n   The ASF licenses this file to You under the Apache License, Version 2.0\n   (the \"License\"); you may not use this file except in compliance with\n   the License.  You may obtain a copy of the License at\n"
+      },
+      {
+        "term": "Apache",
+        "line": 5,
+        "text": "   contributor license agreements.  See the NOTICE file distributed with\n   this work for additional information regarding copyright ownership.\n   The ASF licenses this file to You under the Apache License, Version 2.0\n   (the \"License\"); you may not use this file except in compliance with\n   the License.  You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software"
+      },
+      {
+        "term": "write",
+        "line": 608,
+        "text": "        XSSFPictureData img = createRelationship(XSSFPictureData.getRelationForType(format), this.xssfFactory, imageNumber, true).getDocumentPart();\n        try (OutputStream out = img.getPackagePart().getOutputStream()) {\n            out.write(pictureData);\n        } catch (IOException e) {\n            throw new POIXMLException(e);\n        }\n        pictures.add(img);\n        return imageNumber - 1;\n    }"
+      },
+      {
+        "term": "write",
+        "line": 725,
+        "text": "\n        try (UnsynchronizedByteArrayOutputStream out = UnsynchronizedByteArrayOutputStream.builder().get()) {\n            srcSheet.write(out);\n            try (InputStream bis = out.toInputStream()) {\n                clonedSheet.read(bis);\n            }\n        } catch (IOException e){\n            throw new POIXMLException(\"Failed to clone sheet\", e);\n        }"
+      },
+      {
+        "term": "Workbook",
+        "line": 85,
+        "text": "import org.apache.poi.ss.usermodel.Sheet;\nimport org.apache.poi.ss.usermodel.SheetVisibility;\nimport org.apache.poi.ss.usermodel.Workbook;\nimport org.apache.poi.ss.util.CellReference;\nimport org.apache.poi.ss.util.WorkbookUtil;\nimport org.apache.poi.util.Beta;\nimport org.apache.poi.util.IOUtils;\nimport org.apache.poi.util.Internal;\nimport org.apache.poi.util.NotImplemented;"
+      },
+      {
+        "term": "Workbook",
+        "line": 87,
+        "text": "import org.apache.poi.ss.usermodel.Workbook;\nimport org.apache.poi.ss.util.CellReference;\nimport org.apache.poi.ss.util.WorkbookUtil;\nimport org.apache.poi.util.Beta;\nimport org.apache.poi.util.IOUtils;\nimport org.apache.poi.util.Internal;\nimport org.apache.poi.util.NotImplemented;\nimport org.apache.poi.util.Removal;\nimport org.apache.poi.util.StringUtil;"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "androidx/androidx",
+    "commit": "ffadc46c08a3423475e126935917bfa2cf91b9ba",
+    "path": "webkit/webkit/src/main/java/androidx/webkit/ProfileStore.java",
+    "url": "https://github.com/androidx/androidx/blob/ffadc46c08a3423475e126935917bfa2cf91b9ba/webkit/webkit/src/main/java/androidx/webkit/ProfileStore.java",
+    "blob": "fff31c92e232607714fc39a6464296eced1bf05d",
+    "sha256": "3e4e948de8b56920741000bd3b856996913e9f1931d4065ddf06f2c8cc8811cc",
+    "bytes": 5934,
+    "excerpts": [
+      {
+        "term": "MULTI_PROFILE",
+        "line": 53,
+        "text": "     * @return ProfileStore instance to use for managing profiles.\n     * @throws UnsupportedOperationException if the\n     *     {@link WebViewFeature#MULTI_PROFILE} feature is not supported.\n     *     This should be checked before use with {@link WebViewFeature#isFeatureSupported}.\n     */\n    @RequiresFeature(name = WebViewFeature.MULTI_PROFILE,\n            enforcement = \"androidx.webkit.WebViewFeature#isFeatureSupported\")\n    static @NonNull ProfileStore getInstance() {\n        ApiFeature.NoFramework feature = WebViewFeatureInternal.MULTI_PROFILE;"
+      },
+      {
+        "term": "MULTI_PROFILE",
+        "line": 56,
+        "text": "     *     This should be checked before use with {@link WebViewFeature#isFeatureSupported}.\n     */\n    @RequiresFeature(name = WebViewFeature.MULTI_PROFILE,\n            enforcement = \"androidx.webkit.WebViewFeature#isFeatureSupported\")\n    static @NonNull ProfileStore getInstance() {\n        ApiFeature.NoFramework feature = WebViewFeatureInternal.MULTI_PROFILE;\n        if (feature.isSupportedByWebView()) {\n            return ProfileStoreImpl.getInstance();\n        } else {"
+      },
+      {
+        "term": "getOrCreateProfile",
+        "line": 38,
+        "text": " * <p>\n *    // Use this store instance to manage Profiles.\n *    Profile createdProfile = profileStore.getOrCreateProfile(\"test_profile\");\n *    createdProfile.getGeolocationPermissions().clear(\"example\");\n *    //...\n *    profileStore.deleteProfile(\"profile_test\");\n * <p>\n * </pre>\n */"
+      },
+      {
+        "term": "getOrCreateProfile",
+        "line": 81,
+        "text": "    @RequiresFeature(name = WebViewFeature.MULTI_PROFILE,\n            enforcement = \"androidx.webkit.WebViewFeature#isFeatureSupported\")\n    @NonNull Profile getOrCreateProfile(@NonNull String name);\n\n    /**\n     * Returns a profile with the given name, if it exists.\n     * <p>\n     * Returns the associated Profile with this name, if there's no Profile with this name or the\n     * Profile was deleted by {@link ProfileStore#deleteProfile(String)} it will return null."
+      },
+      {
+        "term": "deleteProfile",
+        "line": 41,
+        "text": " *    createdProfile.getGeolocationPermissions().clear(\"example\");\n *    //...\n *    profileStore.deleteProfile(\"profile_test\");\n * <p>\n * </pre>\n */\n@UiThread\npublic interface ProfileStore {\n"
+      },
+      {
+        "term": "deleteProfile",
+        "line": 87,
+        "text": "     * <p>\n     * Returns the associated Profile with this name, if there's no Profile with this name or the\n     * Profile was deleted by {@link ProfileStore#deleteProfile(String)} it will return null.\n     *\n     * @param name the name of the profile to retrieve.\n     * @return instance of {@link Profile} matching this name, null otherwise if there's no match.\n     * @throws UnsupportedOperationException if the\n     *     {@link WebViewFeature#MULTI_PROFILE} feature is not supported.\n     *     This should be checked before use with {@link WebViewFeature#isFeatureSupported}."
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/view/SurfaceControlViewHost.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/view/SurfaceControlViewHost.java",
+    "blob": "c8cf7d9a5194a1cd2d01f93d07fb5d5ecf6e83ae",
+    "sha256": "83cb3b9064eef2b1902998c9ceedcdaac1d2aa3fdc78176129993a8b3c72a776",
+    "bytes": 21790,
+    "excerpts": [
+      {
+        "term": "SurfaceControlViewHost(",
+        "line": 305,
+        "text": "\n    /** @hide */\n    public SurfaceControlViewHost(@NonNull Context c, @NonNull Display d,\n            @NonNull WindowlessWindowManager wwm, @NonNull String callsite) {\n        mSurfaceControl = wwm.mRootSurface;\n        mWm = wwm;\n        mViewRoot = new ViewRootImpl(c, d, mWm, new WindowlessWindowLayout());\n        mCloseGuard.openWithCallSite(\"release\", callsite);\n        setConfigCallback(c, d);"
+      },
+      {
+        "term": "SurfaceControlViewHost(",
+        "line": 330,
+        "text": "     * @param hostToken The host token, as discussed above.\n     */\n    public SurfaceControlViewHost(@NonNull Context context, @NonNull Display display,\n            @Nullable IBinder hostToken) {\n        this(context, display, hostToken, \"untracked\");\n    }\n\n    /**\n     * Construct a new SurfaceControlViewHost. The root Surface will be"
+      },
+      {
+        "term": "getSurfacePackage",
+        "line": 128,
+        "text": "     * Package encapsulating a Surface hierarchy which contains interactive view\n     * elements. It's expected to get this object from\n     * {@link SurfaceControlViewHost#getSurfacePackage} afterwards it can be embedded within\n     * a SurfaceView by calling {@link SurfaceView#setChildSurfacePackage}.\n     *\n     * Note that each {@link SurfacePackage} must be released by calling\n     * {@link SurfacePackage#release}. However, if you use the recommended flow,\n     *  the framework will automatically handle the lifetime for you.\n     *"
+      },
+      {
+        "term": "getSurfacePackage",
+        "line": 320,
+        "text": "    /**\n     * Construct a new SurfaceControlViewHost. The root Surface will be\n     * allocated internally and is accessible via getSurfacePackage().\n     *\n     * The {@param hostToken} parameter, primarily used for ANR reporting,\n     * must be obtained from whomever will be hosting the embedded hierarchy.\n     * It's accessible from {@link SurfaceView#getHostToken}.\n     *\n     * @param context The Context object for your activity or application."
+      },
+      {
+        "term": "setView",
+        "line": 427,
+        "text": "     * @param height The height to layout the View within, in pixels.\n     */\n    public void setView(@NonNull View view, int width, int height) {\n        final WindowManager.LayoutParams lp =\n                new WindowManager.LayoutParams(width, height,\n                        WindowManager.LayoutParams.TYPE_APPLICATION, 0, PixelFormat.TRANSPARENT);\n        setView(view, lp);\n    }\n"
+      },
+      {
+        "term": "setView",
+        "line": 431,
+        "text": "                new WindowManager.LayoutParams(width, height,\n                        WindowManager.LayoutParams.TYPE_APPLICATION, 0, PixelFormat.TRANSPARENT);\n        setView(view, lp);\n    }\n\n    /**\n     * @hide\n     */\n    @TestApi"
+      },
+      {
+        "term": "accessibility",
+        "line": 31,
+        "text": "import android.os.RemoteException;\nimport android.util.Log;\nimport android.view.accessibility.IAccessibilityEmbeddedConnection;\nimport android.window.ISurfaceSyncGroup;\nimport android.window.WindowTokenClient;\n\nimport dalvik.system.CloseGuard;\n\nimport java.util.Objects;"
+      },
+      {
+        "term": "accessibility",
+        "line": 60,
+        "text": "\n    private SurfaceControl mSurfaceControl;\n    private IAccessibilityEmbeddedConnection mAccessibilityEmbeddedConnection;\n    private boolean mReleased = false;\n\n    private final class ISurfaceControlViewHostImpl extends ISurfaceControlViewHost.Stub {\n        @Override\n        public void onConfigurationChanged(Configuration configuration) {\n            if (mViewRoot == null) {"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "mozilla/gecko-dev",
+    "commit": "5836a062726f715fda621338a17b51aff30d0a8c",
+    "path": "mobile/android/geckoview/src/main/java/org/mozilla/geckoview/GeckoRuntimeSettings.java",
+    "url": "https://github.com/mozilla/gecko-dev/blob/5836a062726f715fda621338a17b51aff30d0a8c/mobile/android/geckoview/src/main/java/org/mozilla/geckoview/GeckoRuntimeSettings.java",
+    "blob": "90fbae34df908976d39774f3bc1d2c7a445f3b67",
+    "sha256": "ff8f824de130b2b36585c9dc96a222a76aa29120af5e4a04fb1fde1295ee9404",
+    "bytes": 84926,
+    "excerpts": [
+      {
+        "term": "Mozilla Public",
+        "line": 3,
+        "text": "/* -*- Mode: Java; c-basic-offset: 4; tab-width: 20; indent-tabs-mode: nil; -*-\n * vim: ts=4 sw=4 expandtab:\n * This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/. */\n\npackage org.mozilla.geckoview;\n\nimport static android.os.Build.VERSION;"
+      },
+      {
+        "term": "remoteDebuggingEnabled",
+        "line": 160,
+        "text": "     * @return This Builder instance.\n     */\n    public @NonNull Builder remoteDebuggingEnabled(final boolean enabled) {\n      getSettings().mRemoteDebugging.set(enabled);\n      return this;\n    }\n\n    /**\n     * Set whether support for web fonts should be enabled."
+      },
+      {
+        "term": "remoteDebuggingEnabled",
+        "line": 1230,
+        "text": "   * @return True if remote debugging support is enabled.\n   */\n  public boolean getRemoteDebuggingEnabled() {\n    return mRemoteDebugging.get();\n  }\n\n  /**\n   * Set whether remote debugging support should be enabled.\n   *"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "graphics/java/android/graphics/pdf/PdfRenderer.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/graphics/java/android/graphics/pdf/PdfRenderer.java",
+    "blob": "4666963b5dd473569de72821a3ff47e9ed6a3189",
+    "sha256": "4c4db705a0f7aac4b7a822ad5f763cb540b67e53714cbebb11e1e730691dd208",
+    "bytes": 16777,
+    "excerpts": [
+      {
+        "term": "untrusted",
+        "line": 147,
+        "text": "     * </p>\n     * <p>\n     * If the file is from an untrusted source it is recommended to run the renderer in a separate,\n     * isolated process with minimal permissions to limit the impact of security exploits.\n     * </p>\n     *\n     * @param input Seekable file descriptor to read from.\n     *\n     * @throws java.io.IOException If an error occurs while reading the file."
+      },
+      {
+        "term": "seekable",
+        "line": 60,
+        "text": " * <pre>\n * // create a new renderer\n * PdfRenderer renderer = new PdfRenderer(getSeekableFileDescriptor());\n *\n * // let us just render all pages\n * final int pageCount = renderer.getPageCount();\n * for (int i = 0; i < pageCount; i++) {\n *     Page page = renderer.openPage(i);\n *"
+      },
+      {
+        "term": "seekable",
+        "line": 139,
+        "text": "     * Creates a new instance.\n     * <p>\n     * <strong>Note:</strong> The provided file descriptor must be <strong>seekable</strong>,\n     * i.e. its data being randomly accessed, e.g. pointing to a file.\n     * </p>\n     * <p>\n     * <strong>Note:</strong> This class takes ownership of the passed in file descriptor\n     * and is responsible for closing it when the renderer is closed.\n     * </p>"
+      },
+      {
+        "term": "Page openPage",
+        "line": 229,
+        "text": "     * @see android.graphics.pdf.PdfRenderer.Page#close() PdfRenderer.Page.close()\n     */\n    public Page openPage(int index) {\n        throwIfClosed();\n        throwIfPageOpened();\n        throwIfPageNotInDocument(index);\n        mCurrentPage = new Page(index);\n        return mCurrentPage;\n    }"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "TomRoush/PdfBox-Android",
+    "commit": "acf64258dd2ce575fea8ac4e51f57cca7f4945d7",
+    "path": "LICENSE.txt",
+    "url": "https://github.com/TomRoush/PdfBox-Android/blob/acf64258dd2ce575fea8ac4e51f57cca7f4945d7/LICENSE.txt",
+    "blob": "6786924e6b90f058e228abda5c33c4dd1cff3b34",
+    "sha256": "8ceed6051cbd7f6d5d56bad8ca5e73f0414fb13cbe0c4170f7c4c9beaa1a7679",
+    "bytes": 16295,
+    "excerpts": [
+      {
+        "term": "Apache",
+        "line": 2,
+        "text": "\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions."
+      },
+      {
+        "term": "Apache",
+        "line": 4,
+        "text": "                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,"
+      },
+      {
+        "term": "Version 2.0",
+        "line": 3,
+        "text": "\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n"
+      },
+      {
+        "term": "Version 2.0",
+        "line": 192,
+        "text": "   Copyright [yyyy] [name of copyright owner]\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "apache/poi",
+    "commit": "df7d70faa13003593f272259c7fe8ed787f507df",
+    "path": "poi/src/main/java/org/apache/poi/ss/util/SheetUtil.java",
+    "url": "https://github.com/apache/poi/blob/df7d70faa13003593f272259c7fe8ed787f507df/poi/src/main/java/org/apache/poi/ss/util/SheetUtil.java",
+    "blob": "95260e887679c5e45636d060493d6f4c49e271f7",
+    "sha256": "b6c8e3f1d02875e5da716ba18d0f27f17c0a6ed0381d8b6a97d262a7453261c9",
+    "bytes": 25703,
+    "excerpts": [
+      {
+        "term": "java.awt",
+        "line": 20,
+        "text": "package org.apache.poi.ss.util;\n\nimport java.awt.font.FontRenderContext;\nimport java.awt.font.TextAttribute;\nimport java.awt.font.TextLayout;\nimport java.awt.geom.AffineTransform;\nimport java.awt.geom.Rectangle2D;\nimport java.text.AttributedString;\nimport java.util.List;"
+      },
+      {
+        "term": "java.awt",
+        "line": 21,
+        "text": "\nimport java.awt.font.FontRenderContext;\nimport java.awt.font.TextAttribute;\nimport java.awt.font.TextLayout;\nimport java.awt.geom.AffineTransform;\nimport java.awt.geom.Rectangle2D;\nimport java.text.AttributedString;\nimport java.util.List;\nimport java.util.Locale;"
+      },
+      {
+        "term": "FontRenderContext",
+        "line": 20,
+        "text": "package org.apache.poi.ss.util;\n\nimport java.awt.font.FontRenderContext;\nimport java.awt.font.TextAttribute;\nimport java.awt.font.TextLayout;\nimport java.awt.geom.AffineTransform;\nimport java.awt.geom.Rectangle2D;\nimport java.text.AttributedString;\nimport java.util.List;"
+      },
+      {
+        "term": "FontRenderContext",
+        "line": 253,
+        "text": "         * drawing context to measure text\n         */\n        private static FontRenderContext fontRenderContext = new FontRenderContext(null, true, true);\n\n        /**\n         * Calculate the best-fit width for a cell\n         * If a merged cell spans multiple columns, evenly distribute the column width among those columns\n         *\n         * @param defaultCharWidth the width of a character using the default font in a workbook"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "mozilla/gecko-dev",
+    "commit": "5836a062726f715fda621338a17b51aff30d0a8c",
+    "path": "mobile/android/geckoview/src/main/java/org/mozilla/geckoview/GeckoRuntime.java",
+    "url": "https://github.com/mozilla/gecko-dev/blob/5836a062726f715fda621338a17b51aff30d0a8c/mobile/android/geckoview/src/main/java/org/mozilla/geckoview/GeckoRuntime.java",
+    "blob": "3eaf228e935cc1f7ec374e25e407d0a576fdce98",
+    "sha256": "090c013b620aba9a530dab8770cef18d03f0e045bf8b5fd8093d545f61e890d9",
+    "bytes": 44188,
+    "excerpts": [
+      {
+        "term": "Only one",
+        "line": 274,
+        "text": "\n    if (sRuntime != null) {\n      throw new IllegalStateException(\"Only one GeckoRuntime instance is allowed\");\n    }\n    sRuntime = this;\n  }\n\n  @WrapForJNI\n  @UiThread"
+      },
+      {
+        "term": "GeckoRuntime create",
+        "line": 612,
+        "text": "   */\n  @UiThread\n  public static @NonNull GeckoRuntime create(final @NonNull Context context) {\n    ThreadUtils.assertOnUiThread();\n    return create(context, new GeckoRuntimeSettings());\n  }\n\n  /**\n   * Returns a WebExtensionController for this GeckoRuntime."
+      },
+      {
+        "term": "GeckoRuntime create",
+        "line": 648,
+        "text": "   */\n  @UiThread\n  public static @NonNull GeckoRuntime create(\n      final @NonNull Context context, final @NonNull GeckoRuntimeSettings settings) {\n    ThreadUtils.assertOnUiThread();\n    if (DEBUG) {\n      Log.d(LOGTAG, \"create \" + context);\n    }\n"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/jni/com_android_internal_os_Zygote.cpp",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/jni/com_android_internal_os_Zygote.cpp",
+    "blob": "ce806a0fcc08760b64705dcb4dce573dcbcde313",
+    "sha256": "8be5c0354ee78ff6b6c9fd93a77dca78994b7f32fa15d0c430293b76a4181e1b",
+    "bytes": 117345,
+    "excerpts": [
+      {
+        "term": "isolateAppData",
+        "line": 1132,
+        "text": "// Isolate app's data directory, by mounting a tmpfs on CE DE storage,\n// and create and bind mount app data in related_packages.\nstatic void isolateAppDataPerPackage(int userId, std::string_view package_name,\n    std::string_view volume_uuid, long long ce_data_inode, std::string_view actualCePath,\n    std::string_view actualDePath, fail_fn_t fail_fn) {\n\n  char mirrorCePath[PATH_MAX];\n  char mirrorDePath[PATH_MAX];\n  char mirrorCeParent[PATH_MAX];"
+      },
+      {
+        "term": "isolateAppData",
+        "line": 1222,
+        "text": " *     key takes effect on a whole filesystem instance including all its mounts.\n */\nstatic void isolateAppData(JNIEnv* env, const std::vector<std::string>& merged_data_info_list,\n    uid_t uid, const char* process_name,\n    jstring managed_nice_name, fail_fn_t fail_fn) {\n\n  const userid_t userId = multiuser_get_user_id(uid);\n\n  int size = merged_data_info_list.size();"
+      },
+      {
+        "term": "MountAppDataTmpFs",
+        "line": 803,
+        "text": "}\n\nstatic void MountAppDataTmpFs(const std::string& target_dir,\n                      fail_fn_t fail_fn) {\n  if (TEMP_FAILURE_RETRY(mount(\"tmpfs\", target_dir.c_str(), \"tmpfs\",\n                               MS_NOSUID | MS_NODEV | MS_NOEXEC, \"uid=0,gid=0,mode=0751\")) == -1) {\n    fail_fn(CREATE_ERROR(\"Failed to mount tmpfs to %s: %s\",\n                         target_dir.c_str(), strerror(errno)));\n  }"
+      },
+      {
+        "term": "MountAppDataTmpFs",
+        "line": 1255,
+        "text": "  }\n\n  MountAppDataTmpFs(internalLegacyCePath, fail_fn);\n  MountAppDataTmpFs(internalCePath, fail_fn);\n  MountAppDataTmpFs(internalDePath, fail_fn);\n\n  // Mount tmpfs on all external vols DE and CE storage\n  DIR* dir = opendir(externalPrivateMountPath);\n  if (dir == nullptr) {"
+      },
+      {
+        "term": "app data isolation",
+        "line": 1399,
+        "text": " * Without sdk sandbox data isolation, the sandbox could detect if another app is installed on the\n * system by \"touching\" other data directories like /data/misc_ce/0/sdksandbox/com.whatsapp, similar\n * to apps without app data isolation (see {@link #isolateAppData()}).\n *\n * To prevent this, tmpfs is mounted onto misc_ce and misc_de directories on all possible volumes in\n * a separate mount namespace. The sandbox directory path is then created containing the name of the\n * client app package associated with the sdk sandbox. The contents for this (sdk level storage and\n * shared sdk storage) are bind mounted from the sandbox data mirror.\n */"
+      }
+    ],
+    "boundary": "Primary source/interface evidence only; no transitive license closure, legal advice, Android payload build or product acceptance."
+  }
+]
