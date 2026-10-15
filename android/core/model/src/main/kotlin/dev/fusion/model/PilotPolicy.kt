@@ -16,7 +16,7 @@ object PilotPolicy {
         PilotModule("a11y", "Accessibility", PilotAccess.CANDIDATE, "Read-only system accessibility state. TalkBack/Switch/Voice release gates remain unpassed."),
         PilotModule("apps", "Installed apps", PilotAccess.CANDIDATE, "Launchable apps only. Third-party task/window state is not available."),
         PilotModule("continuity", "Sharing and peripherals", PilotAccess.CANDIDATE, "Explicit Android share intents and attached input inventory; no PC bridge."),
-        PilotModule("notes", "Notes", PilotAccess.CONSENT_REQUIRED, "Bounded UTF-8 Markdown with revision-checked publication/readback and explicit saved-note wiki-backlink scans. Use disposable text; Android acceptance pending. Unsaved drafts are memory-only; no backup or encryption."),
+        PilotModule("notes", "Notes", PilotAccess.CONSENT_REQUIRED, "Bounded UTF-8 Markdown with revision-checked publication/readback and explicit saved-note wiki-backlink scans. Use disposable text; Android acceptance pending. Coalesced local draft checkpoints are separate from saved notes; unconfirmed edits can be lost. No backup or encryption."),
         PilotModule("browser", "Browser", PilotAccess.BLOCKED, "Process isolation, origin/permission and session security review pending. Use an external browser for the pilot."),
         PilotModule("terminal", "Local shell", PilotAccess.CONSENT_REQUIRED, "Allowlisted Android diagnostics and echo only. No command interpreter, subprocess execution, PTY, SSH or Linux userland."),
         PilotModule("media", "Media", PilotAccess.CONSENT_REQUIRED, "MediaStore listing and explicit external viewer handoff, not a native player."),
@@ -33,7 +33,7 @@ object PilotPolicy {
         PilotModule("beam", "Beam", PilotAccess.BLOCKED, "Receiver authentication/trust, owned session indicator and S17–S21 not passed. No automatic LAN file serving."),
         PilotModule("dlna", "DLNA", PilotAccess.BLOCKED, "LAN peer/XML/URL trust and owned session stop/privacy review pending."),
         PilotModule("messages", "Messages", PilotAccess.BLOCKED, "SMS role/permission policy and delivery receipts incomplete. No iMessage, RCS or Matrix transport."),
-        PilotModule("together", "Together", PilotAccess.BLOCKED, "Local state model is not a network co-watching service. S22 not passed."),
+        PilotModule("together", "Together", PilotAccess.BLOCKED, "No network co-watching service or measured synchronization. S22 not passed."),
     ))
     fun module(id: String): PilotModule = modules.find { it.id == id }
         ?: PilotModule(id, "Unknown module", PilotAccess.BLOCKED, "Unknown modules fail closed.")

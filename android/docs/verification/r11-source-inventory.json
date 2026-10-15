@@ -297,7 +297,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "413fc399372f1b92b7fe19f5cefbba0fbe8f2a0f8a3c4c6c7d8695630116a6a4"
+      "sha256": "643d2c9151b0e1d8e06f00def17649b09f9d220a04c0681845200f8dff3fb59e"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -633,7 +633,7 @@
       "path": "feature/together/src/main/java/dev/fusion/together/TogetherSession.kt",
       "module": ":feature:together",
       "package": "dev.fusion.together",
-      "sha256": "13966e993e622b4a6f2ffb36ca02230f7d2ff3f1d77d8ed70ef1c2e30da11ffb"
+      "sha256": "6f2b989f0c34b5a23386c630e3cbbf695b10e8903c2a06b6e851499693215bbc"
     },
     {
       "path": "feature/lens/src/main/java/dev/fusion/lens/LensScreen.kt",

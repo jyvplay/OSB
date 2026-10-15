@@ -14,7 +14,7 @@ class BrowserSurfaceActivity:Activity() {
         left=SurfaceView(this);right=SurfaceView(this)
         val row=LinearLayout(this).apply {
             orientation=LinearLayout.HORIZONTAL
-            addView(left,LinearLayout.LayoutParams(0,-1,1f));addView(right,LinearLayout.LayoutParams(0,-1,1f))
+            addView(this@BrowserSurfaceActivity.left,LinearLayout.LayoutParams(0,-1,1f));addView(this@BrowserSurfaceActivity.right,LinearLayout.LayoutParams(0,-1,1f))
         }
         setContentView(row)
     }

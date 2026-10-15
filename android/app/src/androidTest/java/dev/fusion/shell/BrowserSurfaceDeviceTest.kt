@@ -101,7 +101,7 @@ class BrowserSurfaceDeviceTest {
         val context=ApplicationProvider.getApplicationContext<Context>()
         ActivityScenario.launch(BrowserSurfaceActivity::class.java).use { scenario ->
             lateinit var left:SurfaceView;lateinit var right:SurfaceView
-            scenario.onActivity { left=it.left;right=it.right }
+            scenario.onActivity { left=it.left;right=it.right;assertNotSame(left,right);assertSame(left.parent,right.parent);assertEquals(2,(left.parent as ViewGroup).childCount) }
             Remote(context,BrowserSurfaceAProbe::class.java).use { a -> Remote(context,BrowserSurfaceBProbe::class.java).use { b ->
                 val aa=attach(a,left);val bb=attach(b,right)
                 assertNotEquals(aa.getInt("pid"),bb.getInt("pid"));assertNotEquals(Process.myPid(),aa.getInt("pid"))
