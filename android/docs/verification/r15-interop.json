@@ -19,6 +19,6 @@
   "coordinate_absolute_tolerance": "1e-6 source/viewport coordinate units",
   "scope": "Same-author corpus; independent maintained crypto implementation and Python standard libraries. No device, Office-engine, key-management, FIPS or full-security acceptance.",
   "script_sha256": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
-  "compiled_receipt_sha256": "7be0ce71236703c7cce0d9a38df5b28fc15e4a855848a4db2137678481312422",
+  "compiled_receipt_sha256": "d5764f5e4f71a84a329064a4d5cb5774dd20470d2db00c9cc161998940c6e08c",
   "requests_sha256": "c6bbb7403882767743909730968fc4e35ab1b0374432b886f1b2f809f45d3ae5"
 }

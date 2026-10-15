@@ -7,7 +7,7 @@ Actual local toolchain restored: Kotlin2.2.21 (npm SHA512 verified), JRE17.0.9, 
 Six independent candidates before implementation:
 1. Lens: finite quarter-turn/mirror/fit-or-crop coordinate transforms and inverse, not virtual camera or segmentation.
 2. Capture: bounded monotonic recording/pause interval accounting, not MediaProjection consent/encoder success.
-3. Messages: strict bounded transcript archive with canonical framing and tamper/error detection, not SMS/RCS/iMessage transport or encrypted storage.
+3. Messages: strict bounded transcript archive with canonical framing and accidental-corruption detection (CRC is not authentication), not SMS/RCS/iMessage transport or encrypted storage.
 4. Vault: original bounded AES256-GCM envelope using platform JCA and caller-owned key/context, verified against external cryptography; not key management, password derivation, rollback prevention or a vault unlock.
 5. Core model: canonical own-app launch-link codec for an allowlisted module/workspace, not an Intent dispatcher or grant of document/network authority.
 6. Office/sandbox: framed original DecimalSheet requests executed inside existing isolated-UID FD worker, not only a hash. Existing R14 native isolation cases (distinct UID, descriptor discipline, watchdog, controlled private path and socket denial) passed; this permits the next experimental parser test, NOT a full FF12/S gate promotion. New native execution is mandatory before claiming the parser actually ran there.

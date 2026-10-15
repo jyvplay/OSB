@@ -77,6 +77,24 @@ object R15Checks {
             no { SheetFrame.encode(mapOf(key to "1")) }
         }
         eq(mapOf("DX1000" to "1"),SheetFrame.readResult("FSR1\nDX1000\t1\n".toByteArray()))
+        // Additional boundary attacks: size validation precedes allocation/crypto and failed calls preserve state.
+        eq(256,TranscriptArchive.decode(TranscriptArchive.encode(List(256){TranscriptLine("m$it","","",it.toLong())})).size)
+        no { TranscriptArchive.encode(List(256){TranscriptLine("m$it","","x".repeat(8192),it.toLong())}) }
+        no { VaultEnvelope.open(sealed+byteArrayOf(0),key,context) }
+        no { VaultEnvelope.open(sealed.copyOf(35),key,context) }
+        no { VaultEnvelope.seal(plaintext,key,ByteArray(1025)) }
+        val replayable=VaultEnvelope.seal("other-resource".toByteArray(),key,context)
+        eq("other-resource",VaultEnvelope.open(replayable,key,context).toString(Charsets.UTF_8))
+        // Shared context deliberately does not bind a filename/resource identity.
+        no { SheetFrame.decode(ByteArray(SheetFrame.MAX_INPUT+1)) }
+        no { SheetFrame.readResult(ByteArray(SheetFrame.MAX_OUTPUT+1)) }
+        val fullSheet=(1..256).associate { "A$it" to ("1"+"0".repeat(100)) }
+        eq(256,SheetFrame.readResult(SheetFrame.execute(SheetFrame.encode(fullSheet))).size)
+        no { SheetFrame.decode("FSC1\nA1\tMg\n".toByteArray()) } // Noncanonical Base64 padding.
+        no { SheetFrame.decode("FSC1\nA2\tMg==\nA1\tMQ==\n".toByteArray()) }
+        no { LaunchLinks.decode("x".repeat(129)) }
+        no { LaunchLinks.decode("fusion://open/../editor?workspace=1") }
+        no { LaunchLinks.decode("fusion://open/editor?workspace=%31") }
         println("R15: $checks assertions PASS. Six separately compiled production components; no Android/security/Office/full-module acceptance inferred.")
     }
 }

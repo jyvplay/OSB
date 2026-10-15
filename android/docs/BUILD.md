@@ -1,4 +1,56 @@
-# R14 current build and try-out entry points
+# R15 current build and executable entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
+AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36. Current min/compile/target34/36/36
+still deviates from requested compile37. These are incomplete debug builds, not release clearance.
+
+**44/48 modules (91.67%) have bounded executable subsets;0/48 are fully accepted.**
+See [R15-ENGINEERING.md](R15-ENGINEERING.md) for the A–J review, six mechanisms,20 false-solution
+shapes, counterexample/repair and exact remaining gaps. Inherited751c0f4/run38690692400 finished
+64/64 API34 cases PASS. R15 **eeb93a4/run38692920167** then passed **71/71 API34 cases**,
+both debug flavors, invoked JVM/contracts and lint. The seven new cases include actual child-UID
+arithmetic, refusal paths, Android Bitmap comparison and platform AEAD. This is not physical or
+full-product acceptance. Expanded host checks/docs postdate that native candidate; production and
+native-test sources remain unchanged. Download debug APKs from the run's `fusion-native-debug`
+artifact, or build locally; no APK was manually installed or visually reviewed in this workspace.
+
+## What can be exercised
+
+- Existing Capture flow now reports its observed recorder-active elapsed interval after finalization.
+  This is explicitly not encoded-media duration or proof of playback, hardware encoding or timing.
+  Existing consent/notification/lock/thermal protections remain unchanged.
+- R15 public Kotlin APIs: Lens geometry, pause/resume accounting, plaintext transcript archives,
+  authenticated Vault envelopes, canonical launch targets and bounded arithmetic frames.
+  They are not complete new camera/Vault/Messages/launch workflows. No Vault/notification/Office
+  gate was unlocked. The Vault API requires a caller-protected random32-byte key, not a password.
+- Actual isolated arithmetic is tested through `FormatLease.evaluateSheet` with a test-owned
+  FSC1 file. It is not an Office document format; no external Office engine is bundled.
+
+## Reproduce host checks
+
+From `android/`, configure JAVA_HOME for JDK17 and KOTLINC for Kotlin2.2.21:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_r15_contracts.py
+python3 -m pip install --target "$HOME/.cache/fusion-r15-oracles" cryptography==46.0.3
+PYTHONPATH="$HOME/.cache/fusion-r15-oracles" python3 tools/run_r15_interop.py
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+./gradlew :testing:r15Contracts
+```
+
+Fresh local results:5510 assertions,700 cross-language checks,74 Python tests.
+The700 include100 Java→OpenSSL and100 OpenSSL→Java authenticated-envelope cases.
+The host dependency is outside the repository/APK. R14 was rebuilt/rerun:1893 assertions and600
+cross-language cases passed. None of these commands substitutes for Android/device evidence.
+
+The native commands below remain applicable and now include seven R15 cases: actual Bitmap
+transforms, elapsed clock, file/crypto, Android URI and isolated parser success/refusals.
+Explicit disposable-emulator consent is mandatory; never reset personal app data for tests.
+
+---
+
+# Historical R14 build and try-out entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
 AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36. Current min/compile/target34/36/36
