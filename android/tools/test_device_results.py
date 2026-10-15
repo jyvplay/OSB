@@ -13,10 +13,11 @@ class DeviceReportChecks(unittest.TestCase):
 
     def test_failure_error_skip_and_success_are_distinct(self):
         with tempfile.TemporaryDirectory() as root:
-            Path(root,'TEST-result.xml').write_text('<testsuite><testcase classname="C" name="a"/><testcase classname="C" name="b"><failure/></testcase><testcase classname="C" name="c"><error/></testcase><testcase classname="C" name="d"><skipped/></testcase></testsuite>')
+            Path(root,'TEST-result.xml').write_text('<testsuite><testcase classname="C" name="a"/><testcase classname="C" name="b"><failure message="actual diagnostic"/></testcase><testcase classname="C" name="c"><error/></testcase><testcase classname="C" name="d"><skipped/></testcase></testsuite>')
             report=collect(root)
             self.assertEqual({'PASS':1,'FAIL':2,'SKIP':1},report['counts'])
             self.assertIn('C.c=FAIL',''.join(messages(report)))
+            self.assertIn('actual diagnostic',''.join(messages(report)))
 
     def test_conflicting_duplicate_is_refused(self):
         with tempfile.TemporaryDirectory() as root:

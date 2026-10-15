@@ -31,7 +31,9 @@ class FormatIsolationDeviceTest {
             assertNotEquals(Process.myUid(),result.uid);assertNotEquals(Process.myPid(),result.pid)
             assertEquals(bytes.size,result.bytes)
             assertEquals(MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) },result.digest)
-            assertFalse(result.internetGranted);assertTrue("Expected native EACCES, not missing-file refusal",result.privateAccessDenied)
+            assertFalse("Worker unexpectedly holds INTERNET permission",result.internetGranted)
+            assertEquals("Expected native EACCES, not missing-file refusal",OsConstants.EACCES,result.privateErrno)
+            assertTrue("Private access denied flag must agree with actual errno",result.privateAccessDenied)
             assertEquals("private-parent-only",sentinel.readText());assertArrayEquals(bytes,file.readBytes())
         } finally { sentinel.delete();file.delete() }
     }

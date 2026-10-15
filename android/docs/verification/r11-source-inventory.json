@@ -415,7 +415,7 @@
       "path": "feature/find/src/main/java/dev/fusion/find/Palette.kt",
       "module": ":feature:find",
       "package": "dev.fusion.find",
-      "sha256": "672de4fc84aa889897e1accad04c69ff41c25b9ded177d9a6fcdc4b82330261a"
+      "sha256": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219"
     },
     {
       "path": "feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt",
@@ -679,13 +679,13 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "98b938d27d516e4f26ba262c661ba9042318e0e3bc21c3d6206498519992c8c4"
+      "sha256": "120553d274246f22387469bf751d4088be8c298d8dd7de8ac370f5357dcfc258"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "fe35d28d1de38c331c554945e8b5df8457755b9acf0abc678113af7a120a6ff1"
+      "sha256": "005751c103f6b15baecda0d29c07ec900c73ddf73b3578e1dd7f491a3e17ae8e"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

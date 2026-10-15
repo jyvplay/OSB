@@ -20,6 +20,11 @@ def collect(root):
             skipped=case.find('skipped') is not None
             status='FAIL' if failed else 'SKIP' if skipped else 'PASS'
             row={'class':identity[0],'name':identity[1],'status':status}
+            failure=case.find('failure')
+            if failure is None: failure=case.find('error')
+            if failure is not None:
+                detail=failure.get('type','')+' '+failure.get('message','')+'\n'+(failure.text or '')
+                row['failure_detail']=detail.encode('utf-8')[:1800].decode('utf-8','replace')
             if identity in cases and cases[identity]!=row: raise ValueError('Conflicting duplicate results')
             cases[identity]=row
             if len(cases)>1000: raise ValueError('Too many cases')
@@ -43,6 +48,11 @@ def messages(report):
     if chunk:
         text='Android test results: '+ '; '.join(chunk)
         yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
+
+    for row in report['cases']:
+        if 'failure_detail' in row:
+            text=f"Failure detail {row['class']}.{row['name']}: "+row['failure_detail']
+            yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
 
 if __name__=='__main__':
     report=collect('app/build/outputs/androidTest-results/managedDevice')

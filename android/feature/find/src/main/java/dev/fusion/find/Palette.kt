@@ -27,11 +27,13 @@ fun CommandPalette(commands:List<Command>,onSelect:(String)->Unit,onDismiss:()->
     val selectedIndex=position.coerceIn(0,maxOf(0,hits.lastIndex))
     val inputFocus=remember { FocusRequester() }
     val scroll=rememberLazyListState()
-    LaunchedEffect(Unit) { inputFocus.requestFocus() }
     LaunchedEffect(query) { position=0 }
     LaunchedEffect(selectedIndex,hits) { if(hits.isNotEmpty()) scroll.animateScrollToItem(selectedIndex) }
     AlertDialog(onDismissRequest=onDismiss,title={ Text("Find local actions") },
-        text={ Column(Modifier.fillMaxWidth().onPreviewKeyEvent { event ->
+        text={
+            // The dialog is separately composed: request only after this content attaches its input.
+            LaunchedEffect(Unit) { inputFocus.requestFocus() }
+            Column(Modifier.fillMaxWidth().onPreviewKeyEvent { event ->
             if(event.type!=KeyEventType.KeyDown) false else when(event.key) {
                 Key.Escape -> { onDismiss(); true }
                 Key.DirectionDown -> { if(hits.isNotEmpty()) position=(selectedIndex+1)%hits.size; true }

@@ -65,10 +65,13 @@ class FormatWorkerService : Service() {
                     if(privateName!=null) {
                         require(privateName.matches(Regex(PRIVATE_NAME)))
                         val candidate=File(File(applicationInfo.dataDir,"files"),privateName)
-                        var denied=false
-                        try { candidate.inputStream().use { it.read() } }
-                        catch(error: java.io.IOException) { denied=(error.cause as? ErrnoException)?.errno==OsConstants.EACCES }
-                        response.putBoolean("privateAccessDenied",denied)
+                        // Observe the kernel errno directly, not a Java IOException cause-chain convention.
+                        // [U] verify on API 34/36/37: isolated-UID app-private path denial errno.
+                        var errno=0
+                        try { val probe=Os.open(candidate.absolutePath,OsConstants.O_RDONLY or OsConstants.O_CLOEXEC,0);Os.close(probe) }
+                        catch(error: ErrnoException) { errno=error.errno }
+                        response.putInt("privateErrno",errno)
+                        response.putBoolean("privateAccessDenied",errno==OsConstants.EACCES)
                     }
                     response.putBoolean("ok",true)
                 } catch(error: Exception) {

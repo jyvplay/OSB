@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 /** One operation/isolated process. No URI, output path, network permission or parser engine transfer. */
 class FormatLease(context: Context) : Closeable {
     data class Evidence(val uid: Int,val pid: Int,val bytes: Int,val digest: String,
-                        val internetGranted: Boolean,val privateAccessDenied: Boolean)
+                        val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int)
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -45,7 +45,7 @@ class FormatLease(context: Context) : Closeable {
             if(!digest.matches(Regex("[0-9a-f]{64}")) || size !in 0..FormatWorkerService.MAX_INPUT_BYTES) {
                 result.completeExceptionally(IllegalStateException("Malformed worker result"));return
             }
-            result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied")))
+            result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1)))
         }
     })
     private val connection=object: ServiceConnection {
