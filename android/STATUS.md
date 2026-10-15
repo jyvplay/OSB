@@ -1,4 +1,18 @@
-# Latest: R12 continuation — full specification still incomplete
+# Latest: R17 — bounded R16 closure and persistent local tasks
+
+- **47/48 modules (97.92%) have executable subsets;1/48 (2.08%) remains unestablished: LOK.**
+- **0/48 fully accepted;48/48 unfinished.** All original full workflow/physical/legal/AX gates remain separate.
+- R16: real authenticated TCP/clock tests, actual benchmark journeys and855 measured first-party ART rules.
+- R17: local Tasks with date-only labels, reversible completion, revision-checked private persistence and corrupt-data refusal; no reminders.
+- **ddc7fec/run38700509084:79/79 API34 cases PASS**, both debug builds, JVM/contracts and lint.
+- Earlier6164211:78/79 with a Task UI timeout. Focused/full reruns passed without a production change;
+  causal diagnosis/stability remains open, not silently marked fixed.
+- **397 Tasks assertions +200 independent wire/date cases;17131 R16 assertions +64 actual socket cases;
+  81 Python tests; four conditional Z3 integer-model checks.** None proves the complete application.
+- [R17 engineering/evidence/alternatives](docs/R17-ENGINEERING.md), [R16 closure](docs/R16-ENGINEERING.md),
+  [per-module census](docs/MODULE-TESTABILITY.md), [Studio try-out](docs/BUILD.md).
+
+# Historical: R12 continuation — full specification still incomplete
 
 - **30/48 modules (62.50%) have substantial testable subsets;18/48 (37.50%) not established.**
 - **0/48 fully accepted (0%);48/48 outstanding (100%).** All30 spikes unpassed.

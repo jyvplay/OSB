@@ -738,24 +738,38 @@
       "module": ":feature:automation",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Strict own-app plan validation and sequential callback dispatch; real file effects and stop-on-failure tested.",
+      "behavior": "Bounded own-app action plans plus immutable/date-only local tasks, canonical snapshot, revision-checked private AtomicFile store and real shell add/complete/recreate. Latest79-case native run passed; earlier Task UI timeout remains unexplained.",
       "production": [
-        "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt"
+        "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
         "tools/run_r13_contracts.py",
-        "tools/run_r13_interop.py"
+        "tools/run_r13_interop.py",
+        "testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt",
+        "tools/run_r17_interop.py",
+        "app/src/androidTest/java/dev/fusion/shell/R17TaskStoreDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt"
       ],
-      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md)",
-      "limit": "No durable jobs, triggers, scheduling, rollback or retries. Host callbacks do not establish Android dispatch; actual host dispatch passed at f0cc82d/run38685789036; no complete workflow acceptance follows.",
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest",
+      "limit": "No task editing/deletion/recurrence/reminders/calendar integration; plaintext and single-process storage only; UI stability and full keyboard/AX/physical acceptance remain open. Action plans still not transactional/scheduled.",
       "sha256": {
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "e539e547e6bcaca0fdd94877dcc6124285981dac866a40830a238c127140ac3f",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt": "415b5cdf537cb70c6140be47b791bb5776a1914f3eef99ca777002cb6091dfe3",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "311ae0218ded03b902402a59b1dcab102c6c7e49e18d810091e73816230b9337",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
         "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
-        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805"
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805",
+        "testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt": "66d462a1810b52dba5bdc5c83366f9544514c96ea8c13da07172fa812cfbe0c8",
+        "tools/run_r17_interop.py": "296fa638a234aca25bddb066536b51e01590a702f438449abeeba2aa309b5369",
+        "app/src/androidTest/java/dev/fusion/shell/R17TaskStoreDeviceTest.kt": "b79692a3f53eba5cba8d9e6f3587a83b554b5c15e12dca15487d54e05afb10a3",
+        "app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt": "f6c3e0c316e80f3015b36f770083bf93f0636a4dfe3d3a1f8aa1bd1c049fe01c"
       }
     },
     {

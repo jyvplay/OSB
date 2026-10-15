@@ -9,6 +9,11 @@ still differs from requested compile37. These remain evaluation builds, not rele
 established subset. R16 experiments are closed with their stated positive/negative outcomes;
 see [R16-ENGINEERING.md](R16-ENGINEERING.md) and [R17-ENGINEERING.md](R17-ENGINEERING.md).
 
+Native **ddc7fec/run38700509084 passed79/79**, both flavors, JVM/contracts and lint.
+[Debug APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38700509084).
+An earlier Task UI timeout is retained; later focused/full runs passed without a causal production
+repair. This is an evaluation workflow, not a stability or accessibility release claim.
+
 ## New try-out: local tasks
 
 1. Run the **proDebug** app on a disposable API34+ AVD; acknowledge the pilot warning.
@@ -43,6 +48,10 @@ Use `gradlew.bat` on Windows. R16's independent socket verifier additionally nee
 cryptography46.0.3 (`PYTHONPATH` as in the historical R15 instructions below).
 Native tests require explicit `fusionDisposable=true` and a disposable emulator, as documented
 below. Never point reset/instrumentation routines at personal app data.
+
+Optional conditional-model verifier (host only; NOT an implementation proof):
+`python3 -m pip install --target "$HOME/.cache/fusion-provers" z3-solver==5.3.0.0`, then
+`PYTHONPATH="$HOME/.cache/fusion-provers" python3 tools/prove_r17_models.py`.
 
 The baseline module now ships855 actual measured first-party startup/Files ART rules.
 Generation, packaging and profile-required startup passed atbb338a5/run38697143892.

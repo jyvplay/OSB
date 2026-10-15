@@ -4,7 +4,7 @@
 
 **47/48 modules (97.92%) have substantial executable subsets;1/48 (2.08%) remains unestablished: LOK. Fully original-specification-accepted:0/48 (0%). Unfinished:48/48 (100%).** The census counts each included Gradle module once. Tasks extend the already-counted automation module; no new denominator or duplicate credit was introduced.
 
-Actual systems: Python3, separately restored Kotlin2.2.21/JRE17.0.9, Python cryptography46.0.3/OpenSSL and standard-library calendar/struct/CRC, Git/gh/GitHub Actions/API, actual remote Android API34 managed devices, actual AndroidX macrobenchmark/profile generation. Compiler tarball SHA512 and safe archive member paths were checked. Two regression commands ran concurrently. No independent agent, theorem prover, physical device, expert accessibility review, counsel or local Android SDK/ADB execution was available. Real emulator execution is disclosed as such, never substituted for physical acceptance. No TypeScript product, mock peer/player or simulated OS was added.
+Actual systems: Python3, separately restored Kotlin2.2.21/JRE17.0.9, Python cryptography46.0.3/OpenSSL and standard-library calendar/struct/CRC, Git/gh/GitHub Actions/API, actual remote Android API34 managed devices, actual AndroidX macrobenchmark/profile generation. Compiler tarball SHA512 and safe archive member paths were checked. Two regression commands ran concurrently. No independent agent, physical device, expert accessibility review, counsel or local Android SDK/ADB execution was available. Later in R17, host-only Z3-solver5.3.0.0 was installed and used for explicitly conditional mathematical models; it did not verify Kotlin or Android code. Real emulator execution is disclosed as such, never substituted for physical acceptance. No TypeScript product, mock peer/player or simulated OS was added.
 
 Order honored: finish R16's six bounded experiments and reporting first, including its explicit negative LOK outcome; then implement Tasks. [R16-ENGINEERING.md](R16-ENGINEERING.md) contains that closure. It does NOT say complete co-watching, Office or performance acceptance.
 
@@ -18,7 +18,7 @@ Order honored: finish R16's six bounded experiments and reporting first, includi
 
 **Storage:** FTS1 canonical big-endian framing, strict UTF8, explicit lengths/counts, revision, date epoch-day/null sentinel, Boolean flag and CRC32. CRC detects accidental changes, not a malicious writer. AtomicFile publication is followed by actual bounded reopen/validation. A save error can occur after publication: outcome is uncertain until reload; no rollback claim or blind retry. Corrupt base data is not replaced. An orphan `.new` with no committed base refuses; AtomicFile may clean its own stale temporary file when a committed base exists.
 
-**Quantifiers:** for a fixed candidate, domain, environment and declared finite corpus, every case must yield its specified state/refusal; one violated invariant rejects the candidate. Accepted subset claims additionally require positive execution of the actual public production path. This is not a universal claim over arbitrary mutable/concurrently altered collections, compromised processes, storage failures, Android versions/OEMs or the full original application. Mathematical bounds assume the stated encoding/model; no machine-checked proof was produced.
+**Quantifiers:** for a fixed candidate, domain, environment and declared finite corpus, every case must yield its specified state/refusal; one violated invariant rejects the candidate. Accepted subset claims additionally require positive execution of the actual public production path. This is not a universal claim over arbitrary mutable/concurrently altered collections, compromised processes, storage failures, Android versions/OEMs or the full original application. Mathematical bounds assume the stated encoding/model; four conditional integer models were checked by Z3, but no implementation-level proof was produced.
 
 Adjacent problems not substituted: date label/alarm; done flag/notification delivery; private snapshot/general SAF safe-save; process lock/interprocess exclusion; CRC/authentication; successful reopen/power-cut durability; visible widget/complete keyboard/AX; startup TTID/Room restore latency; emulator sample/physical budget; one tested kernel/full module; numeric parser/Office1:1; measured ART rules/proven speedup.
 
@@ -87,10 +87,11 @@ The early mechanism separation is in the R16/R17 plans. These are not independen
 - Tasks: **397 host assertions +200 independent Python/JVM wire/date cases PASS**. Separate production JAR and consumer compilation; source/JAR/runner hashes retained in `r17-kernel-contracts.txt` and `r17-interop.json`.
 - R16: **17131 assertions +64 real cross-process Java/OpenSSL socket cases PASS**.
 - Fresh R15 regression: **5510 assertions +700 cases PASS**; fresh R14: **1893 assertions +600 cases PASS**.
+- **Four Z3 counterexample queries returned UNSAT**, each with satisfiable assumptions; a separate asymmetric-delay query returned SAT against the claim that midpoint always equals true offset. `r17-smt-models.json` retains solver version, source hash, SMT2 and witnesses. These concern mathematical models only, not platform behavior or Kotlin/JCA/AtomicFile implementation.
 - **81 Python tests PASS**; structural/source/ownership checks pass. None implies Android or product acceptance.
 - R16 native: **74 PASS/0 FAIL/0 SKIP** at7a1eee3/run38695979143, and again atbb338a5/run38697143956 after the evidence/historical-focus repair. Receipts retained.
 - Measured-profile run **bb338a5/38697143892**:1 generator +3 measurement cases PASS; exact855-rule hash and ART assets match. See R16 report for raw measurements and limits.
-- Five new Task Android cases cover private-file persistence/race, corrupt bytes, oversize/orphan data, explicit AtomicFile abort and real shell add/complete/recreate. Their current revision-specific result must be collected before claiming native success; a build is not that result.
+- Five new Task Android cases cover private-file persistence/race, corrupt bytes, oversize/orphan data, explicit AtomicFile abort and real shell add/complete/recreate. Actual outcomes: e5da199/run38698914797 passed79/79;6164211/run38699003492 passed78 with1 Task UI timeout after Add. All four storage tests passed in both. Atddc7fec, the test adds explicit input/enabled-state checks and diagnostic observations without changing production; focused run38700509147 passed the real add/complete/recreate case. This does NOT establish a causal repair or stability. The fresh full-suite result is recorded below after collection.
 
 ## I. Repairs and regression discipline
 
@@ -98,7 +99,7 @@ The actual truncated receipt and non-reproduced historical focus experiment are 
 
 R16's public clock-constructor defect and unsigned benchmark APK are retained in its report. Fresh expanded clock/concurrency and all64 independent socket cases passed; current module acceptance remains bounded.
 
-Tasks add an attack beyond checksum-only testing: recompute CRC after corrupting semantic fields, then require semantic refusal. Constructor aliasing, date boundaries and revision overflow receive explicit tests. Save failure is not renamed rollback. New native defects, if observed, require their own retained result and fresh rerun—not inherited green results.
+Tasks add an attack beyond checksum-only testing: recompute CRC after corrupting semantic fields, then require semantic refusal. Constructor aliasing, date boundaries and revision overflow receive explicit tests. Save failure is not renamed rollback. The Task UI timeout at6164211 is retained. It did not reproduce in the focused diagnostic; no causal production repair is claimed. Fresh full-suite results must be examined, and repeat/timing/IME/density investigation remains a residual gate even after a green rerun.
 
 ## J. Major-system alternatives and exact remaining gaps
 
@@ -110,3 +111,17 @@ Tasks add an attack beyond checksum-only testing: recompute CRC after corrupting
 6. **Release:** all48 modules still have original unmet requirements. Compile37 migration (current34/36/36 min/compile/target), full browser/Office, physical/API37, legal, complete keyboard/AX, safe-save/provider/fault matrices and S1–S30 remain open. See FULL-SPEC-REVIEW.md and MODULE-TESTABILITY.md rather than interpreting97.92% as finished features.
 
 No architecture can honestly erase legal, physical or authority gates. These alternatives provide testable boundaries and next experiments rather than bypasses or delegated stock-desktop/system-cast/external-Office replacements.
+
+
+## Repeated measurement observation
+
+The measured-profile pipeline also passed ate352ad7/run38698420603: generator and all3 measurements, with the identical855-rule profile hash. In that run TTID medians were1393.754506ms (none) and1415.739593ms (profile-required), reversing the first run's ordering. Neither pair of3-sample observations supports a causal speedup or physical budget claim. Full metric JSON, including frame-duration/overrun samples, is retained rather than selectively reporting a favorable run.
+
+
+## Final exact native outcome and stopping boundary
+
+**ddc7fec / [run38700509084](https://github.com/jyvplay/OSB/actions/runs/38700509084):79 PASS,0 FAIL,0 SKIP**, both debug builds, invoked JVM/contracts and lint success. All five Task storage/UI cases passed. Production and native-test sources are unchanged by the final evidence/documentation/model-proof additions; see `r17-native-source-match.json`. This is not a new native execution at the final documentation commit or reproducible-binary attestation.
+
+The earlier6164211 Task UI timeout remains an unresolved intermittent observation. The diagnostic and full rerun passed without a production change; no causal repair/stability theorem is claimed. Highest-information next test: repeat actual fast input/Add interactions across IME visibility, density/font scale, activity lifecycle and full-suite ordering while retaining UI/disk diagnostics. Do not dismiss a reproduced failure as merely a flaky test.
+
+R16's bounded plan is closed. R17 adds a working observed local Tasks path and verified storage/kernel components, not complete PR03 or all original features. Original full product success is NOT established.47/48 bounded subsets,0/48 fully accepted remains the honest result.

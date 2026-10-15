@@ -1,0 +1,12 @@
+{
+  "run": 38700509147,
+  "candidate": "ddc7fecfa6b50d20aae9cda8ff3feb6384e14818",
+  "conclusion": "success",
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R17TaskUiDeviceTest.addCompleteAndReopenPersistedTaskThroughActualShell",
+      "result": "PASS"
+    }
+  ],
+  "scope": "Focused Tasks UI only, not full-suite acceptance or a causal repair/stability proof"
+}

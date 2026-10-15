@@ -14,10 +14,18 @@ See [build instructions](android/docs/BUILD.md),
 [231-row requirement ledger](android/requirements.csv).
 
 Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md).
-[Current substantial testable subsets:30/48 (62.50%)](android/docs/MODULE-TESTABILITY.md).
+[Current substantial testable subsets:47/48 (97.92%)](android/docs/MODULE-TESTABILITY.md).
 **0/48 specification-accepted modules (0%); not a production-ready beta.**
 
-## Latest R12 continuation
+## Latest R17
+
+[R17 report](android/docs/R17-ENGINEERING.md): R16 experiments closed,855 actual measured ART rules,
+and persistent local Tasks added. Latest verified native candidate **ddc7fec passed79/79 API34 cases**,
+both builds/JVM/contracts/lint. An earlier Task UI timeout remains unexplained; successful reruns
+are not a causal repair/stability proof. No full Office, browser, physical or release acceptance.
+Try **Automation → enable with test data → Local tasks**; no reminders are implemented.
+
+## Historical R12 continuation
 
 **30/48 modules (62.50%) have substantial testable subsets;0/48 are fully specification-accepted.**
 Five new bounded kernels and two newly executed Android inventory paths, plus strict UTF8/CSV
