@@ -14,11 +14,8 @@ android {
     kotlinOptions { jvmTarget = "17" }
 }
 
-// Placeholder for the generated startup profile.
-// Generate on device via :benchmark:BaselineProfileGenerator, then replace
-// src/main/baseline-prof.txt with the real rules and upgrade this module to
-// the androidx.baselineprofile plugin once the Studio toolchain is verified.
-// Until then this module builds cleanly and makes no performance claims.
+// Actual measured first-party profile: provenance and limitations in PROVENANCE.md.
+// Android library profile merge is used; no baselineprofile Gradle plugin is required here.
 
 dependencies {
     implementation(libs.androidx.profileinstaller.profileinstaller)

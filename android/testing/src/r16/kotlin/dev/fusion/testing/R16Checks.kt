@@ -29,6 +29,36 @@ object R16Checks {
         no { PeerClock(-Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE) }
         no { PeerClock.from(0, 0, 0, 1).copy(roundTripNanos = 2) }
         eq(0L, PeerClock(0, 1, 1).midpointNanos)
+        for (forward in listOf(0L,1L,7L,1000L)) for (back in listOf(0L,2L,8L,1001L)) for (processing in listOf(0L,7L,200L)) {
+            val offset=-100L
+            val c=PeerClock.from(1000,1000+offset+forward,1000+offset+forward+processing,1000+forward+processing+back)
+            eq(offset-back,c.offsetLowerNanos);eq(offset+forward,c.offsetUpperNanos)
+            eq(forward+back,c.roundTripNanos);eq(offset-back+(forward+back)/2,c.midpointNanos)
+        }
+        repeat(2) {
+            val pool=Executors.newFixedThreadPool(9);val clients=mutableListOf<Socket>()
+            try {
+                ServerSocket(0,9,InetAddress.getLoopbackAddress()).use { server ->
+                    server.soTimeout=5000
+                    fun attempt()=pool.submit<Exception?> {
+                        try { TogetherChannel.respond(server.accept(),ByteArray(32),PlaybackAdvertisement("a".repeat(64),0,false),5000);null }
+                        catch(e:Exception) { e }
+                    }
+                    val futures=(0 until 8).map {
+                        val future=attempt();val socket=Socket(InetAddress.getLoopbackAddress(),server.localPort)
+                        clients+=socket;socket.soTimeout=3000
+                        socket.getOutputStream().write(byteArrayOf(0x46,0x54,0x47,0x31)+ByteArray(16))
+                        val hello=ByteArray(20);java.io.DataInputStream(socket.getInputStream()).readFully(hello)
+                        eq(true,hello.copyOfRange(0,4).contentEquals(byteArrayOf(0x46,0x54,0x47,0x31)));future
+                    }
+                    val denied=attempt()
+                    Socket(InetAddress.getLoopbackAddress(),server.localPort).use { ninth -> ninth.soTimeout=3000;eq(-1,ninth.getInputStream().read()) }
+                    eq(true,denied.get(5,TimeUnit.SECONDS) is IllegalStateException)
+                    clients.forEach { it.close() }
+                    futures.forEach { eq(true,it.get(5,TimeUnit.SECONDS) is java.io.IOException) }
+                }
+            } finally { clients.forEach { it.close() };pool.shutdownNow() }
+        }
         val executor = Executors.newSingleThreadExecutor()
         try {
             ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->

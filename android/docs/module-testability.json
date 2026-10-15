@@ -660,14 +660,27 @@
     },
     {
       "module": ":feature:together",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Legacy random-peer simulation removed; no real transport.",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real fixed-frame authenticated TCP state exchange and causal clock intervals; host/OpenSSL and API34 execution.",
+      "production": [
+        "feature/together/src/main/kotlin/dev/fusion/together/TogetherChannel.kt",
+        "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt"
+      ],
+      "checks": [
+        "testing/src/r16/kotlin/dev/fusion/testing/R16Checks.kt",
+        "tools/run_r16_interop.py",
+        "app/src/androidTest/java/dev/fusion/shell/R16TogetherDeviceTest.kt"
+      ],
+      "command": "python3 tools/run_r16_contracts.py; python3 tools/run_r16_interop.py; :app:pixel6Api34ProDebugAndroidTest",
+      "limit": "No pairing/rooms/player/Syncplay/multi-device synchronization; clock and key assumptions; S22 unpassed.",
+      "sha256": {
+        "feature/together/src/main/kotlin/dev/fusion/together/TogetherChannel.kt": "0396878b173b834a09a58c956f72fd0764ca508a25af318463d228487645dabb",
+        "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt": "3b25746b6b3a83b7dfd3ddf0c5f6d23e5973b9d8aaceb654a521bce9ea13dc90",
+        "testing/src/r16/kotlin/dev/fusion/testing/R16Checks.kt": "753dab3bcc405558bb418d3fb637a0301219cc0367beda183f0f76f5e1b380dd",
+        "tools/run_r16_interop.py": "f6e989a7fb20ed30690a308284863986583f0a128ce2d31decc5760b3d54d23b",
+        "app/src/androidTest/java/dev/fusion/shell/R16TogetherDeviceTest.kt": "a462bc304ea3980729b95765601b3a290dfdc3919d9488f906cf4023e3984067"
+      }
     },
     {
       "module": ":feature:lens",
@@ -962,25 +975,51 @@
     },
     {
       "module": ":benchmark",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Startup/baseline generator test source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Actual device runs on at least two reference devices, reproducible budgets and reports",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual nondebuggable API34 startup and Files open/close measurements, including profile-required compilation.",
+      "production": [
+        "benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt",
+        "benchmark/src/main/java/dev/fusion/benchmark/LabJourney.kt",
+        "benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt"
+      ],
+      "checks": [
+        "tools/collect_profile_artifact.py",
+        "tools/export_r16_measurements.py",
+        "tools/collect_r16_measurements.py"
+      ],
+      "command": ":benchmark:pixel6Api34BenchmarkAndroidTest (disposable opt-in; measured-profile workflow)",
+      "limit": "Three iterations per measurement on emulator, not two physical reference devices, full journeys or budget acceptance.",
+      "sha256": {
+        "benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt": "e3bf914582461f9989c1743e74bae2e62e23fa22cfd9d74d965007099d97e5a0",
+        "benchmark/src/main/java/dev/fusion/benchmark/LabJourney.kt": "c19cdd10fc2f99897c1b5d54fac759496ff4c20c6f259b0389f01ba893228581",
+        "benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt": "f3f97d1461db3352a442e1a9da57d839472eac94c32ca8844f3cce164daff520",
+        "tools/collect_profile_artifact.py": "9f83833295fb1c57618e3a37a3f87f96db35dd680c2519decbea160adbbb4cd1",
+        "tools/export_r16_measurements.py": "19395ff5bacccf4c09308a4453c560e981bd003d13e4158ea6cb7f04f0fa8880",
+        "tools/collect_r16_measurements.py": "16e12d0da42b58969d2cb62622d6bf945596602c197d0a3ccf761ac52cf9b99b"
+      }
     },
     {
       "module": ":baselineprofile",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Intentionally empty baseline profile; no generated rules",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Generate from measured user journeys on devices, verify packaging/effect",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "855 actual measured first-party ART rules; packaged assets and profile-required startup passed at bb338a5/run38697143892.",
+      "production": [
+        "baselineprofile/src/main/baseline-prof.txt"
+      ],
+      "checks": [
+        "benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt",
+        "benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt",
+        "tools/collect_profile_artifact.py"
+      ],
+      "command": "Android measured profile experiment workflow; see PROVENANCE.md",
+      "limit": "First-party startup/Files journey only; no proven speedup, all-flavor/API/OEM or physical release acceptance.",
+      "sha256": {
+        "baselineprofile/src/main/baseline-prof.txt": "8b99ceddc7cb6dbb80e40425ab57d1bcec3e7aa181fcbe4501d4edcb0cda8b12",
+        "benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt": "f3f97d1461db3352a442e1a9da57d839472eac94c32ca8844f3cce164daff520",
+        "benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt": "e3bf914582461f9989c1743e74bae2e62e23fa22cfd9d74d965007099d97e5a0",
+        "tools/collect_profile_artifact.py": "9f83833295fb1c57618e3a37a3f87f96db35dd680c2519decbea160adbbb4cd1"
+      }
     },
     {
       "module": ":testing",
