@@ -1,4 +1,28 @@
-# Latest: R11 executable subsets and actual Android verification
+# Latest: R11B tested subsets — full product still incomplete
+
+- **0/48 accepted modules (0%);48/48 outstanding (100%).** Productivity0/13,
+  Forge0/13, nested browser0/19 accepted. All30 spikes remain unpassed.
+- **182,871 Kotlin assertions /13 libraries;61 Python tests;323 cross-language checks.**
+- Implemented atomic saved-note trash/restore, wrapping actions and compositor
+  child-focus repair. Added real debug WebView cookie/localStorage profile experiment
+  and native socket-denial probe with reachable positive controls.
+- **1ea1faa / run38670396374:29/29 API34 cases PASS**, including actual200%-font
+  Notes, dirty-backlink, focus, browser profile and six boundary cases.
+  Both debug flavors, invoked unit/contracts/lint and APK upload passed.
+  [Run/APKs](https://github.com/jyvplay/OSB/actions/runs/38670396374).
+- Prior-source focus genuinely failed. Three earlier native candidates failed;
+  their results are preserved, not relabeled as successes.
+- Actual host Linux kernel experiment enforced per-process hard CPU, but a real
+  fork attack defeated aggregate-job enforcement. Not Android sandbox acceptance.
+- Browser desktop integration, Office engines, full parser containment and the
+  original broader feature/platform/hardware/legal/AX gaps remain unsatisfied.
+  SDK37 catalog observation was NOT_LISTED; build baseline remains34/36/36.
+- [A–J report, substantive testability and alternatives](docs/R11B-ENGINEERING.md).
+  [All48 module acceptance rows](docs/MODULE-COMPLETION.md).
+
+---
+
+# Historical: R11 executable subsets and actual Android verification
 
 - **0/48 accepted (0%);48 outstanding (100%)**. Productivity0/13, Forge0/13,
   nested browser0/19. No engine/device/legal spike promoted.

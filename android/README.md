@@ -1,12 +1,13 @@
-> **Latest: [R11 implementation/testability/alternatives](docs/R11-ENGINEERING.md).**
-> **182,829 JVM assertions /13 libraries;61 Python methods;323 cross-language
-> checks passed.** Added bounded browser session metadata/codec and real saved-note
-> backlinks, plus an isolated-service FD spike. Browser renderer and Office engines
-> remain absent/blocked. Both-flavor build/unit/contracts/lint passed at1ee1589;
-> API34 **24/24 named cases passed**, including5 boundary cases—not full FF12.
+> **Latest: [R11B implementation/testability/alternatives](docs/R11B-ENGINEERING.md).**
+> **182,871 JVM assertions /13 libraries;61 Python methods;323 cross-language
+> checks passed.** Real Notes trash/restore, reflow and compositor focus repair.
+> **29/29 API34 named cases passed at1ea1faa**, including200%-font Notes,
+> six elementary boundary cases and debug WebView profile/DOM experiment.
+> Both debug flavors, invoked unit/contracts/lint and APK upload passed.
+> No complete desktop browser, Office engine or full parser sandbox is delivered.
 > **0/48 accepted modules (0%); not a complete product or production beta.**
 >
-> Older sections below are historical; use R11 for current evidence and gaps.
+> Older sections below are historical; use R11B for current evidence and gaps.
 
 > **Historical: [R10 productivity / Forge engineering](docs/R10-ENGINEERING.md).**
 > **177,198 JVM assertions,57 Python methods and707 cross-implementation/oracle

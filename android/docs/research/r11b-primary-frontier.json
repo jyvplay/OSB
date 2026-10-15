@@ -163,5 +163,31 @@
       }
     ],
     "limits": "Concrete profile/initialization interfaces, not an Android build, transitive-license audit or universally required storage layout."
+  },
+  {
+    "repository": "torvalds/linux",
+    "commit": "0fcb05b72344f40806cbe810de8872f1698bf053",
+    "path": "kernel/sys.c",
+    "url": "https://github.com/torvalds/linux/blob/0fcb05b72344f40806cbe810de8872f1698bf053/kernel/sys.c",
+    "blob": "35b538ba843c705dba5378f3626ce5610e9db0cf",
+    "sha256": "aa89d4c1b7368e3cf9de9776a1499ecb4d663bc9f18d6afab79ba219b63d6d88",
+    "excerpts": [
+      {
+        "term": "new_rlim->rlim_max > rlim->rlim_max",
+        "line": 1526,
+        "text": "\tif (new_rlim) {\n\t\t/*\n\t\t * Keep the capable check against init_user_ns until cgroups can\n\t\t * contain all limits.\n\t\t */\n\t\tif (new_rlim->rlim_max > rlim->rlim_max &&\n\t\t\t\t!capable(CAP_SYS_RESOURCE))\n\t\t\tretval = -EPERM;\n\t\tif (!retval)\n\t\t\tretval = security_task_setrlimit(tsk, resource, new_rlim);\n\t}\n\tif (!retval) {\n\t\tif (old_rlim)\n\t\t\t*old_rlim = *rlim;\n\t\tif (new_rlim)"
+      },
+      {
+        "term": "update_rlimit_cpu",
+        "line": 1549,
+        "text": "\t */\n\tif (!retval && new_rlim && resource == RLIMIT_CPU &&\n\t    new_rlim->rlim_cur != RLIM_INFINITY &&\n\t    IS_ENABLED(CONFIG_POSIX_TIMERS)) {\n\t\t/*\n\t\t * update_rlimit_cpu can fail if the task is exiting, but there\n\t\t * may be other tasks in the thread group that are not exiting,\n\t\t * and they need their cpu timers adjusted.\n\t\t *\n\t\t * The group_leader is the last task to be released, so if we\n\t\t * cannot update_rlimit_cpu on it, then the entire process is\n\t\t * exiting and we do not need to update at all.\n\t\t */\n\t\tupdate_rlimit_cpu(tsk->group_leader, new_rlim->rlim_cur);\n\t}"
+      },
+      {
+        "term": "update_rlimit_cpu",
+        "line": 1554,
+        "text": "\t\t * update_rlimit_cpu can fail if the task is exiting, but there\n\t\t * may be other tasks in the thread group that are not exiting,\n\t\t * and they need their cpu timers adjusted.\n\t\t *\n\t\t * The group_leader is the last task to be released, so if we\n\t\t * cannot update_rlimit_cpu on it, then the entire process is\n\t\t * exiting and we do not need to update at all.\n\t\t */\n\t\tupdate_rlimit_cpu(tsk->group_leader, new_rlim->rlim_cur);\n\t}\n\n\treturn retval;\n}\n\nSYSCALL_DEFINE2(getrlimit, unsigned int, resource, struct rlimit __user *, rlim)"
+      }
+    ],
+    "limits": "Research excerpts from upstream GPL kernel code, NOT vendored/linked product code. Running host and Android kernel versions differ; no Android enforcement theorem imported."
   }
 ]

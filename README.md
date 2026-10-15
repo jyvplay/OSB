@@ -13,5 +13,5 @@ See [build instructions](android/docs/BUILD.md),
 [current verification status](android/STATUS.md), and the
 [231-row requirement ledger](android/requirements.csv).
 
-Latest: [R11 engineering, testability and alternatives](android/docs/R11-ENGINEERING.md).
+Latest: [R11B engineering, testability and alternatives](android/docs/R11B-ENGINEERING.md).
 **0/48 specification-accepted modules (0%); not a production-ready beta.**

@@ -1,15 +1,16 @@
-# R11 current build and test entry points
+# R11B current build and test entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with compatible AGP/JDK17 and SDK36.
 The IDE name is not a compatibility proof. Current min/compile/target34/36/36 is an
 explicit deviation from the requested compile37/target37 migration. No native
 arm64/4K+16K engine payload has been validated.
 
-Run38662585401 at1ee1589 passed both debug flavors, invoked JVM unit/contracts,
-lint and APK upload; API34 **24/24 named cases passed**, including5 elementary
-isolated-FD cases. This is not full FF12 or a working Office/browser engine. See [R11](R11-ENGINEERING.md)
-for precise case outcomes, gaps, bounds and alternatives; do not mistake debug
-APK availability for a complete beta.
+[Run38670396374](https://github.com/jyvplay/OSB/actions/runs/38670396374) at1ea1faa
+passed both debug flavors, invoked unit/contracts, lint and APK upload; API34
+**29/29 named cases passed**, including six elementary boundary cases and actual
+200%-font Notes trash/restore. Download `fusion-native-debug` from that run for
+these incomplete debug APKs (not production/beta clearance). No APK was manually
+installed/visually reviewed here. See [R11B](R11B-ENGINEERING.md) for exact limits.
 
 ```sh
 python3 tools/native_lab.py doctor
@@ -22,7 +23,7 @@ python3 tools/run_r11_interop.py
 ./gradlew :app:assembleProDebug :app:assemblePlayDebug
 ./gradlew :testing:browserSessionContracts :testing:noteLinkContracts
 ./gradlew :app:lintProDebug :app:lintPlayDebug
-# Disposable opted-in managed device only; mutates fresh test-owned app files:
+# Disposable opted-in managed device only; mutates test-owned files and system font scale:
 ./gradlew :app:pixel6Api34ProDebugAndroidTest \
   -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
   -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest

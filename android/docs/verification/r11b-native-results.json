@@ -1,0 +1,505 @@
+{
+  "scope": "Actual named API34 managed-device cases, NOT physical/whole-browser/parser/AX/release acceptance",
+  "runs": [
+    {
+      "candidate": "c9f7dc0",
+      "run": 38668309848,
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38668309848",
+      "counts": {
+        "PASS": 25,
+        "FAIL": 2,
+        "SKIP": 0
+      },
+      "cases": [
+        {
+          "case": "dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl",
+          "result": "FAIL"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision",
+          "result": "FAIL"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication",
+          "result": "PASS"
+        }
+      ],
+      "provenance": "r11b-device-first-annotations.json"
+    },
+    {
+      "candidate": "04ff55e",
+      "run": 38668756004,
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38668756004",
+      "counts": {
+        "PASS": 26,
+        "FAIL": 2,
+        "SKIP": 0
+      },
+      "cases": [
+        {
+          "case": "dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl",
+          "result": "FAIL"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision",
+          "result": "FAIL"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication",
+          "result": "PASS"
+        }
+      ],
+      "provenance": "r11b-device-second-annotations.json"
+    },
+    {
+      "candidate": "ac433fe",
+      "run": 38669282249,
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38669282249",
+      "counts": {
+        "PASS": 27,
+        "FAIL": 1,
+        "SKIP": 0
+      },
+      "cases": [
+        {
+          "case": "dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision",
+          "result": "FAIL"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication",
+          "result": "PASS"
+        }
+      ],
+      "provenance": "r11b-device-third-annotations.json"
+    },
+    {
+      "candidate": "1ea1faa",
+      "run": 38670396374,
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38670396374",
+      "counts": {
+        "PASS": 29,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "cases": [
+        {
+          "case": "dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashAtTwoHundredPercentFontScale",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows",
+          "result": "PASS"
+        },
+        {
+          "case": "dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication",
+          "result": "PASS"
+        }
+      ],
+      "provenance": "r11b-device-final-annotations.json"
+    }
+  ]
+}

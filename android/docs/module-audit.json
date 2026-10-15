@@ -14,7 +14,7 @@
     {
       "module": ":app",
       "status": "incomplete",
-      "present_scope": "Native own-window host with restore/workspace actions, Find and notes integration; partial API34 smoke execution; full UI/AX unverified",
+      "present_scope": "Native own-window host with restore/workspace actions, Find and Notes integration; prior-source focus failure reproduced and repaired source passed API34 case at1ea1faa; full UI/AX unverified",
       "remaining_gap": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "evidence_level": "partial_android_execution"
     },
@@ -140,7 +140,7 @@
     {
       "module": ":feature:browser",
       "status": "incomplete",
-      "present_scope": "Executed immutable bounded tab/window/group/split metadata kernel and named-session codec; no renderer/disk/UI adapter; old browser surface remains blocked",
+      "present_scope": "Executed bounded tab/window/group/split metadata and named-session codec; separate debug :app experiment passed real WebView cookie/localStorage profile partition on API34. No product renderer/disk/UI/profile adapter",
       "remaining_gap": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "evidence_level": "partial_kernel_contracts"
     },
@@ -161,8 +161,8 @@
     {
       "module": ":feature:notes",
       "status": "incomplete",
-      "present_scope": "Real bounded locked/revision-checked Markdown files and immutable saved-note wiki-link graph; explicit native scan and two Notes UI tests passed at ea9766d",
-      "remaining_gap": "Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, versioning/reversible delete, attachments/OCR/export and full PR-02 scope",
+      "present_scope": "Bounded locked/revision-checked Markdown files, saved-note wiki links, atomic saved-revision trash/restore and wrapping native actions;42 new real-file checks plus normal/200%-font trash and dirty-backlink API34 cases passed at1ea1faa",
+      "remaining_gap": "Full Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, version history, attachments/OCR/import/export and full PR-02 scope",
       "evidence_level": "partial_kernel_contracts"
     },
     {
@@ -280,7 +280,7 @@
     {
       "module": ":format:pdf",
       "status": "incomplete",
-      "present_scope": "Platform preview source; isolated UID/read-only FD digest spike:5/5 API34 boundary cases passed at1ee1589 with exact-path/inode controls; not a PDF parser boundary",
+      "present_scope": "Platform preview source; isolated UID/read-only FD/digest precursor:6/6 API34 cases passed at1ea1faa including native socket denial with reachable controls. Not a document parser boundary or Android CPU/RSS proof",
       "remaining_gap": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
       "evidence_level": "partial_android_execution"
     },
@@ -343,7 +343,7 @@
     {
       "module": ":testing",
       "status": "incomplete",
-      "present_scope": "Executed13-library/182829-assertion Kotlin contracts,61 Python methods,323 cross-language checks and actual API34 named cases; reporting tools distinguish missing/failed results",
+      "present_scope": "Executed13-library/182871-assertion Kotlin contracts,61 Python methods,323 cross-language checks and29/29 API34 cases at1ea1faa; prior-source focus counterexample and host Linux fork-limit counterexample recorded",
       "remaining_gap": "Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records",
       "evidence_level": "runner_executed"
     }
@@ -671,6 +671,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R11 \u2014 executable subsets, real native failures and missing engines; incomplete",
-  "build_evidence": "Native code at1ee1589: run38662585401 passed both-flavor assembly, invoked unit/contracts, lint and APK upload; API34 actual24/24 named cases PASS including5 elementary isolated-FD cases. These are not full assigned-scope, parser/security/AX, physical-device or license acceptance. Later R11 documentation/tooling changes do not alter that recorded native-source result."
+  "revision": "R11B \u2014 tested reversible Notes, focus/profile/socket experiments; incomplete",
+  "build_evidence": "Native candidate1ea1faa: run38670396374 passed both-flavor assembly, invoked unit/contracts, lint and APK upload; API34 actual29/29 named cases PASS including six elementary isolated-FD/socket cases and actual200%-font trash/restore. Prior failed candidates remain recorded. These are not full assigned-scope, parser/security/AX, physical-device or license acceptance. See R11B-ENGINEERING.md and verification/r11b-native-results.json."
 }

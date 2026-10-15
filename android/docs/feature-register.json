@@ -1125,7 +1125,7 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Real locked/revision-checked Markdown files, saved-note wiki backlink graph and explicit native scan. Host contracts and two API34 UI cases passed at ea9766d; attachments/OCR/export/recovery/reversible deletion and full Markdown remain absent.",
+    "route": "Real locked/revision-checked Markdown files, saved-note backlinks, native scan and atomic saved-revision trash/restore. Host contracts and API34 normal/200%-font trash and dirty-backlink cases passed at1ea1faa. Attachments/OCR/import/export, process-death draft recovery, version history and full Markdown remain incomplete.",
     "tests": [
       "plan:T-PR-02",
       "jvm:NotesChecks"

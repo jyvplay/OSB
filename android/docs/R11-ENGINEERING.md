@@ -1,3 +1,5 @@
+> Historical R11 checkpoint. Latest: [R11B implementation and exact verification](R11B-ENGINEERING.md).
+
 # R11 — bounded implementation, actual Android failures, and viable next routes
 
 **The full original Android specification / production beta is NOT delivered.**
