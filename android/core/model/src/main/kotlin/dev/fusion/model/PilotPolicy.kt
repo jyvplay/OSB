@@ -19,7 +19,7 @@ object PilotPolicy {
         PilotModule("notes", "Notes", PilotAccess.CONSENT_REQUIRED, "Bounded UTF-8 Markdown with revision-checked publication/readback and explicit saved-note wiki-backlink scans. Use disposable text; Android acceptance pending. Coalesced local draft checkpoints are separate from saved notes; unconfirmed edits can be lost. No backup or encryption."),
         PilotModule("browser", "Browser", PilotAccess.BLOCKED, "Process isolation, origin/permission and session security review pending. Use an external browser for the pilot."),
         PilotModule("terminal", "Local shell", PilotAccess.CONSENT_REQUIRED, "Allowlisted Android diagnostics and echo only. No command interpreter, subprocess execution, PTY, SSH or Linux userland."),
-        PilotModule("media", "Media", PilotAccess.CONSENT_REQUIRED, "MediaStore listing and explicit external viewer handoff, not a native player."),
+        PilotModule("media", "Media", PilotAccess.CONSENT_REQUIRED, "Read-only bounded UTF-8 SRT inspection, MediaStore listing and explicit external viewer handoff; not a native player."),
         PilotModule("capture", "Screen capture", PilotAccess.CONSENT_REQUIRED, "Records the screen/app selected in Android consent. Video only; codec hardware use/latency unmeasured. Persistent Stop, lock/critical-thermal stop. Exclude all real secrets."),
         PilotModule("lens", "Lens preview", PilotAccess.CONSENT_REQUIRED, "Physical camera preview only. No effects, virtual camera, conferencing or recording route."),
         PilotModule("automation", "Automation drafts", PilotAccess.CONSENT_REQUIRED, "Draft storage only. No scheduled or executed routines."),

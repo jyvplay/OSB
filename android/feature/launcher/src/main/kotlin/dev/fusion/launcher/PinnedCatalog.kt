@@ -8,7 +8,7 @@ data class LaunchTarget(val key: String, val title: String, val running: Boolean
  * Immutable operation results; this is not installed-app discovery, persistence or a Home role.
  */
 class PinnedCatalog(pins: List<String> = emptyList()) {
-    private val order = pins.toList()
+    private val order = pins.also { require(it.size <= MAX_PINS) }.toList()
     init {
         require(order.size <= MAX_PINS && order.distinct().size == order.size)
         order.forEach(::validKey)

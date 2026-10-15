@@ -1,0 +1,20 @@
+{
+  "seed": 120014,
+  "passed": 984,
+  "failed": 0,
+  "operations": {
+    "I": 120,
+    "S": 100,
+    "D": 100,
+    "B": 80,
+    "R": 84,
+    "T": 100,
+    "L": 100,
+    "V": 300
+  },
+  "requests_sha256": "516f45e40306bfcbfd928626293affc3c2a333d3464265ecbb73b1358f13c0f0",
+  "expected_sha256": "e380fb3edcfe5de87459142d1d84169b36ba6c4f6df7fe3f2d5b04a0ecc8f000",
+  "compiler_receipt_sha256": "462e7040a8b6e990534e40c6f4ec06f0097d7dc4cea2420ea5352227f9dec514",
+  "oracle_script_sha256": "50a0bc66d6deee1319c99cd53e9be520369483a02bc0dfba5331e2b33ea3101a",
+  "scope": "Python-generated held-out corpus, actual JVM execution; same assistant authorship, not independent expert review or Android evidence"
+}

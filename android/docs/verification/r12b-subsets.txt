@@ -1,11 +1,12 @@
-R12 continuation subsets: 2368 assertions passed across five new module kernels + UTF8 repair.
+R12 continuation subsets: 2374 assertions passed across five new module kernels + UTF8 repair.
 
 Six separately compiled production JVM libraries; not an Android run.
-d4b4c9acdb5e63542c06fdf823a8fe534dc1ad959dd24d71031da6dfdef021e7  core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt
+4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc  core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt
 ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b  feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt
 e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058  format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt
-a1d6d068ff134b42863890bf87135f951de0141aad8eb2a2fc396899ebad090f  feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt
-c95ca4c4f0ddff8107844aa068e814b960f2649d065e4283b67342c0b0c59e38  feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt
+d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e  feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt
+9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d  feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt
 ffae27b41b638a288a78fa7e98d72e467a5a9e75d5ca4979f3195de35ae3f7db  format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt
-af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc  testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt
+b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13  testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt
+a1916ab0e5cab85a0424df0bedff709427262bec83e138952a05a2f43a4ba803  testing/src/subsets/kotlin/dev/fusion/testing/SubsetOracle.kt
 1ab3f4674b5301cd9e9666d5411d2084c25d8ffaeff9ac8b470aa05935dfb9ec  tools/run_subset_contracts.py

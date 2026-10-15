@@ -1,0 +1,80 @@
+{
+  "scope": "Pinned primary source only; no exhaustive best-known claim, no third-party product source imported",
+  "records": [
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "graphics/java/android/graphics/Bitmap.java",
+      "git_blob": "b9d3756ac6d2a39252414f2f0f5cdea6f9deec8b",
+      "sha256": "88aa989eeab261f3951b6286bc40f209910c13f29d998cabab6234bb818f2570",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/graphics/java/android/graphics/Bitmap.java",
+      "excerpts": [
+        {
+          "term": "getPixels(",
+          "line": 362,
+          "text": "     * reference to the pixel data. This will not free the pixel data synchronously;\n     * it simply allows it to be garbage collected if there are no other references.\n     * The bitmap is marked as \"dead\", meaning it will throw an exception if\n     * getPixels() or setPixels() is called, and will draw nothing. This operation\n     * cannot be reversed, so it should only be called if you are sure there are no\n     * further uses for the bitmap. This is an advanced call, and normally need\n     * not be called, since the normal GC process will free up this memory when\n     * there are no more references to this bitmap."
+        },
+        {
+          "term": "getPixels(",
+          "line": 1719,
+          "text": "    /**\n     * Return the number of bytes between rows in the bitmap's pixels. Note that\n     * this refers to the pixels as stored natively by the bitmap. If you call\n     * getPixels() or setPixels(), then the pixels are uniformly treated as\n     * 32bit values, packed according to the Color class.\n     *\n     * <p>As of {@link android.os.Build.VERSION_CODES#KITKAT}, this method\n     * should not be used to calculate the memory usage of the bitmap. Instead,"
+        },
+        {
+          "term": "non-premultiplied",
+          "line": 2015,
+          "text": "    /**\n     * Returns the {@link Color} at the specified location. Throws an exception\n     * if x or y are out of bounds (negative or >= to the width or height\n     * respectively). The returned color is a non-premultiplied ARGB value in\n     * the {@link ColorSpace.Named#SRGB sRGB} color space.\n     *\n     * @param x    The x coordinate (0...width-1) of the pixel to return\n     * @param y    The y coordinate (0...height-1) of the pixel to return"
+        },
+        {
+          "term": "non-premultiplied",
+          "line": 2078,
+          "text": "     * a packed int representing a {@link Color}. The stride parameter allows\n     * the caller to allow for gaps in the returned pixels array between\n     * rows. For normal packed results, just pass width for the stride value.\n     * The returned colors are non-premultiplied ARGB values in the\n     * {@link ColorSpace.Named#SRGB sRGB} color space.\n     *\n     * @param pixels   The array to receive the bitmap's colors\n     * @param offset   The first index to write into pixels[]"
+        },
+        {
+          "term": "sRGB",
+          "line": 1060,
+          "text": "    /**\n     * Returns a mutable bitmap with the specified width and height.  Its\n     * initial density is as per {@link #getDensity}. The newly created\n     * bitmap is in the {@link ColorSpace.Named#SRGB sRGB} color space.\n     *\n     * @param width    The width of the bitmap\n     * @param height   The height of the bitmap\n     * @param config   The bitmap config to create."
+        },
+        {
+          "term": "sRGB",
+          "line": 1076,
+          "text": "    /**\n     * Returns a mutable bitmap with the specified width and height.  Its\n     * initial density is determined from the given {@link DisplayMetrics}.\n     * The newly created bitmap is in the {@link ColorSpace.Named#SRGB sRGB}\n     * color space.\n     *\n     * @param display  Display metrics for the display this bitmap will be\n     *                 drawn on."
+        }
+      ]
+    },
+    {
+      "repository": "androidx/media",
+      "commit": "8c6678b657ede1e7883fc164ef73ed483c7796c3",
+      "path": "libraries/extractor/src/main/java/androidx/media3/extractor/text/subrip/SubripParser.java",
+      "git_blob": "8f607ed63577e4fac408cd4860655eb7a1a08940",
+      "sha256": "2c279051224ecb3f63202f8583412651c3d5ea32caf18e08f28f456f45d18236",
+      "url": "https://github.com/androidx/media/blob/8c6678b657ede1e7883fc164ef73ed483c7796c3/libraries/extractor/src/main/java/androidx/media3/extractor/text/subrip/SubripParser.java",
+      "excerpts": [
+        {
+          "term": "Html.fromHtml",
+          "line": 158,
+          "text": "        currentLine = parsableByteArray.readLine(charset);\n      }\n\n      Spanned text = Html.fromHtml(textBuilder.toString());\n\n      @Nullable String alignmentTag = null;\n      for (int i = 0; i < tags.size(); i++) {\n        String tag = tags.get(i);"
+        },
+        {
+          "term": "parseTimecode",
+          "line": 139,
+          "text": "      long endTimeUs;\n      Matcher matcher = SUBRIP_TIMING_LINE.matcher(currentLine);\n      if (matcher.matches()) {\n        startTimeUs = parseTimecode(matcher, /* groupOffset= */ 1);\n        endTimeUs = parseTimecode(matcher, /* groupOffset= */ 6);\n      } else {\n        Log.w(TAG, \"Skipping invalid timing: \" + currentLine);\n        continue;"
+        },
+        {
+          "term": "parseTimecode",
+          "line": 140,
+          "text": "      Matcher matcher = SUBRIP_TIMING_LINE.matcher(currentLine);\n      if (matcher.matches()) {\n        startTimeUs = parseTimecode(matcher, /* groupOffset= */ 1);\n        endTimeUs = parseTimecode(matcher, /* groupOffset= */ 6);\n      } else {\n        Log.w(TAG, \"Skipping invalid timing: \" + currentLine);\n        continue;\n      }"
+        },
+        {
+          "term": "SUBRIP_TIMING_LINE",
+          "line": 64,
+          "text": "\n  // Some SRT files don't include hours or milliseconds in the timecode, so we use optional groups.\n  private static final String SUBRIP_TIMECODE = \"(?:(\\\\d+):)?(\\\\d+):(\\\\d+)(?:,(\\\\d{3}))?\";\n  private static final Pattern SUBRIP_TIMING_LINE =\n      Pattern.compile(\"\\\\s*(\" + SUBRIP_TIMECODE + \")\\\\s*-->\\\\s*(\" + SUBRIP_TIMECODE + \")\\\\s*\");\n\n  // NOTE: Android Studio's suggestion to simplify '\\\\}' is incorrect [internal: b/144480183].\n  private static final Pattern SUBRIP_TAG_PATTERN = Pattern.compile(\"\\\\{\\\\\\\\.*?\\\\}\");"
+        },
+        {
+          "term": "SUBRIP_TIMING_LINE",
+          "line": 137,
+          "text": "\n      long startTimeUs;\n      long endTimeUs;\n      Matcher matcher = SUBRIP_TIMING_LINE.matcher(currentLine);\n      if (matcher.matches()) {\n        startTimeUs = parseTimecode(matcher, /* groupOffset= */ 1);\n        endTimeUs = parseTimecode(matcher, /* groupOffset= */ 6);\n      } else {"
+        }
+      ]
+    }
+  ]
+}

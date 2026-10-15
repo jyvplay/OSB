@@ -297,7 +297,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "643d2c9151b0e1d8e06f00def17649b09f9d220a04c0681845200f8dff3fb59e"
+      "sha256": "21c9ee449d88836c532ff0c5a1b5fc0449a733962b665eb1f3a86c1fb249a091"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -315,7 +315,7 @@
       "path": "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
       "module": ":core:settings",
       "package": "dev.fusion.settings",
-      "sha256": "d4b4c9acdb5e63542c06fdf823a8fe534dc1ad959dd24d71031da6dfdef021e7"
+      "sha256": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc"
     },
     {
       "path": "core/security/src/main/java/dev/fusion/security/IndexKeys.kt",
@@ -423,7 +423,7 @@
       "path": "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt",
       "module": ":feature:launcher",
       "package": "dev.fusion.launcher",
-      "sha256": "c95ca4c4f0ddff8107844aa068e814b960f2649d065e4283b67342c0b0c59e38"
+      "sha256": "9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d"
     },
     {
       "path": "feature/find/src/main/java/dev/fusion/find/Palette.kt",
@@ -639,7 +639,7 @@
       "path": "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt",
       "module": ":feature:backup",
       "package": "dev.fusion.backup",
-      "sha256": "a1d6d068ff134b42863890bf87135f951de0141aad8eb2a2fc396899ebad090f"
+      "sha256": "d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e"
     },
     {
       "path": "feature/continuity/src/main/java/dev/fusion/continuity/ContinuityScreen.kt",

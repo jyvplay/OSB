@@ -49,6 +49,8 @@ object SubsetChecks {
         eq(4096, c.decode(c.encode(mapOf("theme" to "a".repeat(4096))))["theme"]!!.length)
         reject { SettingsCatalog(listOf(SettingDef("a", "A"), SettingDef("a", "B"))) }
         reject { c.decode(ByteArray(SettingsCatalog.MAX_FRAME + 1)) }
+        reject { SettingsCatalog((0..64).map { SettingDef("k$it", "T") }) }
+        reject { SettingsCatalog(listOf(SettingDef("k", "T", List(17) { "alias" }))) }
         // A snapshot is an export, not an instruction: unknown IDs/aliases cannot create preferences.
         reject { c.encode(mapOf("FILE" to "dark")) }
         reject { c.decode("FSET1\n\n".toByteArray()) }
@@ -113,7 +115,7 @@ object SubsetChecks {
         reject { BackupContent.decode(reseal(frame.copyOf().also { ByteBuffer.wrap(it).putInt(4, Int.MAX_VALUE) })) }
         reject { BackupContent.decode(reseal(frame.copyOf().also { ByteBuffer.wrap(it).putInt(8, Int.MAX_VALUE) })) }
         reject { BackupContent.decode(reseal(frame.copyOf().also { it[12] = '/'.code.toByte() })) }
-        for (name in listOf("../x.md", "x/y.md", "x\\y.md", ".x.md", "a..md", "α.md", "x.md\u0000")) reject { BackupContent.encode(mapOf(name to byteArrayOf())) }
+        for (name in listOf("../x.md", "x/y.md", "x\\y.md", ".x.md", "a..md", "α.md", "x.md\u0000", "CON.md", "aux.md", "COM9.md", "LPT1.md")) reject { BackupContent.encode(mapOf(name to byteArrayOf())) }
         reject { BackupContent.encode(mapOf("a.md" to byteArrayOf(), "A.md" to byteArrayOf())) }
         reject { BackupContent.encode((0..64).associate { "f$it.md" to byteArrayOf() }) }
         reject { BackupContent.encode(mapOf("a.md" to ByteArray(BackupContent.MAX_FILE_BYTES + 1))) }

@@ -10,7 +10,10 @@ data class SettingDef(val id: String, val title: String, val aliases: List<Strin
 
 /** Bounded registry and portable snapshot, NOT preferences persistence or settings application. */
 class SettingsCatalog(definitions: List<SettingDef>) {
-    private val definitions = definitions.map { it.copy(aliases = it.aliases.toList()) }
+    private val definitions = definitions.also { list ->
+        require(list.size in 1..64)
+        list.forEach { require(it.aliases.size <= 16) }
+    }.map { it.copy(aliases = it.aliases.toList()) }
     init {
         require(definitions.size in 1..64)
         require(definitions.map { it.id }.distinct().size == definitions.size)

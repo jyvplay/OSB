@@ -19,6 +19,8 @@ object BackupContent {
     private fun validName(s: String) {
         // Deliberately portable ASCII basename subset; no traversal, hidden files or case aliases.
         require(s.matches(Regex("[A-Za-z0-9][A-Za-z0-9_-]{0,63}\\.md")))
+        val stem = s.removeSuffix(".md").uppercase(java.util.Locale.ROOT)
+        require(stem !in setOf("CON", "PRN", "AUX", "NUL") && !stem.matches(Regex("(?:COM|LPT)[1-9]")))
     }
     private fun digest(b: ByteArray) = MessageDigest.getInstance("SHA-256").digest(b)
     fun encode(entries: Map<String, ByteArray>): ByteArray {
