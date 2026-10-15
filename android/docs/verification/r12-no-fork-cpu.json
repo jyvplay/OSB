@@ -2,25 +2,41 @@
   "status": "PASS",
   "kernel": "6.1.158+",
   "architecture": "x86_64",
-  "source_sha256": "6eafe478986b547d4a70d10d67ed90b45ca090684d7efd4746a8bb02a1a9faa1",
+  "source_sha256": "46fb4c356ad23f41bf87d6c34e8f7d4f0cf5937c9df2eebc16aa5a3260ffdd46",
   "results": [
     {
       "mode": "control",
       "exit_code": 0,
-      "cpu_seconds": 2.5351489999999997,
-      "wall_seconds": 4.1143332949995965,
-      "stdout": "{\"mode\": \"control\", \"actual_fork_pid\": 5419}\n",
+      "cpu_seconds": 2.5529759999999997,
+      "wall_seconds": 2.553682068999933,
+      "stdout": "{\"mode\": \"control\", \"actual_fork_pid\": 6089}\n",
       "stderr": ""
     },
     {
       "mode": "install",
       "exit_code": -9,
-      "cpu_seconds": 1.911449,
-      "wall_seconds": 2.9864492719998452,
-      "stdout": "{\"phase\": \"before-exec\", \"attacks\": {\"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}}\n{\"phase\": \"after-real-exec\", \"pid\": 5420, \"uid\": 1001, \"cpu_seconds\": 0.8097769999999999, \"attacks\": {\"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}, \"hard_raise_errno\": 1}\n",
+      "cpu_seconds": 2.002196,
+      "wall_seconds": 2.0031578990001435,
+      "stdout": "{\"phase\": \"before-exec\", \"attacks\": {\"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}}\n{\"phase\": \"after-real-exec\", \"pid\": 6090, \"uid\": 1001, \"cpu_seconds\": 0.8147260000000001, \"attacks\": {\"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}, \"hard_raise_errno\": 1}\n",
+      "stderr": ""
+    },
+    {
+      "mode": "preexisting-thread",
+      "exit_code": 0,
+      "cpu_seconds": 0.03479400000000027,
+      "wall_seconds": 0.035089546000108385,
+      "stdout": "{\"mode\": \"preexisting-thread\", \"refused\": \"Must install before any extra thread exists\"}\n",
+      "stderr": ""
+    },
+    {
+      "mode": "x32-bypass",
+      "exit_code": -31,
+      "cpu_seconds": 0.029518999999999837,
+      "wall_seconds": 0.02987245799977245,
+      "stdout": "",
       "stderr": ""
     }
   ],
-  "scope": "Observed deny of clone/fork/vfork/clone3, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded.",
+  "scope": "Observed deny of clone/fork/vfork/clone3, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded; preexisting-thread installation refused and actual x32-tagged syscall killed by SIGSYS.",
   "residual": "Linux host single-thread LP64 only. All other syscalls ALLOWED. No memory/wall/filesystem/network confinement, inherited children or Android/ARM64/16K/JNI/parser/Office compatibility acceptance. Denying clone also denies new threads and may break engines."
 }

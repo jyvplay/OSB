@@ -165,9 +165,8 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
                     }
                     NoteAction.New -> Unit
                 }
-                checkpoint()
             } catch(e: Exception) { failure(e) }
-            finally { mutable.value=mutable.value.copy(busy=false) }
+            finally { mutable.value=mutable.value.copy(busy=false);checkpoint() }
         }
     }
     fun save() {

@@ -6,5 +6,6 @@
         <activity android:name="dev.fusion.shell.probes.BrowserSurfaceActivity" android:exported="false" />
         <service android:name="dev.fusion.shell.probes.BrowserSurfaceAProbe" android:exported="false" android:process=":browser_surface_a" />
         <service android:name="dev.fusion.shell.probes.BrowserSurfaceBProbe" android:exported="false" android:process=":browser_surface_b" />
+        <service android:name="dev.fusion.shell.probes.NotesRecoveryProcessProbe" android:exported="false" android:process=":notes_recovery_probe" />
     </application>
 </manifest>

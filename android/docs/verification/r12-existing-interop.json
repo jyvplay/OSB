@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checks": 323,
+  "notes_cases": 300,
+  "seed": 1107,
+  "scope": "Independent regex oracle for flat ASCII wiki links and Python SHA-256 revisions; independent struct/hashlib/modified-UTF decoder of one real Kotlin browser-session file including NUL and supplementary Unicode.",
+  "not_proved": "Full wiki/CommonMark grammar, native UI/renderer, disk adapter, isolation, performance, security and whole-product acceptance.",
+  "source_sha256": {
+    "testing/src/interop/kotlin/dev/fusion/testing/R11Bridge.kt": "944344a3874499f5b37cdb5b3278656708a92715907a26e76deb22cef731531f",
+    "tools/run_r11_interop.py": "31d6acacdfe1245607d4fd5d465b9b69818d1a87f52727230cc43cf2604e9db7",
+    "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
+    "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt": "e6012ae4fef688f47061294cd58164eeb2cf03a7b766ab9814a49225b7a4c563",
+    "feature/notes/src/main/kotlin/dev/fusion/notes/NoteLinks.kt": "57db938f2e37741ecd15f33d2143963dffd034b7a319d5cea65306f1559e7d1f",
+    "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt": "9799b5edf82ee2291369596bea2f751fe914c4454ae854a96f317fa2bf68af68"
+  }
+}

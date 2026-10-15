@@ -483,7 +483,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "177837d1602c4b4012c0470c51f62e0c878b28273e96e723de83198b3361d5d0"
+      "sha256": "6766813517e1f6837171403be6a07a92ea68cf5ad4aed84773ffdc7f7cade3b1"
     },
     {
       "path": "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt",

@@ -13,6 +13,7 @@ import signal
 import subprocess
 import sys
 import time
+import threading
 
 SCRIPT=Path(__file__).resolve()
 
@@ -70,7 +71,23 @@ def burn(seconds):
     while time.process_time()-start<seconds: sum(i*i for i in range(1000))
 
 def child(mode):
+    resource.setrlimit(resource.RLIMIT_CORE,(0,0)) # Never leave a core dump from the deliberate SIGSYS attack.
     libc=native()
+    if mode=='preexisting-thread':
+        started=threading.Event();done=threading.Event()
+        def worker(): started.set();done.wait(10)
+        thread=threading.Thread(target=worker);thread.start();started.wait(2)
+        try:
+            try: no_fork(libc)
+            except RuntimeError as error:
+                require('before any extra thread' in str(error),'Wrong reason for preflight refusal')
+                emit(mode=mode,refused=str(error));return
+            raise RuntimeError('Silently applied a calling-thread filter in a multithreaded process')
+        finally: done.set();thread.join(2)
+    if mode=='x32-bypass':
+        no_fork(libc)
+        libc.syscall(0x40000000,-1,0,0)
+        raise RuntimeError('x32 tagged syscall bypassed filter')
     if mode=='control':
         pid=os.fork()
         if pid==0: os._exit(0)
@@ -100,7 +117,7 @@ def main():
     if len(sys.argv)>1 and sys.argv[1]=='--child': child(sys.argv[2]);return
     path=SCRIPT.parents[1]/'docs/verification/r12-no-fork-cpu.json';path.unlink(missing_ok=True)
     results=[]
-    for mode in ('control','install'):
+    for mode in ('control','install','preexisting-thread','x32-bypass'):
         before=resource.getrusage(resource.RUSAGE_CHILDREN);start=time.monotonic()
         process=subprocess.Popen([sys.executable,str(SCRIPT),'--child',mode],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,start_new_session=True)
         try: stdout,stderr=process.communicate(timeout=15)
@@ -110,13 +127,15 @@ def main():
         after=resource.getrusage(resource.RUSAGE_CHILDREN)
         cpu=after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime
         if mode=='control': require(process.returncode==0 and cpu>=2.5,'Positive control failed')
+        elif mode=='preexisting-thread': require(process.returncode==0 and 'refused' in stdout,'Multithread preflight did not refuse')
+        elif mode=='x32-bypass': require(process.returncode==-signal.SIGSYS,'x32 ABI attack was not killed by seccomp')
         else:
             require(process.returncode==-signal.SIGKILL and 1.8<=cpu<=3.0,'No observed kernel hard-limit kill')
             rows=[json.loads(line) for line in stdout.splitlines()]
             require([r['phase'] for r in rows]==['before-exec','after-real-exec'],'Missing exec/filter evidence')
         results.append({'mode':mode,'exit_code':process.returncode,'cpu_seconds':cpu,'wall_seconds':time.monotonic()-start,'stdout':stdout,'stderr':stderr})
     report={'status':'PASS','kernel':os.uname().release,'architecture':os.uname().machine,'source_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'results':results,
-      'scope':'Observed deny of clone/fork/vfork/clone3, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded.',
+      'scope':'Observed deny of clone/fork/vfork/clone3, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded; preexisting-thread installation refused and actual x32-tagged syscall killed by SIGSYS.',
       'residual':'Linux host single-thread LP64 only. All other syscalls ALLOWED. No memory/wall/filesystem/network confinement, inherited children or Android/ARM64/16K/JNI/parser/Office compatibility acceptance. Denying clone also denies new threads and may break engines.'}
     path.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 
