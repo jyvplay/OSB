@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "parent_pid": 5792,
+  "peer": {
+    "pid": 5793,
+    "accepted": true
+  },
+  "elapsed_seconds": 0.027171949999910794,
+  "source_sha256": "bdd7c6c7ddf1f553d54cd59e15790435c2145aa95ad48cb101834c33dc0a4634",
+  "scope": "Actual Python two-process loopback/socket/HMAC probe only; NOT Android, multi-device, pairing, media synchronization or Syncplay acceptance"
+}

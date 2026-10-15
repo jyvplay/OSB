@@ -1,0 +1,7 @@
+{
+  "native_run": 38692920167,
+  "native_candidate": "eeb93a4ffee7ca760acad8799b03743b5a5e6171",
+  "comparison": "Working production, Android instrumentation, Gradle/catalog and native workflow sources compared with tested candidate",
+  "differences": [],
+  "scope": "No production/native-test/build-config source changes; host-only expanded checks and documents differ. Not a new native run or binary reproducibility attestation."
+}

@@ -1,0 +1,15 @@
+R16: 16903 assertions PASS; actual loopback exchange plus clock algebra. Not multi-device, player, pairing, Syncplay or physical acceptance.
+
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Separately compiled Together production library; no Android execution inferred.
+0396878b173b834a09a58c956f72fd0764ca508a25af318463d228487645dabb  feature/together/src/main/kotlin/dev/fusion/together/TogetherChannel.kt
+3b25746b6b3a83b7dfd3ddf0c5f6d23e5973b9d8aaceb654a521bce9ea13dc90  feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt
+5e203126e54ae06fc0edcc45d00d1069f65ac1be04c5df2dee3dc9d28d641694  testing/src/r16/kotlin/dev/fusion/testing/R16Checks.kt
+cdf129c5f5604158ece2d669893eadb63c7b54526df78c20dbaf5eac26a33ed7  testing/src/r16/kotlin/dev/fusion/testing/R16Peer.kt
+dcc648cd2152ae9eaeac3d455517c83ce43eb61b6a94df5659ea424243ad59ef  tools/run_r16_contracts.py
+8fc2bb5df3efe6368df2fa9818be21f3d1cf33bf35aac45cd4159d4d2f56420a  testing/build/r16/TogetherChannel.jar
+dba80347d90a5ee1cca43aab6ec2245165f306e6d644b82df288b61fc676426b  testing/build/r16/checks.jar

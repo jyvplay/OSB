@@ -1,0 +1,389 @@
+{
+  "scope": "Reverified bounded source inputs, not a global best-known frontier or legal certification",
+  "records": [
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/view/SurfaceControlViewHost.java",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/view/SurfaceControlViewHost.java",
+      "sha256": "83cb3b9064eef2b1902998c9ceedcdaac1d2aa3fdc78176129993a8b3c72a776",
+      "git_blob": "c8cf7d9a5194a1cd2d01f93d07fb5d5ecf6e83ae",
+      "retrieved": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "android/README.md",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/android/README.md",
+      "sha256": "cb6d1a21737dc994f9aee26f1ab8c595cc374b5b827ec649ce3cd38c79b36e19",
+      "git_blob": "17331b5ef7a3447659bef5704481bd4ad85b36a9",
+      "retrieved": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "retrieved": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "COPYING.MPL",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING.MPL",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+      "git_blob": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "retrieved": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "libreofficekit/README.md",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/libreofficekit/README.md",
+      "sha256": "88e2717b169484a8ff47eff2fe99c6f84213dc69acbc4ef31ae3dcd3f0c850cf",
+      "git_blob": "148879ec57fc3bfd6e5d38d9ecfbc88540943a07",
+      "retrieved": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "retrieved": true
+    },
+    {
+      "repository": "pyca/cryptography",
+      "commit": "c0af4dd7b75921bbe9f1d41a03dbd4b64a9e3403",
+      "path": "docs/hazmat/primitives/aead.rst",
+      "git_blob": "e30bc6c5fdb2e4830987bbe19ed989fccdd1e75f",
+      "sha256": "73a17ff5e8c4fc824a1ef31c789a530109f74c491c04c1f23db2ca9cc29bee16",
+      "url": "https://github.com/pyca/cryptography/blob/c0af4dd7b75921bbe9f1d41a03dbd4b64a9e3403/docs/hazmat/primitives/aead.rst",
+      "excerpts": [
+        {
+          "line": 46,
+          "text": "        :returns bytes: A 32 byte key.\n\n    .. method:: encrypt(nonce, data, associated_data)\n\n        .. warning::\n"
+        },
+        {
+          "line": 54,
+          "text": "\n        Encrypts the ``data`` provided and authenticates the\n        ``associated_data``.  The output of this can be passed directly\n        to the ``decrypt`` method.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a key."
+        },
+        {
+          "line": 57,
+          "text": "        to the ``decrypt`` method.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 61,
+          "text": "        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data that should be\n            authenticated with the key, but does not need to be encrypted. Can\n            be ``None``.\n        :type associated_data: :term:`bytes-like`"
+        },
+        {
+          "line": 64,
+          "text": "            authenticated with the key, but does not need to be encrypted. Can\n            be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes."
+        },
+        {
+          "line": 66,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)"
+        },
+        {
+          "line": 69,
+          "text": "            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same"
+        },
+        {
+          "line": 71,
+          "text": "    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n"
+        },
+        {
+          "line": 72,
+          "text": "\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a"
+        },
+        {
+          "line": 73,
+          "text": "        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a\n            key."
+        },
+        {
+          "line": 75,
+          "text": "        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a\n            key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to decrypt (with tag appended)."
+        },
+        {
+          "line": 80,
+          "text": "        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext."
+        },
+        {
+          "line": 82,
+          "text": "        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur"
+        },
+        {
+          "line": 84,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur\n            when the ciphertext has been changed, but will also occur when the\n            key, nonce, or associated data are wrong."
+        },
+        {
+          "line": 89,
+          "text": "            key, nonce, or associated data are wrong.\n\n.. class:: AESGCM(key)\n\n    .. versionadded:: 2.0\n"
+        },
+        {
+          "line": 129,
+          "text": "        :returns bytes: The generated key.\n\n    .. method:: encrypt(nonce, data, associated_data)\n\n        .. warning::\n"
+        },
+        {
+          "line": 137,
+          "text": "\n        Encrypts and authenticates the ``data`` provided as well as\n        authenticating the ``associated_data``.  The output of this can be\n        passed directly to the ``decrypt`` method.\n\n        :param nonce: NIST `recommends a 96-bit IV length`_ for best"
+        },
+        {
+          "line": 142,
+          "text": "        :param nonce: NIST `recommends a 96-bit IV length`_ for best\n            performance but it can be up to 2\\ :sup:`64` - 1 :term:`bits`.\n            **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 146,
+          "text": "        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended."
+        },
+        {
+          "line": 148,
+          "text": "        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes."
+        },
+        {
+          "line": 150,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)"
+        },
+        {
+          "line": 153,
+          "text": "            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same"
+        },
+        {
+          "line": 155,
+          "text": "    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n"
+        },
+        {
+          "line": 156,
+          "text": "\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: NIST `recommends a 96-bit IV length`_ for best"
+        },
+        {
+          "line": 157,
+          "text": "        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: NIST `recommends a 96-bit IV length`_ for best\n            performance but it can be up to 2\\ :sup:`64` - 1 :term:`bits`."
+        },
+        {
+          "line": 161,
+          "text": "        :param nonce: NIST `recommends a 96-bit IV length`_ for best\n            performance but it can be up to 2\\ :sup:`64` - 1 :term:`bits`.\n            **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 165,
+          "text": "        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext."
+        },
+        {
+          "line": 167,
+          "text": "        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur"
+        },
+        {
+          "line": 169,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur\n            when the ciphertext has been changed, but will also occur when the\n            key, nonce, or associated data are wrong."
+        },
+        {
+          "line": 174,
+          "text": "            key, nonce, or associated data are wrong.\n\n.. class:: AESGCMSIV(key)\n\n    .. versionadded:: 42.0.0\n"
+        },
+        {
+          "line": 211,
+          "text": "        :returns bytes: The generated key.\n\n    .. method:: encrypt(nonce, data, associated_data)\n\n        Encrypts and authenticates the ``data`` provided as well as\n        authenticating the ``associated_data``.  The output of this can be"
+        },
+        {
+          "line": 214,
+          "text": "\n        Encrypts and authenticates the ``data`` provided as well as\n        authenticating the ``associated_data``.  The output of this can be\n        passed directly to the ``decrypt`` method.\n\n        :param nonce: A 12-byte value."
+        },
+        {
+          "line": 221,
+          "text": "        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended."
+        },
+        {
+          "line": 223,
+          "text": "        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`32` - 1 bytes."
+        },
+        {
+          "line": 225,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`32` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)"
+        },
+        {
+          "line": 228,
+          "text": "            than 2\\ :sup:`32` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same"
+        },
+        {
+          "line": 230,
+          "text": "    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n"
+        },
+        {
+          "line": 231,
+          "text": "\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12-byte value."
+        },
+        {
+          "line": 232,
+          "text": "        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12-byte value.\n        :type nonce: :term:`bytes-like`"
+        },
+        {
+          "line": 238,
+          "text": "        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext."
+        },
+        {
+          "line": 240,
+          "text": "        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur"
+        },
+        {
+          "line": 242,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur\n            when the ciphertext has been changed, but will also occur when the\n            key, nonce, or associated data are wrong."
+        },
+        {
+          "line": 282,
+          "text": "        :returns bytes: The generated key.\n\n    .. method:: encrypt(nonce, data, associated_data)\n\n        .. warning::\n"
+        },
+        {
+          "line": 290,
+          "text": "\n        Encrypts and authenticates the ``data`` provided as well as\n        authenticating the ``associated_data``.  The output of this can be\n        passed directly to the ``decrypt`` method.\n\n        :param nonce: A 12-15 byte value. **NEVER REUSE A NONCE** with a key."
+        },
+        {
+          "line": 293,
+          "text": "        passed directly to the ``decrypt`` method.\n\n        :param nonce: A 12-15 byte value. **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 297,
+          "text": "        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended."
+        },
+        {
+          "line": 299,
+          "text": "        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes."
+        },
+        {
+          "line": 301,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the 16 byte tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)"
+        },
+        {
+          "line": 304,
+          "text": "            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same"
+        },
+        {
+          "line": 306,
+          "text": "    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n"
+        },
+        {
+          "line": 307,
+          "text": "\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a key."
+        },
+        {
+          "line": 308,
+          "text": "        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`"
+        },
+        {
+          "line": 310,
+          "text": "        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A 12 byte value. **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 314,
+          "text": "        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext."
+        },
+        {
+          "line": 316,
+          "text": "        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur"
+        },
+        {
+          "line": 318,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur\n            when the ciphertext has been changed, but will also occur when the\n            key, nonce, or associated data are wrong."
+        },
+        {
+          "line": 362,
+          "text": "        :returns bytes: The generated key.\n\n    .. method:: encrypt(data, associated_data)\n\n        .. note::\n"
+        },
+        {
+          "line": 380,
+          "text": "\n        Encrypts and authenticates the ``data`` provided as well as\n        authenticating the ``associated_data``.  The output of this can be\n        passed directly to the ``decrypt`` method.\n\n        :param data: The data to encrypt."
+        },
+        {
+          "line": 385,
+          "text": "        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`\n        :param list associated_data: An optional ``list`` of ``bytes-like objects``. This\n            is additional data that should be authenticated with the key, but\n            is not encrypted. Can be ``None``.  In SIV mode the final element\n            of this list is treated as a ``nonce``."
+        },
+        {
+          "line": 390,
+          "text": "            of this list is treated as a ``nonce``.\n        :returns bytes: The ciphertext bytes with the 16 byte tag **prepended**.\n        :raises OverflowError: If ``data`` or an ``associated_data`` element\n            is larger than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(data, associated_data)"
+        },
+        {
+          "line": 393,
+          "text": "            is larger than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same"
+        },
+        {
+          "line": 395,
+          "text": "    .. method:: decrypt(data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n"
+        },
+        {
+          "line": 396,
+          "text": "\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param bytes data: The data to decrypt (with tag **prepended**)."
+        },
+        {
+          "line": 397,
+          "text": "        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param bytes data: The data to decrypt (with tag **prepended**).\n        :param list associated_data: An optional ``list`` of ``bytes-like objects``. This"
+        },
+        {
+          "line": 400,
+          "text": "\n        :param bytes data: The data to decrypt (with tag **prepended**).\n        :param list associated_data: An optional ``list`` of ``bytes-like objects``. This\n            is additional data that should be authenticated with the key, but\n            is not encrypted. Can be ``None`` if none was used during\n            encryption."
+        },
+        {
+          "line": 405,
+          "text": "            encryption.\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur\n            when the ciphertext has been changed, but will also occur when the\n            key or associated data are wrong."
+        },
+        {
+          "line": 456,
+          "text": "        :returns bytes: The generated key.\n\n    .. method:: encrypt(nonce, data, associated_data)\n\n        .. warning::\n"
+        },
+        {
+          "line": 464,
+          "text": "\n        Encrypts and authenticates the ``data`` provided as well as\n        authenticating the ``associated_data``.  The output of this can be\n        passed directly to the ``decrypt`` method.\n\n        :param nonce: A value of between 7 and 13 bytes. The maximum"
+        },
+        {
+          "line": 471,
+          "text": "            encrypting and must satisfy the condition:\n            ``len(data) < 2 ** (8 * (15 - len(nonce)))``\n            **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 475,
+          "text": "        :param data: The data to encrypt.\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the tag appended."
+        },
+        {
+          "line": 477,
+          "text": "        :param associated_data: Additional data that should be\n            authenticated with the key, but is not encrypted. Can be ``None``.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes."
+        },
+        {
+          "line": 479,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The ciphertext bytes with the tag appended.\n        :raises OverflowError: If ``data`` or ``associated_data`` is larger\n            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)"
+        },
+        {
+          "line": 482,
+          "text": "            than 2\\ :sup:`31` - 1 bytes.\n\n    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same"
+        },
+        {
+          "line": 484,
+          "text": "    .. method:: decrypt(nonce, data, associated_data)\n\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n"
+        },
+        {
+          "line": 485,
+          "text": "\n        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A value of between 7 and 13 bytes. This"
+        },
+        {
+          "line": 486,
+          "text": "        Decrypts the ``data`` and authenticates the ``associated_data``. If you\n        called encrypt with ``associated_data`` you must pass the same\n        ``associated_data`` in decrypt or the integrity check will fail.\n\n        :param nonce: A value of between 7 and 13 bytes. This\n            is the same value used when you originally called encrypt."
+        },
+        {
+          "line": 490,
+          "text": "        :param nonce: A value of between 7 and 13 bytes. This\n            is the same value used when you originally called encrypt.\n            **NEVER REUSE A NONCE** with a key.\n        :type nonce: :term:`bytes-like`\n        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`"
+        },
+        {
+          "line": 494,
+          "text": "        :param data: The data to decrypt (with tag appended).\n        :type data: :term:`bytes-like`\n        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext."
+        },
+        {
+          "line": 496,
+          "text": "        :param associated_data: Additional data to authenticate. Can be\n            ``None`` if none was passed during encryption.\n        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur"
+        },
+        {
+          "line": 498,
+          "text": "        :type associated_data: :term:`bytes-like`\n        :returns bytes: The original plaintext.\n        :raises cryptography.exceptions.InvalidTag: If the authentication tag\n            doesn't validate this exception will be raised. This will occur\n            when the ciphertext has been changed, but will also occur when the\n            key, nonce, or associated data are wrong."
+        }
+      ]
+    }
+  ]
+}
