@@ -399,7 +399,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "4e104fc161a714f414daf790ac823fae4e657918f06a7f17be5af7150d2f1c15"
+      "sha256": "9ddbfaa3a6db4eb221371a3d2621811714389cdd334abef9dd1e70fa7cdf02c3"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorTools.kt",

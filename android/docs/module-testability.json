@@ -69,14 +69,21 @@
     },
     {
       "module": ":core:capabilities",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Nullable runtime observations and probe source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Android probe execution, OEM/API34/36/37 matrix, hardware initialization evidence",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual Android RAM/SDK/display/role/declared-encoder observations with explicit unknown propagation; native case PASS at67fbd39",
+      "production": [
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Observed inventory only: no NPU/physical display-out/session inference, codec initialization, performance or OEM/API36/37 acceptance",
+      "sha256": {
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt": "9118012424e9b28ebf5cf7cf008734ad12a40a411c607d91f427588aaf140812",
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7"
+      }
     },
     {
       "module": ":core:model",
@@ -163,14 +170,21 @@
     },
     {
       "module": ":core:hw",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Nullable hardware inventory/probe source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Verified hardware capabilities/initialization, Compat admission, reference device matrix",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual Android video codec encoder/decoder declaration partition and audio feature inventory; native case PASS at67fbd39",
+      "production": [
+        "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Declared hardware flags/preferences are NOT successful codec initialization, throughput or casting; physical/API36/37 and Compat acceptance remain open",
+      "sha256": {
+        "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt": "4f09fcf0da21f0c5492b71a395664f12aa14158b9f08999eed750e65d82159f6",
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7"
+      }
     },
     {
       "module": ":core:index",

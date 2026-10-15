@@ -42,9 +42,9 @@
     {
       "module": ":core:capabilities",
       "status": "incomplete",
-      "present_scope": "Nullable runtime observations and probe source",
-      "remaining_gap": "Android probe execution, OEM/API34/36/37 matrix, hardware initialization evidence",
-      "evidence_level": "android_compiled"
+      "present_scope": "Actual Android RAM/SDK/display/role/declared-encoder observations with explicit unknown propagation; native case PASS at67fbd39",
+      "remaining_gap": "Observed inventory only: no NPU/physical display-out/session inference, codec initialization, performance or OEM/API36/37 acceptance",
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":core:model",
@@ -84,9 +84,9 @@
     {
       "module": ":core:hw",
       "status": "incomplete",
-      "present_scope": "Nullable hardware inventory/probe source",
-      "remaining_gap": "Verified hardware capabilities/initialization, Compat admission, reference device matrix",
-      "evidence_level": "android_compiled"
+      "present_scope": "Actual Android video codec encoder/decoder declaration partition and audio feature inventory; native case PASS at67fbd39",
+      "remaining_gap": "Declared hardware flags/preferences are NOT successful codec initialization, throughput or casting; physical/API36/37 and Compat acceptance remain open",
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":core:index",
