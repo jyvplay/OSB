@@ -63,9 +63,9 @@
     {
       "module": ":core:settings",
       "status": "incomplete",
-      "present_scope": "Settings graph source",
-      "remaining_gap": "DataStore, migrations, full settings/apply semantics and persistence acceptance",
-      "evidence_level": "android_compiled"
+      "present_scope": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native rerun pending",
+      "remaining_gap": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":core:security",
@@ -119,9 +119,9 @@
     {
       "module": ":feature:launcher",
       "status": "incomplete",
-      "present_scope": "Shelf/launcher UI source",
-      "remaining_gap": "Full pinned/folders/recents/search/Home/widget behavior, keyboard/device acceptance",
-      "evidence_level": "android_compiled"
+      "present_scope": "Immutable pin/reorder/unpin, missing-target preservation, deterministic catalog reconciliation and locale-stable search",
+      "remaining_gap": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":feature:find",
@@ -182,9 +182,9 @@
     {
       "module": ":feature:media",
       "status": "incomplete",
-      "present_scope": "Local media library/playback source; explicit experimental consent",
-      "remaining_gap": "Full codec/license/fidelity/metadata/library/device requirements and measured playback acceptance",
-      "evidence_level": "android_compiled"
+      "present_scope": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte-limited stream reader; native picker/inspection UI added, execution pending",
+      "remaining_gap": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":feature:beam",
@@ -210,9 +210,9 @@
     {
       "module": ":feature:backup",
       "status": "incomplete",
-      "present_scope": "Archive/export/restore source; pilot blocked",
-      "remaining_gap": "Reviewed encryption, transactional restore/rollback, versions/large-data/crash tests and BK acceptance",
-      "evidence_level": "android_compiled"
+      "present_scope": "Bounded noncompressed FBC1 content serialization and whole-frame checksum/structural verification before returning entries",
+      "remaining_gap": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":feature:continuity",
@@ -287,9 +287,9 @@
     {
       "module": ":format:image",
       "status": "incomplete",
-      "present_scope": "Image operations source; pilot blocked",
-      "remaining_gap": "FM/FF format registry, fidelity/loss reporting, HEIC platform gate and codec/device tests",
-      "evidence_level": "android_compiled"
+      "present_scope": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, execution pending",
+      "remaining_gap": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":format:psd",

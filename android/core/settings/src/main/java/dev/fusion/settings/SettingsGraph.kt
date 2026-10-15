@@ -3,13 +3,6 @@ package dev.fusion.settings
 import android.content.Context
 import android.content.SharedPreferences
 
-data class SettingDef(
-    val id: String,
-    val title: String,
-    val aliases: List<String> = emptyList(),
-    val default: String = ""
-)
-
 data class SettingChange(val id: String, val old: String, val now: String)
 
 /**
@@ -19,21 +12,19 @@ data class SettingChange(val id: String, val old: String, val now: String)
 class SettingsGraph(context: Context, defs: List<SettingDef> = DEFAULTS) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences("fusion_settings", Context.MODE_PRIVATE)
-    private val byId = defs.associateBy { it.id }
+    private val catalog = SettingsCatalog(defs)
+    private val byId = catalog.all().associateBy { it.id }
     private val history = ArrayDeque<SettingChange>()
 
     fun all(): List<SettingDef> = byId.values.toList()
     fun get(id: String): String = prefs.getString(id, byId[id]?.default ?: "") ?: ""
-    fun search(q: String): List<SettingDef> {
-        val s = q.lowercase()
-        if (s.isBlank()) return all()
-        return all().filter {
-            it.title.lowercase().contains(s) || it.id.lowercase().contains(s) ||
-                it.aliases.any { a -> a.lowercase().contains(s) }
-        }
-    }
+    fun search(q: String): List<SettingDef> = catalog.search(q)
+    /** Explicit export only; decoding a snapshot never applies settings. */
+    fun exportSnapshot(): ByteArray = catalog.encode(byId.keys.associateWith(::get))
+    fun inspectSnapshot(bytes: ByteArray): Map<String, String> = catalog.decode(bytes)
     fun set(id: String, value: String): Boolean {
         if (!byId.containsKey(id)) return false
+        try { catalog.encode(mapOf(id to value)) } catch (_: Exception) { return false }
         val old = get(id)
         if (old == value) return true
         prefs.edit().putString(id, value).apply()

@@ -27,6 +27,23 @@ object ImageOps {
         JPEG("image/jpeg"), PNG("image/png"), WEBP("image/webp")
     }
 
+    /** Existing software bitmap only. Android premultiplication/color conversion is NOT byte fidelity.
+     * No decode/export/source mutation is performed. Caller owns/recycles the returned bitmap.
+     */
+    fun rotate(bitmap: Bitmap, quarterTurns: Int): Bitmap = toBitmap(samples(bitmap).rotateClockwise(quarterTurns))
+    fun crop(bitmap: Bitmap, left: Int, top: Int, right: Int, bottom: Int): Bitmap =
+        toBitmap(samples(bitmap).crop(left, top, right, bottom))
+    fun flip(bitmap: Bitmap, horizontal: Boolean): Bitmap = toBitmap(samples(bitmap).flip(horizontal))
+    private fun samples(bitmap: Bitmap): ArgbImage {
+        require(!bitmap.isRecycled && bitmap.config != Bitmap.Config.HARDWARE)
+        require(bitmap.width.toLong() * bitmap.height <= ArgbImage.MAX_PIXELS)
+        val data = IntArray(bitmap.width * bitmap.height)
+        bitmap.getPixels(data, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+        return ArgbImage(bitmap.width, bitmap.height, data)
+    }
+    private fun toBitmap(image: ArgbImage): Bitmap =
+        Bitmap.createBitmap(image.pixels(), image.width, image.height, Bitmap.Config.ARGB_8888)
+
     /** Reads dimensions without allocating the full bitmap. */
     suspend fun probe(context: Context, uri: Uri): Result<ImageInfo> = withContext(Dispatchers.IO) {
         runCatching {
@@ -45,6 +62,7 @@ object ImageOps {
     suspend fun decode(context: Context, uri: Uri, maxEdge: Int = 2048): Result<Bitmap> =
         withContext(Dispatchers.IO) {
             runCatching {
+                require(maxEdge in 1..2048) { "Preview edge must be 1..2048 pixels" }
                 val source = ImageDecoder.createSource(context.contentResolver, uri)
                 ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
                     val longest = maxOf(info.size.width, info.size.height)

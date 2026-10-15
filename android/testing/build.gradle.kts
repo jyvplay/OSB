@@ -120,3 +120,17 @@ tasks.register<JavaExec>("noteDraftContracts") {
     classpath = contract.runtimeClasspath
     mainClass.set("dev.fusion.notes.NoteDraftChecks")
 }
+
+// R12 continuation: independent pure source set, no Android stubs or duplicate legacy contracts.
+val subsets by sourceSets.creating
+kotlin.sourceSets.named("subsets") {
+    kotlin.srcDir("src/subsets/kotlin")
+    listOf("core/settings", "feature/media", "format/image", "feature/backup", "feature/launcher", "format/native").forEach {
+        kotlin.srcDir("../$it/src/main/kotlin")
+    }
+}
+tasks.register<JavaExec>("subsetContracts") {
+    dependsOn(subsets.classesTaskName)
+    classpath = subsets.runtimeClasspath
+    mainClass.set("dev.fusion.testing.SubsetChecks")
+}

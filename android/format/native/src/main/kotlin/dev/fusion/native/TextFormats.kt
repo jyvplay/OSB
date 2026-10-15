@@ -23,6 +23,12 @@ object TextFormats {
         }.toList()
     }
     fun isProbablyUtf8(bytes: ByteArray): Boolean {
-        return try { String(bytes, Charsets.UTF_8); true } catch (_: Exception) { false }
+        return try {
+            Charsets.UTF_8.newDecoder()
+                .onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+                .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
+                .decode(java.nio.ByteBuffer.wrap(bytes))
+            true
+        } catch (_: java.nio.charset.CharacterCodingException) { false }
     }
 }

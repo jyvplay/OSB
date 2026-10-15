@@ -109,14 +109,21 @@
     },
     {
       "module": ":core:settings",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Settings graph source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. DataStore, migrations, full settings/apply semantics and persistence acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native rerun pending",
+      "production": [
+        "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
+      "sha256": {
+        "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "d4b4c9acdb5e63542c06fdf823a8fe534dc1ad959dd24d71031da6dfdef021e7",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc"
+      }
     },
     {
       "module": ":core:security",
@@ -234,14 +241,21 @@
     },
     {
       "module": ":feature:launcher",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Shelf/launcher UI source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Full pinned/folders/recents/search/Home/widget behavior, keyboard/device acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Immutable pin/reorder/unpin, missing-target preservation, deterministic catalog reconciliation and locale-stable search",
+      "production": [
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "limit": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
+      "sha256": {
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt": "c95ca4c4f0ddff8107844aa068e814b960f2649d065e4283b67342c0b0c59e38",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc"
+      }
     },
     {
       "module": ":feature:find",
@@ -371,14 +385,21 @@
     },
     {
       "module": ":feature:media",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Local media library/playback source; explicit experimental consent",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Full codec/license/fidelity/metadata/library/device requirements and measured playback acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte-limited stream reader; native picker/inspection UI added, execution pending",
+      "production": [
+        "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "limit": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
+      "sha256": {
+        "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt": "ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc"
+      }
     },
     {
       "module": ":feature:beam",
@@ -422,14 +443,21 @@
     },
     {
       "module": ":feature:backup",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Archive/export/restore source; pilot blocked",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Reviewed encryption, transactional restore/rollback, versions/large-data/crash tests and BK acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded noncompressed FBC1 content serialization and whole-frame checksum/structural verification before returning entries",
+      "production": [
+        "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "limit": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
+      "sha256": {
+        "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt": "a1d6d068ff134b42863890bf87135f951de0141aad8eb2a2fc396899ebad090f",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc"
+      }
     },
     {
       "module": ":feature:continuity",
@@ -501,18 +529,20 @@
       "module": ":format:native",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing simple CSV/word-count transformations only; NOT strict full CSV/UTF-8",
+      "behavior": "Strict UTF8 validation (replacement-decoding defect repaired); existing simple CSV/word count",
       "production": [
         "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt"
       ],
       "checks": [
-        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt"
+        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
       ],
       "command": ":format:native:test",
-      "limit": "Strict safe bounded parsers/CSV fidelity and Forge registration; legacy UTF-8 heuristic not a validator",
+      "limit": "Full bounded CSV dialect/fidelity and Forge registration absent; legacy CSV parser remains limited",
       "sha256": {
-        "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt": "6c258b92e8ad4f714e262d260adeed6b64dce80da9ebf35a05be77faaf2f3b6f",
-        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt": "2473284ae33a50cb333e597ecec9639cd6158c508261a2ddcee56a1a3255a4af"
+        "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt": "ffae27b41b638a288a78fa7e98d72e467a5a9e75d5ca4979f3195de35ae3f7db",
+        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt": "e68cc5ab88de7c3b22b2aa462e2769dcc59120f7278429bc15fb2e0d264e0a1e",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc"
       }
     },
     {
@@ -571,14 +601,21 @@
     },
     {
       "module": ":format:image",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Image operations source; pilot blocked",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. FM/FF format registry, fidelity/loss reporting, HEIC platform gate and codec/device tests",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, execution pending",
+      "production": [
+        "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "limit": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
+      "sha256": {
+        "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "af1d0988a48eb7bb11007996ea518118c425ee370024146ed88ecde8ab8247dc"
+      }
     },
     {
       "module": ":format:psd",

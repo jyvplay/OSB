@@ -53,7 +53,8 @@ fun MediaScreen(context: Context, onView: (Uri, String) -> Unit) {
             try { items = queryImages(context); msg = "${items.size} images (recent first)"; } catch (e: SecurityException) { msg = "Permission missing: ${e.message}" }
         } }) { Text("Load images") }
         Text(msg)
-        LazyColumn {
+        SubtitlePicker(context)
+        LazyColumn(Modifier.weight(1f)) {
             items(items) { e ->
                 Text(e.name, Modifier.fillMaxWidth().clickable { onView(e.uri, e.mime) }.padding(8.dp))
             }
