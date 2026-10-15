@@ -935,13 +935,19 @@
       "path": "benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt",
       "module": ":benchmark",
       "package": "dev.fusion.benchmark",
-      "sha256": "88dd4b5af4bcd019f77057782ab101581991c76160f47079a8592618d8169086"
+      "sha256": "f3f97d1461db3352a442e1a9da57d839472eac94c32ca8844f3cce164daff520"
+    },
+    {
+      "path": "benchmark/src/main/java/dev/fusion/benchmark/LabJourney.kt",
+      "module": ":benchmark",
+      "package": "dev.fusion.benchmark",
+      "sha256": "c19cdd10fc2f99897c1b5d54fac759496ff4c20c6f259b0389f01ba893228581"
     },
     {
       "path": "benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt",
       "module": ":benchmark",
       "package": "dev.fusion.benchmark",
-      "sha256": "620382ee3546cb8cadffe7366f9252fa40ea9ad244286ea595e56814d903a8db"
+      "sha256": "e3bf914582461f9989c1743e74bae2e62e23fa22cfd9d74d965007099d97e5a0"
     },
     {
       "path": "testing/src/main/kotlin/dev/fusion/testing/Fixtures.kt",
