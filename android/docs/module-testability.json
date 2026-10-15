@@ -17,7 +17,7 @@
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "635ef1eaf809d69ded4460cf35984b1e2364a52ee2278eef82ccaf90d6086304",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "5857ee915617773ab5de564375728d552c3777d4192062dd663a7b7165c3e77d"
       }
     },
     {
@@ -235,8 +235,8 @@
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
-        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "4e104fc161a714f414daf790ac823fae4e657918f06a7f17be5af7150d2f1c15",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "9ddbfaa3a6db4eb221371a3d2621811714389cdd334abef9dd1e70fa7cdf02c3",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "5857ee915617773ab5de564375728d552c3777d4192062dd663a7b7165c3e77d"
       }
     },
     {
@@ -272,7 +272,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "5857ee915617773ab5de564375728d552c3777d4192062dd663a7b7165c3e77d"
       }
     },
     {

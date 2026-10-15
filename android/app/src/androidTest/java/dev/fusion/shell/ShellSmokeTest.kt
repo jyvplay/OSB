@@ -121,6 +121,8 @@ class ShellSmokeTest {
         }
         compose.onNodeWithTag("editor-content").performTextInput("First document")
         compose.onNodeWithTag("editor-content").assertTextContains("First document")
+        // Patch attack: focus-driven scrolling must not hide the fixed action toolbar.
+        compose.onNodeWithText("New").assertIsDisplayed()
         compose.onNodeWithText("New").performScrollTo().assertIsDisplayed().performClick()
         compose.waitUntil(10_000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
         compose.onAllNodesWithTag("editor-tab").assertCountEquals(2)
@@ -233,6 +235,18 @@ class ShellSmokeTest {
     }
     @Test fun editorTabsAtTwoHundredPercentFontScale() = withTwoHundredPercentFont {
         editorTabsDoNotReplaceEachOthersText()
+    }
+    @Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont() = withTwoHundredPercentFont {
+        openModule("editor")
+        compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("New").performClick()
+        compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("editor-content").performScrollTo().performTextInput((1..60).joinToString("\n") { "Long line $it" })
+        compose.onNodeWithText("New").assertIsDisplayed().performClick()
+        compose.waitUntil(10000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
+        compose.onNodeWithText("New").assertIsDisplayed()
+        compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()
+        compose.onNodeWithTag("editor-content").assertTextContains("Long line 60", substring=true)
     }
     private fun withTwoHundredPercentFont(action:()->Unit) {
         val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()

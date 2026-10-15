@@ -74,7 +74,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
     }
     val ready = !state.loading && !state.recoveryBlocked && !state.busy && !state.toolsBusy
 
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp).semantics { paneTitle = "Text editor" }
+    Column(Modifier.fillMaxSize().padding(12.dp).semantics { paneTitle = "Text editor" }
         .onPreviewKeyEvent { event ->
             if (event.type != KeyEventType.KeyDown || !event.isCtrlPressed || event.isAltPressed || !ready) false
             else when (event.key) {
@@ -87,7 +87,9 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                 else -> false
             }
         }, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
+        // Keep actions outside the focused document's scroll/bring-into-view region.
+        // Bounded independent scrolling keeps a tall toolbar reachable at large font sizes.
+        FlowRow(Modifier.fillMaxWidth().heightIn(max=240.dp).verticalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
             OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
             Button(enabled = ready && active != null && pendingCopy == null,
@@ -97,6 +99,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                     active?.let { if (dirty) closingId = it.id else model.closeDocument(it.id) }
                 }) { Text("Close tab") }
         }
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()), verticalArrangement=Arrangement.spacedBy(6.dp)) {
         FlowRow(Modifier.fillMaxWidth()) {
             session.documents.forEach { doc ->
                 val docDirty = remember(doc.content, doc.savedDigest) { doc.dirty }
@@ -138,6 +141,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
         active?.let { Text("Draft encoding: ${it.encoding.label}. Unrepresentable export characters are refused, not replaced.") }
         Text("Strict UTF-8 / UTF-16 / explicit Windows-1252 • 2 MiB/document • 8 tabs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
+        }
     }
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",
