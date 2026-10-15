@@ -1,0 +1,82 @@
+[
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/content/Context.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/content/Context.java",
+    "blob": "06635eedeb9ab9debd518557bc08fa7041b1603b",
+    "sha256": "a4c3e12925983e677c014b65b6b81b1b90ede2a13c74384f86544cd98e7f507a",
+    "excerpts": [
+      {
+        "term": "bindIsolatedService",
+        "line": 491,
+        "text": "     */\n    public static final int BIND_INCLUDE_CAPABILITIES = 0x000001000;\n\n    /**\n     * Flag for {@link #bindIsolatedService}: Bind the service into a shared isolated process.\n     * Specifying this flag allows multiple isolated services to be running in a single shared\n     * isolated process.\n     *\n     * The shared isolated process instance is identified by the <var>instanceName</var>\n     * parameter in {@link #bindIsolatedService(Intent, int, String, Executor, ServiceConnection)}.\n     *\n     * Subsequent calls to {@link #bindIsolatedService} with the same <var>instanceName</var>\n     * will cause the isolated service to be co-located in the same shared isolated process.\n     *\n     * Note that the shared isolated process is scoped to the calling app; once created, only\n     * the calling app can bind additional isolated services into the shared process. However,\n     * the services themselves can come from different APKs and therefore different vendors.\n     *\n     * Only services that set the {@link android.R.attr#allowSharedIsolatedProcess} attribute\n     * to {@code true} are allowed to be bound into a shared isolated process."
+      },
+      {
+        "term": "bindIsolatedService",
+        "line": 496,
+        "text": "     * Specifying this flag allows multiple isolated services to be running in a single shared\n     * isolated process.\n     *\n     * The shared isolated process instance is identified by the <var>instanceName</var>\n     * parameter in {@link #bindIsolatedService(Intent, int, String, Executor, ServiceConnection)}.\n     *\n     * Subsequent calls to {@link #bindIsolatedService} with the same <var>instanceName</var>\n     * will cause the isolated service to be co-located in the same shared isolated process.\n     *\n     * Note that the shared isolated process is scoped to the calling app; once created, only\n     * the calling app can bind additional isolated services into the shared process. However,\n     * the services themselves can come from different APKs and therefore different vendors.\n     *\n     * Only services that set the {@link android.R.attr#allowSharedIsolatedProcess} attribute\n     * to {@code true} are allowed to be bound into a shared isolated process.\n     *\n     */\n    public static final int BIND_SHARED_ISOLATED_PROCESS = 0x00002000;\n\n    /***********    Public flags above this line ***********/"
+      },
+      {
+        "term": "instanceName",
+        "line": 495,
+        "text": "     * Flag for {@link #bindIsolatedService}: Bind the service into a shared isolated process.\n     * Specifying this flag allows multiple isolated services to be running in a single shared\n     * isolated process.\n     *\n     * The shared isolated process instance is identified by the <var>instanceName</var>\n     * parameter in {@link #bindIsolatedService(Intent, int, String, Executor, ServiceConnection)}.\n     *\n     * Subsequent calls to {@link #bindIsolatedService} with the same <var>instanceName</var>\n     * will cause the isolated service to be co-located in the same shared isolated process.\n     *\n     * Note that the shared isolated process is scoped to the calling app; once created, only\n     * the calling app can bind additional isolated services into the shared process. However,\n     * the services themselves can come from different APKs and therefore different vendors.\n     *\n     * Only services that set the {@link android.R.attr#allowSharedIsolatedProcess} attribute\n     * to {@code true} are allowed to be bound into a shared isolated process.\n     *\n     */\n    public static final int BIND_SHARED_ISOLATED_PROCESS = 0x00002000;\n"
+      },
+      {
+        "term": "instanceName",
+        "line": 498,
+        "text": "     *\n     * The shared isolated process instance is identified by the <var>instanceName</var>\n     * parameter in {@link #bindIsolatedService(Intent, int, String, Executor, ServiceConnection)}.\n     *\n     * Subsequent calls to {@link #bindIsolatedService} with the same <var>instanceName</var>\n     * will cause the isolated service to be co-located in the same shared isolated process.\n     *\n     * Note that the shared isolated process is scoped to the calling app; once created, only\n     * the calling app can bind additional isolated services into the shared process. However,\n     * the services themselves can come from different APKs and therefore different vendors.\n     *\n     * Only services that set the {@link android.R.attr#allowSharedIsolatedProcess} attribute\n     * to {@code true} are allowed to be bound into a shared isolated process.\n     *\n     */\n    public static final int BIND_SHARED_ISOLATED_PROCESS = 0x00002000;\n\n    /***********    Public flags above this line ***********/\n    /***********    Hidden flags below this line ***********/\n"
+      }
+    ]
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/os/Handler.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/os/Handler.java",
+    "blob": "ceaf337b2122def3a927b751f62e383e69c328bd",
+    "sha256": "c76c07e14d20fb1cffb9cda8aa3cfe3eb35bddac12a3016a10c9a00f1ac03f36",
+    "excerpts": [
+      {
+        "term": "sendingUid = Binder.getCallingUid",
+        "line": 938,
+        "text": "    }\n\n    private final class MessengerImpl extends IMessenger.Stub {\n        public void send(Message msg) {\n            msg.sendingUid = Binder.getCallingUid();\n            Handler.this.sendMessage(msg);\n        }\n    }\n\n    private static Message getPostMessage(Runnable r) {\n        Message m = Message.obtain();\n        m.callback = r;\n        return m;\n    }\n\n    @UnsupportedAppUsage\n    private static Message getPostMessage(Runnable r, Object token) {\n        Message m = Message.obtain();\n        m.obj = token;\n        m.callback = r;"
+      }
+    ]
+  },
+  {
+    "repository": "LibreOffice/core",
+    "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+    "path": "COPYING",
+    "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING",
+    "blob": "94a9ed024d3859793618152ea559a168bbcbb5e2",
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "excerpts": [
+      {
+        "term": "GNU Lesser",
+        "line": 672,
+        "text": "\n  The GNU General Public License does not permit incorporating your program\ninto proprietary programs.  If your program is a subroutine library, you\nmay consider it more useful to permit linking proprietary applications with\nthe library.  If this is what you want to do, use the GNU Lesser General\nPublic License instead of this License.  But first, please read\n<http://www.gnu.org/philosophy/why-not-lgpl.html>."
+      }
+    ]
+  },
+  {
+    "repository": "apache/poi",
+    "commit": "df7d70faa13003593f272259c7fe8ed787f507df",
+    "path": "legal/LICENSE",
+    "url": "https://github.com/apache/poi/blob/df7d70faa13003593f272259c7fe8ed787f507df/legal/LICENSE",
+    "blob": "990301df8a1b7b0436b250682f52d79da93857eb",
+    "sha256": "6e7c918e5a49f677c1b85a9eb2d035cd85c217fc42af6b4a336964a434001a9c",
+    "excerpts": [
+      {
+        "term": "Apache License",
+        "line": 2,
+        "text": "\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common"
+      },
+      {
+        "term": "Apache License",
+        "line": 179,
+        "text": "      of your accepting any such warranty or additional liability.\n\n   END OF TERMS AND CONDITIONS\n\n   APPENDIX: How to apply the Apache License to your work.\n\n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n\n   Copyright [yyyy] [name of copyright owner]\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at"
+      }
+    ]
+  }
+]

@@ -55,7 +55,7 @@ FOUNDATIONS=[
  ('Permissive main APK / isolated MPL / no forbidden copyleft assets','No new APK dependency added this pass; optional external host verifiers are not bundled. Full transitive/legal audit still required.'),
  ('Two reference devices / E0 budgets / no invented measurements','No reference-device measurements; budgets remain E0.'),
  ('Requested47 slots vs included48 / dedicated modules','41 exact,2 partial owners,4 absent (quickpanel/office/photos/ime); Meet/GPL ownership also unresolved.'),
- ('Actual Android build and native visual inspection','Not executed; SDK/JDK/ADB/emulator/access prerequisites absent in this sandbox.')]
+ ('Actual Android build and native visual inspection','R10 both-flavor build/tests/lint passed remotely. New R11 isolated-UID spike is not yet device-verified; visual/physical acceptance absent.')]
 
 def inventory(root=ROOT):
     modules=re.findall(r'"(:[\w:]+)"',(root/'settings.gradle.kts').read_text())
@@ -103,7 +103,7 @@ def report(root=ROOT):
     missing=missing_edges(edges,exports,sources,packages)
     if missing: raise ValueError(json.dumps(missing,indent=2))
     rows=json.loads((root/'docs/feature-register.json').read_text())
-    lines=['# Full recorded v2/v2.1 scope review — R10 continuation','',
+    lines=['# Full recorded v2/v2.1 scope review — R11 continuation','',
       '**231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**',
       'This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.',
       '',f'{len(modules)} included modules; {len(sources)} main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.',
@@ -117,7 +117,7 @@ def report(root=ROOT):
         owners=', '.join('`:'+p.replace('/',':')+'`'+(' (absent)' if ':'+p.replace('/',':') not in modules else '') for p in candidates)
         lines.append(f"| {row['id']} | {row['feature'].replace('|','/')} | {row['status']} | {owners} | {', '.join(row['gates']) or 'No spike named here; integration/security/AX gates still apply'} |")
     lines += ['', 'Status counts: '+json.dumps(dict(sorted(Counter(r['status'] for r in rows).items())))+'.', '',
-      'Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r10-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R10-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.', '']
+      'Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r11-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R11-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.', '']
     data={'kind':'source ownership only; NOT Android compilation','modules':modules,
           'production_project_edges':{k:sorted(v) for k,v in edges.items()},'missing_internal_edges':missing,
           'source_inventory':[{k:v for k,v in s.items() if k!='text'} for s in sources]}
@@ -126,7 +126,7 @@ def report(root=ROOT):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
     text,data=report()
-    for name,content in [('docs/FULL-SPEC-REVIEW.md',text),('docs/verification/r10-source-inventory.json',data)]:
+    for name,content in [('docs/FULL-SPEC-REVIEW.md',text),('docs/verification/r11-source-inventory.json',data)]:
         path=ROOT/name
         if args.check:
             if path.read_text()!=content: raise ValueError('Stale scope/source review: '+name)

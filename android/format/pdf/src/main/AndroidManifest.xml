@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Each broker lease binds a fresh isolated instance. No exported entry or URI grant. -->
+        <service android:name="dev.fusion.format.pdf.sandbox.FormatWorkerService"
+            android:exported="false" android:isolatedProcess="true" android:process=":format_worker" />
+    </application>
+</manifest>

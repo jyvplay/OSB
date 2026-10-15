@@ -82,7 +82,7 @@ jobs:
   instrumented:
     name: API34 managed-device checks (not physical-device spike passes)
     runs-on: ubuntu-24.04
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name != 'pull_request'
     defaults:
       run:
         working-directory: android
@@ -100,9 +100,12 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Run pro managed-device tests
-        run: ./gradlew --no-daemon :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+        run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: device-reports
-          path: android/app/build/reports/**
+          path: |
+            android/app/build/reports/**
+            android/device.log
+            android/app/build/outputs/androidTest-results/**

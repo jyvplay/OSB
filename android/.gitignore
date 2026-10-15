@@ -19,3 +19,4 @@ sdk-setup.log
 unit-tests.log
 contracts.log
 lint.log
+device.log
