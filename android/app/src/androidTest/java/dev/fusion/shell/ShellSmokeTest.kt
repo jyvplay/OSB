@@ -40,6 +40,14 @@ class ShellSmokeTest {
         compose.onNodeWithTag("calculator-input").performScrollTo().assertTextContains("0.1+0.2")
         compose.onNodeWithTag("calculator-result").performScrollTo().assertTextEquals("0.3")
     }
+    @Test fun distinctWindowPanesDoNotMergeTheirControls() {
+        openModule("editor")
+        compose.onNodeWithText("Open text").performScrollTo().assertIsDisplayed()
+        openModule("calculator")
+        compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Open text").assertExists()
+        compose.onAllNodesWithContentDescription("Minimize").assertCountEquals(2)
+    }
     @Test fun filesDeclaresMissingAccess() {
         openModule("files")
         compose.onNodeWithText("No folder access. Only folders you choose are visible.").assertIsDisplayed()
@@ -141,4 +149,26 @@ class ShellSmokeTest {
             java.io.File(context.filesDir,"notes/$name.md").delete() // Only this test's fresh UUID name.
         }
     }
+    @Test fun savedWikiBacklinksReadRealNoteFiles() {
+        val context=androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val store=dev.fusion.notes.NotesStore(context)
+        val suffix=java.util.UUID.randomUUID().toString().replace("-","")
+        val source="LinkSource_$suffix";val target="LinkTarget_$suffix"
+        val a=store.save(source,"[[$target]]",null)
+        val b=store.save(target,"Saved target",null)
+        try {
+            openModule("notes")
+            compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Open note: $target") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Open note: $target").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("notes-scan-links") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("notes-scan-links").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Backlink: $source")).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Backlink: $source").performScrollTo().assertIsDisplayed()
+            org.junit.Assert.assertEquals("[[$target]]",store.load(source).text)
+        } finally {
+            runCatching { store.delete(source,a.revision) };runCatching { store.delete(target,b.revision) }
+        }
+    }
+
 }

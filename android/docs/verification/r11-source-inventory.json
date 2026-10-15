@@ -199,7 +199,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "9e3b3be152a1b45020ab7d1da8144cce6d7be215c6cc93ebfdb99ac237c03261"
+      "sha256": "938bc05c12a91396dea28ca2bfc382f389c962a403f184b8c0fd2578453f57af"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -295,7 +295,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "371ae6e411c13b4716ec8bf88fcfb9d766c5ad8adf8a32f68eaae708deb2afe3"
+      "sha256": "413fc399372f1b92b7fe19f5cefbba0fbe8f2a0f8a3c4c6c7d8695630116a6a4"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -430,6 +430,18 @@
       "sha256": "29b18d7590efb582a308fbd2f55a565b59912aa3394bf930054eef343f81f57a"
     },
     {
+      "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
+      "module": ":feature:browser",
+      "package": "dev.fusion.browser.model",
+      "sha256": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b"
+    },
+    {
+      "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt",
+      "module": ":feature:browser",
+      "package": "dev.fusion.browser.model",
+      "sha256": "e6012ae4fef688f47061294cd58164eeb2cf03a7b766ab9814a49225b7a4c563"
+    },
+    {
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/LocalShell.kt",
       "module": ":feature:terminal",
       "package": "dev.fusion.terminal",
@@ -451,25 +463,31 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "71cf358f280f7d5c2a746f80ad544b71341c4dc4e3a8ebd99a9b60f723a982cf"
+      "sha256": "a9f2c1e55e3ca5cdc1164432e13ba6b4937d1ee3c24bcb3d4440fc5ac8c72bcf"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "f5631816034e43cb7ebffa8e7ca0fbc471600b023c5f66c06ca070c65a4d96e6"
+      "sha256": "d63ded7357e3ca04d24ff3e56499c05171842ab0e5e08f670146bf042ce3048e"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "2ee969c7b562eb1c9f614b37d307993a8bf61f5455831445fc8f0f19f056508f"
+      "sha256": "fd5980f017eb1746da54c6bbb9934d156181fc229e55d50f0fab697a60b44c42"
     },
     {
       "path": "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "60e8e4a43e72aa7f5db3e4db4af357ba9cc28145bd9db90a08902dba1215a6b4"
+      "sha256": "2e362c3ace40cc1981c5737eedf9552cf64abc590ab36e470272239aea5698b4"
+    },
+    {
+      "path": "feature/notes/src/main/kotlin/dev/fusion/notes/NoteLinks.kt",
+      "module": ":feature:notes",
+      "package": "dev.fusion.notes",
+      "sha256": "57db938f2e37741ecd15f33d2143963dffd034b7a319d5cea65306f1559e7d1f"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/Calc.kt",

@@ -77,6 +77,10 @@ class NoteFiles(directory: Path) {
         return names.sorted()
     }
     fun list(): List<String> = locked { namesUnlocked() }
+    /** Saved-note graph under the same cooperative writer lock; unsaved drafts are deliberately excluded. */
+    fun links(): NoteLinkGraph = locked {
+        NoteLinks.build(namesUnlocked().asSequence().map { name -> snapshot(name,bytesUnlocked(path(name))) })
+    }
     private fun bytesUnlocked(file: Path): ByteArray {
         require(Files.isRegularFile(file, NOFOLLOW_LINKS)) { "Note is missing or not a regular file" }
         FileChannel.open(file, READ, NOFOLLOW_LINKS).use { channel ->

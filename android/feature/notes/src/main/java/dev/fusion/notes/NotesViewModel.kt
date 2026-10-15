@@ -18,7 +18,8 @@ sealed interface NoteAction {
 data class NotesState(
     val names: List<String> = emptyList(), val name: String = "", val text: String = "",
     val savedText: String = "", val revision: NoteRevision? = null, val busy: Boolean = true,
-    val status: String = "Loading local notes…", val pending: NoteAction? = null
+    val status: String = "Loading local notes…", val pending: NoteAction? = null,
+    val links: NoteLinkGraph? = null
 ) {
     val dirty get() = text != savedText || (revision == null && name.isNotEmpty())
 }
@@ -46,6 +47,18 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try { val names=withContext(Dispatchers.IO) { store.list() }; mutable.value=mutable.value.copy(names=names,status="Local Markdown notes. Drafts are memory-only until saved.") }
             catch(e: Exception) { failure(e) }
+            finally { mutable.value=mutable.value.copy(busy=false) }
+        }
+    }
+    fun refreshLinks() {
+        val s=mutable.value
+        if(s.busy || s.pending!=null) return
+        mutable.value=s.copy(busy=true,links=null)
+        viewModelScope.launch {
+            try {
+                val graph=withContext(Dispatchers.IO) { store.links() }
+                mutable.value=mutable.value.copy(links=graph,status="Scanned saved-note revisions under the writer lock. Unsaved drafts excluded. Refresh after external changes.")
+            } catch(e: Exception) { failure(e) }
             finally { mutable.value=mutable.value.copy(busy=false) }
         }
     }
@@ -89,7 +102,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val note=withContext(Dispatchers.IO) { store.save(s.name,s.text,s.revision) }
-                mutable.value=mutable.value.copy(name=note.name,text=note.text,savedText=note.text,revision=note.revision,
+                mutable.value=mutable.value.copy(name=note.name,text=note.text,savedText=note.text,revision=note.revision,links=null,
                     names=(s.names+note.name).distinct().sorted(),status="Saved locally with exact readback. Not a backup or a physical durability guarantee.")
             } catch(e: Exception) { failure(e) }
             finally { mutable.value=mutable.value.copy(busy=false) }

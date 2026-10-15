@@ -21,9 +21,11 @@ kotlin.sourceSets.named("contract") {
     // Compile this pure policy source, not the Android adapters in the same directory.
     kotlin.srcDir("../core/perf/src/main/java")
     kotlin.srcDir("../feature/beam/src/main/java")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/contract/kotlin")
     kotlin.srcDir("../feature/calc/src/main/kotlin")
     kotlin.srcDir("../feature/calc/src/contract/kotlin")
-    kotlin.include("**/PilotCoreChecks.kt", "**/PerformancePolicy.kt", "**/QualityGovernor.kt", "**/calc/*.kt", "**/EditorChecks.kt", "**/EncodingDiffChecks.kt", "**/OoxmlChecks.kt", "**/CopyChecks.kt", "**/WindowRestoreChecks.kt", "**/EncryptedIndexChecks.kt", "**/SearchAndGateChecks.kt", "**/FileMutationPolicy.kt", "**/notes/*.kt")
+    kotlin.include("**/PilotCoreChecks.kt", "**/PerformancePolicy.kt", "**/QualityGovernor.kt", "**/calc/*.kt", "**/EditorChecks.kt", "**/browser/model/*.kt", "**/EncodingDiffChecks.kt", "**/OoxmlChecks.kt", "**/CopyChecks.kt", "**/WindowRestoreChecks.kt", "**/EncryptedIndexChecks.kt", "**/SearchAndGateChecks.kt", "**/FileMutationPolicy.kt", "**/notes/*.kt")
 }
 configurations[contract.implementationConfigurationName].extendsFrom(configurations.implementation.get())
 dependencies {
@@ -93,4 +95,16 @@ tasks.register<JavaExec>("ooxmlGuardContracts") {
     dependsOn(contract.classesTaskName)
     classpath = contract.runtimeClasspath
     mainClass.set("dev.fusion.ooxml.OoxmlChecks")
+}
+
+tasks.register<JavaExec>("browserSessionContracts") {
+    dependsOn(contract.classesTaskName)
+    classpath = contract.runtimeClasspath
+    mainClass.set("dev.fusion.browser.model.BrowserSessionChecks")
+}
+
+tasks.register<JavaExec>("noteLinkContracts") {
+    dependsOn(contract.classesTaskName)
+    classpath = contract.runtimeClasspath
+    mainClass.set("dev.fusion.notes.NoteLinkChecks")
 }

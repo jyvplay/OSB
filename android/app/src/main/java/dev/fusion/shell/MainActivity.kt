@@ -14,6 +14,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -583,7 +584,16 @@ class MainActivity : ComponentActivity() {
                                         CustomAccessibilityAction("Close") { dispatch(WindowCommand.Close(w.id)); true }
                                     )
                                 }
-                                .clickable { dispatch(WindowCommand.Focus(w.id)) }
+                                // Observe press without consuming child input or merging their pane semantics.
+                                .pointerInput(w.id) {
+                                    awaitPointerEventScope {
+                                        while(true) {
+                                            val event=awaitPointerEvent(PointerEventPass.Initial)
+                                            if(event.changes.any { it.pressed && !it.previousPressed } && desktop.activeId!=w.id)
+                                                dispatch(WindowCommand.Focus(w.id))
+                                        }
+                                    }
+                                }
                         ) {
                             Row(
                                 Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("window-title-${w.module}").background(Color(0xFF252C2D))

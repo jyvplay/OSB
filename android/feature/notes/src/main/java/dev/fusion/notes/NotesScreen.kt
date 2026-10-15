@@ -23,7 +23,7 @@ fun NotesScreen(model: NotesViewModel) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp).semantics { paneTitle="Local Markdown notes" },
         verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Local Markdown • ${if(state.dirty) "Unsaved memory draft" else "No unsaved changes"}")
-        Text("256 KiB/note • 256 notes. Save explicitly. Draft survives Activity recreation but NOT process death. No encryption, backlinks, attachment support, autosave or backup is claimed.")
+        Text("256 KiB/note • 256 notes. Save explicitly. Draft survives Activity recreation but NOT process death. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR, autosave or backup is claimed.")
         OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
         Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
@@ -34,6 +34,18 @@ fun NotesScreen(model: NotesViewModel) {
         OutlinedTextField(state.text,model::edit,Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).testTag("notes-text"),enabled=ready,label={ Text("Markdown source") })
         if(state.busy) CircularProgressIndicator()
         Text(state.status,Modifier.semantics { liveRegion=LiveRegionMode.Polite })
+        OutlinedButton(onClick=model::refreshLinks,enabled=ready,modifier=Modifier.testTag("notes-scan-links")) { Text("Scan saved-note backlinks") }
+        Text("Links use exact [[note-name]] syntax. Case-sensitive; no aliases/Markdown URLs. Single-line inline code and fenced blocks are excluded; not a complete CommonMark parser. Scan limit:8 MiB and4096 references.")
+        state.links?.let { graph ->
+            if(state.name.isNotBlank() && runCatching { NoteFiles.validateName(state.name) }.isSuccess) {
+                Text("Backlinks to ${state.name} (saved revisions only)")
+                val incoming=graph.backlinks(state.name)
+                if(incoming.isEmpty()) Text("No saved backlinks")
+                incoming.forEach { name -> TextButton(onClick={ model.request(NoteAction.Open(name)) },enabled=ready) { Text("Backlink: $name") } }
+                val missing=graph.unresolved(state.name)
+                if(missing.isNotEmpty()) Text("Unresolved saved links (${missing.size}; first32 shown): ${missing.take(32).joinToString()}")
+            }
+        }
         Text("Saved notes (selecting another note prompts before discarding a draft)")
         state.names.forEach { name -> TextButton(onClick={ model.request(NoteAction.Open(name)) },enabled=ready,modifier=Modifier.fillMaxWidth()) { Text("Open note: $name") } }
     }
