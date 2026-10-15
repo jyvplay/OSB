@@ -679,13 +679,13 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "120553d274246f22387469bf751d4088be8c298d8dd7de8ac370f5357dcfc258"
+      "sha256": "f6e2e22cd5411df4d26f7e61b07b487a41889d48f119c19fc352dfdaf4dc21a0"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "005751c103f6b15baecda0d29c07ec900c73ddf73b3578e1dd7f491a3e17ae8e"
+      "sha256": "64654440a1e3d1965f5fc353e49e704e9ef3776e2251864124e7f662e1a04929"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

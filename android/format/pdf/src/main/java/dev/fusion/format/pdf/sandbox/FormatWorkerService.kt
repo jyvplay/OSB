@@ -42,7 +42,9 @@ class FormatWorkerService : Service() {
                 try {
                     requireNotNull(input) { "Missing input descriptor" }
                     input.use { fd ->
-                        require(OsConstants.S_ISREG(Os.fstat(fd.fileDescriptor).st_mode)) { "Regular file required" }
+                        val stat=Os.fstat(fd.fileDescriptor)
+                        response.putLong("sourceDevice",stat.st_dev);response.putLong("sourceInode",stat.st_ino)
+                        require(OsConstants.S_ISREG(stat.st_mode)) { "Regular file required" }
                         require(Os.lseek(fd.fileDescriptor,0,OsConstants.SEEK_CUR)==0L) { "Fresh descriptor at offset zero required" }
                         require(Os.fcntlInt(fd.fileDescriptor,OsConstants.F_GETFL,0) and OsConstants.O_ACCMODE==OsConstants.O_RDONLY) {
                             "Read-only descriptor required"
@@ -65,6 +67,7 @@ class FormatWorkerService : Service() {
                     if(privateName!=null) {
                         require(privateName.matches(Regex(PRIVATE_NAME)))
                         val candidate=File(File(applicationInfo.dataDir,"files"),privateName)
+                        response.putString("privateProbePath",candidate.absolutePath)
                         // Observe the kernel errno directly, not a Java IOException cause-chain convention.
                         // [U] verify on API 34/36/37: isolated-UID app-private path denial errno.
                         var errno=0

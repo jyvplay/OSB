@@ -22,20 +22,29 @@ class FormatIsolationDeviceTest {
     private val context get()=ApplicationProvider.getApplicationContext<Context>()
     private fun input(bytes: ByteArray)=File.createTempFile("isolation-input-",".bin",context.cacheDir).apply { writeBytes(bytes) }
     private fun refused(block:()->Unit) { var failed=false;try { block() } catch(_:Exception) { failed=true };assertTrue("Expected refusal",failed) }
-    @Test fun isolatedUidCannotReadParentPrivateFileOrAcquireInternetPermission() {
-        val sentinel=File.createTempFile("r11-isolation-",".tmp",context.filesDir).apply { writeText("private-parent-only") }
-        val bytes="actual opaque descriptor payload α\u0000".toByteArray()
-        val file=input(bytes)
+    @Test fun privatePathUnavailableWhileExplicitCapabilityReadsSameFile() {
+        val bytes="private parent-only capability payload α\u0000".toByteArray()
+        val sentinel=File.createTempFile("r11-isolation-",".tmp",context.filesDir).apply { writeBytes(bytes) }
         try {
-            val result=FormatLease(context).use { it.digest(file,sentinel.name) }
+            // Positive controls prevent a wrong/nonexistent fixture path from becoming isolation evidence.
+            assertTrue(sentinel.isFile)
+            val before=Os.stat(sentinel.absolutePath)
+            val result=FormatLease(context).use { it.digest(sentinel,sentinel.name) }
             assertNotEquals(Process.myUid(),result.uid);assertNotEquals(Process.myPid(),result.pid)
+            assertEquals(sentinel.absolutePath,result.privateProbePath)
+            assertEquals(before.st_dev,result.sourceDevice);assertEquals(before.st_ino,result.sourceInode)
             assertEquals(bytes.size,result.bytes)
             assertEquals(MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) },result.digest)
             assertFalse("Worker unexpectedly holds INTERNET permission",result.internetGranted)
-            assertEquals("Expected native EACCES, not missing-file refusal",OsConstants.EACCES,result.privateErrno)
-            assertTrue("Private access denied flag must agree with actual errno",result.privateAccessDenied)
-            assertEquals("private-parent-only",sentinel.readText());assertArrayEquals(bytes,file.readBytes())
-        } finally { sentinel.delete();file.delete() }
+            // API34 actually returned ENOENT, not EACCES. Name invisibility and permission denial
+            // are distinct observations; neither is accepted without the controls above.
+            assertTrue("Private pathname was opened or failed unexpectedly: errno=${result.privateErrno}",
+                result.privateErrno==OsConstants.EACCES || result.privateErrno==OsConstants.ENOENT)
+            assertEquals(result.privateErrno==OsConstants.EACCES,result.privateAccessDenied)
+            val after=Os.stat(sentinel.absolutePath)
+            assertEquals(before.st_dev,after.st_dev);assertEquals(before.st_ino,after.st_ino)
+            assertArrayEquals(bytes,sentinel.readBytes())
+        } finally { sentinel.delete() }
     }
     @Test fun distinctBindingsDoNotShareAnIsolatedProcess() {
         val file=input(byteArrayOf(1,2,3))
