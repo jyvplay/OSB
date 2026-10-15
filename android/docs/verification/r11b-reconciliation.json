@@ -1,0 +1,6 @@
+{
+  "remote_commit": "428018c0181d0caca8e469ad3d42f48459337c70",
+  "equal_tracked_files": 388,
+  "working_files_checked_unchanged": 388,
+  "method": "mixed reset after complete remote tracked-blob equality; working bytes preserved"
+}

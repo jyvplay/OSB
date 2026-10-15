@@ -29,7 +29,7 @@ fun NotesScreen(model: NotesViewModel) {
             OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
             Button(onClick=model::save,enabled=ready && state.name.isNotBlank(),modifier=Modifier.testTag("notes-save")) { Text("Save note") }
             OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
-            if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Delete note…") }
+            if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Move note to trash…") }
         }
         OutlinedTextField(state.text,model::edit,Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).testTag("notes-text"),enabled=ready,label={ Text("Markdown source") })
         if(state.busy) CircularProgressIndicator()
@@ -46,14 +46,22 @@ fun NotesScreen(model: NotesViewModel) {
                 if(missing.isNotEmpty()) Text("Unresolved saved links (${missing.size}; first32 shown): ${missing.take(32).joinToString()}")
             }
         }
+        OutlinedButton(onClick=model::refreshTrash,enabled=ready,modifier=Modifier.testTag("notes-trash-scan")) { Text("Refresh saved-note trash") }
+        state.trash?.let { entries ->
+            Text("Saved-note trash: ${entries.size}/256. No automatic purge. Restore refuses name conflicts.")
+            entries.forEach { entry ->
+                TextButton(onClick={ model.request(NoteAction.Restore(entry)) },enabled=ready,
+                    modifier=Modifier.testTag("notes-restore-${entry.token}")) { Text("Restore ${entry.name} • ${entry.token.take(8)}") }
+            }
+        }
         Text("Saved notes (selecting another note prompts before discarding a draft)")
         state.names.forEach { name -> TextButton(onClick={ model.request(NoteAction.Open(name)) },enabled=ready,modifier=Modifier.fillMaxWidth()) { Text("Open note: $name") } }
     }
     state.pending?.let { action ->
         val deleting=action is NoteAction.Delete
-        AlertDialog(onDismissRequest=model::cancel,title={ Text(if(deleting) "Delete note permanently?" else "Discard this memory draft?") },
-            text={ Text(if(deleting) "Deletes the saved note and discards its memory draft. There is no trash or undo. A changed on-disk revision will be refused." else "Unsaved text will be discarded. Previously saved files are not changed.") },
-            confirmButton={ TextButton(onClick=model::confirm) { Text(if(deleting) "Delete permanently" else "Discard draft") } },
+        AlertDialog(onDismissRequest=model::cancel,title={ Text(if(deleting) "Move saved note to trash?" else "Discard this memory draft?") },
+            text={ Text(if(deleting) "Moves the saved revision to local trash; it can be restored without overwriting another note. Unsaved draft changes are discarded, not put in trash. A changed on-disk revision is refused. No automatic purge." else "Unsaved text will be discarded before opening or restoring the selected saved revision. Other saved notes are not overwritten.") },
+            confirmButton={ TextButton(onClick=model::confirm) { Text(if(deleting) "Move saved revision" else "Discard draft") } },
             dismissButton={ TextButton(onClick=model::cancel) { Text("Keep editing") } })
     }
 }

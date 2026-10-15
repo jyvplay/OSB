@@ -42,7 +42,8 @@ subprocess.run([compiler, '-jvm-target', '17', '-classpath', boundary_cp,
     '\nStable-local positive consumer: compilation passed. Neither fixture is an Android UI build.\n'+
     '\n'.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(root)) for p in (negative,positive))+'\n')
 sources.append(positive)
-contracts = [root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NoteLinkChecks.kt',
+contracts = [root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NoteTrashChecks.kt',
+             root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NoteLinkChecks.kt',
              root/'feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt',
              root/'core/documents/src/contract/kotlin/dev/fusion/documents/EncodingDiffChecks.kt',
              root/'format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt',
@@ -68,7 +69,7 @@ for main, args in [('dev.fusion.testing.PilotCoreChecks', []), ('dev.fusion.calc
                    ('dev.fusion.documents.EncodingDiffChecks', [str(root/'core/documents/src/contract/resources')]),
                    ('dev.fusion.ooxml.OoxmlChecks', []),
                    ('dev.fusion.documents.CopyChecks', [str(root/'core/documents/src/contract/resources')]),
-                   ('dev.fusion.notes.NotesChecks', []), ('dev.fusion.notes.NoteLinkChecks', []), ('dev.fusion.index.EncryptedIndexChecks', []), ('dev.fusion.testing.SearchAndGateChecks', []),
+                   ('dev.fusion.notes.NotesChecks', []), ('dev.fusion.notes.NoteTrashChecks', []), ('dev.fusion.notes.NoteLinkChecks', []), ('dev.fusion.index.EncryptedIndexChecks', []), ('dev.fusion.testing.SearchAndGateChecks', []),
                    ('dev.fusion.windowing.WindowRestoreChecks', [str(root/'core/windowing/src/contract/resources')])]:
     result = subprocess.run([java, '-cp', os.pathsep.join([str(jar),classpath]), main, *args], check=False, text=True, capture_output=True)
     stdout += result.stdout+'\n'

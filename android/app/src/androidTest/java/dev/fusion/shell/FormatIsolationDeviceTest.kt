@@ -86,4 +86,26 @@ class FormatIsolationDeviceTest {
             refused { lease.digest(file) }
         } } finally { file.delete() }
     }
+    @Test fun actualLoopbackConnectionIsDeniedWithReachablePositiveControl() {
+        val file=input(byteArrayOf(4,5,6))
+        val loopback=java.net.InetAddress.getByAddress(byteArrayOf(127,0,0,1))
+        try { java.net.ServerSocket(0,4,loopback).use { server ->
+            server.soTimeout=2000
+            // Parent really connects and is accepted: unreachable listener/timeouts cannot masquerade as denial.
+            java.net.Socket().use { client ->
+                client.connect(java.net.InetSocketAddress(loopback,server.localPort),1000)
+                server.accept().use { accepted -> assertTrue(accepted.isConnected);assertEquals(client.localPort,accepted.port) }
+            }
+            val result=FormatLease(context).use { it.probeSocket(file,server.localPort) }
+            assertFalse(result.internetGranted)
+            assertTrue("Not an actual security refusal: ${result.socketOutcome}, errno=${result.socketErrno}",
+                result.socketOutcome=="DENIED" || result.socketOutcome=="SECURITY_EXCEPTION")
+            // Listener remains reachable afterwards; this does not claim absence of all IPC/network channels.
+            java.net.Socket().use { client ->
+                client.connect(java.net.InetSocketAddress(loopback,server.localPort),1000)
+                server.accept().use { accepted -> assertTrue(accepted.isConnected);assertEquals(client.localPort,accepted.port) }
+            }
+        } } finally { file.delete() }
+    }
+
 }

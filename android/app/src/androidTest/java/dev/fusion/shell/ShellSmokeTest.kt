@@ -48,6 +48,16 @@ class ShellSmokeTest {
         compose.onNodeWithText("Open text").assertExists()
         compose.onAllNodesWithContentDescription("Minimize").assertCountEquals(2)
     }
+    @Test fun activatingWindowKeepsChildFocus() {
+        openModule("editor")
+        compose.onNodeWithText("New").performScrollTo().performClick()
+        compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("editor-content").performTextInput("retained")
+        openModule("calculator")
+        compose.onNodeWithTag("editor-content").assertIsNotFocused()
+        compose.onNodeWithTag("editor-content").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) { it() }
+        compose.onNodeWithTag("editor-content").assertIsFocused().assertTextContains("retained")
+    }
     @Test fun filesDeclaresMissingAccess() {
         openModule("files")
         compose.onNodeWithText("No folder access. Only folders you choose are visible.").assertIsDisplayed()
@@ -154,8 +164,8 @@ class ShellSmokeTest {
         val store=dev.fusion.notes.NotesStore(context)
         val suffix=java.util.UUID.randomUUID().toString().replace("-","")
         val source="LinkSource_$suffix";val target="LinkTarget_$suffix"
-        val a=store.save(source,"[[$target]]",null)
-        val b=store.save(target,"Saved target",null)
+        store.save(source,"[[$target]]",null)
+        store.save(target,"Saved target",null)
         try {
             openModule("notes")
             compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
@@ -165,9 +175,49 @@ class ShellSmokeTest {
             compose.onNodeWithTag("notes-scan-links").performScrollTo().performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Backlink: $source")).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText("Backlink: $source").performScrollTo().assertIsDisplayed()
+            compose.onNodeWithTag("notes-text").performScrollTo().performTextReplacement("unsaved target draft")
+            compose.onNodeWithText("Backlink: $source").performScrollTo().performClick()
+            compose.onNodeWithText("Discard this memory draft?").assertIsDisplayed()
+            compose.onNodeWithText("Keep editing").performClick()
+            compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains("unsaved target draft")
+            org.junit.Assert.assertEquals("Saved target",store.load(target).text)
             org.junit.Assert.assertEquals("[[$target]]",store.load(source).text)
         } finally {
-            runCatching { store.delete(source,a.revision) };runCatching { store.delete(target,b.revision) }
+            java.io.File(context.filesDir,"notes/$source.md").delete()
+            java.io.File(context.filesDir,"notes/$target.md").delete()
+        }
+    }
+
+    @Test fun savedNoteTrashRestoresWithoutLosingItsRevision() {
+        val context=androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val store=dev.fusion.notes.NotesStore(context)
+        val name="Trash_界_"+java.util.UUID.randomUUID().toString().replace("-","")
+        val original=store.save(name,"retained saved bytes α",null)
+        try {
+            openModule("notes")
+            compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Open note: $name") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Open note: $name").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Move note to trash…") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Move note to trash…").performScrollTo().performClick()
+            compose.onNodeWithText("Move saved note to trash?").assertIsDisplayed()
+            compose.onNodeWithText("Move saved revision").performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Saved revision moved to trash.",substring=true)).fetchSemanticsNodes().isNotEmpty() }
+            val receipt=store.trash().single { it.name==name }
+            org.junit.Assert.assertFalse(store.list().contains(name))
+            compose.activityRule.scenario.recreate()
+            compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+            compose.onNodeWithTag("notes-trash-scan").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("notes-restore-${receipt.token}") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("notes-restore-${receipt.token}").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Restored saved revision without overwriting another note.")).fetchSemanticsNodes().isNotEmpty() }
+            org.junit.Assert.assertEquals(original,store.load(name))
+            compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains(original.text)
+        } finally {
+            java.io.File(context.filesDir,"notes/$name.md").delete()
+            runCatching { store.trash().filter { it.name==name }.forEach {
+                java.io.File(context.filesDir,"notes/.trash-v1/${it.name}--${it.token}_${it.revision.sha256}.md").delete()
+            } }
         }
     }
 

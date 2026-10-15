@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class FormatWorkerService : Service() {
     companion object {
         const val DIGEST = 1
+        const val SOCKET_PROBE = 2
         const val MAX_INPUT_BYTES = 16 * 1024 * 1024
         const val LIFETIME_MS = 5000L
         internal const val PRIVATE_NAME = "r11-isolation-[a-zA-Z0-9]+\\.tmp"
@@ -29,12 +30,15 @@ class FormatWorkerService : Service() {
         override fun handleMessage(message: Message) {
             // Manifest binding is non-exported; Messenger stamps the actual sending UID in the framework.
             if(message.sendingUid!=applicationInfo.uid) return
+            // Handler recycles Message after return; never capture it in the worker closure.
+            val operation=message.what
             val data=message.data
             val input=data.getParcelable("input",ParcelFileDescriptor::class.java)
             val reply=message.replyTo
             val id=data.getString("id")
             val privateName=data.getString("privateName")
-            if(message.what!=DIGEST || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
+            val socketPort=data.getInt("socketPort",0)
+            if(operation !in setOf(DIGEST,SOCKET_PROBE) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
                 input?.close();return
             }
             work.execute {
@@ -63,6 +67,23 @@ class FormatWorkerService : Service() {
                         response.putString("digest",hash.digest().joinToString("") { "%02x".format(it) })
                         response.putInt("bytes",size)
                     }
+                    if(operation==SOCKET_PROBE) {
+                        require(socketPort in 1..65535)
+                        // Test-owned IPv4 loopback only; no DNS, external host or arbitrary address accepted.
+                        // [U] verify on API 34/36/37: actual isolated socket denial, not just permission metadata.
+                        var outcome="CONNECTED"
+                        try {
+                            java.net.Socket().use { socket ->
+                                socket.connect(java.net.InetSocketAddress(java.net.InetAddress.getByAddress(byteArrayOf(127,0,0,1)),socketPort),1000)
+                            }
+                        } catch(error: java.io.IOException) {
+                            var cause: Throwable?=error;var errno=-1
+                            while(cause!=null) { if(cause is ErrnoException) { errno=cause.errno;break };cause=cause.cause }
+                            outcome=if(errno==OsConstants.EACCES || errno==OsConstants.EPERM) "DENIED" else "OTHER_FAILURE"
+                            response.putInt("socketErrno",errno)
+                        } catch(_: SecurityException) { outcome="SECURITY_EXCEPTION" }
+                        response.putString("socketOutcome",outcome)
+                    }
                     response.putBoolean("internetGranted",checkSelfPermission(Manifest.permission.INTERNET)==PackageManager.PERMISSION_GRANTED)
                     if(privateName!=null) {
                         require(privateName.matches(Regex(PRIVATE_NAME)))
@@ -82,7 +103,7 @@ class FormatWorkerService : Service() {
                     response.putBoolean("ok",false)
                     response.putString("error",error.javaClass.simpleName.take(80)+": "+(error.message ?: "refused").take(160))
                 }
-                runCatching { reply.send(Message.obtain(null,DIGEST).apply { this.data=response }) }
+                runCatching { reply.send(Message.obtain(null,operation).apply { this.data=response }) }
                 // Keep the process alive until the parent unbinds or the fixed lifetime expires.
             }
         }

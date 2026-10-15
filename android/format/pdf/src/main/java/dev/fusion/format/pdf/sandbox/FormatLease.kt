@@ -17,7 +17,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 class FormatLease(context: Context) : Closeable {
     data class Evidence(val uid: Int,val pid: Int,val bytes: Int,val digest: String,
                         val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int,
-                        val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long)
+                        val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long,
+                        val socketOutcome: String?,val socketErrno: Int)
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -26,12 +27,13 @@ class FormatLease(context: Context) : Closeable {
     private val result=CompletableFuture<Evidence>()
     private val death=CountDownLatch(1)
     private val started=AtomicBoolean(false)
+    private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
     private val closed=AtomicBoolean(false)
     private val id=UUID.randomUUID().toString()
     private var bound=false
     private val reply=Messenger(object: Handler(thread.looper) {
         override fun handleMessage(message: Message) {
-            if(closed.get() || message.what!=FormatWorkerService.DIGEST) return
+            if(closed.get() || message.what!=expectedOperation.get()) return
             val data=message.data
             if(data.getString("id")!=id) return
             val uid=data.getInt("uid",-1)
@@ -47,7 +49,7 @@ class FormatLease(context: Context) : Closeable {
                 result.completeExceptionally(IllegalStateException("Malformed worker result"));return
             }
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
-                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode")))
+                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1)))
         }
     })
     private val connection=object: ServiceConnection {
@@ -76,13 +78,22 @@ class FormatLease(context: Context) : Closeable {
     /** A fresh open is mandatory: dup alone shares file position with its owner. Caller owns the source. */
     fun digest(file: File, privateProbeName: String?=null): Evidence =
         ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use { digestDescriptor(it,privateProbeName) }
-    fun digestDescriptor(input: ParcelFileDescriptor,privateProbeName: String?=null): Evidence {
+    fun probeSocket(file: File,loopbackPort: Int): Evidence {
+        require(loopbackPort in 1..65535)
+        return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
+            request(it,null,FormatWorkerService.SOCKET_PROBE,loopbackPort)
+        }
+    }
+    fun digestDescriptor(input: ParcelFileDescriptor,privateProbeName: String?=null): Evidence =
+        request(input,privateProbeName,FormatWorkerService.DIGEST,0)
+    private fun request(input: ParcelFileDescriptor,privateProbeName: String?,operation: Int,port: Int): Evidence {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Wait for workers off the UI thread" }
         check(!closed.get() && started.compareAndSet(false,true)) { "One request per lease" }
+        expectedOperation.set(operation)
         try {
             require(privateProbeName==null || privateProbeName.matches(Regex(FormatWorkerService.PRIVATE_NAME)))
-            val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName) }
-            connected.get().send(Message.obtain(null,FormatWorkerService.DIGEST).apply { this.data=data;replyTo=reply })
+            val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName);putInt("socketPort",port) }
+            connected.get().send(Message.obtain(null,operation).apply { this.data=data;replyTo=reply })
             return result.get(8,TimeUnit.SECONDS)
         } finally { close() }
     }

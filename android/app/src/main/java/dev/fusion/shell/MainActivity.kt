@@ -553,8 +553,9 @@ class MainActivity : ComponentActivity() {
                     .sortedBy { it.z }.forEach { w -> key(w.id) {
                         val adjusted = w.bounds.constrained(sw, sh, desktop.density)
                         val windowFocus = remember { FocusRequester() }
+                        var windowHasFocus by remember { mutableStateOf(false) }
                         LaunchedEffect(desktop.activeId) {
-                            if (desktop.activeId == w.id) runCatching { windowFocus.requestFocus() }
+                            if (desktop.activeId == w.id && !windowHasFocus) runCatching { windowFocus.requestFocus() }
                         }
                         Column(
                             Modifier.offset(adjusted.x.dp, adjusted.y.dp)
@@ -563,7 +564,10 @@ class MainActivity : ComponentActivity() {
                                 .border(1.dp, if (desktop.activeId == w.id) mint else border)
                                 .background(panel)
                                 .focusRequester(windowFocus)
-                                .onFocusChanged { if (it.hasFocus && desktop.activeId != w.id) dispatch(WindowCommand.Focus(w.id)) }
+                                .onFocusChanged {
+                                    windowHasFocus=it.hasFocus
+                                    if (it.hasFocus && desktop.activeId != w.id) dispatch(WindowCommand.Focus(w.id))
+                                }
                                 .focusable()
                                 .semantics {
                                     paneTitle = w.title

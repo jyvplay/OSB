@@ -108,3 +108,9 @@ tasks.register<JavaExec>("noteLinkContracts") {
     classpath = contract.runtimeClasspath
     mainClass.set("dev.fusion.notes.NoteLinkChecks")
 }
+
+tasks.register<JavaExec>("noteTrashContracts") {
+    dependsOn(contract.classesTaskName)
+    classpath = contract.runtimeClasspath
+    mainClass.set("dev.fusion.notes.NoteTrashChecks")
+}

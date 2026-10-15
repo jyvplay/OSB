@@ -16,6 +16,8 @@ import java.security.MessageDigest
 /** A revision is an optimistic concurrency token, not authentication or encryption. */
 data class NoteRevision(val name: String, val sha256: String)
 data class NoteSnapshot(val name: String, val text: String, val revision: NoteRevision)
+/** Persisted identity: name, unique token and saved revision are encoded with the bytes in one trash filename. */
+data class TrashedNote(val name: String, val token: String, val revision: NoteRevision)
 class NoteConflict(message: String) : IllegalStateException(message)
 class NotesBusy : IllegalStateException("Another notes operation is active. Retry explicitly.")
 
@@ -30,6 +32,7 @@ class NoteFiles(directory: Path) {
     companion object {
         const val MAX_BYTES = 256 * 1024
         const val MAX_NOTES = 256
+        const val MAX_TRASH = 256
         fun validateName(name: String) {
             require(name.length in 1..64 && name.toByteArray(Charsets.UTF_8).size <= 128 &&
                 name.all { it.isLetterOrDigit() || it == '-' || it == '_' }) {
@@ -136,14 +139,84 @@ class NoteFiles(directory: Path) {
             }
         }
     }
-    /** Explicit irreversible deletion; UI must obtain confirmation. No trash capability claimed. */
-    fun delete(name: String, expected: NoteRevision) {
-        val file = path(name)
-        locked {
-            checkRevision(name, file, expected)
-            Files.delete(file)
-            try { FileChannel.open(root, READ).use { it.force(true) } }
-            catch (e: Exception) { throw java.io.IOException("Note removed, but directory persistence is unconfirmed; refresh the inventory.", e) }
+    private fun trashDirectory(create: Boolean): Path? {
+        val directory=root.resolve(".trash-v1")
+        if(!Files.exists(directory,NOFOLLOW_LINKS)) {
+            if(!create) return null
+            Files.createDirectory(directory)
         }
+        require(Files.isDirectory(directory,NOFOLLOW_LINKS)) { "Trash must be a real directory" }
+        return directory
+    }
+    private fun trashName(entry: TrashedNote): String {
+        validateName(entry.name)
+        require(entry.revision.name==entry.name && entry.token.matches(Regex("[0-9a-f]{32}")) &&
+            entry.revision.sha256.matches(Regex("[0-9a-f]{64}"))) { "Invalid trash identity" }
+        return "${entry.name}--${entry.token}_${entry.revision.sha256}.md"
+    }
+    private fun trashUnlocked(): List<TrashedNote> {
+        val directory=trashDirectory(false) ?: return emptyList()
+        val result=ArrayList<TrashedNote>()
+        Files.newDirectoryStream(directory).use { entries ->
+            for(file in entries) {
+                require(result.size<MAX_TRASH) { "Trash inventory exceeds 256; nothing was removed" }
+                val match=Regex("(.+)--([0-9a-f]{32})_([0-9a-f]{64})\\.md").matchEntire(file.fileName.toString())
+                    ?: throw IllegalStateException("Unrecognized trash entry; nothing was removed")
+                val (name,token,sha)=match.destructured
+                val entry=TrashedNote(name,token,NoteRevision(name,sha))
+                require(trashName(entry)==file.fileName.toString())
+                val note=snapshot(name,bytesUnlocked(file))
+                require(note.revision==entry.revision) { "Trashed revision changed; restore refused" }
+                result.add(entry)
+            }
+        }
+        return java.util.Collections.unmodifiableList(result.sortedWith(compareBy({ it.name },{ it.token })))
+    }
+    /** No automatic expiry or purge. At capacity, deletion refuses and preserves the live note. */
+    fun trash(): List<TrashedNote> = locked { trashUnlocked() }
+    private fun forceDirectories(trash: Path) {
+        FileChannel.open(trash,READ).use { it.force(true) }
+        FileChannel.open(root,READ).use { it.force(true) }
+    }
+    /** Moves the SAVED revision, not an unsaved UI draft. One atomic same-filesystem rename, no unlink/copy fallback. */
+    fun delete(name: String, expected: NoteRevision): TrashedNote {
+        val file=path(name)
+        return locked {
+            checkRevision(name,file,expected)
+            require(trashUnlocked().size<MAX_TRASH) { "Trash full; saved note retained" }
+            val bytes=bytesUnlocked(file)
+            val entry=TrashedNote(name,java.util.UUID.randomUUID().toString().replace("-",""),expected)
+            val directory=requireNotNull(trashDirectory(true))
+            val target=directory.resolve(trashName(entry))
+            require(!Files.exists(target,NOFOLLOW_LINKS)) { "Trash identity collision" }
+            try {
+                Files.move(file,target,ATOMIC_MOVE)
+                check(bytesUnlocked(target).contentEquals(bytes)) { "Trash readback mismatch" }
+                forceDirectories(directory)
+            } catch(error: Exception) {
+                throw java.io.IOException("Trash move not confirmed; inspect saved notes and trash before retrying. No cleanup deletion performed.",error)
+            }
+            entry
+        }
+    }
+    /** Never overwrites even an identical current note. Receipt must still identify the saved bytes. */
+    fun restore(entry: TrashedNote): NoteSnapshot = locked {
+        val filename=trashName(entry)
+        val directory=requireNotNull(trashDirectory(false)) { "Trash entry is missing" }
+        val source=directory.resolve(filename)
+        val bytes=bytesUnlocked(source)
+        val note=snapshot(entry.name,bytes)
+        require(note.revision==entry.revision) { "Trashed revision changed; restore refused" }
+        val target=path(entry.name)
+        require(!Files.exists(target,NOFOLLOW_LINKS)) { "A saved note already uses this name; neither version was changed" }
+        require(namesUnlocked().size<MAX_NOTES) { "256-note limit reached; trash retained" }
+        try {
+            Files.move(source,target,ATOMIC_MOVE)
+            check(bytesUnlocked(target).contentEquals(bytes)) { "Restore readback mismatch" }
+            forceDirectories(directory)
+        } catch(error: Exception) {
+            throw java.io.IOException("Restore not confirmed; inspect saved notes and trash before retrying. No cleanup deletion performed.",error)
+        }
+        note
     }
 }

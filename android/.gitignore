@@ -21,3 +21,6 @@ contracts.log
 lint.log
 device.log
 device-results.json
+focus-before.log
+focus-before-result.json
+focus-before-results/

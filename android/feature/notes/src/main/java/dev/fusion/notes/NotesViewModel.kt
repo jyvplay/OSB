@@ -13,13 +13,14 @@ import kotlinx.coroutines.flow.asStateFlow
 sealed interface NoteAction {
     data object New : NoteAction
     data class Open(val name: String) : NoteAction
+    data class Restore(val entry: TrashedNote) : NoteAction
     data class Delete(val name: String, val revision: NoteRevision) : NoteAction
 }
 data class NotesState(
     val names: List<String> = emptyList(), val name: String = "", val text: String = "",
     val savedText: String = "", val revision: NoteRevision? = null, val busy: Boolean = true,
     val status: String = "Loading local notes…", val pending: NoteAction? = null,
-    val links: NoteLinkGraph? = null
+    val links: NoteLinkGraph? = null, val trash: List<TrashedNote>? = null
 ) {
     val dirty get() = text != savedText || (revision == null && name.isNotEmpty())
 }
@@ -62,6 +63,18 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
             finally { mutable.value=mutable.value.copy(busy=false) }
         }
     }
+    fun refreshTrash() {
+        val s=mutable.value
+        if(s.busy || s.pending!=null) return
+        mutable.value=s.copy(busy=true,trash=null)
+        viewModelScope.launch {
+            try {
+                val entries=withContext(Dispatchers.IO) { store.trash() }
+                mutable.value=mutable.value.copy(trash=entries,status="Saved-note trash checked. No automatic purge; restores never overwrite an existing note.")
+            } catch(e: Exception) { failure(e) }
+            finally { mutable.value=mutable.value.copy(busy=false) }
+        }
+    }
     fun request(action: NoteAction) {
         val s=mutable.value
         if(s.busy || s.pending!=null) return
@@ -75,7 +88,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         if(action == NoteAction.New) { mutable.value=NotesState(names=mutable.value.names,busy=false,status="New memory-only draft; choose a unique name and save explicitly."); return }
         val s=mutable.value
         if(action is NoteAction.Delete && (action.name!=s.name || action.revision!=s.revision)) return
-        mutable.value=s.copy(busy=true)
+        mutable.value=s.copy(busy=true,links=if(action is NoteAction.Open) s.links else null)
         viewModelScope.launch {
             try {
                 when(action) {
@@ -86,8 +99,18 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
                     is NoteAction.Delete -> {
                         withContext(Dispatchers.IO) { store.delete(action.name,action.revision) }
                         // Deletion outcome is retained even if the following inventory read fails.
-                        mutable.value=NotesState(names=s.names.filterNot { it==action.name },busy=true,status="Note deleted permanently.")
-                        val names=withContext(Dispatchers.IO) { store.list() }; mutable.value=mutable.value.copy(names=names)
+                        mutable.value=NotesState(names=s.names.filterNot { it==action.name },busy=true,status="Saved revision moved to trash. Unsaved draft was discarded as confirmed.")
+                        val names=withContext(Dispatchers.IO) { store.list() }
+                        val trash=withContext(Dispatchers.IO) { store.trash() }
+                        mutable.value=mutable.value.copy(names=names,trash=trash)
+                    }
+                    is NoteAction.Restore -> {
+                        val note=withContext(Dispatchers.IO) { store.restore(action.entry) }
+                        mutable.value=NotesState(names=(s.names+note.name).distinct().sorted(),name=note.name,
+                            text=note.text,savedText=note.text,revision=note.revision,busy=true,
+                            status="Restored saved revision without overwriting another note.")
+                        val trash=withContext(Dispatchers.IO) { store.trash() }
+                        mutable.value=mutable.value.copy(trash=trash)
                     }
                     NoteAction.New -> Unit
                 }
@@ -98,7 +121,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
     fun save() {
         val s=mutable.value
         if(s.busy || s.pending!=null) return
-        mutable.value=s.copy(busy=true)
+        mutable.value=s.copy(busy=true,links=null)
         viewModelScope.launch {
             try {
                 val note=withContext(Dispatchers.IO) { store.save(s.name,s.text,s.revision) }
@@ -110,6 +133,6 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
     }
     private fun failure(e: Exception) {
         if(e is CancellationException) throw e
-        mutable.value=mutable.value.copy(status="Operation not confirmed: ${e.message?.take(240) ?: e.javaClass.simpleName}. Draft retained; refresh/reopen to reconcile.")
+        mutable.value=mutable.value.copy(status="Operation not confirmed: ${e.message?.take(240) ?: e.javaClass.simpleName}. Current memory state retained; refresh saved notes and trash to reconcile.")
     }
 }
