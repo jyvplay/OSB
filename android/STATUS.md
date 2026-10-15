@@ -1,4 +1,29 @@
-# Latest: R11B tested subsets — full product still incomplete
+# Latest: R12 real native progress — full specification still incomplete
+
+- **23/48 modules (47.92%) meet the documented substantial-testable-subset standard**;
+ 25/48 (52.08%) are not established by that standard, not necessarily empty.
+- **0/48 fully specification-accepted (0%);48/48 outstanding (100%).** Productivity0/13,
+  requested Forge0/13 and nested browser0/19. All30 spikes remain unpassed.
+- **Native2c2b5bc / run38676376263:39/39 API34 cases PASS,0 FAIL,0 SKIP**, on a regular
+  Google managed image. Both debug flavors, invoked unit/contracts/lint and APK upload passed.
+  [Run/APKs](https://github.com/jyvplay/OSB/actions/runs/38676376263).
+- New Notes recovery is separate from explicit saved Markdown. Actual writer-process death,
+  stale/corrupt checkpoints, cross-owner refusal, initial readiness and request flooding are tested.
+- Editor controls/tabs reflow; normal and200%-font cases passed. Real debug remote WebViews
+  passed framebuffer/input/resize checks. No complete product browser is inferred.
+- **183,179 host Kotlin assertions/13 libraries;68 Python tests;733 cross-language checks.**
+- Real Linux no-fork/CPU experiment tested exec, allow-all filter stacking, hard-limit raise,
+  preexisting-thread and x32 attacks. Host only; its no-thread policy is not Office/ART-ready.
+- First compile/input/pixel/startup/Editor failures remain recorded; no repaired candidate
+  inherited trust. Legacy random Together peer/clock simulation was removed, not renamed.
+- Office engines, full browser/sandbox/productivity/Forge integrations and original hardware,
+  API37/16K/legal/AX obligations remain open. The release checker correctly refuses acceptance.
+- [R12 A–J report](docs/R12-ENGINEERING.md) · [All48 testability rows](docs/MODULE-TESTABILITY.md)
+  · [Full module acceptance](docs/MODULE-COMPLETION.md) · [Build/try-out](docs/BUILD.md).
+
+---
+
+# Historical: R11B tested subsets — full product still incomplete
 
 - **0/48 accepted modules (0%);48/48 outstanding (100%).** Productivity0/13,
   Forge0/13, nested browser0/19 accepted. All30 spikes remain unpassed.

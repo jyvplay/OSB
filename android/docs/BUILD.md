@@ -1,4 +1,68 @@
-# R11B current build and test entry points
+# R12 current build and try-out entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with a version compatible with
+**AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36**. The IDE name itself is not compatibility
+proof. Current min/compile/target34/36/36 remains a documented deviation from37.
+
+[Verified native run38676376263](https://github.com/jyvplay/OSB/actions/runs/38676376263)
+at2c2b5bc has39/39 API34 cases passing and the `fusion-native-debug` APK artifact.
+These are incomplete debug builds, not a cleared production beta.
+
+## Try the actual Notes implementation
+
+1. Choose the `proDebug` app variant and start a disposable API34+ AVD.
+2. Run `app`, open Notes, and enable its test-data experiment if prompted.
+3. Enter a name and draft text. `Checkpoint draft` requests a local recovery
+   checkpoint; wait for the **confirmed by exact readback** status. Unconfirmed
+   edits are not promised durable. The checkpoint is separate from saved Markdown.
+4. `Save note` explicitly publishes the saved note. Trash/restore acts on that saved
+   revision, refuses conflicts, and is not version history or backup.
+5. For your own manual lifecycle check, stop/relaunch the app and reopen Notes
+   (re-enable test-data consent if requested). This is a suggested user check,
+   not a claim that this session manually installed/reviewed the APK.
+
+Recovery is plaintext app-private data in `no_backup`, not encrypted backup. An
+unreadable checkpoint blocks edits rather than overwriting it; preserve and inspect
+`no_backup/notes-recovery-v1.bin` in Device Explorer before attempting recovery.
+Browser remote surfaces are debug instrumentation experiments, not an unlocked
+product browser. Office and the original broader missing features remain blocked.
+
+## Reproduce verification
+
+From `android/` with the actual SDK/JDK installed:
+
+```sh
+python3 tools/check_project.py
+python3 tools/module_testability.py --check
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+./gradlew :app:assembleProDebug :app:assemblePlayDebug
+./gradlew :testing:noteDraftContracts :testing:noteTrashContracts
+./gradlew :app:lintProDebug :app:lintPlayDebug
+# This requires a running disposable AVD:
+./gradlew :app:installProDebug
+# Managed device: regular Google API34 image in R12, not aosp-atd.
+# Explicit opt-in permits test file resets and temporary system font-scale changes.
+./gradlew :app:pixel6Api34ProDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
+  -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+python3 tools/report_device_results.py
+```
+
+Host-only checks (not Android substitutes), with real Java17/Kotlin2.2.21 paths:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_jvm_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r12_interop.py
+python3 tools/probe_no_fork_cpu.py # child-only unprivileged Linux x86_64 experiment
+```
+
+The full A–J evidence ledger, exact native candidates and APK links are in
+[R12-ENGINEERING.md](R12-ENGINEERING.md). Testability is23/48 (47.92%); full acceptance
+is0/48 (0%). A debug APK or green subset suite is not production-beta clearance.
+
+---
+
+# Historical R11B build and test entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with compatible AGP/JDK17 and SDK36.
 The IDE name is not a compatibility proof. Current min/compile/target34/36/36 is an

@@ -2,41 +2,41 @@
   "status": "PASS",
   "kernel": "6.1.158+",
   "architecture": "x86_64",
-  "source_sha256": "46fb4c356ad23f41bf87d6c34e8f7d4f0cf5937c9df2eebc16aa5a3260ffdd46",
+  "source_sha256": "20e8c7ea1578e786ab51991559d90026106ca50be22a86c4675219698548ebe5",
   "results": [
     {
       "mode": "control",
       "exit_code": 0,
-      "cpu_seconds": 2.5529759999999997,
-      "wall_seconds": 2.553682068999933,
-      "stdout": "{\"mode\": \"control\", \"actual_fork_pid\": 6089}\n",
+      "cpu_seconds": 2.535085,
+      "wall_seconds": 2.5361961660000816,
+      "stdout": "{\"mode\": \"control\", \"actual_fork_pid\": 36225}\n",
       "stderr": ""
     },
     {
       "mode": "install",
       "exit_code": -9,
-      "cpu_seconds": 2.002196,
-      "wall_seconds": 2.0031578990001435,
-      "stdout": "{\"phase\": \"before-exec\", \"attacks\": {\"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}}\n{\"phase\": \"after-real-exec\", \"pid\": 6090, \"uid\": 1001, \"cpu_seconds\": 0.8147260000000001, \"attacks\": {\"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}, \"hard_raise_errno\": 1}\n",
+      "cpu_seconds": 2.0038690000000003,
+      "wall_seconds": 2.004971428999852,
+      "stdout": "{\"phase\": \"before-exec\", \"attacks\": {\"allow_all_stack_return\": 0, \"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}}\n{\"phase\": \"after-real-exec\", \"pid\": 36226, \"uid\": 1001, \"cpu_seconds\": 0.808195, \"attacks\": {\"allow_all_stack_return\": 0, \"clone\": 1, \"fork\": 1, \"vfork\": 1, \"clone3\": 1, \"disable_filter_errno\": 22, \"clear_no_new_privs_errno\": 22}, \"hard_raise_errno\": 1}\n",
       "stderr": ""
     },
     {
       "mode": "preexisting-thread",
       "exit_code": 0,
-      "cpu_seconds": 0.03479400000000027,
-      "wall_seconds": 0.035089546000108385,
+      "cpu_seconds": 0.033086000000000095,
+      "wall_seconds": 0.03337192999970284,
       "stdout": "{\"mode\": \"preexisting-thread\", \"refused\": \"Must install before any extra thread exists\"}\n",
       "stderr": ""
     },
     {
       "mode": "x32-bypass",
       "exit_code": -31,
-      "cpu_seconds": 0.029518999999999837,
-      "wall_seconds": 0.02987245799977245,
+      "cpu_seconds": 0.028449999999999566,
+      "wall_seconds": 0.028812176999963413,
       "stdout": "",
       "stderr": ""
     }
   ],
-  "scope": "Observed deny of clone/fork/vfork/clone3, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded; preexisting-thread installation refused and actual x32-tagged syscall killed by SIGSYS.",
+  "scope": "Observed deny of clone/fork/vfork/clone3 after stacking an allow-all filter, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded; preexisting-thread installation refused and actual x32-tagged syscall killed by SIGSYS.",
   "residual": "Linux host single-thread LP64 only. All other syscalls ALLOWED. No memory/wall/filesystem/network confinement, inherited children or Android/ARM64/16K/JNI/parser/Office compatibility acceptance. Denying clone also denies new threads and may break engines."
 }

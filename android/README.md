@@ -1,4 +1,15 @@
-> **Latest: [R11B implementation/testability/alternatives](docs/R11B-ENGINEERING.md).**
+> **Latest: [R12 implementation, alternatives and exact evidence](docs/R12-ENGINEERING.md).**
+> **39/39 API34 cases passed at2c2b5bc** on a regular Google managed image;
+> both debug flavors, invoked unit/contracts and lint passed.
+> Added bounded Notes recovery with cross-owner conflict refusal and actual writer-death
+> tests; repaired Editor reflow; verified real remote WebView pixels/input/resize in
+> debug experiments. These do not deliver a complete desktop browser or Office engine.
+> **183,179 Kotlin assertions;68 Python tests;733 cross-language checks passed.**
+> **23/48 modules (47.92%) have substantial testable subsets;0/48 (0%) are fully accepted.**
+> See the [48-row testability census](docs/MODULE-TESTABILITY.md) and [Studio try-out instructions](docs/BUILD.md).
+> [Verified run / debug APKs](https://github.com/jyvplay/OSB/actions/runs/38676376263).
+
+> **Historical: [R11B implementation/testability/alternatives](docs/R11B-ENGINEERING.md).**
 > **182,871 JVM assertions /13 libraries;61 Python methods;323 cross-language
 > checks passed.** Real Notes trash/restore, reflow and compositor focus repair.
 > **29/29 API34 named cases passed at1ea1faa**, including200%-font Notes,

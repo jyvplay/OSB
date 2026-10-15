@@ -218,7 +218,8 @@
       "kind": "behavioral_subset",
       "behavior": "Real editing and lifecycle integration",
       "production": [
-        "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt"
+        "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt",
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt"
@@ -227,6 +228,7 @@
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "4e104fc161a714f414daf790ac823fae4e657918f06a7f17be5af7150d2f1c15",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
       }
     },
@@ -314,18 +316,28 @@
       "module": ":feature:notes",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real revision-bound store/backlinks/trash and strict draft codec; native recovery integration under test",
+      "behavior": "Real revision-bound store/backlinks/trash and strict draft codec; native checkpoint recovery, writer death and owner conflict cases passed at2c2b5bc",
       "production": [
-        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt"
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt",
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesRecoveryStore.kt",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt"
       ],
       "checks": [
-        "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt"
+        "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/NotesRecoveryDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/NotesProcessDeathDeviceTest.kt"
       ],
-      "command": ":testing:noteDraftContracts",
-      "limit": "Full Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, version history, attachments/OCR/import/export and full PR-02 scope",
+      "command": ":testing:noteDraftContracts; native: :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Whole-app lifecycle/power-cut/backup and full filesystem/IME/AX acceptance; version history, attachments/OCR/import/export and full PR-02 scope",
       "sha256": {
         "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt": "5a6918f57732fc403ed7c66bb0df2fe6d07a1b2cf95bc7c66ccbb879800d0e38",
-        "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt": "95491b9435005695c7135fe3027cc83625d4109f6fb71c125f75aca37f1afaef"
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt": "9799b5edf82ee2291369596bea2f751fe914c4454ae854a96f317fa2bf68af68",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesRecoveryStore.kt": "7e74d6209b8650944b83c3a5a872d088ccede0db57e488bdc8ab6aefb4b962e3",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt": "41d9dd9b77d3c3bc3ec12d5b809d98b6335faec226e05aa753070501914b3589",
+        "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt": "95491b9435005695c7135fe3027cc83625d4109f6fb71c125f75aca37f1afaef",
+        "app/src/androidTest/java/dev/fusion/shell/NotesRecoveryDeviceTest.kt": "6b08b53d04ecc412dbd6bf5fd002d21767616e1516730fd792aa0f13e250a5ca",
+        "app/src/androidTest/java/dev/fusion/shell/NotesProcessDeathDeviceTest.kt": "79e3626fff3fba454cf5628d45424e10aedc334e03314c653fb5ea998f27ca14"
       }
     },
     {

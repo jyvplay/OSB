@@ -49,7 +49,12 @@ def no_fork(libc):
     require(libc.prctl(22,2,ctypes.byref(program),0,0)==0,'SECCOMP_MODE_FILTER failed')
 
 def attacks(libc):
-    results={}
+    # Attacker tries to replace the restrictive policy with an allow-everything filter.
+    # Linux must stack it, not erase the earlier deny rules.
+    allow=(Filter*1)(Filter(0x06,0,0,0x7fff0000));program=Program(1,allow)
+    stacked=libc.prctl(22,2,ctypes.byref(program),0,0)
+    require(stacked==0,'Could not execute allow-all stacking attack')
+    results={'allow_all_stack_return':stacked}
     for name,nr in FORK_SYSCALLS.items():
         ctypes.set_errno(0)
         result=libc.syscall(nr,0,0,0,0,0,0);error=ctypes.get_errno()
@@ -135,7 +140,7 @@ def main():
             require([r['phase'] for r in rows]==['before-exec','after-real-exec'],'Missing exec/filter evidence')
         results.append({'mode':mode,'exit_code':process.returncode,'cpu_seconds':cpu,'wall_seconds':time.monotonic()-start,'stdout':stdout,'stderr':stderr})
     report={'status':'PASS','kernel':os.uname().release,'architecture':os.uname().machine,'source_sha256':hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),'results':results,
-      'scope':'Observed deny of clone/fork/vfork/clone3, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded; preexisting-thread installation refused and actual x32-tagged syscall killed by SIGSYS.',
+      'scope':'Observed deny of clone/fork/vfork/clone3 after stacking an allow-all filter, failed filter/no-new-privs removal, retained filter and CPU accounting across real exec, and hard CPU SIGKILL. Unconstrained fork/CPU control succeeded; preexisting-thread installation refused and actual x32-tagged syscall killed by SIGSYS.',
       'residual':'Linux host single-thread LP64 only. All other syscalls ALLOWED. No memory/wall/filesystem/network confinement, inherited children or Android/ARM64/16K/JNI/parser/Office compatibility acceptance. Denying clone also denies new threads and may break engines.'}
     path.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 

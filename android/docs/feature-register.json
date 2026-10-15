@@ -1125,10 +1125,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Real locked/revision-checked Markdown files, saved-note backlinks, native scan and atomic saved-revision trash/restore. Host contracts and API34 normal/200%-font trash and dirty-backlink cases passed at1ea1faa. Attachments/OCR/import/export, process-death draft recovery, version history and full Markdown remain incomplete.",
+    "route": "Real bounded/revision-checked Markdown, saved-note backlinks, trash/restore and separate strict local draft recovery with coalesced single-writer checkpoints. Native stale/corrupt/recreated-owner/writer-process-death/queue and cross-owner tests passed at2c2b5bc; see R12 exact limits. Attachments/OCR/import/export, version history, full Markdown and physical/AX acceptance remain incomplete.",
     "tests": [
       "plan:T-PR-02",
-      "jvm:NotesChecks"
+      "jvm:NotesChecks",
+      "jvm:NoteDraftChecks",
+      "jvm:NoteTrashChecks",
+      "android:NotesRecoveryDeviceTest",
+      "android:NotesProcessDeathDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []

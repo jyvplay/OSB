@@ -112,7 +112,7 @@
     {
       "module": ":feature:editor",
       "status": "incomplete",
-      "present_scope": "Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts",
+      "present_scope": "Native multi-draft editor/tools, non-exported identity broker, checkpoint-before-write adapter, explicit interrupted-copy review and bounded receipts R12 wrapping controls/tabs and normal/200%-font UI cases passed at2c2b5bc; full lifecycle/AX scope still unaccepted.",
       "remaining_gap": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "evidence_level": "partial_android_execution"
     },
@@ -140,7 +140,7 @@
     {
       "module": ":feature:browser",
       "status": "incomplete",
-      "present_scope": "Executed bounded tab/window/group/split metadata and named-session codec; separate debug :app experiment passed real WebView cookie/localStorage profile partition on API34. No product renderer/disk/UI/profile adapter",
+      "present_scope": "Executed immutable session metadata/codec. Separate debug :app experiments passed real profiles and remote surface pixels/input/resize on regular API34 at2c2b5bc. No connected product renderer/chrome/profile/navigation integration.",
       "remaining_gap": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "evidence_level": "partial_kernel_contracts"
     },
@@ -161,9 +161,9 @@
     {
       "module": ":feature:notes",
       "status": "incomplete",
-      "present_scope": "Bounded locked/revision-checked Markdown files, saved-note wiki links, atomic saved-revision trash/restore and wrapping native actions;42 new real-file checks plus normal/200%-font trash and dirty-backlink API34 cases passed at1ea1faa",
-      "remaining_gap": "Full Android filesystem/IME/AX/lifecycle acceptance; process-death draft recovery, version history, attachments/OCR/import/export and full PR-02 scope",
-      "evidence_level": "partial_kernel_contracts"
+      "present_scope": "Bounded locked Markdown/backlinks/trash; strict local draft codec, coalesced AtomicFile checkpoints with OS-lock/expected-value conflict checks. Real corrupt/stale/recreated-owner/process-death/queue/cross-owner and200%-font native cases passed at2c2b5bc.",
+      "remaining_gap": "Every-keystroke/power-loss and full lifecycle/IME/AX acceptance; version history, attachments/OCR/import/export and full PR-02 scope",
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:calc",
@@ -231,7 +231,7 @@
     {
       "module": ":feature:together",
       "status": "incomplete",
-      "present_scope": "Pre-existing local room/drift model only; pilot blocked",
+      "present_scope": "Explicit unavailable screen only; legacy random-peer/clock simulation and its tests removed. No room, transport or synchronized media exists.",
       "remaining_gap": "Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22",
       "evidence_level": "android_compiled"
     },
@@ -261,14 +261,14 @@
       "status": "incomplete",
       "present_scope": "Small text/CSV helper source",
       "remaining_gap": "Strict safe bounded parsers/CSV fidelity and Forge registration; legacy UTF-8 heuristic not a validator",
-      "evidence_level": "compiled_only"
+      "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":format:archive",
       "status": "incomplete",
       "present_scope": "ZIP guard source",
       "remaining_gap": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
-      "evidence_level": "compiled_only"
+      "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":format:ooxml",
@@ -296,7 +296,7 @@
       "status": "incomplete",
       "present_scope": "Bounded PSD parsing source; pilot blocked",
       "remaining_gap": "S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance",
-      "evidence_level": "android_compiled"
+      "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":format:lok",
@@ -310,21 +310,21 @@
       "status": "incomplete",
       "present_scope": "UPnP/DLNA client and parser source; pilot blocked",
       "remaining_gap": "Real receiver interoperability, transport trust/lifecycle/security and S20 evidence",
-      "evidence_level": "android_compiled"
+      "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":cast:airplay",
       "status": "incomplete",
       "present_scope": "URL sender/SDP source compiled; no receiver tests",
       "remaining_gap": "S18 hardware and S19 counsel/hardware gates; no mirroring or FairPlay bypass claim",
-      "evidence_level": "compiled_only"
+      "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":cast:castv2",
       "status": "incomplete",
       "present_scope": "CastV2 protocol/client source compiled with unchecked-cast warnings",
       "remaining_gap": "S21 receiver/auth/session/Stop/exclusion/latency and protocol/security acceptance",
-      "evidence_level": "compiled_only"
+      "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":benchmark",
@@ -343,7 +343,7 @@
     {
       "module": ":testing",
       "status": "incomplete",
-      "present_scope": "Executed13-library/182871-assertion Kotlin contracts,61 Python methods,323 cross-language checks and29/29 API34 cases at1ea1faa; prior-source focus counterexample and host Linux fork-limit counterexample recorded",
+      "present_scope": "183179 host Kotlin assertions/13 separately compiled libraries;68 Python checks;733 cross-language checks;39/39 actual API34 cases at2c2b5bc. Source-bound23/48 (47.92%) testable-subset census is separate from full acceptance0/48.",
       "remaining_gap": "Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records",
       "evidence_level": "runner_executed"
     }
@@ -671,6 +671,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R11B \u2014 tested reversible Notes, focus/profile/socket experiments; incomplete",
-  "build_evidence": "Native candidate1ea1faa: run38670396374 passed both-flavor assembly, invoked unit/contracts, lint and APK upload; API34 actual29/29 named cases PASS including six elementary isolated-FD/socket cases and actual200%-font trash/restore. Prior failed candidates remain recorded. These are not full assigned-scope, parser/security/AX, physical-device or license acceptance. See R11B-ENGINEERING.md and verification/r11b-native-results.json."
+  "revision": "R12 \u2014 bounded draft recovery and concrete testability; incomplete",
+  "build_evidence": "Native candidate2c2b5bc, run38676376263: both-flavor assembly, invoked unit/contracts, lint and APK upload passed; regular Google API34 actual39/39 named cases PASS,0 failed/skipped. Includes real remote pixels/input/resize, Notes owner conflicts and writer-process death, and Notes/Editor200%-font cases. Earlier failed candidates retained. Full parser/Office/browser, human AX, physical-device, API37/16K and legal/license acceptance are not established. Testable subsets:23/48 (47.92%), independently defined from full acceptance0/48."
 }

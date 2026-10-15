@@ -1,3 +1,5 @@
+> Historical R11B checkpoint. Latest: [R12 native work and exact verification](R12-ENGINEERING.md).
+
 # R11 continuation — reversible Notes, native focus, real browser profiles, and sandbox experiments
 
 **This is not the completed original specification or a production beta.** No
