@@ -91,7 +91,7 @@ class ShellSmokeTest {
         openModule("editor")
         compose.onNodeWithContentDescription("Minimize").performClick()
         compose.onNodeWithText("Restore: Editor").performScrollTo().performClick()
-        compose.onNodeWithText("Open UTF-8").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Open text").performScrollTo().assertIsDisplayed()
     }
     @Test fun editorTabsDoNotReplaceEachOthersText() {
         openModule("editor")
@@ -110,12 +110,13 @@ class ShellSmokeTest {
         compose.onNodeWithTag("editor-content").assertTextContains("First document")
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test fun paletteExecutesARealModuleAction() {
         compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-editor") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText("Find").performScrollTo().performClick()
         compose.onNodeWithTag("palette-query").performTextInput("editor")
         compose.onNodeWithTag("palette-query").performKeyInput { pressKey(Key.Enter) }
-        compose.onNodeWithText("Open UTF-8").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Open text").performScrollTo().assertIsDisplayed()
     }
     @Test fun notesSaveAndMemoryDraftSurviveActivityRecreation() {
         val name="test_"+java.util.UUID.randomUUID().toString().replace("-","")
