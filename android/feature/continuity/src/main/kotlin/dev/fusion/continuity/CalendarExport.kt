@@ -16,7 +16,7 @@ object CalendarExport {
         for(t in listOf(event.created,event.start,event.end)) require(t.nano==0 && t.epochSecond in 0..253402300799L)
         require(event.end>event.start)
         fun escape(text: String, limit: Int): String {
-            require(text.length<=limit && text.none { it<' ' && it!='\n' })
+            require(text.length<=limit && text.none { it.isISOControl() && it!='\n' })
             Charsets.UTF_8.newEncoder().onMalformedInput(CodingErrorAction.REPORT).encode(CharBuffer.wrap(text))
             return text.replace("\\","\\\\").replace(";","\\;").replace(",","\\,").replace("\n","\\n")
         }

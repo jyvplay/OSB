@@ -40,8 +40,13 @@ class R13SubsetDeviceTest {
         val t=Instant.parse("2026-10-15T12:00:00Z")
         val bytes=CalendarExport.encode(SharedCalendarEvent("test@fusion",t,t,t.plusSeconds(60),"🙂".repeat(60),"x\nBEGIN:VEVENT"))
         val text=String(bytes,Charsets.UTF_8)
-        assertEquals(1,Regex("(?m)^BEGIN:VEVENT\\r$").findAll(text).count())
+        assertEquals(1,text.split("\r\n").count { it=="BEGIN:VEVENT" })
+        assertEquals(1,text.split("\r\n").count { it=="END:VEVENT" })
         assertTrue(text.split("\r\n").all { it.toByteArray().size<=75 })
+        for(control in listOf("\u007F","\u0085")) {
+            try { CalendarExport.encode(SharedCalendarEvent("test@fusion",t,t,t.plusSeconds(60),control));fail("Unsupported control accepted") }
+            catch(_:IllegalArgumentException) { }
+        }
     }
     @Test fun originalWorkbookWritesLiteralFormulaLikeTextWithoutMacroParts() {
         val b=LiteralWorkbook.export("Sheet",listOf(listOf(LiteralCell.Text("=1+1"),LiteralCell.Bool(true))))

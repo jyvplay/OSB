@@ -669,7 +669,7 @@
       "path": "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt",
       "module": ":feature:continuity",
       "package": "dev.fusion.continuity",
-      "sha256": "7af5352b18e35fb871ed717e1bba0f5163afcd3a9af7d6aa4cfa19392010fa5c"
+      "sha256": "c7914208c08e577386bccb2f317449fbafad60fc073913e29a4617b89ba2b485"
     },
     {
       "path": "feature/accessibility/src/main/java/dev/fusion/a11y/Adaptation.kt",

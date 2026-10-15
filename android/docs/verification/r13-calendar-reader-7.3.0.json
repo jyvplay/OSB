@@ -1,0 +1,31 @@
+{
+  "reader": "icalendar 7.3.0",
+  "experiment": "Library own writer then own reader, independent of Kotlin exporter",
+  "script_sha256": "e3ec064809c814b3c3ba62a8c3042c6a085c3de5b737a5988eeab8b1e69e7fd5",
+  "cases": [
+    {
+      "input": "a\\;b",
+      "wire": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:a\\\\\\;b\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+      "actual": "a\\;b",
+      "equal": true
+    },
+    {
+      "input": "a\\\\b",
+      "wire": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:a\\\\\\\\b\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+      "actual": "a\\\\b",
+      "equal": true
+    },
+    {
+      "input": "a\\nb",
+      "wire": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:a\\\\nb\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+      "actual": "a\\nb",
+      "equal": true
+    },
+    {
+      "input": "a\\b",
+      "wire": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nSUMMARY:a\\\\b\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+      "actual": "a\\b",
+      "equal": true
+    }
+  ]
+}

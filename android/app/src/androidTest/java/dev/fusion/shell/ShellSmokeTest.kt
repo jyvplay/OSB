@@ -22,6 +22,16 @@ class ShellSmokeTest {
         compose.onNodeWithTag("shelf-$module").performScrollTo().performClick()
     }
 
+    // Read-only diagnostic of the actual Activity-owned model. Does not dispatch or repair an edit.
+    private fun editorDiagnostic(): String {
+        var result="Activity observation unavailable"
+        compose.activityRule.scenario.onActivity { activity ->
+            val state=androidx.lifecycle.ViewModelProvider(activity)[dev.fusion.editor.EditorViewModel::class.java].state.value
+            val id=state.session.selectedId
+            result="loading=${state.loading} blocked=${state.recoveryBlocked} toolsBusy=${state.toolsBusy} planCount=${state.replacement?.count} revision=${state.buffers[id]?.revision} buffer=${state.buffers[id]?.content} field=${state.fields[id]?.text} status=${state.status}"
+        }
+        return result
+    }
     @Test fun explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates() {
         openModule("automation")
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
@@ -99,9 +109,14 @@ class ShellSmokeTest {
         compose.onNodeWithTag("editor-replacement").performScrollTo().performTextInput("two")
         compose.onNodeWithTag("editor-replace-all-review").performScrollTo().performClick()
         compose.waitUntil(5_000) { compose.onAllNodes(hasTestTag("editor-confirm-replace")).fetchSemanticsNodes().isNotEmpty() }
+        val beforeApply=editorDiagnostic()
         compose.onNodeWithTag("editor-confirm-replace").performClick()
+        val afterApply=editorDiagnostic()
         compose.onNodeWithText("Close tools").performClick()
-        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("two two")
+        try { compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("two two") }
+        catch(failure:AssertionError) {
+            throw AssertionError("Replacement failed. Before=$beforeApply; after apply=$afterApply; after close=${editorDiagnostic()}",failure)
+        }
         compose.onNodeWithTag("editor-undo").performScrollTo().performClick()
         compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("one one")
         compose.onNodeWithTag("editor-redo").performScrollTo().performClick()

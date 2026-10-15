@@ -9,3 +9,11 @@ Acceptance threshold for testability: public production API separately compiled,
 Office request: inspect pinned LibreOffice interfaces/licensing/architecture, not copy/rephrase implementation. No clean-room-independence or legal-clearance claim: the same agent has inspected sources. Full1:1 parity must first name an upstream revision, platforms, formats, behaviors and tolerance/corpus; no finite small kernel or passed corpus certifies that universal contract. Source inspection is not a way to relicense derivative code. No LOK payload or source is incorporated into the main APK. Existing engine gate remains closed.
 
 IME: preserve the failing R12 test initially. Measure active/default/enabled IME and actual window insets through Android, use real touch/accessibility editing without a Compose test-input substitute. Distinguish unavailable keyboard, harness effects and application clipping; do not infer the cause from a timeout.
+
+## Continuation provenance
+
+PR2 was explicitly merged as f3898d1. Current continuation is on arena/60b30790-osb; its clean
+merged baseline lacked the prior working-tree kernels, so they were reconstructed and pushed
+as f0cc82d. Current verification, reader counterexamples and census are in R13-ENGINEERING.md.
+This retrospective provenance does not turn a completed test into a pre-implementation spike
+or promote any original device/legal/isolation gate.

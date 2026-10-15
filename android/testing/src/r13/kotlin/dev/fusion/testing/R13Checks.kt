@@ -30,12 +30,20 @@ object R13Checks {
             refused { ContentDigest.scan(byteArrayOf().inputStream(),Long.MAX_VALUE) }
             refused { ContentDigest.scan(object:InputStream(){ override fun read()=0;override fun read(b:ByteArray,o:Int,l:Int)=0 }) }
             var closed=false
+            val short=object:ByteArrayInputStream("abc".toByteArray()){override fun read(b:ByteArray,o:Int,l:Int)=super.read(b,o,minOf(l,1))}
+            eq(digest,ContentDigest.scan(short,3))
+            val excess="abcd".byteInputStream();refused { ContentDigest.scan(excess,3) };eq(0,excess.available())
+            checks++;try { ContentDigest.scan(object:InputStream(){override fun read():Int=throw IOException("provider failure")});error("IO swallowed") } catch(_:IOException) { }
             val input=object:ByteArrayInputStream("abc".toByteArray()){override fun close(){closed=true;super.close()}}
             ContentDigest.scan(input);eq(false,closed);input.close();eq(true,closed)
             eq(listOf("echo","a b","","c d","$"+"HOME","x;y"),ShellWords.parse("echo 'a b' \"\" c\\ d $"+"HOME x;y"))
             eq(emptyList<String>(),ShellWords.parse(" \t\n"))
             eq(listOf("ab c"),ShellWords.parse("a\"b c\""))
             for(s in listOf("'bad","bad\\","\"bad","\u0000","x".repeat(2049),"x ".repeat(65)," ".repeat(4097))) refused { ShellWords.parse(s) }
+            eq(listOf("x".repeat(2048)),ShellWords.parse("x".repeat(2048)))
+            eq(emptyList<String>(),ShellWords.parse(" ".repeat(4096)))
+            // Deliberate non-POSIX boundary: backslash quotes any next character in double quotes.
+            eq(listOf("q"),ShellWords.parse("\"\\q\""))
             eq(64,ShellWords.parse("x ".repeat(64)).size)
             val plan=ActionPlan.parse("workspace 2\nopen calculator\nopen notes")
             val effects=root.resolve("actual-actions")
@@ -45,14 +53,24 @@ object R13Checks {
             eq(1,stopped.completed);eq(2,attempted)
             eq(0,plan.execute { throw IOException("real callback failure") }.completed)
             for(s in listOf("open beam","open terminal","workspace 0","workspace 4","open  notes","open notes\n","run sh","open notes\r","open notes\n".repeat(17))) refused { ActionPlan.parse(s) }
+            var malformedEffects=0
+            refused { ActionPlan.parse("open notes\nrun shell").execute { malformedEffects++;true } }
+            eq(0,malformedEffects)
             eq(16,ActionPlan.parse(List(16){"open files"}.joinToString("\n")).actions().size)
             val event=SharedCalendarEvent("test@fusion",now,now,now.plusSeconds(60),"界🙂".repeat(70),"a,b;c\\d\nEND:VEVENT")
             val encoded=CalendarExport.encode(event)
             val physical=encoded.toString(Charsets.UTF_8).split("\r\n")
             for(line in physical) { checks++;check(line.toByteArray().size<=75) }
+            eq(1,physical.count { it=="BEGIN:VEVENT" })
+            eq(1,physical.count { it=="END:VEVENT" })
             val unfolded=encoded.toString(Charsets.UTF_8).replace("\r\n ","")
             eq(true,unfolded.contains("DESCRIPTION:a\\,b\\;c\\\\d\\nEND:VEVENT"))
-            for(e in listOf(event.copy(uid="x\r\nBEGIN:VEVENT"),event.copy(end=now),event.copy(start=now.plusNanos(1)),event.copy(summary="\uD800"),event.copy(description="a\rb"),event.copy(summary="x".repeat(1025)))) refused { CalendarExport.encode(e) }
+            for(e in listOf(event.copy(uid="x\r\nBEGIN:VEVENT"),event.copy(end=now),event.copy(start=now.plusNanos(1)),event.copy(summary="\uD800"),event.copy(description="a\rb"),event.copy(summary="\u007F"),event.copy(description="\u0085"),event.copy(summary="x".repeat(1025)))) refused { CalendarExport.encode(e) }
+            eq(true,CalendarExport.encode(event.copy(uid="a".repeat(128),summary="s".repeat(1024),description="d".repeat(8192))).isNotEmpty())
+            val last=Instant.parse("9999-12-31T23:59:59Z")
+            eq(true,CalendarExport.encode(event.copy(created=last,start=last.minusSeconds(60),end=last)).toString(Charsets.UTF_8).contains("DTEND:99991231T235959Z"))
+            refused { CalendarExport.encode(event.copy(created=Instant.ofEpochSecond(-1))) }
+            refused { CalendarExport.encode(event.copy(end=last.plusSeconds(1))) }
             val rows=listOf(listOf(LiteralCell.Text("=SUM(A1:A2)"),LiteralCell.Text("α🙂\r\n<&>"),LiteralCell.Number(BigDecimal("12.30")),LiteralCell.Bool(true),LiteralCell.Empty))
             val workbook=LiteralWorkbook.export("Original",rows)
             eq(2,workbook.limitations.size)
@@ -69,6 +87,10 @@ object R13Checks {
             refused { LiteralWorkbook.export("s",List(70){listOf(LiteralCell.Text("a".repeat(32767)))}) }
             refused { LiteralWorkbook.export("s",listOf(listOf(LiteralCell.Number(BigDecimal("1234567890123456"))))) }
             refused { LiteralWorkbook.export("s",listOf(listOf(LiteralCell.Number(BigDecimal("1E1000"))))) }
+            eq(true,LiteralWorkbook.export("x".repeat(31),List(1000){emptyList()}).bytes.isNotEmpty())
+            eq(true,LiteralWorkbook.export("s",List(156){List(128){LiteralCell.Empty}}+listOf(List(32){LiteralCell.Empty})).bytes.isNotEmpty())
+            eq(true,LiteralWorkbook.export("s",listOf(listOf(LiteralCell.Text("x".repeat(32767))))).bytes.isNotEmpty())
+            refused { LiteralWorkbook.export("s",listOf(listOf(LiteralCell.Text("_X00af_")))) }
             val random=java.util.Random(130013)
             repeat(200) {
                 val bytes=ByteArray(random.nextInt(8193)).also(random::nextBytes)
