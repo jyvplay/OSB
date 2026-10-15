@@ -5,7 +5,7 @@
   "sha256": {
     "tools/run_r17_interop.py": "296fa638a234aca25bddb066536b51e01590a702f438449abeeba2aa309b5369",
     "testing/build/r17/TaskBook.jar": "305acc199928c174f3e449ffd683536f32757d49b6062d835a91c3d81630d3fe",
-    "testing/build/r17/checks.jar": "d6e29cf9b67a54b4ad864fb56f922316dd4e31b295399c9e04555c43e021ddad"
+    "testing/build/r17/checks.jar": "a32180bc9b5f7a4aae167c526412055102a176059b8b50f2aa7dd1872ca9a708"
   },
   "scope": "Bounded plaintext task framing/date semantics; no authentication, Android persistence or reminder acceptance"
 }

@@ -21,7 +21,7 @@ object R17Checks {
         for(title in listOf(""," ","x\ny","x\u0000y","\uD800","x".repeat(257))) no {task.copy(title=title)}
         no {task.copy(id="1-1-1-1-1")};no {task.copy(due=LocalDate.of(0,1,1))}
         val full=TaskBook(1,(0 until 128).map {LocalTask(UUID(0,it.toLong()).toString(),"界".repeat(256),LocalDate.of(9999,12,31))})
-        eq(128,TaskFrame.decode(TaskFrame.encode(full)).tasks.size);no {full.add(task.copy(id=UUID(1,1).toString()))}
+        eq(104340,TaskFrame.encode(full).size);eq(128,TaskFrame.decode(TaskFrame.encode(full)).tasks.size);no {full.add(task.copy(id=UUID(1,1).toString()))}
         val frame=TaskFrame.encode(book)
         for(i in frame.indices) {val corrupt=frame.copyOf();corrupt[i]=(corrupt[i].toInt() xor 1).toByte();no {TaskFrame.decode(corrupt)}}
         for(n in 0 until frame.size) no {TaskFrame.decode(frame.copyOf(n))}
@@ -35,6 +35,10 @@ object R17Checks {
         val invalidRevision=frame.copyOf();java.nio.ByteBuffer.wrap(invalidRevision,4,8).putLong(-1);no {TaskFrame.decode(recalc(invalidRevision))}
         val invalidCount=frame.copyOf();java.nio.ByteBuffer.wrap(invalidCount,12,4).putInt(129);no {TaskFrame.decode(recalc(invalidCount))}
         val invalidUtf=frame.copyOf();invalidUtf[55]=0xff.toByte();no {TaskFrame.decode(recalc(invalidUtf))}
+        val invalidLength=frame.copyOf();java.nio.ByteBuffer.wrap(invalidLength,53,2).putShort(1025.toShort());no {TaskFrame.decode(recalc(invalidLength))}
+        val invalidDay=frame.copyOf();java.nio.ByteBuffer.wrap(invalidDay,invalidDay.size-12,8).putLong(Long.MAX_VALUE);no {TaskFrame.decode(recalc(invalidDay))}
+        val duplicate=frame.copyOfRange(0,16)+frame.copyOfRange(16,frame.size-4)+frame.copyOfRange(16,frame.size-4)+ByteArray(4)
+        java.nio.ByteBuffer.wrap(duplicate,12,4).putInt(2);no {TaskFrame.decode(recalc(duplicate))}
         // Explicitly demonstrate CRC is NOT authentication: a different valid snapshot imports.
         val forged=TaskFrame.encode(TaskBook(book.revision,listOf(task.copy(title="changed"))))
         eq("changed",TaskFrame.decode(forged).tasks.single().title)

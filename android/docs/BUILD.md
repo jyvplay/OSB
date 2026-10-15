@@ -1,3 +1,57 @@
+# R17 — current Android build and try-out
+
+Open **OSB/android** in Android Studio Rabbit1 with compatible AGP8.13.2,
+Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is verified remotely;
+the Rabbit1 desktop IDE itself was not run here. Current min/compile/target34/36/36
+still differs from requested compile37. These remain evaluation builds, not release clearance.
+
+**47/48 (97.92%) bounded testable modules;0/48 fully accepted.** Only LOK lacks an
+established subset. R16 experiments are closed with their stated positive/negative outcomes;
+see [R16-ENGINEERING.md](R16-ENGINEERING.md) and [R17-ENGINEERING.md](R17-ENGINEERING.md).
+
+## New try-out: local tasks
+
+1. Run the **proDebug** app on a disposable API34+ AVD; acknowledge the pilot warning.
+2. Open **Automation** from the horizontally scrollable shelf, enable the session with test data,
+   then choose **Local tasks**.
+3. Enter a title and optionally a date such as2028-02-29; press **Add task**. Check/uncheck completion.
+4. Close/reopen or recreate the Activity, re-enable the session, and open Local tasks again.
+   Confirmed tasks load from private no-backup storage. **Reload tasks** handles stale views.
+
+Limits:128 tasks,256 UTF16 title units, date-only years0001..9999, plaintext local storage.
+No reminders, notifications, recurrence, task deletion/editing, calendar sync or backup.
+If loading/saving cannot be confirmed, input is retained and mutations block until reload.
+An error can follow publication; never assume rollback or blindly duplicate a task.
+
+Existing **Action plans** remain the default view and are session-only. Tasks are persistent;
+the consent panel now distinguishes them. No external command, network or provider grant is added.
+
+## Reproduce checks
+
+From `android/`, set JAVA_HOME to JDK17 and KOTLINC to Kotlin2.2.21:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_r16_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r17_contracts.py
+python3 tools/run_r17_interop.py
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+./gradlew :app:assembleProDebug :testing:r17Contracts
+```
+
+Use `gradlew.bat` on Windows. R16's independent socket verifier additionally needs host-only
+cryptography46.0.3 (`PYTHONPATH` as in the historical R15 instructions below).
+Native tests require explicit `fusionDisposable=true` and a disposable emulator, as documented
+below. Never point reset/instrumentation routines at personal app data.
+
+The baseline module now ships855 actual measured first-party startup/Files ART rules.
+Generation, packaging and profile-required startup passed atbb338a5/run38697143892.
+See `baselineprofile/PROVENANCE.md`; no physical speedup/budget acceptance is claimed.
+
+---
+
+## Historical R15 instructions and receipts (superseded census)
+
 # R15 current build and executable entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with

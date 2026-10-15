@@ -27,7 +27,7 @@ H+: bounded socket/AEAD/clock and actual measured-profile experiments can cross 
 
 ## C. Verified imported results and open interface
 
-`research/r16-primary.json` records seven pinned primary-source records: inherited LO/AOSP/pyca inputs rechecked where recorded and AndroidX BaselineProfileRule source. The pinned AndroidX upstream file is explicitly NOT represented as the exact1.3.3 binary; actual resolved1.3.3 behavior is established by the CI run, not version inference from source. These records are a limited verified investigation, not an exhaustive best-known frontier survey.
+`research/r16-primary.json` records seven pinned primary-source records: inherited LO/pyca inputs rechecked where recorded and AndroidX BaselineProfileRule source. The pinned AndroidX upstream file is explicitly NOT represented as the exact1.3.3 binary; actual resolved1.3.3 behavior is established by the CI run, not version inference from source. These records are a limited verified investigation, not an exhaustive best-known frontier survey.
 
 AES-GCM is used with128-bit tags and fresh96-bit nonces. Under independent uniform nonce sampling, the union-bound collision probability after q encryptions under a key is at most q(q−1)/2^97. Session challenges/direction-separated AAD do not excuse GCM nonce reuse. No lifetime q enforcement, entropy audit, FIPS validation or key lifecycle is supplied. Real OpenSSL interoperability checks wire compatibility, not those hypotheses.
 

@@ -1,4 +1,4 @@
-R17: 393 assertions PASS; immutable tasks and bounded plaintext codec, not Android/reminder/full Tasks acceptance.
+R17: 397 assertions PASS; immutable tasks and bounded plaintext codec, not Android/reminder/full Tasks acceptance.
 
 info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
 openjdk version "17.0.9" 2023-10-17
@@ -7,8 +7,8 @@ OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
 
 Separately compiled Tasks production library; no Android execution inferred.
 e539e547e6bcaca0fdd94877dcc6124285981dac866a40830a238c127140ac3f  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
-ee2eb7b0ed8a8c953e9819a0f1b912d6f9f5d5ad405c1a006e9b5a2779bcf82d  testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt
+66d462a1810b52dba5bdc5c83366f9544514c96ea8c13da07172fa812cfbe0c8  testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt
 6ce667e32221ebc3514f505186da308bf910b6a8650f23de5e3fb0ee25e2c9da  testing/src/r17/kotlin/dev/fusion/testing/R17Oracle.kt
 37bf7558aea5226511fa2e3ad28c7a6a50b4b94add02725c54edcf5bc89a46c0  tools/run_r17_contracts.py
 305acc199928c174f3e449ffd683536f32757d49b6062d835a91c3d81630d3fe  testing/build/r17/TaskBook.jar
-d6e29cf9b67a54b4ad864fb56f922316dd4e31b295399c9e04555c43e021ddad  testing/build/r17/checks.jar
+a32180bc9b5f7a4aae167c526412055102a176059b8b50f2aa7dd1872ca9a708  testing/build/r17/checks.jar
