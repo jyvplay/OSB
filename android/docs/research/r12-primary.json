@@ -1,0 +1,125 @@
+{
+  "scope": "Pinned source retrieval verified by Git blob; not all-provider/device behavior, crash durability or legal closure",
+  "records": [
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/view/SurfaceControlViewHost.java",
+      "git_blob": "c8cf7d9a5194a1cd2d01f93d07fb5d5ecf6e83ae",
+      "sha256": "83cb3b9064eef2b1902998c9ceedcdaac1d2aa3fdc78176129993a8b3c72a776",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/view/SurfaceControlViewHost.java",
+      "excerpts": [
+        {
+          "term": "setView(",
+          "line": 438,
+          "excerpt": "    /**\n     * @hide\n     */\n    @TestApi\n    public void setView(@NonNull View view, @NonNull WindowManager.LayoutParams attrs) {\n        Objects.requireNonNull(view);\n        attrs.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;\n        addWindowToken(attrs);\n        view.setLayoutParams(attrs);\n        mViewRoot.setView(view, attrs, null);\n    }\n\n    /**\n     * @return The view passed to setView, or null if none has been passed.\n     */\n    public @Nullable View getView() {"
+        },
+        {
+          "term": "setView(",
+          "line": 443,
+          "excerpt": "        Objects.requireNonNull(view);\n        attrs.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;\n        addWindowToken(attrs);\n        view.setLayoutParams(attrs);\n        mViewRoot.setView(view, attrs, null);\n    }\n\n    /**\n     * @return The view passed to setView, or null if none has been passed.\n     */\n    public @Nullable View getView() {\n        return mViewRoot.getView();\n    }\n\n    /**\n     * @return the ViewRootImpl wrapped by this host."
+        },
+        {
+          "term": "relayout(",
+          "line": 494,
+          "excerpt": "     *\n     * @param width Width in pixels\n     * @param height Height in pixels\n     */\n    public void relayout(int width, int height) {\n        final WindowManager.LayoutParams lp =\n                new WindowManager.LayoutParams(width, height,\n                        WindowManager.LayoutParams.TYPE_APPLICATION, 0, PixelFormat.TRANSPARENT);\n        relayout(lp);\n    }\n\n    /**\n     * Trigger the tear down of the embedded view hierarchy and release the SurfaceControl.\n     * This will result in onDispatchedFromWindow being dispatched to the embedded view hierarchy\n     * and render the object unusable.\n     */"
+        },
+        {
+          "term": "relayout(",
+          "line": 498,
+          "excerpt": "    public void relayout(int width, int height) {\n        final WindowManager.LayoutParams lp =\n                new WindowManager.LayoutParams(width, height,\n                        WindowManager.LayoutParams.TYPE_APPLICATION, 0, PixelFormat.TRANSPARENT);\n        relayout(lp);\n    }\n\n    /**\n     * Trigger the tear down of the embedded view hierarchy and release the SurfaceControl.\n     * This will result in onDispatchedFromWindow being dispatched to the embedded view hierarchy\n     * and render the object unusable.\n     */\n    public void release() {\n        // ViewRoot will release mSurfaceControl for us.\n        doRelease(true /* immediate */);\n    }"
+        },
+        {
+          "term": "release()",
+          "line": 279,
+          "excerpt": "         * take ownership in that case.\n         */\n        public void release() {\n            if (mSurfaceControl != null) {\n                mSurfaceControl.release();\n             }\n             mSurfaceControl = null;\n        }\n\n        /**\n         * Returns an input token used which can be used to request focus on the embedded surface.\n         *\n         * @hide\n         */\n        public IBinder getInputToken() {\n            return mInputToken;"
+        },
+        {
+          "term": "release()",
+          "line": 506,
+          "excerpt": "     * Trigger the tear down of the embedded view hierarchy and release the SurfaceControl.\n     * This will result in onDispatchedFromWindow being dispatched to the embedded view hierarchy\n     * and render the object unusable.\n     */\n    public void release() {\n        // ViewRoot will release mSurfaceControl for us.\n        doRelease(true /* immediate */);\n    }\n\n    private void doRelease(boolean immediate) {\n        if (mConfigChangedCallback != null) {\n            ViewRootImpl.removeConfigCallback(mConfigChangedCallback);\n            mConfigChangedCallback = null;\n        }\n\n        mViewRoot.die(immediate);"
+        }
+      ]
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/view/SurfaceView.java",
+      "git_blob": "0e4cf89e7772bcd02c6c34b332512db3cd50b5ad",
+      "sha256": "6dadf3b0d3881cb6f6a9466583ccb2012cbd979c15f66bf9b0465b3c18f4af27",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/view/SurfaceView.java",
+      "excerpts": [
+        {
+          "term": "getHostToken()",
+          "line": 1769,
+          "excerpt": "     * be passed from the host process to the client process.\n     *\n     * @return The token\n     */\n    public @Nullable IBinder getHostToken() {\n        final ViewRootImpl viewRoot = getViewRootImpl();\n        if (viewRoot == null) {\n            return null;\n        }\n        return viewRoot.getInputToken();\n    }\n\n    /**\n     * Set window stopped to false and update surface visibility when ViewRootImpl surface is\n     * created.\n     * @hide"
+        },
+        {
+          "term": "setChildSurfacePackage(",
+          "line": 1844,
+          "excerpt": "     * remote-owner.\n     *\n     * @param p The SurfacePackage to embed.\n     */\n    public void setChildSurfacePackage(@NonNull SurfaceControlViewHost.SurfacePackage p) {\n        final SurfaceControl lastSc = mSurfacePackage != null ?\n                mSurfacePackage.getSurfaceControl() : null;\n        final SurfaceControl.Transaction transaction = new Transaction();\n        if (mSurfaceControl != null) {\n            if (lastSc != null) {\n                transaction.reparent(lastSc, null);\n                mSurfacePackage.release();\n            }\n            reparentSurfacePackage(transaction, p);\n            applyTransactionOnVriDraw(transaction);\n        }"
+        },
+        {
+          "term": "onDetachedFromWindow()",
+          "line": 435,
+          "excerpt": "        }\n    }\n\n    @Override\n    protected void onDetachedFromWindow() {\n        ViewRootImpl viewRoot = getViewRootImpl();\n        // It's possible to create a SurfaceView using the default constructor and never\n        // attach it to a view hierarchy, this is a common use case when dealing with\n        // OpenGL. A developer will probably create a new GLSurfaceView, and let it manage\n        // the lifecycle. Instead of attaching it to a view, they can just pass\n        // the SurfaceHolder forward, most live wallpapers do it.\n        if (viewRoot != null) {\n            viewRoot.removeSurfaceChangedCallback(this);\n        }\n\n        mAttachedToWindow = false;"
+        },
+        {
+          "term": "onDetachedFromWindow()",
+          "line": 461,
+          "excerpt": "        updateSurface();\n        releaseSurfaces(true /* releaseSurfacePackage*/);\n\n        mHaveFrame = false;\n        super.onDetachedFromWindow();\n    }\n\n    @Override\n    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {\n        int width = mRequestedWidth >= 0\n                ? resolveSizeAndState(mRequestedWidth, widthMeasureSpec, 0)\n                : getDefaultSize(0, widthMeasureSpec);\n        int height = mRequestedHeight >= 0\n                ? resolveSizeAndState(mRequestedHeight, heightMeasureSpec, 0)\n                : getDefaultSize(0, heightMeasureSpec);\n        setMeasuredDimension(width, height);"
+        }
+      ]
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/util/AtomicFile.java",
+      "git_blob": "be8e2c2d745c16e62d0b80e7f841c4a67524ad16",
+      "sha256": "fd8e9350b0d12648e9886162e4cbd2fb64311a3a4c9bcf7144ceaaaa145fc8fe",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/util/AtomicFile.java",
+      "excerpts": [
+        {
+          "term": "startWrite()",
+          "line": 248,
+          "excerpt": "        if (mLegacyBackupName.exists()) {\n            rename(mLegacyBackupName, mBaseName);\n        }\n\n        // It was okay to call openRead() between startWrite() and finishWrite() for the first time\n        // (because there is no backup file), where openRead() would open the file being written,\n        // which makes no sense, but finishWrite() would still persist the write properly. For all\n        // subsequent writes, if openRead() was called in between, it would see a backup file and\n        // delete the file being written, the same behavior as our new implementation. So we only\n        // need a special case for the first write, and don't delete the new file in this case so\n        // that finishWrite() can still work.\n        if (mNewName.exists() && mBaseName.exists()) {\n            if (!mNewName.delete()) {\n                Log.e(LOG_TAG, \"Failed to delete outdated new file \" + mNewName);\n            }\n        }"
+        },
+        {
+          "term": "startWrite()",
+          "line": 322,
+          "excerpt": "    /** @hide */\n    public void write(Consumer<FileOutputStream> writeContent) {\n        FileOutputStream out = null;\n        try {\n            out = startWrite();\n            writeContent.accept(out);\n            finishWrite(out);\n        } catch (Throwable t) {\n            failWrite(out);\n            throw ExceptionUtils.propagate(t);\n        } finally {\n            IoUtils.closeQuietly(out);\n        }\n    }\n\n    @Override"
+        },
+        {
+          "term": "finishWrite(",
+          "line": 254,
+          "excerpt": "        // which makes no sense, but finishWrite() would still persist the write properly. For all\n        // subsequent writes, if openRead() was called in between, it would see a backup file and\n        // delete the file being written, the same behavior as our new implementation. So we only\n        // need a special case for the first write, and don't delete the new file in this case so\n        // that finishWrite() can still work.\n        if (mNewName.exists() && mBaseName.exists()) {\n            if (!mNewName.delete()) {\n                Log.e(LOG_TAG, \"Failed to delete outdated new file \" + mNewName);\n            }\n        }\n        return new FileInputStream(mBaseName);\n    }\n\n    /**\n     * @hide\n     * Checks if the original or legacy backup file exists."
+        },
+        {
+          "term": "finishWrite(",
+          "line": 324,
+          "excerpt": "        FileOutputStream out = null;\n        try {\n            out = startWrite();\n            writeContent.accept(out);\n            finishWrite(out);\n        } catch (Throwable t) {\n            failWrite(out);\n            throw ExceptionUtils.propagate(t);\n        } finally {\n            IoUtils.closeQuietly(out);\n        }\n    }\n\n    @Override\n    public String toString() {\n        return \"AtomicFile[\" + mBaseName + \"]\";"
+        },
+        {
+          "term": "failWrite(",
+          "line": 195,
+          "excerpt": "     * Call when you have failed for some reason at writing to the stream\n     * returned by {@link #startWrite()}.  This will close the current\n     * write stream, and delete the new file.\n     */\n    public void failWrite(FileOutputStream str) {\n        if (str == null) {\n            return;\n        }\n        if (!FileUtils.sync(str)) {\n            Log.e(LOG_TAG, \"Failed to sync file output stream\");\n        }\n        try {\n            str.close();\n        } catch (IOException e) {\n            Log.e(LOG_TAG, \"Failed to close file output stream\", e);\n        }"
+        },
+        {
+          "term": "failWrite(",
+          "line": 326,
+          "excerpt": "            out = startWrite();\n            writeContent.accept(out);\n            finishWrite(out);\n        } catch (Throwable t) {\n            failWrite(out);\n            throw ExceptionUtils.propagate(t);\n        } finally {\n            IoUtils.closeQuietly(out);\n        }\n    }\n\n    @Override\n    public String toString() {\n        return \"AtomicFile[\" + mBaseName + \"]\";\n    }\n"
+        },
+        {
+          "term": "openRead()",
+          "line": 287,
+          "excerpt": "        return mBaseName.lastModified();\n    }\n\n    /**\n     * A convenience for {@link #openRead()} that also reads all of the\n     * file contents into a byte array which is returned.\n     */\n    public byte[] readFully() throws IOException {\n        FileInputStream stream = openRead();\n        try {\n            int pos = 0;\n            int avail = stream.available();\n            byte[] data = new byte[avail];\n            while (true) {\n                int amt = stream.read(data, pos, data.length-pos);\n                //Log.i(\"foo\", \"Read \" + amt + \" bytes at \" + pos"
+        },
+        {
+          "term": "openRead()",
+          "line": 291,
+          "excerpt": "     * A convenience for {@link #openRead()} that also reads all of the\n     * file contents into a byte array which is returned.\n     */\n    public byte[] readFully() throws IOException {\n        FileInputStream stream = openRead();\n        try {\n            int pos = 0;\n            int avail = stream.available();\n            byte[] data = new byte[avail];\n            while (true) {\n                int amt = stream.read(data, pos, data.length-pos);\n                //Log.i(\"foo\", \"Read \" + amt + \" bytes at \" + pos\n                //        + \" of avail \" + data.length);\n                if (amt <= 0) {\n                    //Log.i(\"foo\", \"**** FINISHED READING: pos=\" + pos\n                    //        + \" len=\" + data.length);"
+        }
+      ]
+    }
+  ]
+}

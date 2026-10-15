@@ -18,16 +18,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun NotesScreen(model: NotesViewModel) {
     val state by model.state.collectAsStateWithLifecycle()
-    val ready=!state.busy && state.pending==null
+    val ready=!state.busy && state.pending==null && !state.recoveryBlocked
     val revision=state.revision
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp).semantics { paneTitle="Local Markdown notes" },
         verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        Text("Local Markdown • ${if(state.dirty) "Unsaved memory draft" else "No unsaved changes"}")
-        Text("256 KiB/note • 256 notes. Save explicitly. Draft survives Activity recreation but NOT process death. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR, autosave or backup is claimed.")
+        Text("Local Markdown • ${if(state.dirty) "Unsaved note draft" else "No unsaved changes"}")
+        Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")
+        Text(state.recoveryStatus,Modifier.testTag("notes-recovery-status").semantics { liveRegion=LiveRegionMode.Polite })
         OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
             Button(onClick=model::save,enabled=ready && state.name.isNotBlank(),modifier=Modifier.testTag("notes-save")) { Text("Save note") }
+            OutlinedButton(onClick=model::checkpointNow,enabled=ready,modifier=Modifier.testTag("notes-checkpoint")) { Text("Checkpoint draft now") }
             OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
             if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Move note to trash…") }
         }

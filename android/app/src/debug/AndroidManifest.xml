@@ -3,5 +3,8 @@
         <!-- Test-owned profiles. Same UID is deliberate: partition test, NOT security isolation. Never in release. -->
         <service android:name="dev.fusion.shell.probes.BrowserProfileAProbe" android:exported="false" android:process=":browser_probe_a" />
         <service android:name="dev.fusion.shell.probes.BrowserProfileBProbe" android:exported="false" android:process=":browser_probe_b" />
+        <activity android:name="dev.fusion.shell.probes.BrowserSurfaceActivity" android:exported="false" />
+        <service android:name="dev.fusion.shell.probes.BrowserSurfaceAProbe" android:exported="false" android:process=":browser_surface_a" />
+        <service android:name="dev.fusion.shell.probes.BrowserSurfaceBProbe" android:exported="false" android:process=":browser_surface_b" />
     </application>
 </manifest>
