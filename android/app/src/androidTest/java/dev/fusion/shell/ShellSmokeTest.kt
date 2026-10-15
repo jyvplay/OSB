@@ -236,7 +236,7 @@ class ShellSmokeTest {
     @Test fun editorTabsAtTwoHundredPercentFontScale() = withTwoHundredPercentFont {
         editorTabsDoNotReplaceEachOthersText()
     }
-    @Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont() = withTwoHundredPercentFont {
+    @Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont() = withTwoHundredPercentFont { withVisibleKeyboard {
         openModule("editor")
         compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText("New").performClick()
@@ -255,6 +255,20 @@ class ShellSmokeTest {
         compose.onNodeWithText("New").assertIsDisplayed()
         compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()
         compose.onNodeWithTag("editor-content").assertTextContains("Long line 60", substring=true)
+    } }
+    private fun withVisibleKeyboard(action:()->Unit) {
+        // Explicit disposable-emulator fixture: attached hardware keyboard must not suppress IME.
+        val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val key="show_ime_with_hard_keyboard"
+        val before=android.provider.Settings.Secure.getString(instrumentation.targetContext.contentResolver,key)
+        check(before==null || before=="0" || before=="1")
+        fun command(value:String) {
+            instrumentation.uiAutomation.executeShellCommand(value).use { fd ->
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use { it.readBytes() }
+            }
+        }
+        try { command("settings put secure $key 1"); action() }
+        finally { command(if(before==null) "settings delete secure $key" else "settings put secure $key $before") }
     }
     private fun withTwoHundredPercentFont(action:()->Unit) {
         val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
