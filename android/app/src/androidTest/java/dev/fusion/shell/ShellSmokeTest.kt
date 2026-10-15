@@ -70,7 +70,8 @@ class ShellSmokeTest {
             compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
         }
         compose.onNodeWithTag("editor-content").performTextInput("Draft survives recreation")
-        compose.onNodeWithText("Close tab").performScrollTo().performClick()
+        compose.onNodeWithText("Close tab").performScrollTo().assertIsDisplayed().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodes(hasText("Discard unsaved changes?")).fetchSemanticsNodes().isNotEmpty() && runCatching { compose.onNodeWithText("Discard unsaved changes?").assertIsDisplayed() }.isSuccess }
         compose.onNodeWithText("Discard unsaved changes?").assertIsDisplayed()
         compose.onNodeWithText("Keep editing").performClick()
         compose.activityRule.scenario.recreate()
@@ -119,10 +120,10 @@ class ShellSmokeTest {
             compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
         }
         compose.onNodeWithTag("editor-content").performTextInput("First document")
-        compose.onNodeWithText("New").performScrollTo().performClick()
-        compose.waitUntil(10_000) {
-            compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
-        }
+        compose.onNodeWithTag("editor-content").assertTextContains("First document")
+        compose.onNodeWithText("New").performScrollTo().assertIsDisplayed().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
+        compose.onAllNodesWithTag("editor-tab").assertCountEquals(2)
         compose.onNodeWithTag("editor-content").performTextInput("Second document")
         compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()
         compose.onNodeWithTag("editor-content").assertTextContains("First document")
@@ -227,7 +228,13 @@ class ShellSmokeTest {
         }
     }
 
-    @Test fun savedNoteTrashAtTwoHundredPercentFontScale() {
+    @Test fun savedNoteTrashAtTwoHundredPercentFontScale() = withTwoHundredPercentFont {
+        savedNoteTrashRestoresWithoutLosingItsRevision()
+    }
+    @Test fun editorTabsAtTwoHundredPercentFontScale() = withTwoHundredPercentFont {
+        editorTabsDoNotReplaceEachOthersText()
+    }
+    private fun withTwoHundredPercentFont(action:()->Unit) {
         val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
         val before=android.provider.Settings.System.getString(instrumentation.targetContext.contentResolver,"font_scale")
         check(before==null || before.toFloatOrNull()?.let { it in 0.5f..5f }==true) { "Unexpected existing font setting; no mutation" }
@@ -245,11 +252,18 @@ class ShellSmokeTest {
                     kotlin.math.abs(actual-2f)<0.01f
                 }.getOrDefault(false)
             }
-            savedNoteTrashRestoresWithoutLosingItsRevision()
+            action()
         } finally {
             // DisposableEmulatorRule has already required explicit opt-in AND emulator hardware.
             val value=before?.toFloatOrNull()?.takeIf { it in 0.5f..5f }
             command(if(value==null) "settings delete system font_scale" else "settings put system font_scale $value")
+            compose.waitUntil(10_000) {
+                runCatching {
+                    var actual=0f
+                    compose.activityRule.scenario.onActivity { actual=it.resources.configuration.fontScale }
+                    kotlin.math.abs(actual-(value ?: 1f))<0.01f
+                }.getOrDefault(false)
+            }
         }
     }
 

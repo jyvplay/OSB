@@ -60,6 +60,17 @@ class NotesRecoveryDeviceTest {
             assertEquals("draft",current.state.value.text);assertEquals(newer,files.load(name))
         } finally { first?.let(::close);second?.let(::close);File(app.filesDir,"notes/$name.md").delete() }
     }
+    @Test fun firstReadyStateIncludesInventoryBeforeAcceptingActions() {
+        val name="ready_"+UUID.randomUUID().toString().replace("-","")
+        val saved=NotesStore(app).save(name,"startup inventory",null)
+        val owner=owner()
+        try {
+            assertTrue(owner.model.state.value.names.contains(name))
+            main { owner.model.request(NoteAction.Open(name)) }
+            val state=wait(owner.model) { !it.busy && it.name==name }
+            assertEquals(saved.text,state.text)
+        } finally { close(owner);File(app.filesDir,"notes/$name.md").delete() }
+    }
     @Test fun repeatedCheckpointRequestsUseOneWriterMailbox() {
         val owner=owner()
         try {

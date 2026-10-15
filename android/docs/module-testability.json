@@ -17,7 +17,7 @@
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "635ef1eaf809d69ded4460cf35984b1e2364a52ee2278eef82ccaf90d6086304",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "fc7986c28a80af3f642bdc1e616c0ad9a6e0d755695666e21489523cf1fe989a"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
       }
     },
     {
@@ -227,7 +227,7 @@
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "fc7986c28a80af3f642bdc1e616c0ad9a6e0d755695666e21489523cf1fe989a"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
       }
     },
     {
@@ -256,7 +256,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "fc7986c28a80af3f642bdc1e616c0ad9a6e0d755695666e21489523cf1fe989a"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "91b146e21a7c851abc7d107efce6b66d884c493f71bf1b771ac7dfb66de5796c"
       }
     },
     {

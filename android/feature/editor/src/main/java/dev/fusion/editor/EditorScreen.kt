@@ -2,7 +2,6 @@ package dev.fusion.editor
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +15,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 /** PR-01 / FF-15 / FM-18. Real SAF I/O is owned by an Activity-scoped ViewModel. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -86,7 +87,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                 else -> false
             }
         }, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
             OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
             Button(enabled = ready && active != null && pendingCopy == null,
@@ -96,15 +97,15 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                     active?.let { if (dirty) closingId = it.id else model.closeDocument(it.id) }
                 }) { Text("Close tab") }
         }
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+        FlowRow(Modifier.fillMaxWidth()) {
             session.documents.forEach { doc ->
                 val docDirty = remember(doc.content, doc.savedDigest) { doc.dirty }
-                TextButton(enabled = ready, onClick = { model.select(doc.id) }) {
+                TextButton(enabled = ready, onClick = { model.select(doc.id) },modifier=Modifier.testTag("editor-tab")) {
                     Text((if (doc.id == active?.id) "Selected: " else "") + doc.name + if (docDirty) " • Unsaved" else "")
                 }
             }
         }
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+        FlowRow(Modifier.fillMaxWidth()) {
             OutlinedButton(enabled=ready && (state.buffers[active?.id]?.undoDepth ?: 0)>0,onClick={ model.undo() },modifier=Modifier.testTag("editor-undo")) { Text("Undo") }
             OutlinedButton(enabled=ready && (state.buffers[active?.id]?.redoDepth ?: 0)>0,onClick={ model.undo(redo=true) },modifier=Modifier.testTag("editor-redo")) { Text("Redo") }
             OutlinedButton(enabled=ready && active != null,onClick={ toolsOpen=true }) { Text("Find / Replace / Go to") }
@@ -113,7 +114,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         Text(state.status, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         if (pendingCopy != null) {
             Text("Frozen copy: ${pendingCopy.name}. State: ${pendingCopy.stage}. Retry invalidates older results and keeps the original frozen payload. Inspect any partial destination first; no in-place replay or automatic deletion.")
-            Row(Modifier.horizontalScroll(rememberScrollState())) {
+            FlowRow(Modifier.fillMaxWidth()) {
                 OutlinedButton(enabled = ready, onClick = { retryConfirmId=pendingCopy?.requestId; retryConfirm=true }) { Text("Retry with a new picker") }
                 TextButton(enabled = ready, onClick = { abandoningCopyId=pendingCopy?.requestId; abandoningCopy=true }) { Text("Abandon pending attempt") }
             }
@@ -149,7 +150,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         dismissButton={ TextButton(onClick={ abandoningCopy=false }) { Text("Keep pending attempt") } })
     closingId?.let { id ->
         AlertDialog(onDismissRequest = { closingId = null }, title = { Text("Discard unsaved changes?") },
-            text = { Text("This removes this tab and its local recovery draft. The source document and previously saved copies are not changed.") },
+            text = { Text("This removes this tab and its local recovery draft. The source document and previously saved copies are not changed.",Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
             confirmButton = { TextButton(onClick = { model.closeDocument(id, discard = true); closingId = null }) { Text("Discard draft") } },
             dismissButton = { TextButton(onClick = { closingId = null }) { Text("Keep editing") } })
     }

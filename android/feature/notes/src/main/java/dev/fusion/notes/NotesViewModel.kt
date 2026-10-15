@@ -43,10 +43,15 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val restored=withContext(Dispatchers.IO) { recovery.read() }
-                mutable.value=NotesState(name=restored.name,text=restored.text,savedText=restored.savedText,
-                    revision=restored.revision,busy=false,recoveryStatus="Recovered last local checkpoint; saved notes were not modified.")
+                // Publish readiness once, only after both startup reads. An intermediate busy=false
+                // allowed a caller to observe readiness and have its next action dropped by refresh().
+                val inventory=withContext(Dispatchers.IO) { runCatching { store.list() } }
                 initialized=true
-                refresh()
+                mutable.value=NotesState(names=inventory.getOrDefault(emptyList()),name=restored.name,
+                    text=restored.text,savedText=restored.savedText,revision=restored.revision,busy=false,
+                    status=inventory.exceptionOrNull()?.let { "Inventory unavailable: ${it.message?.take(160)}. Recovered draft retained; refresh explicitly." }
+                        ?: "Local Markdown notes. Recovery checkpoints are separate from explicit Save note.",
+                    recoveryStatus="Recovered last local checkpoint; saved notes were not modified.")
             } catch(e: Exception) {
                 if(e is CancellationException) throw e
                 mutable.value=NotesState(busy=false,recoveryBlocked=true,

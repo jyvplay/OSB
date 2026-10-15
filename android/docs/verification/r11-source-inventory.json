@@ -393,7 +393,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "965fb855fa488c7a04f3609a99b21752d02861d2b1ab0631714ded2a874d0e5e"
+      "sha256": "4e104fc161a714f414daf790ac823fae4e657918f06a7f17be5af7150d2f1c15"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorTools.kt",
@@ -483,7 +483,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "9ad861adf1578f05b87a30a0816323a9c98beca9178ed3d77f51d755efead57b"
+      "sha256": "41d9dd9b77d3c3bc3ec12d5b809d98b6335faec226e05aa753070501914b3589"
     },
     {
       "path": "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt",
