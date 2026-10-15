@@ -731,7 +731,19 @@
       "path": "feature/together/src/main/java/dev/fusion/together/TogetherSession.kt",
       "module": ":feature:together",
       "package": "dev.fusion.together",
-      "sha256": "6f2b989f0c34b5a23386c630e3cbbf695b10e8903c2a06b6e851499693215bbc"
+      "sha256": "058adc1565d458775afdf2b9388d0b888b40a66614796e3de0d5640ac8247b4d"
+    },
+    {
+      "path": "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt",
+      "module": ":feature:together",
+      "package": "dev.fusion.together",
+      "sha256": "3b25746b6b3a83b7dfd3ddf0c5f6d23e5973b9d8aaceb654a521bce9ea13dc90"
+    },
+    {
+      "path": "feature/together/src/main/kotlin/dev/fusion/together/TogetherChannel.kt",
+      "module": ":feature:together",
+      "package": "dev.fusion.together",
+      "sha256": "0396878b173b834a09a58c956f72fd0764ca508a25af318463d228487645dabb"
     },
     {
       "path": "feature/lens/src/main/java/dev/fusion/lens/LensScreen.kt",

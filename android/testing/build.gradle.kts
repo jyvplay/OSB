@@ -179,3 +179,15 @@ tasks.register<JavaExec>("r15Contracts") {
     classpath = r15.runtimeClasspath
     mainClass.set("dev.fusion.testing.R15Checks")
 }
+
+// R16 actual bounded peer transport and causal clock bounds. No simulated player/peer.
+val r16 by sourceSets.creating
+kotlin.sourceSets.named("r16") {
+    kotlin.srcDir("src/r16/kotlin")
+    kotlin.srcDir("../feature/together/src/main/kotlin")
+}
+tasks.register<JavaExec>("r16Contracts") {
+    dependsOn(r16.classesTaskName)
+    classpath = r16.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R16Checks")
+}

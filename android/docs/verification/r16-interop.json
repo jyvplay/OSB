@@ -1,0 +1,369 @@
+{
+  "result": "PASS",
+  "cases": 64,
+  "details": [
+    {
+      "case": "OpenSSL-client-JVM-server-0",
+      "result": "PASS",
+      "endpoint_output": "STATE 9061922289446056098 true",
+      "elapsed_seconds": 0.08400105500004429
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-1",
+      "result": "PASS",
+      "endpoint_output": "STATE 2983826050267008541 false",
+      "elapsed_seconds": 0.07480301899977349
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-2",
+      "result": "PASS",
+      "endpoint_output": "STATE 7486150765702859952 true",
+      "elapsed_seconds": 0.08488000000033935
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-3",
+      "result": "PASS",
+      "endpoint_output": "STATE 8637007374182559627 true",
+      "elapsed_seconds": 0.07310965600026975
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-4",
+      "result": "PASS",
+      "endpoint_output": "STATE 9141883026342630569 true",
+      "elapsed_seconds": 0.08464449600023727
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-5",
+      "result": "PASS",
+      "endpoint_output": "STATE 6899879273254092005 false",
+      "elapsed_seconds": 0.0859211150000192
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-6",
+      "result": "PASS",
+      "endpoint_output": "STATE 169985935421548932 true",
+      "elapsed_seconds": 0.08373222399995939
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-7",
+      "result": "PASS",
+      "endpoint_output": "STATE 8277604403941729662 true",
+      "elapsed_seconds": 0.08231200000000172
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-8",
+      "result": "PASS",
+      "endpoint_output": "STATE 1121985640865407807 true",
+      "elapsed_seconds": 0.07262630300010642
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-9",
+      "result": "PASS",
+      "endpoint_output": "STATE 4878474190637271763 true",
+      "elapsed_seconds": 0.09551065999994535
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-10",
+      "result": "PASS",
+      "endpoint_output": "STATE 7267053915308712269 true",
+      "elapsed_seconds": 0.07575573900021482
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-11",
+      "result": "PASS",
+      "endpoint_output": "STATE 4980957207514803266 true",
+      "elapsed_seconds": 0.07375521599988133
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-12",
+      "result": "PASS",
+      "endpoint_output": "STATE 2859716827160948199 true",
+      "elapsed_seconds": 0.07474286499973459
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-13",
+      "result": "PASS",
+      "endpoint_output": "STATE 3170515209569217998 false",
+      "elapsed_seconds": 0.08292814600008569
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-14",
+      "result": "PASS",
+      "endpoint_output": "STATE 4430304734530188138 true",
+      "elapsed_seconds": 0.08336106900014784
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-15",
+      "result": "PASS",
+      "endpoint_output": "STATE 7643603220875107844 true",
+      "elapsed_seconds": 0.08501777099991159
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-16",
+      "result": "PASS",
+      "endpoint_output": "STATE 3444665304624117996 false",
+      "elapsed_seconds": 0.08216976399990017
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-17",
+      "result": "PASS",
+      "endpoint_output": "STATE 3768998225449526477 true",
+      "elapsed_seconds": 0.078658981999979
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-18",
+      "result": "PASS",
+      "endpoint_output": "STATE 3980661640899514341 false",
+      "elapsed_seconds": 0.08907451699997182
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-19",
+      "result": "PASS",
+      "endpoint_output": "STATE 3909116294681150479 true",
+      "elapsed_seconds": 0.08718350599974656
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-20",
+      "result": "PASS",
+      "endpoint_output": "STATE 8250049288233446109 true",
+      "elapsed_seconds": 0.07638511799996195
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-21",
+      "result": "PASS",
+      "endpoint_output": "STATE 9209020556117894971 false",
+      "elapsed_seconds": 0.07316789099968446
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-22",
+      "result": "PASS",
+      "endpoint_output": "STATE 1921065363414311758 false",
+      "elapsed_seconds": 0.07417647400006899
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-23",
+      "result": "PASS",
+      "endpoint_output": "STATE 2872395747582005184 true",
+      "elapsed_seconds": 0.10185724099983418
+    },
+    {
+      "case": "OpenSSL-client-JVM-server-24",
+      "result": "PASS",
+      "endpoint_output": "STATE 1635472941293985585 false",
+      "elapsed_seconds": 0.07536372899994603
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-0",
+      "result": "PASS",
+      "endpoint_output": "STATE 5785121349512896044 true RTT 37067035"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-1",
+      "result": "PASS",
+      "endpoint_output": "STATE 7016203776650206322 true RTT 38060906"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-2",
+      "result": "PASS",
+      "endpoint_output": "STATE 6784607713608504510 true RTT 35020610"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-3",
+      "result": "PASS",
+      "endpoint_output": "STATE 5685912480666010063 false RTT 44039782"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-4",
+      "result": "PASS",
+      "endpoint_output": "STATE 27272970955530449 false RTT 38616698"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-5",
+      "result": "PASS",
+      "endpoint_output": "STATE 4646419652529612352 false RTT 40673130"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-6",
+      "result": "PASS",
+      "endpoint_output": "STATE 4638750500419081643 true RTT 45637354"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-7",
+      "result": "PASS",
+      "endpoint_output": "STATE 5998674995354521669 false RTT 37757510"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-8",
+      "result": "PASS",
+      "endpoint_output": "STATE 7397232027904251822 true RTT 41856302"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-9",
+      "result": "PASS",
+      "endpoint_output": "STATE 4924884823227457675 false RTT 37407682"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-10",
+      "result": "PASS",
+      "endpoint_output": "STATE 4353275224178429817 false RTT 45595908"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-11",
+      "result": "PASS",
+      "endpoint_output": "STATE 2320928645977674660 true RTT 37434839"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-12",
+      "result": "PASS",
+      "endpoint_output": "STATE 2504915025491838780 false RTT 40694951"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-13",
+      "result": "PASS",
+      "endpoint_output": "STATE 7027160964678057463 true RTT 38803213"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-14",
+      "result": "PASS",
+      "endpoint_output": "STATE 7733299526430948968 true RTT 37538196"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-15",
+      "result": "PASS",
+      "endpoint_output": "STATE 3808205334239533167 true RTT 37867023"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-16",
+      "result": "PASS",
+      "endpoint_output": "STATE 258869725678618606 false RTT 48156701"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-17",
+      "result": "PASS",
+      "endpoint_output": "STATE 8282138554562492792 true RTT 39989338"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-18",
+      "result": "PASS",
+      "endpoint_output": "STATE 2811530034736976585 false RTT 41791645"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-19",
+      "result": "PASS",
+      "endpoint_output": "STATE 6424503278968821716 false RTT 39709859"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-20",
+      "result": "PASS",
+      "endpoint_output": "STATE 4694480044281093129 true RTT 36904490"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-21",
+      "result": "PASS",
+      "endpoint_output": "STATE 3596537796784580986 false RTT 38882835"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-22",
+      "result": "PASS",
+      "endpoint_output": "STATE 127062983001253232 false RTT 38761898"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-23",
+      "result": "PASS",
+      "endpoint_output": "STATE 1208504503067963043 false RTT 37018820"
+    },
+    {
+      "case": "JVM-client-OpenSSL-server-24",
+      "result": "PASS",
+      "endpoint_output": "STATE 8219101093068601937 true RTT 39494768"
+    },
+    {
+      "case": "key",
+      "result": "PASS",
+      "endpoint_output": "REFUSED AEADBadTagException",
+      "elapsed_seconds": 0.07943375900003957
+    },
+    {
+      "case": "media",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException",
+      "elapsed_seconds": 0.07782628499990096
+    },
+    {
+      "case": "negative",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException",
+      "elapsed_seconds": 0.0713166620002994
+    },
+    {
+      "case": "flag",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException",
+      "elapsed_seconds": 0.07042209800010824
+    },
+    {
+      "case": "role",
+      "result": "PASS",
+      "endpoint_output": "REFUSED AEADBadTagException",
+      "elapsed_seconds": 0.07981022500007384
+    },
+    {
+      "case": "tamper",
+      "result": "PASS",
+      "endpoint_output": "REFUSED AEADBadTagException",
+      "elapsed_seconds": 0.08226523200028169
+    },
+    {
+      "case": "truncate",
+      "result": "PASS",
+      "endpoint_output": "REFUSED EOFException",
+      "elapsed_seconds": 0.04106998299994302
+    },
+    {
+      "case": "magic",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException",
+      "elapsed_seconds": 0.03494459300009112
+    },
+    {
+      "case": "slow",
+      "result": "PASS",
+      "endpoint_output": "REFUSED SocketException",
+      "elapsed_seconds": 1.5017890340000122
+    },
+    {
+      "case": "fresh-server-challenge-rejects-old-request",
+      "result": "PASS",
+      "endpoint_output": "REFUSED AEADBadTagException",
+      "elapsed_seconds": 0.07165927999994892
+    },
+    {
+      "case": "reply-negative-clock",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException"
+    },
+    {
+      "case": "reply-processing",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException"
+    },
+    {
+      "case": "reply-media",
+      "result": "PASS",
+      "endpoint_output": "REFUSED IllegalArgumentException"
+    },
+    {
+      "case": "reply-role",
+      "result": "PASS",
+      "endpoint_output": "REFUSED AEADBadTagException"
+    }
+  ],
+  "cryptography": "46.0.3",
+  "openssl": "OpenSSL 3.5.4 30 Sep 2025",
+  "sha256": {
+    "tools/run_r16_interop.py": "f6e989a7fb20ed30690a308284863986583f0a128ce2d31decc5760b3d54d23b",
+    "testing/build/r16/TogetherChannel.jar": "8fc2bb5df3efe6368df2fa9818be21f3d1cf33bf35aac45cd4159d4d2f56420a",
+    "testing/build/r16/checks.jar": "dba80347d90a5ee1cca43aab6ec2245165f306e6d644b82df288b61fc676426b"
+  },
+  "scope": "Real loopback sockets between separate Kotlin JVM and independent Python/OpenSSL endpoints; no multi-device, real player, pairing UI, Syncplay or physical performance acceptance"
+}

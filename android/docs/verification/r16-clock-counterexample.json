@@ -1,0 +1,9 @@
+{
+  "counterexample": "Public constructor admits inverted interval and negative RTT",
+  "stdout": "PeerClock(offsetLowerNanos=10, offsetUpperNanos=-10, roundTripNanos=-1)\n",
+  "consumer": "import dev.fusion.together.PeerClock\nfun main() { println(PeerClock(10,-10,-1)) }\n",
+  "before_sha256": {
+    "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt": "fd71b9c42e42fa5bd91b729d28a44495684a6c65bb4e3858ebbe6b468e179e5a",
+    "testing/build/r16/TogetherChannel.jar": "22cbd8f00af812decf0ab18ceb910e1cec56c08554ed0069c7ae37bcbac26fb0"
+  }
+}

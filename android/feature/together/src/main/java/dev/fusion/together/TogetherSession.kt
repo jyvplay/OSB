@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 fun TogetherScreen() {
     Column(Modifier.fillMaxSize().padding(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Together unavailable")
-        Text("Own-media networking, authenticated peers, clock measurements and Syncplay-compatible transport are not implemented. S22 has not passed.")
+        Text("A bounded authenticated socket exchange exists, but pairing, rooms, real-player integration, multi-device synchronization and Syncplay compatibility are not implemented. S22 has not passed.")
         Text("No room is created and no media is playing or synchronized by this module.")
     }
 }
