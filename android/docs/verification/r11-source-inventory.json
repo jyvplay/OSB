@@ -311,7 +311,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "450b8b7cd6155c240a3be137e670b1e561578425ec8dada16cebabca96427b82"
+      "sha256": "98c3b0cbea70efc0a0f4a7597923f46e01c043b937469fc65d9cfeefa545ce0a"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -785,7 +785,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "5aee8ac4b02d60d8ecc9ce03330d96a24b43ffe1fcbf319b9c7ab4ed956ca772"
+      "sha256": "311ae0218ded03b902402a59b1dcab102c6c7e49e18d810091e73816230b9337"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",

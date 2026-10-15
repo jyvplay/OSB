@@ -30,7 +30,8 @@ fun TaskPanel(context: Context) {
                 val result=withContext(Dispatchers.IO) { action() }
                 book=result;blocked=false;status="Loaded/saved revision ${result.revision}. No reminder scheduled."
                 if(clearInput) { title="";date="" }
-            } catch(_:TaskConflict) { blocked=true;status="Tasks changed elsewhere. Reload before editing; your input is retained." }
+            } catch(e:kotlinx.coroutines.CancellationException) { throw e }
+            catch(_:TaskConflict) { blocked=true;status="Tasks changed elsewhere. Reload before editing; your input is retained." }
             catch(_:Exception) { blocked=true;status="Load/save could not be confirmed. Data and input are not cleared. Reload to inspect; do not assume rollback." }
             finally { busy=false }
         }
