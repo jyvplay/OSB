@@ -9,16 +9,19 @@ import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
 import java.io.File
+import java.io.ByteArrayOutputStream
+import dev.fusion.ooxml.SheetFrame
 import java.security.MessageDigest
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
-/** FF-12 spike: real isolated UID + read-only descriptor boundary, not an Office/PDF engine. */
+/** FF-12 spike: real isolated UID + read-only descriptor boundary, bounded original arithmetic experiment; not an Office/PDF engine. */
 class FormatWorkerService : Service() {
     companion object {
         const val DIGEST = 1
         const val SOCKET_PROBE = 2
+        const val DECIMAL_SHEET = 3
         const val MAX_INPUT_BYTES = 16 * 1024 * 1024
         const val LIFETIME_MS = 5000L
         internal const val PRIVATE_NAME = "r11-isolation-[a-zA-Z0-9]+\\.tmp"
@@ -38,7 +41,7 @@ class FormatWorkerService : Service() {
             val id=data.getString("id")
             val privateName=data.getString("privateName")
             val socketPort=data.getInt("socketPort",0)
-            if(operation !in setOf(DIGEST,SOCKET_PROBE) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
+            if(operation !in setOf(DIGEST,SOCKET_PROBE,DECIMAL_SHEET) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
                 input?.close();return
             }
             work.execute {
@@ -54,18 +57,23 @@ class FormatWorkerService : Service() {
                             "Read-only descriptor required"
                         }
                         val hash=MessageDigest.getInstance("SHA-256");var size=0
+                        val limit=if(operation==DECIMAL_SHEET) SheetFrame.MAX_INPUT else MAX_INPUT_BYTES
+                        val payload=if(operation==DECIMAL_SHEET) ByteArrayOutputStream() else null
                         // A dup shares the offset with its owner. The broker must provide a fresh open, not reuse a cursor.
                         ParcelFileDescriptor.AutoCloseInputStream(ParcelFileDescriptor.dup(fd.fileDescriptor)).use { stream ->
                             val bytes=ByteArray(8192)
                             while(true) {
-                                val n=stream.read(bytes,0,minOf(bytes.size,MAX_INPUT_BYTES-size+1))
+                                val n=stream.read(bytes,0,minOf(bytes.size,limit-size+1))
                                 if(n<0) break
                                 require(n>0) { "No progress" };size+=n
-                                require(size<=MAX_INPUT_BYTES) { "Input byte budget exceeded" };hash.update(bytes,0,n)
+                                require(size<=limit) { "Input byte budget exceeded" };hash.update(bytes,0,n);payload?.write(bytes,0,n)
                             }
                         }
                         response.putString("digest",hash.digest().joinToString("") { "%02x".format(it) })
                         response.putInt("bytes",size)
+                        // Original bounded parser now runs in this actual isolated worker, never on Binder/main.
+                        // [U] verify on API 34/36/37: Binder result bounds, service death and parser behavior.
+                        if(payload!=null) response.putByteArray("sheetResult",SheetFrame.execute(payload.toByteArray()))
                     }
                     if(operation==SOCKET_PROBE) {
                         require(socketPort in 1..65535)

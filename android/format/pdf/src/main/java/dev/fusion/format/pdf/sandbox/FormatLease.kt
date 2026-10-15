@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
+import dev.fusion.ooxml.SheetFrame
 import java.io.Closeable
 import java.io.File
 import java.util.UUID
@@ -18,7 +19,7 @@ class FormatLease(context: Context) : Closeable {
     data class Evidence(val uid: Int,val pid: Int,val bytes: Int,val digest: String,
                         val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int,
                         val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long,
-                        val socketOutcome: String?,val socketErrno: Int)
+                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null)
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -48,8 +49,15 @@ class FormatLease(context: Context) : Closeable {
             if(!digest.matches(Regex("[0-9a-f]{64}")) || size !in 0..FormatWorkerService.MAX_INPUT_BYTES) {
                 result.completeExceptionally(IllegalStateException("Malformed worker result"));return
             }
+            val sheet=if(message.what==FormatWorkerService.DECIMAL_SHEET) {
+                try {
+                    val frame=requireNotNull(data.getByteArray("sheetResult"))
+                    require(size<=SheetFrame.MAX_INPUT)
+                    SheetFrame.readResult(frame)
+                } catch(error:Exception) { result.completeExceptionally(error);return }
+            } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
-                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1)))
+                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet))
         }
     })
     private val connection=object: ServiceConnection {
@@ -78,6 +86,10 @@ class FormatLease(context: Context) : Closeable {
     /** A fresh open is mandatory: dup alone shares file position with its owner. Caller owns the source. */
     fun digest(file: File, privateProbeName: String?=null): Evidence =
         ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use { digestDescriptor(it,privateProbeName) }
+    /** Input is an FSC1 frame, not an Office document. Result remains untrusted bounded data. */
+    fun evaluateSheet(file:File):Evidence = ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
+        request(it,null,FormatWorkerService.DECIMAL_SHEET,0)
+    }
     fun probeSocket(file: File,loopbackPort: Int): Evidence {
         require(loopbackPort in 1..65535)
         return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {

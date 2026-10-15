@@ -100,14 +100,27 @@
     },
     {
       "module": ":core:model",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Gate/value types only; safety tests do not supply Files functionality or a new engine.",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Complete immutable cross-module models, schema/compatibility and full product integration",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Canonical own-app launch-link encoding/decoding with module/workspace allowlist and ambiguity refusal.",
+      "production": [
+        "core/model/src/main/kotlin/dev/fusion/model/LaunchLinks.kt"
+      ],
+      "checks": [
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
+        "tools/run_r15_contracts.py",
+        "tools/run_r15_interop.py"
+      ],
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "limit": "No Intent registration/dispatch, document grant, cross-device handoff or complete shared domain model.",
+      "sha256": {
+        "core/model/src/main/kotlin/dev/fusion/model/LaunchLinks.kt": "cbd0d0b85d035b317f9ac5372308c71c84849ecedb4a19eecbfa0a3d56ae6d9c",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt": "4d5d8478936c253f53d3a2270516879821db85e354a8f41b22a5bf7c797ee659",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
+        "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
+        "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1"
+      }
     },
     {
       "module": ":core:commands",
@@ -389,14 +402,27 @@
     },
     {
       "module": ":feature:vault",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Vault UI/storage source; pilot blocked",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Reviewed secure lifecycle, exclusion/lock/key recovery, no data-loss paths, device/security tests",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded AES256-GCM envelope with fresh96-bit nonce, authenticated header/context and bidirectional external crypto verification.",
+      "production": [
+        "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt"
+      ],
+      "checks": [
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
+        "tools/run_r15_contracts.py",
+        "tools/run_r15_interop.py"
+      ],
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "limit": "Caller supplies/protects key. No KDF/Keystore, replay/rollback protection, secure deletion, vault unlock or complete security gate acceptance.",
+      "sha256": {
+        "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt": "f3967e66f4ae6e84f7fb93cbbc45b1445e4ab8f431df69407beb7c069b9d6b1a",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt": "4d5d8478936c253f53d3a2270516879821db85e354a8f41b22a5bf7c797ee659",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
+        "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
+        "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1"
+      }
     },
     {
       "module": ":feature:notes",
@@ -536,14 +562,27 @@
     },
     {
       "module": ":feature:capture",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Native playback/revocation/exclusion/power-loss and hardware encoder measurement",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded monotonic pause/resume interval accounting, consumed by real recorder start/stop status.",
+      "production": [
+        "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt"
+      ],
+      "checks": [
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
+        "tools/run_r15_contracts.py",
+        "tools/run_r15_interop.py"
+      ],
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "limit": "Observed elapsed intervals are not encoded media timestamps. No new MediaProjection/encoder/thermal/physical gate acceptance.",
+      "sha256": {
+        "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt": "7a6e0d87e4d929542576c1c4de5b84ead4ab557d31433073c3e8ec897065e150",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt": "4d5d8478936c253f53d3a2270516879821db85e354a8f41b22a5bf7c797ee659",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
+        "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
+        "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1"
+      }
     },
     {
       "module": ":feature:backup",
@@ -626,25 +665,51 @@
     },
     {
       "module": ":feature:lens",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Camera preview only; explicit experimental consent",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. S25\u201328 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Finite quarter-turn/mirror/fit/crop transforms and inverse, checked with exact rational references.",
+      "production": [
+        "feature/lens/src/main/kotlin/dev/fusion/lens/ViewportTransform.kt"
+      ],
+      "checks": [
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
+        "tools/run_r15_contracts.py",
+        "tools/run_r15_interop.py"
+      ],
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "limit": "Not wired to CameraX sensor/metering pipeline. No virtual camera, segmentation, relighting or hardware acceptance.",
+      "sha256": {
+        "feature/lens/src/main/kotlin/dev/fusion/lens/ViewportTransform.kt": "444aebd14110b254fd1ab07e556e2aa531ca1bfc3258fdfaa641636662c49874",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt": "4d5d8478936c253f53d3a2270516879821db85e354a8f41b22a5bf7c797ee659",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
+        "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
+        "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1"
+      }
     },
     {
       "module": ":feature:messages",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "SMS repository/surface source, role/transport gaps; pilot blocked",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Own-Mac client, SMS role/MMS, Matrix/XMPP, delivery states, security/device/legal acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Strict bounded plaintext transcript archive with actual file roundtrip and independent binary/CRC verification.",
+      "production": [
+        "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt"
+      ],
+      "checks": [
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
+        "tools/run_r15_contracts.py",
+        "tools/run_r15_interop.py"
+      ],
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "limit": "Not authentication/encryption, system message access, attachments, own-Mac/SMS/RCS transport or a completed messaging UI.",
+      "sha256": {
+        "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt": "f66857b47fba58f03f52b414f6540ef215f4064c4ad70269f9c09674d61c580d",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt": "4d5d8478936c253f53d3a2270516879821db85e354a8f41b22a5bf7c797ee659",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
+        "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
+        "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1"
+      }
     },
     {
       "module": ":feature:automation",
@@ -712,11 +777,12 @@
       "module": ":format:ooxml",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded lossy text extraction and original new literal-cell XLSX writer; external openpyxl readback. Neither is an Office engine. R14 adds original bounded decimal dependency arithmetic, not LibreOffice formula parity.",
+      "behavior": "Bounded lossy text extraction and original new literal-cell XLSX writer; external openpyxl readback. Neither is an Office engine. R14 adds original bounded decimal dependency arithmetic, not LibreOffice formula parity. R15 adds bounded canonical arithmetic request/result framing; actual isolated-worker execution requires native evidence.",
       "production": [
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt"
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt"
       ],
       "checks": [
         "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt",
@@ -727,14 +793,19 @@
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
-        "tools/run_r14_interop.py"
+        "tools/run_r14_interop.py",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
+        "tools/run_r15_contracts.py",
+        "tools/run_r15_interop.py"
       ],
-      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py",
+      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py",
       "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "sha256": {
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt": "e81b290a5bc56aed12a4c06908752e9c5d1b838555872c99272881d05e84739b",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt": "913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt": "d2845e2365719ae640159d08d47c58346a9c89e26de9d2755cd3224536fb4fdd",
         "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt": "984e49dacb739fbdb5024e028fd7a2e03518f47ad023cc058715191eb3ca757e",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
@@ -743,7 +814,11 @@
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
-        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt": "4d5d8478936c253f53d3a2270516879821db85e354a8f41b22a5bf7c797ee659",
+        "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
+        "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
+        "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1"
       }
     },
     {
@@ -760,7 +835,7 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
       "sha256": {
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "844cf12cad5dd2b41248eaad4bf21476c9e1a1bd78761f2e8f2a627d8c1b15f9",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "51a5cfa31c77df5b9e208bb8da63f04c01eeaaa73c9e4dc9b39fb2e84d8663da",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a"
       }
     },

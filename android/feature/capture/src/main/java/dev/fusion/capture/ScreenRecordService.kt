@@ -35,6 +35,7 @@ object RecorderState {
 /** MD-01 / SC-09 / CA-14: real local recorder; not a cast transport or verified HW encoder. */
 class ScreenRecordService : Service() {
     private var projection: MediaProjection? = null
+    private var timeline = RecordingTimeline()
     private var display: VirtualDisplay? = null
     private var recorder: MediaRecorder? = null
     private var partial: File? = null
@@ -127,6 +128,7 @@ class ScreenRecordService : Service() {
             display = mp.createVirtualDisplay("FusionCapture", width, height, resources.configuration.densityDpi,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, created.surface, null, main)
             created.start()
+            timeline=RecordingTimeline().also { it.start(SystemClock.elapsedRealtime()) }
             RecorderState.active.value = true
             RecorderState.status.value = "Recording selected screen/app: ${width}×$height, AVC, 30 fps requested. No audio. Hardware encoder and latency not measured."
         } catch (e: Exception) {
@@ -137,6 +139,7 @@ class ScreenRecordService : Service() {
     private fun finishCapture(reason: String, discard: Boolean = false) {
         if (RecorderState.finalizing.value) return
         val started = RecorderState.active.value
+        val observed = if(started) runCatching { timeline.stop(SystemClock.elapsedRealtime()).activeMillis }.getOrNull() else null
         RecorderState.active.value = false
         RecorderState.finalizing.value = true
         RecorderState.status.value = "$reason Finalizing; no completed file claimed yet."
@@ -174,7 +177,7 @@ class ScreenRecordService : Service() {
                 }
             }
             RecorderState.completed.value = result.first
-            RecorderState.status.value = "$reason ${result.second}"
+            RecorderState.status.value = "$reason ${result.second}" + (observed?.let { " Observed recorder-active interval: ${it}ms, not encoded-media duration." } ?: "")
             RecorderState.finalizing.value = false
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()

@@ -164,3 +164,18 @@ tasks.register<JavaExec>("r14Contracts") {
     classpath = r14.runtimeClasspath
     mainClass.set("dev.fusion.testing.R14Checks")
 }
+
+// R15 production kernels and original arithmetic wire format. No Android stubs.
+val r15 by sourceSets.creating
+kotlin.sourceSets.named("r15") {
+    kotlin.srcDir("src/r15/kotlin")
+    listOf("feature/lens", "feature/capture", "feature/messages", "feature/vault", "core/model", "format/ooxml").forEach {
+        kotlin.srcDir("../$it/src/main/kotlin")
+    }
+    kotlin.include("**/ViewportTransform.kt", "**/RecordingTimeline.kt", "**/TranscriptArchive.kt", "**/VaultEnvelope.kt", "**/LaunchLinks.kt", "**/SheetFrame.kt", "**/DecimalSheet.kt", "**/R15Checks.kt", "**/R15Oracle.kt")
+}
+tasks.register<JavaExec>("r15Contracts") {
+    dependsOn(r15.classesTaskName)
+    classpath = r15.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R15Checks")
+}

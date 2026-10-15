@@ -1,0 +1,7 @@
+{
+  "kind": "Actual separately compiled consumer: result checker accepted outside engine address domain",
+  "source_sha256": "61fa96fef90a30c74e854f5cbe0834ea06879359b3bf4acb3afa285e405395c6",
+  "library_sha256": "7a1141189ae1785162b146b16c7cd600e0ac1f44f2396bd6956ab8ebb37a2c27",
+  "consumer": "import dev.fusion.ooxml.SheetFrame\nfun main() { println(SheetFrame.readResult(\"FSR1\\nZZ9999\\t1\\n\".toByteArray())) }\n",
+  "stdout": "{ZZ9999=1}\n"
+}
