@@ -24,6 +24,8 @@ val LocalDensityProfile = staticCompositionLocalOf { FusionDensity.Balanced }
 
 private val Scheme = darkColorScheme(
     primary = Color(0xFF65DDB4),
+    // Opaque sRGB foreground calculation; not a rendered accessibility pass.
+    onPrimary = Color(0xFF000000L or requireNotNull(Contrast.foreground(0,0x65DDB4)).toLong()),
     background = Color(0xFF0C1011),
     surface = Color(0xFF191E20),
     onBackground = Color(0xFFE4E4E7),

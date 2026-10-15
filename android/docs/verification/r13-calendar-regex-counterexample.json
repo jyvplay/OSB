@@ -1,0 +1,6 @@
+{
+  "experiment": "Actual Kotlin2.2.21/JRE17 execution of a minimal one-event CRLF fixture",
+  "probe_source": "fun main() {\n val text=\"BEGIN:VCALENDAR\\r\\nBEGIN:VEVENT\\r\\nEND:VEVENT\\r\\nEND:VCALENDAR\\r\\n\"\n println(\"old_regex=\"+Regex(\"(?m)^BEGIN:VEVENT\\\\r$\").findAll(text).count())\n println(\"exact_CRLF_lines=\"+text.split(\"\\r\\n\").count { it==\"BEGIN:VEVENT\" })\n}\n",
+  "stdout": "old_regex=0\nexact_CRLF_lines=1\n",
+  "conclusion": "The old CRLF/multiline-anchor assertion reports zero on a literal one-event fixture. Replace it with exact physical-line counting; native repair not yet executed."
+}

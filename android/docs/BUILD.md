@@ -1,4 +1,116 @@
-# R12 continuation build and try-out entry points
+# R14 current build and try-out entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
+AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36. Current min/compile/target34/36/36
+remains a deviation from requested compile37. This is an incomplete debug application,
+not a production beta or complete Office engine.
+
+**39/48 modules (81.25%) have bounded executable subsets;0/48 are fully accepted.**
+Full A–J evidence, six constructions, repairs and limitations: [R14-ENGINEERING.md](R14-ENGINEERING.md).
+Inherited native run38687376592:55 PASS/2 FAIL; calendar repair passed, editor redo/recreation
+and large-font threading failures remained in that inherited run.
+R14 de06095/run38689433735:both debug flavors/JVM/contracts/lint succeeded; native63 PASS/1 FAIL.
+All six new kernel cases and both editor cases passed in that run. The Settings test incorrectly
+assumed BALANCED instead of the actual COMPACT default. Its corrected fixture and later UI changes
+require a fresh native run; no full-product acceptance follows.
+
+## Try the actual changes
+
+- **Files:** choose a folder with the Android picker. Use literal folder filtering, Name or Largest.
+  Directories remain first. No file mutation is enabled. Metadata query limit5000 items;
+  underlying provider enumeration is not time-bounded. Provider size0 may mean unknown.
+- **Settings:** select a different density, review, Cancel or Apply reviewed density.
+  The existing desktop geometry changes only on explicit apply. A changed current value
+  conflicts instead of being overwritten. The displayed status is not a durability receipt.
+- Primary-color foreground uses the new opaque sRGB contrast component. This does not
+  certify all controls, text, translucent surfaces, displays or accessibility.
+- SpatialFocus, NoticeLedger and DecimalSheet are tested public Kotlin APIs, not newly completed
+  global focus, notification or Office workflows. Notification access remains disabled.
+
+## Reproduce R14 checks
+
+From `android/`, configure JAVA_HOME for JDK17 and KOTLINC for Kotlin2.2.21:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_r14_contracts.py
+python3 tools/run_r14_interop.py
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+./gradlew :testing:r14Contracts
+```
+
+Fresh host results:1893 assertions,600 cross-language cases,74 Python tests.
+The interop runner requires a fresh compiled receipt and verifies source/JAR hashes.
+Python references are same-author differential checks using maintained decimal/AST;
+no actual Office engine or Android runtime is inferred. R13 was rebuilt and rerun too:
+503 host assertions and404 real-reader/differential cases passed.
+
+Native assemble/lint/disposable-emulator commands below remain applicable; they include six
+R14 kernel/adapter cases and actual density review/cancel/apply UI. Never run destructive fixture
+reset on personal data. No physical/API37/AX/legal/isolation acceptance is inferred from host checks.
+
+---
+
+# Historical R13 build and bounded-subset entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
+**AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36**. IDE branding is not compatibility proof.
+Current min/compile/target34/36/36 remains a deviation from requested compile37.
+
+**34/48 modules (70.83%) have qualifying bounded executable subsets;0/48 are fully
+accepted.** This is not a production-beta or full Office implementation. Exact evidence,
+six mechanisms, counterexamples and residual gaps: [R13-ENGINEERING.md](R13-ENGINEERING.md).
+The inherited API34 run38684747487 has49 PASS/2 FAIL, despite a passing new plain real-IME
+test. R13 candidatef0cc82d/run38685789036 has a successful build/JVM/contracts/lint job;
+its managed-device suite finished55 PASS/2 FAIL (editor replacement and the calendar-test
+regex counterexample). The corrected calendar assertion and later control-character hardening
+require their own native run. See retained receipts in the R13 report; this is not a green build.
+
+## Try actual app-local automation
+
+1. Build/run `proDebug` on a disposable API34+ emulator using the commands below.
+2. Open Automation; acknowledge the existing experimental/test-data consent gate.
+3. Enter `workspace 2` and `open calculator` on separate lines, then explicitly Execute.
+4. The host dispatches approved actions to its actual desktop state. No host means Execute
+   is unavailable; malformed programs are rejected before dispatch. A later dispatch failure
+   stops the plan and retains earlier effects. Plans are session-only, not scheduled jobs.
+
+Terminal now uses a bounded quoted argument lexer for its builtins. `echo "two words" ''`
+exercises quoted/empty arguments; this is **not** a PTY or POSIX shell. Calendar export,
+content receipts and literal XLSX creation are tested public Kotlin APIs, not newly finished
+end-user workflows. No full Office import/edit/render/recalc, journaled move or CalendarContract
+acceptance is claimed.
+
+## Reproduce R13 host checks (not Android execution)
+
+From `android/`, configure `JAVA_HOME` to JDK17 and `KOTLINC` to the Kotlin2.2.21 compiler
+executable. Host dependencies are installed outside the repository and are not APK dependencies:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_r13_contracts.py
+python3 -m pip install --target "$HOME/.cache/fusion-r13-oracles" openpyxl==3.1.5 icalendar==7.3.0
+PYTHONPATH="$HOME/.cache/fusion-r13-oracles" python3 tools/probe_calendar_reader.py
+PYTHONPATH="$HOME/.cache/fusion-r13-oracles" python3 tools/run_r13_interop.py
+python3 tools/native_source_audit.py --check
+python3 tools/module_testability.py --check
+python3 -m unittest discover -s tools -p 'test_*.py'
+# Gradle's JVM source set (requires the configured Android build environment):
+./gradlew :testing:r13Contracts
+```
+
+Fresh results:503 host assertions,404 independent-reader/differential cases,74 Python tests.
+The interop runner checks compiled receipt hashes, including actual JARs. Rebuild first; stale
+or missing receipts/binaries are not treated as a pass. The older icalendar6.3.2 reader loses
+literal backslashes on its own writer's output; its failing calibration is retained, not hidden.
+Run the same probe in a separate host environment pinned to6.3.2 to reproduce that witness.
+
+Native assemble, lint and disposable-emulator commands below remain applicable and include
+`R13SubsetDeviceTest`, actual automation→Calculator UI dispatch and real IME observations.
+No local SDK/device execution or physical acceptance is inferred from the host commands.
+
+---
+
+# Historical R12 continuation build and try-out entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with a version compatible with
 **AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36**. The IDE name itself is not compatibility

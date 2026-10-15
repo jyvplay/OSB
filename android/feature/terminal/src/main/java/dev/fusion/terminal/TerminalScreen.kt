@@ -28,10 +28,11 @@ fun TerminalScreen(shell: LocalShell) {
         LazyColumn(Modifier.weight(1f)) {
             items(lines) { Text(it, color = if (it.startsWith("$")) Color(0xFF65DDB4) else Color(0xFFD4D4D8), fontFamily = FontFamily.Monospace, fontSize = 12.sp) }
         }
-        OutlinedTextField(input, { input = it }, Modifier.fillMaxSize(0.2f), singleLine = true, label = { Text("command") })
+        OutlinedTextField(input, { if (it.length <= 4096) input = it }, Modifier.fillMaxSize(0.2f), singleLine = true, label = { Text("command") })
         androidx.compose.material3.Button(onClick = {
             val out = shell.run(input)
             if (out.firstOrNull() == "__clear__") lines.clear() else { lines.add("$ $input"); lines.addAll(out) }
+            while (lines.size > 200) lines.removeAt(0)
             input = ""
         }) { Text("Run") }
     }

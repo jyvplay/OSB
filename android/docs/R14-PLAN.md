@@ -1,0 +1,15 @@
+# R14 pre-implementation contract and rejection thresholds
+
+Existing baseline:34/48 bounded testable modules;0 fully accepted. Work remains on arena/60b30790-osb / PR3; no merge. Available: Git/gh, Python, Kotlin2.2.21/JRE17 cache, remote Actions, external Python readers. No local SDK/device, agents, prover, physical lab or counsel.
+
+Six separate candidate artifacts, before implementation:
+1. Files directory query: bounded immutable metadata, literal filtering, directory-first natural ordering without numeric overflow; connect to read-only Files. Reject duplicate identities/malformed Unicode/budget overflow. Does not bound SAF enumeration or grant mutations.
+2. Design-system contrast: opaque sRGB luminance/contrast and preferred/black/white foreground selection. Verify with a differently implemented high-precision Python oracle. Does not certify rendered text, HDR/transparency or accessibility.
+3. Accessibility spatial traversal: finite visible/enabled rectangle graph, deterministic directional target selection. No Android input injection/global focus/AX acceptance. Attack ties, overlaps, NaN, missing current and disabled targets.
+4. Alerts temporal ledger: bounded public-notice state, explicit redaction/removal, TTL, monotonic caller-supplied time, deterministic eviction. Notification listener remains disabled. Attack public→secret update, expiry equality, rollback, capacity and stale replacement.
+5. Settings three-way patch: bounded key/value snapshots, conflict-detecting apply with no partial effects and unrelated-edit preservation. No persistence/permission/whole-settings implementation. Attack aliasing, conflicts and repeated apply.
+6. Original spreadsheet arithmetic: bounded decimal expression parser and cell dependency evaluation, cycle/unknown-cell refusal, no external names/functions/macros. Independent Python decimal checks. Not native Office import/render/recalc parity.
+
+H+: these bounded behaviors are achievable with current libraries. H−: a concrete invariant/cross-module constraint is violated; reject that candidate until repaired. H∂: claims depend on domain, reader/platform or resource assumptions. No global impossibility theorem is asserted. Declare a subset only after separately compiling real production APIs and executing positive, negative and patch-specific tests with source/artifact receipts. No Android integration pass without exact native results. All original device/legal/isolation gates remain closed. A repaired component gets a fresh affected-suite run, not inherited trust.
+
+Quantifiers: for each candidate C choose its finite admissible domain/implementation before testing; require every case in a declared corpus T(C) to satisfy its specified result or refusal. This finite predicate is not proof that every input/environment in the original specification succeeds. Full acceptance would require all original mandatory gates and workflows, not one successful input per module. Resource counted: qualifying included Gradle modules, once each; kernel tests/assertions are separate counts.

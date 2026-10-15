@@ -201,7 +201,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "1dc8d8bc55937f2cfc591b8ee54223acdcacedbc285f7a9ef73925b428edb7a1"
+      "sha256": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -276,6 +276,12 @@
       "sha256": "271b01e374834c3e678063facc1944bb7cacceedfc9901c91c247825498843c0"
     },
     {
+      "path": "core/files/src/main/kotlin/dev/fusion/files/ContentDigest.kt",
+      "module": ":core:files",
+      "package": "dev.fusion.files",
+      "sha256": "8f6695513525123e3bb32d5c32fda77d1c82c6ce3be43119bcf8f1500974fdb4"
+    },
+    {
       "path": "core/files/src/main/kotlin/dev/fusion/files/FileMutationPolicy.kt",
       "module": ":core:files",
       "package": "dev.fusion.files",
@@ -297,7 +303,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "21c9ee449d88836c532ff0c5a1b5fc0449a733962b665eb1f3a86c1fb249a091"
+      "sha256": "450b8b7cd6155c240a3be137e670b1e561578425ec8dada16cebabca96427b82"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -387,7 +393,13 @@
       "path": "core/designsystem/src/main/java/dev/fusion/designsystem/Theme.kt",
       "module": ":core:designsystem",
       "package": "dev.fusion.designsystem",
-      "sha256": "6c8a81fc3caa8dd00efc56255ca4eac88b4acd9d8a00e78161d729d5a9e089dc"
+      "sha256": "817423666e7adb88f98cddee46fc60f1143e3ba7c0da3e039a8a71b63322c889"
+    },
+    {
+      "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt",
+      "module": ":core:designsystem",
+      "package": "dev.fusion.designsystem",
+      "sha256": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt",
@@ -435,7 +447,13 @@
       "path": "feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt",
       "module": ":feature:files",
       "package": "dev.fusion.filesui",
-      "sha256": "3766c2455e14cb517a967ac34c053de4a2437194050681e73959c0bbbdea8c77"
+      "sha256": "126215f5c564eb747bc743908b967202b5dbe742f4a2240a0472d2860c72f370"
+    },
+    {
+      "path": "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt",
+      "module": ":feature:files",
+      "package": "dev.fusion.filesui",
+      "sha256": "622d473aa0ac39f1f75d4430f6c392a2d8544e681988e9278d01e182cb7a000b"
     },
     {
       "path": "feature/browser/src/main/java/dev/fusion/browser/BrowserScreen.kt",
@@ -459,13 +477,19 @@
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/LocalShell.kt",
       "module": ":feature:terminal",
       "package": "dev.fusion.terminal",
-      "sha256": "eaa96ae583fc4503ff7a6ccdcd460108ad98328c515405d63fc30c1a2cf7f06c"
+      "sha256": "2644aae0576cc9b671d79097d997c599c221618be3f9e5980e5ebfbc1ecffa83"
     },
     {
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/TerminalScreen.kt",
       "module": ":feature:terminal",
       "package": "dev.fusion.terminal",
-      "sha256": "b9cd2f1dd3ee705cafb1ae4cd27d42fe39d88aecda2e111d49234b84b8f5eab1"
+      "sha256": "026485a1194021328f690498b8d05f6cabe5b8788896e6ad845af8673bf036f6"
+    },
+    {
+      "path": "feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt",
+      "module": ":feature:terminal",
+      "package": "dev.fusion.terminal",
+      "sha256": "54406f22e35d9dfd86ec1f7b29eeb088393daedb21e663037915ca58a16a754d"
     },
     {
       "path": "feature/vault/src/main/java/dev/fusion/vault/VaultScreen.kt",
@@ -555,7 +579,13 @@
       "path": "feature/settings/src/main/java/dev/fusion/settingsui/SettingsScreen.kt",
       "module": ":feature:settings",
       "package": "dev.fusion.settingsui",
-      "sha256": "b26ba49802d180e73e8ad5b5110e4cff24e754f5541e97704b4ee067031cbcee"
+      "sha256": "313b671c6f8ef61002a3f753eb1fddc546fd8c9ad2c478e2fe073f582fe86ce7"
+    },
+    {
+      "path": "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt",
+      "module": ":feature:settings",
+      "package": "dev.fusion.settingsui",
+      "sha256": "938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09"
     },
     {
       "path": "feature/media/src/main/java/dev/fusion/media/MediaLibrary.kt",
@@ -612,6 +642,12 @@
       "sha256": "aca724f65481e1e0c8e04ce7d56ea96b972b4ad5ab732a8daa46f04e87e88433"
     },
     {
+      "path": "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt",
+      "module": ":feature:alerts",
+      "package": "dev.fusion.alerts",
+      "sha256": "ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b"
+    },
+    {
       "path": "feature/capture/src/main/java/dev/fusion/capture/CaptureScreen.kt",
       "module": ":feature:capture",
       "package": "dev.fusion.capture",
@@ -654,10 +690,22 @@
       "sha256": "d9e1410c114b36d0b22d00dea4c8bc8cd431d4275e80f5912a673b42efe1f8ba"
     },
     {
+      "path": "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt",
+      "module": ":feature:continuity",
+      "package": "dev.fusion.continuity",
+      "sha256": "c7914208c08e577386bccb2f317449fbafad60fc073913e29a4617b89ba2b485"
+    },
+    {
       "path": "feature/accessibility/src/main/java/dev/fusion/a11y/Adaptation.kt",
       "module": ":feature:accessibility",
       "package": "dev.fusion.a11y",
       "sha256": "9ab93b91db2f0947eaacb2f8bc87006ddf587766556e0eadd60b945ab7ea1939"
+    },
+    {
+      "path": "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt",
+      "module": ":feature:accessibility",
+      "package": "dev.fusion.a11y",
+      "sha256": "5f6cac892e00cf719d0b989c52a0761eaf4ca49cf319aece115005964c7980a2"
     },
     {
       "path": "feature/together/src/main/java/dev/fusion/together/TogetherSession.kt",
@@ -687,7 +735,13 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "3780931bc468c0ec44f41bf6f9ebf13e616babca234a5dd06ed7c3aa88412c3b"
+      "sha256": "76783624aacf41759578cca43bc52bed4bb8cbb0b5b40cfca5d27aaaca657b0c"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623"
     },
     {
       "path": "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt",
@@ -700,6 +754,18 @@
       "module": ":format:archive",
       "package": "dev.fusion.archive",
       "sha256": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "e81b290a5bc56aed12a4c06908752e9c5d1b838555872c99272881d05e84739b"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",

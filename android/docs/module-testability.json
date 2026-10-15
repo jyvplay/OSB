@@ -16,8 +16,8 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "1dc8d8bc55937f2cfc591b8ee54223acdcacedbc285f7a9ef73925b428edb7a1",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
       }
     },
     {
@@ -58,14 +58,27 @@
     },
     {
       "module": ":core:files",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Gate/value types only; safety tests do not supply Files functionality or a new engine.",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Not the specified journaled fileops; ordered publish/verify/retire, provider crash/undo matrix S6",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded consumed-byte SHA256 receipt and real-file change comparison; actual Kotlin/stdlib hashlib cross-checks.",
+      "production": [
+        "core/files/src/main/kotlin/dev/fusion/files/ContentDigest.kt"
+      ],
+      "checks": [
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
+        "tools/run_r13_contracts.py",
+        "tools/run_r13_interop.py"
+      ],
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md)",
+      "limit": "Not file identity, stable snapshot, wall-time cancellation, SAF journaling, fsync, publication, source retirement or S6 acceptance.",
+      "sha256": {
+        "core/files/src/main/kotlin/dev/fusion/files/ContentDigest.kt": "8f6695513525123e3bb32d5c32fda77d1c82c6ce3be43119bcf8f1500974fdb4",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
+        "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805"
+      }
     },
     {
       "module": ":core:capabilities",
@@ -228,14 +241,27 @@
     },
     {
       "module": ":core:designsystem",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Compose theme source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Opaque sRGB contrast and preferred/black/white foreground selection, consumed by shell theme; independent high-precision arithmetic comparisons.",
+      "production": [
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt"
+      ],
+      "checks": [
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
+        "tools/run_r14_contracts.py",
+        "tools/run_r14_interop.py"
+      ],
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "limit": "Not alpha/HDR/rendered text contrast, density completeness, physical display or full accessibility acceptance.",
+      "sha256": {
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
+        "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+      }
     },
     {
       "module": ":feature:editor",
@@ -254,7 +280,7 @@
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
       }
     },
     {
@@ -292,19 +318,32 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
       }
     },
     {
       "module": ":feature:files",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Read-only SAF browsing pilot and explicit mutation gate",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Full FM operations/journaling/undo/Peek, verified providers, accessibility and S6",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded directory metadata query with literal filtering, overflow-free natural order and directory/size policies; connected to read-only Files.",
+      "production": [
+        "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt"
+      ],
+      "checks": [
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
+        "tools/run_r14_contracts.py",
+        "tools/run_r14_interop.py"
+      ],
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "limit": "Not bounded provider enumeration, identity/snapshot verification, journaled mutations or S6. New UI/native checks require exact CI evidence.",
+      "sha256": {
+        "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt": "622d473aa0ac39f1f75d4430f6c392a2d8544e681988e9278d01e182cb7a000b",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
+        "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+      }
     },
     {
       "module": ":feature:browser",
@@ -326,14 +365,27 @@
     },
     {
       "module": ":feature:terminal",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "App-UID local command execution source; explicit experimental consent",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Isolated PTY process, terminal emulation, lifecycle/input/security and P1 acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded quoted local-builtin argument lexer; empty arguments, escapes and malformed/over-budget refusal.",
+      "production": [
+        "feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt"
+      ],
+      "checks": [
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
+        "tools/run_r13_contracts.py",
+        "tools/run_r13_interop.py"
+      ],
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md)",
+      "limit": "Not a POSIX grammar, PTY, process isolation, SSH, terminal emulation or Linux userland. LocalShell integration is separate from these host results.",
+      "sha256": {
+        "feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt": "54406f22e35d9dfd86ec1f7b29eeb088393daedb21e663037915ca58a16a754d",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
+        "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805"
+      }
     },
     {
       "module": ":feature:vault",
@@ -394,14 +446,27 @@
     },
     {
       "module": ":feature:settings",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Read-only diagnostics/redacted sharing; geometry density setting",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Complete functional setting groups/migrations, runtime verification and accessible full-density behavior",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Three-way conflict-detecting settings patch, idempotent apply and unrelated-edit preservation; actual density review/cancel/apply UI.",
+      "production": [
+        "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt"
+      ],
+      "checks": [
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
+        "tools/run_r14_contracts.py",
+        "tools/run_r14_interop.py"
+      ],
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "limit": "No durable transaction, authenticated import, permission grant or arbitrary-setting enablement. Host applies only density; native UI evidence pending.",
+      "sha256": {
+        "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt": "938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
+        "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+      }
     },
     {
       "module": ":feature:media",
@@ -447,14 +512,27 @@
     },
     {
       "module": ":feature:alerts",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Alerts UI/listener source; listener disabled",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Opt-in/permission/privacy/deletion/migration and NC acceptance; disabled source is not completion",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal.",
+      "production": [
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt"
+      ],
+      "checks": [
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
+        "tools/run_r14_contracts.py",
+        "tools/run_r14_interop.py"
+      ],
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "limit": "No notification ingestion or persistence integration. System listener remains disabled. Caller classification and single-owner use required.",
+      "sha256": {
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt": "ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
+        "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+      }
     },
     {
       "module": ":feature:capture",
@@ -489,25 +567,51 @@
     },
     {
       "module": ":feature:continuity",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Android explicit share/peripheral inventory source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Full CT handoff/desktop/peripheral behaviors, no PC bridge claimed, device acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded single UTC event ICS serialization; Unicode octet folding, escaped literals and independent-reader roundtrip.",
+      "production": [
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt"
+      ],
+      "checks": [
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
+        "tools/run_r13_contracts.py",
+        "tools/run_r13_interop.py"
+      ],
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md)",
+      "limit": "Not wired to share UI, not CalendarContract, recurrence, reminders, synchronization, PC bridge or complete continuity.",
+      "sha256": {
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt": "c7914208c08e577386bccb2f317449fbafad60fc073913e29a4617b89ba2b485",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
+        "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805"
+      }
     },
     {
       "module": ":feature:accessibility",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "System accessibility observation/adaptation source",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Whole-product AX release gates; system state inspection does not establish usable UI",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded geometric directional target selection, enabled/visible filtering and deterministic ties.",
+      "production": [
+        "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt"
+      ],
+      "checks": [
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
+        "tools/run_r14_contracts.py",
+        "tools/run_r14_interop.py"
+      ],
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "limit": "Pure target policy; not connected to Android focus requests or a global input service. Not TalkBack/Switch/Voice acceptance.",
+      "sha256": {
+        "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt": "5f6cac892e00cf719d0b989c52a0761eaf4ca49cf319aece115005964c7980a2",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
+        "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+      }
     },
     {
       "module": ":feature:together",
@@ -544,14 +648,27 @@
     },
     {
       "module": ":feature:automation",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "App-local routine source; explicit experimental consent",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Strict own-app plan validation and sequential callback dispatch; real file effects and stop-on-failure tested.",
+      "production": [
+        "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt"
+      ],
+      "checks": [
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
+        "tools/run_r13_contracts.py",
+        "tools/run_r13_interop.py"
+      ],
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md)",
+      "limit": "No durable jobs, triggers, scheduling, rollback or retries. Host callbacks do not establish Android dispatch; actual host dispatch passed at f0cc82d/run38685789036; no complete workflow acceptance follows.",
+      "sha256": {
+        "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
+        "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805"
+      }
     },
     {
       "module": ":format:native",
@@ -595,18 +712,38 @@
       "module": ":format:ooxml",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded lossy text extraction with consumed ZIP guards, not native Office editing",
+      "behavior": "Bounded lossy text extraction and original new literal-cell XLSX writer; external openpyxl readback. Neither is an Office engine. R14 adds original bounded decimal dependency arithmetic, not LibreOffice formula parity.",
       "production": [
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt"
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt"
       ],
       "checks": [
-        "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt"
+        "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
+        "tools/run_r13_contracts.py",
+        "tools/run_r13_interop.py",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
+        "tools/run_r14_contracts.py",
+        "tools/run_r14_interop.py"
       ],
-      "command": ":testing:ooxmlGuardContracts",
+      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py",
       "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "sha256": {
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
-        "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt": "984e49dacb739fbdb5024e028fd7a2e03518f47ad023cc058715191eb3ca757e"
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt": "e81b290a5bc56aed12a4c06908752e9c5d1b838555872c99272881d05e84739b",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt": "913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc",
+        "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt": "984e49dacb739fbdb5024e028fd7a2e03518f47ad023cc058715191eb3ca757e",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
+        "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
+        "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
+        "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
       }
     },
     {

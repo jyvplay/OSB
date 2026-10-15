@@ -290,7 +290,7 @@ class MainActivity : ComponentActivity() {
         }
         handleShare(intent)
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(primary = mint, background = bg, surface = panel)) {
+            MaterialTheme(colorScheme = darkColorScheme(primary = mint, onPrimary = Color(0xFF000000L or requireNotNull(dev.fusion.designsystem.Contrast.foreground(0,0x65DDB4)).toLong()), background = bg, surface = panel)) {
                 Surface(Modifier.fillMaxSize(), color = bg) {
                     Box(Modifier.fillMaxSize().safeDrawingPadding()) { ShellScreen() }
                 }
@@ -699,7 +699,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.testTag("shelf-$module"),
                         enabled = !desktopModel.loading && !desktopModel.blocked,
                         onClick = { openModule(module) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF303A39))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF303A39), contentColor = Color(0xFF000000L or requireNotNull(dev.fusion.designsystem.Contrast.foreground(0xE4E4E7,0x303A39)).toLong()))
                     ) { Text(module.replaceFirstChar { it.uppercase() }) }
                 }
                 (0..2).forEach { ws ->
@@ -810,7 +810,18 @@ class MainActivity : ComponentActivity() {
             "together" -> TogetherScreen()
             "lens" -> LensScreen()
             "messages" -> MessagesScreen(this)
-            "automation" -> AutomationScreen(this)
+            "automation" -> AutomationScreen(this) { action ->
+                if(desktopModel.loading || desktopModel.blocked) false
+                else when(action) {
+                    is dev.fusion.automation.LocalAction.Open -> {
+                        openModule(action.module)
+                        desktop.windows.any { it.module==action.module && it.workspace==desktop.workspace }
+                    }
+                    is dev.fusion.automation.LocalAction.Workspace -> {
+                        dispatch(WindowCommand.SwitchWorkspace(action.index));desktop.workspace==action.index
+                    }
+                }
+            }
             else -> Text("Module not available in this build.", Modifier.padding(16.dp))
         }
     }
