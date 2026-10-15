@@ -13,10 +13,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 @Suppress("UNUSED_PARAMETER")
 fun AutomationScreen(context: android.content.Context, perform: ((LocalAction)->Boolean)? = null) {
+    var tasks by remember { mutableStateOf(false) }
     var script by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("Nothing executed.") }
     var running by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Button(onClick={tasks=!tasks},modifier=Modifier.testTag("tasks-mode")) { Text(if(tasks) "Back to action plans" else "Local tasks") }
+        if(tasks) { TaskPanel(context);return@Column }
         Text("Local action plan",style=MaterialTheme.typography.titleSmall)
         Text("One action per line: open editor, open calculator, open notes, open files, open settings, or workspace 1 / 2 / 3. Up to16 actions; existing permission/experiment gates remain in force.")
         OutlinedTextField(script,{ if(it.length<=4096) script=it },Modifier.fillMaxWidth().testTag("routine-script"),label={ Text("Actions (session only)") },enabled=!running)
