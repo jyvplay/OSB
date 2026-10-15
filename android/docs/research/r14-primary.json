@@ -1,0 +1,47 @@
+{
+  "scope": "Pinned WCAG definitions plus reverified LO license/interface/architecture; not exhaustive best-known frontier or legal/engine verification",
+  "records": [
+    {
+      "repository": "w3c/wcag",
+      "commit": "23bad5904949904275a08f1c6e395b78a02aa6f3",
+      "path": "guidelines/terms/20/relative-luminance.html",
+      "git_blob": "a5c539db6b0fe3038a5108c0c2c033791af547db",
+      "sha256": "391cc0cc06fc31641e35465bb8af5cb4c861f709a1ebc0e0e490b53a0cb2eb69",
+      "url": "https://github.com/w3c/wcag/blob/23bad5904949904275a08f1c6e395b78a02aa6f3/guidelines/terms/20/relative-luminance.html",
+      "text": "<dt><dfn id=\"dfn-relative-luminance\">relative luminance</dfn></dt>\n<dd>\n   \n   <p>the relative brightness of any point in a colorspace, normalized to 0 for darkest\n      black and 1 for lightest white\n   </p>\n   \n  <div class=\"note\">\n   <p>For the sRGB colorspace, the relative luminance of a color is defined as L = 0.2126\n      * <strong>R</strong> + 0.7152 * <strong>G</strong> + 0.0722 * <strong>B</strong> where <strong>R</strong>, <strong>G</strong> and <strong>B</strong> are defined as:\n   </p>\n   \n   <ul>\n      \n      <li>if RsRGB &lt;= 0.04045 then <strong>R</strong> = RsRGB/12.92 else <strong>R</strong> = ((RsRGB+0.055)/1.055) ^ 2.4\n      </li>\n      \n      <li>if GsRGB &lt;= 0.04045 then <strong>G</strong> = GsRGB/12.92 else <strong>G</strong> = ((GsRGB+0.055)/1.055) ^ 2.4\n      </li>\n      \n      <li>if BsRGB &lt;= 0.04045 then <strong>B</strong> = BsRGB/12.92 else <strong>B</strong> = ((BsRGB+0.055)/1.055) ^ 2.4\n      </li>\n      \n   </ul>\n   \n   <p>and RsRGB, GsRGB, and BsRGB are defined as:</p>\n   \n   <ul>\n      \n      <li>RsRGB = R8bit/255</li>\n      \n      <li>GsRGB = G8bit/255</li>\n      \n      <li>BsRGB = B8bit/255</li>\n      \n   </ul>\n   \n   <p>The \"^\" character is the exponentiation operator. (Formula taken from \n      [[SRGB]].)\n   </p>\n\n  </div>\n\n  <p class=\"note\">Before May 2021 the value of 0.04045 in the definition was different (0.03928). It was taken from an older version of the specification and has been updated. It has no practical effect on the calculations in the context of these guidelines.</p>\n  \n   <p class=\"note\">Almost all systems used today to view web content assume sRGB encoding. Unless it\n      is known that another color space will be used to process and display the content,\n      authors should evaluate using sRGB colorspace. If using other color spaces, see <a href=\"https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum\">Understanding Success Criterion 1.4.3 Contrast (Minimum)</a>.\n   </p>\n   \n   <p class=\"note\">If dithering occurs after delivery, then the source color value is used. For colors\n      that are dithered at the source, the average values of the colors that are dithered\n      should be used (average R, average G, and average B).\n   </p>\n   \n   <p class=\"note\">Tools are available that automatically do the calculations when testing contrast and\n      flash.\n   </p>\n   \n   <p class=\"note\">A <a href=\"relative-luminance.html\">separate page giving the relative luminance definition using MathML</a> to display the formulas is available.\n   </p>\n   \n</dd>\n"
+    },
+    {
+      "repository": "w3c/wcag",
+      "commit": "23bad5904949904275a08f1c6e395b78a02aa6f3",
+      "path": "guidelines/sc/20/contrast-minimum.html",
+      "git_blob": "744d7f328e5194725731d3d1205cfa1dc831915d",
+      "sha256": "f1d819b44cc5ba64e962ce64889de2ab214af6911b27a119f7d24c43197b2e64",
+      "url": "https://github.com/w3c/wcag/blob/23bad5904949904275a08f1c6e395b78a02aa6f3/guidelines/sc/20/contrast-minimum.html",
+      "text": "<section id=\"contrast-minimum\" class=\"sc\">\n   \n   <h4>Contrast (Minimum)</h4>\n   \n   <p class=\"conformance-level\">AA</p>\n   \n   <p>The visual presentation of <a>text</a> and <a>images of text</a> has a <a>contrast ratio</a> of at least 4.5:1, except for the following:\n   </p>\n   \n   <dl>\n      \n      <dt>Large Text</dt>\n      \n      <dd>\n         \n         <p><a>Large-scale</a> text and images of large-scale text have a contrast ratio of at least 3:1;\n         </p>\n         \n      </dd>\n      \n      <dt>Incidental</dt>\n      \n      <dd>\n         \n         <p>Text or images of text that are part of an inactive <a>user interface component</a>, that are <a>pure decoration</a>, that are not visible to anyone, or that are part of a picture that contains significant\n            other visual content, have no contrast requirement.\n         </p>\n         \n      </dd>\n      \n      <dt>Logotypes</dt>\n      \n      <dd>\n         \n         <p>Text that is part of a logo or brand name has no contrast requirement.</p>\n         \n      </dd>\n      \n   </dl>\n   \n</section>\n"
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "COPYING.MPL",
+      "git_blob": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING.MPL"
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "libreofficekit/README.md",
+      "git_blob": "148879ec57fc3bfd6e5d38d9ecfbc88540943a07",
+      "sha256": "88e2717b169484a8ff47eff2fe99c6f84213dc69acbc4ef31ae3dcd3f0c850cf",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/libreofficekit/README.md"
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h"
+    }
+  ]
+}

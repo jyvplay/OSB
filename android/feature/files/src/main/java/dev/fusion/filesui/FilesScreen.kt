@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,6 +60,13 @@ fun FilesScreen(
     var trashEntries by remember { mutableStateOf<List<TrashEntry>>(emptyList()) }
     var trashRefresh by remember { mutableIntStateOf(0) }
     val dir = stack.lastOrNull()
+    var filter by remember(treeUri) { mutableStateOf("") }
+    var order by remember { mutableStateOf(ListingOrder.NAME) }
+    val listing = remember(entries,filter,order) { runCatching {
+        val selectedRows=DirectoryQuery.select(entries.map { ListingItem(it.uri.toString(),it.name,it.isDirectory,it.size) },filter,order)
+        val byId=entries.associateBy { it.uri.toString() }
+        selectedRows.map { byId.getValue(it.id) }
+    } }
 
     LaunchedEffect(treeUri) { stack = treeUri?.let(repo::tree)?.let(::listOf) ?: emptyList() }
     LaunchedEffect(dir?.uri, refresh) {
@@ -212,8 +220,16 @@ fun FilesScreen(
             }
         }
 
+        OutlinedTextField(filter,{ if(it.length<=128) filter=it },label={ Text("Filter this folder (literal)") },
+            modifier=Modifier.fillMaxWidth().testTag("files-filter"),singleLine=true)
+        Row {
+            OutlinedButton(onClick={ order=ListingOrder.NAME },enabled=order!=ListingOrder.NAME) { Text("Name") }
+            OutlinedButton(onClick={ order=ListingOrder.LARGEST },enabled=order!=ListingOrder.LARGEST) { Text("Largest") }
+        }
+        if(listing.isFailure) Text("Folder query refused: malformed metadata, duplicate identity or budget exceeded. No partial listing shown.")
+        Text("${listing.getOrDefault(emptyList()).size} of ${entries.size} entries. Query limit:5000 entries; provider enumeration is not time-bounded.")
         LazyColumn(Modifier.weight(1f)) {
-            items(entries, key = { it.uri.toString() }) { e ->
+            items(listing.getOrDefault(emptyList()), key = { it.uri.toString() }) { e ->
                 Text(
                     (if (e.isDirectory) "[Folder] " else "[File] ") + e.name,
                     Modifier.fillMaxWidth()

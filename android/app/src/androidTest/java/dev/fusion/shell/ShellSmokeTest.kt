@@ -40,6 +40,19 @@ class ShellSmokeTest {
         compose.waitUntil(10000) { compose.onAllNodesWithTag("calculator-input").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
     }
+    @Test fun densityReviewCancelAndApplyChangeActualDesktopState() {
+        openModule("settings")
+        compose.onNodeWithText("TOUCH").performScrollTo().performClick()
+        compose.onNodeWithText("Window geometry density: BALANCED").assertExists()
+        compose.onNodeWithText("Cancel density change").performScrollTo().performClick()
+        compose.onNodeWithText("Window geometry density: BALANCED").assertExists()
+        compose.onNodeWithText("TOUCH").performScrollTo().performClick()
+        compose.onNodeWithTag("settings-apply-density").performScrollTo().performClick()
+        compose.onNodeWithText("Window geometry density: TOUCH").assertExists()
+        compose.onNodeWithTag("settings-query").performScrollTo().performTextInput("x".repeat(257))
+        compose.onNodeWithText("Search query exceeds256 UTF16 code units; query unchanged.").assertExists()
+        compose.onNodeWithTag("settings-query").assertTextEquals("")
+    }
     @Test fun shellRendersWithShelf() {
         compose.onNodeWithText("Fusion Shell").assertIsDisplayed()
         compose.onNodeWithTag("shelf-files").assertIsDisplayed()
@@ -119,9 +132,14 @@ class ShellSmokeTest {
         }
         compose.onNodeWithTag("editor-undo").performScrollTo().performClick()
         compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("one one")
+        val beforeRedo=editorDiagnostic()
         compose.onNodeWithTag("editor-redo").performScrollTo().performClick()
+        val afterRedo=editorDiagnostic()
+        try { compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("two two") }
+        catch(failure:AssertionError) { throw AssertionError("Redo failed before recreation. Before=$beforeRedo; after=$afterRedo",failure) }
         compose.activityRule.scenario.recreate()
-        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("two two")
+        try { compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("two two") }
+        catch(failure:AssertionError) { throw AssertionError("Redo lost after recreation. Before=$beforeRedo; after redo=$afterRedo; recreated=${editorDiagnostic()}",failure) }
     }
 
     @Test fun blockedBeamCannotBeEnabledByPilotConsent() {

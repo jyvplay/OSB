@@ -1,0 +1,3 @@
+Exception in thread "main" java.lang.IllegalStateException: #216 60530 != 6.053E+4
+	at dev.fusion.testing.R14Checks.eq(R14Checks.kt:13)
+	at dev.fusion.testing.R14Checks.main(R14Checks.kt:72)

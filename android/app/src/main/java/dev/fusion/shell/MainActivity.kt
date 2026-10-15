@@ -290,7 +290,7 @@ class MainActivity : ComponentActivity() {
         }
         handleShare(intent)
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(primary = mint, background = bg, surface = panel)) {
+            MaterialTheme(colorScheme = darkColorScheme(primary = mint, onPrimary = Color(0xFF000000L or requireNotNull(dev.fusion.designsystem.Contrast.foreground(0,0x65DDB4)).toLong()), background = bg, surface = panel)) {
                 Surface(Modifier.fillMaxSize(), color = bg) {
                     Box(Modifier.fillMaxSize().safeDrawingPadding()) { ShellScreen() }
                 }

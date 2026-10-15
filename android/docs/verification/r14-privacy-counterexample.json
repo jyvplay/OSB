@@ -1,0 +1,7 @@
+{
+  "kind": "Executed Kotlin public API counterexample before repair",
+  "source_sha256": "5f41a0eecacd5ba0b25d89f57c8c26ee58efae19927ee42ce035bf9ea01d34f9",
+  "library_sha256": "49bd04351678e631d0f9c94b17720c022a607a1340401f17743fc7aac6db835c",
+  "consumer": "import dev.fusion.alerts.*\nfun main() {\n val ledger=NoticeLedger();ledger.post(PublicNotice(\"id\",\"public\",\"old\",100),100)\n try { ledger.redact(\"id\",99) } catch(e:IllegalArgumentException) { println(\"redaction_refused=\"+e.message) }\n println(\"retained_after_redaction=\"+ledger.advance(100).retained.size)\n}\n",
+  "stdout": "redaction_refused=Clock rollback\nretained_after_redaction=1\n"
+}
