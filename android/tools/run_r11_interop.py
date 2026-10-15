@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Independent Python checks against real R11 Kotlin kernels. Run run_jvm_contracts.py first."""
+import argparse
 import base64
 import hashlib
 import io
@@ -13,7 +14,9 @@ import subprocess
 import tempfile
 
 root=Path(__file__).resolve().parents[1]
-report_path=root/'docs/verification/r11-independent-checks.json'
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--report',default='docs/verification/r11-independent-checks.json')
+report_path=root/parser.parse_args().report
 report_path.unlink(missing_ok=True) # Never leave stale PASS evidence after a new failure.
 built=root/'testing/build/contracts'
 source=root/'testing/src/interop/kotlin/dev/fusion/testing/R11Bridge.kt'
@@ -69,6 +72,6 @@ with tempfile.TemporaryDirectory() as directory:
 report={'status':'PASS','checks':checks,'notes_cases':300,'seed':1107,
     'scope':'Independent regex oracle for flat ASCII wiki links and Python SHA-256 revisions; independent struct/hashlib/modified-UTF decoder of one real Kotlin browser-session file including NUL and supplementary Unicode.',
     'not_proved':'Full wiki/CommonMark grammar, native UI/renderer, disk adapter, isolation, performance, security and whole-product acceptance.',
-    'source_sha256':{str(path.relative_to(root)):hashlib.sha256(path.read_bytes()).hexdigest() for path in [source,Path(__file__),*sorted((root/'feature/browser/src/main/kotlin').rglob('*.kt')),root/'feature/notes/src/main/kotlin/dev/fusion/notes/NoteLinks.kt']}}
+    'source_sha256':{str(path.relative_to(root)):hashlib.sha256(path.read_bytes()).hexdigest() for path in [source,Path(__file__),*sorted((root/'feature/browser/src/main/kotlin').rglob('*.kt')),root/'feature/notes/src/main/kotlin/dev/fusion/notes/NoteLinks.kt',root/'feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt']}}
 report_path.write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

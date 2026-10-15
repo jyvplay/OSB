@@ -20,6 +20,7 @@ result_root=Path('app/build/outputs/androidTest-results/managedDevice')
 destination=Path('focus-before-results')
 if destination.exists(): shutil.rmtree(destination)
 try:
+    if result_root.exists(): shutil.rmtree(result_root) # No stale case can satisfy the baseline experiment.
     source.write_bytes(baseline)
     with open('focus-before.log','w') as log:
         result=subprocess.run(['./gradlew',':app:pixel6Api34ProDebugAndroidTest',
@@ -32,6 +33,8 @@ try:
     failures=[f for c in selected for f in c.findall('failure')]
     detail='\n'.join(f.get('message','')+'\n'+(f.text or '') for f in failures)
     if result.returncode==0 or len(selected)!=1 or len(failures)!=1 or 'Focused' not in detail:
+        from ci_annotations import annotation
+        print(annotation('focus-before.log','Focus counterexample experiment'))
         raise RuntimeError('Expected native child-focus assertion counterexample was not established; inspect focus-before.log')
     record={'kind':'actual counterfactual Android build: prior MainActivity with current tests/other sources',
         'prior_main_commit':prior,'candidate_commit':os.environ.get('GITHUB_SHA'),

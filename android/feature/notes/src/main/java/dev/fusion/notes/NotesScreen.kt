@@ -1,6 +1,5 @@
 package dev.fusion.notes
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,6 +14,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NotesScreen(model: NotesViewModel) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -25,7 +25,7 @@ fun NotesScreen(model: NotesViewModel) {
         Text("Local Markdown • ${if(state.dirty) "Unsaved memory draft" else "No unsaved changes"}")
         Text("256 KiB/note • 256 notes. Save explicitly. Draft survives Activity recreation but NOT process death. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR, autosave or backup is claimed.")
         OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
-        Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+        FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
             Button(onClick=model::save,enabled=ready && state.name.isNotBlank(),modifier=Modifier.testTag("notes-save")) { Text("Save note") }
             OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
@@ -60,7 +60,7 @@ fun NotesScreen(model: NotesViewModel) {
     state.pending?.let { action ->
         val deleting=action is NoteAction.Delete
         AlertDialog(onDismissRequest=model::cancel,title={ Text(if(deleting) "Move saved note to trash?" else "Discard this memory draft?") },
-            text={ Text(if(deleting) "Moves the saved revision to local trash; it can be restored without overwriting another note. Unsaved draft changes are discarded, not put in trash. A changed on-disk revision is refused. No automatic purge." else "Unsaved text will be discarded before opening or restoring the selected saved revision. Other saved notes are not overwritten.") },
+            text={ Text(if(deleting) "Moves the saved revision to local trash; it can be restored without overwriting another note. Unsaved draft changes are discarded, not put in trash. A changed on-disk revision is refused. No automatic purge." else "Unsaved text will be discarded before opening or restoring the selected saved revision. Other saved notes are not overwritten.",Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
             confirmButton={ TextButton(onClick=model::confirm) { Text(if(deleting) "Move saved revision" else "Discard draft") } },
             dismissButton={ TextButton(onClick=model::cancel) { Text("Keep editing") } })
     }

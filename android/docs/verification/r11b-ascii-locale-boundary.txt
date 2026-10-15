@@ -1,0 +1,8 @@
+Exception in thread "main" java.nio.file.InvalidPathException: Malformed input or input contains unmappable characters: ??????????????????????????????????????????.md
+	at java.base/sun.nio.fs.UnixPath.encode(Unknown Source)
+	at java.base/sun.nio.fs.UnixPath.<init>(Unknown Source)
+	at java.base/sun.nio.fs.UnixFileSystem.getPath(Unknown Source)
+	at java.base/java.nio.file.Path.resolve(Unknown Source)
+	at dev.fusion.notes.NoteFiles.path(NoteFiles.kt:61)
+	at dev.fusion.notes.NoteFiles.save(NoteFiles.kt:113)
+	at dev.fusion.notes.NoteTrashChecks.main(NoteTrashChecks.kt:44)

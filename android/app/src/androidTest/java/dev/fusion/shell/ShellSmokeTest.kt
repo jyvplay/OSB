@@ -199,8 +199,13 @@ class ShellSmokeTest {
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Open note: $name") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText("Open note: $name").performScrollTo().performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Move note to trash…") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-            compose.onNodeWithText("Move note to trash…").performScrollTo().performClick()
-            compose.waitUntil(10000) { compose.onNodeWithText("Move saved note to trash?").isDisplayed() }
+            compose.onNodeWithText("Move note to trash…").performScrollTo().assertIsDisplayed().performClick()
+            try { compose.waitUntil(10000) { compose.onNodeWithText("Move saved note to trash?").isDisplayed() } }
+            catch(error: Exception) {
+                throw AssertionError("Trash confirmation missing. Action semantics: "+runCatching {
+                    compose.onNodeWithText("Move note to trash…").printToString(maxDepth=1)
+                }.getOrDefault("no action node"),error)
+            }
             compose.onNodeWithText("Move saved note to trash?").assertIsDisplayed()
             compose.onNodeWithText("Move saved revision").performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Saved revision moved to trash.",substring=true)).fetchSemanticsNodes().isNotEmpty() }
@@ -219,6 +224,32 @@ class ShellSmokeTest {
             runCatching { store.trash().filter { it.name==name }.forEach {
                 java.io.File(context.filesDir,"notes/.trash-v1/${it.name}--${it.token}_${it.revision.sha256}.md").delete()
             } }
+        }
+    }
+
+    @Test fun savedNoteTrashAtTwoHundredPercentFontScale() {
+        val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val before=android.provider.Settings.System.getString(instrumentation.targetContext.contentResolver,"font_scale")
+        check(before==null || before.toFloatOrNull()?.let { it in 0.5f..5f }==true) { "Unexpected existing font setting; no mutation" }
+        fun command(value:String) {
+            instrumentation.uiAutomation.executeShellCommand(value).use { fd ->
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use { it.readBytes() }
+            }
+        }
+        try {
+            command("settings put system font_scale 2.0")
+            compose.waitUntil(10000) {
+                runCatching {
+                    var actual=0f
+                    compose.activityRule.scenario.onActivity { actual=it.resources.configuration.fontScale }
+                    kotlin.math.abs(actual-2f)<0.01f
+                }.getOrDefault(false)
+            }
+            savedNoteTrashRestoresWithoutLosingItsRevision()
+        } finally {
+            // DisposableEmulatorRule has already required explicit opt-in AND emulator hardware.
+            val value=before?.toFloatOrNull()?.takeIf { it in 0.5f..5f }
+            command(if(value==null) "settings delete system font_scale" else "settings put system font_scale $value")
         }
     }
 
