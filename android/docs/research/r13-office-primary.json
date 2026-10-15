@@ -1,0 +1,123 @@
+{
+  "scope": "Architecture, interface and license inspection only. No implementation bodies copied; not independent clean-room or legal clearance. Not exact-version functional parity verification.",
+  "records": [
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "COPYING.MPL",
+      "retrieved": true,
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+      "git_blob": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING.MPL",
+      "excerpts": [
+        {
+          "term": "License",
+          "line": 1,
+          "text": "Mozilla Public License Version 2.0\n==================================\n\n1. Definitions\n--------------"
+        },
+        {
+          "term": "License",
+          "line": 24,
+          "text": "    including portions thereof.\n\n1.5. \"Incompatible With Secondary Licenses\"\n    means\n\n    (a) that the initial Contributor has attached the notice described\n        in Exhibit B to the Covered Software; or"
+        },
+        {
+          "term": "Source Code Form",
+          "line": 19,
+          "text": "\n1.4. \"Covered Software\"\n    means Source Code Form to which the initial Contributor has attached\n    the notice in Exhibit A, the Executable Form of such Source Code\n    Form, and Modifications of such Source Code Form, in each case\n    including portions thereof.\n"
+        },
+        {
+          "term": "Source Code Form",
+          "line": 21,
+          "text": "    means Source Code Form to which the initial Contributor has attached\n    the notice in Exhibit A, the Executable Form of such Source Code\n    Form, and Modifications of such Source Code Form, in each case\n    including portions thereof.\n\n1.5. \"Incompatible With Secondary Licenses\"\n    means"
+        },
+        {
+          "term": "Modifications",
+          "line": 21,
+          "text": "    means Source Code Form to which the initial Contributor has attached\n    the notice in Exhibit A, the Executable Form of such Source Code\n    Form, and Modifications of such Source Code Form, in each case\n    including portions thereof.\n\n1.5. \"Incompatible With Secondary Licenses\"\n    means"
+        },
+        {
+          "term": "Modifications",
+          "line": 49,
+          "text": "    all of the rights conveyed by this License.\n\n1.10. \"Modifications\"\n    means any of the following:\n\n    (a) any file in Source Code Form that results from an addition to,\n        deletion from, or modification of the contents of Covered"
+        }
+      ]
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "libreofficekit/README.md",
+      "retrieved": true,
+      "sha256": "88e2717b169484a8ff47eff2fe99c6f84213dc69acbc4ef31ae3dcd3f0c850cf",
+      "git_blob": "148879ec57fc3bfd6e5d38d9ecfbc88540943a07",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/libreofficekit/README.md",
+      "excerpts": [
+        {
+          "term": "LibreOfficeKit",
+          "line": 1,
+          "text": "# LibreOfficeKit\n\nLibreOfficeKit can be used for accessing LibreOffice functionality\nthrough C/C++, without any need to use UNO.\n"
+        },
+        {
+          "term": "LibreOfficeKit",
+          "line": 3,
+          "text": "# LibreOfficeKit\n\nLibreOfficeKit can be used for accessing LibreOffice functionality\nthrough C/C++, without any need to use UNO.\n\nFor now it only offers document conversion (in addition to an experimental\ntiled rendering API)."
+        }
+      ]
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "retrieved": true,
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "excerpts": [
+        {
+          "term": "documentLoad",
+          "line": 58,
+          "text": "    void (*destroy) (LibreOfficeKit* pThis);\n\n    LibreOfficeKitDocument* (*documentLoad) (LibreOfficeKit* pThis,\n                                             const char* pURL);\n\n    char* (*getError) (LibreOfficeKit* pThis);\n"
+        },
+        {
+          "term": "documentLoad",
+          "line": 64,
+          "text": "\n    /// @since LibreOffice 5.0\n    LibreOfficeKitDocument* (*documentLoadWithOptions) (LibreOfficeKit* pThis,\n                                                        const char* pURL,\n                                                        const char* pOptions);\n    /// @since LibreOffice 5.2\n"
+        },
+        {
+          "term": "saveAs",
+          "line": 196,
+          "text": "    void (*destroy) (LibreOfficeKitDocument* pThis);\n\n    int (*saveAs) (LibreOfficeKitDocument* pThis,\n                   const char* pUrl,\n                   const char* pFormat,\n                   const char* pFilterOptions);\n"
+        },
+        {
+          "term": "paintTile",
+          "line": 228,
+          "text": "                         int nMode);\n\n    /// @see lok::Document::paintTile().\n    void (*paintTile) (LibreOfficeKitDocument* pThis,\n                       unsigned char* pBuffer,\n                       const int nCanvasWidth,\n                       const int nCanvasHeight,"
+        },
+        {
+          "term": "paintTile",
+          "line": 229,
+          "text": "\n    /// @see lok::Document::paintTile().\n    void (*paintTile) (LibreOfficeKitDocument* pThis,\n                       unsigned char* pBuffer,\n                       const int nCanvasWidth,\n                       const int nCanvasHeight,\n                       const int nTilePosX,"
+        },
+        {
+          "term": "postKeyEvent",
+          "line": 255,
+          "text": "                              void* pData);\n\n    /// @see lok::Document::postKeyEvent\n    void (*postKeyEvent) (LibreOfficeKitDocument* pThis,\n                          int nType,\n                          int nCharCode,\n                          int nKeyCode);"
+        },
+        {
+          "term": "postKeyEvent",
+          "line": 256,
+          "text": "\n    /// @see lok::Document::postKeyEvent\n    void (*postKeyEvent) (LibreOfficeKitDocument* pThis,\n                          int nType,\n                          int nCharCode,\n                          int nKeyCode);\n"
+        },
+        {
+          "term": "getPart",
+          "line": 207,
+          "text": "\n#if defined LOK_USE_UNSTABLE_API || defined LIBO_INTERNAL_ONLY\n    /// @see lok::Document::getParts().\n    int (*getParts) (LibreOfficeKitDocument* pThis);\n\n    /// @see lok::Document::getPartPageRectangles().\n    char* (*getPartPageRectangles) (LibreOfficeKitDocument* pThis);"
+        },
+        {
+          "term": "getPart",
+          "line": 208,
+          "text": "#if defined LOK_USE_UNSTABLE_API || defined LIBO_INTERNAL_ONLY\n    /// @see lok::Document::getParts().\n    int (*getParts) (LibreOfficeKitDocument* pThis);\n\n    /// @see lok::Document::getPartPageRectangles().\n    char* (*getPartPageRectangles) (LibreOfficeKitDocument* pThis);\n"
+        }
+      ]
+    }
+  ]
+}
