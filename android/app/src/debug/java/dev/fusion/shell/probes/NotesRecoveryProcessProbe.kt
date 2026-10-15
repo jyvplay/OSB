@@ -20,6 +20,7 @@ class NotesRecoveryProcessProbe:Service() {
                 synchronized(this@NotesRecoveryProcessProbe) {
                     if(code==WRITE) {
                         val text=requireNotNull(data.readString());require(text.length<=128)
+                        store.read() // Establish the current checkpoint identity in this fresh owner.
                         store.write(NoteDraft("process_probe",text))
                     }
                     val recovered=store.read()

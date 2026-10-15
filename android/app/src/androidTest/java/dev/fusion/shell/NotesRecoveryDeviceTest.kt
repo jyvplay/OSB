@@ -60,6 +60,31 @@ class NotesRecoveryDeviceTest {
             assertEquals("draft",current.state.value.text);assertEquals(newer,files.load(name))
         } finally { first?.let(::close);second?.let(::close);File(app.filesDir,"notes/$name.md").delete() }
     }
+    @Test fun distinctRecoveryOwnersCannotBlindlyOverwriteEachOther() {
+        val dir=File(app.cacheDir,"recovery-owners-"+UUID.randomUUID())
+        try {
+            val a=NotesRecoveryStore(dir);val b=NotesRecoveryStore(dir)
+            try { a.write(NoteDraft("a","unobserved"));fail("Write without read accepted") } catch(_:IllegalStateException) {}
+            assertEquals(NoteDraft(),a.read());assertEquals(NoteDraft(),b.read())
+            val first=NoteDraft("a","first confirmed")
+            a.write(first)
+            try { b.write(NoteDraft("b","stale owner"));fail("Stale owner overwrite accepted") } catch(_:NoteConflict) {}
+            assertEquals(first,NotesRecoveryStore(dir).read())
+            assertEquals(first,b.read());val second=NoteDraft("b","explicitly reconciled")
+            b.write(second)
+            try { a.write(first);fail("Old owner replay accepted") } catch(_:NoteConflict) {}
+            assertEquals(second,NotesRecoveryStore(dir).read())
+        } finally { dir.deleteRecursively() }
+    }
+    @Test fun deletedEmptyCheckpointDoesNotEqualNeverObservedAbsence() {
+        val dir=File(app.cacheDir,"recovery-absence-"+UUID.randomUUID())
+        try {
+            val store=NotesRecoveryStore(dir);store.read();store.write(NoteDraft())
+            assertTrue(File(dir,"notes-recovery-v1.bin").delete())
+            try { store.write(NoteDraft("n","not published"));fail("Deleted checkpoint silently replaced") } catch(_:NoteConflict) {}
+            assertFalse(File(dir,"notes-recovery-v1.bin").exists())
+        } finally { dir.deleteRecursively() }
+    }
     @Test fun firstReadyStateIncludesInventoryBeforeAcceptingActions() {
         val name="ready_"+UUID.randomUUID().toString().replace("-","")
         val saved=NotesStore(app).save(name,"startup inventory",null)

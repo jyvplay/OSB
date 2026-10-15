@@ -465,7 +465,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesRecoveryStore.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "2e6002ecaa844170c39dcb88357c1c16c7b947eb05f9a62a780dbb1ba2d42b25"
+      "sha256": "7e74d6209b8650944b83c3a5a872d088ccede0db57e488bdc8ab6aefb4b962e3"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt",
