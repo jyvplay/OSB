@@ -5,9 +5,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Bounded immutable pin/reorder/search/catalog reconciliation kernel tested; caller-supplied targets only. Actual LauncherApps/Home/folders/widgets/recents and persistent host integration remain missing.",
     "tests": [
-      "plan:T-SH-01"
+      "plan:T-SH-01",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -20,9 +22,11 @@
     "tier": "A/B",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pin versus running-target reconciliation tested without dropping temporarily absent pins; not yet wired to durable host shelf controls/badges/previews/edges.",
     "tests": [
-      "plan:T-SH-02"
+      "plan:T-SH-02",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -840,9 +844,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Bounded canonical settings snapshot export/inspection and locale-stable alias search; Android SharedPreferences adapter tested. Inspection does not apply settings; DataStore/migrations/atomic import/full history remain missing.",
     "tests": [
-      "plan:T-ST-01"
+      "plan:T-ST-01",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1106,7 +1112,7 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Native bounded UTF-8 editor; per-tab delta undo/redo, code-point literal KMP search, reviewed revision-bound replacement, mixed-newline navigation, immutable pending copy and checkpoints; Android/IME/AX unverified; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "route": "Bounded8-draft encoding-preserving native editor, undo/literal tools, current-source line diff and correlated Save-a-Copy/recovery. Host contracts and selected API34 UI cases executed; streaming large files, regex, autosave/provider/process-death/IME/AX acceptance incomplete.",
     "tests": [
       "core:documents/DocumentSafetyTest",
       "plan:SAF-provider-and-editor-device-matrix",
@@ -1125,10 +1131,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Bounded Markdown note files with name/revision checks, locks, atomic publication/readback and native memory-draft UI. Android unrun; attachments/backlinks/OCR/export/recovery incomplete.",
+    "route": "Real bounded/revision-checked Markdown, saved-note backlinks, trash/restore and separate strict local draft recovery with coalesced single-writer checkpoints. Native stale/corrupt/recreated-owner/writer-process-death/queue and cross-owner tests passed at2c2b5bc; see R12 exact limits. Attachments/OCR/import/export, version history, full Markdown and physical/AX acceptance remain incomplete.",
     "tests": [
       "plan:T-PR-02",
-      "jvm:NotesChecks"
+      "jvm:NotesChecks",
+      "jvm:NoteDraftChecks",
+      "jvm:NoteTrashChecks",
+      "android:NotesRecoveryDeviceTest",
+      "android:NotesProcessDeathDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1191,7 +1201,7 @@
     "tier": "A",
     "phase": "P2/P3",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "New bounded immutable browser session metadata/codec, executed host contracts only; old in-process BrowserScreen blocked and not connected. Renderer/profile/process/native UI integrations absent; S29/S30 unpassed.",
     "tests": [
       "plan:T-PR-07"
     ],
@@ -1475,7 +1485,7 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.9",
-    "route": "Native Compose + bounded Kotlin decimal34/scientific binary64/64-bit programmer/dimension-checked units; checksummed 100-entry local history; Android integration uncompiled",
+    "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted.",
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
       "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
@@ -1602,9 +1612,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Decoded ARGB integer crop/rotation/flip kernel and actual Android software Bitmap adapters tested; no complete image editor/format pipeline/fidelity/export acceptance.",
     "tests": [
-      "plan:T-FF-05"
+      "plan:T-FF-05",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1660,11 +1672,13 @@
     "tier": "A",
     "phase": "P2/P3",
     "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Bounded strict CSV and UTF8 kernels tested including multiline/empty-cell preservation; existing text/Markdown subsets only. No complete SVG/RTF/edit/export Forge route.",
     "tests": [
-      "plan:T-FF-09"
+      "plan:T-FF-09",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1699,7 +1713,7 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Real isolated UID/read-only FD opaque-digest precursor:5/5 elementary API34 boundary cases passed at1ee1589, including exact-path/inode and positive-FD controls after ENOENT counterexample. Full parser sandbox, parent watchdog/RSS/CPU/socket/output guards absent; no S-gate promoted.",
     "tests": [
       "plan:T-FF-12"
     ],
@@ -1796,11 +1810,13 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Real bounded read-only UTF8 SRT picker/inspection UI with millisecond half-open/overlap lookup and canonical export kernel. No native player, synchronized subtitles, PiP/gapless or Beam acceptance.",
     "tests": [
-      "plan:T-MD-02"
+      "plan:T-MD-02",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2017,9 +2033,11 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "New bounded noncompressed FBC1 content codec validated before returning entries; not encryption, legacy migration, restore publication or full backup. Legacy restore remains blocked by S7.",
     "tests": [
-      "plan:T-BK-01"
+      "plan:T-BK-01",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": [

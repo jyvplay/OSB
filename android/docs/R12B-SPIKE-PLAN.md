@@ -1,0 +1,11 @@
+# R12 continuation: pre-implementation plan
+
+No S1–S30 gate is promoted by this work. Implement ungated bounded kernels, not hardware codecs, global shortcuts, live media, a new Office engine or transactional restore. No simulated provider/receiver/player is admissible.
+
+Before accepting a new testable-subset row, compile production separately from consumers and execute real transformations on bytes/pixels/text/catalog data. Native integration claims additionally require a new Android run. Five candidates start independently: settings canonical snapshot codec/search; SubRip parser/export/time lookup; integer ARGB crop/quarter-turn/reflection; noncompressed bounded backup-content framing; launcher pin ordering/catalog reconciliation. Existing malformed-UTF8 validator gets a negative regression.
+
+Success: for every admitted finite input, operation either returns its specified output without input mutation or explicitly rejects invalid/over-budget input. No silent truncation, unbounded allocation from encoded sizes, replacement decoding, checksum-as-authentication, or model-only claims. Byte bounds, half-open millisecond intervals, pixel coordinates and catalog ordering will be explicit in source. Limits are per call, not whole-process RSS/CPU proofs.
+
+Threshold: deterministic hand fixtures, boundary and hostile cases, separate compilation, seeded metamorphic/cross-language tests where feasible, source fingerprinted results. Repairs get fresh complete affected-suite execution and a new attack. Native API/source compatibility is pending until CI; old39-case success cannot be inherited by changed sources.
+
+Mandatory attacks: Turkish locale; duplicates/unknown keys; strict UTF8/surrogates; encoded length overflow; trailing/truncated frames; forged checksum; mutable-array aliases; non-square rotations/alpha; subtitle overlap/boundaries/CRLF/BOM/markup; duplicate catalog identities; disappearing apps and hidden pin loss. Backup decoding never writes a filesystem and is not transactional restore. Subtitles are plain text, not HTML or a fake player. Pixels are existing decoded ARGB, not a decoder/fidelity/HEIC spike. Launcher takes actual caller catalog, not invented installed apps.

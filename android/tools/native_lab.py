@@ -10,7 +10,8 @@ import os
 from pathlib import Path
 import re
 import shutil
-import struct
+from png_capture import dimensions as png_dimensions
+from bounded_process import capture as capture_binary
 import subprocess
 import sys
 import uuid
@@ -58,17 +59,9 @@ def apk_from_metadata(directory, package):
     return apk
 
 
-def png_dimensions(data):
-    # Framing sanity only; device Bitmap.compress is the producer. Not visual QA.
-    if len(data) < 45 or data[:8] != b'\x89PNG\r\n\x1a\n' or data[12:16] != b'IHDR' or data[-12:] != b'\0\0\0\0IEND\xaeB`\x82':
-        raise ValueError('Missing/truncated native PNG capture.')
-    width, height = struct.unpack('>II', data[16:24])
-    if not 0 < width <= 16384 or not 0 < height <= 16384:
-        raise ValueError('Invalid capture dimensions.')
-    return width, height
-
-
 def run(command, *, env=None, timeout=120, binary=False):
+    if binary:
+        return capture_binary(command, cwd=ROOT, env=env, timeout=timeout)
     result = subprocess.run(list(map(str, command)), cwd=ROOT, env=env, capture_output=True,
                             text=not binary, timeout=timeout, check=False)
     if result.returncode:
@@ -114,7 +107,7 @@ def build(report, output):
     # Notes contracts exercise POSIX symlinks/directory fsync. Do not pretend Windows
     # host filesystem results establish Android behavior; run the native device test there.
     if sys.platform.startswith('linux'):
-        tasks.append(':testing:notesContracts')
+        tasks.extend([':testing:notesContracts', ':testing:encryptedIndexContracts'])
     # Stream into a file; never label a timeout/partial build as passed.
     with (output/'build.log').open('w') as log:
         result = subprocess.run([str(wrapper), '--no-daemon', '--console=plain', *tasks], cwd=ROOT,
@@ -159,7 +152,7 @@ def visual(args, report, output, evidence):
         if not re.search(r'^Success\s*$', installed, re.M):
             raise RuntimeError('Install did not confirm success.')
     runner = package+'.test/androidx.test.runner.AndroidJUnitRunner'
-    classes = ('ShellSmokeTest', 'CopyContractDeviceTest', 'CheckpointDeviceTest', 'StorageBoundaryDeviceTest')
+    classes = ('ShellSmokeTest', 'CopyContractDeviceTest', 'CheckpointDeviceTest', 'StorageBoundaryDeviceTest', 'EncryptedIndexDeviceTest')
     expected = sum(len(re.findall(r'@Test\s+fun ', (ROOT/f'app/src/androidTest/java/dev/fusion/shell/{name}.kt').read_text())) for name in classes)
     evidence['captures'] = []
     evidence['fontRestored'] = False

@@ -1,0 +1,25 @@
+import dev.fusion.documents.*
+import dev.fusion.ooxml.Ooxml
+import java.io.File
+import java.util.Base64
+
+/** Host verification CLI against separately compiled production libraries; not an APK adapter. */
+fun main(args: Array<String>) {
+    val input=File(args[1]);val output=File(args[2])
+    when(args[0]) {
+        "encode" -> output.writeBytes(TextEncodingCodec.encode(input.inputStream().use(TextBytes::read).let(TextBytes::decode),TextEncoding.valueOf(args[3])))
+        "decode" -> output.writeBytes(TextBytes.encode(TextEncodingCodec.decode(input.inputStream().use(TextBytes::read),if(args[3]=="AUTO") null else TextEncoding.valueOf(args[3])).content))
+        "docx" -> output.writeText(input.inputStream().use(Ooxml::extractDocxText).getOrThrow())
+        "diff-batch" -> {
+            output.mkdirs()
+            input.listFiles()!!.filter { it.isDirectory }.sortedBy { it.name }.forEach { case ->
+                val diff=LineDiff.compare(File(case,"before").readText(),File(case,"after").readText())
+                File(output,case.name).bufferedWriter().use { writer ->
+                    writer.appendLine("${diff.added}\t${diff.removed}")
+                    diff.lines.forEach { writer.appendLine(it.change.name+"\t"+Base64.getEncoder().encodeToString(it.text.toByteArray())) }
+                }
+            }
+        }
+        else -> error("Unknown operation")
+    }
+}

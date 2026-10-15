@@ -1,0 +1,7 @@
+First candidate SHA256: 02dfb03ef6828097c724fd183a07ee5b9ede333374bbb6cb8a0435a125052f4f
+Exit: 1
+Exception in thread "main" java.lang.IllegalStateException: OOXML guard check 19 failed
+	at dev.fusion.ooxml.OoxmlChecks.expect(OoxmlChecks.kt:8)
+	at dev.fusion.ooxml.OoxmlChecks.main(OoxmlChecks.kt:43)
+
+Diagnosis: scanner skipped compact <c/> cells before the cell counter. No trust inherited by the repair.

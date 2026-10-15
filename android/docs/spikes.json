@@ -4,209 +4,209 @@
     "question": "External displays, shortcut conflicts, H1/H2 decision on reference devices",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: External displays, shortcut conflicts, H1/H2 decision on reference devices. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S2",
     "question": "Reversible HOME-role coexistence stock and One UI",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Reversible HOME-role coexistence stock and One UI. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S3",
     "question": "Six-window 120 Hz Compose compositor frame measurements",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Six-window 120 Hz Compose compositor frame measurements. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S4",
     "question": "FTS scale/latency/battery and source choice",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: FTS scale/latency/battery and source choice. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S5",
     "question": "Read-only/16KB packaged PTY and Linux payload",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Read-only/16KB packaged PTY and Linux payload. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S6",
     "question": "Journalled FileOps crash/power/revoke/provider fault matrix",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Journalled FileOps crash/power/revoke/provider fault matrix. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S7",
     "question": "Backup engine decision and verified sampled restore",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Backup engine decision and verified sampled restore. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S8",
     "question": "API37 memory limiter two-hour soak",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: API37 memory limiter two-hour soak. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S9",
     "question": "Pointer-free compositor with TalkBack/Switch/Voice",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Pointer-free compositor with TalkBack/Switch/Voice. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S10",
     "question": "LOKit license closure/payload/thermal/fidelity/latency",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: LOKit license closure/payload/thermal/fidelity/latency. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S11",
     "question": "POI Android shading and workbook budgets",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: POI Android shading and workbook budgets. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S12",
     "question": "HEIC decode and HeifWriter on three OEMs (canonical v2.0 ID)",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: HEIC decode and HeifWriter on three OEMs (canonical v2.0 ID). Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S13",
     "question": "PSD composite fidelity (canonical v2.0 ID)",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: PSD composite fidelity (canonical v2.0 ID). Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S14",
     "question": "Split browser memory/renderer sleeping",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Split browser memory/renderer sleeping. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S15",
     "question": "Mouse event matrix across three devices and mice",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Mouse event matrix across three devices and mice. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S16",
     "question": "IME clipboard behavior and sensitive data",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: IME clipboard behavior and sensitive data. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S17",
     "question": "Real HW encoder loopback/latency/thermal",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Real HW encoder loopback/latency/thermal. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S18",
     "question": "AirPlay audio and URL on Apple TV/HomePod/speaker; F-17 soak",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: AirPlay audio and URL on Apple TV/HomePod/speaker; F-17 soak. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S19",
     "question": "AirPlay sender mirroring legal review and physical receiver evidence",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: AirPlay sender mirroring legal review and physical receiver evidence. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S20",
     "question": "GPL receiver APK boundary/surface handoff/audio",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: GPL receiver APK boundary/surface handoff/audio. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S21",
     "question": "Cast SDK/castv2 receiver interoperability and trust",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Cast SDK/castv2 receiver interoperability and trust. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S22",
     "question": "Together two-four peer clock drift",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Together two-four peer clock drift. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S23",
     "question": "BlackTop 60-minute survival on five OEM families",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: BlackTop 60-minute survival on five OEM families. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S24",
     "question": "Multi-receiver synchronized casting drift",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Multi-receiver synchronized casting drift. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S25",
     "question": "Browser Lens injection with second participant on real conferencing sites",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Browser Lens injection with second participant on real conferencing sites. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S26",
     "question": "Lens GPU/thermal/latency on Standard and Studio hardware",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Lens GPU/thermal/latency on Standard and Studio hardware. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S27",
     "question": "Signed PC companion webcam seen by desktop conferencing clients",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Signed PC companion webcam seen by desktop conferencing clients. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S28",
     "question": "Generative model license/RAM/time admission",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Generative model license/RAM/time admission. Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S29",
     "question": "Gecko Compose surface Z-order (v2.1 \u03948 calls this S12; collision resolved here)",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Gecko Compose surface Z-order (v2.1 \u03948 calls this S12; collision resolved here). Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   },
   {
     "id": "S30",
     "question": "Gecko WebExtension loading (v2.1 \u03948 calls this S13; collision resolved here)",
     "status": "blocked",
     "evidence": [],
-    "reason": "No reference devices, receivers, counsel sign-off, or completed Android build in this sandbox."
+    "reason": "No accepted gate-specific evidence for this spike: Gecko WebExtension loading (v2.1 \u03948 calls this S13; collision resolved here). Both-flavor debug builds and selected API34 emulator tests exist; they do not establish this required engine/provider/reference-device/hardware/legal matrix."
   }
 ]

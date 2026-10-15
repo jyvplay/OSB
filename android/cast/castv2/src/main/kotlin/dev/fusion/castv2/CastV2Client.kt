@@ -248,7 +248,7 @@ class CastV2Client(
             append("""{"type":"LOAD","media":{"contentId":"${Json.escape(url)}","contentType":"${Json.escape(contentType)}","streamType":"BUFFERED"""")
             if (title.isNotEmpty()) append(""","metadata":{"type":0,"title":"${Json.escape(title)}"}""")
             append("""},"autoplay":true,"requestId":$id""")
-            sessionId?.let { append(""","sessionId":"${Json.escape(it)}""") }
+            sessionId?.let { append(""","sessionId":"${Json.escape(it)}"""") }
             append("}")
         }
         val resp = request(NS_MEDIA, t, payload, id)

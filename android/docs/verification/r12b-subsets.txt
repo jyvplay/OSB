@@ -1,0 +1,12 @@
+R12 continuation subsets: 2394 assertions passed across five new module kernels + UTF8/CSV repairs.
+
+Six separately compiled production JVM libraries; not an Android run.
+4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc  core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt
+ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b  feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt
+e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058  format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt
+d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e  feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt
+9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d  feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt
+ce587cf733fc8130ae3488d7ebce5d8e605163a87806fe2a6a297f3bae2709c1  format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt
+37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b  testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt
+0c2efafc7479702ddc70f61239bdd46318a8bd55bb467c84fb16e7830b4ce398  testing/src/subsets/kotlin/dev/fusion/testing/SubsetOracle.kt
+1ab3f4674b5301cd9e9666d5411d2084c25d8ffaeff9ac8b470aa05935dfb9ec  tools/run_subset_contracts.py

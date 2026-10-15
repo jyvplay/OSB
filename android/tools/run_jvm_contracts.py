@@ -14,11 +14,13 @@ folders = ['core/model', 'core/windowing', 'core/commands', 'core/index', 'core/
            'format/native', 'format/archive', 'format/ooxml', 'cast/airplay', 'cast/castv2']
 out = root/'testing/build/contracts'
 out.mkdir(parents=True, exist_ok=True)
+(out/'result.txt').unlink(missing_ok=True) # Never leave a stale success record after a new failure.
+(out/'failure.txt').unlink(missing_ok=True)
 sources = []
 jars = []
 subprocess.run([compiler, '-version'], check=True)
-for folder in folders + ['feature/calc', 'feature/notes']:
-    source_root = root/folder/('src/main/kotlin' if folder in ('feature/calc', 'feature/notes') else 'src/main')
+for folder in folders + ['feature/calc', 'feature/notes', 'feature/browser']:
+    source_root = root/folder/('src/main/kotlin' if folder in ('feature/calc', 'feature/notes', 'feature/browser') else 'src/main')
     module_sources = sorted(source_root.rglob('*.kt'))
     module_name = folder.replace('/', '_')
     jar = out/(module_name+'.jar')
@@ -40,7 +42,14 @@ subprocess.run([compiler, '-jvm-target', '17', '-classpath', boundary_cp,
     '\nStable-local positive consumer: compilation passed. Neither fixture is an Android UI build.\n'+
     '\n'.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(root)) for p in (negative,positive))+'\n')
 sources.append(positive)
-contracts = [root/'core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt',
+contracts = [root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt',
+             root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NoteTrashChecks.kt',
+             root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NoteLinkChecks.kt',
+             root/'feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt',
+             root/'core/documents/src/contract/kotlin/dev/fusion/documents/EncodingDiffChecks.kt',
+             root/'format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt',
+             root/'core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt',
+             root/'core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt',
              root/'feature/notes/src/contract/kotlin/dev/fusion/notes/NotesChecks.kt',
              root/'core/files/src/main/kotlin/dev/fusion/files/FileMutationPolicy.kt',
              root/'testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt',
@@ -54,14 +63,21 @@ jar = out/'pilot-contracts.jar'
 classpath = os.pathsep.join(map(str,jars))
 subprocess.run([compiler, '-jvm-target', '17', '-module-name', 'contracts', '-include-runtime',
                 '-classpath', classpath, *map(str,contracts), '-d', str(jar)], check=True)
-stdout = 'Two negative module-boundary attacks rejected; stable-local consumer compiled.\nProduction sources compiled as 12 separate JVM libraries (calculator/notes kernels only); consumers compiled against their public APIs. Android sources excluded.\n\n'
+stdout = 'Two negative module-boundary attacks rejected; stable-local consumer compiled.\nProduction sources compiled as 13 separate JVM libraries (calculator/notes/browser kernels only); consumers compiled against their public APIs. Android sources excluded.\n\n'
 for main, args in [('dev.fusion.testing.PilotCoreChecks', []), ('dev.fusion.calc.CalculatorChecks', []),
                    ('dev.fusion.documents.EditorChecks', []),
+                   ('dev.fusion.browser.model.BrowserSessionChecks', []),
+                   ('dev.fusion.documents.EncodingDiffChecks', [str(root/'core/documents/src/contract/resources')]),
+                   ('dev.fusion.ooxml.OoxmlChecks', []),
                    ('dev.fusion.documents.CopyChecks', [str(root/'core/documents/src/contract/resources')]),
-                   ('dev.fusion.notes.NotesChecks', []), ('dev.fusion.testing.SearchAndGateChecks', []),
+                   ('dev.fusion.notes.NoteDraftChecks', []), ('dev.fusion.notes.NotesChecks', []), ('dev.fusion.notes.NoteTrashChecks', []), ('dev.fusion.notes.NoteLinkChecks', []), ('dev.fusion.index.EncryptedIndexChecks', []), ('dev.fusion.testing.SearchAndGateChecks', []),
                    ('dev.fusion.windowing.WindowRestoreChecks', [str(root/'core/windowing/src/contract/resources')])]:
-    result = subprocess.run([java, '-cp', os.pathsep.join([str(jar),classpath]), main, *args], check=True, text=True, capture_output=True)
+    result = subprocess.run([java, '-cp', os.pathsep.join([str(jar),classpath]), main, *args], check=False, text=True, capture_output=True)
     stdout += result.stdout+'\n'
+    if result.returncode:
+        failure=stdout+f'FAILED {main}, exit {result.returncode}\n'+result.stderr
+        (out/'failure.txt').write_text(failure)
+        raise RuntimeError(failure)
 print(stdout, end='')
 sources += contracts
 fingerprints = '\n'.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(root)}' for p in sources)

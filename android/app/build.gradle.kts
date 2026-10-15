@@ -58,7 +58,9 @@ android {
                 maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6Api34").apply {
                     device = "Pixel 6"
                     apiLevel = 34
-                    systemImageSource = "aosp-atd"
+                    // R12: exercise the unchanged framebuffer assertions on a regular image.
+                    // ATD returned transparent screenshot pixels despite working remote input.
+                    systemImageSource = "google"
                 }
             }
         }

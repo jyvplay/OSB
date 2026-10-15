@@ -4,6 +4,19 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TextFormatsTest {
+    @Test fun csvPreservesQuotedNewlinesEmptyRecordsAndTrailingCells() {
+        assertEquals(listOf(listOf("a", "b\nc", ""), listOf("")), TextFormats.csvRows("a,\"b\nc\",\r\n\n"))
+    }
+    @Test(expected = IllegalArgumentException::class) fun csvRejectsUnclosedQuote() {
+        TextFormats.csvRows("\"unclosed")
+    }
+
+    @Test fun malformedUtf8MustNotBeReplacementDecoded() {
+        org.junit.Assert.assertFalse(TextFormats.isProbablyUtf8(byteArrayOf(0xff.toByte())))
+        org.junit.Assert.assertFalse(TextFormats.isProbablyUtf8(byteArrayOf(0xed.toByte(), 0xa0.toByte(), 0x80.toByte())))
+        org.junit.Assert.assertTrue(TextFormats.isProbablyUtf8("α🙂".toByteArray()))
+    }
+
     @Test fun wordCountIgnoresBlank() {
         assertEquals(3, TextFormats.wordCount("  hello   brave\nworld "))
     }

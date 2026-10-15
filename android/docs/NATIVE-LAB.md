@@ -1,4 +1,4 @@
-# Real native build and visual lab — R7
+# Real native build and visual lab — R8
 
 **Authored, not Android-compiled or device-executed here.** No screenshots or APKs
 were produced in this sandbox. The host admission/parser tests ran; that does
@@ -30,7 +30,7 @@ python3 tools/native_lab.py build
 
 `doctor` checks local prerequisites only. `build` runs both debug APK builds,
 both instrumentation-APK builds, both app lint tasks and the kernel Gradle contract
-runners (seven on Linux; six elsewhere), retaining the real Gradle log. It does not run every JUnit suite;
+runners (eight on Linux; six elsewhere), retaining the real Gradle log. It does not run every JUnit suite;
 additional unit-test tasks are listed in `BUILD.md`/the CI workflow. Downloads
 require your network and accepted SDK licenses. Wrapper JAR integrity is checked
 by the source checker, but the Gradle distribution SHA-256 remains unpinned:
@@ -61,7 +61,7 @@ server/device spoofing all properties. Never run against a daily-driver device.
 The visual command builds current sources rather than silently trusting an old
 APK. It validates AGP metadata/package identity and refuses split/escaping APK
 paths, installs the selected flavor, and runs the smoke/copy-contract/checkpoint tests and
-native SQLite/notes filesystem checks, and one native capture test at **system font scale1.0 and2.0**. Android34+ may apply
+native SQLite/notes filesystem and encrypted-index/Keystore checks, and one native capture test at **system font scale1.0 and2.0**. Android34+ may apply
 nonlinear font scaling: this is the actual 200% system setting, not a claim that
 every glyph doubles in pixels. Configuration readback and the Activity's actual
 font scale must agree. Each capture uses `UiAutomation.takeScreenshot`, not a
@@ -141,3 +141,26 @@ which tasks actually ran. On other hosts it does not pretend that skipping this
 Linux-specific suite proves correctness: `StorageBoundaryDeviceTest` must run on
 the Android emulator, and physical durability still requires separate testing.
 No Gradle, emulator or screenshot run has occurred here.
+
+## R8 capture integrity and encrypted-index obligations
+
+The lab now bounds each binary subprocess capture to32 MiB stdout/256 KiB stderr
+and its existing timeout. It validates PNG chunk framing/CRC, required pixel data,
+bounded complete deflate output and row filters. Supported captures are8-bit,
+noninterlaced RGB/RGBA,≤16,384px per dimension and≤16,777,216 total pixels,≤4096
+chunks. Only small sRGB/gAMA/cHRM/pHYs/sBIT metadata is admitted. ICC/compressed
+text/EXIF, animation and other extensions are intentionally refused. A real
+Android encoder outside this subset will produce a visible failure; widen the
+parser only with actual captures and new bounded tests, never by skipping checks.
+These checks do not establish image provenance, pixel correctness, UI quality or
+accessibility. Pipe limits are not an OS sandbox or a descendant-process supervisor.
+
+Linux builds additionally run `:testing:encryptedIndexContracts`. The native
+`EncryptedIndexDeviceTest` uses fresh test aliases/directories and checks actual
+Keystore/filesystem behavior when run. It is **unrun here**. Search-cache encryption
+does not encrypt the original Notes files. Encrypted Find source discovery and
+native UI integration are not delivered or enabled; S4 remains blocked.
+
+The earlier CI failure occurred during SDK setup, not Kotlin compilation. The
+workflow now targets ubuntu-24.04's documented SDK and reports setup failures
+explicitly. This candidate CI change has not been dispatched/tested in this pass.

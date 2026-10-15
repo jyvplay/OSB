@@ -14,6 +14,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -477,8 +478,8 @@ class MainActivity : ComponentActivity() {
         }
         closingNotesWindow?.let { id ->
             AlertDialog(onDismissRequest={ closingNotesWindow=null },title={ Text("Close with an unsaved note?") },
-                text={ Text("The draft remains only in memory while this Activity's ViewModel lives. It is NOT recovered after process death. Keep editing and save first if you need to retain it.") },
-                confirmButton={ TextButton(onClick={ desktopModel.dispatch(WindowCommand.Close(id)); closingNotesWindow=null }) { Text("Hide memory draft") } },
+                text={ Text("The latest acknowledged draft checkpoint can be recovered; recent unconfirmed edits can be lost. Closing this window does not save Markdown.") },
+                confirmButton={ TextButton(onClick={ desktopModel.dispatch(WindowCommand.Close(id)); closingNotesWindow=null }) { Text("Hide note window") } },
                 dismissButton={ TextButton(onClick={ closingNotesWindow=null }) { Text("Keep editing") } })
         }
         Column(
@@ -552,8 +553,9 @@ class MainActivity : ComponentActivity() {
                     .sortedBy { it.z }.forEach { w -> key(w.id) {
                         val adjusted = w.bounds.constrained(sw, sh, desktop.density)
                         val windowFocus = remember { FocusRequester() }
+                        var windowHasFocus by remember { mutableStateOf(false) }
                         LaunchedEffect(desktop.activeId) {
-                            if (desktop.activeId == w.id) runCatching { windowFocus.requestFocus() }
+                            if (desktop.activeId == w.id && !windowHasFocus) runCatching { windowFocus.requestFocus() }
                         }
                         Column(
                             Modifier.offset(adjusted.x.dp, adjusted.y.dp)
@@ -562,7 +564,10 @@ class MainActivity : ComponentActivity() {
                                 .border(1.dp, if (desktop.activeId == w.id) mint else border)
                                 .background(panel)
                                 .focusRequester(windowFocus)
-                                .onFocusChanged { if (it.hasFocus && desktop.activeId != w.id) dispatch(WindowCommand.Focus(w.id)) }
+                                .onFocusChanged {
+                                    windowHasFocus=it.hasFocus
+                                    if (it.hasFocus && desktop.activeId != w.id) dispatch(WindowCommand.Focus(w.id))
+                                }
                                 .focusable()
                                 .semantics {
                                     paneTitle = w.title
@@ -583,7 +588,16 @@ class MainActivity : ComponentActivity() {
                                         CustomAccessibilityAction("Close") { dispatch(WindowCommand.Close(w.id)); true }
                                     )
                                 }
-                                .clickable { dispatch(WindowCommand.Focus(w.id)) }
+                                // Observe press without consuming child input or merging their pane semantics.
+                                .pointerInput(w.id) {
+                                    awaitPointerEventScope {
+                                        while(true) {
+                                            val event=awaitPointerEvent(PointerEventPass.Initial)
+                                            if(event.changes.any { it.pressed && !it.previousPressed } && desktop.activeId!=w.id)
+                                                dispatch(WindowCommand.Focus(w.id))
+                                        }
+                                    }
+                                }
                         ) {
                             Row(
                                 Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("window-title-${w.module}").background(Color(0xFF252C2D))

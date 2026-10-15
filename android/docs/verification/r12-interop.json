@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "checks": 410,
+  "write_exact_frame": 200,
+  "read_python_frame": 200,
+  "malformed_attacks": 10,
+  "seed": 120012,
+  "sources": {
+    "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt": "5a6918f57732fc403ed7c66bb0df2fe6d07a1b2cf95bc7c66ccbb879800d0e38",
+    "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt": "9799b5edf82ee2291369596bea2f751fe914c4454ae854a96f317fa2bf68af68",
+    "feature/notes/src/main/kotlin/dev/fusion/notes/NoteLinks.kt": "57db938f2e37741ecd15f33d2143963dffd034b7a319d5cea65306f1559e7d1f"
+  },
+  "driver_sha256": "c66c781332a316510390914b90bd9cf2fd6e6e7017ad7ed991acb9a236520480",
+  "scope": "Python independently constructs exact frames/checksums and malformed resealed frames; real compiled Kotlin codec writes/reads them. Not Android persistence or physical process-death verification."
+}

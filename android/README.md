@@ -1,4 +1,50 @@
-> **Latest checkpoint:** [R8 draft-PR notes](docs/R8-PR-CHECKPOINT.md): 170,728 JVM
+> **Latest: [R12 continuation — seven more testable modules](docs/R12B-ENGINEERING.md).**
+> **30/48 modules (62.50%) meet the substantial-testable-subset standard;0/48 are fully accepted.**
+> Five new kernels: settings snapshots, subtitle inspection, ARGB operations, backup-content framing,
+> and launcher catalog/pins. Two existing runtime-inventory modules now have actual Android checks.
+> Strict UTF8 and multiline CSV defects repaired. **2,394 new +183,179 rerun Kotlin assertions;
+> 1,188 new cross-language checks;74 local Python tests passed.**
+> Latest0a23219:49/50 API34 cases passed; the stronger Editor test timed out awaiting an observable IME. Both flavors/unit/contracts/lint passed. The native suite is NOT fully green.
+> The preceding200%-font Editor failure is retained, not silently erased by a later pass.
+> See [Studio instructions](docs/BUILD.md) and the [48-row census](docs/MODULE-TESTABILITY.md).
+
+> **Historical: [R12 implementation, alternatives and exact evidence](docs/R12-ENGINEERING.md).**
+> **39/39 API34 cases passed at2c2b5bc** on a regular Google managed image;
+> both debug flavors, invoked unit/contracts and lint passed.
+> Added bounded Notes recovery with cross-owner conflict refusal and actual writer-death
+> tests; repaired Editor reflow; verified real remote WebView pixels/input/resize in
+> debug experiments. These do not deliver a complete desktop browser or Office engine.
+> **183,179 Kotlin assertions;68 Python tests;733 cross-language checks passed.**
+> **23/48 modules (47.92%) have substantial testable subsets;0/48 (0%) are fully accepted.**
+> See the [48-row testability census](docs/MODULE-TESTABILITY.md) and [Studio try-out instructions](docs/BUILD.md).
+> [Verified run / debug APKs](https://github.com/jyvplay/OSB/actions/runs/38676376263).
+
+> **Historical: [R11B implementation/testability/alternatives](docs/R11B-ENGINEERING.md).**
+> **182,871 JVM assertions /13 libraries;61 Python methods;323 cross-language
+> checks passed.** Real Notes trash/restore, reflow and compositor focus repair.
+> **29/29 API34 named cases passed at1ea1faa**, including200%-font Notes,
+> six elementary boundary cases and debug WebView profile/DOM experiment.
+> Both debug flavors, invoked unit/contracts/lint and APK upload passed.
+> No complete desktop browser, Office engine or full parser sandbox is delivered.
+> **0/48 accepted modules (0%); not a complete product or production beta.**
+>
+> Older sections below are historical; use R12B for current evidence and gaps.
+
+> **Historical: [R10 productivity / Forge engineering](docs/R10-ENGINEERING.md).**
+> **177,198 JVM assertions,57 Python methods and707 cross-implementation/oracle
+> checks passed.** Added encoding-preserving editor recovery/copy, bounded
+> current-source line diff and repaired ignored-ZIP expansion guards. **Both Android
+> flavors now assemble; unit tests, contracts, lint and APK upload pass in CI.** Browser,
+> Office engines and format isolation are still missing/blocked.
+> **0/48 accepted modules (0%); not a production-ready beta.**
+
+> **Historical: [R8 continuation](docs/R8-ENGINEERING.md).** 171,082 JVM assertions,
+> 47 Python tests and cross-implementation crypto/PNG checks passed. Added a bounded
+> encrypted-index persistence/search kernel and repaired capture integrity checks.
+> Android/Keystore integration and visual inspection remain unrun; encrypted Find
+> is not wired to live sources. **0/48 complete modules. Substantial coding remains.**
+
+> **Previous merged checkpoint:** [R8 draft-PR notes](docs/R8-PR-CHECKPOINT.md): 170,728 JVM
 > assertions / 35 Python tests passed; Android build and visual inspection unrun.
 > Full system remains incomplete (0/48 accepted modules). R7 evidence below is historical.
 
@@ -6,9 +52,9 @@
 
 Open this directory in Android Studio. Do **not** open the repository root as a
 web project. This source tree is a partial implementation, not the complete
-v2.1 product. There is no verified APK from this sandbox.
+v2.1 product. CI debug APKs are incomplete test builds, not certified releases.
 
-## Current R7 — full recorded-scope review and native hardening
+## Historical R7 — full recorded-scope review and native hardening
 
 **0/48 fully specification-complete modules (0%);48/48 still require implementation
 or acceptance (100%).** There is substantial missing code, not just missing tests.

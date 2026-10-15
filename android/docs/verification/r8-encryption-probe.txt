@@ -1,0 +1,23 @@
+Actual JCE AES256/GCM provider=SunJCE, IV=12 bytes, tag=128 bits; 1048576-byte real-file roundtrip passed; modified tag refused. Linux host, not Android Keystore, FTS, battery, or S4 acceptance.
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.spec.GCMParameterSpec
+import java.nio.file.Files
+fun main() {
+    val k=KeyGenerator.getInstance("AES").apply { init(256) }.generateKey()
+    val input=ByteArray(1024*1024) { (it%251).toByte() }
+    val aad="fusion-index-probe".toByteArray()
+    val c=Cipher.getInstance("AES/GCM/NoPadding"); c.init(Cipher.ENCRYPT_MODE,k);c.updateAAD(aad)
+    val encrypted=c.doFinal(input)
+    val p=Files.createTempFile("fusion-encryption-probe-",".bin")
+    try {
+        Files.write(p,encrypted)
+        val d=Cipher.getInstance("AES/GCM/NoPadding");d.init(Cipher.DECRYPT_MODE,k,GCMParameterSpec(128,c.iv));d.updateAAD(aad)
+        check(d.doFinal(Files.readAllBytes(p)).contentEquals(input))
+        encrypted[encrypted.lastIndex]=(encrypted.last().toInt() xor 1).toByte()
+        var refused=false
+        try { d.doFinal(encrypted) } catch(e:javax.crypto.AEADBadTagException) { refused=true }
+        check(refused)
+        println("Actual JCE AES256/GCM provider=${c.provider.name}, IV=${c.iv.size} bytes, tag=128 bits; 1048576-byte real-file roundtrip passed; modified tag refused. Linux host, not Android Keystore, FTS, battery, or S4 acceptance.")
+    } finally { Files.deleteIfExists(p) }
+}

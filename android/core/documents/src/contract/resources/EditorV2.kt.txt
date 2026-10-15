@@ -1,0 +1,8 @@
+import dev.fusion.documents.*
+import java.io.File
+fun main(args:Array<String>) {
+ val doc=TextDocument("historical-v2","v2.txt",null,"Original α",TextBytes.digest("Original α"))
+ val session=CopyProtocol.start(EditorSession(listOf(doc),doc.id),doc.id,"00000000-0000-4000-8000-000000000001")
+ File(args.single()).outputStream().use { SessionCodec.write(session,it) }
+ println("Historical v2 writer executed against pre-R10 production library; frozen UTF-8 copy retained.")
+}

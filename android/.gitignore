@@ -10,3 +10,18 @@ pilot-reports/
 
 # Owner/device release reports may contain sensitive data; keep out of source control.
 docs/release-artifacts/
+
+sdk-setup.log
+
+# Runner diagnostics are artifacts, not product sources.
+assemble.log
+sdk-setup.log
+unit-tests.log
+contracts.log
+lint.log
+device.log
+device-results.json
+focus-before.log
+focus-before-result.json
+focus-before-results/
+sdk-available.log

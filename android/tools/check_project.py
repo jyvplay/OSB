@@ -62,3 +62,7 @@ print('Copy broker manifest/routing and historical fixture fingerprint checked (
 subprocess.run([sys.executable, str(root/'tools/native_source_audit.py'), '--check'], check=True)
 
 assert hashlib.sha256((root/"core/windowing/src/contract/resources/desktop-v1.bin").read_bytes()).hexdigest()=="3a5356222b28828fc11a95317d3c4c8766af824f37ebd6d76be8c64bbb753d5d", "Historical desktop fixture changed"
+
+assert hashlib.sha256((root/'core/documents/src/contract/resources/editor-session-v2.bin').read_bytes()).hexdigest()=='369cf464ed4a97a484e79c954bf87395f21ebab285081b77f381d6baac0733d4', 'Historical editor v2 fixture changed'
+
+subprocess.run([sys.executable,str(root/'tools/module_testability.py'),'--check'],check=True)

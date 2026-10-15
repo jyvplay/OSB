@@ -2,6 +2,9 @@ package dev.fusion.ooxml
 
 import java.io.File
 import java.io.InputStream
+import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
+import java.nio.charset.CodingErrorAction
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
@@ -13,12 +16,19 @@ import java.util.zip.ZipInputStream
  *   - no layout, styles, fonts, images, charts, comments or revisions
  *   - no formulas (only cached cell values are read)
  *   - no editing and no saving back to OOXML
- * Use it for search, preview and plain-text export only.
+ * Use it for search, preview and plain-text export only. ZIP budgets are not process isolation,
+ * an XML validator, central-directory authentication or a wall-clock/blocked-stream watchdog.
  */
 object Ooxml {
 
     const val MAX_PART_BYTES = 32 * 1024 * 1024
-    private const val MAX_ENTRIES = 5_000
+    const val MAX_ENTRIES = 5_000
+    const val MAX_EXPANDED_BYTES = 64L * 1024 * 1024
+    const val MAX_INPUT_BYTES = 64L * 1024 * 1024
+    const val MAX_XML_BYTES = 2 * 1024 * 1024
+    const val MAX_CELLS = 20_000
+    const val MAX_ROWS = 10_000
+    const val MAX_SHARED_STRINGS = 20_000
 
     data class Sheet(val name: String, val rows: List<List<String>>)
 
@@ -51,19 +61,54 @@ object Ooxml {
 
     private fun readParts(input: InputStream, want: (String) -> Boolean): Map<String, String> {
         val out = linkedMapOf<String, String>()
-        ZipInputStream(input).use { zip ->
+        // Count actual reads, not attacker-controlled ZIP metadata. Includes unwanted/directory entries.
+        var compressed=0L
+        val bounded=object: InputStream() {
+            override fun read(): Int {
+                val value=input.read()
+                if(value>=0) { compressed++;require(compressed<=MAX_INPUT_BYTES) { "ZIP input budget exceeded" } }
+                return value
+            }
+            override fun read(bytes: ByteArray, offset: Int, length: Int): Int {
+                if(length==0) return 0
+                val n=input.read(bytes,offset,minOf(length.toLong(),MAX_INPUT_BYTES-compressed+1).toInt())
+                require(n!=0) { "Input made no progress" }
+                if(n>0) { compressed+=n;require(compressed<=MAX_INPUT_BYTES) { "ZIP input budget exceeded" } }
+                return n
+            }
+            override fun close()=input.close()
+        }
+        ZipInputStream(bounded).use { zip ->
+            val names=HashSet<String>()
+            var total=0L;val buffer=ByteArray(8192)
             var entry: ZipEntry? = zip.nextEntry
-            var seen = 0
             while (entry != null) {
-                if (++seen > MAX_ENTRIES) throw IllegalArgumentException("Archive has too many entries")
-                val name = entry.name
-                if (!entry.isDirectory && want(name)) {
-                    val bytes = zip.readNBytes(MAX_PART_BYTES + 1)
-                    if (bytes.size > MAX_PART_BYTES) throw IllegalArgumentException("Part $name is too large")
-                    out[name] = bytes.toString(Charsets.UTF_8)
+                require(names.size<MAX_ENTRIES) { "Archive has too many entries" }
+                val name=entry.name
+                require(name.length in 1..1024 && !name.startsWith("/") && '\\' !in name &&
+                    name.none { it.code<32 || it.code==127 } &&
+                    name.removeSuffix("/").split('/').none { it==".." || it=="." || it.isEmpty() }) { "Unsafe part name" }
+                require(names.add(name)) { "Duplicate part name: $name" }
+                val selected=!entry.isDirectory && want(name)
+                val limit=if(selected) MAX_XML_BYTES else MAX_PART_BYTES
+                val bytes=if(selected) ByteArrayOutputStream() else null
+                var count=0L
+                while(true) {
+                    val n=zip.read(buffer,0,minOf(buffer.size.toLong(),limit-count+1,MAX_EXPANDED_BYTES-total+1).toInt())
+                    if(n<0) break
+                    require(n>0) { "ZIP decoder made no progress" }
+                    count+=n;total+=n
+                    require(count<=limit && total<=MAX_EXPANDED_BYTES) { "Expanded ZIP budget exceeded" }
+                    bytes?.write(buffer,0,n)
                 }
-                zip.closeEntry()
-                entry = zip.nextEntry
+                if(bytes!=null) {
+                    val xml=Charsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+                        .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes.toByteArray())).toString()
+                    require(!xml.contains("<!DOCTYPE") && !xml.contains("<!ENTITY")) { "DTD/entity declarations unsupported" }
+                    out[name]=xml
+                }
+                // Fully consumed through the counters: closeEntry cannot invisibly drain an ignored bomb.
+                zip.closeEntry();entry=zip.nextEntry
             }
         }
         return out
@@ -84,6 +129,7 @@ object Ooxml {
             when {
                 tag == "w:t" || tag.startsWith("w:t ") -> {
                     val end = xml.indexOf("</w:t>", gt + 1)
+                    require(end>=0) { "Unclosed text run" }
                     if (end >= 0) {
                         sb.append(unescape(xml.substring(gt + 1, end)))
                         i = end + 6
@@ -125,6 +171,7 @@ object Ooxml {
                     j = gt + 1
                 }
             }
+            require(out.size<MAX_SHARED_STRINGS) { "Too many shared strings" }
             out.add(sb.toString())
             i = siEnd + 5
         }
@@ -135,6 +182,7 @@ object Ooxml {
     internal fun parseSheetXml(xml: String, shared: List<String>): List<List<String>> {
         val rows = mutableListOf<List<String>>()
         var rowStart = 0
+        var cellCount=0
         while (true) {
             val r = xml.indexOf("<row", rowStart)
             if (r < 0) break
@@ -147,8 +195,9 @@ object Ooxml {
                 val cGt = xml.indexOf('>', cIdx)
                 if (cGt < 0) break
                 val attrs = xml.substring(cIdx + 1, cGt)
-                if (!(attrs == "c" || attrs.startsWith("c "))) { c = cGt + 1; continue }
+                if (!(attrs == "c" || attrs == "c/" || attrs.startsWith("c "))) { c = cGt + 1; continue }
                 val isShared = Regex("t\\s*=\\s*\"s\"").containsMatchIn(attrs)
+                require(++cellCount<=MAX_CELLS) { "Too many cells" }
                 val selfClosing = attrs.endsWith("/")
                 if (selfClosing) {
                     cells.add("")
@@ -156,7 +205,8 @@ object Ooxml {
                     continue
                 }
                 val cClose = xml.indexOf("</c>", cGt)
-                val limit = if (cClose < 0) rEnd else cClose
+                require(cClose>=0 && cClose<rEnd) { "Unclosed cell" }
+                val limit = cClose
                 val vIdx = xml.indexOf("<v>", cGt)
                 var value = ""
                 if (vIdx in 0 until limit) {
@@ -169,6 +219,7 @@ object Ooxml {
                 cells.add(value)
                 c = if (cClose < 0) cGt + 1 else cClose + 4
             }
+            require(rows.size<MAX_ROWS) { "Too many rows" }
             rows.add(cells)
             rowStart = rEnd + 6
         }

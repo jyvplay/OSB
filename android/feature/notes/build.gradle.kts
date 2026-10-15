@@ -15,6 +15,7 @@ android {
     buildFeatures { compose = true }
 }
 dependencies {
+    implementation(project(":core:storage"))
     implementation(libs.androidx.lifecycle.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(platform(libs.androidx.compose.compose.bom))

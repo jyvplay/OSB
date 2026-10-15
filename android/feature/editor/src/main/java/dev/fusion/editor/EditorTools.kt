@@ -54,6 +54,19 @@ internal fun EditorTools(model: EditorViewModel, onDismiss: () -> Unit) {
             OutlinedButton(enabled=ready && (line.toIntOrNull() ?: 0)>0 && (column.toIntOrNull() ?: 0)>0,
                 onClick={ model.goTo(line.toInt(),column.toInt()) }) { Text("Go to position") }
             Text("CRLF is one line break; lone CR/LF also break lines. Columns count Unicode code points, not grapheme clusters or visual/tab columns. Close this panel to return focus to the selected text.")
+            OutlinedButton(enabled=ready,onClick=model::compareSource,modifier=Modifier.testTag("editor-compare-source")) { Text("Compare draft with current source") }
+            Text("Diff: exact line endings; at most2048 lines/side and1,000,000 cells. No merge or file writes. Preview shows at most200 entries/1024 characters each; hidden preview text is not removed from the draft.")
+            state.comparison?.let { comparison ->
+                Text("${comparison.added} added / ${comparison.removed} removed lines")
+                comparison.lines.take(200).forEach { line ->
+                    val prefix=when(line.change) {
+                        dev.fusion.documents.LineChange.SAME -> "  "
+                        dev.fusion.documents.LineChange.REMOVED -> "− "
+                        dev.fusion.documents.LineChange.ADDED -> "+ "
+                    }
+                    Text(prefix+line.text.take(1024).replace("\r","␍").replace("\n","␊\n"))
+                }
+            }
             if(state.toolsBusy) CircularProgressIndicator()
             Text(inputError ?: state.status,Modifier.semantics { liveRegion=LiveRegionMode.Polite })
         } },confirmButton={ TextButton(onClick=onDismiss) { Text("Close tools") } })

@@ -16,6 +16,7 @@ android {
 
 dependencies {
     api(project(":core:documents"))
-    implementation(libs.androidx.documentfile.documentfile)
+    // DocumentFile is part of SafRepository/TrashRepository public parameter and return types.
+    api(libs.androidx.documentfile.documentfile)
     implementation(libs.kotlinx.kotlinx.coroutines.android)
 }

@@ -1,0 +1,12 @@
+import dev.fusion.index.*
+import java.nio.file.Files
+import java.nio.file.Path
+import javax.crypto.spec.SecretKeySpec
+fun main(args:Array<String>) {
+    val key=SecretKeySpec(ByteArray(32) { it.toByte() },"AES") // PUBLIC TEST VECTOR, not an app key.
+    val docs=listOf(Doc("interop","Título","Cross-provider α 😀\u0000","owned-notes"))
+    val file=Path.of(args[1])
+    if(args[0]=="emit") Files.write(file,EncryptedIndexCodec.seal(docs,key,"interop"))
+    else check(EncryptedIndexCodec.open(Files.readAllBytes(file),key,"interop")==docs)
+    println("Actual Kotlin index codec ${args[0]} passed; public test key, not production data.")
+}

@@ -46,7 +46,7 @@ class DocumentSafetyTest {
         assertThrows(Exception::class.java) { SessionCodec.read(ByteArrayInputStream(bytes)) }
         assertThrows(Exception::class.java) { SessionCodec.read(ByteArrayInputStream(byteArrayOf(127,127,127,127))) }
         val futurePayload = ByteArrayOutputStream().also {
-            DataOutputStream(it).apply { writeInt(0x46534544); writeInt(2) }
+            DataOutputStream(it).apply { writeInt(0x46534544); writeInt(Int.MAX_VALUE) } // Schema2 is supported, not future.
         }.toByteArray()
         val future = ByteArrayOutputStream().also {
             DataOutputStream(it).apply {
@@ -54,6 +54,17 @@ class DocumentSafetyTest {
             }
         }.toByteArray()
         assertThrows(IllegalArgumentException::class.java) { SessionCodec.read(ByteArrayInputStream(future)) }
+    }
+    @Test fun knownSchemaTruncatedAfterHeaderIsNotAnUnsupportedVersion() {
+        for(version in 1..3) {
+            val payload=ByteArrayOutputStream().also {
+                DataOutputStream(it).apply { writeInt(0x46534544);writeInt(version) }
+            }.toByteArray()
+            val envelope=ByteArrayOutputStream().also {
+                DataOutputStream(it).apply { writeInt(payload.size);write(payload);writeUTF(TextBytes.digest(payload)) }
+            }.toByteArray()
+            assertThrows(java.io.EOFException::class.java) { SessionCodec.read(ByteArrayInputStream(envelope)) }
+        }
     }
     @Test fun invalidIdentitiesAndDanglingSelectionsAreRejected() {
         assertThrows(Exception::class.java) { roundTrip(EditorSession(listOf(document(), document()), "doc-1")) }

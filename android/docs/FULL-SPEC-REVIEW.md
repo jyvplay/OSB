@@ -1,9 +1,9 @@
-# Full recorded v2/v2.1 scope review — R7
+# Full recorded v2/v2.1 scope review — R11 continuation
 
-**231 requirement records and35 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**
+**231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**
 This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.
 
-48 included modules; 93 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
+48 included modules; 111 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
 
 ## Cross-cutting contract (v2.1 supersedes conflicting v2.0 clauses)
 
@@ -14,7 +14,7 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | API34 minimum / compile37 / target36→37 | min34/compile36/target36; compile37 deviation remains. |
 | arm64 and 4K/16K native pages | No linked native/transitive APK audit or physical page-size test. |
 | Immutable deterministic WindowEngine / effects / versioned restore | Published list snapshots protected, deterministic kernel tests; full effect/session integration incomplete. |
-| Open idempotency / command replay | Open-key suppression only while its window exists; unbounded post-close replay protection NOT implemented. |
+| Open idempotency / command replay | Ordered epoch/sequence stream and codec v3 tested across Close/recovery; raw Open keys still deduplicate only live windows. No durable acknowledgement or multi-writer log. |
 | 48dp title / Compact240×180 / Touch320×240 | Kernel geometry and authored Compose minima; rendered/AX acceptance unrun. |
 | Room restore / debounce≤500ms | AtomicFile geometry still used, not Room. No500ms device persistence bound proved. |
 | Hilt / Flow / DataStore / WorkManager / KSP | Flow/coroutines partially used; requested architecture stack incomplete. |
@@ -26,7 +26,7 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | BlackTop60min / own FGS / hotplug / OEM throttling | SH-10/12 implementation and S23/reference-device evidence absent. |
 | Mouse learn / controller / external-keyboard IME / confinement | Native keyboard subset only; IN/WM-16 scope incomplete. |
 | Five-state thermal / ADPF→sustained→own fallback | Pure policy tested; complete measurement/governor integration absent. |
-| Forge registry / macros-off / lifecycle / explicit fidelity loss | Editor lifecycle subset; complete registry/isolated engines/loss reports absent. |
+| Forge registry / macros-off / lifecycle / explicit fidelity loss | Editor bounded encoding/copy/recovery/diff kernels; OOXML container guards only. Complete registry/isolated engines/loss reports absent. |
 | SAF safe-save and file-move journal | Editor Save a Copy limited protocol; Files mutations now refuse in backend. No full journal/provider acceptance. |
 | Real browser z-order/extensions/security S29/S30 | Blocked; no generic WebView substituted as completed browser. |
 | Own Beam / trust / secure exclusion / stop / codec/latency indicator | Blocked pending S17–21 and security/hardware review; no delegated system-cast equivalence. |
@@ -35,15 +35,16 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | Lens LN-01–15 / Meet / per-site / PC webcam / recording | Physical camera preview only; S25–28 and processed-track routes absent. |
 | No native third-party Android virtual camera/mic claim | Boundary maintained; does not implement own Meet/browser/PC alternatives. |
 | Own-Mac Messages / SMS role / Matrix/XMPP / RCS handoff | Transport/role scope incomplete; no no-Mac iMessage, hosted Apple relay or fake RCS API. |
+| Encrypted search / source consent / secure-content exclusion | Executed bounded AES-GCM snapshot and locked-session kernel; Android keys/tests authored. No FTS/crawler/source consent integration, Vault/private-content exclusion adapter, key lifecycle or S4 acceptance. |
 | Local-first / no default telemetry / opt-in Home / permission-light | Source defaults partly enforced; full privacy/security review unpassed. |
-| Keyboard complete / visible focus / TalkBack/Switch/Voice /200% | Native improvements and tests authored; no whole-product interaction review. |
+| Keyboard complete / visible focus / TalkBack/Switch/Voice /200% | Selected native interaction regressions pass on API34; no whole-product keyboard/TalkBack/Switch/Voice review. |
 | Density changes dimensions, not capability set | Tile geometric impossibility explicitly disabled; full density/AX matrix unrun. |
 | $19.99 + $14.99 Pro /14day / signed offline entitlement | Commerce and signed entitlement absent; no fabricated trial/ownership state. |
 | Offline no feature loss/no wipe / expiry read-only Files/Find | No remote wipe path introduced; complete entitlement lifecycle absent. |
-| Permissive main APK / isolated MPL / no forbidden copyleft assets | No new external library added this pass; full transitive/legal audit still required. |
+| Permissive main APK / isolated MPL / no forbidden copyleft assets | No new APK dependency added this pass; optional external host verifiers are not bundled. Full transitive/legal audit still required. |
 | Two reference devices / E0 budgets / no invented measurements | No reference-device measurements; budgets remain E0. |
 | Requested47 slots vs included48 / dedicated modules | 41 exact,2 partial owners,4 absent (quickpanel/office/photos/ime); Meet/GPL ownership also unresolved. |
-| Actual Android build and native visual inspection | Not executed; SDK/JDK/ADB/emulator/access prerequisites absent in this sandbox. |
+| Actual Android build and native visual inspection | R11 both-flavor build/tests/lint and24 API34 named cases passed remotely at1ee1589, including5 elementary isolated-FD cases. Full parser isolation, visual/AX/physical acceptance absent. |
 
 ## Every recorded requirement
 
@@ -171,7 +172,7 @@ Owner candidates below identify where work belongs, not implementation completen
 | FF-06 | HEIC/HEIF/AVIF decode via platform/audited fallback | partial_unverified | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | S12 |
 | FF-07 | Platform hardware HEIC encode/export | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | S12 |
 | FF-08 | PSD/PSB layers/composite/export | partial_unverified | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | S13 |
-| FF-09 | SVG render/export and text/Markdown/CSV/RTF edit; vector editor later | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
+| FF-09 | SVG render/export and text/Markdown/CSV/RTF edit; vector editor later | partial_unverified | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-10 | EPUB reader | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-11 | Save-As/export fidelity warning | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-12 | Isolated format sandbox/watchdogs/bomb guards | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
@@ -181,7 +182,7 @@ Owner candidates below identify where work belongs, not implementation completen
 | FF-16 | Conversion/loss report before lossy save | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-17 | Macros disabled by default | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | MD-01 | Capture recording/audio/annotation/blur/redact/OCR/commit-first | partial_unverified | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | S17 |
-| MD-02 | Hardware media player/subtitles/PiP/gapless/Beam | not_implemented | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
+| MD-02 | Hardware media player/subtitles/PiP/gapless/Beam | partial_unverified | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
 | MD-03 | Photos with non-destructive edits/HEIC | partial_unverified | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
 | MD-04 | Voice recorder | not_implemented | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
 | MD-05 | Camera/scan/QR hooks | not_implemented | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
@@ -283,6 +284,6 @@ Owner candidates below identify where work belongs, not implementation completen
 | MS-05 | SMS/MMS with SMS role | partial_unverified | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 | MS-06 | Permissive Matrix/XMPP clients; no AGPL Signal client | not_implemented | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 
-Status counts: {"excluded": 3, "not_implemented": 171, "partial_unverified": 56, "superseded": 1}.
+Status counts: {"excluded": 3, "not_implemented": 169, "partial_unverified": 58, "superseded": 1}.
 
-Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r7-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R7-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.
+Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r11-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R11-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.

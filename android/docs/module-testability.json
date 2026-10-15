@@ -1,0 +1,776 @@
+{
+  "schema": 1,
+  "standard": "At least one concrete nontrivial operational transformation, persistence operation, protocol parser/serializer, runtime integration, or executable harness with real source and an existing reproducible behavioral check. Folder presence, compilation, value types, gate/denial-only code, simulated peers and labels do not qualify. This is a reviewed lower bound on testable subsets, never full module acceptance. Test existence is not proof its complete feature works.",
+  "rows": [
+    {
+      "module": ":app",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Own-window focus and real module action dispatch",
+      "production": [
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
+      "sha256": {
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "1dc8d8bc55937f2cfc591b8ee54223acdcacedbc285f7a9ef73925b428edb7a1",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+      }
+    },
+    {
+      "module": ":core:documents",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded encoding-preserving editor sessions, recovery and copy protocol",
+      "production": [
+        "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt"
+      ],
+      "checks": [
+        "core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt"
+      ],
+      "command": ":testing:copyContracts",
+      "limit": "Streaming large files, regex, full autosave/recovery, provider/IME/AX/process-death and physical persistence acceptance; complete Forge lifecycle absent",
+      "sha256": {
+        "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt": "c2087ef153ab436a893e636f23d68ddd3e8ab256724bff525d3ac3a87a3bc9fc",
+        "core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt": "c3c9d1a9cee2247dd22e14aef8316c0a543d78d53ba2882ae3b7d0a599ce898a"
+      }
+    },
+    {
+      "module": ":core:windowing",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Deterministic window reducer and versioned restore",
+      "production": [
+        "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt"
+      ],
+      "checks": [
+        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt"
+      ],
+      "command": ":testing:windowRestoreContracts",
+      "limit": "Full WM-01\u201316 semantics, Compose host/input/display integration, Room, physical a11y/perf",
+      "sha256": {
+        "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt": "80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574",
+        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074"
+      }
+    },
+    {
+      "module": ":core:files",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Gate/value types only; safety tests do not supply Files functionality or a new engine.",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Not the specified journaled fileops; ordered publish/verify/retire, provider crash/undo matrix S6",
+      "sha256": {}
+    },
+    {
+      "module": ":core:capabilities",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual Android RAM/SDK/display/role/declared-encoder observations with explicit unknown propagation; native case PASS at67fbd39",
+      "production": [
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Observed inventory only: no NPU/physical display-out/session inference, codec initialization, performance or OEM/API36/37 acceptance",
+      "sha256": {
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt": "9118012424e9b28ebf5cf7cf008734ad12a40a411c607d91f427588aaf140812",
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7"
+      }
+    },
+    {
+      "module": ":core:model",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Gate/value types only; safety tests do not supply Files functionality or a new engine.",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Complete immutable cross-module models, schema/compatibility and full product integration",
+      "sha256": {}
+    },
+    {
+      "module": ":core:commands",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Immutable bounded locale-stable command search",
+      "production": [
+        "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt"
+      ],
+      "checks": [
+        "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt"
+      ],
+      "command": ":testing:searchAndGateContracts",
+      "limit": "Complete command routing, conflict/remap/keyboard/a11y contracts and integration",
+      "sha256": {
+        "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt": "f984f73585bf67e9b1dc8a36335e5410c87eaadeabaac5abb25a3d483aab3938",
+        "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt": "b7aecce4afc12eec430cfd6a0d441a55a18ea72fc96af57adb805b6903a85347"
+      }
+    },
+    {
+      "module": ":core:settings",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native inspection passed at67fbd39",
+      "production": [
+        "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
+      "sha256": {
+        "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc",
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt": "4e83784d8a76343ad2b32cdf7fd8366ca4701598dbfd34a04a48620e0fb96c78",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+      }
+    },
+    {
+      "module": ":core:security",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual key/crypto paths, fail closed after Android key loss",
+      "production": [
+        "core/security/src/main/java/dev/fusion/security/IndexKeys.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
+      "sha256": {
+        "core/security/src/main/java/dev/fusion/security/IndexKeys.kt": "3ac11bb42295d9552e997fe3d17fd25ece8872144e580c5400e9e3fba16bddf7",
+        "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt": "f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0"
+      }
+    },
+    {
+      "module": ":core:perf",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Deterministic codec/thermal decision policy, not measured governor",
+      "production": [
+        "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt"
+      ],
+      "checks": [
+        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt"
+      ],
+      "command": ":testing:pilotContracts",
+      "limit": "ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings",
+      "sha256": {
+        "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt": "8943c5233fe5bc3b565b463b4930961514c1f96a5d52a0abdf89a9f6810a6cd3",
+        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt": "4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5"
+      }
+    },
+    {
+      "module": ":core:hw",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual Android video codec encoder/decoder declaration partition and audio feature inventory; native case PASS at67fbd39",
+      "production": [
+        "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Declared hardware flags/preferences are NOT successful codec initialization, throughput or casting; physical/API36/37 and Compat acceptance remain open",
+      "sha256": {
+        "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt": "4f09fcf0da21f0c5492b71a395664f12aa14158b9f08999eed750e65d82159f6",
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7"
+      }
+    },
+    {
+      "module": ":core:index",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded real encrypted index files, conflicts and search",
+      "production": [
+        "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt"
+      ],
+      "checks": [
+        "core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt"
+      ],
+      "command": ":testing:encryptedIndexContracts",
+      "limit": "S4 FTS/source/latency/battery decisions; explicit source consent/Vault/private-data exclusions, Android Keystore/filesystem/lifecycle integration, rollback/key lifecycle policy, native Find integration and device security acceptance",
+      "sha256": {
+        "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt": "cfd1fc18855633cde0f712752abf0eb824cea718afcf453e82e7582fd3a33d90",
+        "core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt": "85d70aa92b40a5727f576febabae618eecefa0bf0a97a66670227a4c32b121f7"
+      }
+    },
+    {
+      "module": ":core:storage",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real AtomicFile checkpoint commit/readback/failure",
+      "production": [
+        "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Specified Room/migrations, process-death/disk-failure/power-loss acceptance and complete recovery lifecycle",
+      "sha256": {
+        "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt": "7b8f454f8ad2b8e8b4c8b3354122ec24431649c86bbcf5afbd940e384622cd36",
+        "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt": "5d121553b5d8662f07661c0d3f311c434f54c740fbbf475f51d788df255bae3c"
+      }
+    },
+    {
+      "module": ":core:designsystem",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Compose theme source",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:editor",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real editing and lifecycle integration",
+      "production": [
+        "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt",
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
+      "sha256": {
+        "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+      }
+    },
+    {
+      "module": ":feature:launcher",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Immutable pin/reorder/unpin, missing-target preservation, deterministic catalog reconciliation and locale-stable search",
+      "production": [
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
+      "sha256": {
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt": "9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+      }
+    },
+    {
+      "module": ":feature:find",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual local command palette selection dispatch, not Files index integration",
+      "production": [
+        "feature/find/src/main/java/dev/fusion/find/Palette.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
+      "sha256": {
+        "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+      }
+    },
+    {
+      "module": ":feature:files",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Read-only SAF browsing pilot and explicit mutation gate",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Full FM operations/journaling/undo/Peek, verified providers, accessibility and S6",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:browser",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app",
+      "production": [
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt"
+      ],
+      "checks": [
+        "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt"
+      ],
+      "command": ":testing:browserSessionContracts",
+      "limit": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
+      "sha256": {
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
+        "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt": "ead3541b5e0e31da1d49ef735db6a43e88f445e821fb9f77f766c954b4f1d3a1"
+      }
+    },
+    {
+      "module": ":feature:terminal",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "App-UID local command execution source; explicit experimental consent",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Isolated PTY process, terminal emulation, lifecycle/input/security and P1 acceptance",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:vault",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Vault UI/storage source; pilot blocked",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Reviewed secure lifecycle, exclusion/lock/key recovery, no data-loss paths, device/security tests",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:notes",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real revision-bound store/backlinks/trash and strict draft codec; native checkpoint recovery, writer death and owner conflict cases passed at2c2b5bc",
+      "production": [
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt",
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesRecoveryStore.kt",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt"
+      ],
+      "checks": [
+        "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/NotesRecoveryDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/NotesProcessDeathDeviceTest.kt"
+      ],
+      "command": ":testing:noteDraftContracts; native: :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Whole-app lifecycle/power-cut/backup and full filesystem/IME/AX acceptance; version history, attachments/OCR/import/export and full PR-02 scope",
+      "sha256": {
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt": "5a6918f57732fc403ed7c66bb0df2fe6d07a1b2cf95bc7c66ccbb879800d0e38",
+        "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt": "9799b5edf82ee2291369596bea2f751fe914c4454ae854a96f317fa2bf68af68",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesRecoveryStore.kt": "7e74d6209b8650944b83c3a5a872d088ccede0db57e488bdc8ab6aefb4b962e3",
+        "feature/notes/src/main/java/dev/fusion/notes/NotesViewModel.kt": "41d9dd9b77d3c3bc3ec12d5b809d98b6335faec226e05aa753070501914b3589",
+        "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt": "95491b9435005695c7135fe3027cc83625d4109f6fb71c125f75aca37f1afaef",
+        "app/src/androidTest/java/dev/fusion/shell/NotesRecoveryDeviceTest.kt": "6b08b53d04ecc412dbd6bf5fd002d21767616e1516730fd792aa0f13e250a5ca",
+        "app/src/androidTest/java/dev/fusion/shell/NotesProcessDeathDeviceTest.kt": "79e3626fff3fba454cf5628d45424e10aedc334e03314c653fb5ea998f27ca14"
+      }
+    },
+    {
+      "module": ":feature:calc",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real decimal/scientific/programmer/unit calculations",
+      "production": [
+        "feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt"
+      ],
+      "checks": [
+        "feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt"
+      ],
+      "command": ":testing:calculatorContracts",
+      "limit": "PR-09 complete actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance",
+      "sha256": {
+        "feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt": "049b18efbc9258276cb8f9ac9866dacd0a1c1f3d2c7c9d5a77723bcad2bc5fcf",
+        "feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt": "a3d71c977661945024e7fa8704b563aabcde37345ab35faba29457046d5a6ecb"
+      }
+    },
+    {
+      "module": ":feature:settings",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Read-only diagnostics/redacted sharing; geometry density setting",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Complete functional setting groups/migrations, runtime verification and accessible full-density behavior",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:media",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte stream reader; literal-cue inspector text input passed at67fbd39. System picker adapter compiled, grant/lifecycle execution pending",
+      "production": [
+        "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt",
+        "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
+      "sha256": {
+        "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt": "ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b",
+        "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt": "b0c4aae27639e97f9d0e2db6a13f68f859321d33f266d78c56955e9f06d9e00d",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
+        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt": "c48816bc9cb2f5c9fdb1c54f770955eeddb9f279e425c46b1935ceedcddd0610"
+      }
+    },
+    {
+      "module": ":feature:beam",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real quality decisions and bounded local HTTP subset, not receiver/casting acceptance",
+      "production": [
+        "feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt"
+      ],
+      "checks": [
+        "feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt"
+      ],
+      "command": ":feature:beam:testDebugUnitTest",
+      "limit": "S17\u201321 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting",
+      "sha256": {
+        "feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt": "89eee07b9a1c21651e1f85e939a14809618d6569b05b0afcd9abc093d1d5468e",
+        "feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt": "1305688195b7587010dcf8c730acfaa4b1a8c61a16480f2e5a582abddcf51875"
+      }
+    },
+    {
+      "module": ":feature:alerts",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Alerts UI/listener source; listener disabled",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Opt-in/permission/privacy/deletion/migration and NC acceptance; disabled source is not completion",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:capture",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Native playback/revocation/exclusion/power-loss and hardware encoder measurement",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:backup",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded noncompressed FBC1 content serialization and whole-frame checksum/structural verification before returning entries",
+      "production": [
+        "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
+      "sha256": {
+        "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt": "d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+      }
+    },
+    {
+      "module": ":feature:continuity",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Android explicit share/peripheral inventory source",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Full CT handoff/desktop/peripheral behaviors, no PC bridge claimed, device acceptance",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:accessibility",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "System accessibility observation/adaptation source",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Whole-product AX release gates; system state inspection does not establish usable UI",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:together",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Legacy random-peer simulation removed; no real transport.",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Real own-media networking/Syncplay-compatible transport, multi-device clock/media agreement S22",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:lens",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Camera preview only; explicit experimental consent",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. S25\u201328 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:messages",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "SMS repository/surface source, role/transport gaps; pilot blocked",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Own-Mac client, SMS role/MMS, Matrix/XMPP, delivery states, security/device/legal acceptance",
+      "sha256": {}
+    },
+    {
+      "module": ":feature:automation",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "App-local routine source; explicit experimental consent",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance",
+      "sha256": {}
+    },
+    {
+      "module": ":format:native",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded strict comma/double-quote CSV with multiline/empty-cell preservation, strict UTF8 validation and simple word count",
+      "production": [
+        "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt"
+      ],
+      "checks": [
+        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+      ],
+      "command": ":format:native:test",
+      "limit": "Not arbitrary CSV dialect/encoding inference, spreadsheet formula evaluation, streaming large-file editing, Forge registration or full fidelity acceptance",
+      "sha256": {
+        "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt": "ce587cf733fc8130ae3488d7ebce5d8e605163a87806fe2a6a297f3bae2709c1",
+        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt": "8ac10b68f847f9b615cf49e01c3fea5dfb26089c79ac4123430b33fd7fe7fe1e",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
+      }
+    },
+    {
+      "module": ":format:archive",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security",
+      "production": [
+        "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt"
+      ],
+      "checks": [
+        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt"
+      ],
+      "command": ":format:archive:test",
+      "limit": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
+      "sha256": {
+        "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75",
+        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt": "1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260"
+      }
+    },
+    {
+      "module": ":format:ooxml",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded lossy text extraction with consumed ZIP guards, not native Office editing",
+      "production": [
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt"
+      ],
+      "checks": [
+        "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt"
+      ],
+      "command": ":testing:ooxmlGuardContracts",
+      "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
+      "sha256": {
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
+        "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt": "984e49dacb739fbdb5024e028fd7a2e03518f47ad023cc058715191eb3ca757e"
+      }
+    },
+    {
+      "module": ":format:pdf",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real elementary isolated-UID/FD/watchdog/socket precursor, not PDF parser isolation",
+      "production": [
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt"
+      ],
+      "checks": [
+        "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt"
+      ],
+      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
+      "sha256": {
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "844cf12cad5dd2b41248eaad4bf21476c9e1a1bd78761f2e8f2a627d8c1b15f9",
+        "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a"
+      }
+    },
+    {
+      "module": ":format:image",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, selected native cases passed at67fbd39",
+      "production": [
+        "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt",
+        "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt"
+      ],
+      "checks": [
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+      ],
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "limit": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
+      "sha256": {
+        "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
+        "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt": "f9de8fe09ef057479df66e831ccec81bdefcc6eeee57aca93d2cda79edd60f04",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+      }
+    },
+    {
+      "module": ":format:psd",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Actual header/composite parsing tests; not full layers/PSB/fidelity",
+      "production": [
+        "format/psd/src/main/kotlin/dev/fusion/psd/PsdInfo.kt"
+      ],
+      "checks": [
+        "format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt"
+      ],
+      "command": ":format:psd:testDebugUnitTest",
+      "limit": "S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance",
+      "sha256": {
+        "format/psd/src/main/kotlin/dev/fusion/psd/PsdInfo.kt": "c96c40b7dca610aed8d63ce29662fbcab8462b96c8bfd14d9f0ef1ea9fc9c599",
+        "format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt": "cd123b32608342a5956176845fdddb2300169a85c34711da987c4a4fdc978115"
+      }
+    },
+    {
+      "module": ":format:lok",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "LibreOffice route/gate source; not a shipping Office engine",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance",
+      "sha256": {}
+    },
+    {
+      "module": ":cast:dlna",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "UPnP description/control URL/SOAP parsing only, not receiver transport acceptance",
+      "production": [
+        "cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt"
+      ],
+      "checks": [
+        "cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt"
+      ],
+      "command": ":cast:dlna:testDebugUnitTest",
+      "limit": "Real receiver interoperability, transport trust/lifecycle/security and S20 evidence",
+      "sha256": {
+        "cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt": "ecaeba866a60db19a3b70634e0555c211e1112ccca2b617139e5ff38d915e945",
+        "cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt": "26e80485a21f6ed25db56ab751d22447702c668ef7bec3895db723116bced7e1"
+      }
+    },
+    {
+      "module": ":cast:airplay",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "SDP/protocol byte construction only, not hardware URL/audio/mirroring",
+      "production": [
+        "cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt"
+      ],
+      "checks": [
+        "cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt"
+      ],
+      "command": ":cast:airplay:test",
+      "limit": "S18 hardware and S19 counsel/hardware gates; no mirroring or FairPlay bypass claim",
+      "sha256": {
+        "cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt": "84040f8065d19b1ce06abe1cfc6dbca156919525271b8cdf97c962c99e644d64",
+        "cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt": "e6a99e6eeef10399ff8616dbf51e16a1120a4ddb9b0fa6ab843125133e922a93"
+      }
+    },
+    {
+      "module": ":cast:castv2",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real JSON/protobuf protocol codecs only, not authenticated receiver sessions",
+      "production": [
+        "cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt"
+      ],
+      "checks": [
+        "cast/castv2/src/test/kotlin/dev/fusion/castv2/JsonTest.kt"
+      ],
+      "command": ":cast:castv2:test",
+      "limit": "S21 receiver/auth/session/Stop/exclusion/latency and protocol/security acceptance",
+      "sha256": {
+        "cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt": "0ef260b857681162388c20512c2b736302e7282bcf58463379967e7e0b5f98a7",
+        "cast/castv2/src/test/kotlin/dev/fusion/castv2/JsonTest.kt": "abc506fbaa5ad2da55b4e93160e4494194a209b9cf813037d219da9b587f87af"
+      }
+    },
+    {
+      "module": ":benchmark",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Startup/baseline generator test source",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Actual device runs on at least two reference devices, reproducible budgets and reports",
+      "sha256": {}
+    },
+    {
+      "module": ":baselineprofile",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Intentionally empty baseline profile; no generated rules",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Generate from measured user journeys on devices, verify packaging/effect",
+      "sha256": {}
+    },
+    {
+      "module": ":testing",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Executable production contract harness and adversarial corpora, not a user feature",
+      "production": [
+        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt"
+      ],
+      "checks": [
+        "tools/test_pilot_reporting.py"
+      ],
+      "command": "python3 -m unittest discover -s tools -p test_*.py",
+      "limit": "Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records",
+      "sha256": {
+        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt": "4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5",
+        "tools/test_pilot_reporting.py": "4ef01b5bf3c90c23d34d4255570383501398f128cb9c0d108351aaa2cfeefb80"
+      }
+    }
+  ]
+}

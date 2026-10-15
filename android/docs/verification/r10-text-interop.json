@@ -1,0 +1,22 @@
+{
+  "checks": 707,
+  "result": "PASS",
+  "diff_pairs": 225,
+  "oracles": [
+    "CPython codecs",
+    "Python zipfile",
+    "recursive edit-distance oracle"
+  ],
+  "production_source_sha256": {
+    "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt": "c2087ef153ab436a893e636f23d68ddd3e8ab256724bff525d3ac3a87a3bc9fc",
+    "core/documents/src/main/kotlin/dev/fusion/documents/SessionCodec.kt": "18451e546cd3ad874a66ae2059e7c1fa47173e0282db3c9f99ba7b4587daf16f",
+    "core/documents/src/main/kotlin/dev/fusion/documents/TextDocument.kt": "e14ecfb052f71ccc593e574c97874a7afde1a0b546353d714c6de376657d6143",
+    "core/documents/src/main/kotlin/dev/fusion/documents/TextEditing.kt": "fad3876be614a07603202a11aecf30bdca85659ef66f8502df556037fccdcf60",
+    "core/documents/src/main/kotlin/dev/fusion/documents/VerifiedCopy.kt": "18085b09c0d5ff2a2b7a7b137b590b3c0ac849208970e1fb371fe7875dba591e",
+    "core/documents/src/main/kotlin/dev/fusion/documents/TextEncoding.kt": "57830a4f22bdef746d4ca530a260603322b94ee3a7a9c41217d1b09f44a6beda",
+    "core/documents/src/main/kotlin/dev/fusion/documents/LineDiff.kt": "265f8f9134f70f9ab1e48e8f68778db880fc8e67d1ec3fd94aa08df0a9c4324e",
+    "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c"
+  },
+  "native_evidence": false,
+  "limitations": "Host only. JDK/Python ZIP implementations may share zlib ancestry. No process sandbox, XML validator, Android UI or SAF acceptance."
+}

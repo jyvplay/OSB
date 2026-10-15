@@ -1,3 +1,168 @@
+# R12 continuation build and try-out entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with a version compatible with
+**AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36**. The IDE name itself is not compatibility
+proof. Current min/compile/target34/36/36 remains a documented deviation from37.
+
+[Latest compiled native run38682595367](https://github.com/jyvplay/OSB/actions/runs/38682595367)
+at0a23219 has both debug flavors, invoked unit/contracts and lint passing, with the
+`fusion-native-debug` APK artifact. **Native result:49 PASS/1 FAIL/0 SKIP**; the stronger
+Editor200%-font long-text test timed out awaiting actual IME visibility. This remains unresolved.
+These are incomplete debug builds with a known failing test, not a cleared production beta.
+
+## Try the new read-only subtitle inspector
+
+1. Build/run `proDebug` on a disposable API34+ AVD and open **Media**.
+2. Acknowledge its experimental/test-data scope. Choose **Inspect subtitle file…**.
+3. Pick a real UTF8 `.srt` file using the Android system document picker. The subtitle path
+   does **not** require `READ_MEDIA_IMAGES`; the separate image-inventory action does.
+4. Enter an integer time in milliseconds. Active overlapping cues are shown literally,
+   with end times excluded; up to8 are previewed with an explicit count.
+5. Invalid/unsupported/oversized input is refused without changing the source; prior preview remains.
+
+This is inspection, not playback. It supports the strict consecutive-index/timecode subset in
+`R12B-ENGINEERING.md`,≤1MiB. No styles, media-clock sync, durable grant, background player,
+provider wall-time guarantee or restoration of the preview after Activity death is claimed.
+
+New settings/image/backup/launcher APIs are tested bounded components, not newly exposed full
+end-user workflows. Backup restore remains blocked. Run the actual contracts from `android/`:
+
+```sh
+./gradlew :testing:subsetContracts
+# With Kotlin2.2.21 and Java17 configured (separate module compilation):
+python3 tools/run_subset_contracts.py
+python3 tools/run_subset_interop.py
+python3 tools/probe_text_regression.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+```
+
+The same original managed-device command below also runs the new Bitmap, subtitles/UI,
+settings, backup-content, CSV and runtime-inventory cases. Do not infer native results from
+these host commands. [Current evidence and exact revisions](R12B-ENGINEERING.md).
+
+## Try the actual Notes implementation
+
+1. Choose the `proDebug` app variant and start a disposable API34+ AVD.
+2. Run `app`, open Notes, and enable its test-data experiment if prompted.
+3. Enter a name and draft text. `Checkpoint draft` requests a local recovery
+   checkpoint; wait for the **confirmed by exact readback** status. Unconfirmed
+   edits are not promised durable. The checkpoint is separate from saved Markdown.
+4. `Save note` explicitly publishes the saved note. Trash/restore acts on that saved
+   revision, refuses conflicts, and is not version history or backup.
+5. For your own manual lifecycle check, stop/relaunch the app and reopen Notes
+   (re-enable test-data consent if requested). This is a suggested user check,
+   not a claim that this session manually installed/reviewed the APK.
+
+Recovery is plaintext app-private data in `no_backup`, not encrypted backup. An
+unreadable checkpoint blocks edits rather than overwriting it; preserve and inspect
+`no_backup/notes-recovery-v1.bin` in Device Explorer before attempting recovery.
+Browser remote surfaces are debug instrumentation experiments, not an unlocked
+product browser. Office and the original broader missing features remain blocked.
+
+## Reproduce verification
+
+From `android/` with the actual SDK/JDK installed:
+
+```sh
+python3 tools/check_project.py
+python3 tools/module_testability.py --check
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+./gradlew :app:assembleProDebug :app:assemblePlayDebug
+./gradlew :testing:noteDraftContracts :testing:noteTrashContracts
+./gradlew :app:lintProDebug :app:lintPlayDebug
+# This requires a running disposable AVD:
+./gradlew :app:installProDebug
+# Managed device: regular Google API34 image in R12, not aosp-atd.
+# Explicit opt-in permits test file resets and temporary system font-scale changes.
+./gradlew :app:pixel6Api34ProDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
+  -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+python3 tools/report_device_results.py
+```
+
+Host-only checks (not Android substitutes), with real Java17/Kotlin2.2.21 paths:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_jvm_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r12_interop.py
+python3 tools/probe_no_fork_cpu.py # child-only unprivileged Linux x86_64 experiment
+```
+
+The full A–J evidence ledger, exact native candidates and APK links are in
+[R12-ENGINEERING.md](R12-ENGINEERING.md). Testability is23/48 (47.92%); full acceptance
+is0/48 (0%). A debug APK or green subset suite is not production-beta clearance.
+
+---
+
+# Historical R11B build and test entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with compatible AGP/JDK17 and SDK36.
+The IDE name is not a compatibility proof. Current min/compile/target34/36/36 is an
+explicit deviation from the requested compile37/target37 migration. No native
+arm64/4K+16K engine payload has been validated.
+
+[Run38670396374](https://github.com/jyvplay/OSB/actions/runs/38670396374) at1ea1faa
+passed both debug flavors, invoked unit/contracts, lint and APK upload; API34
+**29/29 named cases passed**, including six elementary boundary cases and actual
+200%-font Notes trash/restore. Download `fusion-native-debug` from that run for
+these incomplete debug APKs (not production/beta clearance). No APK was manually
+installed/visually reviewed here. See [R11B](R11B-ENGINEERING.md) for exact limits.
+
+```sh
+python3 tools/native_lab.py doctor
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+# Set JAVA_HOME and KOTLINC to actual Java17/Kotlin2.2.21 installations:
+python3 tools/run_jvm_contracts.py
+python3 tools/run_r11_interop.py
+# Full Android prerequisites required:
+./gradlew :app:assembleProDebug :app:assemblePlayDebug
+./gradlew :testing:browserSessionContracts :testing:noteLinkContracts
+./gradlew :app:lintProDebug :app:lintPlayDebug
+# Disposable opted-in managed device only; mutates test-owned files and system font scale:
+./gradlew :app:pixel6Api34ProDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
+  -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+python3 tools/report_device_results.py
+```
+
+The reporter reads generated JUnit XML and emits named cases through Checks even
+when tests fail; missing XML is **NO_EXECUTION_EVIDENCE**, never a pass. Visual
+capture/human AX, physical-device performance and legal/license gates remain open.
+
+---
+
+## Historical R10 verification additions
+
+Current acceptance remains0/48 modules. See [R10 engineering record](R10-ENGINEERING.md).
+With a real JDK/Android SDK use the existing both-flavor build/lint/device commands;
+the current host JRE/Kotlin setup only compiles the pure libraries.
+
+```sh
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+# Host Kotlin2.2.21 + Java17 runtime; JAVA_HOME and KOTLINC must point to real tools:
+python3 tools/run_jvm_contracts.py
+python3 tools/run_text_interop.py --report docs/verification/r10-text-interop.json
+# With Gradle prerequisites/dependencies available:
+./gradlew :testing:encodingDiffContracts :testing:ooxmlGuardContracts
+```
+
+The encoding/diff/ZIP contracts do not execute Android providers, process isolation,
+UI or Office engines. `ci_annotations.py` exposes bounded failed-assembly excerpts
+through GitHub Checks; full `assemble.log` is also uploaded. Existing run38648345516
+failed assembly after successful SDK setup. No compiler cause is inferred from the
+Node-action warning. Subsequent run38652913588 passed both-flavor assembly after
+two compiler repairs, but failed the unit-test step; contracts/lint/upload skipped.
+All Gradle CI phases now use `tools/run_gradle_ci.sh` for bounded API-visible errors.
+Final run38656329782 at86b4621 passed both-flavor assembly, all invoked JVM tests,
+contracts, both-flavor lint and debug APK upload. Download `fusion-native-debug`
+from https://github.com/jyvplay/OSB/actions/runs/38656329782 . These are debug builds
+of an incomplete product, not release/beta clearance. Managed-device job skipped;
+no artifact was installed or visually inspected here.
+
+---
+
 # Native build and verification
 
 ## Toolchain and deliberate deviations
@@ -127,3 +292,20 @@ moves the active window to that workspace. Mouse menu equivalents are provided.
 Notes currently support Markdown source, not rendered Markdown, backlinks,
 attachments, autosave, encryption or process-death draft recovery. Deletion is
 explicitly confirmed/permanent, not a reversible Notes trash implementation.
+
+## R8 encrypted-index and independent host checks
+
+```sh
+# Linux/POSIX contract; native Android test remains a separate obligation:
+./gradlew :testing:encryptedIndexContracts
+# Full genuine standalone JVM suite, when JAVA_HOME/KOTLINC are configured:
+python3 tools/run_jvm_contracts.py
+# Optional external implementations (install cryptography46.0.3/Pillow12.0.0 yourself):
+python3 tools/run_independent_checks.py --report pilot-reports/cross-verifiers.json
+```
+
+The optional script downloads nothing. It compares SunJCE and OpenSSL in both
+directions and checks parser fixture PNGs with Pillow. Those fixtures are not
+native screenshots. No new APK dependency was introduced. See `R8-ENGINEERING.md`
+for actual results, bounds and unimplemented product scope. Encrypted Find is not
+wired to live sources; no feature/spike is promoted by this kernel work.

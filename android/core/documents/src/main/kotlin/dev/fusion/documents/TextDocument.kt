@@ -13,6 +13,7 @@ data class TextDocument(
     val sourceUri: String?,
     val content: String,
     val savedDigest: String,
+    val encoding: TextEncoding = TextEncoding.UTF8,
 ) {
     val dirty: Boolean get() = TextBytes.digest(content) != savedDigest
     fun saved(snapshot: String): TextDocument = copy(savedDigest = TextBytes.digest(snapshot))

@@ -40,6 +40,24 @@ class ShellSmokeTest {
         compose.onNodeWithTag("calculator-input").performScrollTo().assertTextContains("0.1+0.2")
         compose.onNodeWithTag("calculator-result").performScrollTo().assertTextEquals("0.3")
     }
+    @Test fun distinctWindowPanesDoNotMergeTheirControls() {
+        openModule("editor")
+        compose.onNodeWithText("Open text").performScrollTo().assertIsDisplayed()
+        openModule("calculator")
+        compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Open text").assertExists()
+        compose.onAllNodesWithContentDescription("Minimize").assertCountEquals(2)
+    }
+    @Test fun activatingWindowKeepsChildFocus() {
+        openModule("editor")
+        compose.onNodeWithText("New").performScrollTo().performClick()
+        compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("editor-content").performTextInput("retained")
+        openModule("calculator")
+        compose.onNodeWithTag("editor-content").assertIsNotFocused()
+        compose.onNodeWithTag("editor-content").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) { it() }
+        compose.onNodeWithTag("editor-content").assertIsFocused().assertTextContains("retained")
+    }
     @Test fun filesDeclaresMissingAccess() {
         openModule("files")
         compose.onNodeWithText("No folder access. Only folders you choose are visible.").assertIsDisplayed()
@@ -52,7 +70,8 @@ class ShellSmokeTest {
             compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
         }
         compose.onNodeWithTag("editor-content").performTextInput("Draft survives recreation")
-        compose.onNodeWithText("Close tab").performScrollTo().performClick()
+        compose.onNodeWithText("Close tab").performScrollTo().assertIsDisplayed().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodes(hasText("Discard unsaved changes?")).fetchSemanticsNodes().isNotEmpty() && runCatching { compose.onNodeWithText("Discard unsaved changes?").assertIsDisplayed() }.isSuccess }
         compose.onNodeWithText("Discard unsaved changes?").assertIsDisplayed()
         compose.onNodeWithText("Keep editing").performClick()
         compose.activityRule.scenario.recreate()
@@ -91,7 +110,7 @@ class ShellSmokeTest {
         openModule("editor")
         compose.onNodeWithContentDescription("Minimize").performClick()
         compose.onNodeWithText("Restore: Editor").performScrollTo().performClick()
-        compose.onNodeWithText("Open UTF-8").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Open text").performScrollTo().assertIsDisplayed()
     }
     @Test fun editorTabsDoNotReplaceEachOthersText() {
         openModule("editor")
@@ -101,21 +120,24 @@ class ShellSmokeTest {
             compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
         }
         compose.onNodeWithTag("editor-content").performTextInput("First document")
-        compose.onNodeWithText("New").performScrollTo().performClick()
-        compose.waitUntil(10_000) {
-            compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty()
-        }
+        compose.onNodeWithTag("editor-content").assertTextContains("First document")
+        // Patch attack: focus-driven scrolling must not hide the fixed action toolbar.
+        compose.onNodeWithText("New").assertIsDisplayed()
+        compose.onNodeWithText("New").performScrollTo().assertIsDisplayed().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
+        compose.onAllNodesWithTag("editor-tab").assertCountEquals(2)
         compose.onNodeWithTag("editor-content").performTextInput("Second document")
         compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()
         compose.onNodeWithTag("editor-content").assertTextContains("First document")
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test fun paletteExecutesARealModuleAction() {
         compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-editor") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText("Find").performScrollTo().performClick()
         compose.onNodeWithTag("palette-query").performTextInput("editor")
         compose.onNodeWithTag("palette-query").performKeyInput { pressKey(Key.Enter) }
-        compose.onNodeWithText("Open UTF-8").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Open text").performScrollTo().assertIsDisplayed()
     }
     @Test fun notesSaveAndMemoryDraftSurviveActivityRecreation() {
         val name="test_"+java.util.UUID.randomUUID().toString().replace("-","")
@@ -140,4 +162,147 @@ class ShellSmokeTest {
             java.io.File(context.filesDir,"notes/$name.md").delete() // Only this test's fresh UUID name.
         }
     }
+    @Test fun savedWikiBacklinksReadRealNoteFiles() {
+        val context=androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val store=dev.fusion.notes.NotesStore(context)
+        val suffix=java.util.UUID.randomUUID().toString().replace("-","")
+        val source="LinkSource_$suffix";val target="LinkTarget_$suffix"
+        store.save(source,"[[$target]]",null)
+        store.save(target,"Saved target",null)
+        try {
+            openModule("notes")
+            compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Open note: $target") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Open note: $target").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("notes-scan-links") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("notes-scan-links").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Backlink: $source")).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Backlink: $source").performScrollTo().assertIsDisplayed()
+            compose.onNodeWithTag("notes-text").performScrollTo().performTextReplacement("unsaved target draft")
+            compose.onNodeWithText("Backlink: $source").performScrollTo().performClick()
+            compose.onNodeWithText("Discard this memory draft?").assertIsDisplayed()
+            compose.onNodeWithText("Keep editing").performClick()
+            compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains("unsaved target draft")
+            org.junit.Assert.assertEquals("Saved target",store.load(target).text)
+            org.junit.Assert.assertEquals("[[$target]]",store.load(source).text)
+        } finally {
+            java.io.File(context.filesDir,"notes/$source.md").delete()
+            java.io.File(context.filesDir,"notes/$target.md").delete()
+        }
+    }
+
+    @Test fun savedNoteTrashRestoresWithoutLosingItsRevision() {
+        val context=androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val store=dev.fusion.notes.NotesStore(context)
+        val name="Trash_界_"+java.util.UUID.randomUUID().toString().replace("-","")
+        val original=store.save(name,"retained saved bytes α",null)
+        try {
+            openModule("notes")
+            compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Open note: $name") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Open note: $name").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Move note to trash…") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText("Move note to trash…").performScrollTo().assertIsDisplayed().performClick()
+            try { compose.waitUntil(10000) { compose.onNodeWithText("Move saved note to trash?").isDisplayed() } }
+            catch(error: Exception) {
+                throw AssertionError("Trash confirmation missing. Action semantics: "+runCatching {
+                    compose.onNodeWithText("Move note to trash…").printToString(maxDepth=1)
+                }.getOrDefault("no action node"),error)
+            }
+            compose.onNodeWithText("Move saved note to trash?").assertIsDisplayed()
+            compose.onNodeWithText("Move saved revision").performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Saved revision moved to trash.",substring=true)).fetchSemanticsNodes().isNotEmpty() }
+            val receipt=store.trash().single { it.name==name }
+            org.junit.Assert.assertFalse(store.list().contains(name))
+            compose.activityRule.scenario.recreate()
+            compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+            compose.onNodeWithTag("notes-trash-scan").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("notes-restore-${receipt.token}") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("notes-restore-${receipt.token}").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onAllNodes(hasText("Restored saved revision without overwriting another note.")).fetchSemanticsNodes().isNotEmpty() }
+            org.junit.Assert.assertEquals(original,store.load(name))
+            compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains(original.text)
+        } finally {
+            java.io.File(context.filesDir,"notes/$name.md").delete()
+            runCatching { store.trash().filter { it.name==name }.forEach {
+                java.io.File(context.filesDir,"notes/.trash-v1/${it.name}--${it.token}_${it.revision.sha256}.md").delete()
+            } }
+        }
+    }
+
+    @Test fun savedNoteTrashAtTwoHundredPercentFontScale() = withTwoHundredPercentFont {
+        savedNoteTrashRestoresWithoutLosingItsRevision()
+    }
+    @Test fun editorTabsAtTwoHundredPercentFontScale() = withTwoHundredPercentFont {
+        editorTabsDoNotReplaceEachOthersText()
+    }
+    @Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont() = withTwoHundredPercentFont { withVisibleKeyboard {
+        openModule("editor")
+        compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("New").performClick()
+        compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("editor-content").performScrollTo().performClick().performTextInput((1..60).joinToString("\n") { "Long line $it" })
+        compose.waitUntil(10000) {
+            var visible=false
+            compose.activityRule.scenario.onActivity {
+                visible=it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime())==true
+            }
+            visible
+        }
+        compose.waitUntil(10000) { runCatching { compose.onNodeWithText("New").assertIsDisplayed() }.isSuccess }
+        compose.onNodeWithText("New").assertIsDisplayed().performClick()
+        compose.waitUntil(10000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
+        compose.onNodeWithText("New").assertIsDisplayed()
+        compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()
+        compose.onNodeWithTag("editor-content").assertTextContains("Long line 60", substring=true)
+    } }
+    private fun withVisibleKeyboard(action:()->Unit) {
+        // Explicit disposable-emulator fixture: attached hardware keyboard must not suppress IME.
+        val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val key="show_ime_with_hard_keyboard"
+        val before=android.provider.Settings.Secure.getString(instrumentation.targetContext.contentResolver,key)
+        check(before==null || before=="0" || before=="1")
+        fun command(value:String) {
+            instrumentation.uiAutomation.executeShellCommand(value).use { fd ->
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use { it.readBytes() }
+            }
+        }
+        try { command("settings put secure $key 1"); action() }
+        finally { command(if(before==null) "settings delete secure $key" else "settings put secure $key $before") }
+    }
+    private fun withTwoHundredPercentFont(action:()->Unit) {
+        val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val before=android.provider.Settings.System.getString(instrumentation.targetContext.contentResolver,"font_scale")
+        check(before==null || before.toFloatOrNull()?.let { it in 0.5f..5f }==true) { "Unexpected existing font setting; no mutation" }
+        fun command(value:String) {
+            instrumentation.uiAutomation.executeShellCommand(value).use { fd ->
+                android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use { it.readBytes() }
+            }
+        }
+        try {
+            command("settings put system font_scale 2.0")
+            compose.waitUntil(10000) {
+                runCatching {
+                    var actual=0f
+                    compose.activityRule.scenario.onActivity { actual=it.resources.configuration.fontScale }
+                    kotlin.math.abs(actual-2f)<0.01f
+                }.getOrDefault(false)
+            }
+            compose.waitForIdle()
+            action()
+        } finally {
+            // DisposableEmulatorRule has already required explicit opt-in AND emulator hardware.
+            val value=before?.toFloatOrNull()?.takeIf { it in 0.5f..5f }
+            command(if(value==null) "settings delete system font_scale" else "settings put system font_scale $value")
+            compose.waitUntil(10_000) {
+                runCatching {
+                    var actual=0f
+                    compose.activityRule.scenario.onActivity { actual=it.resources.configuration.fontScale }
+                    kotlin.math.abs(actual-(value ?: 1f))<0.01f
+                }.getOrDefault(false)
+            }
+            compose.waitForIdle()
+        }
+    }
+
 }

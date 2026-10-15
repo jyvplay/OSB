@@ -1,0 +1,22 @@
+{
+  "baseline": "02d56ae287bf77b98890418861017a53d6acc539",
+  "scope": "Actual JVM prior/current source counterexample; not a native Android A/B test",
+  "fixtures": [
+    "single FF byte must not be valid UTF8",
+    "quoted multiline cell and trailing empty cell must remain one row with two fields"
+  ],
+  "results": {
+    "before": {
+      "sha256": "6c258b92e8ad4f714e262d260adeed6b64dce80da9ebf35a05be77faaf2f3b6f",
+      "stdout": "true\nYQ==;Yiw=\n",
+      "exit_code": 0
+    },
+    "after": {
+      "sha256": "ce587cf733fc8130ae3488d7ebce5d8e605163a87806fe2a6a297f3bae2709c1",
+      "stdout": "false\nYQpi,\n",
+      "exit_code": 0
+    }
+  },
+  "runner_sha256": "56bbf712d628181e0583af7f1372a594fca2ac542fdcb5806c9afab17afa9b2b",
+  "script_sha256": "47aa002e60d1a61dc3609ab7c61333576004cdcb8d9b2bdc655089cdd94f7015"
+}

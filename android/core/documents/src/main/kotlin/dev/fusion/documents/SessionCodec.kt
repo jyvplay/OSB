@@ -10,7 +10,7 @@ import java.io.OutputStream
 /** FF-15: versioned, bounded recovery snapshot, including the immutable picker payload. */
 data class PendingCopy(val documentId: String, val name: String, val sourceUri: String?, val content: String,
                        val requestId: String? = null, val stage: CopyStage = CopyStage.REVIEW_REQUIRED,
-                       val destinationUri: String? = null)
+                       val destinationUri: String? = null, val encoding: TextEncoding = TextEncoding.UTF8)
 data class EditorSession(
     val documents: List<TextDocument> = emptyList(),
     val selectedId: String? = null,
@@ -24,7 +24,7 @@ object SessionCodec {
     const val MAX_DOCUMENTS = 8
     const val MAX_SNAPSHOT_BYTES = (MAX_DOCUMENTS + 1) * TextBytes.MAX_BYTES + 512 * 1024
     private const val MAGIC = 0x46534544 // FSED
-    private const val VERSION = 2
+    private const val VERSION = 3
 
     fun write(session: EditorSession, destination: OutputStream) {
         validate(session)
@@ -34,13 +34,13 @@ object SessionCodec {
             out.writeInt(session.documents.size)
             session.documents.forEach { doc ->
                 out.field(doc.id); out.field(doc.name); out.optional(doc.sourceUri)
-                out.field(doc.content); out.field(doc.savedDigest)
+                out.field(doc.content); out.field(doc.savedDigest); out.field(doc.encoding.name)
             }
             out.optional(session.selectedId)
             out.writeBoolean(session.pendingCopy != null)
             session.pendingCopy?.let {
                 out.field(it.documentId); out.field(it.name); out.optional(it.sourceUri); out.field(it.content)
-                out.optional(it.requestId); out.field(it.stage.name); out.optional(it.destinationUri)
+                out.optional(it.requestId); out.field(it.stage.name); out.optional(it.destinationUri); out.field(it.encoding.name)
             }
             out.optional(session.copyEpoch); out.writeLong(session.copySequence)
             out.writeInt(session.copyReceipts.size)
@@ -70,17 +70,18 @@ object SessionCodec {
             require(count in 0..MAX_DOCUMENTS)
             val docs = List(count) {
                 TextDocument(data.field(80), data.field(4096), data.optional(8192),
-                    data.field(TextBytes.MAX_BYTES), data.field(64))
+                    data.field(TextBytes.MAX_BYTES), data.field(64), if(version>=3) TextEncoding.valueOf(data.field(32)) else TextEncoding.UTF8)
             }
             val selected = data.optional(80)
             val pending = if (data.readBoolean()) {
                 val old=PendingCopy(data.field(80), data.field(4096), data.optional(8192), data.field(TextBytes.MAX_BYTES))
                 if(version==1) old // Legacy payload has no correlation identity: explicit review/retry only.
-                else old.copy(requestId=data.optional(80),stage=CopyStage.valueOf(data.field(32)),destinationUri=data.optional(8192))
+                else old.copy(requestId=data.optional(80),stage=CopyStage.valueOf(data.field(32)),destinationUri=data.optional(8192),
+                    encoding=if(version>=3) TextEncoding.valueOf(data.field(32)) else TextEncoding.UTF8)
             } else null
-            val epoch=if(version==2) data.optional(36) else null
-            val sequence=if(version==2) data.readLong() else 0L
-            val receiptCount=if(version==2) data.readInt() else 0
+            val epoch=if(version>=2) data.optional(36) else null
+            val sequence=if(version>=2) data.readLong() else 0L
+            val receiptCount=if(version>=2) data.readInt() else 0
             require(receiptCount in 0..CopyProtocol.MAX_RECEIPTS)
             val receipts=List(receiptCount) { CopyReceipt(data.field(80),data.field(80),data.optional(8192),
                 CopyOutcome.valueOf(data.field(32)),data.optional(64),if(data.readBoolean()) data.readInt() else null) }
@@ -117,7 +118,7 @@ object SessionCodec {
             require(p.documentId in ids)
             require(TextBytes.encode(p.name).size <= 4096)
             require(p.sourceUri == null || TextBytes.encode(p.sourceUri).size <= 8192)
-            TextBytes.encode(p.content)
+            TextEncodingCodec.encode(p.content,p.encoding)
             if(p.requestId==null) require(p.stage==CopyStage.REVIEW_REQUIRED && p.destinationUri==null)
             else require(s.copyEpoch!=null && p.requestId=="${s.copyEpoch}-${s.copySequence}" && CopyProtocol.validRequestId(p.requestId))
             require(p.destinationUri==null || CopyProtocol.validDestination(p.destinationUri))

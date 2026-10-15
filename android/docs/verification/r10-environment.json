@@ -1,0 +1,19 @@
+{
+  "checks": {
+    "java17": true,
+    "javac17": false,
+    "platform36": false,
+    "buildTools35": false,
+    "buildTools36": false,
+    "wrapper": true
+  },
+  "versions": {
+    "java": "openjdk version \"17.0.9\" 2023-10-17\nOpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)\nOpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)",
+    "javac": "[Errno 2] No such file or directory: '/home/user/.cache/fusion-tools/java/jdk4py/java-runtime/bin/javac'"
+  },
+  "sdk": "/SDK-NOT-CONFIGURED",
+  "adb": "/SDK-NOT-CONFIGURED/platform-tools/adb",
+  "adbPresent": false,
+  "buildPrerequisitesPresent": false,
+  "limitations": "No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Distribution SHA-256 remains unpinned; release supply-chain gate open."
+}

@@ -1,0 +1,294 @@
+{
+  "scope": "Pinned source retrieval verified by Git blob; not all-provider/device behavior, crash durability or legal closure",
+  "records": [
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/view/SurfaceControlViewHost.java",
+      "git_blob": "c8cf7d9a5194a1cd2d01f93d07fb5d5ecf6e83ae",
+      "sha256": "83cb3b9064eef2b1902998c9ceedcdaac1d2aa3fdc78176129993a8b3c72a776",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/view/SurfaceControlViewHost.java",
+      "excerpts": [
+        {
+          "term": "setView(",
+          "line": 438,
+          "excerpt": "    /**\n     * @hide\n     */\n    @TestApi\n    public void setView(@NonNull View view, @NonNull WindowManager.LayoutParams attrs) {\n        Objects.requireNonNull(view);\n        attrs.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;\n        addWindowToken(attrs);\n        view.setLayoutParams(attrs);\n        mViewRoot.setView(view, attrs, null);\n    }\n\n    /**\n     * @return The view passed to setView, or null if none has been passed.\n     */\n    public @Nullable View getView() {"
+        },
+        {
+          "term": "setView(",
+          "line": 443,
+          "excerpt": "        Objects.requireNonNull(view);\n        attrs.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;\n        addWindowToken(attrs);\n        view.setLayoutParams(attrs);\n        mViewRoot.setView(view, attrs, null);\n    }\n\n    /**\n     * @return The view passed to setView, or null if none has been passed.\n     */\n    public @Nullable View getView() {\n        return mViewRoot.getView();\n    }\n\n    /**\n     * @return the ViewRootImpl wrapped by this host."
+        },
+        {
+          "term": "relayout(",
+          "line": 494,
+          "excerpt": "     *\n     * @param width Width in pixels\n     * @param height Height in pixels\n     */\n    public void relayout(int width, int height) {\n        final WindowManager.LayoutParams lp =\n                new WindowManager.LayoutParams(width, height,\n                        WindowManager.LayoutParams.TYPE_APPLICATION, 0, PixelFormat.TRANSPARENT);\n        relayout(lp);\n    }\n\n    /**\n     * Trigger the tear down of the embedded view hierarchy and release the SurfaceControl.\n     * This will result in onDispatchedFromWindow being dispatched to the embedded view hierarchy\n     * and render the object unusable.\n     */"
+        },
+        {
+          "term": "relayout(",
+          "line": 498,
+          "excerpt": "    public void relayout(int width, int height) {\n        final WindowManager.LayoutParams lp =\n                new WindowManager.LayoutParams(width, height,\n                        WindowManager.LayoutParams.TYPE_APPLICATION, 0, PixelFormat.TRANSPARENT);\n        relayout(lp);\n    }\n\n    /**\n     * Trigger the tear down of the embedded view hierarchy and release the SurfaceControl.\n     * This will result in onDispatchedFromWindow being dispatched to the embedded view hierarchy\n     * and render the object unusable.\n     */\n    public void release() {\n        // ViewRoot will release mSurfaceControl for us.\n        doRelease(true /* immediate */);\n    }"
+        },
+        {
+          "term": "release()",
+          "line": 279,
+          "excerpt": "         * take ownership in that case.\n         */\n        public void release() {\n            if (mSurfaceControl != null) {\n                mSurfaceControl.release();\n             }\n             mSurfaceControl = null;\n        }\n\n        /**\n         * Returns an input token used which can be used to request focus on the embedded surface.\n         *\n         * @hide\n         */\n        public IBinder getInputToken() {\n            return mInputToken;"
+        },
+        {
+          "term": "release()",
+          "line": 506,
+          "excerpt": "     * Trigger the tear down of the embedded view hierarchy and release the SurfaceControl.\n     * This will result in onDispatchedFromWindow being dispatched to the embedded view hierarchy\n     * and render the object unusable.\n     */\n    public void release() {\n        // ViewRoot will release mSurfaceControl for us.\n        doRelease(true /* immediate */);\n    }\n\n    private void doRelease(boolean immediate) {\n        if (mConfigChangedCallback != null) {\n            ViewRootImpl.removeConfigCallback(mConfigChangedCallback);\n            mConfigChangedCallback = null;\n        }\n\n        mViewRoot.die(immediate);"
+        }
+      ]
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/view/SurfaceView.java",
+      "git_blob": "0e4cf89e7772bcd02c6c34b332512db3cd50b5ad",
+      "sha256": "6dadf3b0d3881cb6f6a9466583ccb2012cbd979c15f66bf9b0465b3c18f4af27",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/view/SurfaceView.java",
+      "excerpts": [
+        {
+          "term": "getHostToken()",
+          "line": 1769,
+          "excerpt": "     * be passed from the host process to the client process.\n     *\n     * @return The token\n     */\n    public @Nullable IBinder getHostToken() {\n        final ViewRootImpl viewRoot = getViewRootImpl();\n        if (viewRoot == null) {\n            return null;\n        }\n        return viewRoot.getInputToken();\n    }\n\n    /**\n     * Set window stopped to false and update surface visibility when ViewRootImpl surface is\n     * created.\n     * @hide"
+        },
+        {
+          "term": "setChildSurfacePackage(",
+          "line": 1844,
+          "excerpt": "     * remote-owner.\n     *\n     * @param p The SurfacePackage to embed.\n     */\n    public void setChildSurfacePackage(@NonNull SurfaceControlViewHost.SurfacePackage p) {\n        final SurfaceControl lastSc = mSurfacePackage != null ?\n                mSurfacePackage.getSurfaceControl() : null;\n        final SurfaceControl.Transaction transaction = new Transaction();\n        if (mSurfaceControl != null) {\n            if (lastSc != null) {\n                transaction.reparent(lastSc, null);\n                mSurfacePackage.release();\n            }\n            reparentSurfacePackage(transaction, p);\n            applyTransactionOnVriDraw(transaction);\n        }"
+        },
+        {
+          "term": "onDetachedFromWindow()",
+          "line": 435,
+          "excerpt": "        }\n    }\n\n    @Override\n    protected void onDetachedFromWindow() {\n        ViewRootImpl viewRoot = getViewRootImpl();\n        // It's possible to create a SurfaceView using the default constructor and never\n        // attach it to a view hierarchy, this is a common use case when dealing with\n        // OpenGL. A developer will probably create a new GLSurfaceView, and let it manage\n        // the lifecycle. Instead of attaching it to a view, they can just pass\n        // the SurfaceHolder forward, most live wallpapers do it.\n        if (viewRoot != null) {\n            viewRoot.removeSurfaceChangedCallback(this);\n        }\n\n        mAttachedToWindow = false;"
+        },
+        {
+          "term": "onDetachedFromWindow()",
+          "line": 461,
+          "excerpt": "        updateSurface();\n        releaseSurfaces(true /* releaseSurfacePackage*/);\n\n        mHaveFrame = false;\n        super.onDetachedFromWindow();\n    }\n\n    @Override\n    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {\n        int width = mRequestedWidth >= 0\n                ? resolveSizeAndState(mRequestedWidth, widthMeasureSpec, 0)\n                : getDefaultSize(0, widthMeasureSpec);\n        int height = mRequestedHeight >= 0\n                ? resolveSizeAndState(mRequestedHeight, heightMeasureSpec, 0)\n                : getDefaultSize(0, heightMeasureSpec);\n        setMeasuredDimension(width, height);"
+        },
+        {
+          "term": "Required z-order hypothesis for embedded input",
+          "line": 1829,
+          "excerpt": "     * If this SurfaceView is above its host Surface (see\n     * {@link #setZOrderOnTop} then the embedded Surface hierarchy will be able to receive\n     * input.\n     *\n     * This will take ownership of the SurfaceControl contained inside the SurfacePackage\n     * and free the caller of the obligation to call\n     * {@link SurfaceControlViewHost.SurfacePackage#release}. However, note that\n     * {@link SurfaceControlViewHost.SurfacePackage#release} and\n     * {@link SurfaceControlViewHost#release} are not the same. While the ownership\n     * of this particular {@link SurfaceControlViewHost.SurfacePackage} will be taken by the\n     * SurfaceView the underlying {@link SurfaceControlViewHost} remains managed by it's original\n     * remote-owner.\n     *"
+        }
+      ]
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/util/AtomicFile.java",
+      "git_blob": "be8e2c2d745c16e62d0b80e7f841c4a67524ad16",
+      "sha256": "fd8e9350b0d12648e9886162e4cbd2fb64311a3a4c9bcf7144ceaaaa145fc8fe",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/util/AtomicFile.java",
+      "excerpts": [
+        {
+          "term": "startWrite()",
+          "line": 248,
+          "excerpt": "        if (mLegacyBackupName.exists()) {\n            rename(mLegacyBackupName, mBaseName);\n        }\n\n        // It was okay to call openRead() between startWrite() and finishWrite() for the first time\n        // (because there is no backup file), where openRead() would open the file being written,\n        // which makes no sense, but finishWrite() would still persist the write properly. For all\n        // subsequent writes, if openRead() was called in between, it would see a backup file and\n        // delete the file being written, the same behavior as our new implementation. So we only\n        // need a special case for the first write, and don't delete the new file in this case so\n        // that finishWrite() can still work.\n        if (mNewName.exists() && mBaseName.exists()) {\n            if (!mNewName.delete()) {\n                Log.e(LOG_TAG, \"Failed to delete outdated new file \" + mNewName);\n            }\n        }"
+        },
+        {
+          "term": "startWrite()",
+          "line": 322,
+          "excerpt": "    /** @hide */\n    public void write(Consumer<FileOutputStream> writeContent) {\n        FileOutputStream out = null;\n        try {\n            out = startWrite();\n            writeContent.accept(out);\n            finishWrite(out);\n        } catch (Throwable t) {\n            failWrite(out);\n            throw ExceptionUtils.propagate(t);\n        } finally {\n            IoUtils.closeQuietly(out);\n        }\n    }\n\n    @Override"
+        },
+        {
+          "term": "finishWrite(",
+          "line": 254,
+          "excerpt": "        // which makes no sense, but finishWrite() would still persist the write properly. For all\n        // subsequent writes, if openRead() was called in between, it would see a backup file and\n        // delete the file being written, the same behavior as our new implementation. So we only\n        // need a special case for the first write, and don't delete the new file in this case so\n        // that finishWrite() can still work.\n        if (mNewName.exists() && mBaseName.exists()) {\n            if (!mNewName.delete()) {\n                Log.e(LOG_TAG, \"Failed to delete outdated new file \" + mNewName);\n            }\n        }\n        return new FileInputStream(mBaseName);\n    }\n\n    /**\n     * @hide\n     * Checks if the original or legacy backup file exists."
+        },
+        {
+          "term": "finishWrite(",
+          "line": 324,
+          "excerpt": "        FileOutputStream out = null;\n        try {\n            out = startWrite();\n            writeContent.accept(out);\n            finishWrite(out);\n        } catch (Throwable t) {\n            failWrite(out);\n            throw ExceptionUtils.propagate(t);\n        } finally {\n            IoUtils.closeQuietly(out);\n        }\n    }\n\n    @Override\n    public String toString() {\n        return \"AtomicFile[\" + mBaseName + \"]\";"
+        },
+        {
+          "term": "failWrite(",
+          "line": 195,
+          "excerpt": "     * Call when you have failed for some reason at writing to the stream\n     * returned by {@link #startWrite()}.  This will close the current\n     * write stream, and delete the new file.\n     */\n    public void failWrite(FileOutputStream str) {\n        if (str == null) {\n            return;\n        }\n        if (!FileUtils.sync(str)) {\n            Log.e(LOG_TAG, \"Failed to sync file output stream\");\n        }\n        try {\n            str.close();\n        } catch (IOException e) {\n            Log.e(LOG_TAG, \"Failed to close file output stream\", e);\n        }"
+        },
+        {
+          "term": "failWrite(",
+          "line": 326,
+          "excerpt": "            out = startWrite();\n            writeContent.accept(out);\n            finishWrite(out);\n        } catch (Throwable t) {\n            failWrite(out);\n            throw ExceptionUtils.propagate(t);\n        } finally {\n            IoUtils.closeQuietly(out);\n        }\n    }\n\n    @Override\n    public String toString() {\n        return \"AtomicFile[\" + mBaseName + \"]\";\n    }\n"
+        },
+        {
+          "term": "openRead()",
+          "line": 287,
+          "excerpt": "        return mBaseName.lastModified();\n    }\n\n    /**\n     * A convenience for {@link #openRead()} that also reads all of the\n     * file contents into a byte array which is returned.\n     */\n    public byte[] readFully() throws IOException {\n        FileInputStream stream = openRead();\n        try {\n            int pos = 0;\n            int avail = stream.available();\n            byte[] data = new byte[avail];\n            while (true) {\n                int amt = stream.read(data, pos, data.length-pos);\n                //Log.i(\"foo\", \"Read \" + amt + \" bytes at \" + pos"
+        },
+        {
+          "term": "openRead()",
+          "line": 291,
+          "excerpt": "     * A convenience for {@link #openRead()} that also reads all of the\n     * file contents into a byte array which is returned.\n     */\n    public byte[] readFully() throws IOException {\n        FileInputStream stream = openRead();\n        try {\n            int pos = 0;\n            int avail = stream.available();\n            byte[] data = new byte[avail];\n            while (true) {\n                int amt = stream.read(data, pos, data.length-pos);\n                //Log.i(\"foo\", \"Read \" + amt + \" bytes at \" + pos\n                //        + \" of avail \" + data.length);\n                if (amt <= 0) {\n                    //Log.i(\"foo\", \"**** FINISHED READING: pos=\" + pos\n                    //        + \" len=\" + data.length);"
+        }
+      ]
+    },
+    {
+      "repository": "torvalds/linux",
+      "commit": "0fcb05b72344f40806cbe810de8872f1698bf053",
+      "path": "kernel/seccomp.c",
+      "git_blob": "86cf4460d69eaa8e1c643e479118e29da00aca9d",
+      "sha256": "816096f7a7b4cf36a8d26b0089def033e0b648e736f1b206390b51b9e6aebebe",
+      "url": "https://github.com/torvalds/linux/blob/0fcb05b72344f40806cbe810de8872f1698bf053/kernel/seccomp.c",
+      "excerpts": [
+        {
+          "term": "task_no_new_privs(current)",
+          "line": 691,
+          "excerpt": "\t * Installing a seccomp filter requires that the task has\n\t * CAP_SYS_ADMIN in its namespace or be running with no_new_privs.\n\t * This avoids scenarios where unprivileged tasks can affect the\n\t * behavior of privileged children.\n\t */\n\tif (!task_no_new_privs(current) &&\n\t\t\t!ns_capable_noaudit(current_user_ns(), CAP_SYS_ADMIN))\n\t\treturn ERR_PTR(-EACCES);\n\n\t/* Allocate a new seccomp_filter */\n\tsfilter = kzalloc_obj(*sfilter, GFP_KERNEL | __GFP_NOWARN);\n\tif (!sfilter)\n\t\treturn ERR_PTR(-ENOMEM);\n\n\tmutex_init(&sfilter->notify_lock);\n\tret = bpf_prog_create_from_user(&sfilter->prog, fprog,\n\t\t\t\t\tseccomp_check_filter, save_orig);\n\tif (ret < 0) {\n\t\tkfree(sfilter);"
+        },
+        {
+          "term": "SECCOMP_MODE_FILTER:",
+          "line": 1401,
+          "excerpt": "\n\tswitch (mode) {\n\tcase SECCOMP_MODE_STRICT:\n\t\t__secure_computing_strict(this_syscall);  /* may call do_exit */\n\t\treturn true;\n\tcase SECCOMP_MODE_FILTER:\n\t\treturn __seccomp_filter(this_syscall, false);\n\t/* Surviving SECCOMP_RET_KILL_* must be proactively impossible. */\n\tcase SECCOMP_MODE_DEAD:\n\t\tWARN_ON_ONCE(1);\n\t\tdo_exit(SIGKILL);\n\t\treturn false;\n\tdefault:\n\t\tBUG();\n\t}\n}\n#endif /* CONFIG_HAVE_ARCH_SECCOMP_FILTER */\n\nlong prctl_get_seccomp(void)"
+        },
+        {
+          "term": "SECCOMP_MODE_FILTER:",
+          "line": 2152,
+          "excerpt": "\t\t * so make sure it is always NULL here to pass the internal\n\t\t * check in do_seccomp().\n\t\t */\n\t\tuargs = NULL;\n\t\tbreak;\n\tcase SECCOMP_MODE_FILTER:\n\t\top = SECCOMP_SET_MODE_FILTER;\n\t\tuargs = filter;\n\t\tbreak;\n\tdefault:\n\t\treturn -EINVAL;\n\t}\n\n\t/* prctl interface doesn't have flags, so they are always zero. */\n\treturn do_seccomp(op, 0, uargs);\n}\n\n#if defined(CONFIG_SECCOMP_FILTER) && defined(CONFIG_CHECKPOINT_RESTORE)\nstatic struct seccomp_filter *get_nth_filter(struct task_struct *task,"
+        },
+        {
+          "term": "seccomp_assign_mode",
+          "line": 1439,
+          "excerpt": "\t\tgoto out;\n\n#ifdef TIF_NOTSC\n\tdisable_TSC();\n#endif\n\tseccomp_assign_mode(current, seccomp_mode, 0);\n\tret = 0;\n\nout:\n\tspin_unlock_irq(&current->sighand->siglock);\n\n\treturn ret;\n}\n\n#ifdef CONFIG_SECCOMP_FILTER\nstatic void seccomp_notify_free(struct seccomp_filter *filter)\n{\n\tkfree(filter->notif);\n\tfilter->notif = NULL;"
+        },
+        {
+          "term": "seccomp_assign_mode",
+          "line": 2031,
+          "excerpt": "\tif (ret)\n\t\tgoto out;\n\t/* Do not free the successfully attached filter. */\n\tprepared = NULL;\n\n\tseccomp_assign_mode(current, seccomp_mode, flags);\nout:\n\tspin_unlock_irq(&current->sighand->siglock);\n\tif (flags & SECCOMP_FILTER_FLAG_TSYNC)\n\t\tmutex_unlock(&current->signal->cred_guard_mutex);\nout_put_fd:\n\tif (flags & SECCOMP_FILTER_FLAG_NEW_LISTENER) {\n\t\tif (ret) {\n\t\t\tlistener_f->private_data = NULL;\n\t\t\tfput(listener_f);\n\t\t\tput_unused_fd(listener);\n\t\t\tseccomp_notify_detach(prepared);\n\t\t} else {\n\t\t\tfd_install(listener, listener_f);"
+        },
+        {
+          "term": "for (; f; f = f->prev)",
+          "line": 423,
+          "excerpt": "\t/*\n\t * All filters in the list are evaluated and the lowest BPF return\n\t * value always takes priority (ignoring the DATA).\n\t */\n\tfor (; f; f = f->prev) {\n\t\tu32 cur_ret = bpf_prog_run_pin_on_cpu(f->prog, sd);\n\n\t\tif (ACTION_ONLY(cur_ret) < ACTION_ONLY(ret)) {\n\t\t\tret = cur_ret;\n\t\t\t*match = f;\n\t\t}\n\t}\n\treturn ret;\n}\n#endif /* CONFIG_SECCOMP_FILTER */\n"
+        },
+        {
+          "term": "ACTION_ONLY(cur_ret)",
+          "line": 426,
+          "excerpt": "\t */\n\tfor (; f; f = f->prev) {\n\t\tu32 cur_ret = bpf_prog_run_pin_on_cpu(f->prog, sd);\n\n\t\tif (ACTION_ONLY(cur_ret) < ACTION_ONLY(ret)) {\n\t\t\tret = cur_ret;\n\t\t\t*match = f;\n\t\t}\n\t}\n\treturn ret;\n}\n#endif /* CONFIG_SECCOMP_FILTER */\n\nstatic inline bool seccomp_may_assign_mode(unsigned long seccomp_mode)\n{\n\tassert_spin_locked(&current->sighand->siglock);"
+        }
+      ],
+      "limit": "Source of an upstream kernel, not the running kernel or Android guarantee. No GPL product code vendored."
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "android/README.md",
+      "git_blob": "17331b5ef7a3447659bef5704481bd4ad85b36a9",
+      "sha256": "cb6d1a21737dc994f9aee26f1ab8c595cc374b5b827ec649ce3cd38c79b36e19",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/android/README.md",
+      "excerpts": [
+        {
+          "term": "build",
+          "line": 160,
+          "excerpt": "\n## Emulator and Debugging Notes\n\nFor instructions on how to build for Android, see `README.cross`.\n\n### Getting Something Running\n\nAttach your device, so 'adb devices' shows it. Then run:\n\n        cd android/app\n        make install\n        adb logcat\n"
+        },
+        {
+          "term": "build",
+          "line": 198,
+          "excerpt": "\n## Debugging\n\nFirst of all, you need to configure the build with `--enable-debug` or\n`--enable-dbgutil`.  You may want to provide `--enable-symbols` to limit debuginfo,\nlike `--enable-symbols=\"sw/\"` or so, in order to fit into the memory\nduring linking.\n\nBuilding with all symbols is also possible but the linking is currently\nslow (around 10 to 15 minutes) and you need lots of memory (around 16GB + some\nswap).\n\n### Using ndk-gdb"
+        },
+        {
+          "term": "LibreOfficeKit",
+          "line": 6,
+          "excerpt": "## Bootstrap\n\nContains common code for all projects on Android to bootstrap LibreOffice. In\naddition it is a home to `LibreOfficeKit` (LOK - see `libreofficekit/README.md`) JNI\nclasses.\n\n## Stuff in App Directory\n\nLibreOffice Android application - the code is based on Fennec (Firefox for Android).\nIt uses OpenGL ES 2 for rendering of the document tiles which are gathered from\nLibreOffice using LOK. The application contains the LibreOffice core in one shared\nlibrary: `liblo-native-code.so`, which is bundled together with the application.\n"
+        },
+        {
+          "term": "LibreOfficeKit",
+          "line": 34,
+          "excerpt": "   amount of time.\n2. An OpenGL thread which contains the OpenGL context and is responsible for drawing\n   all layers (including tiles) to the screen.\n3. A thread (`LOKitThread`), that performs `LibreOfficeKit` calls, which may take more time\n   to complete. In addition it also receives events from the soffice thread (see below)\n   when the callback emits an event. Events are stored in a blocking queue (thread\n   processes events in FCFS order, goes to sleep when no more event is available and\n   awakens when there are events in the queue again).\n4. A native thread created by LibreOfficeKit (we call it the soffice thread), where\n   LibreOffice itself runs. It receives calls from `LOKitThread`, and may emit callback\n   events as necessary.\n\n## LOKitThread"
+        },
+        {
+          "term": "Android",
+          "line": 1,
+          "excerpt": "# LibreOffice for Android\n\n## Bootstrap\n\nContains common code for all projects on Android to bootstrap LibreOffice. In\naddition it is a home to `LibreOfficeKit` (LOK - see `libreofficekit/README.md`) JNI\nclasses.\n\n## Stuff in App Directory\n"
+        },
+        {
+          "term": "Android",
+          "line": 5,
+          "excerpt": "\n## Bootstrap\n\nContains common code for all projects on Android to bootstrap LibreOffice. In\naddition it is a home to `LibreOfficeKit` (LOK - see `libreofficekit/README.md`) JNI\nclasses.\n\n## Stuff in App Directory\n\nLibreOffice Android application - the code is based on Fennec (Firefox for Android).\nIt uses OpenGL ES 2 for rendering of the document tiles which are gathered from\nLibreOffice using LOK. The application contains the LibreOffice core in one shared\nlibrary: `liblo-native-code.so`, which is bundled together with the application."
+        }
+      ],
+      "limit": "Actual upstream source interface/build instructions; no local Android engine/payload or transitive-license/fidelity acceptance."
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "excerpts": [
+        {
+          "term": "documentLoadWithOptions",
+          "line": 64,
+          "excerpt": "    char* (*getError) (LibreOfficeKit* pThis);\n\n    /// @since LibreOffice 5.0\n    LibreOfficeKitDocument* (*documentLoadWithOptions) (LibreOfficeKit* pThis,\n                                                        const char* pURL,\n                                                        const char* pOptions);\n    /// @since LibreOffice 5.2\n\n    /// The name \"freeError\" is a historical accident, actually this\n    /// is a generic deallocation function for dynamically allocated\n    /// memory returned by other LibreOfficeKit functions.\n\n    /// Especially on Windows it is important to not call free() in"
+        },
+        {
+          "term": "saveAs",
+          "line": 196,
+          "excerpt": "\n    void (*destroy) (LibreOfficeKitDocument* pThis);\n\n    int (*saveAs) (LibreOfficeKitDocument* pThis,\n                   const char* pUrl,\n                   const char* pFormat,\n                   const char* pFilterOptions);\n\n    /** @see lok::Document::getDocumentType().\n        @since LibreOffice 6.0\n     */\n    int (*getDocumentType) (LibreOfficeKitDocument* pThis);\n"
+        },
+        {
+          "term": "paintTile",
+          "line": 228,
+          "excerpt": "    void (*setPartMode) (LibreOfficeKitDocument* pThis,\n                         int nMode);\n\n    /// @see lok::Document::paintTile().\n    void (*paintTile) (LibreOfficeKitDocument* pThis,\n                       unsigned char* pBuffer,\n                       const int nCanvasWidth,\n                       const int nCanvasHeight,\n                       const int nTilePosX,\n                       const int nTilePosY,\n                       const int nTileWidth,\n                       const int nTileHeight);\n"
+        },
+        {
+          "term": "paintTile",
+          "line": 229,
+          "excerpt": "                         int nMode);\n\n    /// @see lok::Document::paintTile().\n    void (*paintTile) (LibreOfficeKitDocument* pThis,\n                       unsigned char* pBuffer,\n                       const int nCanvasWidth,\n                       const int nCanvasHeight,\n                       const int nTilePosX,\n                       const int nTilePosY,\n                       const int nTileWidth,\n                       const int nTileHeight);\n\n    /// @see lok::Document::getTileMode()."
+        }
+      ],
+      "limit": "Actual upstream source interface/build instructions; no local Android engine/payload or transitive-license/fidelity acceptance."
+    },
+    {
+      "repository": "apache/poi",
+      "commit": "df7d70faa13003593f272259c7fe8ed787f507df",
+      "path": "poi-ooxml/src/main/java/org/apache/poi/xssf/streaming/SXSSFWorkbook.java",
+      "git_blob": "ac03b2d1e4f1eea461deedd8da31974397f98769",
+      "sha256": "1cd7fb87c66effd013d31465d9dd4b57c5f93b713c5fd296ed077be08abad2e9",
+      "url": "https://github.com/apache/poi/blob/df7d70faa13003593f272259c7fe8ed787f507df/poi-ooxml/src/main/java/org/apache/poi/xssf/streaming/SXSSFWorkbook.java",
+      "excerpts": [
+        {
+          "term": "temporary",
+          "line": 102,
+          "excerpt": " * Carefully review your memory budget and compatibility needs before deciding\n * whether to enable shared strings or not.\n *\n * <p>To release resources used by this workbook (including disposing of the temporary\n * files backing this workbook on disk) {@link #close} should be called directly or a\n * try-with-resources statement should be used.</p>\n */\npublic class SXSSFWorkbook implements Workbook {\n    /**\n     * Specifies how many rows can be accessed at most via {@link SXSSFSheet#getRow}.\n     * When a new node is created via {@link SXSSFSheet#createRow} and the total number\n     * of unflushed records would exceed the specified value, then the\n     * row with the lowest index value is flushed and cannot be accessed"
+        },
+        {
+          "term": "temporary",
+          "line": 237,
+          "excerpt": "     * </p>\n     *\n     * @param rowAccessWindowSize the number of rows that are kept in memory until flushed out, see above.\n     * @param compressTmpFiles whether to use gzip compression for temporary files\n     */\n    public SXSSFWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTmpFiles) {\n        this(workbook, rowAccessWindowSize, compressTmpFiles, false);\n    }\n\n    /**\n     * Constructs a workbook from an existing workbook.\n     * <p>\n     * When a new node is created via {@link SXSSFSheet#createRow} and the total number"
+        },
+        {
+          "term": "dispose()",
+          "line": 838,
+          "excerpt": "\n        // Clean up temporary resources\n        try {\n            sxSheet.dispose();\n        } catch (IOException e) {\n            LOG.atWarn().withThrowable(e).log(\"Failed to dispose old sheet\");\n        }\n    }\n\n    /**\n     * Create a new Font and add it to the workbook's font table\n     *\n     * @return new font object"
+        },
+        {
+          "term": "dispose()",
+          "line": 927,
+          "excerpt": "        }\n\n        // Dispose of any temporary files backing this workbook on disk\n        dispose();\n\n        // Tell the base workbook to close, does nothing if\n        //  it's a newly created one\n        _wb.close();\n    }\n\n    /**\n     * Write out this workbook to an OutputStream.\n     *"
+        },
+        {
+          "term": "setCompressTempFiles",
+          "line": 268,
+          "excerpt": "     */\n    public SXSSFWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTmpFiles, boolean useSharedStringsTable) {\n        setRandomAccessWindowSize(rowAccessWindowSize);\n        setCompressTempFiles(compressTmpFiles);\n        if (workbook == null) {\n            _wb = new XSSFWorkbook();\n            _sharedStringSource = useSharedStringsTable ? _wb.getSharedStringSource() : null;\n        } else {\n            _wb=workbook;\n            _sharedStringSource = useSharedStringsTable ? _wb.getSharedStringSource() : null;\n            for ( Sheet sheet : _wb ) {\n                createAndRegisterSXSSFSheet( (XSSFSheet)sheet );\n            }"
+        },
+        {
+          "term": "setCompressTempFiles",
+          "line": 358,
+          "excerpt": "     * </p>\n     * @param compress whether to compress temp files\n     */\n    public void setCompressTempFiles(boolean compress) {\n        _compressTmpFiles = compress;\n    }\n\n    /**\n     * @param shouldCalculateSheetDimensions defaults to <code>true</code>, set to <code>false</code> if\n     *                                       the calculated dimensions are causing trouble\n     * @since 5.2.3\n     */\n    public void setShouldCalculateSheetDimensions(boolean shouldCalculateSheetDimensions) {"
+        },
+        {
+          "term": "write(OutputStream",
+          "line": 941,
+          "excerpt": "     * @throws IOException if anything can't be written.\n     */\n    @Override\n    public void write(OutputStream stream) throws IOException {\n        flushSheets();\n\n        //Save the template\n        File tmplFile = TempFile.createTempFile(\"poi-sxssf-template\", \".xlsx\");\n        boolean deleted;\n        try {\n            try (OutputStream os = Files.newOutputStream(tmplFile.toPath())) {\n                _wb.write(os);\n            }"
+        }
+      ],
+      "limit": "Actual upstream source interface/build instructions; no local Android engine/payload or transitive-license/fidelity acceptance."
+    }
+  ]
+}

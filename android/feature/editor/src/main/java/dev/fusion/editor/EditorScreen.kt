@@ -2,7 +2,6 @@ package dev.fusion.editor
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.runtime.LaunchedEffect
@@ -10,9 +9,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 /** PR-01 / FF-15 / FM-18. Real SAF I/O is owned by an Activity-scoped ViewModel. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -61,12 +66,15 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
     var abandoningCopy by remember { mutableStateOf(false) }
     var abandoningCopyId by remember { mutableStateOf<String?>(null) }
     var closingId by remember { mutableStateOf<String?>(null) }
+    var openingEncoding by rememberSaveable { mutableStateOf<dev.fusion.documents.TextEncoding?>(null) }
+    var pickerEncoding by rememberSaveable { mutableStateOf<dev.fusion.documents.TextEncoding?>(null) }
+    var encodingMenu by remember { mutableStateOf(false) }
     val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) model.open(uri)
+        if (uri != null) model.open(uri,encoding=pickerEncoding)
     }
     val ready = !state.loading && !state.recoveryBlocked && !state.busy && !state.toolsBusy
 
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp).semantics { paneTitle = "Text editor" }
+    Column(Modifier.fillMaxSize().padding(12.dp).semantics { paneTitle = "Text editor" }
         .onPreviewKeyEvent { event ->
             if (event.type != KeyEventType.KeyDown || !event.isCtrlPressed || event.isAltPressed || !ready) false
             else when (event.key) {
@@ -74,14 +82,16 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                 Key.Y -> { model.undo(redo=true); true }
                 Key.F, Key.H, Key.G -> if(active != null) { toolsOpen=true; true } else false
                 Key.S -> if(active != null && pendingCopy==null) { copyConfirmId=active.id; true } else false
-                Key.O -> { openDocument.launch(arrayOf("text/*", "application/json")); true }
+                Key.O -> { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")); true }
                 Key.N -> { model.newDocument(); true }
                 else -> false
             }
         }, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        // Keep actions outside the focused document's scroll/bring-into-view region.
+        // Bounded independent scrolling keeps a tall toolbar reachable at large font sizes.
+        FlowRow(Modifier.weight(0.4f,fill=false).fillMaxWidth().verticalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
-            OutlinedButton(enabled = ready, onClick = { openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open UTF-8") }
+            OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
             Button(enabled = ready && active != null && pendingCopy == null,
                 onClick = { copyConfirmId=active?.id }) { Text("Save a Copy") }
             OutlinedButton(enabled = ready && active != null && pendingCopy?.documentId != active?.id,
@@ -89,15 +99,16 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                     active?.let { if (dirty) closingId = it.id else model.closeDocument(it.id) }
                 }) { Text("Close tab") }
         }
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+        Column(Modifier.weight(0.6f).fillMaxWidth().verticalScroll(rememberScrollState()), verticalArrangement=Arrangement.spacedBy(6.dp)) {
+        FlowRow(Modifier.fillMaxWidth()) {
             session.documents.forEach { doc ->
                 val docDirty = remember(doc.content, doc.savedDigest) { doc.dirty }
-                TextButton(enabled = ready, onClick = { model.select(doc.id) }) {
+                TextButton(enabled = ready, onClick = { model.select(doc.id) },modifier=Modifier.testTag("editor-tab")) {
                     Text((if (doc.id == active?.id) "Selected: " else "") + doc.name + if (docDirty) " • Unsaved" else "")
                 }
             }
         }
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+        FlowRow(Modifier.fillMaxWidth()) {
             OutlinedButton(enabled=ready && (state.buffers[active?.id]?.undoDepth ?: 0)>0,onClick={ model.undo() },modifier=Modifier.testTag("editor-undo")) { Text("Undo") }
             OutlinedButton(enabled=ready && (state.buffers[active?.id]?.redoDepth ?: 0)>0,onClick={ model.undo(redo=true) },modifier=Modifier.testTag("editor-redo")) { Text("Redo") }
             OutlinedButton(enabled=ready && active != null,onClick={ toolsOpen=true }) { Text("Find / Replace / Go to") }
@@ -106,7 +117,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         Text(state.status, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         if (pendingCopy != null) {
             Text("Frozen copy: ${pendingCopy.name}. State: ${pendingCopy.stage}. Retry invalidates older results and keeps the original frozen payload. Inspect any partial destination first; no in-place replay or automatic deletion.")
-            Row(Modifier.horizontalScroll(rememberScrollState())) {
+            FlowRow(Modifier.fillMaxWidth()) {
                 OutlinedButton(enabled = ready, onClick = { retryConfirmId=pendingCopy?.requestId; retryConfirm=true }) { Text("Retry with a new picker") }
                 TextButton(enabled = ready, onClick = { abandoningCopyId=pendingCopy?.requestId; abandoningCopy=true }) { Text("Abandon pending attempt") }
             }
@@ -119,7 +130,18 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         session.copyReceipts.firstOrNull()?.let { receipt ->
             Text("Last copy receipt: ${receipt.outcome} · ${receipt.destinationUri?.take(180) ?: "No destination returned"}. Readback is not cloud sync or power-loss durability. Last 16 receipts retained locally.")
         }
-        Text("UTF-8 only • 2 MiB/document • 8 tabs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
+        Box {
+            OutlinedButton(onClick={ encodingMenu=true },enabled=ready) { Text("Open encoding: ${openingEncoding?.label ?: "BOM detection / UTF-8"}") }
+            DropdownMenu(expanded=encodingMenu,onDismissRequest={ encodingMenu=false }) {
+                DropdownMenuItem(text={ Text("BOM detection / strict UTF-8") },onClick={ openingEncoding=null;encodingMenu=false })
+                dev.fusion.documents.TextEncoding.entries.forEach { encoding ->
+                    DropdownMenuItem(text={ Text(encoding.label) },onClick={ openingEncoding=encoding;encodingMenu=false })
+                }
+            }
+        }
+        active?.let { Text("Draft encoding: ${it.encoding.label}. Unrepresentable export characters are refused, not replaced.") }
+        Text("Strict UTF-8 / UTF-16 / explicit Windows-1252 • 2 MiB/document • 8 tabs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
+        }
     }
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",
@@ -132,7 +154,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         dismissButton={ TextButton(onClick={ abandoningCopy=false }) { Text("Keep pending attempt") } })
     closingId?.let { id ->
         AlertDialog(onDismissRequest = { closingId = null }, title = { Text("Discard unsaved changes?") },
-            text = { Text("This removes this tab and its local recovery draft. The source document and previously saved copies are not changed.") },
+            text = { Text("This removes this tab and its local recovery draft. The source document and previously saved copies are not changed.",Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
             confirmButton = { TextButton(onClick = { model.closeDocument(id, discard = true); closingId = null }) { Text("Discard draft") } },
             dismissButton = { TextButton(onClick = { closingId = null }) { Text("Keep editing") } })
     }

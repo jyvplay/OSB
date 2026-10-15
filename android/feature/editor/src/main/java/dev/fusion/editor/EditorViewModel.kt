@@ -14,6 +14,8 @@ import android.provider.DocumentsContract
 import dev.fusion.documents.SessionCodec
 import dev.fusion.documents.TextBytes
 import dev.fusion.documents.TextDocument
+import dev.fusion.documents.TextEncoding
+import dev.fusion.documents.TextEncodingCodec
 import dev.fusion.documents.VerifiedCopy
 import dev.fusion.documents.EditBuffer
 import dev.fusion.documents.TextSelection
@@ -21,6 +23,8 @@ import dev.fusion.documents.LiteralQuery
 import dev.fusion.documents.LiteralSearch
 import dev.fusion.documents.TextReplacement
 import dev.fusion.documents.ReplacementPlan
+import dev.fusion.documents.LineDiff
+import dev.fusion.documents.LineComparison
 import dev.fusion.documents.TextNavigation
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -49,6 +53,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
         val fields: Map<String, TextFieldValue> = emptyMap(),
         val toolsBusy: Boolean = false,
         val replacement: ReplacementPlan? = null,
+        val comparison: LineComparison? = null,
     )
 
     private val mutable = MutableStateFlow(State())
@@ -76,7 +81,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
                     fields = restored.documents.associate { it.id to TextFieldValue(it.content) }, status = when {
                     restored.pendingCopy != null -> "Interrupted or legacy copy needs review. No destination will be replayed. Inspect any partial file, then retry to a new destination or abandon."
                     restored.documents.isNotEmpty() -> "Recovered local session. Source documents have not been changed."
-                    else -> "Local recovery is separate from saving a document. Open UTF-8 text or create a document."
+                    else -> "Local recovery is separate from saving a document. Open bounded text or create a document."
                 })
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
@@ -102,6 +107,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
                 ?: TextFieldValue(doc.content,TextRange(buffers.getValue(doc.id).selection.anchor,buffers.getValue(doc.id).selection.caret)))
         }
         mutable.value = old.copy(session = session, buffers = buffers, fields = fields,
+            comparison = null,
             replacement = old.replacement?.takeIf { plan -> session.documents.any { it.id == plan.documentId } },
             status = message ?: old.status)
         if (old.session != session) checkpoints.trySend(Unit)
@@ -135,24 +141,27 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
         addDocument("Untitled.txt", null, "")
     }
 
-    fun open(uri: Uri, suppliedName: String? = null) {
+    fun open(uri: Uri, suppliedName: String? = null, encoding: TextEncoding? = null) {
         if (!ready() || state.value.busy) return
         // Reopening a source focuses its draft; it must never replace unsaved text.
         state.value.session.documents.firstOrNull { it.sourceUri == uri.toString() }?.let {
             select(it.id); return
         }
-        mutable.value = state.value.copy(busy = true, status = "Reading UTF-8 document…")
+        if(state.value.session.documents.size>=SessionCodec.MAX_DOCUMENTS) {
+            mutable.value=state.value.copy(status="Eight-document limit. Close a tab before opening another.");return
+        }
+        mutable.value = state.value.copy(busy = true, status = "Reading bounded text document…")
         viewModelScope.launch {
             try {
-                val (name, content) = withContext(Dispatchers.IO) {
+                val (name, decoded) = withContext(Dispatchers.IO) {
                     val name = suppliedName ?: resolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use {
                         if (it.moveToFirst()) it.getString(0) else null
                     } ?: "Document.txt"
                     val bytes = requireNotNull(resolver.openInputStream(uri)) { "Provider did not open the document" }.use(TextBytes::read)
-                    name to TextBytes.decode(bytes)
+                    name to TextEncodingCodec.decode(bytes,encoding)
                 }
-                addDocument(name, uri.toString(), content)
-                mutable.value = state.value.copy(status = "Opened local session copy. Only strict UTF-8 is supported; source is unchanged." +
+                addDocument(name, uri.toString(), decoded.content,decoded.encoding)
+                mutable.value = state.value.copy(status = "Opened ${decoded.encoding.label}; Save a Copy preserves this encoding/BOM. Source unchanged." +
                     if(name.length>512) " Display label shortened without changing the source filename." else "")
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
@@ -161,7 +170,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    private fun addDocument(name: String, source: String?, content: String) {
+    private fun addDocument(name: String, source: String?, content: String, encoding: TextEncoding = TextEncoding.UTF8) {
         val session = state.value.session
         if (session.documents.size >= SessionCodec.MAX_DOCUMENTS) {
             mutable.value = state.value.copy(status = "Eight-document limit. Close a tab before opening another."); return
@@ -169,7 +178,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
         // A bounded display label must not split a surrogate pair and poison all future checkpoints.
         val label = name.substring(0,TextSelection(minOf(512,name.length)).inText(name).anchor)
         TextBytes.encodedSize(label)
-        val doc = TextDocument(UUID.randomUUID().toString(), label, source, content, TextBytes.digest(content))
+        val doc = TextDocument(UUID.randomUUID().toString(), label, source, content, TextBytes.digest(content),encoding)
         change(session.copy(documents = session.documents + doc, selectedId = doc.id))
     }
 
@@ -224,7 +233,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
     fun confirmReplace() {
         if(!ready() || state.value.toolsBusy) return
         val plan = state.value.replacement ?: return
-        mutable.value = state.value.copy(replacement=null)
+        mutable.value = state.value.copy(replacement=null,comparison=null)
         val buffer = state.value.buffers[plan.documentId] ?: return
         try {
             require(state.value.session.selectedId == plan.documentId) { "Selected tab changed; review again" }
@@ -233,9 +242,23 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
                 else "Replaced ${plan.count} literal matches in one undoable draft edit. No source file was written.")
         } catch(e: IllegalArgumentException) { mutable.value = state.value.copy(status="Replacement refused: ${e.message}") }
     }
+    fun compareSource() {
+        runTool { buffer ->
+            val document=state.value.session.documents.single { it.id==buffer.documentId }
+            val source=document.sourceUri ?: throw IllegalArgumentException("This draft has no source file")
+            val original=withContext(Dispatchers.IO) {
+                val bytes=requireNotNull(resolver.openInputStream(Uri.parse(source))).use(TextBytes::read)
+                TextEncodingCodec.decode(bytes,document.encoding).content
+            }
+            val comparison=withContext(Dispatchers.Default) { LineDiff.compare(original,buffer.content) }
+            if(sameRevision(buffer)) mutable.value=state.value.copy(comparison=comparison,
+                status="Compared with source bytes read now, not a historical saved version. Source was not written.")
+            else mutable.value=state.value.copy(status="Comparison discarded: selected draft/revision changed.")
+        }
+    }
     fun cancelTools() {
         toolTicket = Any()
-        mutable.value = state.value.copy(replacement=null)
+        mutable.value = state.value.copy(replacement=null,comparison=null)
     }
     fun goTo(line: Int, column: Int) {
         runTool { buffer ->
@@ -248,7 +271,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
         if(!ready() || state.value.busy || state.value.toolsBusy) return
         val buffer = state.value.buffers[state.value.session.selectedId] ?: return
         val ticket = Any().also { toolTicket = it; runningToolTicket = it }
-        mutable.value = state.value.copy(toolsBusy=true,replacement=null)
+        mutable.value = state.value.copy(toolsBusy=true,replacement=null,comparison=null)
         viewModelScope.launch {
             try { operation(buffer) }
             catch(e: Exception) {
@@ -256,7 +279,8 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
                 mutable.value = state.value.copy(status="Editor tool refused: ${e.message}. No replacement applied.")
             } finally {
                 mutable.value = state.value.copy(toolsBusy=false,
-                    replacement=if(ticket === toolTicket) state.value.replacement else null)
+                    replacement=if(ticket === toolTicket) state.value.replacement else null,
+                    comparison=if(ticket === toolTicket) state.value.comparison else null)
             }
         }
     }
@@ -391,7 +415,7 @@ class EditorViewModel(application: Application) : AndroidViewModel(application) 
                     // ACTION_CREATE_DOCUMENT may return an existing item. Metadata size is not trusted.
                     // This read observation is not an exclusive lease; concurrent/provider alias risks remain.
                     VerifiedCopy.requireEmpty { requireNotNull(resolver.openInputStream(uri)) }
-                    VerifiedCopy.write(TextBytes.encode(frozen.content),
+                    VerifiedCopy.write(TextEncodingCodec.encode(frozen.content,frozen.encoding),
                         output={ requireNotNull(resolver.openOutputStream(uri,"wt")) },
                         reopen={ requireNotNull(resolver.openInputStream(uri)) },
                         binding=VerifiedCopy.Binding(result.requestId,requireNotNull(frozen.destinationUri)))

@@ -13,7 +13,7 @@ import java.net.Socket
 import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
- * End-to-end JVM test of [CastV2Client] against a fake Chromecast.
+ * Loopback transport unit test of [CastV2Client]. NOT a real Chromecast, TLS or hardware test.
  *
  * The fake device is a loopback ServerSocket that speaks real castv2 framing
  * (4-byte big-endian length + protobuf CastMessage) using the same [Proto]
@@ -25,7 +25,7 @@ class CastV2ClientTest {
 
     /** A scripted fake Chromecast speaking castv2 framing over a plain socket. */
     private class FakeChromecast : AutoCloseable {
-        val server = ServerSocket(0)
+        val server = ServerSocket(0, 50, java.net.InetAddress.getByName("127.0.0.1"))
         val port: Int get() = server.localPort
         val received = ConcurrentLinkedQueue<CastMessage>()
 
@@ -81,7 +81,7 @@ class CastV2ClientTest {
                     }
 
                 CastV2Client.NS_MEDIA -> {
-                    val requestId = if (msg.payloadUtf8?.contains("LOAD") == true) 2 else 3
+                    val requestId = requireNotNull(Json.parseObject(requireNotNull(msg.payloadUtf8)).num("requestId")).toInt()
                     val body = """{"type":"MEDIA_STATUS","status":[{"mediaSessionId":7,""" +
                         """"playerState":"PLAYING"}],"requestId":$requestId}"""
                     write(out, reply("web-1", CastV2Client.NS_MEDIA, body))
@@ -118,7 +118,7 @@ class CastV2ClientTest {
             assertEquals("web-1", client.transportId)
             assertEquals("sess-1", client.sessionId)
 
-            val mediaSessionId = client.load("http://192.168.1.10:8080/video.mp4", "video/mp4", "Demo")
+            val mediaSessionId = client.load("http://192.168.1.10:8080/video.mp4", "video/mp4", "Quoted \"title\" 漢\n")
             assertEquals(7L, mediaSessionId)
             assertEquals(7L, client.mediaSessionId)
 
@@ -137,9 +137,16 @@ class CastV2ClientTest {
             assertTrue(namespaces.contains(CastV2Client.NS_RECEIVER))
             assertTrue(namespaces.contains(CastV2Client.NS_MEDIA))
 
+            val requestIds = fake.received.mapNotNull { message ->
+                message.payloadUtf8?.let { Json.parseObject(it).num("requestId")?.toInt() }
+            }
+            assertEquals((1..6).toList(), requestIds) // The peer must correlate every command, not repeat ID3.
             val loadPayload = fake.received.first { it.payloadUtf8?.contains("LOAD") == true }.payloadUtf8!!
             assertTrue(loadPayload.contains("http://192.168.1.10:8080/video.mp4"))
             assertTrue(loadPayload.contains("sess-1"))
+            val decodedLoad=Json.parseObject(loadPayload)
+            assertEquals("sess-1",decodedLoad.str("sessionId"))
+            assertEquals("Quoted \"title\" 漢\n",decodedLoad.obj("media")?.obj("metadata")?.str("title"))
         } finally {
             fake.close()
         }

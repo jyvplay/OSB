@@ -1,0 +1,8 @@
+{
+  "fixture_sha256": "369cf464ed4a97a484e79c954bf87395f21ebab285081b77f381d6baac0733d4",
+  "generator": "EditorV2.kt.txt",
+  "production_baseline": "3f3bb797a6a1b764289bfd0ea82d1686fc8de35a",
+  "writer_schema": 2,
+  "created_using": "Executed pre-edit production documents JAR, not the schema3 writer",
+  "generator_sha256": "11330288560fcf2709e404c8154b2a41fb6f2231ee20cdb26c3bdadf74a2f735"
+}

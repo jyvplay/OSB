@@ -1,3 +1,141 @@
+# Latest: R12 continuation — full specification still incomplete
+
+- **30/48 modules (62.50%) have substantial testable subsets;18/48 (37.50%) not established.**
+- **0/48 fully accepted (0%);48/48 outstanding (100%).** All30 spikes unpassed.
+- Five newly implemented bounded kernels; two existing inventory paths now actually tested on Android.
+- Real subtitle picker/inspection UI, Android Bitmap crop/rotate/flip adapters, settings snapshot inspection;
+  no fake player, Office engine or enabled backup restore. UTF8/CSV defects reproduced and repaired.
+- **183,179 prior Kotlin assertions rerun;2,394 new assertions;1,188 new cross-language checks;74 local Python tests.**
+- Latest0a23219/run38682595367:49 PASS/1 FAIL/0 SKIP; both debug builds/unit/contracts/lint passed.
+  Remaining failure: stronger Editor200%-font long-text test timed out awaiting an actually visible IME.
+  Prior native failures are retained; earlier67fbd3949/49 used the weaker suite. No complete native pass is claimed.
+- [R12 continuation evidence, A–J and alternatives](docs/R12B-ENGINEERING.md).
+  [Per-module census](docs/MODULE-TESTABILITY.md); [Studio try-out](docs/BUILD.md).
+
+# Historical: R12 real native progress — full specification still incomplete
+
+- **23/48 modules (47.92%) meet the documented substantial-testable-subset standard**;
+ 25/48 (52.08%) are not established by that standard, not necessarily empty.
+- **0/48 fully specification-accepted (0%);48/48 outstanding (100%).** Productivity0/13,
+  requested Forge0/13 and nested browser0/19. All30 spikes remain unpassed.
+- **Native2c2b5bc / run38676376263:39/39 API34 cases PASS,0 FAIL,0 SKIP**, on a regular
+  Google managed image. Both debug flavors, invoked unit/contracts/lint and APK upload passed.
+  [Run/APKs](https://github.com/jyvplay/OSB/actions/runs/38676376263).
+- New Notes recovery is separate from explicit saved Markdown. Actual writer-process death,
+  stale/corrupt checkpoints, cross-owner refusal, initial readiness and request flooding are tested.
+- Editor controls/tabs reflow; normal and200%-font cases passed. Real debug remote WebViews
+  passed framebuffer/input/resize checks. No complete product browser is inferred.
+- **183,179 host Kotlin assertions/13 libraries;68 Python tests;733 cross-language checks.**
+- Real Linux no-fork/CPU experiment tested exec, allow-all filter stacking, hard-limit raise,
+  preexisting-thread and x32 attacks. Host only; its no-thread policy is not Office/ART-ready.
+- First compile/input/pixel/startup/Editor failures remain recorded; no repaired candidate
+  inherited trust. Legacy random Together peer/clock simulation was removed, not renamed.
+- Office engines, full browser/sandbox/productivity/Forge integrations and original hardware,
+  API37/16K/legal/AX obligations remain open. The release checker correctly refuses acceptance.
+- [R12 A–J report](docs/R12-ENGINEERING.md) · [All48 testability rows](docs/MODULE-TESTABILITY.md)
+  · [Full module acceptance](docs/MODULE-COMPLETION.md) · [Build/try-out](docs/BUILD.md).
+
+---
+
+# Historical: R11B tested subsets — full product still incomplete
+
+- **0/48 accepted modules (0%);48/48 outstanding (100%).** Productivity0/13,
+  Forge0/13, nested browser0/19 accepted. All30 spikes remain unpassed.
+- **182,871 Kotlin assertions /13 libraries;61 Python tests;323 cross-language checks.**
+- Implemented atomic saved-note trash/restore, wrapping actions and compositor
+  child-focus repair. Added real debug WebView cookie/localStorage profile experiment
+  and native socket-denial probe with reachable positive controls.
+- **1ea1faa / run38670396374:29/29 API34 cases PASS**, including actual200%-font
+  Notes, dirty-backlink, focus, browser profile and six boundary cases.
+  Both debug flavors, invoked unit/contracts/lint and APK upload passed.
+  [Run/APKs](https://github.com/jyvplay/OSB/actions/runs/38670396374).
+- Prior-source focus genuinely failed. Three earlier native candidates failed;
+  their results are preserved, not relabeled as successes.
+- Actual host Linux kernel experiment enforced per-process hard CPU, but a real
+  fork attack defeated aggregate-job enforcement. Not Android sandbox acceptance.
+- Browser desktop integration, Office engines, full parser containment and the
+  original broader feature/platform/hardware/legal/AX gaps remain unsatisfied.
+  SDK37 catalog observation was NOT_LISTED; build baseline remains34/36/36.
+- [A–J report, substantive testability and alternatives](docs/R11B-ENGINEERING.md).
+  [All48 module acceptance rows](docs/MODULE-COMPLETION.md).
+
+---
+
+# Historical: R11 executable subsets and actual Android verification
+
+- **0/48 accepted (0%);48 outstanding (100%)**. Productivity0/13, Forge0/13,
+  nested browser0/19. No engine/device/legal spike promoted.
+- **182,829 host Kotlin assertions /13 libraries;61 Python tests;323 independent-
+  implementation checks.** Browser metadata/codec5,202; Notes saved-link graph429.
+- Added native explicit saved-note backlink scanning; bounded browser metadata is
+  not connected to renderer/UI/disk. No Office engine, browser renderer, full parser
+  sandbox, PTY, own Beam or other missing platform substituted with a demo.
+- **Run38662585401 @1ee1589:** both-flavor assembly, invoked unit/contracts/lint
+  and APK upload PASS. API34 **24/24 named cases PASS**, including all5 elementary
+  isolated-FD boundary cases. [Run/artifacts](https://github.com/jyvplay/OSB/actions/runs/38662585401).
+- Reproduced and repaired window PaneTitle merging and dialog focus lifecycle.
+  The private probe observed ENOENT, not assumed EACCES; revised experiment adds
+  exact path/inode and positive-FD controls. Prior failures preserved. No full
+  parser/saturated-watchdog/security/AX acceptance follows from these passes.
+  [Full A–J report and testability](docs/R11-ENGINEERING.md).
+- Alternatives researched from pinned upstream interfaces/licenses: WebView profile
+  feature detection, remote native surface embedding, MPL GeckoView/LOK islands,
+  POI headless subset and isolated platform PDF route. None is a shipped engine or
+  audited transitive payload. [All-module0/1 acceptance table](docs/MODULE-COMPLETION.md).
+- Local full SDK/JDK/ADB and physical/AX/latency/API37/16K acceptance remain absent.
+
+Older sections are historical, not evidence for the current source revision.
+
+---
+
+# Historical: R10 productivity / Forge continuation
+
+- **0/48 accepted modules (0%);48 outstanding (100%).** Requested Productivity
+  parents0/13; Forge0/13; nested browser subfeatures0/19. No acceptance promotion.
+- **177,198 JVM assertions /57 Python methods /707 independent-implementation
+  and oracle checks passed.** [A–J record](docs/R10-ENGINEERING.md) distinguishes
+  host execution, native source and mandatory unrun device/legal acceptance.
+- Encoding/BOM-preserving bounded text open, copy verification and schema3
+  recovery; genuine v1/v2 migration. Added bounded exact current-source line diff.
+- OOXML scanner now counts ignored/directory/aggregate expanded bytes; compact
+  empty-cell budget failure was reproduced, repaired and regression-tested.
+  This remains a lossy text extractor, not Office editing or process isolation.
+- **CI run38656329782 at86b4621 passed both-flavor assembly, all invoked JVM
+  unit tests, contract tasks, both-flavor lint and debug APK upload.**
+  [Run/artifacts](https://github.com/jyvplay/OSB/actions/runs/38656329782).
+  Fixed primitive-array mapping, DocumentFile API exposure, malformed Cast LOAD
+  JSON, two stale test fixtures and optional telephony manifest declaration.
+  Managed-device job skipped; no physical Cast/Beam acceptance inferred.
+- Local full JDK/SDK/ADB remain absent. No installed APK, native visual/AX, device
+  latency or production-beta clearance. Diagnostic capture now covers all Gradle
+  CI phases and uses an executed GitHub-safe message byte budget.
+- Historical R8 remote commit/index discrepancy reconciled with working bytes
+  preserved. Old R8 evidence/inventory retained; current inventory98 main sources.
+
+Earlier sections below are historical and do not describe current CI phases.
+
+---
+
+# Historical: R8 continuation
+
+- **171,082 JVM assertions / 47 Python tests passed**, plus SunJCE↔OpenSSL and
+  13 Pillow/parser cross-checks. Actual logs/hashes, not Android evidence.
+- New bounded encrypted-index store and locked-session literal search; no source
+  discovery, consent/exclusion adapter or live Find UI integration. S4 stays blocked.
+- PNG pixel/CRC/deflate validation and bounded binary acquisition now replace the
+  earlier framing-only check. Parser fixtures are not native screenshots.
+- Native Keystore adapter/test authored; missing keys do not regenerate on read.
+  Native code remains uncompiled/unrun; no hardware-backing assertion.
+- Existing CI failed during SDK setup, before compilation. Candidate workflow
+  repair is authored and **unrun**. No new CI dispatch, commit or push this pass.
+- **0/48 specification-complete modules (0%);48 outstanding (100%).** 231 recorded
+  requirements and36 explicit cross-cutting obligations;30 unpassed spikes.
+- [Full A–J record and remaining feature gaps](docs/R8-ENGINEERING.md).
+
+Earlier sections below record historical checkpoints, not current-source results.
+
+---
+
 # Latest: R8 draft-PR checkpoint
 
 **170,728 JVM assertions and 35 Python tests passed.** Android build/device/visual
