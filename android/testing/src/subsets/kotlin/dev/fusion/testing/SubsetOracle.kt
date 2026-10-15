@@ -34,6 +34,7 @@ object SubsetOracle {
                         val targets = if (f[2].isEmpty()) emptyList() else f[2].split(',').map { v -> LaunchTarget(v.substringBefore(':'), v.substringBefore(':'), v.substringAfter(':') == "1") }
                         PinnedCatalog(pins).shelf(targets).joinToString(",") { it.key }
                     }
+                    "C" -> TextFormats.csvRows(String(dec.decode(f[1]), Charsets.UTF_8)).joinToString(";") { row -> row.joinToString(",") { enc.encodeToString(it.toByteArray(Charsets.UTF_8)) } }
                     "V" -> TextFormats.isProbablyUtf8(dec.decode(f[1])).toString()
                     else -> error("Unknown test operation")
                 }

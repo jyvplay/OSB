@@ -259,9 +259,9 @@
     {
       "module": ":format:native",
       "status": "incomplete",
-      "present_scope": "Small text/CSV helper source",
+      "present_scope": "Bounded strict CSV preserving quoted newlines/empty records, strict UTF8 validation, word count; host contracts and CPython corpus executed",
       "remaining_gap": "Strict safe bounded parsers/CSV fidelity and Forge registration; legacy UTF-8 heuristic not a validator",
-      "evidence_level": "jvm_unit_target_passed"
+      "evidence_level": "partial_kernel_contracts"
     },
     {
       "module": ":format:archive",

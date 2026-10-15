@@ -25,8 +25,8 @@ object SubsetChecks {
         MessageDigest.getInstance("SHA-256").digest(b.copyOf(b.size - 32)).copyInto(b, b.size - 32); return b
     }
     @JvmStatic fun main(args: Array<String>) {
-        settings(); subtitles(); images(); backups(); launcher(); utf8()
-        println("R12 continuation subsets: $checks assertions passed across five new module kernels + UTF8 repair.")
+        settings(); subtitles(); images(); backups(); launcher(); utf8(); csv()
+        println("R12 continuation subsets: $checks assertions passed across five new module kernels + UTF8/CSV repairs.")
     }
     fun settings() {
         val aliases = mutableListOf("FILE"); val defs = mutableListOf(SettingDef("theme", "TITLE", aliases), SettingDef("density", "Density"))
@@ -142,6 +142,24 @@ object SubsetChecks {
         reject { PinnedCatalog((0..128).map { "p$it" }) }
         eq(128, PinnedCatalog((0..127).map { "p$it" }).pins().size)
         reject { pins.search((0..4096).map { LaunchTarget("k$it", "a") }, "") }
+    }
+    fun csv() {
+        eq(listOf(listOf("a", "b\nc", ""), listOf("", "x\"y", "z")), TextFormats.csvRows("a,\"b\nc\",\r\n,\"x\"\"y\",z"))
+        eq(listOf(listOf("")), TextFormats.csvRows("\n"))
+        eq(listOf(listOf("a"), listOf("")), TextFormats.csvRows("a\n\n"))
+        eq(listOf(listOf("", "")), TextFormats.csvRows(","))
+        eq(listOf(listOf("")), TextFormats.csvRows("\"\""))
+        eq(emptyList<List<String>>(), TextFormats.csvRows(""))
+        eq(listOf(listOf("=1+1", "  x ")), TextFormats.csvRows("=1+1,  x "))
+        eq(listOf(listOf("a\r\nb")), TextFormats.csvRows("\"a\r\nb\""))
+        for (bad in listOf("a\"b", "\"x\"z", "\"unterminated", "a\rb", "\"x\" ")) reject { TextFormats.csvRows(bad) }
+        eq(65536, TextFormats.csvRows("x".repeat(65536)).single().single().length)
+        reject { TextFormats.csvRows("x".repeat(65537)) }
+        eq(256, TextFormats.csvRows(",".repeat(255)).single().size)
+        reject { TextFormats.csvRows(",".repeat(256)) }
+        eq(10000, TextFormats.csvRows("\n".repeat(10000)).size)
+        reject { TextFormats.csvRows("\n".repeat(10001)) }
+        reject { TextFormats.csvRows("x".repeat(2 * 1024 * 1024 + 1)) }
     }
     fun utf8() {
         for (s in listOf("", "hello", "α🙂\u0000", "\uFEFF")) yes(TextFormats.isProbablyUtf8(s.toByteArray()))

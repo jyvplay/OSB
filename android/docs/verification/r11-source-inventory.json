@@ -693,7 +693,7 @@
       "path": "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt",
       "module": ":format:native",
       "package": "dev.fusion.native",
-      "sha256": "ffae27b41b638a288a78fa7e98d72e467a5a9e75d5ca4979f3195de35ae3f7db"
+      "sha256": "ce587cf733fc8130ae3488d7ebce5d8e605163a87806fe2a6a297f3bae2709c1"
     },
     {
       "path": "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt",

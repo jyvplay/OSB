@@ -71,6 +71,10 @@ class SubsetDeviceTest {
         assertEquals(listOf("a", "b"), p.shelf(listOf(LaunchTarget("b", "B"), LaunchTarget("a", "A"))).map { it.key })
         assertEquals(listOf("b", "a"), p.move("b", 0).pins())
     }
+    @Test fun csvPreservesMultilineAndEmptyFieldsOnArt() {
+        assertEquals(listOf(listOf("a", "b\nc", ""), listOf("")), TextFormats.csvRows("a,\"b\nc\",\r\n\n"))
+        try { TextFormats.csvRows("\"unterminated"); fail("Malformed CSV accepted") } catch (_: IllegalArgumentException) { }
+    }
     @Test fun malformedUtf8IsRefusedOnArt() {
         assertFalse(TextFormats.isProbablyUtf8(byteArrayOf(0xff.toByte())))
         assertTrue(TextFormats.isProbablyUtf8("α🙂".toByteArray()))

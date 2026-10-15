@@ -122,7 +122,7 @@
       "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
       "sha256": {
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
       }
     },
     {
@@ -254,7 +254,7 @@
       "limit": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
       "sha256": {
         "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt": "9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
       }
     },
     {
@@ -398,7 +398,7 @@
       "limit": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
       "sha256": {
         "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt": "ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
       }
     },
     {
@@ -456,7 +456,7 @@
       "limit": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
       "sha256": {
         "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt": "d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
       }
     },
     {
@@ -529,7 +529,7 @@
       "module": ":format:native",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Strict UTF8 validation (replacement-decoding defect repaired); existing simple CSV/word count",
+      "behavior": "Bounded strict comma/double-quote CSV with multiline/empty-cell preservation, strict UTF8 validation and simple word count",
       "production": [
         "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt"
       ],
@@ -538,11 +538,11 @@
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
       ],
       "command": ":format:native:test",
-      "limit": "Full bounded CSV dialect/fidelity and Forge registration absent; legacy CSV parser remains limited",
+      "limit": "Not arbitrary CSV dialect/encoding inference, spreadsheet formula evaluation, streaming large-file editing, Forge registration or full fidelity acceptance",
       "sha256": {
-        "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt": "ffae27b41b638a288a78fa7e98d72e467a5a9e75d5ca4979f3195de35ae3f7db",
-        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt": "e68cc5ab88de7c3b22b2aa462e2769dcc59120f7278429bc15fb2e0d264e0a1e",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13"
+        "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt": "ce587cf733fc8130ae3488d7ebce5d8e605163a87806fe2a6a297f3bae2709c1",
+        "format/native/src/test/kotlin/dev/fusion/native/TextFormatsTest.kt": "8ac10b68f847f9b615cf49e01c3fea5dfb26089c79ac4123430b33fd7fe7fe1e",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
       }
     },
     {
@@ -614,7 +614,7 @@
       "limit": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
       "sha256": {
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "b6c6d65e93136c1664b1227a5a68a042434ef27aa03259a17febbdd12b866c13"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
       }
     },
     {

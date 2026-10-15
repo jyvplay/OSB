@@ -2,7 +2,7 @@
 """Python byte/pixel/time/catalog oracles against separately compiled actual Kotlin libraries.
 Run run_subset_contracts.py first. No mocked Android APIs or external packages.
 """
-import base64, hashlib, json, os, random, struct, subprocess
+import base64, csv, hashlib, io, json, os, random, struct, subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'testing/build/subsets'
 REPORT=ROOT/'docs/verification/r12b-interop.json'
@@ -53,6 +53,16 @@ for _ in range(300):
     try: data.decode('utf-8','strict');ok=True
     except UnicodeDecodeError:ok=False
     add('V',[b64(data)],str(ok).lower())
+for _ in range(200):
+    rows=[[''.join(r.choice(['a','α','🙂',',','"','\n','\r',' ','=']) for c in range(r.randrange(20))) for col in range(r.randrange(1,8))] for row in range(r.randrange(1,8))]
+    output=io.StringIO(newline='');csv.writer(output,lineterminator='\r\n').writerows(rows)
+    frame=output.getvalue()
+    # CPython's own parser independently checks writer-generated corpus before Kotlin sees it.
+    assert list(csv.reader(io.StringIO(frame,newline=''),strict=True))==rows
+    want=';'.join(','.join(b64(cell.encode()) for cell in row) for row in rows)
+    add('C',[b64(frame.encode())],want)
+for text in ['"open','a"b','"x"z','x\ry']:
+    add('C',[b64(text.encode())],'REFUSED')
 java=str(Path(os.environ['JAVA_HOME'])/'bin/java') if 'JAVA_HOME' in os.environ else 'java'
 cp=os.pathsep.join(str(OUT/n) for n in ['checks.jar','core_settings.jar','feature_media.jar','format_image.jar','feature_backup.jar','feature_launcher.jar','format_native.jar'])
 p=subprocess.run([java,'-cp',cp,'dev.fusion.testing.SubsetOracle'],input='\n'.join(requests)+'\n',capture_output=True,text=True,check=True)
