@@ -1,0 +1,86 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 5,
+    "start_column": null,
+    "end_line": 5,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4, gradle/actions/wrapper-validation@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 18,
+    "start_column": null,
+    "end_line": 18,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale:  \njava.lang.AssertionError: Assert failed: The component is not displayed!\nat androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)\nat dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText(ShellSmokeTest.kt:124)\nat dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale$lambda$0(ShellSmokeTest.kt:235)\nat dev.fusion.shell.ShellSmokeTest.$r8$lambda$cFU17-OtkySpVBuFpCOkn0JNb8Q(Unknown Source:0)\nat dev.fusion.shell.ShellSmokeTest$$ExternalSyntheticLambda18.invoke(D8$$SyntheticClass:0)\nat dev.fusion.shell.ShellSmokeTest.withTwoHundredPercentFont(ShellSmokeTest.kt:255)\nat dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale(ShellSmokeTest.kt:234)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls=PASS; dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess=PASS; dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus=PASS; dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation=PASS; dev.fusion.shell.ShellSmokeTest.savedNoteTrashAtTwoHundredPercentFontScale=PASS; dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale=FAIL; dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles=PASS; dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent=PASS; dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent=PASS; dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf=PASS; dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit=PASS; dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows=PASS; dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication=PASS; dev.fusion.shell.SubsetDeviceTest.settingsExportReadsRealPreferencesAndInspectionDoesNotApply=PASS; dev.fusion.shell.SubsetDeviceTest.strictSubtitleStreamOverlapAndHalfOpenEndpointsOnArt=PASS; dev.fusion.shell.SubsetDeviceTest.malformedUtf8IsRefusedOnArt=PASS; dev.fusion.shell.SubsetDeviceTest.csvPreservesMultilineAndEmptyFieldsOnArt=PASS; dev.fusion.shell.SubsetDeviceTest.backupContentRoundTripsRealFileWithoutRestoringOrChangingSource=PASS; dev.fusion.shell.SubsetDeviceTest.missingCatalogTargetsDoNotDestroyStoredPins=PASS; dev.fusion.shell.SubsetDeviceTest.realSoftwareBitmapCropRotateAndFlipDoNotMutateSource=PASS; dev.fusion.shell.SubtitleUiDeviceTest.actualTextInputSelectsLiteralCueWithoutPretendingToPlay=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles=PASS; dev.fusion.shell.BrowserSurfaceDeviceTest.realPixelsAndInputRemainIndependentAcrossTwoRemoteWebViewsAndResize=PASS; dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint=PASS; dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity=PASS; dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported=PASS; dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation=PASS; dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss=PASS; dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess=PASS; dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile=PASS; dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse=PASS; dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog=PASS; dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl=PASS; dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused=PASS; dev.fusion.shell.NotesProcessDeathDeviceTest.acknowledgedDraftCheckpointSurvivesActualWriterProcessDeath=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.firstReadyStateIncludesInventoryBeforeAcceptingActions=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.recoveredStaleRevisionCannotOverwriteNewerSavedBytes=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.unreadableRecoveryBlocksEditsAndPreservesExactFile=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.distinctRecoveryOwnersCannotBlindlyOverwriteEachOther=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.deletedEmptyCheckpointDoesNotEqualNeverObservedAbsence=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.freshOwnerRecoversCheckpointWithoutSavingOrReplayingPendingDelete=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.repeatedCheckpointRequestsUseOneWriterMailbox=PASS; dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf=PASS; dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision=PASS; dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation=PASS; dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction=PASS; dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 1209,
+    "start_column": null,
+    "end_line": 1209,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 1168,
+    "start_column": null,
+    "end_line": 1168,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\nD ^[[0m\n\tjava.lang.AssertionError: Assert failed: The component is not displayed!\n\tat androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)\n\npixel6Api34 Tests 32/47 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 34/47 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 36/47 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 46/47 completed. (0 skipped) (1 failed)\nFinished 47 tests on pixel6Api34\n\n> Task :app:pixel6Api34ProDebugAndroidTest\nTests on pixel6Api34 failed: There was 1 failure(s).\n\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1792037777470.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights.\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 4m 43s\n787 actionable tasks: 9 executed, 778 up-to-date",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/25572e6bf7c2cb235b4fa8fc2fa0da388d851479/.github",
+    "start_line": 18,
+    "start_column": null,
+    "end_line": 18,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Expected prior-source focus counterexample observed: \njava.lang.AssertionError: Failed to assert the following: (Focused = 'true')\nSemantics of the node:\nNode #166 at (l=32.0, t=675.0, r=1048.0, b=1148.0)px, Tag: 'editor-content'\nEditableText = 'retained'\nTextSelectionRange = 'TextRange(8, 8)'\nIsEditable = 'true'\nImeAction = 'Default'\nFocused = 'false'\nText = '[Untitled.txt \u2014 Unsaved changes]'\nActions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution]\nMergeDescendants = 'true'\nHas 12 siblings\nSelector used: (TestTag = 'editor-content')\n\nat androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)\nat androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)\nat androidx.compose.ui.test.AssertionsKt.assertIsFocused(Assertions.kt:116)\nat dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus(ShellSmokeTest.kt:59)\n",
+    "raw_details": ""
+  }
+]

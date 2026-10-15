@@ -1,0 +1,3 @@
+exit_code=1
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+RELEASE BLOCKED: Every in-scope requirement, not just P1, must be verified; exclusions cannot expand silently

@@ -1,0 +1,211 @@
+{
+  "run": 38680047085,
+  "candidate": "67fbd39f3a0d3f8721decf44f87e0cbee7579984",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38680047085",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 49,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashAtTwoHundredPercentFontScale",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.settingsExportReadsRealPreferencesAndInspectionDoesNotApply",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.strictSubtitleStreamOverlapAndHalfOpenEndpointsOnArt",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.malformedUtf8IsRefusedOnArt",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.csvPreservesMultilineAndEmptyFieldsOnArt",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.backupContentRoundTripsRealFileWithoutRestoringOrChangingSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.missingCatalogTargetsDoNotDestroyStoredPins",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.realSoftwareBitmapCropRotateAndFlipDoNotMutateSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubtitleUiDeviceTest.actualTextInputSelectsLiteralCueWithoutPretendingToPlay",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.BrowserSurfaceDeviceTest.realPixelsAndInputRemainIndependentAcrossTwoRemoteWebViewsAndResize",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesProcessDeathDeviceTest.acknowledgedDraftCheckpointSurvivesActualWriterProcessDeath",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.firstReadyStateIncludesInventoryBeforeAcceptingActions",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.recoveredStaleRevisionCannotOverwriteNewerSavedBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.unreadableRecoveryBlocksEditsAndPreservesExactFile",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.distinctRecoveryOwnersCannotBlindlyOverwriteEachOther",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.deletedEmptyCheckpointDoesNotEqualNeverObservedAbsence",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.freshOwnerRecoversCheckpointWithoutSavingOrReplayingPendingDelete",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.repeatedCheckpointRequestsUseOneWriterMailbox",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.RuntimeInventoryDeviceTest.hardwareInventoryReflectsCodecDeclarationsNotAssumedWorkingReceivers",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.RuntimeInventoryDeviceTest.capabilityReportMatchesRuntimeWithoutInventingNpuDesktopOrDisplayOut",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision",
+      "result": "PASS"
+    }
+  ],
+  "scope": "Actual retained API34 named outcomes, not physical/full-product/AX/legal acceptance"
+}

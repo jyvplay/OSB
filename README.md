@@ -13,6 +13,14 @@ See [build instructions](android/docs/BUILD.md),
 [current verification status](android/STATUS.md), and the
 [231-row requirement ledger](android/requirements.csv).
 
-Latest: [R12 engineering and exact evidence](android/docs/R12-ENGINEERING.md).
-[Substantial testable subsets:23/48 (47.92%)](android/docs/MODULE-TESTABILITY.md).
+Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md).
+[Current substantial testable subsets:30/48 (62.50%)](android/docs/MODULE-TESTABILITY.md).
 **0/48 specification-accepted modules (0%); not a production-ready beta.**
+
+## Latest R12 continuation
+
+**30/48 modules (62.50%) have substantial testable subsets;0/48 are fully specification-accepted.**
+Five new bounded kernels and two newly executed Android inventory paths, plus strict UTF8/CSV
+repairs and actual subtitle inspection. See the [R12 continuation engineering record](android/docs/R12B-ENGINEERING.md)
+and [Android Studio instructions](android/docs/BUILD.md). Native results are revision-specific;
+no whole browser, Office engine, full sandbox or complete productivity suite is claimed.

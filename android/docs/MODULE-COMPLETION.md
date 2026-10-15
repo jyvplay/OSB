@@ -1,4 +1,4 @@
-# Native module completion audit — R12 — bounded draft recovery and concrete testability; incomplete
+# Native module completion audit — R12 continuation — seven additional testable subsets; incomplete
 
 **Included Gradle modules: 48. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 48 (100.00%).**
 
@@ -13,7 +13,7 @@ This is not a time/effort estimate. A module is complete only after its entire a
 - api37 16k and reference performance: unpassed
 - license sbom closure: unpassed
 
-Native candidate2c2b5bc, run38676376263: both-flavor assembly, invoked unit/contracts, lint and APK upload passed; regular Google API34 actual39/39 named cases PASS,0 failed/skipped. Includes real remote pixels/input/resize, Notes owner conflicts and writer-process death, and Notes/Editor200%-font cases. Earlier failed candidates retained. Full parser/Office/browser, human AX, physical-device, API37/16K and legal/license acceptance are not established. Testable subsets:23/48 (47.92%), independently defined from full acceptance0/48.
+R12 continuation:30/48 substantial-testable subsets (62.50%), separately from full acceptance0/48. Latest0a23219/run38682595367: both-flavor assembly, invoked unit/contracts/lint and APK upload passed, but native49 PASS/1 FAIL/0 SKIP (new Editor200%-font long-text test timed out awaiting actual IME visibility). Earlier67fbd3949/49 predates this stronger test and is not inherited. All new module-specific cases passed. Pure kernels:2394 new plus183179 rerun host assertions;1188 new cross-language checks;74 local Python methods. All failures and exact next test: R12B-ENGINEERING.md. Full browser/Office/sandbox, human AX, physical/API37/16K and legal acceptance remain open.
 
 ## All included modules
 
@@ -68,7 +68,7 @@ Native candidate2c2b5bc, run38676376263: both-flavor assembly, invoked unit/cont
 | `:baselineprofile` | Intentionally empty baseline profile; no generated rules | empty profile | 0/1 (0%) | Generate from measured user journeys on devices, verify packaging/effect |
 | `:testing` | 183179 host Kotlin assertions/13 separately compiled libraries;68 Python checks;733 cross-language checks;39/39 actual API34 cases at2c2b5bc. Source-bound23/48 (47.92%) testable-subset census is separate from full acceptance0/48. | runner executed | 0/1 (0%) | Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records |
 
-The 12 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12-ENGINEERING.md for exact runtime results. No row is a full feature pass.
+The 12 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12B-ENGINEERING.md for current exact runtime results, including the retained failing IME test. No row is a full feature pass.
 
 ## Specification architecture reconciliation
 
@@ -128,4 +128,4 @@ Additional/alternative current names: `:core:documents`, `:core:files`, `:featur
 
 **Separate obligations, not falsely added to the 48-module denominator:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.
 
-Sources: `settings.gradle.kts`, per-module source review, `docs/feature-register.json`, `docs/verification/r12-jvm-contracts.txt` and `docs/R12-ENGINEERING.md`. Reproduce with `python3 tools/module_audit.py --check`. Review data lives in `docs/module-audit.json`; this report is generated.
+Sources: `settings.gradle.kts`, per-module source review, `docs/feature-register.json`, `docs/verification/r12b-full-jvm.txt`, `docs/verification/r12b-subsets.txt` and `docs/R12B-ENGINEERING.md`. Reproduce with `python3 tools/module_audit.py --check`. Review data lives in `docs/module-audit.json`; this report is generated.

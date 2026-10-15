@@ -1,4 +1,14 @@
-> **Latest: [R12 implementation, alternatives and exact evidence](docs/R12-ENGINEERING.md).**
+> **Latest: [R12 continuation — seven more testable modules](docs/R12B-ENGINEERING.md).**
+> **30/48 modules (62.50%) meet the substantial-testable-subset standard;0/48 are fully accepted.**
+> Five new kernels: settings snapshots, subtitle inspection, ARGB operations, backup-content framing,
+> and launcher catalog/pins. Two existing runtime-inventory modules now have actual Android checks.
+> Strict UTF8 and multiline CSV defects repaired. **2,394 new +183,179 rerun Kotlin assertions;
+> 1,188 new cross-language checks;74 local Python tests passed.**
+> Latest0a23219:49/50 API34 cases passed; the stronger Editor test timed out awaiting an observable IME. Both flavors/unit/contracts/lint passed. The native suite is NOT fully green.
+> The preceding200%-font Editor failure is retained, not silently erased by a later pass.
+> See [Studio instructions](docs/BUILD.md) and the [48-row census](docs/MODULE-TESTABILITY.md).
+
+> **Historical: [R12 implementation, alternatives and exact evidence](docs/R12-ENGINEERING.md).**
 > **39/39 API34 cases passed at2c2b5bc** on a regular Google managed image;
 > both debug flavors, invoked unit/contracts and lint passed.
 > Added bounded Notes recovery with cross-owner conflict refusal and actual writer-death
@@ -18,7 +28,7 @@
 > No complete desktop browser, Office engine or full parser sandbox is delivered.
 > **0/48 accepted modules (0%); not a complete product or production beta.**
 >
-> Older sections below are historical; use R11B for current evidence and gaps.
+> Older sections below are historical; use R12B for current evidence and gaps.
 
 > **Historical: [R10 productivity / Forge engineering](docs/R10-ENGINEERING.md).**
 > **177,198 JVM assertions,57 Python methods and707 cross-implementation/oracle

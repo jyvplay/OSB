@@ -1,12 +1,44 @@
-# R12 current build and try-out entry points
+# R12 continuation build and try-out entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with a version compatible with
 **AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36**. The IDE name itself is not compatibility
 proof. Current min/compile/target34/36/36 remains a documented deviation from37.
 
-[Verified native run38676376263](https://github.com/jyvplay/OSB/actions/runs/38676376263)
-at2c2b5bc has39/39 API34 cases passing and the `fusion-native-debug` APK artifact.
-These are incomplete debug builds, not a cleared production beta.
+[Latest compiled native run38682595367](https://github.com/jyvplay/OSB/actions/runs/38682595367)
+at0a23219 has both debug flavors, invoked unit/contracts and lint passing, with the
+`fusion-native-debug` APK artifact. **Native result:49 PASS/1 FAIL/0 SKIP**; the stronger
+Editor200%-font long-text test timed out awaiting actual IME visibility. This remains unresolved.
+These are incomplete debug builds with a known failing test, not a cleared production beta.
+
+## Try the new read-only subtitle inspector
+
+1. Build/run `proDebug` on a disposable API34+ AVD and open **Media**.
+2. Acknowledge its experimental/test-data scope. Choose **Inspect subtitle file…**.
+3. Pick a real UTF8 `.srt` file using the Android system document picker. The subtitle path
+   does **not** require `READ_MEDIA_IMAGES`; the separate image-inventory action does.
+4. Enter an integer time in milliseconds. Active overlapping cues are shown literally,
+   with end times excluded; up to8 are previewed with an explicit count.
+5. Invalid/unsupported/oversized input is refused without changing the source; prior preview remains.
+
+This is inspection, not playback. It supports the strict consecutive-index/timecode subset in
+`R12B-ENGINEERING.md`,≤1MiB. No styles, media-clock sync, durable grant, background player,
+provider wall-time guarantee or restoration of the preview after Activity death is claimed.
+
+New settings/image/backup/launcher APIs are tested bounded components, not newly exposed full
+end-user workflows. Backup restore remains blocked. Run the actual contracts from `android/`:
+
+```sh
+./gradlew :testing:subsetContracts
+# With Kotlin2.2.21 and Java17 configured (separate module compilation):
+python3 tools/run_subset_contracts.py
+python3 tools/run_subset_interop.py
+python3 tools/probe_text_regression.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+```
+
+The same original managed-device command below also runs the new Bitmap, subtitles/UI,
+settings, backup-content, CSV and runtime-inventory cases. Do not infer native results from
+these host commands. [Current evidence and exact revisions](R12B-ENGINEERING.md).
 
 ## Try the actual Notes implementation
 

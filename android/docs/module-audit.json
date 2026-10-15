@@ -671,6 +671,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R12 \u2014 bounded draft recovery and concrete testability; incomplete",
-  "build_evidence": "Native candidate2c2b5bc, run38676376263: both-flavor assembly, invoked unit/contracts, lint and APK upload passed; regular Google API34 actual39/39 named cases PASS,0 failed/skipped. Includes real remote pixels/input/resize, Notes owner conflicts and writer-process death, and Notes/Editor200%-font cases. Earlier failed candidates retained. Full parser/Office/browser, human AX, physical-device, API37/16K and legal/license acceptance are not established. Testable subsets:23/48 (47.92%), independently defined from full acceptance0/48."
+  "revision": "R12 continuation \u2014 seven additional testable subsets; incomplete",
+  "build_evidence": "R12 continuation:30/48 substantial-testable subsets (62.50%), separately from full acceptance0/48. Latest0a23219/run38682595367: both-flavor assembly, invoked unit/contracts/lint and APK upload passed, but native49 PASS/1 FAIL/0 SKIP (new Editor200%-font long-text test timed out awaiting actual IME visibility). Earlier67fbd3949/49 predates this stronger test and is not inherited. All new module-specific cases passed. Pure kernels:2394 new plus183179 rerun host assertions;1188 new cross-language checks;74 local Python methods. All failures and exact next test: R12B-ENGINEERING.md. Full browser/Office/sandbox, human AX, physical/API37/16K and legal acceptance remain open."
 }

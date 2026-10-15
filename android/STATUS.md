@@ -1,4 +1,18 @@
-# Latest: R12 real native progress — full specification still incomplete
+# Latest: R12 continuation — full specification still incomplete
+
+- **30/48 modules (62.50%) have substantial testable subsets;18/48 (37.50%) not established.**
+- **0/48 fully accepted (0%);48/48 outstanding (100%).** All30 spikes unpassed.
+- Five newly implemented bounded kernels; two existing inventory paths now actually tested on Android.
+- Real subtitle picker/inspection UI, Android Bitmap crop/rotate/flip adapters, settings snapshot inspection;
+  no fake player, Office engine or enabled backup restore. UTF8/CSV defects reproduced and repaired.
+- **183,179 prior Kotlin assertions rerun;2,394 new assertions;1,188 new cross-language checks;74 local Python tests.**
+- Latest0a23219/run38682595367:49 PASS/1 FAIL/0 SKIP; both debug builds/unit/contracts/lint passed.
+  Remaining failure: stronger Editor200%-font long-text test timed out awaiting an actually visible IME.
+  Prior native failures are retained; earlier67fbd3949/49 used the weaker suite. No complete native pass is claimed.
+- [R12 continuation evidence, A–J and alternatives](docs/R12B-ENGINEERING.md).
+  [Per-module census](docs/MODULE-TESTABILITY.md); [Studio try-out](docs/BUILD.md).
+
+# Historical: R12 real native progress — full specification still incomplete
 
 - **23/48 modules (47.92%) meet the documented substantial-testable-subset standard**;
  25/48 (52.08%) are not established by that standard, not necessarily empty.
