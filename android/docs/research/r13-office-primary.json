@@ -119,5 +119,6 @@
         }
       ]
     }
-  ]
+  ],
+  "r13_continuation_retrieval": "All three pinned records retrieved again and both digests reverified in this continuation. No source copied into product."
 }

@@ -10,9 +10,9 @@ import android.os.Build
  */
 class LocalShell(private val context: Context) {
     fun run(line: String): List<String> {
-        val parts = line.trim().split(Regex("\\s+")).filter { it.isNotEmpty() }
+        val parts = try { ShellWords.parse(line) } catch (_: IllegalArgumentException) { return listOf("Rejected: invalid quotation or command budget exceeded") }
         if (parts.isEmpty()) return emptyList()
-        return when (parts[0].lowercase()) {
+        return when (parts[0].lowercase(java.util.Locale.ROOT)) {
             "help" -> listOf("help ls-apps device mem echo clear", "PTY/Linux/SSH are NOT implemented in this build.")
             "echo" -> listOf(parts.drop(1).joinToString(" "))
             "device" -> listOf("sdk=${Build.VERSION.SDK_INT} soc=${Build.SOC_MODEL ?: Build.HARDWARE} fp=${Build.FINGERPRINT.take(48)}")

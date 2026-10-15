@@ -22,7 +22,7 @@ object PilotPolicy {
         PilotModule("media", "Media", PilotAccess.CONSENT_REQUIRED, "Read-only bounded UTF-8 SRT inspection, MediaStore listing and explicit external viewer handoff; not a native player."),
         PilotModule("capture", "Screen capture", PilotAccess.CONSENT_REQUIRED, "Records the screen/app selected in Android consent. Video only; codec hardware use/latency unmeasured. Persistent Stop, lock/critical-thermal stop. Exclude all real secrets."),
         PilotModule("lens", "Lens preview", PilotAccess.CONSENT_REQUIRED, "Physical camera preview only. No effects, virtual camera, conferencing or recording route."),
-        PilotModule("automation", "Automation drafts", PilotAccess.CONSENT_REQUIRED, "Draft storage only. No scheduled or executed routines."),
+        PilotModule("automation", "Local action plans", PilotAccess.CONSENT_REQUIRED, "Explicit bounded own-app open/workspace actions. Session only; no schedules, external commands, privilege or implicit consent."),
         PilotModule("backup", "Backup", PilotAccess.BLOCKED, "Restore/key custody/fault matrix S7 not passed. Do not entrust pilot data to this engine."),
         PilotModule("alerts", "Alerts", PilotAccess.BLOCKED, "Encrypted history and privacy review incomplete. Listener ingestion is disabled in the pilot build."),
         PilotModule("vault", "Vault", PilotAccess.BLOCKED, "Existing Keystore exercise is not a password manager. Authentication, custody and capture exclusion acceptance pending."),

@@ -810,7 +810,18 @@ class MainActivity : ComponentActivity() {
             "together" -> TogetherScreen()
             "lens" -> LensScreen()
             "messages" -> MessagesScreen(this)
-            "automation" -> AutomationScreen(this)
+            "automation" -> AutomationScreen(this) { action ->
+                if(desktopModel.loading || desktopModel.blocked) false
+                else when(action) {
+                    is dev.fusion.automation.LocalAction.Open -> {
+                        openModule(action.module)
+                        desktop.windows.any { it.module==action.module && it.workspace==desktop.workspace }
+                    }
+                    is dev.fusion.automation.LocalAction.Workspace -> {
+                        dispatch(WindowCommand.SwitchWorkspace(action.index));desktop.workspace==action.index
+                    }
+                }
+            }
             else -> Text("Module not available in this build.", Modifier.padding(16.dp))
         }
     }

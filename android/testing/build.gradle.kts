@@ -134,3 +134,18 @@ tasks.register<JavaExec>("subsetContracts") {
     classpath = subsets.runtimeClasspath
     mainClass.set("dev.fusion.testing.SubsetChecks")
 }
+
+// R13: actual pure kernels, independent of Android adapters.
+val r13 by sourceSets.creating
+kotlin.sourceSets.named("r13") {
+    kotlin.srcDir("src/r13/kotlin")
+    listOf("core/files", "feature/terminal", "feature/automation", "feature/continuity", "format/ooxml").forEach {
+        kotlin.srcDir("../$it/src/main/kotlin")
+    }
+    kotlin.include("**/ContentDigest.kt", "**/ShellWords.kt", "**/ActionPlan.kt", "**/CalendarExport.kt", "**/LiteralWorkbook.kt", "**/R13Checks.kt", "**/R13Oracle.kt")
+}
+tasks.register<JavaExec>("r13Contracts") {
+    dependsOn(r13.classesTaskName)
+    classpath = r13.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R13Checks")
+}

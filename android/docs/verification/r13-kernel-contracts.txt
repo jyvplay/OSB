@@ -1,0 +1,10 @@
+R13: 482 assertions PASS; real stream/file/callback effects and bounded serializers. Not full Office/Files/PTY/calendar/automation acceptance.
+
+Five separately compiled production libraries; no Android execution inferred.
+8f6695513525123e3bb32d5c32fda77d1c82c6ce3be43119bcf8f1500974fdb4  core/files/src/main/kotlin/dev/fusion/files/ContentDigest.kt
+54406f22e35d9dfd86ec1f7b29eeb088393daedb21e663037915ca58a16a754d  feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt
+76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623  feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt
+7af5352b18e35fb871ed717e1bba0f5163afcd3a9af7d6aa4cfa19392010fa5c  feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt
+e81b290a5bc56aed12a4c06908752e9c5d1b838555872c99272881d05e84739b  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt
+bcb7d5114665d33881485ac81abd7e7a76f25c5d04f1cda4354e64fba1e1ed48  testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt
+9940f60f5c45cf113f803a5ca56b76e0b54c0a1a471fe4494b01234dba43c59a  tools/run_r13_contracts.py

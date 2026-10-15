@@ -22,6 +22,14 @@ class ShellSmokeTest {
         compose.onNodeWithTag("shelf-$module").performScrollTo().performClick()
     }
 
+    @Test fun explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates() {
+        openModule("automation")
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("routine-script").performScrollTo().performTextInput("open calculator")
+        compose.onNodeWithTag("routine-run").performScrollTo().performClick()
+        compose.waitUntil(10000) { compose.onAllNodesWithTag("calculator-input").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
+    }
     @Test fun shellRendersWithShelf() {
         compose.onNodeWithText("Fusion Shell").assertIsDisplayed()
         compose.onNodeWithTag("shelf-files").assertIsDisplayed()

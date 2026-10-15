@@ -16,8 +16,8 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "1dc8d8bc55937f2cfc591b8ee54223acdcacedbc285f7a9ef73925b428edb7a1",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "493708a2f54065d07786ef02cffcc63fcd3a9a365534a0b413c9eb91b382f122",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "448a36e7cf4b5d8b43c82c4b78dc5617554c69b64c5a43a5b5cd151f09d90a52"
       }
     },
     {
@@ -254,7 +254,7 @@
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "448a36e7cf4b5d8b43c82c4b78dc5617554c69b64c5a43a5b5cd151f09d90a52"
       }
     },
     {
@@ -292,7 +292,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7d2ed76229ce8ba33063bb6a34c60b18f0cc8a3a92eac9bae582bb7c12afc3f7"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "448a36e7cf4b5d8b43c82c4b78dc5617554c69b64c5a43a5b5cd151f09d90a52"
       }
     },
     {
