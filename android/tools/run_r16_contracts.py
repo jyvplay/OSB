@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile six actual production kernels separately, then compile/run public consumers."""
+"""Compile the actual Together production library separately, then compile/run public consumers."""
 import hashlib,os,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'testing/build/r16';OUT.mkdir(parents=True,exist_ok=True)

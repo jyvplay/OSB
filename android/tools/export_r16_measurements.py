@@ -37,8 +37,8 @@ def collect():
 def emit(data):
     raw=json.dumps(data,sort_keys=True,separators=(',',':')).encode()
     if len(raw)>4*1024*1024:raise ValueError('Measurement receipt exceeds export cap')
-    packed=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[packed[i:i+48000] for i in range(0,len(packed),48000)]
-    if len(chunks)>9:raise ValueError('Too many annotation chunks; use retained artifact instead')
+    packed=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[packed[i:i+3800] for i in range(0,len(packed),3800)]
+    if len(chunks)>40:raise ValueError('Too many annotation chunks; use retained artifact instead')
     digest=hashlib.sha256(raw).hexdigest()
     for i,c in enumerate(chunks):print(f'::notice title=R16 measured artifacts::R16BUNDLE {i+1}/{len(chunks)} {digest} {c}')
     (ROOT/'profile-export.json').write_bytes(raw)
