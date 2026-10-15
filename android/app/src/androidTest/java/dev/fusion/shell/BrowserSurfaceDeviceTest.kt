@@ -81,9 +81,9 @@ class BrowserSurfaceDeviceTest {
         return result
     }
     private fun clicks(remote:Remote)=JSONObject(remote.request(BrowserSurfaceProbe.READ).getString("dom")!!).getInt("clicks")
-    private fun tap(surface:SurfaceView) {
+    private fun tap(surface:SurfaceView,fractionY:Float=.25f) {
         val pos=IntArray(2);var x=0f;var y=0f
-        main { surface.getLocationOnScreen(pos);x=pos[0]+surface.width*.25f;y=pos[1]+surface.height*.25f }
+        main { surface.getLocationOnScreen(pos);x=pos[0]+surface.width*.25f;y=pos[1]+surface.height*fractionY }
         val now=SystemClock.uptimeMillis()
         for((action,time) in listOf(MotionEvent.ACTION_DOWN to now,MotionEvent.ACTION_UP to now+50)) {
             val event=MotionEvent.obtain(now,time,action,x,y,0).apply { source=InputDevice.SOURCE_TOUCHSCREEN }
@@ -120,12 +120,22 @@ class BrowserSurfaceDeviceTest {
                         assertTrue("Remote pixel was ${Integer.toHexString(pixel)}",kotlin.math.abs(Color.red(pixel)-18)<=8 && kotlin.math.abs(Color.green(pixel)-93)<=8 && kotlin.math.abs(Color.blue(pixel)-133)<=8)
                     }
                 } finally { bitmap.recycle() }
+                val beforeHeight=JSONObject(a.request(BrowserSurfaceProbe.READ).getString("dom")!!).getInt("height")
                 val size=Bundle()
                 main { size.putInt("width",left.width);size.putInt("height",left.height/2) }
                 a.request(BrowserSurfaceProbe.RESIZE,size)
+                val resizeDeadline=SystemClock.uptimeMillis()+5_000
+                var afterHeight=beforeHeight
+                while(afterHeight>=beforeHeight && SystemClock.uptimeMillis()<resizeDeadline) {
+                    afterHeight=JSONObject(a.request(BrowserSurfaceProbe.READ).getString("dom")!!).getInt("height")
+                    if(afterHeight>=beforeHeight) SystemClock.sleep(50)
+                }
+                assertTrue("DOM viewport did not resize",afterHeight in 1 until beforeHeight)
                 // Attack the patch: rejected over-budget relayout must leave the live host usable.
                 a.request(BrowserSurfaceProbe.RESIZE,Bundle().apply { putInt("width",Int.MAX_VALUE);putInt("height",1) },expectError=true)
                 tap(left);awaitClicks(a,2);assertEquals(1,clicks(b))
+                // Z-order repair attack: input outside the resized embedded surface must not leak into it.
+                tap(left,.75f);SystemClock.sleep(200);assertEquals(2,clicks(a));assertEquals(1,clicks(b))
                 println("R12 remote-surface provider=${aa.getString("provider")}; pids=${aa.getInt("pid")},${bb.getInt("pid")}; same UID=${aa.getInt("uid")}")
             } }
         }

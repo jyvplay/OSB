@@ -11,7 +11,10 @@ class BrowserSurfaceActivity:Activity() {
     lateinit var right:SurfaceView;private set
     override fun onCreate(state:Bundle?) {
         super.onCreate(state)
-        left=SurfaceView(this);right=SurfaceView(this)
+        // AOSP SurfaceView requires above-host z-order for embedded input delivery.
+        // [U] verify API34/36/37; this does NOT solve chrome/overlap/IME/AX in the own compositor.
+        left=SurfaceView(this).apply { setZOrderOnTop(true) }
+        right=SurfaceView(this).apply { setZOrderOnTop(true) }
         val row=LinearLayout(this).apply {
             orientation=LinearLayout.HORIZONTAL
             addView(this@BrowserSurfaceActivity.left,LinearLayout.LayoutParams(0,-1,1f));addView(this@BrowserSurfaceActivity.right,LinearLayout.LayoutParams(0,-1,1f))

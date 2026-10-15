@@ -68,6 +68,11 @@
           "term": "onDetachedFromWindow()",
           "line": 461,
           "excerpt": "        updateSurface();\n        releaseSurfaces(true /* releaseSurfacePackage*/);\n\n        mHaveFrame = false;\n        super.onDetachedFromWindow();\n    }\n\n    @Override\n    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {\n        int width = mRequestedWidth >= 0\n                ? resolveSizeAndState(mRequestedWidth, widthMeasureSpec, 0)\n                : getDefaultSize(0, widthMeasureSpec);\n        int height = mRequestedHeight >= 0\n                ? resolveSizeAndState(mRequestedHeight, heightMeasureSpec, 0)\n                : getDefaultSize(0, heightMeasureSpec);\n        setMeasuredDimension(width, height);"
+        },
+        {
+          "term": "Required z-order hypothesis for embedded input",
+          "line": 1829,
+          "excerpt": "     * If this SurfaceView is above its host Surface (see\n     * {@link #setZOrderOnTop} then the embedded Surface hierarchy will be able to receive\n     * input.\n     *\n     * This will take ownership of the SurfaceControl contained inside the SurfacePackage\n     * and free the caller of the obligation to call\n     * {@link SurfaceControlViewHost.SurfacePackage#release}. However, note that\n     * {@link SurfaceControlViewHost.SurfacePackage#release} and\n     * {@link SurfaceControlViewHost#release} are not the same. While the ownership\n     * of this particular {@link SurfaceControlViewHost.SurfacePackage} will be taken by the\n     * SurfaceView the underlying {@link SurfaceControlViewHost} remains managed by it's original\n     * remote-owner.\n     *"
         }
       ]
     },
