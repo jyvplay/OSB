@@ -39,6 +39,7 @@ android {
     buildTypes {
         // Must mirror the app's non-debuggable, profileable variant.
         create("benchmark") {
+            signingConfig = signingConfigs.getByName("debug")
             isDebuggable = false
             matchingFallbacks += listOf("release")
         }

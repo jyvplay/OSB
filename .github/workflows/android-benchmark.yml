@@ -1,7 +1,7 @@
 name: Android measured profile experiment
 on:
   push:
-    paths: ['android/benchmark/**', 'android/baselineprofile/**', 'android/tools/collect_profile_artifact.py', '.github/workflows/android-benchmark.yml']
+    paths: ['android/benchmark/**', 'android/baselineprofile/**', 'android/tools/collect_profile_artifact.py', 'android/tools/export_r16_measurements.py', '.github/workflows/android-benchmark.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -46,6 +46,9 @@ jobs:
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
           -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.suppressErrors=EMULATOR
           -Pandroid.experimental.enableAdditionalTestOutput=true
+      - name: Publish actual measured evidence through Checks API
+        if: always()
+        run: python3 tools/export_r16_measurements.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
