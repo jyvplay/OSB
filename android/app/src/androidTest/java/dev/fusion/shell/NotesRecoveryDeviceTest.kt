@@ -3,6 +3,7 @@ package dev.fusion.shell
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.viewModelScope
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -58,6 +59,19 @@ class NotesRecoveryDeviceTest {
             main { current.save() };wait(current) { !it.busy && it.status.startsWith("Operation not confirmed") }
             assertEquals("draft",current.state.value.text);assertEquals(newer,files.load(name))
         } finally { first?.let(::close);second?.let(::close);File(app.filesDir,"notes/$name.md").delete() }
+    }
+    @Test fun repeatedCheckpointRequestsUseOneWriterMailbox() {
+        val owner=owner()
+        try {
+            main {
+                owner.model.name("bounded_queue");owner.model.edit("retained")
+                repeat(1000) { owner.model.checkpointNow() }
+                // Main looper has not yielded: the old per-click launch would expose1000 queued children here.
+                assertEquals(1,owner.model.viewModelScope.coroutineContext[Job]!!.children.count())
+            }
+            wait(owner.model) { it.recoveryStatus.startsWith("Local draft checkpoint confirmed") }
+            assertEquals("retained",owner.model.state.value.text)
+        } finally { close(owner) }
     }
     @Test fun unreadableRecoveryBlocksEditsAndPreservesExactFile() {
         val file=File(app.noBackupFilesDir,"notes-recovery-v1.bin");val bytes=byteArrayOf(9,8,7,6);file.writeBytes(bytes)

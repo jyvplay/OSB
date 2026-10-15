@@ -81,7 +81,8 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
             false
         }
     }
-    fun checkpointNow() { if(ready() && !mutable.value.busy) viewModelScope.launch { flush() } }
+    // The button shares the one-slot mailbox; repeated clicks cannot spawn an unbounded IO coroutine queue.
+    fun checkpointNow() { if(ready() && !mutable.value.busy) checkpoint() }
     fun name(value: String) {
         val s=mutable.value
         if (ready() && !s.busy && s.pending==null && s.revision==null && value.length<=64) { mutable.value=s.copy(name=value);checkpoint() }

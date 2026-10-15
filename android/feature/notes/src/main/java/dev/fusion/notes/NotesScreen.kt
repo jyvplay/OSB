@@ -29,7 +29,7 @@ fun NotesScreen(model: NotesViewModel) {
         FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
             Button(onClick=model::save,enabled=ready && state.name.isNotBlank(),modifier=Modifier.testTag("notes-save")) { Text("Save note") }
-            OutlinedButton(onClick=model::checkpointNow,enabled=ready,modifier=Modifier.testTag("notes-checkpoint")) { Text("Checkpoint draft now") }
+            OutlinedButton(onClick=model::checkpointNow,enabled=ready,modifier=Modifier.testTag("notes-checkpoint")) { Text("Checkpoint draft") }
             OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
             if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Move note to trash…") }
         }

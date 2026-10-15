@@ -49,7 +49,7 @@ PASS: 1046 window restore assertions; v1 historical migration, v2 historical mig
 
 Compiled source SHA-256:
 67e53e6202dcf5570e49816063f60513f64242b8fc03440dbef2e35eaf692ef2  core/model/src/main/kotlin/dev/fusion/model/Models.kt
-413fc399372f1b92b7fe19f5cefbba0fbe8f2a0f8a3c4c6c7d8695630116a6a4  core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt
+643d2c9151b0e1d8e06f00def17649b09f9d220a04c0681845200f8dff3fb59e  core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt
 896d340f943888ef976874a0e822c499a26938527e98dbba503c465387620718  core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCodec.kt
 befbf7132bd65ae982f954588b98ca83efbba0451985b6140be5f7e38fe2e295  core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCommandStream.kt
 80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574  core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt
