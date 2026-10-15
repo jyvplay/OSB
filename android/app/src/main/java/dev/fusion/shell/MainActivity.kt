@@ -478,8 +478,8 @@ class MainActivity : ComponentActivity() {
         }
         closingNotesWindow?.let { id ->
             AlertDialog(onDismissRequest={ closingNotesWindow=null },title={ Text("Close with an unsaved note?") },
-                text={ Text("The draft remains only in memory while this Activity's ViewModel lives. It is NOT recovered after process death. Keep editing and save first if you need to retain it.") },
-                confirmButton={ TextButton(onClick={ desktopModel.dispatch(WindowCommand.Close(id)); closingNotesWindow=null }) { Text("Hide memory draft") } },
+                text={ Text("The latest acknowledged draft checkpoint can be recovered; recent unconfirmed edits can be lost. Closing this window does not save Markdown.") },
+                confirmButton={ TextButton(onClick={ desktopModel.dispatch(WindowCommand.Close(id)); closingNotesWindow=null }) { Text("Hide note window") } },
                 dismissButton={ TextButton(onClick={ closingNotesWindow=null }) { Text("Keep editing") } })
         }
         Column(

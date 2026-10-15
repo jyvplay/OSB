@@ -1,6 +1,6 @@
 id,tier,phase,sources,route,tests,status,gates,feature
-SH-01,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-01,partial_unverified,S2,Launcher pinned/all-apps/folders/recents/search
-SH-02,A/B,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-02,partial_unverified,,Shelf pinned/running/badges/previews/edges
+SH-01,A,P1,owner:v2.0 §7.1,Bounded immutable pin/reorder/search/catalog reconciliation kernel tested; caller-supplied targets only. Actual LauncherApps/Home/folders/widgets/recents and persistent host integration remain missing.,plan:T-SH-01; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,S2,Launcher pinned/all-apps/folders/recents/search
+SH-02,A/B,P1,owner:v2.0 §7.1,Pin versus running-target reconciliation tested without dropping temporarily absent pins; not yet wired to durable host shelf controls/badges/previews/edges.,plan:T-SH-02; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,,Shelf pinned/running/badges/previews/edges
 SH-03,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-03,partial_unverified,,Top bar menus/status/clock/Beam indicator
 SH-04,A,P1,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-04,not_implemented,,Desktop wallpaper/icons/folders/widgets/context menu/layouts
 SH-05,A,P2,owner:v2.0 §7.1,Compose shell; HOME/LauncherApps/AppWidgetHost where allowed,plan:T-SH-05,not_implemented,,Widget host with suspend and crash isolation
@@ -59,7 +59,7 @@ NC-03,A/B,P1,owner:v2.0 §7.5,NotificationListenerService; Room alert store; sys
 NC-04,B,P2,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-04,not_implemented,,Notification diagnostics
 NC-05,A,P1,owner:v2.0 §7.5,Capture foreground Stop action and finalization status; universal long-operation service layer still pending,plan:T-NC-05,partial_unverified,,Observable own-operation progress/live updates
 NC-06,A,P2,owner:v2.0 §7.5,NotificationListenerService; Room alert store; system settings panels,plan:T-NC-06,not_implemented,,Volume/brightness/layout OSD
-ST-01,A,P1,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-01,partial_unverified,,Settings graph IDs/aliases/lock reasons/history/undo/export/import
+ST-01,A,P1,owner:v2.0 §7.6,Bounded canonical settings snapshot export/inspection and locale-stable alias search; Android SharedPreferences adapter tested. Inspection does not apply settings; DataStore/migrations/atomic import/full history remain missing.,plan:T-ST-01; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,,Settings graph IDs/aliases/lock reasons/history/undo/export/import
 ST-02,A,P1,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-02,not_implemented,,Curated system-settings deep links per OEM
 ST-03,A,P2,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-03,not_implemented,,Default-apps guide
 ST-04,A,P1,owner:v2.0 §7.6,Settings registry/history and capability/system-settings adapters,plan:T-ST-04,partial_unverified,,Capabilities/fingerprint/thermal/memory/codec/redacted diagnostics
@@ -115,11 +115,11 @@ FF-01,B,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and expli
 FF-02,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-02,not_implemented,S11,Shaded POI headless Office read/write/convert/extract
 FF-03,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-03,partial_unverified,,PDF render/annotate/sign/export
 FF-04,A/B,P3,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-04,not_implemented,,PDF-compatible AI; non-PDF AI boundary
-FF-05,A,P1,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-05,partial_unverified,,Raster open/edit/export
+FF-05,A,P1,owner:v2.0 §7.10,Decoded ARGB integer crop/rotation/flip kernel and actual Android software Bitmap adapters tested; no complete image editor/format pipeline/fidelity/export acceptance.,plan:T-FF-05; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,,Raster open/edit/export
 FF-06,A/B,P1,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-06,partial_unverified,S12,HEIC/HEIF/AVIF decode via platform/audited fallback
 FF-07,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-07,not_implemented,S12,Platform hardware HEIC encode/export
 FF-08,B,P3,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-08,partial_unverified,S13,PSD/PSB layers/composite/export
-FF-09,A,P2/P3,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-09,not_implemented,,SVG render/export and text/Markdown/CSV/RTF edit; vector editor later
+FF-09,A,P2/P3,owner:v2.0 §7.10,Bounded strict CSV and UTF8 kernels tested including multiline/empty-cell preservation; existing text/Markdown subsets only. No complete SVG/RTF/edit/export Forge route.,plan:T-FF-09; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,,SVG render/export and text/Markdown/CSV/RTF edit; vector editor later
 FF-10,A,P4,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-10,not_implemented,,EPUB reader
 FF-11,A,P2,owner:v2.0 §7.10,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-11,not_implemented,,Save-As/export fidelity warning
 FF-12,A,P1,owner:v2.0 §7.10,"Real isolated UID/read-only FD opaque-digest precursor:5/5 elementary API34 boundary cases passed at1ee1589, including exact-path/inode and positive-FD controls after ENOENT counterexample. Full parser sandbox, parent watchdog/RSS/CPU/socket/output guards absent; no S-gate promoted.",plan:T-FF-12,not_implemented,,Isolated format sandbox/watchdogs/bomb guards
@@ -129,7 +129,7 @@ FF-15,A,P2,owner:v2.1 §1.3/§4,"Activity-scoped text sessions; bounded versione
 FF-16,A,P2,owner:v2.1 §1.3/§4,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-16,not_implemented,,Conversion/loss report before lossy save
 FF-17,A,P2,owner:v2.1 §1.3/§4,Forge format router with isolated parsers and explicit fidelity,plan:T-FF-17,not_implemented,,Macros disabled by default
 MD-01,A,P2,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-01,partial_unverified,S17,Capture recording/audio/annotation/blur/redact/OCR/commit-first
-MD-02,A,P2,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-02,not_implemented,,Hardware media player/subtitles/PiP/gapless/Beam
+MD-02,A,P2,owner:v2.0 §7.11,"Real bounded read-only UTF8 SRT picker/inspection UI with millisecond half-open/overlap lookup and canonical export kernel. No native player, synchronized subtitles, PiP/gapless or Beam acceptance.",plan:T-MD-02; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,,Hardware media player/subtitles/PiP/gapless/Beam
 MD-03,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-03,partial_unverified,,Photos with non-destructive edits/HEIC
 MD-04,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-04,not_implemented,,Voice recorder
 MD-05,A,P3,owner:v2.0 §7.11,MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent,plan:T-MD-05,not_implemented,,Camera/scan/QR hooks
@@ -146,7 +146,7 @@ SC-06,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolate
 SC-07,A,P3,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-07,not_implemented,,Tink encrypted containers
 SC-08,A,P1,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-08,partial_unverified,,Telemetry off/local logs/redacted export
 SC-09,A,P2,owner:v2.0 §7.12,Keystore/least-privilege platform services; isolated security boundaries,plan:T-SC-09,not_implemented,,Cast excludes Vault/secure surfaces; red indicator; stop on lock
-BK-01,B,P2,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-01,partial_unverified,S7,Timeline encrypted incremental backup/remote targets/restore browser
+BK-01,B,P2,owner:v2.0 §7.13,"New bounded noncompressed FBC1 content codec validated before returning entries; not encryption, legacy migration, restore publication or full backup. Legacy restore remains blocked by S7.",plan:T-BK-01; jvm:SubsetChecks; android:SubsetDeviceTest,partial_unverified,S7,Timeline encrypted incremental backup/remote targets/restore browser
 BK-02,B,P3,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-02,not_implemented,,Folder sync with conflict inbox
 BK-03,A,P1,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-03,not_implemented,,Configuration export/import
 BK-04,A,P3,owner:v2.0 §7.13,Spike-selected encrypted versioned backup; sync explicitly separate,plan:T-BK-04,not_implemented,,New-device checklist

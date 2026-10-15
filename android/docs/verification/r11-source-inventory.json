@@ -201,7 +201,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "635ef1eaf809d69ded4460cf35984b1e2364a52ee2278eef82ccaf90d6086304"
+      "sha256": "1dc8d8bc55937f2cfc591b8ee54223acdcacedbc285f7a9ef73925b428edb7a1"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -399,7 +399,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "9ddbfaa3a6db4eb221371a3d2621811714389cdd334abef9dd1e70fa7cdf02c3"
+      "sha256": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorTools.kt",

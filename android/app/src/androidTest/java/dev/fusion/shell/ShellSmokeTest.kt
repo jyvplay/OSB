@@ -241,7 +241,15 @@ class ShellSmokeTest {
         compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText("New").performClick()
         compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithTag("editor-content").performScrollTo().performTextInput((1..60).joinToString("\n") { "Long line $it" })
+        compose.onNodeWithTag("editor-content").performScrollTo().performClick().performTextInput((1..60).joinToString("\n") { "Long line $it" })
+        compose.waitUntil(10000) {
+            var visible=false
+            compose.activityRule.scenario.onActivity {
+                visible=it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime())==true
+            }
+            visible
+        }
+        compose.waitUntil(10000) { runCatching { compose.onNodeWithText("New").assertIsDisplayed() }.isSuccess }
         compose.onNodeWithText("New").assertIsDisplayed().performClick()
         compose.waitUntil(10000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
         compose.onNodeWithText("New").assertIsDisplayed()
@@ -266,6 +274,7 @@ class ShellSmokeTest {
                     kotlin.math.abs(actual-2f)<0.01f
                 }.getOrDefault(false)
             }
+            compose.waitForIdle()
             action()
         } finally {
             // DisposableEmulatorRule has already required explicit opt-in AND emulator hardware.
@@ -278,6 +287,7 @@ class ShellSmokeTest {
                     kotlin.math.abs(actual-(value ?: 1f))<0.01f
                 }.getOrDefault(false)
             }
+            compose.waitForIdle()
         }
     }
 

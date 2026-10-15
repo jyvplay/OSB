@@ -172,7 +172,7 @@ Owner candidates below identify where work belongs, not implementation completen
 | FF-06 | HEIC/HEIF/AVIF decode via platform/audited fallback | partial_unverified | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | S12 |
 | FF-07 | Platform hardware HEIC encode/export | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | S12 |
 | FF-08 | PSD/PSB layers/composite/export | partial_unverified | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | S13 |
-| FF-09 | SVG render/export and text/Markdown/CSV/RTF edit; vector editor later | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
+| FF-09 | SVG render/export and text/Markdown/CSV/RTF edit; vector editor later | partial_unverified | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-10 | EPUB reader | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-11 | Save-As/export fidelity warning | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-12 | Isolated format sandbox/watchdogs/bomb guards | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
@@ -182,7 +182,7 @@ Owner candidates below identify where work belongs, not implementation completen
 | FF-16 | Conversion/loss report before lossy save | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | FF-17 | Macros disabled by default | not_implemented | `:format:native`, `:format:lok`, `:format:ooxml`, `:format:pdf`, `:format:image`, `:format:psd`, `:format:archive`, `:core:documents` | No spike named here; integration/security/AX gates still apply |
 | MD-01 | Capture recording/audio/annotation/blur/redact/OCR/commit-first | partial_unverified | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | S17 |
-| MD-02 | Hardware media player/subtitles/PiP/gapless/Beam | not_implemented | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
+| MD-02 | Hardware media player/subtitles/PiP/gapless/Beam | partial_unverified | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
 | MD-03 | Photos with non-destructive edits/HEIC | partial_unverified | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
 | MD-04 | Voice recorder | not_implemented | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
 | MD-05 | Camera/scan/QR hooks | not_implemented | `:feature:media`, `:feature:photos` (absent), `:feature:capture`, `:feature:lens` | No spike named here; integration/security/AX gates still apply |
@@ -284,6 +284,6 @@ Owner candidates below identify where work belongs, not implementation completen
 | MS-05 | SMS/MMS with SMS role | partial_unverified | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 | MS-06 | Permissive Matrix/XMPP clients; no AGPL Signal client | not_implemented | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 
-Status counts: {"excluded": 3, "not_implemented": 171, "partial_unverified": 56, "superseded": 1}.
+Status counts: {"excluded": 3, "not_implemented": 169, "partial_unverified": 58, "superseded": 1}.
 
 Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r11-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R11-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.

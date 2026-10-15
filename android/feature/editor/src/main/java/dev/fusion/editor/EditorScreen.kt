@@ -89,7 +89,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         // Keep actions outside the focused document's scroll/bring-into-view region.
         // Bounded independent scrolling keeps a tall toolbar reachable at large font sizes.
-        FlowRow(Modifier.fillMaxWidth().heightIn(max=240.dp).verticalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
+        FlowRow(Modifier.weight(0.4f,fill=false).fillMaxWidth().verticalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
             OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
             Button(enabled = ready && active != null && pendingCopy == null,
@@ -99,7 +99,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                     active?.let { if (dirty) closingId = it.id else model.closeDocument(it.id) }
                 }) { Text("Close tab") }
         }
-        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()), verticalArrangement=Arrangement.spacedBy(6.dp)) {
+        Column(Modifier.weight(0.6f).fillMaxWidth().verticalScroll(rememberScrollState()), verticalArrangement=Arrangement.spacedBy(6.dp)) {
         FlowRow(Modifier.fillMaxWidth()) {
             session.documents.forEach { doc ->
                 val docDirty = remember(doc.content, doc.savedDigest) { doc.dirty }

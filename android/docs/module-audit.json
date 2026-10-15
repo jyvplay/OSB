@@ -63,9 +63,9 @@
     {
       "module": ":core:settings",
       "status": "incomplete",
-      "present_scope": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native rerun pending",
+      "present_scope": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native inspection passed at67fbd39",
       "remaining_gap": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":core:security",
@@ -121,7 +121,7 @@
       "status": "incomplete",
       "present_scope": "Immutable pin/reorder/unpin, missing-target preservation, deterministic catalog reconciliation and locale-stable search",
       "remaining_gap": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:find",
@@ -182,9 +182,9 @@
     {
       "module": ":feature:media",
       "status": "incomplete",
-      "present_scope": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte-limited stream reader; native picker/inspection UI added, execution pending",
+      "present_scope": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte stream reader; literal-cue inspector text input passed at67fbd39. System picker adapter compiled, grant/lifecycle execution pending",
       "remaining_gap": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:beam",
@@ -212,7 +212,7 @@
       "status": "incomplete",
       "present_scope": "Bounded noncompressed FBC1 content serialization and whole-frame checksum/structural verification before returning entries",
       "remaining_gap": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:continuity",
@@ -287,9 +287,9 @@
     {
       "module": ":format:image",
       "status": "incomplete",
-      "present_scope": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, execution pending",
+      "present_scope": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, selected native cases passed at67fbd39",
       "remaining_gap": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":format:psd",

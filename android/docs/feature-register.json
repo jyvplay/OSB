@@ -5,9 +5,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Bounded immutable pin/reorder/search/catalog reconciliation kernel tested; caller-supplied targets only. Actual LauncherApps/Home/folders/widgets/recents and persistent host integration remain missing.",
     "tests": [
-      "plan:T-SH-01"
+      "plan:T-SH-01",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -20,9 +22,11 @@
     "tier": "A/B",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pin versus running-target reconciliation tested without dropping temporarily absent pins; not yet wired to durable host shelf controls/badges/previews/edges.",
     "tests": [
-      "plan:T-SH-02"
+      "plan:T-SH-02",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -840,9 +844,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Bounded canonical settings snapshot export/inspection and locale-stable alias search; Android SharedPreferences adapter tested. Inspection does not apply settings; DataStore/migrations/atomic import/full history remain missing.",
     "tests": [
-      "plan:T-ST-01"
+      "plan:T-ST-01",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1606,9 +1612,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Decoded ARGB integer crop/rotation/flip kernel and actual Android software Bitmap adapters tested; no complete image editor/format pipeline/fidelity/export acceptance.",
     "tests": [
-      "plan:T-FF-05"
+      "plan:T-FF-05",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1664,11 +1672,13 @@
     "tier": "A",
     "phase": "P2/P3",
     "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Bounded strict CSV and UTF8 kernels tested including multiline/empty-cell preservation; existing text/Markdown subsets only. No complete SVG/RTF/edit/export Forge route.",
     "tests": [
-      "plan:T-FF-09"
+      "plan:T-FF-09",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1800,11 +1810,13 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Real bounded read-only UTF8 SRT picker/inspection UI with millisecond half-open/overlap lookup and canonical export kernel. No native player, synchronized subtitles, PiP/gapless or Beam acceptance.",
     "tests": [
-      "plan:T-MD-02"
+      "plan:T-MD-02",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2021,9 +2033,11 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 \u00a77.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "New bounded noncompressed FBC1 content codec validated before returning entries; not encryption, legacy migration, restore publication or full backup. Legacy restore remains blocked by S7.",
     "tests": [
-      "plan:T-BK-01"
+      "plan:T-BK-01",
+      "jvm:SubsetChecks",
+      "android:SubsetDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": [

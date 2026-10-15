@@ -16,8 +16,8 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "635ef1eaf809d69ded4460cf35984b1e2364a52ee2278eef82ccaf90d6086304",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "5857ee915617773ab5de564375728d552c3777d4192062dd663a7b7165c3e77d"
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "1dc8d8bc55937f2cfc591b8ee54223acdcacedbc285f7a9ef73925b428edb7a1",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "bc08bf6301edac9c1e752f15fd855bccdbc4a2674f69fe31a62badbcebbca52c"
       }
     },
     {
@@ -118,18 +118,22 @@
       "module": ":core:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native rerun pending",
+      "behavior": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native inspection passed at67fbd39",
       "production": [
-        "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt"
+        "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt"
       ],
       "checks": [
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
       "sha256": {
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt": "4e83784d8a76343ad2b32cdf7fd8366ca4701598dbfd34a04a48620e0fb96c78",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
       }
     },
     {
@@ -249,8 +253,8 @@
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
-        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "9ddbfaa3a6db4eb221371a3d2621811714389cdd334abef9dd1e70fa7cdf02c3",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "5857ee915617773ab5de564375728d552c3777d4192062dd663a7b7165c3e77d"
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "bc08bf6301edac9c1e752f15fd855bccdbc4a2674f69fe31a62badbcebbca52c"
       }
     },
     {
@@ -262,13 +266,15 @@
         "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt"
       ],
       "checks": [
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
       "sha256": {
         "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt": "9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
       }
     },
     {
@@ -286,7 +292,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "5857ee915617773ab5de564375728d552c3777d4192062dd663a7b7165c3e77d"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "bc08bf6301edac9c1e752f15fd855bccdbc4a2674f69fe31a62badbcebbca52c"
       }
     },
     {
@@ -401,18 +407,24 @@
       "module": ":feature:media",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte-limited stream reader; native picker/inspection UI added, execution pending",
+      "behavior": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte stream reader; literal-cue inspector text input passed at67fbd39. System picker adapter compiled, grant/lifecycle execution pending",
       "production": [
-        "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt"
+        "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt",
+        "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt"
       ],
       "checks": [
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
       "sha256": {
         "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt": "ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
+        "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt": "b0c4aae27639e97f9d0e2db6a13f68f859321d33f266d78c56955e9f06d9e00d",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
+        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt": "c48816bc9cb2f5c9fdb1c54f770955eeddb9f279e425c46b1935ceedcddd0610"
       }
     },
     {
@@ -464,13 +476,15 @@
         "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt"
       ],
       "checks": [
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
       "sha256": {
         "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt": "d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
       }
     },
     {
@@ -617,18 +631,22 @@
       "module": ":format:image",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, execution pending",
+      "behavior": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, selected native cases passed at67fbd39",
       "production": [
-        "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt"
+        "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt",
+        "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt"
       ],
       "checks": [
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt"
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
       "sha256": {
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b"
+        "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt": "f9de8fe09ef057479df66e831ccec81bdefcc6eeee57aca93d2cda79edd60f04",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
       }
     },
     {
