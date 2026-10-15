@@ -34,6 +34,11 @@ jobs:
             exit 1
           fi
           "$SDK_MANAGER" --version
+          if "$SDK_MANAGER" --list > sdk-available.log 2>&1; then
+            python3 -c 'from pathlib import Path; lines=Path("sdk-available.log").read_text().splitlines(); matches=[x.strip() for x in lines if x.split("|")[0].strip()=="platforms;android-37"]; print("::notice::SDK37 catalog observation (not AGP/build/API acceptance): "+("; ".join(matches) if matches else "NOT_LISTED"))'
+          else
+            echo "::notice::SDK inventory unavailable; no API37 availability conclusion."
+          fi
           if ! "$SDK_MANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
             cat sdk-setup.log
             echo "::error::SDK component installation failed before Android compilation. See sdk-setup.log artifact."
@@ -67,6 +72,7 @@ jobs:
           name: sdk-setup-diagnostics
           path: |
             android/sdk-setup.log
+            android/sdk-available.log
             android/assemble.log
             android/unit-tests.log
             android/contracts.log

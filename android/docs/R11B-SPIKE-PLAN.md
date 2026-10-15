@@ -1,0 +1,10 @@
+# R11 continuation: pre-implementation experiment contract
+
+No engine/UI gate is promoted. The prior API34 run at428018c is green; this is not a license, physical-device or complete-feature pass.
+
+1. Notes trash: replace irreversible unlink with a same-filesystem atomic move. Metadata and saved bytes must be one recoverable object, not two independently published files. Bounded256 entries; no automatic purge; exact revision and no-overwrite restore. Host actual-file tests precede Android UI claims.
+2. Window focus: compare the prior MainActivity with a new actual Android child-focus regression. Then restore candidate source and run the full suite. Counterfactual-source output must not contaminate candidate JUnit results.
+3. Socket isolation: parent-owned real IPv4 loopback listener must accept parent connections before/after the worker attempt. Only actual permission/security refusal counts; timeout/refused-connection does not. Still not a proof against all communication channels or arbitrary native compromise.
+4. Browser profile feasibility (debug-only, not product activation): two same-UID, distinct-PID Android services set different WebView data-directory suffixes BEFORE provider use. Use the identical HTTPS origin for offline generated HTML; network/file/content loading disabled. Actual CookieManager and WebView JavaScript/localStorage must retain A while B clears/writes. Require returned DOM values, process identity and installed provider identity. No alternate origins, in-memory map, fake renderer or cloud page substitutes. Failure/unavailable provider keeps the route unverified. This does not establish UID isolation, UI/z-order/IME/AX, all storage APIs, process-death persistence, S29/S30 or full PR07.
+
+The browser experiment uses only platform APIs and first-party debug/test code; it adds no third-party engine to the APK. Existing browser UI remains blocked. LibreOfficeKit and POI payloads are not imported until concrete Android/transitive-license/storage spikes pass. Their source interfaces/limits remain in R11 research records.

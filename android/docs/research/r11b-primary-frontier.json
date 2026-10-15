@@ -1,0 +1,105 @@
+[
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/webkit/WebView.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/webkit/WebView.java",
+    "blob": "6523fffc4b91a2acf41f3629f65d311e47500d6f",
+    "sha256": "63cda6f8f6263fb27258df32f21df076eb1b8ef620034c7a638920967f1899c1",
+    "excerpts": [
+      {
+        "term": "setDataDirectorySuffix",
+        "line": 2068,
+        "text": "     *\n     * @param suffix The directory name suffix to be used for the current\n     *               process. Must not contain a path separator.\n     * @throws IllegalStateException if WebView has already been initialized\n     *                               in the current process.\n     * @throws IllegalArgumentException if the suffix contains a path separator.\n     */\n    public static void setDataDirectorySuffix(@NonNull String suffix) {\n        WebViewFactory.setDataDirectorySuffix(suffix);\n    }\n\n    /**\n     * Indicate that the current process does not intend to use WebView, and\n     * that an exception should be thrown if a WebView is created or any other\n     * methods in the android.webkit package are used.\n     * <p>"
+      },
+      {
+        "term": "setDataDirectorySuffix",
+        "line": 2080,
+        "text": "     * Indicate that the current process does not intend to use WebView, and\n     * that an exception should be thrown if a WebView is created or any other\n     * methods in the android.webkit package are used.\n     * <p>\n     * Applications with multiple processes may wish to call this in processes\n     * that are not intended to use WebView to avoid accidentally incurring\n     * the memory usage of initializing WebView in long-lived processes that\n     * have no need for it, and to prevent potential data directory conflicts\n     * (see {@link #setDataDirectorySuffix}).\n     * <p>\n     * For example, an audio player application with one process for its\n     * activities and another process for its playback service may wish to call\n     * this method in the playback service's {@link android.app.Service#onCreate}.\n     *\n     * @throws IllegalStateException if WebView has already been initialized\n     *                               in the current process."
+      },
+      {
+        "term": "getCurrentWebViewPackage",
+        "line": 3083,
+        "text": "     * information may become outdated at any time.\n     * The WebView package changes either when the current WebView package is updated, disabled, or\n     * uninstalled. It can also be changed through a Developer Setting.\n     * If the WebView package changes, any app process that has loaded WebView will be killed. The\n     * next time the app starts and loads WebView it will use the new WebView package instead.\n     * @return the current WebView package, or {@code null} if there is none.\n     */\n    @Nullable\n    public static PackageInfo getCurrentWebViewPackage() {\n        PackageInfo webviewPackage = WebViewFactory.getLoadedPackageInfo();\n        if (webviewPackage != null) {\n            return webviewPackage;\n        }\n\n        IWebViewUpdateService service = WebViewFactory.getUpdateService();\n        if (service == null) {"
+      },
+      {
+        "term": "getCurrentWebViewPackage",
+        "line": 3094,
+        "text": "            return webviewPackage;\n        }\n\n        IWebViewUpdateService service = WebViewFactory.getUpdateService();\n        if (service == null) {\n            return null;\n        }\n        try {\n            return service.getCurrentWebViewPackage();\n        } catch (RemoteException e) {\n            throw e.rethrowFromSystemServer();\n        }\n    }\n\n    /**\n     * Receive the result from a previous call to {@link #startActivityForResult(Intent, int)}."
+      },
+      {
+        "term": "evaluateJavascript",
+        "line": 737,
+        "text": "    public void loadUrl(@NonNull String url, @NonNull Map<String, String> additionalHttpHeaders) {\n        checkThread();\n        mProvider.loadUrl(url, additionalHttpHeaders);\n    }\n\n    /**\n     * Loads the given URL.\n     * <p>\n     * Also see compatibility note on {@link #evaluateJavascript}.\n     *\n     * @param url the URL of the resource to load\n     */\n    public void loadUrl(@NonNull String url) {\n        checkThread();\n        mProvider.loadUrl(url);\n    }"
+      },
+      {
+        "term": "evaluateJavascript",
+        "line": 890,
+        "text": "     * {@link #loadUrl(String)} will not exist in the loaded page. Applications should use\n     * {@link #addJavascriptInterface} instead to persist JavaScript objects across navigations.\n     *\n     * @param script the JavaScript to execute.\n     * @param resultCallback A callback to be invoked when the script execution\n     *                       completes with the result of the execution (if any).\n     *                       May be {@code null} if no notification of the result is required.\n     */\n    public void evaluateJavascript(@NonNull String script, @Nullable ValueCallback<String>\n            resultCallback) {\n        checkThread();\n        mProvider.evaluateJavaScript(script, resultCallback);\n    }\n\n    /**\n     * Saves the current view as a web archive."
+      }
+    ],
+    "limits": "Platform API/source evidence, not actual provider support or full browser/security/AX acceptance."
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/webkit/WebSettings.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/webkit/WebSettings.java",
+    "blob": "3160057e062f276baf45662d43a100f8ff7b68ae",
+    "sha256": "20d666cdee565fccc5db25a5de00ab210809bab7f69d53bf26fea2e05c513e88",
+    "excerpts": [
+      {
+        "term": "setBlockNetworkLoads",
+        "line": 994,
+        "text": "     * a value of {@code false} will cause a {@link java.lang.SecurityException}\n     * to be thrown. The default value is {@code false} if the application has the\n     * {@link android.Manifest.permission#INTERNET} permission, otherwise it is\n     * {@code true}.\n     *\n     * @param flag {@code true} means block network loads by the WebView\n     * @see android.webkit.WebView#reload\n     */\n    public abstract void setBlockNetworkLoads(boolean flag);\n\n    /**\n     * Gets whether the WebView does not load any resources from the network.\n     *\n     * @return {@code true} if the WebView does not load any resources from the network\n     * @see #setBlockNetworkLoads\n     */"
+      },
+      {
+        "term": "setBlockNetworkLoads",
+        "line": 1000,
+        "text": "     * @see android.webkit.WebView#reload\n     */\n    public abstract void setBlockNetworkLoads(boolean flag);\n\n    /**\n     * Gets whether the WebView does not load any resources from the network.\n     *\n     * @return {@code true} if the WebView does not load any resources from the network\n     * @see #setBlockNetworkLoads\n     */\n    public abstract boolean getBlockNetworkLoads();\n\n    /**\n     * Tells the WebView to enable JavaScript execution.\n     * <b>The default is {@code false}.</b>\n     *"
+      },
+      {
+        "term": "setDomStorageEnabled",
+        "line": 1214,
+        "text": "     */\n    public abstract void setDatabaseEnabled(boolean flag);\n\n    /**\n     * Sets whether the DOM storage API is enabled. The default value is {@code false}.\n     *\n     * @param flag {@code true} if the WebView should use the DOM storage API\n     */\n    public abstract void setDomStorageEnabled(boolean flag);\n\n    /**\n     * Gets whether the DOM Storage APIs are enabled.\n     *\n     * @return {@code true} if the DOM Storage APIs are enabled\n     * @see #setDomStorageEnabled\n     */"
+      },
+      {
+        "term": "setDomStorageEnabled",
+        "line": 1220,
+        "text": "     * @param flag {@code true} if the WebView should use the DOM storage API\n     */\n    public abstract void setDomStorageEnabled(boolean flag);\n\n    /**\n     * Gets whether the DOM Storage APIs are enabled.\n     *\n     * @return {@code true} if the DOM Storage APIs are enabled\n     * @see #setDomStorageEnabled\n     */\n    public abstract boolean getDomStorageEnabled();\n\n    /**\n     * Gets the path to where database storage API databases are saved.\n     *\n     * @return the String path to the database storage API databases"
+      }
+    ],
+    "limits": "Platform API/source evidence, not actual provider support or full browser/security/AX acceptance."
+  },
+  {
+    "repository": "aosp-mirror/platform_frameworks_base",
+    "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+    "path": "core/java/android/webkit/CookieManager.java",
+    "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/webkit/CookieManager.java",
+    "blob": "20230e770bf5b6eac7c006a10c686ba72a70c094",
+    "sha256": "e8a922bdcdea09fff2fd56391a730e4f9ced797c58ebb6056a8f8fa207c935be",
+    "excerpts": [
+      {
+        "term": "setCookie",
+        "line": 120,
+        "text": "     *\n     * <p class=\"note\"><b>Note:</b> if specifying a {@code value} containing the {@code \"Secure\"}\n     * attribute, {@code url} must use the {@code \"https://\"} scheme.\n     *\n     * @param url the URL for which the cookie is to be set\n     * @param value the cookie as a string, using the format of the 'Set-Cookie'\n     *              HTTP response header\n     */\n    public abstract void setCookie(String url, String value);\n\n    /**\n     * Sets a single cookie (key-value pair) for the given URL. Any existing cookie with the same\n     * host, path and name will be replaced with the new cookie. The cookie being set\n     * will be ignored if it is expired. To set multiple cookies, your application should invoke\n     * this method multiple times.\n     *"
+      },
+      {
+        "term": "setCookie",
+        "line": 151,
+        "text": "     * <p class=\"note\"><b>Note:</b> if specifying a {@code value} containing the {@code \"Secure\"}\n     * attribute, {@code url} must use the {@code \"https://\"} scheme.\n     *\n     * @param url the URL for which the cookie is to be set\n     * @param value the cookie as a string, using the format of the 'Set-Cookie'\n     *              HTTP response header\n     * @param callback a callback to be executed when the cookie has been set\n     */\n    public abstract void setCookie(String url, String value, @Nullable ValueCallback<Boolean>\n            callback);\n\n    /**\n     * Gets all the cookies for the given URL. This may return multiple key-value pairs if multiple\n     * cookies are associated with this URL, in which case each cookie will be delimited by {@code\n     * \"; \"} characters (semicolon followed by a space). Each key-value pair will be of the form\n     * {@code \"key=value\"}."
+      },
+      {
+        "term": "removeAllCookies",
+        "line": 219,
+        "text": "     * completes or whether any cookie were removed, and in this case it is safe to call the\n     * method from a thread without a Looper.\n     * @param callback a callback which is executed when the session cookies have been removed\n     */\n    public abstract void removeSessionCookies(@Nullable ValueCallback<Boolean> callback);\n\n    /**\n     * Removes all cookies.\n     * @deprecated Use {@link #removeAllCookies(ValueCallback)} instead.\n     */\n    @Deprecated\n    public abstract void removeAllCookie();\n\n    /**\n     * Removes all cookies.\n     * <p>"
+      },
+      {
+        "term": "removeAllCookies",
+        "line": 237,
+        "text": "     * {@link ValueCallback#onReceiveValue(T) onReceiveValue()} will be called on the current\n     * thread's {@link android.os.Looper} once the operation is complete.\n     * The value provided to the callback indicates whether any cookies were removed.\n     * You can pass {@code null} as the callback if you don't need to know when the operation\n     * completes or whether any cookies were removed, and in this case it is safe to call the\n     * method from a thread without a Looper.\n     * @param callback a callback which is executed when the cookies have been removed\n     */\n    public abstract void removeAllCookies(@Nullable ValueCallback<Boolean> callback);\n\n    /**\n     * Gets whether there are stored cookies.\n     *\n     * @return {@code true} if there are stored cookies\n     */\n    public abstract boolean hasCookies();"
+      }
+    ],
+    "limits": "Platform API/source evidence, not actual provider support or full browser/security/AX acceptance."
+  }
+]
