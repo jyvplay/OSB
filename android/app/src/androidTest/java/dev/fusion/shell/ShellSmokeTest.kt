@@ -200,6 +200,7 @@ class ShellSmokeTest {
             compose.onNodeWithText("Open note: $name").performScrollTo().performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Move note to trash…") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText("Move note to trash…").performScrollTo().performClick()
+            compose.waitUntil(10000) { compose.onNodeWithText("Move saved note to trash?").isDisplayed() }
             compose.onNodeWithText("Move saved note to trash?").assertIsDisplayed()
             compose.onNodeWithText("Move saved revision").performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Saved revision moved to trash.",substring=true)).fetchSemanticsNodes().isNotEmpty() }

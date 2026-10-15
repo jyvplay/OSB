@@ -685,7 +685,7 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "df1fa29ca2ce106a221c12c501587eb64d8f6dc4376040f12dfbe602a6ddcf52"
+      "sha256": "844cf12cad5dd2b41248eaad4bf21476c9e1a1bd78761f2e8f2a627d8c1b15f9"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

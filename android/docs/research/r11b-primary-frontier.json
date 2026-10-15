@@ -101,5 +101,67 @@
       }
     ],
     "limits": "Platform API/source evidence, not actual provider support or full browser/security/AX acceptance."
+  },
+  {
+    "repository": "LibreOffice/core",
+    "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+    "path": "desktop/source/app/userinstall.cxx",
+    "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/desktop/source/app/userinstall.cxx",
+    "blob": "9deea8b7da4331437f5925905a17a944fa636c33",
+    "sha256": "3e2fa1983e3820596e0eab488092088ddc8563fb2494c53e9f204a4ce79a6f44",
+    "excerpts": [
+      {
+        "term": "createPath",
+        "line": 103,
+        "text": "    return e;\n}\n#endif\n\nStatus create(OUString const & uri) {\n    osl::FileBase::RC e = osl::Directory::createPath(uri);\n    if (e != osl::FileBase::E_None && e != osl::FileBase::E_EXIST) {\n        return ERROR_OTHER;\n    }\n#if !(defined ANDROID || defined IOS || defined __EMSCRIPTEN__)\n#if defined UNIX\n    // Set safer permissions for the user directory by default:\n    osl::File::setAttributes(\n        uri,"
+      },
+      {
+        "term": "createPath",
+        "line": 139,
+        "text": "#else\n    // On (Android and) iOS, just create the user directory. Later code fails mysteriously if it\n    // doesn't exist.\n    OUString userDir(\"${$BRAND_BASE_DIR/\" LIBO_ETC_FOLDER \"/\" SAL_CONFIGFILE(\"bootstrap\") \":UserInstallation}/user\");\n    rtl::Bootstrap::expandMacros(userDir);\n    osl::Directory::createPath(userDir);\n#endif\n    std::shared_ptr<comphelper::ConfigurationChanges> batch(\n        comphelper::ConfigurationChanges::create());\n    officecfg::Setup::Office::ooSetupInstCompleted::set(true, batch);\n    batch->commit();\n    return CREATED;\n}\n"
+      },
+      {
+        "term": "UserInstallation",
+        "line": 137,
+        "text": "        return ERROR_OTHER;\n    }\n#else\n    // On (Android and) iOS, just create the user directory. Later code fails mysteriously if it\n    // doesn't exist.\n    OUString userDir(\"${$BRAND_BASE_DIR/\" LIBO_ETC_FOLDER \"/\" SAL_CONFIGFILE(\"bootstrap\") \":UserInstallation}/user\");\n    rtl::Bootstrap::expandMacros(userDir);\n    osl::Directory::createPath(userDir);\n#endif\n    std::shared_ptr<comphelper::ConfigurationChanges> batch(\n        comphelper::ConfigurationChanges::create());\n    officecfg::Setup::Office::ooSetupInstCompleted::set(true, batch);\n    batch->commit();\n    return CREATED;"
+      },
+      {
+        "term": "UserInstallation",
+        "line": 161,
+        "text": "\n}\n\nStatus finalize() {\n    OUString uri;\n    switch (utl::Bootstrap::locateUserInstallation(uri)) {\n    case utl::Bootstrap::PATH_EXISTS:\n        if (isCreated()) {\n            return EXISTED;\n        }\n        [[fallthrough]];\n    case utl::Bootstrap::PATH_VALID:\n        return create(uri);\n    default:"
+      },
+      {
+        "term": "finalize",
+        "line": 159,
+        "text": "    }\n}\n\n}\n\nStatus finalize() {\n    OUString uri;\n    switch (utl::Bootstrap::locateUserInstallation(uri)) {\n    case utl::Bootstrap::PATH_EXISTS:\n        if (isCreated()) {\n            return EXISTED;\n        }\n        [[fallthrough]];\n    case utl::Bootstrap::PATH_VALID:"
+      }
+    ],
+    "limits": "Concrete profile/initialization interfaces, not an Android build, transitive-license audit or universally required storage layout."
+  },
+  {
+    "repository": "LibreOffice/core",
+    "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+    "path": "include/LibreOfficeKit/LibreOfficeKitInit.h",
+    "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKitInit.h",
+    "blob": "2192322c78ec34aa07bd4b9d5565cbff58a8fa65",
+    "sha256": "8c31a6d734081d7e55ce9b7de25bf65474b6e348c1f378331c68cde6c90067a2",
+    "excerpts": [
+      {
+        "term": "lok_init_2",
+        "line": 329,
+        "text": "// On macOS it should be the pathname of the bundle (.app directory)\n// the code is in.\n//\n// user_profile_url is a file: URI for the user profile. Can be NULL.\n\nstatic LibreOfficeKit *lok_init_2( const char *install_path,  const char *user_profile_url )\n{\n#if !defined(IOS) && !defined(ANDROID) && !defined(__EMSCRIPTEN__)\n    void *dlhandle;\n    char *imp_lib;\n    LokHookFunction *pSym;\n    LokHookFunction2 *pSym2;\n\n    dlhandle = lok_dlopen(install_path, &imp_lib);"
+      },
+      {
+        "term": "lok_init_2",
+        "line": 369,
+        "text": "    }\n\n    if (user_profile_url != NULL && user_profile_url[0] == '/')\n    {\n        // It should be either a file: URL or a vnd.sun.star.pathname: URL.\n        fprintf( stderr, \"second parameter to lok_init_2 '%s' should be a URL, not a pathname\\n\", user_profile_url );\n        lok_dlclose( dlhandle );\n        free( imp_lib );\n        return NULL;\n    }\n\n    free( imp_lib );\n    // dlhandle is \"leaked\"\n    // coverity[leaked_storage] - on purpose"
+      },
+      {
+        "term": "lok_init_2",
+        "line": 387,
+        "text": "}\n\nstatic LOK_TOLERATE_UNUSED\nLibreOfficeKit *lok_init( const char *install_path )\n{\n    return lok_init_2( install_path, NULL );\n}\n\n#if !defined(IOS)\nstatic LOK_TOLERATE_UNUSED\nint lok_preinit( const char *install_path,  const char *user_profile_url )\n{\n    void *dlhandle;\n    char *imp_lib;"
+      }
+    ],
+    "limits": "Concrete profile/initialization interfaces, not an Android build, transitive-license audit or universally required storage layout."
   }
 ]

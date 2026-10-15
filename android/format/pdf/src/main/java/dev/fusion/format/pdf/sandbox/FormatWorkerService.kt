@@ -73,12 +73,13 @@ class FormatWorkerService : Service() {
                         // [U] verify on API 34/36/37: actual isolated socket denial, not just permission metadata.
                         var outcome="CONNECTED"
                         try {
-                            java.net.Socket().use { socket ->
-                                socket.connect(java.net.InetSocketAddress(java.net.InetAddress.getByAddress(byteArrayOf(127,0,0,1)),socketPort),1000)
-                            }
-                        } catch(error: java.io.IOException) {
-                            var cause: Throwable?=error;var errno=-1
-                            while(cause!=null) { if(cause is ErrnoException) { errno=cause.errno;break };cause=cause.cause }
+                            val socket=Os.socket(OsConstants.AF_INET,OsConstants.SOCK_STREAM or OsConstants.SOCK_CLOEXEC,0)
+                            try {
+                                Os.setsockoptTimeval(socket,OsConstants.SOL_SOCKET,OsConstants.SO_SNDTIMEO,android.system.StructTimeval.fromMillis(1000))
+                                Os.connect(socket,java.net.InetAddress.getByAddress(byteArrayOf(127,0,0,1)),socketPort)
+                            } finally { Os.close(socket) }
+                        } catch(error: ErrnoException) {
+                            val errno=error.errno
                             outcome=if(errno==OsConstants.EACCES || errno==OsConstants.EPERM) "DENIED" else "OTHER_FAILURE"
                             response.putInt("socketErrno",errno)
                         } catch(_: SecurityException) { outcome="SECURITY_EXCEPTION" }
