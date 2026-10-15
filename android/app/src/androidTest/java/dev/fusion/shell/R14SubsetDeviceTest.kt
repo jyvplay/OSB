@@ -30,6 +30,7 @@ class R14SubsetDeviceTest {
         assertEquals(21.0,Contrast.ratio(0,0xffffff),1e-12)
         val foreground=requireNotNull(Contrast.foreground(0xffffff,0x65ddb4))
         assertTrue(Contrast.ratio(foreground,0x65ddb4)>=4.5)
+        assertTrue(Contrast.ratio(requireNotNull(Contrast.foreground(0xE4E4E7,0x303A39)),0x303A39)>=4.5)
         assertNull(Contrast.foreground(0x777777,0x777777,7.0))
     }
     @Test fun geometricTraversalSkipsDisabledTargets() {

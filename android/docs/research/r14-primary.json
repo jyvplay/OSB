@@ -42,6 +42,37 @@
       "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
       "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
       "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h"
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/webkit/WebViewFactory.java",
+      "git_blob": "0ef37d14420cf05ab1c8d478af54afec6d8fc72d",
+      "sha256": "3938396a86bbdc60400a4fea89d4e0a0814115f03ed2e8b1985c4f94bfe20b97",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/webkit/WebViewFactory.java",
+      "excerpts": [
+        {
+          "line": 321,
+          "text": "    }\n\n    @UnsupportedAppUsage\n    static WebViewFactoryProvider getProvider() {\n        synchronized (sProviderLock) {\n            // For now the main purpose of this function (and the factory abstraction) is to keep\n            // us honest and minimize usage of WebView internals when binding the proxy.\n            if (sProviderInstance != null) return sProviderInstance;"
+        },
+        {
+          "line": 333,
+          "text": "                    || uid == android.os.Process.PHONE_UID || uid == android.os.Process.NFC_UID\n                    || uid == android.os.Process.BLUETOOTH_UID) {\n                throw new UnsupportedOperationException(\n                        \"For security reasons, WebView is not allowed in privileged processes\");\n            }\n\n            if (!isWebViewSupported()) {\n                // Device doesn't support WebView; don't try to load it, just throw."
+        },
+        {
+          "line": 346,
+          "text": "                        \"WebView.disableWebView() was called: WebView is disabled\");\n            }\n\n            Trace.traceBegin(Trace.TRACE_TAG_WEBVIEW, \"WebViewFactory.getProvider()\");\n            try {\n                Class<WebViewFactoryProvider> providerClass = getProviderClass();\n                Method staticFactory = providerClass.getMethod(\n                        CHROMIUM_WEBVIEW_FACTORY_METHOD, WebViewDelegate.class);"
+        }
+      ]
+    },
+    {
+      "repository": "w3c/wcag",
+      "commit": "23bad5904949904275a08f1c6e395b78a02aa6f3",
+      "path": "guidelines/terms/20/contrast-ratio.html",
+      "git_blob": "2a4a2cd7c85759e52dc9a4da21b77005571a8536",
+      "sha256": "c279bc2f5dd510c7bc4a7a35d52004725e0bc5261ec13ee40680aa2d4510a6a2",
+      "url": "https://github.com/w3c/wcag/blob/23bad5904949904275a08f1c6e395b78a02aa6f3/guidelines/terms/20/contrast-ratio.html",
+      "text": "<dt><dfn id=\"dfn-contrast-ratio\">contrast ratio</dfn></dt>\n<dd>\n   \n   <p>(L1 + 0.05) / (L2 + 0.05), where</p>\n   \n   <ul>\n      \n      <li>L1 is the <a>relative luminance</a> of the lighter of the colors, and\n      </li>\n      \n      <li>L2 is the <a>relative luminance</a> of the darker of the colors.\n      </li>\n      \n   </ul>\n   \n   <p class=\"note\">Contrast ratios can range from 1 to 21 (commonly written 1:1 to 21:1).</p>\n   \n   <p class=\"note\">Because authors do not have control over user settings as to how text is rendered\n      (for example font smoothing or anti-aliasing), the contrast ratio for text can be\n      evaluated with anti-aliasing turned off.\n   </p>\n   \n   <p class=\"note\">For the purpose of Success Criteria 1.4.3 Contrast (Minimum) and 1.4.6 Contrast (Enhanced),\n      contrast is measured with respect to the specified background over which the text is rendered in normal usage.\n      If no background color is specified, then white is assumed.\n   </p>\n   \n   <p class=\"note\">Background color is the specified color of content over which the text is to be rendered\n      in normal usage. It is a failure if no background color is specified when the text\n      color is specified, because the user's default background color is unknown and cannot\n      be evaluated for sufficient contrast. For the same reason, it is a failure if no text\n      color is specified when a background color is specified.\n   </p>\n   \n   <p class=\"note\">When there is a border around the letter, the border can add contrast and would be\n      used in calculating the contrast between the letter and its background. A narrow border\n      around the letter would be used as the letter. A wide border around the letter that\n      fills in the inner details of the letters acts as a halo and would be considered background.\n   </p>\n   \n   <p class=\"note\">WCAG conformance should be evaluated for color pairs specified in the content that\n      an author would expect to appear adjacent in typical presentation. Authors need not\n      consider unusual presentations, such as color changes made by the user agent, except\n      where caused by authors' code.\n   </p>\n   \n</dd>\n"
     }
   ]
 }

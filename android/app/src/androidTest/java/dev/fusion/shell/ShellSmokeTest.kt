@@ -42,16 +42,18 @@ class ShellSmokeTest {
     }
     @Test fun densityReviewCancelAndApplyChangeActualDesktopState() {
         openModule("settings")
+        // Assert the actual reset fixture before any action; the window engine defaults to COMPACT.
+        compose.onNodeWithText("Window geometry density: COMPACT").assertExists()
         compose.onNodeWithText("TOUCH").performScrollTo().performClick()
-        compose.onNodeWithText("Window geometry density: BALANCED").assertExists()
+        compose.onNodeWithText("Window geometry density: COMPACT").assertExists()
         compose.onNodeWithText("Cancel density change").performScrollTo().performClick()
-        compose.onNodeWithText("Window geometry density: BALANCED").assertExists()
+        compose.onNodeWithText("Window geometry density: COMPACT").assertExists()
         compose.onNodeWithText("TOUCH").performScrollTo().performClick()
         compose.onNodeWithTag("settings-apply-density").performScrollTo().performClick()
         compose.onNodeWithText("Window geometry density: TOUCH").assertExists()
         compose.onNodeWithTag("settings-query").performScrollTo().performTextInput("x".repeat(257))
         compose.onNodeWithText("Search query exceeds256 UTF16 code units; query unchanged.").assertExists()
-        compose.onNodeWithTag("settings-query").assertTextEquals("")
+        compose.onNodeWithTag("settings-query").assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText,androidx.compose.ui.text.AnnotatedString("")))
     }
     @Test fun shellRendersWithShelf() {
         compose.onNodeWithText("Fusion Shell").assertIsDisplayed()

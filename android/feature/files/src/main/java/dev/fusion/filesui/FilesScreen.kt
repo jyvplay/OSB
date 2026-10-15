@@ -62,11 +62,17 @@ fun FilesScreen(
     val dir = stack.lastOrNull()
     var filter by remember(treeUri) { mutableStateOf("") }
     var order by remember { mutableStateOf(ListingOrder.NAME) }
-    val listing = remember(entries,filter,order) { runCatching {
-        val selectedRows=DirectoryQuery.select(entries.map { ListingItem(it.uri.toString(),it.name,it.isDirectory,it.size) },filter,order)
-        val byId=entries.associateBy { it.uri.toString() }
-        selectedRows.map { byId.getValue(it.id) }
-    } }
+    var listing by remember { mutableStateOf<Result<List<FileEntry>>?>(null) }
+    LaunchedEffect(entries,filter,order) {
+        listing=null
+        // CPU-bound metadata query off the UI thread. Cancellation prevents obsolete publication;
+        // this does not add a provider-enumeration timeout or prove physical performance budgets.
+        listing=kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { runCatching {
+            val selectedRows=DirectoryQuery.select(entries.map { ListingItem(it.uri.toString(),it.name,it.isDirectory,it.size) },filter,order)
+            val byId=entries.associateBy { it.uri.toString() }
+            selectedRows.map { byId.getValue(it.id) }
+        } }
+    }
 
     LaunchedEffect(treeUri) { stack = treeUri?.let(repo::tree)?.let(::listOf) ?: emptyList() }
     LaunchedEffect(dir?.uri, refresh) {
@@ -220,16 +226,17 @@ fun FilesScreen(
             }
         }
 
-        OutlinedTextField(filter,{ if(it.length<=128) filter=it },label={ Text("Filter this folder (literal)") },
+        OutlinedTextField(filter,{ if(it.length<=128) filter=it },label={ Text("Filter this folder (literal, limit128)") },
             modifier=Modifier.fillMaxWidth().testTag("files-filter"),singleLine=true)
         Row {
             OutlinedButton(onClick={ order=ListingOrder.NAME },enabled=order!=ListingOrder.NAME) { Text("Name") }
             OutlinedButton(onClick={ order=ListingOrder.LARGEST },enabled=order!=ListingOrder.LARGEST) { Text("Largest") }
         }
-        if(listing.isFailure) Text("Folder query refused: malformed metadata, duplicate identity or budget exceeded. No partial listing shown.")
-        Text("${listing.getOrDefault(emptyList()).size} of ${entries.size} entries. Query limit:5000 entries; provider enumeration is not time-bounded.")
+        if(listing?.isFailure==true) Text("Folder query refused: malformed metadata, duplicate identity or budget exceeded. No partial listing shown.")
+        if(listing==null) Text("Updating folder query…")
+        Text("${(listing?.getOrDefault(emptyList())?.size ?: 0)} of ${entries.size} entries. Query limit:5000 entries; provider enumeration is not time-bounded. Provider size0 may mean unknown.")
         LazyColumn(Modifier.weight(1f)) {
-            items(listing.getOrDefault(emptyList()), key = { it.uri.toString() }) { e ->
+            items(listing?.getOrDefault(emptyList()) ?: emptyList(), key = { it.uri.toString() }) { e ->
                 Text(
                     (if (e.isDirectory) "[Folder] " else "[File] ") + e.name,
                     Modifier.fillMaxWidth()

@@ -71,6 +71,36 @@ object R14Checks {
         // Regression: numeric equality does not imply BigDecimal.equals representation equality.
         eq(BigDecimal("6.053E+4"),DecimalSheet.evaluate(mapOf("A1" to "=60528+2")).getValue("A1"))
         eq(BigDecimal.ZERO,DecimalSheet.evaluate(mapOf("A1" to "=-0.00")).getValue("A1"))
+        // Boundary and cross-component attacks, not additional claimed features.
+        eq(5000,DirectoryQuery.select(List(5000){ListingItem(it.toString(),"x",false,null)}).size)
+        no { DirectoryQuery.select(List(2200){ListingItem(it.toString(),"x".repeat(1024),false,null)}) }
+        no { DirectoryQuery.select(listOf(items[0].copy(name=""))) }
+        // Patch/global-compatibility attack: primary black must not leak onto a custom dark shelf container.
+        eq(true,Contrast.ratio(0,0x303A39)<4.5)
+        eq(true,Contrast.ratio(requireNotNull(Contrast.foreground(0xE4E4E7,0x303A39)),0x303A39)>=4.5)
+        val maximumBoxes=List(512){FocusBox("n$it",it*20.0,0.0,it*20.0+10,10.0)}
+        eq("n1",SpatialFocus.next(maximumBoxes,"n0",FocusDirection.RIGHT))
+        no { SpatialFocus.next(maximumBoxes+FocusBox("extra",0.0,0.0,1.0,1.0),"n0",FocusDirection.RIGHT) }
+        no { SpatialFocus.next(listOf(boxes[0].copy(visible=false)),"o",FocusDirection.RIGHT) }
+        val maximumLedger=NoticeLedger()
+        repeat(256) { maximumLedger.post(PublicNotice("n$it","t","",0),0) }
+        eq(256,maximumLedger.advance(0).retained.size)
+        eq(256,maximumLedger.clear().evictedIds.size)
+        val endClock=NoticeLedger(retentionMillis=1)
+        endClock.post(PublicNotice("last","t","",Long.MAX_VALUE),Long.MAX_VALUE)
+        eq(1,endClock.advance(Long.MAX_VALUE).retained.size);eq(0,endClock.redact("last").retained.size)
+        val full=List(64){"k$it" to "v".repeat(1000)}.toMap()
+        eq(full,SettingsPatch.plan(emptyMap(),full).apply(emptyMap()))
+        no { SettingsPatch.plan(emptyMap(),full).apply(mapOf("unrelated" to "keep")) }
+        val conflictInput=mutableMapOf("a" to "old","b" to "conflict")
+        no { SettingsPatch.plan(mapOf("a" to "old","b" to "base"),mapOf("a" to "new","b" to "new")).apply(conflictInput) }
+        eq("old",conflictInput["a"])
+        eq(BigDecimal.ONE,DecimalSheet.evaluate(mapOf("A1" to ("="+" ".repeat(510)+"1"))).getValue("A1"))
+        no { DecimalSheet.evaluate(mapOf("A1" to ("="+" ".repeat(511)+"1"))) }
+        eq(BigDecimal.ONE,DecimalSheet.evaluate(mapOf("A1" to ("="+"(".repeat(16)+"1"+")".repeat(16)))).getValue("A1"))
+        // Memoization must not permit a dependency graph deeper than16 through an earlier cached node.
+        val tooDeep=(1..18).associate { "A$it" to if(it==1) "1" else "=A${it-1}" }
+        no { DecimalSheet.evaluate(tooDeep.toList().reversed().toMap()) }
         val random=java.util.Random(140014)
         repeat(300) {
             val rgb=random.nextInt(0x1000000);val fg=requireNotNull(Contrast.foreground(rgb,rgb))

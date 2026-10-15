@@ -201,7 +201,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "98f340cf488a4a868d58e8b5db67d7b175bc8462bbc1f492b145986b6bde3f4d"
+      "sha256": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -447,7 +447,7 @@
       "path": "feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt",
       "module": ":feature:files",
       "package": "dev.fusion.filesui",
-      "sha256": "8153d92ce3cd9e2d5d17ae06bc11d83eb040a9a81f6bf8d74df4141f11714c19"
+      "sha256": "126215f5c564eb747bc743908b967202b5dbe742f4a2240a0472d2860c72f370"
     },
     {
       "path": "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt",

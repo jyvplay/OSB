@@ -1,4 +1,4 @@
-R14: 1873 assertions PASS across six actual production kernels. Not full modules or Android/Office/AX acceptance.
+R14: 1893 assertions PASS across six actual production kernels. Not full modules or Android/Office/AX acceptance.
 
 info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
 openjdk version "17.0.9" 2023-10-17
@@ -12,7 +12,7 @@ Six separately compiled production libraries; no Android execution inferred.
 ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b  feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt
 938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09  feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt
 913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc  format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt
-c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec  testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt
+f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6  testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt
 ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69  testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt
 8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e  tools/run_r14_contracts.py
 36a0860e8161e0744c2fd7fd6328b795b9040e89cf69dde8f3f308c2fe8d02c0  testing/build/r14/DirectoryQuery.jar
@@ -21,4 +21,4 @@ ea9d9cd27fe839d233a2803ab338f619e17f3b67455820f7cf2a78cd87f77458  testing/build/
 245205d249965b796d3ab5250dbf025b72a3c1b44dbbbe46ec499fdee4545fa8  testing/build/r14/NoticeLedger.jar
 cc0ad201765db58717aa993ee051e7cf175985be10a0f3bae068a51cfdbd88e6  testing/build/r14/SettingsPatch.jar
 15ff126ae05e179481dbdbacb6ed053570ed16eeb41e7da8997012e734876ce2  testing/build/r14/DecimalSheet.jar
-d3764d522d23c053b1b8ceb15490b8e2b2de9f2e569f1966c8ce0fb43c06fda2  testing/build/r14/checks.jar
+a83213adb0bb02ed2b786296379406bbf1b2fd81d4ce7302b005754f9a51e702  testing/build/r14/checks.jar

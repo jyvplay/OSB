@@ -16,8 +16,8 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "98f340cf488a4a868d58e8b5db67d7b175bc8462bbc1f492b145986b6bde3f4d",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "25b89ac6479a68e00901b578f92bec1a9def837db1daa203c9c9b09e37aa1e93"
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
       }
     },
     {
@@ -257,7 +257,7 @@
       "limit": "Not alpha/HDR/rendered text contrast, density completeness, physical display or full accessibility acceptance.",
       "sha256": {
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc",
-        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
@@ -280,7 +280,7 @@
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "25b89ac6479a68e00901b578f92bec1a9def837db1daa203c9c9b09e37aa1e93"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
       }
     },
     {
@@ -318,7 +318,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "25b89ac6479a68e00901b578f92bec1a9def837db1daa203c9c9b09e37aa1e93"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
       }
     },
     {
@@ -339,7 +339,7 @@
       "limit": "Not bounded provider enumeration, identity/snapshot verification, journaled mutations or S6. New UI/native checks require exact CI evidence.",
       "sha256": {
         "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt": "622d473aa0ac39f1f75d4430f6c392a2d8544e681988e9278d01e182cb7a000b",
-        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
@@ -462,7 +462,7 @@
       "limit": "No durable transaction, authenticated import, permission grant or arbitrary-setting enablement. Host applies only density; native UI evidence pending.",
       "sha256": {
         "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt": "938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09",
-        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
@@ -528,7 +528,7 @@
       "limit": "No notification ingestion or persistence integration. System listener remains disabled. Caller classification and single-owner use required.",
       "sha256": {
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt": "ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b",
-        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
@@ -607,7 +607,7 @@
       "limit": "Pure target policy; not connected to Android focus requests or a global input service. Not TalkBack/Switch/Voice acceptance.",
       "sha256": {
         "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt": "5f6cac892e00cf719d0b989c52a0761eaf4ca49cf319aece115005964c7980a2",
-        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
@@ -740,7 +740,7 @@
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
         "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
         "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805",
-        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "c6b3aaeb8c8b0f91a904f0d98a0cede79e1e3610d2139fc34e6b41a8971fd4ec",
+        "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"

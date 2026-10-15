@@ -699,7 +699,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.testTag("shelf-$module"),
                         enabled = !desktopModel.loading && !desktopModel.blocked,
                         onClick = { openModule(module) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF303A39))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF303A39), contentColor = Color(0xFF000000L or requireNotNull(dev.fusion.designsystem.Contrast.foreground(0xE4E4E7,0x303A39)).toLong()))
                     ) { Text(module.replaceFirstChar { it.uppercase() }) }
                 }
                 (0..2).forEach { ws ->

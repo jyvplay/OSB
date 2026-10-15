@@ -1,0 +1,22 @@
+R13: 503 assertions PASS; real stream/file/callback effects and bounded serializers. Not full Office/Files/PTY/calendar/automation acceptance.
+
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Five separately compiled production libraries; no Android execution inferred.
+8f6695513525123e3bb32d5c32fda77d1c82c6ce3be43119bcf8f1500974fdb4  core/files/src/main/kotlin/dev/fusion/files/ContentDigest.kt
+54406f22e35d9dfd86ec1f7b29eeb088393daedb21e663037915ca58a16a754d  feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt
+76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623  feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt
+c7914208c08e577386bccb2f317449fbafad60fc073913e29a4617b89ba2b485  feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt
+e81b290a5bc56aed12a4c06908752e9c5d1b838555872c99272881d05e84739b  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt
+de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50  testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt
+2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495  testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt
+8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a  tools/run_r13_contracts.py
+38ec40d7b006433d9dd7e3f0774dff8062c39d28419d849f44b66a785760676b  testing/build/r13/ContentDigest.jar
+0f7fbb414fa4716bf183ae33e3fbaa40567f8a7dc621090a6dfd7559e1c218f4  testing/build/r13/ShellWords.jar
+06ea120e745a9bfc43f8aaa2dfd83795c6d79b2d542d7b96e02b67a73610a1f5  testing/build/r13/ActionPlan.jar
+1d5f9cd3b917a82a3c4c235a95e7abcfb7189bc900eef3e52194ece0e1cc6cdc  testing/build/r13/CalendarExport.jar
+694bc5e534105d9a43835afe145065c201e018fcdba5a98a344d35e27bcf15fd  testing/build/r13/LiteralWorkbook.jar
+3c30c3738e16ebe3c70e27a1f50ea21bf899d63d1810acc721f98e3ed29e7b14  testing/build/r13/checks.jar

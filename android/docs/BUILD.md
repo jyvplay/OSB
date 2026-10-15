@@ -1,4 +1,57 @@
-# R13 current build and bounded-subset entry points
+# R14 current build and try-out entry points
+
+Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
+AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36. Current min/compile/target34/36/36
+remains a deviation from requested compile37. This is an incomplete debug application,
+not a production beta or complete Office engine.
+
+**39/48 modules (81.25%) have bounded executable subsets;0/48 are fully accepted.**
+Full A–J evidence, six constructions, repairs and limitations: [R14-ENGINEERING.md](R14-ENGINEERING.md).
+Inherited native run38687376592:55 PASS/2 FAIL; calendar repair passed, editor redo/recreation
+and large-font threading failures remained in that inherited run.
+R14 de06095/run38689433735:both debug flavors/JVM/contracts/lint succeeded; native63 PASS/1 FAIL.
+All six new kernel cases and both editor cases passed in that run. The Settings test incorrectly
+assumed BALANCED instead of the actual COMPACT default. Its corrected fixture and later UI changes
+require a fresh native run; no full-product acceptance follows.
+
+## Try the actual changes
+
+- **Files:** choose a folder with the Android picker. Use literal folder filtering, Name or Largest.
+  Directories remain first. No file mutation is enabled. Metadata query limit5000 items;
+  underlying provider enumeration is not time-bounded. Provider size0 may mean unknown.
+- **Settings:** select a different density, review, Cancel or Apply reviewed density.
+  The existing desktop geometry changes only on explicit apply. A changed current value
+  conflicts instead of being overwritten. The displayed status is not a durability receipt.
+- Primary-color foreground uses the new opaque sRGB contrast component. This does not
+  certify all controls, text, translucent surfaces, displays or accessibility.
+- SpatialFocus, NoticeLedger and DecimalSheet are tested public Kotlin APIs, not newly completed
+  global focus, notification or Office workflows. Notification access remains disabled.
+
+## Reproduce R14 checks
+
+From `android/`, configure JAVA_HOME for JDK17 and KOTLINC for Kotlin2.2.21:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_r14_contracts.py
+python3 tools/run_r14_interop.py
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+./gradlew :testing:r14Contracts
+```
+
+Fresh host results:1893 assertions,600 cross-language cases,74 Python tests.
+The interop runner requires a fresh compiled receipt and verifies source/JAR hashes.
+Python references are same-author differential checks using maintained decimal/AST;
+no actual Office engine or Android runtime is inferred. R13 was rebuilt and rerun too:
+503 host assertions and404 real-reader/differential cases passed.
+
+Native assemble/lint/disposable-emulator commands below remain applicable; they include six
+R14 kernel/adapter cases and actual density review/cancel/apply UI. Never run destructive fixture
+reset on personal data. No physical/API37/AX/legal/isolation acceptance is inferred from host checks.
+
+---
+
+# Historical R13 build and bounded-subset entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
 **AGP8.13.2, Kotlin2.2.21, JDK17 and SDK36**. IDE branding is not compatibility proof.
