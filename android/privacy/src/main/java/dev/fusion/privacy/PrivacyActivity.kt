@@ -59,6 +59,22 @@ class PrivacyActivity: Activity() {
         label("Separate offline app — NOT anonymous. No Internet permission. No saved drafts, imports, exports, accounts, telemetry or clipboard actions.")
         label("Text is discarded from this workspace whenever it pauses (including Home, switching apps or dialogs), on recreation, or when you press Discard. Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
 
+        val scratchStatus=TextView(this).apply {id=R.id.scratch_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
+        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768,scratchStatus)}
+        editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2));column.addView(scratchStatus)
+        column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
+        label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
+        val linkStatus=TextView(this).apply {id=R.id.link_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
+        val address=PrivateText(this).apply {id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096,linkStatus);maxLines=3}
+        link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2));column.addView(linkStatus)
+        val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
+        column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
+            result.text=try {val p=LinkDisclosure.project(address.text.toString());p.text+"\nRemoved query: ${p.removedQuery}; removed fragment: ${p.removedFragment}. Host/path retained, not anonymous."}
+                catch(_:IllegalArgumentException) {"Input refused. Use bounded valid HTTP(S), no credentials or controls. No network request made."}
+        }})
+        column.addView(result)
+
+        // Keep the primary scratch/link tasks first; the posture review is useful but secondary.
         label("Local device posture — observations only, no privacy score").textSize=18f
         val posture=TextView(this).apply {
             id=R.id.device_posture
@@ -84,21 +100,6 @@ class PrivacyActivity: Activity() {
         addSettingsButton(column,R.id.review_security_settings,"Open Android security settings",Settings.ACTION_SECURITY_SETTINGS)
         label("Input and hardware safety: review the selected keyboard and enabled accessibility services, but keep assistive tools you rely on. Disable USB debugging and wireless debugging when not actively needed; approve only computers you trust. Use any OS-level USB protection your device actually supports. A normal app cannot enable or verify that protection. Unknown keyboards, cables, hubs, inline keyloggers, modified firmware and the boot chain cannot be authenticated here; do not type secrets on hardware you do not trust.")
         label("On supported Pixel 6+ devices, Android documents USB Protection under Advanced Protection: it blocks new USB data connections while locked, but not connections started while unlocked, the boot interval, or every OEM implementation. Check current device documentation; this app does not claim that USB Protection is enabled.")
-
-        val scratchStatus=TextView(this).apply {id=R.id.scratch_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
-        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768,scratchStatus)}
-        editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2));column.addView(scratchStatus)
-        column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
-        label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
-        val linkStatus=TextView(this).apply {id=R.id.link_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
-        val address=PrivateText(this).apply {id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096,linkStatus);maxLines=3}
-        link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2));column.addView(linkStatus)
-        val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
-        column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
-            result.text=try {val p=LinkDisclosure.project(address.text.toString());p.text+"\nRemoved query: ${p.removedQuery}; removed fragment: ${p.removedFragment}. Host/path retained, not anonymous."}
-                catch(_:IllegalArgumentException) {"Input refused. Use bounded valid HTTP(S), no credentials or controls. No network request made."}
-        }})
-        column.addView(result)
         label("Android, the laptop/hypervisor, privileged software, IME and accessibility services remain trusted. No RAM/flash forensic-erasure guarantee. The keyboard no-learning request is advisory. Other apps and Fusion Shell are NOT made offline or anonymous.")
         val scroll=ScrollView(this).apply {isSaveEnabled=false;isSaveFromParentEnabled=false;addView(column)}
         scroll.setOnApplyWindowInsetsListener {v,insets ->

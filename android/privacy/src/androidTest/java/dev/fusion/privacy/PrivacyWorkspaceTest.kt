@@ -6,7 +6,6 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
@@ -28,6 +27,9 @@ class PrivacyWorkspaceTest {
     @Test fun actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty() {
         ActivityScenario.launch(PrivacyActivity::class.java).use {s ->
             val device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            val scratch=androidx.test.uiautomator.UiScrollable(androidx.test.uiautomator.UiSelector().scrollable(true))
+                .scrollIntoView(androidx.test.uiautomator.UiSelector().resourceId("dev.fusion.privacy:id/scratch_text"))
+            assertTrue("Scratchpad editor must be reachable by scrolling",scratch.exists())
             val input=device.wait(Until.findObject(By.res("dev.fusion.privacy","scratch_text")),10000);assertNotNull(input)
             input.text="private native input"
             var old:EditText?=null
@@ -53,7 +55,11 @@ class PrivacyWorkspaceTest {
                 assertTrue(info.imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING!=0)
                 for(id in listOf(android.R.id.copy,android.R.id.cut,android.R.id.paste,android.R.id.pasteAsPlainText,android.R.id.shareText)) assertFalse(input.onTextContextMenuItem(id))
             }
-            s.moveToState(Lifecycle.State.CREATED);s.moveToState(Lifecycle.State.RESUMED)
+            val device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            touch("review_keyboard_settings")
+            assertTrue("Keyboard Settings should open in the API34 system image",device.wait(Until.hasObject(By.pkg("com.android.settings")),10000))
+            device.pressBack()
+            assertNotNull("Workspace should return from Android Settings",device.wait(Until.findObject(By.res("dev.fusion.privacy","scratch_text")),10000))
             s.onActivity {a ->assertEquals("",a.findViewById<EditText>(R.id.scratch_text).text.toString());assertEquals("",a.findViewById<EditText>(R.id.link_text).text.toString())}
         }
     }
