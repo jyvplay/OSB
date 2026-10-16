@@ -33,8 +33,10 @@ class R22BoundaryDeviceTest {
  @Test fun maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget() {
   val rows=List(256) {List(32) {""}};val bytes=CsvTable.of(rows).workbook().bytes
   assertTrue(bytes.size>512*1024)
-  val r=FormatLease(context).use {it.evaluateOwnedXlsx(bytes)}
-  assertEquals(rows,r.table!!.rows);assertEquals(32780,r.table!!.frame().size)
+  repeat(2) { // Fresh isolated process each time; no warm-child cache or swallowed watchdog failure.
+   val r=FormatLease(context).use {it.evaluateOwnedXlsx(bytes)}
+   assertEquals(rows,r.table!!.rows);assertEquals(32780,r.table!!.frame().size)
+  }
  }
  @Test fun updatedXmlNodeLimitAndXincludeAreDataOnlyOnAndroid() {
   assertEquals(32767,BoundedXml.parse(("<a>"+"<b/>".repeat(32767)+"</a>").toByteArray()).children.size)

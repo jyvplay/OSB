@@ -9,6 +9,13 @@ import java.security.MessageDigest
 object LiteralXlsxImport {
     const val MAX_INPUT=2*1024*1024
     const val LOSS="VALUES-ONLY LOSS REPORT: new text projection; source types, styles, layout, sheet name and package metadata omitted. Numeric/boolean encodings remain raw text; no date interpretation. Empty gaps preserved to last admitted cell. Not an Office backup, anonymizer or save-back editor."
+    // Compile once per isolated process, not once per cell. Dense 8192-cell workbooks otherwise
+    // repeatedly compile tens of thousands of patterns inside the unchanged 5-second worker lease.
+    private val escapedToken=Regex("_x[0-9a-f]{4}_",RegexOption.IGNORE_CASE)
+    private val rowIndex=Regex("[1-9][0-9]{0,2}")
+    private val cellCoordinate=Regex("([A-Z]{1,2})([1-9][0-9]{0,2})")
+    private val stringIndex=Regex("0|[1-9][0-9]{0,3}")
+    private val number=Regex("[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]{1,4})?")
     private const val S="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     private const val R="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     private const val P="http://schemas.openxmlformats.org/package/2006/relationships"
@@ -30,7 +37,7 @@ object LiteralXlsxImport {
         n.childrenOnly("t");require(n.children.size<=1)
         val t=n.children.singleOrNull() ?: return ""
         require(t.children.isEmpty() && t.attributes.all {(k,v)->k==BoundedXml.Name("http://www.w3.org/XML/1998/namespace","space") && v in setOf("default","preserve")})
-        return t.text.also {require(it.length<=4096 && !Regex("_x[0-9a-f]{4}_",RegexOption.IGNORE_CASE).containsMatchIn(it))}
+        return t.text.also {require(it.length<=4096 && !escapedToken.containsMatchIn(it))}
     }
     fun read(bytes:ByteArray):CsvTable {
         require(bytes.size<=MAX_INPUT)
@@ -81,11 +88,11 @@ object LiteralXlsxImport {
         val data=ws.one("sheetData");data.childrenOnly("row");val cells=LinkedHashMap<Pair<Int,Int>,String>();var previousRow=0;var height=0;var width=0
         for(row in data.children) {
             row.attrs("r","spans");row.childrenOnly("c")
-            val raw=requireNotNull(row.attr("r"));require(raw.matches(Regex("[1-9][0-9]{0,2}")));val r=raw.toInt();require(r in previousRow+1..256);previousRow=r
+            val raw=requireNotNull(row.attr("r"));require(raw.matches(rowIndex));val r=raw.toInt();require(r in previousRow+1..256);previousRow=r
             var previousColumn=0
             for(c in row.children) {
                 c.attrs("r","s","t");c.childrenOnly("v","is");require(c.attr("s")==null || c.attr("s")=="0")
-                val coordinate=Regex("([A-Z]{1,2})([1-9][0-9]{0,2})").matchEntire(requireNotNull(c.attr("r"))) ?: error("Cell reference refused")
+                val coordinate=cellCoordinate.matchEntire(requireNotNull(c.attr("r"))) ?: error("Cell reference refused")
                 require(coordinate.groupValues[2].toInt()==r);val col=coordinate.groupValues[1].fold(0) {v,ch->v*26+ch.code-'A'.code+1};require(col in previousColumn+1..32);previousColumn=col
                 val kind=c.attr("t") ?: "n"
                 val value=if(kind=="inlineStr") {
@@ -95,9 +102,9 @@ object LiteralXlsxImport {
                     val v=c.children.singleOrNull();if(v==null) {require(kind!="s");""} else {
                         require(v.children.isEmpty() && v.attributes.isEmpty());val text=v.text;require(text.length<=4096)
                         when(kind) {
-                            "s"->{require(text.matches(Regex("0|[1-9][0-9]{0,3}")));strings[text.toInt()]}
+                            "s"->{require(text.matches(stringIndex));strings[text.toInt()]}
                             "b"->{require(text=="0" || text=="1");text}
-                            else->{require(text.matches(Regex("[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]{1,4})?")));text}
+                            else->{require(text.matches(number));text}
                         }
                     }
                 }

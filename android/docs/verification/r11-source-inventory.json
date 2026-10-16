@@ -938,7 +938,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "59b0af16ff5b9e4e4008565ce3a9a9327fccbd4c3b029548eca76641cc8cf60d"
+      "sha256": "e30dc377274335c9028551879702ed69b10ff0fb43d0928d224b1d37819a03b2"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
