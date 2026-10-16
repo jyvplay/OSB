@@ -276,6 +276,17 @@ class ShellSmokeTest {
             compose.onNodeWithText("Move saved note to trash?").assertIsDisplayed()
             compose.onNodeWithText("Move saved revision").performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Saved revision moved to trash.",substring=true)).fetchSemanticsNodes().isNotEmpty() }
+            // The status is published while busy=true, before the final inventory/trash reads.
+            // Observe actual ViewModel completion before another store lock owner reads the files.
+            // Do not retry mutations or suppress NotesBusy; the previous test raced those real reads.
+            compose.waitUntil(10000) {
+                var finished=false
+                compose.activityRule.scenario.onActivity {a ->
+                    val state=androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value
+                    finished=!state.busy && state.status.startsWith("Saved revision moved to trash.")
+                }
+                finished
+            }
             val receipt=store.trash().single { it.name==name }
             org.junit.Assert.assertFalse(store.list().contains(name))
             compose.activityRule.scenario.recreate()
@@ -284,6 +295,15 @@ class ShellSmokeTest {
             compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("notes-restore-${receipt.token}") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("notes-restore-${receipt.token}").performScrollTo().performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Restored saved revision without overwriting another note.")).fetchSemanticsNodes().isNotEmpty() }
+            // Same race attack on the reverse operation: restored text precedes the final trash scan.
+            compose.waitUntil(10000) {
+                var finished=false
+                compose.activityRule.scenario.onActivity {a ->
+                    val state=androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value
+                    finished=!state.busy && state.status=="Restored saved revision without overwriting another note."
+                }
+                finished
+            }
             org.junit.Assert.assertEquals(original,store.load(name))
             compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains(original.text)
         } finally {
