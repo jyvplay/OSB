@@ -10,7 +10,7 @@ cd android
 # Maintained full JDK17 + SDK required, no Studio GUI:
 python3 tools/r23_lab.py device --suite memory --disposable
 python3 tools/r23_lab.py device --suite full --disposable
-# API34 companion14 cases is the default:
+# API34 companion15 cases is the default (new focus/frame verifier):
 python3 tools/r23_lab.py device --suite privacy --disposable
 ```
 

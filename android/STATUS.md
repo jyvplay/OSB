@@ -10,7 +10,7 @@ No Tails/anonymity, hardware-keylogger detection, hostile-host/firmware secrecy,
 R23 explicit owned-memory worksheet path now passed b3f2f1d **focused24/full122**, companion**14**;
 legacy regular-file APIs remain explicit, not fallback. Real SDK37/AGP9 experiment FAILED before tests;
 working SDK36/AGP8.13.2 pins restored and Gradle8.13 distribution checksum configured from official source.
-Rabbit1 support is documented compatibility, not a GUI run. A fresh restored candidate is pending verification.
+Rabbit1 support is documented compatibility, not a GUI run. Restored99c4405 privacy had13PASS/1FAIL (marker readiness); stricter focus/frame screenshot verifier and real Dialog reattack now require a fresh15-case pass, not inherited14-case acceptance.
 
 ---
 

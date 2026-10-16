@@ -45,7 +45,8 @@ class R23EvidenceTests(unittest.TestCase):
     def test_actual_substrate_pass_is_not_production_transfer(self):
         substrate = json.loads((ROOT / 'docs/verification/r23-memory-prerequisite-result.json').read_text())
         self.assertEqual({'PASS': 14, 'FAIL': 0, 'SKIP': 0}, substrate['counts'])
-        self.assertTrue(assess(substrate, substrate['candidate'], 'r23_privacy_api34')[0])
+        self.assertTrue(assess(substrate, substrate['candidate'], 'r23_prerequisite_api34')[0])
+        self.assertFalse(assess(substrate, substrate['candidate'], 'r23_privacy_api34')[0])
         self.assertFalse(assess(substrate, substrate['candidate'], 'r23_memory_transport_api34')[0])
         main = json.loads((ROOT / 'docs/verification/r23-first-native-result.json').read_text())
         self.assertFalse(assess(main, main['candidate'], 'r23_memory_transport_api34')[0])
@@ -77,6 +78,12 @@ class R23EvidenceTests(unittest.TestCase):
             self.assertEqual({'PASS': 0, 'FAIL': 0, 'SKIP': 0}, receipt['counts'])
             for claim in ['r23_privacy_api34', 'r23_memory_transport_api34']:
                 self.assertFalse(assess(receipt, receipt['candidate'], claim)[0])
+
+    def test_actual_thirteen_pass_one_failure_is_not_narrow_or_full_privacy_pass(self):
+        receipt = json.loads((ROOT / 'docs/verification/r23-restored-privacy-failed-result.json').read_text())
+        self.assertEqual({'PASS': 13, 'FAIL': 1, 'SKIP': 0}, receipt['counts'])
+        for claim in ['r23_input_api34', 'r23_memory_api34', 'r23_prerequisite_api34', 'r23_privacy_api34']:
+            self.assertFalse(assess(receipt, receipt['candidate'], claim)[0])
 
     def test_malformed_input_is_refusal_not_exception(self):
         for receipt in [None, [], {}, {'cases': [{}]}]:

@@ -167,3 +167,18 @@ Checksum pin configured from actual official8.13 response;3 duplicate/alias/hash
 144 Python methods now pass; fresh restored native workflows remain mandatory. APK byte/hash collection
 for BOTH main variants added to the real build, not inferred from compressed artifact-container size.
 No code from the rejected SDK37 toolchain is silently accepted; exact receipts remain separate.
+
+## Screenshot readiness failure and stronger verifier (pending fresh candidate)
+
+Restored99c4405 companion38866590115 actually FAILED **13PASS/1FAIL/0SKIP**: old screenshot marker
+wait timed out on reopened secure activity, not a pixel-leak assertion. [Pre-edit repair hypothesis](verification/r23-screenshot-repair-plan.md)
+was committed before the harness change. Source shows focus callbacks replace injected content, but99 lacks
+focus telemetry, so historical causality/general UI stability is NOT claimed solved.
+New helper waits actual focus, installs a per-capture nonce, requires real renderer frame commit, and
+asserts identical shown/attached/root marker, geometry and secure flag BEFORE AND AFTER actual screenshot.
+Secure-first/nonsecure-positive-control/reopened-secure pixel assertions retained. New independent REAL
+focusable Dialog invalidates old marker and requires a fresh committed secure frame, with visible controls.
+No production discard/secure behavior weakened. **Authored, not yet compiled/run; full companion now15.**
+Gate alias `r23_prerequisite_api34` preserves the old14-case substrate scope; current `r23_privacy_api34`
+requires15. Actual13/1 receipt rejected even for passed input/memory subsets because whole workflow failed.
+All fresh15/24/122 gates remain mandatory. Earlier14-case success is not a repair pass.

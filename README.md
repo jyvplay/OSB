@@ -23,7 +23,7 @@ New no-IME digit pad, whole-gesture/focus/lifecycle discard and exposure observa
 explicit no-named-parser-input-file shared-memory worksheet APIs (no silent disk fallback).
 Exact b3f2f1d passed **122 main /24 focused memory /14 privacy** API34 cases; focused cases overlap full counts.
 **4/49 production modules deepened (8.16%), not4 completed modules.** Real SDK37 experiment failed
-pre-test; working SDK36 pins restored, checksum hardened, fresh restored verification pending.
+pre-test; working SDK36 pins restored, checksum hardened; restored privacy13/1 failure retained, stronger15-case focus/frame verifier pending.
 
 
 Native privacy/input hardening on **`arena/f77cb2a6-osb`**: no-IME decimal touch pad,
