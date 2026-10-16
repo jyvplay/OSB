@@ -172,7 +172,9 @@
     ],
     ":format:native": [],
     ":format:archive": [],
-    ":format:ooxml": [],
+    ":format:ooxml": [
+      ":format:archive"
+    ],
     ":format:pdf": [
       ":format:ooxml"
     ],
@@ -810,7 +812,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "b78143570df7d76c1245d066b5e313e5084fb79a1b1f7ace77c17c67d68672fc"
+      "sha256": "1c5f1476372f11685186c3a6907be1dff9b05ea8f200e48f8a6c7356fa780969"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",
@@ -834,7 +836,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "2e8d39fb32f9ce648ad43bf2fe64e8cce8e4341a7835fb9ed9d8d5e2b6e120c9"
+      "sha256": "4bb340ef050df44feab671df316c199fb490da0b60f78f442454b31200976b3e"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
@@ -885,6 +887,12 @@
       "sha256": "69182b5a946c8873287bdb17ac502b827ec5dc983be3c6a14e8cc1934903adf2"
     },
     {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/WorksheetInput.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "62c902cd31a85f486b8e9754608abd4cca787306231ba8376f48dfb57057c36a"
+    },
+    {
       "path": "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt",
       "module": ":format:native",
       "package": "dev.fusion.native",
@@ -906,7 +914,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "5db5a7b994a66e240bebe0b3c184963f0dd582419e8f9e11c6aad6cf68356b02"
+      "sha256": "fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
@@ -925,6 +933,12 @@
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "2697f3230eb6b73b5b9e982711dcc3f69758282b9d745502baff6d8161f0041f"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "59b0af16ff5b9e4e4008565ce3a9a9327fccbd4c3b029548eca76641cc8cf60d"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
@@ -960,13 +974,13 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "571fc8d2adc072d8a010a4ba4da337e4183695d71b62d83b8c42efb67a7fe90f"
+      "sha256": "72da7c087bb21c03e527d207101cb137cad26cd87df5d06e43a026a93ac7ac67"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "82ec98bc22ad859f0c64725de94be1bebfe4c65a8290856a86231bac3d98f499"
+      "sha256": "eace506dd0d3442806b7d621d7e99fe02459eb0b361373b53c99e954fa4294ad"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

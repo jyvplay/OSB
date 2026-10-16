@@ -3,4 +3,4 @@ plugins {
 }
 kotlin { jvmToolchain(17) }
 tasks.withType<Test> { useJUnit() }
-dependencies { testImplementation(libs.junit.junit) }
+dependencies { implementation(project(":format:archive")); testImplementation(libs.junit.junit) }

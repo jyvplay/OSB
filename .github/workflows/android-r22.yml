@@ -25,11 +25,11 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Execute actual R22 ZIP and XML platform spike
+      - name: Execute actual R22 ZIP/XML, isolated import and system-picker boundaries
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py

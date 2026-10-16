@@ -8,6 +8,7 @@ import android.os.*
 import dev.fusion.ooxml.SheetFrame
 import dev.fusion.ooxml.OwnedSheetRequest
 import dev.fusion.ooxml.OwnedCsvRequest
+import dev.fusion.ooxml.OwnedXlsxRequest
 import dev.fusion.ooxml.CsvTable
 import java.io.Closeable
 import java.io.File
@@ -34,6 +35,7 @@ class FormatLease(context: Context) : Closeable {
     private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
     private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
     private val ownedCsv=java.util.concurrent.atomic.AtomicReference<OwnedCsvRequest?>(null)
+    private val ownedXlsx=java.util.concurrent.atomic.AtomicReference<OwnedXlsxRequest?>(null)
     private val closed=AtomicBoolean(false)
     private val id=UUID.randomUUID().toString()
     private var bound=false
@@ -63,6 +65,9 @@ class FormatLease(context: Context) : Closeable {
             } else null
             val table=if(message.what==FormatWorkerService.CSV_TABLE) {
                 try {requireNotNull(ownedCsv.get()).accept(size,digest,requireNotNull(data.getByteArray("tableResult")))}
+                catch(error:Exception) {result.completeExceptionally(error);return}
+            } else if(message.what==FormatWorkerService.XLSX_TABLE) {
+                try {requireNotNull(ownedXlsx.get()).accept(size,digest,requireNotNull(data.getByteArray("tableResult")))}
                 catch(error:Exception) {result.completeExceptionally(error);return}
             } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
@@ -132,6 +137,23 @@ class FormatLease(context: Context) : Closeable {
                 return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->
                     check(file.delete()) {"Could not unlink owned CSV"}
                     ownedCsv.set(model);request(fd,null,FormatWorkerService.CSV_TABLE,0)
+                }
+            } finally {file.delete()}
+        } finally {close()}
+    }
+    /** Values-only XLSX parse in child. Same owned/unlinked capability and correlation limits as CSV.
+     * [U] verify on API34/36/37; neither unlink nor digest is secure erase/computation authentication.
+     */
+    fun evaluateOwnedXlsx(bytes:ByteArray):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedXlsxRequest(bytes)
+            val file=File.createTempFile("fusion-owned-xlsx-",".xlsx",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use {out->out.write(model.bytes());out.fd.sync()}
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->
+                    check(file.delete()) {"Could not unlink owned XLSX"}
+                    ownedXlsx.set(model);request(fd,null,FormatWorkerService.XLSX_TABLE,0)
                 }
             } finally {file.delete()}
         } finally {close()}

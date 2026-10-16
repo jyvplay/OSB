@@ -255,3 +255,16 @@ kotlin.sourceSets.named("r21") {
 tasks.register<JavaExec>("r21Contracts") {
     dependsOn(r21.classesTaskName);classpath=r21.runtimeClasspath;mainClass.set("dev.fusion.testing.R21Checks")
 }
+
+val r22 by sourceSets.creating
+kotlin.sourceSets.named("r22") {
+    kotlin.srcDir("src/r22/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.include("**/WorksheetInput.kt", "**/StrictZip.kt", "**/BoundedXml.kt", "**/LiteralXlsxImport.kt", "**/LiteralWorkbook.kt", "**/CsvTable.kt", "**/BrowserSessions.kt", "**/PermissionLeases.kt", "**/BrowserConsentSession.kt", "**/R22Checks.kt", "**/R22Oracle.kt")
+}
+tasks.register<JavaExec>("r22Contracts") {
+    dependsOn(r22.classesTaskName);classpath=r22.runtimeClasspath;mainClass.set("dev.fusion.testing.R22Checks")
+}

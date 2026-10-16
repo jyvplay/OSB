@@ -368,7 +368,7 @@
       "module": ":feature:browser",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI) R21 session-owned document consent invalidation including unsupported navigation; actual native boundary spike passed. No engine permission delegation.",
+      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI) R21 session-owned document consent invalidation including unsupported navigation; actual native boundary spike passed. No engine permission delegation. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge.",
       "production": [
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt",
@@ -378,18 +378,22 @@
         "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt",
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
       ],
-      "command": ":testing:browserSessionContracts",
+      "command": ":testing:browserSessionContracts; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "sha256": {
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt": "dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7",
         "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt": "ead3541b5e0e31da1d49ef735db6a43e88f445e821fb9f77f766c954b4f1d3a1",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
-        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt": "cb9c83774bd23d85667e4e37a096119884e619bc617823ad68bd19a6c2568510",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt": "42826bddd2a727e48ef9066e6a87b963d5baf434881263504da4aa152d4836f3",
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
-        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939"
+        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "8828804c02d274a52a04af016ee1f2087f5e42284d9f8cdf643920f8bb52e0fd"
       }
     },
     {
@@ -752,7 +756,7 @@
       "module": ":feature:automation",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Latest d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export R21 native CSV worksheet added after worker spike; b96f060 focused8/8 and Task/Notes7/7 passed after exact-readback repair. Whole-app/physical/AX acceptance remains separate.",
+      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Latest d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export R21 native CSV worksheet added after worker spike; b96f060 focused8/8 and Task/Notes7/7 passed after exact-readback repair. Whole-app/physical/AX acceptance remains separate. R22 adds read-only picker import and explicit loss-report/new-text-projection workflow; native UI verification pending.",
       "production": [
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
@@ -761,7 +765,8 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt",
         "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt",
-        "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt"
+        "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/WorksheetInput.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
@@ -781,9 +786,11 @@
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt",
         "app/src/androidTest/java/dev/fusion/shell/R21CsvUiDeviceTest.kt",
-        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt"
+        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
       ],
-      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py",
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "No permanent deletion/history/recurrence/reminders/calendar integration or Room; plaintext/same-process storage only; UI instability, keyboard/AX/physical acceptance remain open. FTS2 mutations prevent old-client downgrade reading. Action plans are not transactional/scheduled.",
       "sha256": {
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
@@ -808,10 +815,13 @@
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "6232f963f6e23ca1bca0edf48e42a1151cdabf4e00307a8b3d3cf6b7870bc571",
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
-        "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "b78143570df7d76c1245d066b5e313e5084fb79a1b1f7ace77c17c67d68672fc",
+        "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "1c5f1476372f11685186c3a6907be1dff9b05ea8f200e48f8a6c7356fa780969",
         "app/src/androidTest/java/dev/fusion/shell/R21CsvUiDeviceTest.kt": "a00e008ea468e0fac937e7a97a03c69ea21c2bb53f64589f26675b9a923b914f",
         "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt": "fa4c541f09a6479c34817c42612ffa80ad0e25189846192ed741783927c0f754",
-        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd"
+        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/WorksheetInput.kt": "62c902cd31a85f486b8e9754608abd4cca787306231ba8376f48dfb57057c36a",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "8828804c02d274a52a04af016ee1f2087f5e42284d9f8cdf643920f8bb52e0fd"
       }
     },
     {
@@ -838,32 +848,40 @@
       "module": ":format:archive",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security",
+      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security R22 adds strict local/central agreement, actual bounded inflate/CRC and allowlisted members; narrow platform spike2/2 passed; not general extraction.",
       "production": [
-        "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt"
+        "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt",
+        "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt"
       ],
       "checks": [
-        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt"
+        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
       ],
-      "command": ":format:archive:test",
+      "command": ":format:archive:test; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
       "sha256": {
         "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75",
-        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt": "1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260"
+        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt": "1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260",
+        "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt": "8874302c439ff4de753618f6b9264b18c82dd03ed945b6f9b3e5ec2ad570139a",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "8828804c02d274a52a04af016ee1f2087f5e42284d9f8cdf643920f8bb52e0fd"
       }
     },
     {
       "module": ":format:ooxml",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded lossy text extraction and original new literal-cell XLSX writer; external openpyxl readback. Neither is an Office engine. R14 adds original bounded decimal dependency arithmetic, not LibreOffice formula parity. R15 adds bounded canonical arithmetic request/result framing; actual isolated-worker execution passed on API34 at eeb93a4/run38692920167; not a complete Office engine. R18 adds immutable owned-model metadata/key-set correlation; actual isolated execution passed at9340662/run38830281113. Matching metadata does not prove arithmetic truth. New owned-worker cases also passed in d6f7393/run38831196589, whose full suite failed a separate older Task UI case. R21 strict bounded CSV parser, immutable column projection/data frame and literal-only export; host 376 assertions/480 independent reader documents.",
+      "behavior": "Bounded lossy text extraction and original new literal-cell XLSX writer; external openpyxl readback. Neither is an Office engine. R14 adds original bounded decimal dependency arithmetic, not LibreOffice formula parity. R15 adds bounded canonical arithmetic request/result framing; actual isolated-worker execution passed on API34 at eeb93a4/run38692920167; not a complete Office engine. R18 adds immutable owned-model metadata/key-set correlation; actual isolated execution passed at9340662/run38830281113. Matching metadata does not prove arithmetic truth. New owned-worker cases also passed in d6f7393/run38831196589, whose full suite failed a separate older Task UI case. R21 strict bounded CSV parser, immutable column projection/data frame and literal-only export; host 376 assertions/480 independent reader documents. R22 values-only single-sheet XLSX with namespace/relationship/sparse-coordinate admission; actual host openpyxl/XlsxWriter references pass. New importer native verification pending.",
       "production": [
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OwnedSheetRequest.kt",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt"
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt"
       ],
       "checks": [
         "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt",
@@ -885,9 +903,11 @@
         "tools/run_r18_contracts.py",
         "tools/run_r18_interop.py",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt",
-        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt"
+        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
       ],
-      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; :app:pixel6Api34ProDebugAndroidTest",
+      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "sha256": {
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
@@ -915,14 +935,18 @@
         "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt": "a404d5f45a4c3949f931266f245ac3c40bd5a311d041a295457c7ff56be916e0",
-        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd"
+        "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt": "fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt": "59b0af16ff5b9e4e4008565ce3a9a9327fccbd4c3b029548eca76641cc8cf60d",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "8828804c02d274a52a04af016ee1f2087f5e42284d9f8cdf643920f8bb52e0fd"
       }
     },
     {
       "module": ":format:pdf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real isolated-UID/FD/watchdog/socket boundary plus bounded original arithmetic through a read-only descriptor; not PDF/Office-engine isolation. R18 additive owned arithmetic API closes writer/unlinks private input before read-only handoff and correlates result metadata/keys; actual native cases passed at9340662/run38830281113. New owned-worker cases also passed in d6f7393/run38831196589, whose full suite failed a separate older Task UI case. R21 actual isolated CSV operation passed its three-case pre-UI boundary suite; not PDF or full Office acceptance.",
+      "behavior": "Real isolated-UID/FD/watchdog/socket boundary plus bounded original arithmetic through a read-only descriptor; not PDF/Office-engine isolation. R18 additive owned arithmetic API closes writer/unlinks private input before read-only handoff and correlates result metadata/keys; actual native cases passed at9340662/run38830281113. New owned-worker cases also passed in d6f7393/run38831196589, whose full suite failed a separate older Task UI case. R21 actual isolated CSV operation passed its three-case pre-UI boundary suite; not PDF or full Office acceptance. R22 adds XLSX operation5 on owned unlinked readonly descriptor; fresh native integration verification pending.",
       "production": [
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt"
@@ -931,17 +955,21 @@
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "82ec98bc22ad859f0c64725de94be1bebfe4c65a8290856a86231bac3d98f499",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "571fc8d2adc072d8a010a4ba4da337e4183695d71b62d83b8c42efb67a7fe90f",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "eace506dd0d3442806b7d621d7e99fe02459eb0b361373b53c99e954fa4294ad",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "72da7c087bb21c03e527d207101cb137cad26cd87df5d06e43a026a93ac7ac67",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
-        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939"
+        "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939",
+        "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "8828804c02d274a52a04af016ee1f2087f5e42284d9f8cdf643920f8bb52e0fd"
       }
     },
     {

@@ -8,9 +8,10 @@ import android.view.*
 import android.widget.*
 import dev.fusion.format.pdf.sandbox.FormatLease
 import dev.fusion.ooxml.CsvTable
+import dev.fusion.ooxml.LiteralXlsxImport
 import java.util.concurrent.Executors
 
-/** Explicit, session-only CSV-to-selected-literal-XLSX workflow. No original overwrite or arbitrary Office opening.
+/** Explicit, session-only CSV-to-selected-literal-XLSX workflow. No original overwrite or arbitrary Office editing.
  * Main network-enabled app, NOT the no-INTERNET scratchpad. Trusted parent/IME/OS can see source text.
  * [U] verify on API 34/36/37: picker cancellation/recreation, secure window, IME/AX and worker lifecycle.
  */
@@ -21,6 +22,9 @@ class CsvWorkbenchActivity:Activity() {
     private lateinit var preview:TextView
     private lateinit var parse:Button
     private lateinit var save:Button
+    private lateinit var importXlsx:Button
+    private var imported:CsvTable?=null
+    private var pendingImport:Any?=null
     private var payload:ByteArray?=null
     private var pending:ByteArray?=null
     private var generation=Any()
@@ -48,7 +52,16 @@ class CsvWorkbenchActivity:Activity() {
                 addCategory(Intent.CATEGORY_OPENABLE);type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";putExtra(Intent.EXTRA_TITLE,"selected-columns.xlsx")
             },21)} catch(_:Exception) {pending=null;busy(false);status.text="Document picker unavailable; no write attempted."}
         }}
-        column.addView(parse);column.addView(save)
+        importXlsx=Button(this).apply {id=R.id.csv_import;text="Import values-only XLSX…";setOnClickListener {
+            if(busy) return@setOnClickListener
+            invalidatePreview();pendingImport=generation;busy(true)
+            try {startActivityForResult(Intent(Intent.ACTION_GET_CONTENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE);type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            },22)} catch(_:Exception) {pendingImport=null;busy(false);status.text="Import picker unavailable; no source read."}
+        }}
+        column.addView(parse);column.addView(save);column.addView(importXlsx)
+        label(LiteralXlsxImport.LOSS)
+        label("Import reads a copy (≤2 MiB) in an isolated worker. One visible sheet, ≤256×32; plain inline/shared text or raw numeric/boolean cells. Formulas, rich text, custom/date number formats, nonzero cell styles, merges, hidden rows, extra parts and unsupported XML/ZIP dialects are refused. Successful import replaces this session draft; cancellation keeps it. Typing CSV replaces imported snapshot. No persistent URI grant; cloud providers may use their own network.")
         label("Preview contains ALL selected cells; quotes, line breaks and bidi formatting are escaped for display only. Export preserves original selected text. Other columns are omitted deliberately. Unsupported XLSX text is refused, never silently rewritten. Worker input briefly uses a private temporary file, unlinked before transfer — NOT secure disk erasure. No source overwrite, backup or physical-durability guarantee. Android/IME/host remain trusted.")
         for((field,limit) in listOf(source to 65536,columns to 100)) {
             field.filters=arrayOf(InputFilter {_,start,end,dest,a,b->
@@ -59,7 +72,7 @@ class CsvWorkbenchActivity:Activity() {
             })
             field.addTextChangedListener(object:TextWatcher {
                 override fun beforeTextChanged(s:CharSequence?,start:Int,count:Int,after:Int) {}
-                override fun onTextChanged(s:CharSequence?,start:Int,before:Int,count:Int) {invalidatePreview()}
+                override fun onTextChanged(s:CharSequence?,start:Int,before:Int,count:Int) {if(field===source) imported=null;invalidatePreview()}
                 override fun afterTextChanged(s:Editable?) {}
             })
         }
@@ -68,10 +81,11 @@ class CsvWorkbenchActivity:Activity() {
         setContentView(scroll);column.isFocusableInTouchMode=true;column.requestFocus()
     }
     private fun invalidatePreview() {generation=Any();payload=null;preview.text="";save.isEnabled=false}
-    private fun busy(value:Boolean) {busy=value;source.isEnabled=!value;columns.isEnabled=!value;parse.isEnabled=!value;save.isEnabled=!value && payload!=null}
+    private fun busy(value:Boolean) {busy=value;importXlsx.isEnabled=!value;source.isEnabled=!value;columns.isEnabled=!value;parse.isEnabled=!value;save.isEnabled=!value && payload!=null}
     private fun prepare() {
         if(busy) return
         invalidatePreview()
+        val snapshot=imported
         val bytes:ByteArray;val selected:List<Int>
         try {
             bytes=CsvTable.utf8(source.text.toString());require(bytes.size<=CsvTable.MAX_INPUT)
@@ -81,8 +95,8 @@ class CsvWorkbenchActivity:Activity() {
         val epoch=generation;busy(true);status.text="Parsing in isolated worker…"
         executor.execute {
             val answer=runCatching {
-                val evidence=FormatLease(this).use {it.evaluateOwnedCsv(bytes)}
-                val table=requireNotNull(evidence.table).project(selected)
+                val original=snapshot ?: requireNotNull(FormatLease(this).use {it.evaluateOwnedCsv(bytes)}.table)
+                val table=original.project(selected)
                 val workbook=table.workbook().bytes;require(workbook.size<=2*1024*1024)
                 val text="${table.rows.size} rows, ${table.columns} selected columns. Literal text only.\n"+table.preview()
                 workbook to text
@@ -100,6 +114,27 @@ class CsvWorkbenchActivity:Activity() {
     @Deprecated("Framework callback retained for explicit snapshot-loss semantics")
     override fun onActivityResult(requestCode:Int,resultCode:Int,data:Intent?) {
         super.onActivityResult(requestCode,resultCode,data)
+        if(requestCode==22) {
+            val epoch=pendingImport;pendingImport=null;val uri=data?.data
+            if(resultCode!=RESULT_OK || uri==null) {busy(false);status.text="Import cancelled; prior session input retained.";return}
+            if(epoch==null || epoch!==generation) {busy(false);status.text="Import snapshot lost or changed; select the document again. No source read.";return}
+            status.text="Reading copy and parsing XLSX in isolated worker…"
+            executor.execute {
+                val answer=runCatching {
+                    val bytes=TaskTransferIO.readWorksheetBytes(contentResolver,uri)
+                    requireNotNull(FormatLease(this).use {it.evaluateOwnedXlsx(bytes)}.table)
+                }
+                runOnUiThread {if(!destroyed) {
+                    if(epoch===generation) answer.fold({table->
+                        source.setText("");imported=table;source.hint="Imported XLSX snapshot. Type CSV to replace."
+                        status.text="XLSX imported: ${table.rows.size} rows × ${table.columns} columns. Review loss report; preview selected columns."
+                    },{status.text="XLSX refused or unavailable. Prior input retained; no source write and no export prepared."})
+                    else status.text="Input changed during import; stale result discarded."
+                    busy(false)
+                }}
+            }
+            return
+        }
         if(requestCode!=21) return
         val bytes=pending;pending=null
         val uri=data?.data
@@ -115,5 +150,5 @@ class CsvWorkbenchActivity:Activity() {
         }
     }
     override fun onSaveInstanceState(outState:Bundle) {super.onSaveInstanceState(outState);outState.clear()}
-    override fun onDestroy() {destroyed=true;payload=null;pending=null;executor.shutdownNow();super.onDestroy()}
+    override fun onDestroy() {destroyed=true;payload=null;pending=null;pendingImport=null;imported=null;executor.shutdownNow();super.onDestroy()}
 }

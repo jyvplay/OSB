@@ -11,6 +11,10 @@ object TaskTransferIO {
         require(uri.scheme=="content")
         return requireNotNull(resolver.openInputStream(uri)) {"Input unavailable"}.use {TaskStreams.read(it)}
     }
+    fun readWorksheetBytes(resolver:ContentResolver,uri:Uri):ByteArray {
+        require(uri.scheme=="content")
+        return requireNotNull(resolver.openInputStream(uri)).use {WorksheetInput.capture(it)}
+    }
     /** Caller MUST supply a newly created document (CreateDocument result), never an existing target.
      * A provider may leave partial data after failure; do not assume rollback or physical durability.
      * [U] verify on API 34/36/37: actual provider grants, cancellation and reopen behavior.

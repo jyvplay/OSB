@@ -140,7 +140,7 @@
     {
       "module": ":feature:browser",
       "status": "incomplete",
-      "present_scope": "Executed immutable session metadata/codec. Separate debug :app experiments passed real profiles and remote surface pixels/input/resize on regular API34 at2c2b5bc. No connected product renderer/chrome/profile/navigation integration. R21 document-owned pending consent/one-shot lifecycle controller executed on JVM and API34; no real engine permission wiring.",
+      "present_scope": "Executed immutable session metadata/codec. Separate debug :app experiments passed real profiles and remote surface pixels/input/resize on regular API34 at2c2b5bc. No connected product renderer/chrome/profile/navigation integration. R21 document-owned pending consent/one-shot lifecycle controller executed on JVM and API34; no real engine permission wiring. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge.",
       "remaining_gap": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "evidence_level": "partial_android_execution"
     },
@@ -252,7 +252,7 @@
     {
       "module": ":feature:automation",
       "status": "incomplete",
-      "present_scope": "App-local routine source; explicit experimental consent R21 native isolated-CSV worksheet with explicit selected-column literal XLSX and exact readback; b96f060 focused8/8, Task/Notes7/7 and full109/109 passed. Still no full automation/productivity acceptance.",
+      "present_scope": "App-local routine source; explicit experimental consent R21 native isolated-CSV worksheet with explicit selected-column literal XLSX and exact readback; b96f060 focused8/8, Task/Notes7/7 and full109/109 passed. Still no full automation/productivity acceptance. R22 adds read-only picker import and explicit loss-report/new-text-projection workflow; native UI verification pending.",
       "remaining_gap": "Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance",
       "evidence_level": "partial_android_execution"
     },
@@ -266,21 +266,21 @@
     {
       "module": ":format:archive",
       "status": "incomplete",
-      "present_scope": "ZIP guard source",
+      "present_scope": "ZIP guard source R22 adds strict local/central agreement, actual bounded inflate/CRC and allowlisted members; narrow platform spike2/2 passed; not general extraction.",
       "remaining_gap": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
       "evidence_level": "jvm_unit_target_passed"
     },
     {
       "module": ":format:ooxml",
       "status": "incomplete",
-      "present_scope": "Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence R21 bounded strict UTF8 CSV table/frame/projection/literal export:376 host assertions,480 external reader documents and6 near-cap stress cases; native worker/UI route passed at b96f060.",
+      "present_scope": "Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence R21 bounded strict UTF8 CSV table/frame/projection/literal export:376 host assertions,480 external reader documents and6 near-cap stress cases; native worker/UI route passed at b96f060. R22 values-only single-sheet XLSX with namespace/relationship/sparse-coordinate admission; actual host openpyxl/XlsxWriter references pass. New importer native verification pending.",
       "remaining_gap": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "evidence_level": "partial_android_execution"
     },
     {
       "module": ":format:pdf",
       "status": "incomplete",
-      "present_scope": "Platform preview source; isolated UID/read-only FD/digest precursor:6/6 API34 cases passed at1ea1faa including native socket denial with reachable controls. Not a document parser boundary or Android CPU/RSS proof R21 CSV grammar added to the real isolated child after a passed3-case operation spike; fresh focused8/8 and full109/109 passed at b96f060. This is a bounded CSV parser boundary, not a PDF/full Office engine or CPU/RSS proof.",
+      "present_scope": "Platform preview source; isolated UID/read-only FD/digest precursor:6/6 API34 cases passed at1ea1faa including native socket denial with reachable controls. Not a document parser boundary or Android CPU/RSS proof R21 CSV grammar added to the real isolated child after a passed3-case operation spike; fresh focused8/8 and full109/109 passed at b96f060. This is a bounded CSV parser boundary, not a PDF/full Office engine or CPU/RSS proof. R22 adds XLSX operation5 on owned unlinked readonly descriptor; fresh native integration verification pending.",
       "remaining_gap": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
       "evidence_level": "partial_android_execution"
     },
@@ -678,6 +678,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R21 isolated CSV worksheet and document-bound consent",
+  "revision": "R22 candidate \u2014 2026-10-16; integration verification pending",
   "build_evidence": "R21 exact application candidate b96f060808d6a7b73df9047f31209d4d589bcae7: full run38849172796 passed109/0/0, focused R21 run38849172743 passed8/0/0, Task/Notes run38849172798 passed7/0/0; both debug flavors, JVM/contracts and lint passed. Substantial testability48/49 (97.96%), fully accepted0/49. Earlier R21 failed UI/full receipts retained in R21-ENGINEERING.md; later docs/tooling commits do not inherit exact-candidate native passes. Full browser/Office/LOK, global anonymity, physical/AX/API37/16KiB and legal gates remain open."
 }

@@ -24,6 +24,13 @@ class BrowserConsentSession(private val profile:String) {
         val next=session.navigate(tab,url)
         session=next;documents[tab]=Any() // Even same URL/back-forward return gets a fresh identity.
     }
+    /** Revoke before renderer crash/kill/detach or navigation-start, even with unchanged URL.
+     * Kernel only: production must deliver authentic engine events; no renderer is embedded here.
+     * A subsequent successful navigate creates a new document. Snapshot URL is not permission liveness.
+     */
+    @Synchronized fun suspendDocument(tab:Long) {
+        check(!closed);require(session.tabs.any {it.id==tab});invalidate(tab)
+    }
     private fun invalidate(tab:Long) {pending.entries.removeAll {it.value.tab==tab};leases.revokeTab(profile,tab);documents.remove(tab)}
     @Synchronized fun close(tab:Long) {check(!closed);val next=session.close(setOf(tab));invalidate(tab);session=next}
     @Synchronized fun shutdown() {closed=true;pending.clear();documents.clear();leases.clear()}
