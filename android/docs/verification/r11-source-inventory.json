@@ -785,7 +785,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "a17d11b99bf7ebf12690171f158d1419e6474af662d233ae37d12ff007e09d2f"
+      "sha256": "11d50ca56250c9256a6fd38eb5bc76746f1ff41871f2951232e97e5b968c5bd0"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",

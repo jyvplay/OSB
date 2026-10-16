@@ -761,7 +761,7 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4",
         "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt": "85543aa80ae499153c5874da07f896aaab04d6c61192439c579014b21397b62b",
-        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "a17d11b99bf7ebf12690171f158d1419e6474af662d233ae37d12ff007e09d2f",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "11d50ca56250c9256a6fd38eb5bc76746f1ff41871f2951232e97e5b968c5bd0",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
         "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",

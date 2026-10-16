@@ -2,8 +2,6 @@ package dev.fusion.automation
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TaskPanel(context: Context) {
     val repo=remember(context) { TaskRepository(File(context.noBackupFilesDir,"tasks-v1.bin")) }
@@ -68,7 +67,7 @@ fun TaskPanel(context: Context) {
             try {TaskQuery.select(book ?: TaskBook(),candidate);query=candidate}
             catch(_:Exception) {status="Search refused: use up to256 Unicode units without control characters."}
         },Modifier.fillMaxWidth().testTag("tasks-query"),label={Text("Find title (literal, case-insensitive)")},singleLine=true)
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+        FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(4.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
             TaskScope.entries.forEach { value ->
                 OutlinedButton(onClick={filter=value},modifier=Modifier.testTag("tasks-scope-$value")) {Text((if(filter==value) "Selected: " else "")+value.name)}
             }

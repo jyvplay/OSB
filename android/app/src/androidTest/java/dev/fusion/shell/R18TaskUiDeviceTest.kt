@@ -34,10 +34,12 @@ class R18TaskUiDeviceTest {
         compose.onNodeWithText("Archive task").performScrollTo().performClick();saved(3)
         compose.onNodeWithText("Renamed task").assertDoesNotExist()
         compose.activityRule.scenario.recreate();open();saved(3)
-        compose.onNodeWithTag("tasks-scope-ARCHIVED").performScrollTo().performClick()
+        compose.onNodeWithTag("tasks-scope-ARCHIVED").performScrollTo().assertIsDisplayed().performClick()
+        compose.onNodeWithTag("tasks-scope-ARCHIVED").assertTextContains("Selected: ARCHIVED")
         compose.onNodeWithText("Renamed task").assertExists()
         compose.onNodeWithText("Restore task").performScrollTo().performClick();saved(4)
-        compose.onNodeWithTag("tasks-scope-ACTIVE").performScrollTo().performClick()
+        compose.onNodeWithTag("tasks-scope-ACTIVE").performScrollTo().assertIsDisplayed().performClick()
+        compose.onNodeWithTag("tasks-scope-ACTIVE").assertTextContains("Selected: ACTIVE")
         compose.onNodeWithTag("tasks-query").performScrollTo().performTextInput("RENAMED")
         compose.onNodeWithText("Renamed task").assertExists()
         compose.onNodeWithTag("tasks-query").performTextReplacement("missing")
@@ -45,5 +47,12 @@ class R18TaskUiDeviceTest {
         compose.onNodeWithTag("tasks-query").performTextClearance()
         compose.onNodeWithTag("tasks-order").performScrollTo().performClick()
         compose.onNodeWithText("Date only: 2028-02-29").assertExists()
+        for(scope in listOf("OPEN","COMPLETED","ARCHIVED","ACTIVE")) {
+            compose.onNodeWithTag("tasks-scope-$scope").performScrollTo().assertIsDisplayed().performClick()
+            compose.onNodeWithTag("tasks-scope-$scope").assertTextContains("Selected: $scope")
+            if(scope in listOf("OPEN","ACTIVE")) compose.onNodeWithText("Renamed task").assertExists()
+            else compose.onNodeWithText("Renamed task").assertDoesNotExist()
+            saved(4) // View changes must not write another task revision.
+        }
     }
 }
