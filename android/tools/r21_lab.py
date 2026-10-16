@@ -8,7 +8,7 @@ p=argparse.ArgumentParser(description=__doc__);p.add_argument('mode',choices=['d
 if a.mode=='doctor':
  print(json.dumps({'JAVA_HOME':os.environ.get('JAVA_HOME'),'kotlinc':shutil.which(os.environ.get('KOTLINC','kotlinc')),'gh':shutil.which('gh'),'adb':shutil.which('adb'),'ANDROID_HOME':os.environ.get('ANDROID_HOME'),'scope':'Availability only. Not execution or acceptance.'},indent=2))
 elif a.mode=='host':
- for script in ['check_project.py','run_r21_contracts.py','run_r21_interop.py','prove_r21_models.py']:run([sys.executable,'tools/'+script])
+ for script in ['check_project.py','run_r21_contracts.py','run_r21_interop.py','run_r21_stress.py','prove_r21_models.py']:run([sys.executable,'tools/'+script])
  run([sys.executable,'-m','unittest','discover','-s','tools','-p','test_*.py'])
 else:
  branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()

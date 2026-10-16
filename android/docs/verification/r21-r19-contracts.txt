@@ -1,0 +1,2 @@
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R19: 539 assertions PASS; bounded undo/merge/stream and literal multi-sheet export. Not Android, Office parity or release acceptance.

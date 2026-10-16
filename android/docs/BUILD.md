@@ -1,4 +1,70 @@
-# R20 — current Android build and try-out
+# R21 — current Android build and try-out
+
+## R21: CSV worksheet try-out
+
+**Evaluated candidate b96f060:** full109/109, R21 focused8/8 and Task/Notes7/7 passed
+on managed API34; both debug builds/JVM/contracts/lint passed. [Download debug artifacts](https://github.com/jyvplay/OSB/actions/runs/38849172796)
+from `fusion-native-debug`. Later report/tooling commits are not separately native-tested
+application candidates. This is not physical/AX/full-product release acceptance.
+
+On your laptop, check out `arena/31a7965e-osb` first: PR #5 is not merged, so `main` does not contain these R21 changes.
+Open `android/` in Rabbit1 with the pinned AGP8.13.2/Kotlin2.2.21/JDK17/SDK36 setup below.
+The IDE GUI itself has not been exercised here. Use a disposable API34+ AVD and test data.
+
+1. Run `app` / `proDebug`; open **Tasks and action plans (Automation)** and enable the
+   experiment for this session. Stay in action plans (Back to action plans if in Tasks).
+2. Choose **CSV selected-column worksheet**. This opens a real native Activity, not a browser page.
+3. Paste, for example:
+
+   ```csv
+   Name,Value,Private
+   Alice,=1+1,omit-this
+   ```
+
+4. Enter `2` under columns, then **Preview selected columns**. The table is parsed in a
+   fresh isolated child; every selected cell is shown. Formula-looking text stays text.
+   `1,2` deliberately keeps Name too—it is not anonymous. Editing source/selection invalidates
+   the previous preview. Display escapes controls without changing exported cell contents.
+5. **Save new literal XLSX…**, choose a new DocumentsUI destination, and wait for an explicit
+   **XLSX readback verified** result. Open a disposable copy in your actual spreadsheet app
+   to test fidelity there. Failure may leave an empty/partial destination; inspect before retry.
+
+Limits:64KiB UTF8,256 rectangular rows,32 columns,4096 UTF16 units/cell. No delimiter/type
+sniffing; no original Office package opening, formulas, styles or macros. Unsupported XLSX
+text is refused. Draft is session-only: closing/recreation loses it; an outstanding export
+snapshot is not restored. Do not use your only copy of important data.
+
+**Privacy boundary:** this is the network-enabled MAIN app, not the separate offline APK.
+CSV input briefly touches a private temporary file before readonly opening/unlinking. That is
+not secure disk erasure. Parent, Android, IME/accessibility, provider and laptop remain trusted.
+Selected content, filenames and sharing context may identify you. The original browser/Office
+entry gates are not unlocked by this bounded worksheet feature.
+
+From `android/`, without an IDE GUI:
+
+```sh
+python3 tools/r21_lab.py doctor
+# Real installed JDK17 + Kotlin2.2.21; make openpyxl3.1.5 and z3-solver importable:
+python3 tools/r21_lab.py host
+python3 tools/run_r21_stress.py
+# With a real Android SDK, not available locally in this sandbox:
+./gradlew :app:assembleProDebug :app:assemblePlayDebug :testing:r21Contracts
+./gradlew :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R21BoundaryDeviceTest,dev.fusion.shell.R21CsvUiDeviceTest
+```
+
+Windows uses `gradlew.bat`; set JAVA_HOME/KOTLINC according to your installed tools.
+Actual push-triggered native CI is `.github/workflows/android-r21.yml` (focused) and
+`android.yml` (full). `r21_lab.py dispatch-native` is provided but not claimed executed.
+A separate manual privacy dispatch attempted here returned GitHub403 (integration permission);
+no run or pass was inferred. Push CI still works; manual dispatch may require reconnecting
+GitHub in Arena with the needed permissions. No credentials should be shared in chat.
+
+Collect only completed actual run IDs with `collect_native_evidence.py RUN_ID NEW_PREFIX`
+(`--focused` for the R21 workflow). Do not overwrite historical failed receipts or conflate
+focused with full. See [R21-ENGINEERING.md](R21-ENGINEERING.md) for exact candidates/outcomes,
+A–J contract, privacy research and residuals. **48/49 substantial subsets;0/49 fully accepted.**
+
+## Earlier R20 build/evidence baseline
 
 Open **OSB/android** in Android Studio Rabbit1 with compatible AGP8.13.2,
 Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is remote;

@@ -1,0 +1,35 @@
+{
+  "result": "PASS",
+  "cases": 6,
+  "input_bytes": [
+    8448,
+    41216,
+    65536,
+    65536,
+    28800,
+    8448
+  ],
+  "frame_bytes": [
+    32780,
+    65548,
+    65595,
+    65595,
+    28684,
+    11276
+  ],
+  "workbook_bytes": [
+    553753,
+    586521,
+    68629,
+    286969,
+    178777,
+    82153
+  ],
+  "producer_seconds_observed": 0.4649899460000597,
+  "producer_child_peak_rss_kib_linux": 101012,
+  "scope": "Actual near-cap CSV producer/readback corpora; no Android memory/performance bound. Host observation excludes Python reader memory. Authored corpus, not independent authorship or blind holdout.",
+  "sha256": {
+    "tools/run_r21_stress.py": "d814db9ff3284b51464db2fd59e94f2726b4f0afa219429c17655c71d60a9387",
+    "testing/build/r21/result.txt": "c8efe6162a91f0296f1aa3c3d6a1846a391a9fed1730732760c2feb7f0fb2c77"
+  }
+}

@@ -752,7 +752,7 @@
       "module": ":feature:automation",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Latest d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export R21 native CSV worksheet UI added after worker spike; fresh UI results required, existing task subset remains established.",
+      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Latest d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export R21 native CSV worksheet added after worker spike; b96f060 focused8/8 and Task/Notes7/7 passed after exact-readback repair. Whole-app/physical/AX acceptance remains separate.",
       "production": [
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",

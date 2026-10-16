@@ -23,3 +23,20 @@ class R21EvidenceTests(unittest.TestCase):
  def test_earlier_104_case_green_run_is_not_later_workbench(self):
   r=json.loads((ROOT/'docs/verification/r21-boundary-full-result.json').read_text())
   self.assertFalse(assess(r,r['candidate'],'r21_full_api34')[0])
+
+ def test_actual_repaired_focused_gate_only_accepts_its_candidate_scope(self):
+  r=json.loads((ROOT/'docs/verification/r21-final-focused-result.json').read_text())
+  self.assertEqual({'PASS':8,'FAIL':0,'SKIP':0},r['counts'])
+  self.assertTrue(assess(r,r['candidate'],'r21_workbench_api34')[0])
+  self.assertFalse(assess(r,self.sha,'r21_workbench_api34')[0])
+  self.assertFalse(assess(r,r['candidate'],'r21_full_api34')[0])
+  for claim in UNSUPPORTED:self.assertFalse(assess(r,r['candidate'],claim)[0])
+
+ def test_actual_full_repair_and_failed_prior_full_runs(self):
+  r=json.loads((ROOT/'docs/verification/r21-final-native-result.json').read_text())
+  self.assertEqual({'PASS':109,'FAIL':0,'SKIP':0},r['counts'])
+  self.assertTrue(assess(r,r['candidate'],'r21_full_api34')[0])
+  self.assertFalse(assess(r,self.sha,'r21_full_api34')[0])
+  for prefix in ['r21-first-full','r21-ime-full','r21-preview-full']:
+   failed=json.loads((ROOT/f'docs/verification/{prefix}-result.json').read_text())
+   self.assertFalse(assess(failed,failed['candidate'],'r21_full_api34')[0])

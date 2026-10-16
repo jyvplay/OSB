@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "denominator": "included Gradle modules, not features/flavors/services/effort",
   "common_acceptance_gates": {
     "android_build_lint_and_both_flavors": true,
@@ -140,9 +140,9 @@
     {
       "module": ":feature:browser",
       "status": "incomplete",
-      "present_scope": "Executed immutable session metadata/codec. Separate debug :app experiments passed real profiles and remote surface pixels/input/resize on regular API34 at2c2b5bc. No connected product renderer/chrome/profile/navigation integration.",
+      "present_scope": "Executed immutable session metadata/codec. Separate debug :app experiments passed real profiles and remote surface pixels/input/resize on regular API34 at2c2b5bc. No connected product renderer/chrome/profile/navigation integration. R21 document-owned pending consent/one-shot lifecycle controller executed on JVM and API34; no real engine permission wiring.",
       "remaining_gap": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":feature:terminal",
@@ -252,9 +252,9 @@
     {
       "module": ":feature:automation",
       "status": "incomplete",
-      "present_scope": "App-local routine source; explicit experimental consent",
+      "present_scope": "App-local routine source; explicit experimental consent R21 native isolated-CSV worksheet with explicit selected-column literal XLSX and exact readback; b96f060 focused8/8, Task/Notes7/7 and full109/109 passed. Still no full automation/productivity acceptance.",
       "remaining_gap": "Bounded permission-safe triggers/actions, lifecycle/cancellation/auditability and AU acceptance",
-      "evidence_level": "android_compiled"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":format:native",
@@ -273,14 +273,14 @@
     {
       "module": ":format:ooxml",
       "status": "incomplete",
-      "present_scope": "Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence",
+      "present_scope": "Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence R21 bounded strict UTF8 CSV table/frame/projection/literal export:376 host assertions,480 external reader documents and6 near-cap stress cases; native worker/UI route passed at b96f060.",
       "remaining_gap": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
-      "evidence_level": "partial_kernel_contracts"
+      "evidence_level": "partial_android_execution"
     },
     {
       "module": ":format:pdf",
       "status": "incomplete",
-      "present_scope": "Platform preview source; isolated UID/read-only FD/digest precursor:6/6 API34 cases passed at1ea1faa including native socket denial with reachable controls. Not a document parser boundary or Android CPU/RSS proof",
+      "present_scope": "Platform preview source; isolated UID/read-only FD/digest precursor:6/6 API34 cases passed at1ea1faa including native socket denial with reachable controls. Not a document parser boundary or Android CPU/RSS proof R21 CSV grammar added to the real isolated child after a passed3-case operation spike; fresh focused8/8 and full109/109 passed at b96f060. This is a bounded CSV parser boundary, not a PDF/full Office engine or CPU/RSS proof.",
       "remaining_gap": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance",
       "evidence_level": "partial_android_execution"
     },
@@ -678,6 +678,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R20 bounded privacy/disclosure increments",
-  "build_evidence": "R12 continuation:30/48 substantial-testable subsets (62.50%), separately from full acceptance0/48. Latest0a23219/run38682595367: both-flavor assembly, invoked unit/contracts/lint and APK upload passed, but native49 PASS/1 FAIL/0 SKIP (new Editor200%-font long-text test timed out awaiting actual IME visibility). Earlier67fbd3949/49 predates this stronger test and is not inherited. All new module-specific cases passed. Pure kernels:2394 new plus183179 rerun host assertions;1188 new cross-language checks;74 local Python methods. All failures and exact next test: R12B-ENGINEERING.md. Full browser/Office/sandbox, human AX, physical/API37/16K and legal acceptance remain open."
+  "revision": "R21 isolated CSV worksheet and document-bound consent",
+  "build_evidence": "R21 exact application candidate b96f060808d6a7b73df9047f31209d4d589bcae7: full run38849172796 passed109/0/0, focused R21 run38849172743 passed8/0/0, Task/Notes run38849172798 passed7/0/0; both debug flavors, JVM/contracts and lint passed. Substantial testability48/49 (97.96%), fully accepted0/49. Earlier R21 failed UI/full receipts retained in R21-ENGINEERING.md; later docs/tooling commits do not inherit exact-candidate native passes. Full browser/Office/LOK, global anonymity, physical/AX/API37/16KiB and legal gates remain open."
 }
