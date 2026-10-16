@@ -1,0 +1,74 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/99c4405ad3d2e110064efd209a3b024fb5e52dce/.github",
+    "start_line": 3,
+    "start_column": null,
+    "end_line": 3,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/99c4405ad3d2e110064efd209a3b024fb5e52dce/.github",
+    "start_line": 25,
+    "start_column": null,
+    "end_line": 25,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Privacy APK footprint (compressed APK only, not RAM/installed size/Tails comparison): [{\"file\": \"privacy/build/outputs/apk/debug/privacy-debug.apk\", \"bytes\": 2526526, \"sha256\": \"9215c7e28bbdf3a99235c170c15f00de9986b5d17ebf32d408a0a7fa577412c0\"}]",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/99c4405ad3d2e110064efd209a3b024fb5e52dce/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl:  \njava.lang.AssertionError\nat org.junit.Assert.fail(Assert.java:87)\nat org.junit.Assert.assertTrue(Assert.java:42)\nat org.junit.Assert.assertTrue(Assert.java:53)\nat dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl$capture(PrivacyPlatformTest.kt:46)\nat dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl(PrivacyPlatformTest.kt:55)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/99c4405ad3d2e110064efd209a3b024fb5e52dce/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl=FAIL; dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions=PASS; dev.fusion.privacy.R23InputDefenseTest.actualMonotonicIdleDeadlineDiscardsWithoutFurtherInteraction=PASS; dev.fusion.privacy.R23InputDefenseTest.detachedKeyCannotMutateNewPadAndNewPadEnforcesAtomicCapacity=PASS; dev.fusion.privacy.R23InputDefenseTest.fullAndPartialObscurationDiscardRealEditorsAndDoNotResumeOnCleanUp=PASS; dev.fusion.privacy.R23InputDefenseTest.realExposureSnapshotAndMergedManifestKeepScopeAndNewScreensPrivate=PASS; dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately=PASS; dev.fusion.privacy.R23InputDefenseTest.realTouchEntryHasNoInputConnectionAndHardwareKeysCannotMutateCode=PASS; dev.fusion.privacy.R23InputDefenseTest.realFocusableDialogDiscardsPadBeforePauseAndFocusReturnStartsEmpty=PASS; dev.fusion.privacy.R23MemoryBoundaryTest.existingWritableMapSurvivesRestrictionButUnmappedReadOnlyParcelRefusesNewWrites=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/99c4405ad3d2e110064efd209a3b024fb5e52dce/.github",
+    "start_line": 290,
+    "start_column": null,
+    "end_line": 290,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/99c4405ad3d2e110064efd209a3b024fb5e52dce/.github",
+    "start_line": 247,
+    "start_column": null,
+    "end_line": 247,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\nssert.java:87)\n\npixel6Api34 Tests 2/14 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 5/14 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 6/14 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 8/14 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 9/14 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 10/14 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 11/14 completed. (0 skipped) (1 failed)\n\n> Task :privacy:pixel6Api34DebugAndroidTest\nTests on pixel6Api34 failed: There was 1 failure(s).\n\nFinished 14 tests on pixel6Api34\n\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792135249475.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights.\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 5m 23s\n119 actionable tasks: 119 executed",
+    "raw_details": ""
+  }
+]

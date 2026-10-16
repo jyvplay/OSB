@@ -1,0 +1,72 @@
+{
+  "run": 38866590115,
+  "candidate": "99c4405ad3d2e110064efd209a3b024fb5e52dce",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38866590115",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 13,
+    "FAIL": 1,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.actualMonotonicIdleDeadlineDiscardsWithoutFurtherInteraction",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.detachedKeyCannotMutateNewPadAndNewPadEnforcesAtomicCapacity",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.fullAndPartialObscurationDiscardRealEditorsAndDoNotResumeOnCleanUp",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.realExposureSnapshotAndMergedManifestKeepScopeAndNewScreensPrivate",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.realTouchEntryHasNoInputConnectionAndHardwareKeysCannotMutateCode",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.realFocusableDialogDiscardsPadBeforePauseAndFocusReturnStartsEmpty",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23MemoryBoundaryTest.existingWritableMapSurvivesRestrictionButUnmappedReadOnlyParcelRefusesNewWrites",
+      "result": "PASS"
+    }
+  ],
+  "suite": "privacy",
+  "scope": "Actual retained API34 named outcomes (privacy companion only), not physical/full-product/AX/legal acceptance"
+}
