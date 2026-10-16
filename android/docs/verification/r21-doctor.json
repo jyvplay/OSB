@@ -1,0 +1,8 @@
+{
+  "JAVA_HOME": "/home/user/.cache/fusion-tools/java/jdk4py/java-runtime",
+  "kotlinc": "/home/user/.cache/fusion-tools/kotlin/package/bin/kotlinc",
+  "gh": "/usr/bin/gh",
+  "adb": null,
+  "ANDROID_HOME": null,
+  "scope": "Availability only. Not execution or acceptance."
+}

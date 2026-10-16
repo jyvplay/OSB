@@ -24,12 +24,12 @@ class R21CsvUiDeviceTest {
   ActivityScenario.launch(CsvWorkbenchActivity::class.java).use {s->
    node("csv_source").text="name,value,secret\nAlice,=1+1,DO_NOT_EXPORT"
    node("csv_columns").text="2"
-   device.pressBack() // hide keyboard before real button touch
+   s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())} // Do not use Back: no visible IME would close the Activity.
    node("csv_parse").click();ready()
    s.onActivity {a->val text=a.findViewById<TextView>(dev.fusion.automation.R.id.csv_preview).text.toString();assertTrue(text.contains("=1+1"));assertFalse(text.contains("DO_NOT_EXPORT"));assertFalse(text.contains("Alice"))}
    node("csv_columns").text="1"
    s.onActivity {a->assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled);assertEquals("",a.findViewById<TextView>(dev.fusion.automation.R.id.csv_preview).text.toString())}
-   node("csv_columns").text="2";device.pressBack();node("csv_parse").click();ready();node("csv_save").click()
+   node("csv_columns").text="2";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())};node("csv_parse").click();ready();node("csv_save").click()
    assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
    val name=device.wait(Until.findObject(By.clazz("android.widget.EditText")),10000);assertNotNull(name);name.text="r21-columns-${UUID.randomUUID()}.xlsx"
    val save=device.wait(Until.findObject(By.text(Pattern.compile("(?i)save"))),10000);assertNotNull(save);save.click()
@@ -40,7 +40,7 @@ class R21CsvUiDeviceTest {
  }
  @Test fun recreationLosesDraftAndCannotExportOldPreview() {
   ActivityScenario.launch(CsvWorkbenchActivity::class.java).use {s->
-   node("csv_source").text="a,b\nx,y";device.pressBack();node("csv_parse").click();ready()
+   node("csv_source").text="a,b\nx,y";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())};node("csv_parse").click();ready()
    s.recreate()
    s.onActivity {a->assertEquals("",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString());assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled)}
   }

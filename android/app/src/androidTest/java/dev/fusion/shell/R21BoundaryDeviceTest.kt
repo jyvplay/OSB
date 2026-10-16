@@ -40,4 +40,14 @@ class R21BoundaryDeviceTest {
   val valid=requireNotNull(s.decide(s.request(id,kind),true,SystemClock.elapsedRealtime(),60000))
   assertTrue(s.consume(valid,id,kind,SystemClock.elapsedRealtime()));assertFalse(s.consume(valid,id,kind,SystemClock.elapsedRealtime()))
  }
+ @Test fun exactByteCapAndDenseEmptyTableCrossRealBinder() {
+  val exact=List(15) {"x".repeat(4096)}.plus("x".repeat(4081)).joinToString(",").toByteArray()
+  assertEquals(65536,exact.size)
+  val a=FormatLease(context).use {it.evaluateOwnedCsv(exact)}
+  assertEquals(16,a.table!!.columns);assertEquals(4081,a.table!!.rows[0][15].length)
+  val dense=((",".repeat(31)+"\n").repeat(256)).toByteArray()
+  val b=FormatLease(context).use {it.evaluateOwnedCsv(dense)}
+  assertEquals(256,b.table!!.rows.size);assertEquals(32,b.table!!.columns);assertEquals(32780,b.table!!.frame().size)
+ }
+
 }
