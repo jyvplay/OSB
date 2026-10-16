@@ -24,3 +24,9 @@ class R19EvidenceTests(unittest.TestCase):
         self.assertFalse(assess(r,self.candidate,'shared_memory_spike')[0])
         r=copy.deepcopy(self.receipt);r['device_conclusion']='failure'
         self.assertFalse(assess(r,self.candidate,'shared_memory_spike')[0])
+
+    def test_actual_95_case_candidate_cannot_inherit_new_picker_workflow(self):
+        r=json.loads((ROOT/'docs/verification/r19-native-result.json').read_text())
+        self.assertTrue(assess(r,r['candidate'],'task_edit_undo_native')[0])
+        self.assertTrue(assess(r,r['candidate'],'shared_memory_spike')[0])
+        self.assertFalse(assess(r,r['candidate'],'task_transfer_native')[0])

@@ -17,7 +17,19 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:47/48 (97.92%)](android/docs/MODULE-TESTABILITY.md).
 **0/48 specification-accepted modules (0%); not a production-ready beta.**
 
-## Latest R18
+## Latest R19
+
+[R19 engineering/evidence report](android/docs/R19-ENGINEERING.md): exact-snapshot edit/import undo,
+confirmed append-only task merge, real system-picker FTS interchange, and Active/Archived literal
+XLSX reports with aggregate-bounded multi-sheet writing. Task data is plaintext; reports are not backups.
+**cce38cb: 95/95 full API34 cases and 4/4 focused cases passed**, plus both builds/JVM/contracts/lint.
+**Latest 58e6566: 96/96 full API34 cases and 5/5 focused cases passed**, including the stronger
+actual picker import/save/reopen/undo workflow; both builds/JVM/contracts/lint also passed. Earlier compiler failures and intermittent task-add failures remain recorded.
+**539 host assertions + 430 reference/readback cases + 30 stress reports passed.**
+No full Office, browser, physical/AX/legal or release-completion claim; subset count remains 47/48.
+Try **Automation → enable with test data → Local tasks**; see [instructions and limits](android/docs/BUILD.md).
+
+## Historical R18
 
 [R18 engineering/evidence report](android/docs/R18-ENGINEERING.md): editable date-only tasks,
 reversible archive/restore with protected revision capacity, versioned persistence and query/order;

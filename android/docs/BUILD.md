@@ -1,4 +1,4 @@
-# R18 — current Android build and try-out
+# R19 — current Android build and try-out
 
 Open **OSB/android** in Android Studio Rabbit1 with compatible AGP8.13.2,
 Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is remote;
@@ -6,20 +6,19 @@ the Rabbit1 desktop IDE itself was not run here. Current min/compile/target34/36
 still differs from requested compile37. These are evaluation builds, not release clearance.
 
 **47/48 (97.92%) substantial executable subsets;0/48 fully accepted (0%).** Only LOK
-lacks an established subset. See [R18-ENGINEERING.md](R18-ENGINEERING.md) for exact
+lacks an established subset. See [R19-ENGINEERING.md](R19-ENGINEERING.md) for exact
 A–J evidence, alternatives, failures and remaining gates.
 
-**Latest tested d6f7393/run38831196589:85 PASS,1 FAIL,0 SKIP**; focused2/2 passed.
-[Latest evaluated APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38831196589)
-include `fusion-native-debug`; both builds/JVM/contracts/lint passed, but the full native gate FAILED.
-The older task-add test timed out with real persisted revision0/no task; all seven new R18 cases passed.
-Use disposable data only. Do not treat this as stable or release-ready.
+**Latest tested 58e6566: 96 PASS, 0 FAIL, 0 SKIP; focused 5/5 passed.**
+[Evaluated debug APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38839938215)
+include `fusion-native-debug`; both debug flavors, JVM/contracts and lint passed.
+This is actual managed API34 pro-debug execution, not physical-device or release clearance.
+The stronger actual import/confirm/save/reopen/discard/undo picker sequence passed in both runs.
+The older task-add timeout remains undiagnosed. Retained contradictory full/focused outcomes are
+in the R18 report; successful runs do not prove causal repair or general stability.
+Use disposable data only. Later evidence/docs revisions are not the same tested commit.
 
-[Earlier9340662 full run](https://github.com/jyvplay/OSB/actions/runs/38830281113) passed86/86,
-but its focused run failed0/2. Both results remain; no causal repair/stability claim is made.
-Later docs/evidence commits are not the same tested revision. Historical79-case R17 results are in its report.
-
-## Try-out: editable local tasks
+## Try-out: reversible tasks, merge and export
 
 1. Use **proDebug** on a disposable API34+ AVD and acknowledge the pilot warning.
 2. Open **Automation** from the horizontally scrollable shelf; enable this session with test data,
@@ -31,6 +30,24 @@ Later docs/evidence commits are not the same tested revision. Historical79-case 
    Archived records still count toward128; no permanent deletion is implemented.
 6. Use the literal title query, ACTIVE/OPEN/COMPLETED/ARCHIVED controls and date/insertion order.
    View changes do not save a new task revision. Recreate/reopen and reload to inspect persistence.
+7. Edit and save, then **Undo last edit/import**: prior task data returns at a new revision, not a
+   rolled-back revision. No-op edit/import retains a still-valid earlier undo. Reload/recreation
+   clears the session token; this is not durable or multi-level history.
+8. **Export all tasks — new document** captures the currently loaded snapshot as plaintext FTS.
+   Reload first if another window changed the store. Choose a new destination in the system picker.
+   Successful status means exact reopen/readback, not provider honesty or power-loss durability.
+9. **Open task file for merge preview** reads FTS1/FTS2 without changing local tasks. Inspect new/
+   identical counts; **Confirm append-only merge** appends new UUIDs only. Conflicting existing IDs,
+   stale previews or capacity/headroom violations refuse the whole plan. Imported revision is not
+   adopted. Discard leaves data unchanged; a changed confirmed merge can be immediately undone.
+10. **Export task report — new XLSX** produces Active/Archived sheets with IDs, literal titles,
+    date strings and booleans. It is a report, not an FTS backup or full Office engine. Some XML/
+    escaped-string text cannot be represented and is refused; use FTS rather than silently losing text.
+
+Cancellation/recreation/provider errors may leave an empty or partial **new** document. Do not
+interpret an error as rollback or delete an unrelated destination. Pending export state and undo
+are session-only. Task input remains capped at 128KiB; generated report readback is separately
+capped at 512KiB. No storage/provider deadlines, encrypted task database or all-provider guarantee.
 
 Limits:128 active+archived tasks,256 UTF16 title/query units, date-only years0001..9999,
 plaintext private no-backup storage, same-process lock, no reminders/recurrence/calendar sync.
@@ -47,12 +64,19 @@ From `android/`, set JAVA_HOME to JDK17 and KOTLINC to Kotlin2.2.21:
 LC_ALL=C.UTF-8 python3 tools/run_r16_contracts.py
 LC_ALL=C.UTF-8 python3 tools/run_r17_contracts.py
 LC_ALL=C.UTF-8 python3 tools/run_r18_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r19_contracts.py
+python3 tools/run_r19_interop.py
+python3 tools/run_r19_report_stress.py
 python3 tools/run_r18_interop.py
 python3 tools/run_r17_interop.py
 python3 tools/check_project.py
 python3 -m unittest discover -s tools -p 'test_*.py'
-./gradlew :app:assembleProDebug :testing:r17Contracts :testing:r18Contracts
+./gradlew :app:assembleProDebug :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts
 ```
+
+The stress script uses Linux resource accounting; run it on a Linux host.
+R19 readers require host-only openpyxl 3.1.5; R13 calendar regression uses calibrated icalendar 7.3.0.
+`tools/prove_r19_models.py` requires z3-solver 5.3.0.0 and checks conditional models, not Kotlin proofs.
 
 Use `gradlew.bat` on Windows. R16's independent socket verifier additionally needs host-only
 cryptography46.0.3 (`PYTHONPATH` as in the historical R15 instructions below).

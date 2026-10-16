@@ -1,0 +1,129 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 116777467630,
+      "run_id": 38839938303,
+      "workflow_name": "Android Tasks focused diagnostic",
+      "head_branch": "arena/31a7965e-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/38839938303",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbMHq-7g",
+      "head_sha": "58e65660881e7e5b4663dd9e3c31dd86ab651a05",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/116777467630",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/38839938303/job/116777467630",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-16T02:20:42Z",
+      "started_at": "2026-10-16T02:20:44Z",
+      "completed_at": "2026-10-16T02:27:50Z",
+      "name": "Focused actual Task UI (not full-suite acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-16T02:20:45Z",
+          "completed_at": "2026-10-16T02:20:48Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-16T02:20:48Z",
+          "completed_at": "2026-10-16T02:20:49Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-16T02:20:49Z",
+          "completed_at": "2026-10-16T02:20:49Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-16T02:20:49Z",
+          "completed_at": "2026-10-16T02:20:55Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-16T02:20:55Z",
+          "completed_at": "2026-10-16T02:20:55Z"
+        },
+        {
+          "name": "Observe actual Task UI and disk outcome",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-16T02:20:55Z",
+          "completed_at": "2026-10-16T02:27:46Z"
+        },
+        {
+          "name": "Publish actual outcomes and diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-16T02:27:46Z",
+          "completed_at": "2026-10-16T02:27:46Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-16T02:27:46Z",
+          "completed_at": "2026-10-16T02:27:47Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-16T02:27:47Z",
+          "completed_at": "2026-10-16T02:27:48Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-16T02:27:48Z",
+          "completed_at": "2026-10-16T02:27:48Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-16T02:27:48Z",
+          "completed_at": "2026-10-16T02:27:48Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-16T02:27:48Z",
+          "completed_at": "2026-10-16T02:27:48Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/116777467630",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000201,
+      "runner_name": "GitHub Actions 1000000201",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

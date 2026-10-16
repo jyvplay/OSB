@@ -1,4 +1,16 @@
-# Latest: R18 — editable/archiveable tasks and owned sandbox requests
+# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+
+- **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
+- **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.
+- Exact-state one-step edit/import undo at a new revision; no-op preservation; append-only merge preview/confirmation with stale/conflict refusal.
+- Real system document pickers, bounded plaintext FTS input/export with exact readback, and Active/Archived XLSX reports. Original literal writer now supports 1..16 sheets with aggregate pre-copy budgets. No full Office/LOK claim.
+- **Collected cce38cb: 95/95 full API34 cases and 4/4 focused UI cases PASS.** Both debug builds/JVM/contracts/lint passed. Native compilation failures are retained; the missing test-only UIAutomator dependency was repaired.
+- **Latest 58e6566: 96/96 full API34 cases and 5/5 focused UI cases PASS; both builds/JVM/contracts/lint PASS.** It actually selects/imports/confirms/saves/reopens/undoes through DocumentsUI and verifies source preservation; cancellation now explicitly checks foreground return.
+- **539 R19 host assertions + 430 reference/readback cases + 30 report stress cases PASS; 95 Python tooling methods PASS.** Four conditional UNSAT checks have SAT premises; two boundary models are SAT. These are not Kotlin implementation proofs.
+- Actual SharedMemory old-writer alias counterexample; production transport unchanged. Earlier intermittent task-add failures remain undiagnosed; passing runs are not stability proof.
+- [R19 A–J report, exact limits and alternatives](docs/R19-ENGINEERING.md), [48-module census](docs/MODULE-TESTABILITY.md), [evaluation APK/try-out](docs/BUILD.md).
+
+# Historical: R18 — editable/archiveable tasks and owned sandbox requests
 
 - **47/48 modules (97.92%) have substantial executable subsets;1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted (0%);48/48 unfinished (100%).** All30 formal spikes remain unpassed.
