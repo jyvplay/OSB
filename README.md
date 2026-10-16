@@ -1,33 +1,14 @@
 # Fusion Shell — native Android development
 
-Open **[`android/`](android/README.md)** in Android Studio. That is the Kotlin /
-Jetpack Compose application, not a browser recreation.
+Open **[`android/`](android/README.md)** in Android Studio Rabbit1. That is the Kotlin / Jetpack Compose application; the root Vite page is only a project landing page and is not the Android product.
 
-The existing root `src/`, npm files and Vite configuration are legacy web work;
-they are not the Android product, were not extended in this pass, and are not
-part of the Android build.
+**The full v2.0/v2.1 product remains incomplete.** The repository's 231-row requirement ledger is not fully accepted; no release/performance/anonymous-OS claim is made. The root TypeScript page is only a refreshed project landing page, not the Android product. See [build instructions](android/docs/BUILD.md), [verification status](android/STATUS.md), and the [requirements ledger](android/requirements.csv).
 
-**This is an incomplete implementation with limited API34 emulator testing of the owner's
-v2.0 + v2.1 specification.** No release-complete or performance claim is made.
-See [build instructions](android/docs/BUILD.md),
-[current verification status](android/STATUS.md), and the
-[231-row requirement ledger](android/requirements.csv).
+## R23 — privacy-workspace increment (source added; Android-unverified here)
 
-Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md).
-[Current substantial testable subsets:47/48 (97.92%)](android/docs/MODULE-TESTABILITY.md).
-**0/48 specification-accepted modules (0%); not a production-ready beta.**
+Added a read-only local device-posture panel and user-directed Android Settings links to the separate no-INTERNET `:privacy` companion. It reports only bounded system API observations, treats unavailable values as unknown, and explicitly says it cannot scan for malware/keyloggers, authenticate hardware/firmware, or provide anonymity. It does not change device settings. See the [R23 A–J engineering record](android/docs/R23-ENGINEERING.md), [privacy PRD addendum](android/docs/R23-PRIVACY-PRD.md), and [fresh primary research](android/docs/research/r23-primary.md).
 
-## Latest R19
-
-[R19 engineering/evidence report](android/docs/R19-ENGINEERING.md): exact-snapshot edit/import undo,
-confirmed append-only task merge, real system-picker FTS interchange, and Active/Archived literal
-XLSX reports with aggregate-bounded multi-sheet writing. Task data is plaintext; reports are not backups.
-**cce38cb: 95/95 full API34 cases and 4/4 focused cases passed**, plus both builds/JVM/contracts/lint.
-**Latest 58e6566: 96/96 full API34 cases and 5/5 focused cases passed**, including the stronger
-actual picker import/save/reopen/undo workflow; both builds/JVM/contracts/lint also passed. Earlier compiler failures and intermittent task-add failures remain recorded.
-**539 host assertions + 430 reference/readback cases + 30 stress reports passed.**
-No full Office, browser, physical/AX/legal or release-completion claim; subset count remains 47/48.
-Try **Automation → enable with test data → Local tasks**; see [instructions and limits](android/docs/BUILD.md).
+No R23 Android compile, APK, emulator, or physical-device test ran in this sandbox. **48/49 modules (97.96%) meet the repository's narrow substantial-testable-subset census; 1/49 (2.04%) is not established; 0/49 are fully specification-accepted.** These are module-level source/testability counts, not feature completion or R23 runtime verification. [Census](android/docs/MODULE-TESTABILITY.md) · [Rabbit1 try-out](android/docs/BUILD.md).
 
 ## Historical R18
 

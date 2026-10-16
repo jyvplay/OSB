@@ -6,4 +6,11 @@
     <item name="project_link" type="id"/>
     <item name="scratch_status" type="id"/>
     <item name="link_status" type="id"/>
+    <item name="device_posture" type="id"/>
+    <item name="device_posture_status" type="id"/>
+    <item name="refresh_device_posture" type="id"/>
+    <item name="review_keyboard_settings" type="id"/>
+    <item name="review_accessibility_settings" type="id"/>
+    <item name="review_developer_settings" type="id"/>
+    <item name="review_security_settings" type="id"/>
 </resources>

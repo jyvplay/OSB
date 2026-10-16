@@ -1,4 +1,13 @@
-# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+# Latest: R23 — offline privacy workspace and posture review
+
+- The full v2.0/v2.1 application remains incomplete; 231 requirement rows and all 30 formal spikes remain open. No release, global-anonymity, full browser, Office engine, or production-sandbox claim.
+- `:privacy` remains a separate no-INTERNET app/UID. R23 adds bounded read-only system observations (current IME, accessibility services, ADB debugging setting, secure-lock configuration, reported patch string, currently listed non-virtual keyboards), explicit unknown values, and user-directed Settings buttons.
+- No settings are changed by the app; no malware/keylogger scan, hardware/firmware attestation, USB Protection status, safe-device verdict, RAM/flash erasure or Tails equivalence is claimed.
+- New Android instrumentation tests and host-only structural checks are authored. **R23 Kotlin has not been compiled or run in this sandbox; no R23 APK exists.** The prior privacy CI receipt does not cover this source.
+- **48/49 modules (97.96%) meet the narrow substantial-testable-subset standard; 1/49 (2.04%) is not established; 0/49 are fully specification-accepted.** This is a module census, not feature completion or new runtime verification.
+- [R23 engineering/A–J](docs/R23-ENGINEERING.md) · [Privacy PRD](docs/R23-PRIVACY-PRD.md) · [fresh primary research](docs/research/r23-primary.md) · [Rabbit1 try-out](docs/BUILD.md) · [module census](docs/MODULE-TESTABILITY.md).
+
+# Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.

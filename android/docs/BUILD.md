@@ -1,3 +1,34 @@
+# R23 — offline privacy workspace and current-source verification
+
+R23 adds an observation-only device posture panel to the separate no-INTERNET `:privacy` app: current IME package, system-reported accessibility services, secure-lock/ADB setting, OS patch string, and currently reported non-virtual keyboard names. Values are bounded and missing/filtered results stay unknown. The panel has refresh and user-directed Android Settings buttons. It never writes a system setting, stores/sends the snapshot, or declares a device safe.
+
+**This R23 Kotlin change has not been compiled or run in this sandbox. No R23 APK is available.** The R22 API34 receipts below are for a different source candidate and do not verify this change. No physical USB/keyboard/hardware test, Android Studio Rabbit1 GUI run, or privacy/anonymity acceptance is claimed.
+
+## Try the R23 privacy companion in Android Studio Rabbit1
+
+1. Open the repository's `android/` directory in Android Studio Rabbit1. Use JDK 17 and the repository-pinned AGP 8.13.2 / Kotlin 2.2.21 / SDK 36 setup; compile36/target36 still differ from the requested compile37/target37 path. Android Studio Rabbit1 itself is not available in this sandbox.
+2. Select the `privacy` run configuration (or assemble `:privacy:assembleDebug`) and install `dev.fusion.privacy` on a disposable API34+ emulator or spare device.
+3. In **Fusion Offline Scratchpad**, review **Local device posture**. It is an observation-only snapshot, not a malware/keylogger scan. Refresh to re-read Android; use the Settings buttons to inspect actual system settings. Opening Settings pauses and discards the scratchpad by design; on return the snapshot is freshly read.
+4. Use dummy text only. Press **Discard all text**, switch apps, open Settings, recreate, and verify the workspace returns empty. The app has no Internet permission and no save/import/export action. It cannot protect Fusion Shell or other apps.
+5. Do not interpret an empty keyboard/accessibility list as safety. An app cannot authenticate a physical/inline keylogger, USB cable, firmware, boot chain, IME, OS, laptop or external observer. The Android USB Protection explanation is device-specific; verify your model's current Android documentation and settings.
+6. For practical, layered mitigations—lock before unfamiliar USB, enable supported OS USB protection, turn off unused USB debugging/revoke unknown authorizations, use trusted input hardware, review IME/accessibility without disabling needed assistance, and minimize secret entry—see [research guidance](research/r23-primary.md#practical-risk-reductions-not-guarantees). These reduce exposure; none proves the device is safe.
+
+From `android/` with an installed Android SDK and JDK17:
+
+```sh
+python3 tools/r23_privacy_check.py                       # source/manifest only
+python3 -m unittest tools.test_r23_privacy -v             # host test of source guard only
+python3 tools/check_project.py                            # traceability/source checks, no Kotlin compile
+./gradlew :privacy:assembleDebug :privacy:lintDebug
+./gradlew :privacy:pixel6Api34DebugAndroidTest            # managed API34; not physical USB/AX acceptance
+```
+
+The host-only guard prints its own structural-only scope. It cannot type-check Kotlin, resolve Android APIs, open system Settings, observe IME/accessibility behavior, or inspect hardware. On a real test device, additionally check actual IME/accessibility Settings transitions and supported USB Protection locked/unlocked/pre-existing-session/boot/reconnect behavior. Do not use a valuable document or real credential as a test fixture.
+
+See [R23 A–J engineering record](R23-ENGINEERING.md), [proposed privacy PRD](R23-PRIVACY-PRD.md), and [fresh primary research](research/r23-primary.md).
+
+---
+
 # R22 — native values-only XLSX import and laptop checks
 
 **Evaluated fe8dca210642d42c0553c47ff4bccc16b5e17404: full119/0/0, focused10/0/0,

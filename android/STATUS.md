@@ -1,4 +1,13 @@
-# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+# Latest: R23 — offline privacy workspace and device-posture observations
+
+- Added bounded, read-only system observations and direct user-controlled Settings routes to the separate `:privacy` APK. The panel reports unknown values honestly and never declares a device safe.
+- New instrumentation tests attack the “all green ⇒ safe” shortcut; a host-only structural check validates the manifest/UI/test-source link.
+- **R23 source and tests are not compiled or executed in this sandbox.** No new APK, emulator, physical device, USB, keyboard, accessibility, or Android Studio Rabbit1 run is claimed. Earlier R22/native receipts do not authenticate the current patch.
+- Formal target remains **0/49 modules accepted; 49/49 unfinished**. Substantial testable-subset census remains **48/49 (97.96%); 1/49 not established (2.04%)**. This is not feature-completion percentage.
+- Tails-inspired privacy requirements are a scoped PRD addendum, not a “Tails mod”: this APK cannot provide global Tor routing, boot/session amnesia, device-owner USB policy, hardware/firmware attestation, or whole-device anonymity.
+- See [R23 A–J engineering record](docs/R23-ENGINEERING.md), [privacy PRD](docs/R23-PRIVACY-PRD.md), [fresh primary research](docs/research/r23-primary.md), and [build/try-out instructions](docs/BUILD.md).
+
+# Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.

@@ -215,10 +215,16 @@
       "sha256": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955"
     },
     {
+      "path": "privacy/src/main/java/dev/fusion/privacy/DevicePrivacySnapshot.kt",
+      "module": ":privacy",
+      "package": "dev.fusion.privacy",
+      "sha256": "6e522cb69a7d7f479f92e2274ce2e540de0d2d6c7fce16b731c007a333c75e47"
+    },
+    {
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "849d62266cd7dccd70e83fc3de5ab8908f67376f660e51e5eddd808d262269ee"
+      "sha256": "cd2caf14c2995786686fb7a5431e44bb6027f5ab802495702a2967094524a47d"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
