@@ -49,12 +49,20 @@ class R22XlsxUiDeviceTest {
     assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
     node("csv_status");status("XLSX readback verified:")
     resolver.openInputStream(uri)!!.use {assertArrayEquals(original,it.readBytes())}
-    val copy=resolver.query(MediaStore.Downloads.EXTERNAL_CONTENT_URI,arrayOf(MediaStore.MediaColumns._ID),"${MediaStore.MediaColumns.DISPLAY_NAME}=?",arrayOf(output),null)!!.use {c->assertTrue(c.moveToFirst());android.content.ContentUris.withAppendedId(MediaStore.Downloads.EXTERNAL_CONTENT_URI,c.getLong(0))}
-    try {
-     val bytes=resolver.openInputStream(copy)!!.use {it.readBytes()}
-     val table=dev.fusion.format.pdf.sandbox.FormatLease(context).use {it.evaluateOwnedXlsx(bytes)}.table!!
-     assertEquals(listOf(listOf("value"),listOf("=1+1")),table.rows)
-    } finally {resolver.delete(copy,null,null)}
+    // A picker-created document need not be queryable through this app's MediaStore collection.
+    // Reopen through a fresh real picker grant; never add broad storage permission just for a test.
+    node("csv_import").click();assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    requireNotNull(device.wait(Until.findObject(By.text(output)),10000)).click()
+    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    node("csv_status");status("XLSX imported:")
+    // Patch attack: old source had 3 columns; new copy has only 1. Column2 must now refuse.
+    node("csv_parse").click();node("csv_status");status("CSV/columns/XLSX refused")
+    s.onActivity {a->assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled)}
+    node("csv_columns").text="1";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())}
+    node("csv_parse").click();node("csv_status");status("Preview ready.")
+    s.onActivity {a->assertEquals("2 rows, 1 selected columns. Literal text only.\n"+CsvTable.of(listOf(listOf("value"),listOf("=1+1"))).preview(),a.findViewById<TextView>(dev.fusion.automation.R.id.csv_preview).text.toString())}
+    resolver.openInputStream(uri)!!.use {assertArrayEquals(original,it.readBytes())}
+    // This tiny exported copy is left in the explicitly disposable AVD; no delete authority is assumed.
     s.recreate();s.onActivity {a->assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled);assertEquals("",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString())}
    }
   } finally {resolver.delete(uri,null,null)}
