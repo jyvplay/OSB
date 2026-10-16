@@ -25,6 +25,17 @@ object R18Checks {
         for(b in listOf(legacy,archived)) {no {b.archive(UUID(1,2).toString(),true)};no {b.edit(UUID(1,2).toString(),"x",null)}}
         val max=TaskBook(Long.MAX_VALUE,listOf(t));eq(true,max===max.archive(t.id,false));eq(true,max===max.edit(t.id,t.title,t.due))
         no {max.archive(t.id,true)};no {max.edit(t.id,"new",null)}
+        val near=TaskBook(Long.MAX_VALUE-1,listOf(t));no {near.archive(t.id,true)}
+        val reserving=TaskBook(Long.MAX_VALUE-2,listOf(t)).archive(t.id,true)
+        eq(Long.MAX_VALUE-1,reserving.revision);eq(Long.MAX_VALUE,reserving.archive(t.id,false).revision)
+        val other=t.copy(id=UUID(2,2).toString())
+        val protected=TaskBook(Long.MAX_VALUE-1,listOf(t.copy(archived=true),other))
+        no {protected.edit(other.id,"consume reserved slot",null)}
+        no {TaskBook(Long.MAX_VALUE,listOf(t.copy(archived=true)))}
+        val allReserved=TaskBook(Long.MAX_VALUE-128,(0 until 128).map {t.copy(id=UUID(0,it.toLong()).toString(),archived=true)})
+        var restored=allReserved
+        for(item in allReserved.tasks) restored=restored.archive(item.id,false)
+        eq(Long.MAX_VALUE,restored.revision);eq(0,restored.tasks.count {it.archived})
         val original=TaskFrame.encode(legacy)
         no {legacy.edit(t.id,"\uD800",null)};no {legacy.edit(t.id," ",null)};no {legacy.edit(t.id,"x",LocalDate.of(0,1,1))};eq(true,original.contentEquals(TaskFrame.encode(legacy)))
         for(version in listOf(0x46545331,0x46545332)) for(flag in 0..255) {
@@ -69,8 +80,14 @@ object R18Checks {
         no {owned.accept(owned.bytes-1,owned.sha256,result)};no {owned.accept(owned.bytes,"0".repeat(64),result)}
         for(text in listOf("FSR1\nA1\t2\n","FSR1\nB1\t6\nC1\t2\n","FSR1\nA1\t2\nB1\t6\nC1\t2\n")) no {owned.accept(owned.bytes,owned.sha256,text.toByteArray())}
         val empty=dev.fusion.ooxml.OwnedSheetRequest.create(emptyMap());eq(emptyMap<String,String>(),empty.accept(empty.bytes,empty.sha256,"FSR1\n".toByteArray()))
+        val accepted=owned.accept(owned.bytes,owned.sha256,result)
+        checks++;try {(accepted as MutableMap<String,String>)["A1"]="changed";error("Mutable result") } catch(_:UnsupportedOperationException) {}
+        no {owned.accept(owned.bytes,owned.sha256,ByteArray(dev.fusion.ooxml.SheetFrame.MAX_OUTPUT+1))}
+        val fullCells=(1..256).associate {"A$it" to it.toString()}
+        val fullOwned=dev.fusion.ooxml.OwnedSheetRequest.create(fullCells)
+        eq(256,fullOwned.accept(fullOwned.bytes,fullOwned.sha256,dev.fusion.ooxml.SheetFrame.execute(fullOwned.frame())).size)
         // Honest negative: matching metadata/keys do NOT prove arithmetic truth from a malicious worker.
         eq("999",owned.accept(owned.bytes,owned.sha256,"FSR1\nA1\t999\nB1\t999\n".toByteArray())["A1"])
-        println("R18: $checks assertions PASS; editing/archive/query/versioned codec, not reminders or full Tasks acceptance.")
+        println("R18: $checks assertions PASS; tasks and owned-sheet correlation; not reminders, Office fidelity or full module acceptance.")
     }
 }

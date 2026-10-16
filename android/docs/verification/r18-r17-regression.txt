@@ -6,9 +6,9 @@ OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
 OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
 
 Separately compiled Tasks production library; no Android execution inferred.
-549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
+d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
 c27775d219ad8f224e4c89852a3925becc8b2c2122a4f44f91e97c4ce0633918  testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt
 6ce667e32221ebc3514f505186da308bf910b6a8650f23de5e3fb0ee25e2c9da  testing/src/r17/kotlin/dev/fusion/testing/R17Oracle.kt
 37bf7558aea5226511fa2e3ad28c7a6a50b4b94add02725c54edcf5bc89a46c0  tools/run_r17_contracts.py
-51fd048e36661bb86bc479a8d0f7b178dfea80810423c05554c59c187392f9ef  testing/build/r17/TaskBook.jar
+dd47d1c3bdbc1164ca82d71eb23fbeb5de622696ee758f2c4677507ade2237fc  testing/build/r17/TaskBook.jar
 4921e2e0b34744a3abd523307188f6cd869215e9852e59627954712c55c487fa  testing/build/r17/checks.jar

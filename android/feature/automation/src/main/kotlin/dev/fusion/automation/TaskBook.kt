@@ -33,7 +33,13 @@ data class LocalTask(val id: String, val title: String, val due: LocalDate? = nu
 /** Defensive immutable snapshot. Stale writers must compare revision in the storage adapter. */
 class TaskBook(val revision: Long = 0, tasks: List<LocalTask> = emptyList()) {
     val tasks: List<LocalTask> = Collections.unmodifiableList(ArrayList(tasks.also {require(it.size<=128)}))
-    init { require(revision >= 0 && this.tasks.size <= 128);require(this.tasks.map { it.id }.toSet().size == this.tasks.size) }
+    init {
+        require(revision >= 0 && this.tasks.size <= 128)
+        require(this.tasks.map { it.id }.toSet().size == this.tasks.size)
+        // Every admitted snapshot reserves one revision for restoring EACH archived record.
+        // All transitions pass this constructor, so unrelated edits cannot consume that reserve.
+        require(revision <= Long.MAX_VALUE - this.tasks.count {it.archived}) { "Reserve exhausted for archived task restoration" }
+    }
     fun add(task: LocalTask): TaskBook {
         require(!task.archived) { "New tasks must be active" }
         return TaskBook(Math.incrementExact(revision), tasks + task)

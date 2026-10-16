@@ -1,4 +1,4 @@
-R18: 896 assertions PASS; editing/archive/query/versioned codec, not reminders or full Tasks acceptance.
+R18: 906 assertions PASS; tasks and owned-sheet correlation; not reminders, Office fidelity or full module acceptance.
 
 info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
 openjdk version "17.0.9" 2023-10-17
@@ -6,14 +6,14 @@ OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
 OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
 
 Separately compiled Tasks and owned-sheet production libraries; no Android execution inferred.
-549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
+d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
 c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5  feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt
 cf1d127e2d4d6fed8e90d3e2c4c33638106ac692cabd1642ab17de68001e76d1  format/ooxml/src/main/kotlin/dev/fusion/ooxml/OwnedSheetRequest.kt
 d2845e2365719ae640159d08d47c58346a9c89e26de9d2755cd3224536fb4fdd  format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt
 913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc  format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt
-366d9868a40d4954ec9a9f590de910753984baf6ad2348301787efb1712dc8b5  testing/src/r18/kotlin/dev/fusion/testing/R18Checks.kt
-a3b89d8f52b1d1a22b640e3c8fe34eb737052815f09265f2812fb11c10152c34  testing/src/r18/kotlin/dev/fusion/testing/R18Oracle.kt
+e2dff9a6459c3888a895446fafdc4d943aa8a1e38ea1aeda8b1a1f106088dd3a  testing/src/r18/kotlin/dev/fusion/testing/R18Checks.kt
+e842a1361a06d1330571b69678f519643244b35c17e2f8ac2edaa62d27d2d755  testing/src/r18/kotlin/dev/fusion/testing/R18Oracle.kt
 bebdab5afa500460babb0d6b6d149ef3d4bdb16a02828206843a1856494897a9  tools/run_r18_contracts.py
-8c8d3a5f6212a25a35492a19f604b685284742032a70cd4056ef1336937f478e  testing/build/r18/TaskBook.jar
+54a3069afde6c31e632c8535bd0c4702670786eef9050f587cf7b91fad61edf3  testing/build/r18/TaskBook.jar
 9c05c49dbde6b78f0be4938dcfb93ae36067656229a690e7ddc5c3dbe05f27ab  testing/build/r18/OwnedSheetRequest.jar
-bf2b39aad586394f724e1774892e47d9cfb766947aa3fa6e9fb3f6b8e19516a7  testing/build/r18/checks.jar
+5993da1cc9665c7e654f1431c73bcdbfbbd270de533bc2732b7986f4519e4177  testing/build/r18/checks.jar

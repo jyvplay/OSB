@@ -5,7 +5,13 @@ object R18Oracle {
     @JvmStatic fun main(args:Array<String>) {
         val b=Base64.getDecoder();val e=Base64.getEncoder()
         generateSequence(::readLine).forEach {line ->
-            val p=line.split('\t');val book=TaskFrame.decode(b.decode(p[1]))
+            val p=line.split('\t')
+            if(p[0]=="S") {
+                val request=dev.fusion.ooxml.OwnedSheetRequest.create(dev.fusion.ooxml.SheetFrame.decode(b.decode(p[1])))
+                val values=request.accept(p[2].toInt(),p[3],b.decode(p[4]))
+                println(values.entries.joinToString(",") {it.key+"="+it.value});return@forEach
+            }
+            val book=TaskFrame.decode(b.decode(p[1]))
             when(p[0]) {
                 "C" -> println(e.encodeToString(TaskFrame.encode(book)))
                 "Q" -> println(TaskQuery.select(book,b.decode(p[2]).toString(Charsets.UTF_8),TaskScope.valueOf(p[3]),TaskOrder.valueOf(p[4])).joinToString(",") {it.id})

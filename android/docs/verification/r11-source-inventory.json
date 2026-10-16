@@ -803,7 +803,7 @@
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432"
+      "sha256": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt",

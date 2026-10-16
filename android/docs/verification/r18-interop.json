@@ -1,16 +1,18 @@
 {
   "result": "PASS",
-  "cases": 1100,
+  "cases": 1200,
   "breakdown": {
     "legacy_or_current_decode_and_FTS2_encode": 100,
     "scope_query_order": 800,
     "edit": 100,
-    "archive": 100
+    "archive": 100,
+    "owned_sheet_receipt": 100
   },
   "sha256": {
-    "tools/run_r18_interop.py": "97233860d683eeb82386ffa13a45550fd59dcdf62feb8037f531bd011b4c0b5e",
-    "testing/build/r18/checks.jar": "bf2b39aad586394f724e1774892e47d9cfb766947aa3fa6e9fb3f6b8e19516a7",
-    "testing/build/r18/TaskBook.jar": "8c8d3a5f6212a25a35492a19f604b685284742032a70cd4056ef1336937f478e"
+    "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
+    "testing/build/r18/checks.jar": "5993da1cc9665c7e654f1431c73bcdbfbbd270de533bc2732b7986f4519e4177",
+    "testing/build/r18/TaskBook.jar": "54a3069afde6c31e632c8535bd0c4702670786eef9050f587cf7b91fad61edf3",
+    "testing/build/r18/OwnedSheetRequest.jar": "9c05c49dbde6b78f0be4938dcfb93ae36067656229a690e7ddc5c3dbe05f27ab"
   },
   "scope": "Same-author corpus using independent Python struct/zlib/date/sort reference and separate JVM producer; not independent expert review or Android/AX/reminder acceptance"
 }

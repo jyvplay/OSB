@@ -31,10 +31,15 @@ for i in range(100):
     requests.append('\t'.join(['E',frame,target['id'],base64.b64encode('Edited 界'.encode()).decode(),'']));expected.append(wire(rev+1,changed))
     archived=[t|{'archived':True} if t['id']==target['id'] else t for t in tasks]
     requests.append('\t'.join(['A',frame,target['id'],'1']));expected.append(wire(rev+1,archived))
+for i in range(100):
+    frame=('FSC1\nA1\t'+base64.b64encode(str(i).encode()).decode()+'\nB1\t'+base64.b64encode(b'=A1*3+1').decode()+'\n').encode()
+    result=f'FSR1\nA1\t{i}\nB1\t{i*3+1}\n'.encode()
+    requests.append('\t'.join(['S',base64.b64encode(frame).decode(),str(len(frame)),hashlib.sha256(frame).hexdigest(),base64.b64encode(result).decode()]))
+    expected.append(f'A1={i},B1={i*3+1}')
 r=subprocess.run([java,'-cp',cp,'dev.fusion.testing.R18Oracle'],input='\n'.join(requests)+'\n',capture_output=True,text=True,check=True)
 actual=r.stdout.splitlines();assert len(actual)==len(expected),(len(actual),len(expected))
 for i,(a,b) in enumerate(zip(actual,expected)):assert a==b,(i,a,b)
-receipt={'result':'PASS','cases':len(expected),'breakdown':{'legacy_or_current_decode_and_FTS2_encode':100,'scope_query_order':800,'edit':100,'archive':100},
- 'sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),OUT/'checks.jar',OUT/'TaskBook.jar']},
+receipt={'result':'PASS','cases':len(expected),'breakdown':{'legacy_or_current_decode_and_FTS2_encode':100,'scope_query_order':800,'edit':100,'archive':100,'owned_sheet_receipt':100},
+ 'sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),OUT/'checks.jar',OUT/'TaskBook.jar',OUT/'OwnedSheetRequest.jar']},
  'scope':'Same-author corpus using independent Python struct/zlib/date/sort reference and separate JVM producer; not independent expert review or Android/AX/reminder acceptance'}
 (ROOT/'docs/verification/r18-interop.json').write_text(json.dumps(receipt,indent=2)+'\n');print(f'R18: {len(expected)} independent Python/JVM cases PASS')

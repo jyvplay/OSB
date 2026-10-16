@@ -35,6 +35,16 @@ class R18TaskDeviceTest {
         val restored=b.archive(3,t.id,false);assertEquals(t.copy(done=true),restored.tasks.single())
         assertEquals(restored.tasks,TaskRepository(f).load().tasks)
     }
+    @Test fun persistedRevisionReserveCannotBeConsumedByAnUnrelatedEdit() = fixture {f ->
+        val archived=LocalTask(UUID(0,1).toString(),"Can restore",archived=true)
+        val active=LocalTask(UUID(0,2).toString(),"Other")
+        f.writeBytes(TaskFrame.encode(TaskBook(Long.MAX_VALUE-1,listOf(archived,active))))
+        val repo=TaskRepository(f);val before=f.readBytes()
+        assertTrue(runCatching {repo.edit(Long.MAX_VALUE-1,active.id,"steal reserve",null)}.isFailure)
+        assertArrayEquals(before,f.readBytes())
+        assertEquals(Long.MAX_VALUE,repo.archive(Long.MAX_VALUE-1,archived.id,false).revision)
+        assertTrue(TaskRepository(f).load().tasks.none {it.archived})
+    }
     @Test fun allArchivedStillCountTowardCapacityAndRestoreNeedsNoFreeSlot() = fixture {f ->
         val tasks=(0 until 128).map {LocalTask(UUID(0,it.toLong()).toString(),"Task $it",archived=true)}
         f.writeBytes(TaskFrame.encode(TaskBook(128,tasks)));val repo=TaskRepository(f);val before=f.readBytes()

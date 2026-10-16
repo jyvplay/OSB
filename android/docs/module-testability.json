@@ -759,7 +759,7 @@
       "limit": "No task editing/deletion/recurrence/reminders/calendar integration; plaintext and single-process storage only; UI stability and full keyboard/AX/physical acceptance remain open. Action plans still not transactional/scheduled.",
       "sha256": {
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
-        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4",
         "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt": "85543aa80ae499153c5874da07f896aaab04d6c61192439c579014b21397b62b",
         "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "a17d11b99bf7ebf12690171f158d1419e6474af662d233ae37d12ff007e09d2f",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
