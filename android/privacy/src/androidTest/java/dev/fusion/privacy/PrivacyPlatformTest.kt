@@ -61,6 +61,14 @@ class PrivacyPlatformTest {
         scenario.onActivity {assertCurrent(it,marker,unsecured)}
         return marker
     }
+    private fun screenBounds(view:android.view.View,out:android.graphics.Rect):Boolean {
+        if(!view.isAttachedToWindow || view.width<=0 || view.height<=0) return false
+        val local=android.graphics.Rect()
+        if(!view.getLocalVisibleRect(local)) return false
+        val point=IntArray(2);view.getLocationOnScreen(point)
+        local.offset(point[0],point[1]);out.set(local)
+        return !out.isEmpty
+    }
     companion object {private val witnessIds=java.util.concurrent.atomic.AtomicInteger()}
     private fun captureFrame(scenario:ActivityScenario<android.app.Activity>,unsecured:Boolean):Int {
         val marker=installCommittedMarker(scenario,unsecured)
@@ -93,9 +101,10 @@ class PrivacyPlatformTest {
                 var laidOut=false
                 scenario.onActivity {activity ->
                     assertCurrent(activity,marker,unsecured)
-                    laidOut=marker.view.getGlobalVisibleRect(root) && witness.getGlobalVisibleRect(strip)
+                    laidOut=screenBounds(marker.view,root) && screenBounds(witness,strip)
                     if(laidOut) {
                         assertTrue("Witness must be inside marker ROI",root.contains(strip))
+                        assertTrue("Separate-window coordinates must be screen-relative, not two root-local origins",strip.centerY()>root.centerY())
                         assertTrue("Witness obscures too much of marker",root.width().toLong()*root.height()>4L*strip.width()*strip.height())
                     }
                 }

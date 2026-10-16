@@ -1193,7 +1193,7 @@
         "privacy/src/main/AndroidManifest.xml": "b2dfd44e13901da005915f670d6234cd9c9c97287ec2257f6d65cea1990754f3",
         "privacy/src/main/res/values/ids.xml": "616fd6709a88a16f10f02c231df7f8546e645f2cbe52506fbab58bc01d571f78",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "f9ef2914a7c080dc8e82a6bd179685d30d174e7ba95e16735a041f380950a766",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "f68a01454bc242d55fe8effdcbdecdab7164738a195e0963ec8a9b650117aa48",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "b6c740d00edccc9dd447b17c4f9ff8d7ebd7faa6f0c661b2359e2a4771de1fc8",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "bda15be3d5e2c7ed2a2fa4bea90f18b5c60216b2a80cccda74ccdd26695052b6",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617"
