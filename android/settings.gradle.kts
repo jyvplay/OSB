@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 rootProject.name = "FusionShell"
 include(
     ":app",
+    ":privacy", // Separate no-INTERNET offline companion APK; not a Tails replacement.
     // core
     ":core:documents",
     ":core:windowing",

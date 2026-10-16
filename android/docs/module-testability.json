@@ -1082,6 +1082,17 @@
         "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt": "4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5",
         "tools/test_pilot_reporting.py": "4ef01b5bf3c90c23d34d4255570383501398f128cb9c0d108351aaa2cfeefb80"
       }
+    },
+    {
+      "module": ":privacy",
+      "substantial_testable_subset": false,
+      "kind": "not_established",
+      "behavior": "Preimplementation platform spike only",
+      "production": [],
+      "checks": [],
+      "command": "",
+      "limit": "No substantive workspace implementation/evidence yet",
+      "sha256": {}
     }
   ]
 }

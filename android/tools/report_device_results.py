@@ -59,6 +59,8 @@ def messages(report):
             yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
 
 if __name__=='__main__':
-    report=collect('app/build/outputs/androidTest-results/managedDevice')
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--root',default='app/build/outputs/androidTest-results/managedDevice');args=parser.parse_args()
+    report=collect(args.root)
     Path('device-results.json').write_text(json.dumps(report,indent=2)+'\n')
     for message in messages(report): print(message)

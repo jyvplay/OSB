@@ -1,6 +1,6 @@
-# Native module completion audit — R12 continuation — seven additional testable subsets; incomplete
+# Native module completion audit — R20 preimplementation
 
-**Included Gradle modules: 48. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 48 (100.00%).**
+**Included Gradle modules: 49. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 49 (100.00%).**
 
 This is not a time/effort estimate. A module is complete only after its entire assigned scope, integration, mandatory safety/accessibility/device tests and license/build gates have reviewed acceptance. A source file, successful compilation or many assertions is insufficient.
 
@@ -67,12 +67,13 @@ R12 continuation:30/48 substantial-testable subsets (62.50%), separately from fu
 | `:benchmark` | Startup/baseline generator test source | android uncompiled | 0/1 (0%) | Actual device runs on at least two reference devices, reproducible budgets and reports |
 | `:baselineprofile` | Intentionally empty baseline profile; no generated rules | empty profile | 0/1 (0%) | Generate from measured user journeys on devices, verify packaging/effect |
 | `:testing` | 183179 host Kotlin assertions/13 separately compiled libraries;68 Python checks;733 cross-language checks;39/39 actual API34 cases at2c2b5bc. Source-bound23/48 (47.92%) testable-subset census is separate from full acceptance0/48. | runner executed | 0/1 (0%) | Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records |
+| `:privacy` | R20 separate-UID no-INTERNET platform spike; no production workspace yet | android uncompiled | 0/1 (0%) | Actual platform evidence, volatile editing, lifecycle/IME/AX and physical security review; no anonymity or OS replacement |
 
 The 12 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12B-ENGINEERING.md for current exact runtime results, including the retained failing IME test. No row is a full feature pass.
 
 ## Specification architecture reconciliation
 
-The architecture-name inventory below has **47 named main-build slots**, not 48 interchangeable completed features. Of these, **41 match included names**, **2 have partial alternative owners**, and **4 have no separate included module**. 7 current included modules are additional/alternative owners. Name matching is not capability fulfillment. Calculator is required by PR-09 even though its dedicated module is additional to the named architecture list.
+The architecture-name inventory below has **47 named main-build slots**, not 49 interchangeable completed features. Of these, **41 match included names**, **2 have partial alternative owners**, and **4 have no separate included module**. 8 current included modules are additional/alternative owners. Name matching is not capability fulfillment. Calculator is required by PR-09 even though its dedicated module is additional to the named architecture list.
 
 | Requested name | Existing candidate(s) | Mapping (not completion) |
 |---|---|---|
@@ -124,7 +125,7 @@ The architecture-name inventory below has **47 named main-build slots**, not 48 
 | `:baselineprofile` | `:baselineprofile` | exact name |
 | `:testing` | `:testing` | exact name |
 
-Additional/alternative current names: `:core:documents`, `:core:files`, `:feature:accessibility`, `:feature:automation`, `:feature:calc`, `:feature:continuity`, `:format:ooxml`.
+Additional/alternative current names: `:core:documents`, `:core:files`, `:feature:accessibility`, `:feature:automation`, `:feature:calc`, `:feature:continuity`, `:format:ooxml`, `:privacy`.
 
 **Separate obligations, not falsely added to the 48-module denominator:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.
 

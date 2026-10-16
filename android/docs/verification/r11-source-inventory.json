@@ -2,6 +2,7 @@
   "kind": "source ownership only; NOT Android compilation",
   "modules": [
     ":app",
+    ":privacy",
     ":core:documents",
     ":core:windowing",
     ":core:files",
@@ -97,6 +98,7 @@
       ":format:pdf",
       ":format:psd"
     ],
+    ":privacy": [],
     ":core:documents": [],
     ":core:windowing": [],
     ":core:files": [
@@ -206,6 +208,12 @@
       "module": ":app",
       "package": "dev.fusion.shell",
       "sha256": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955"
+    },
+    {
+      "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
+      "module": ":privacy",
+      "package": "dev.fusion.privacy",
+      "sha256": "f89401cf1435b011a8c51b177de499bce4dade07bafb84d7b3ff00d4eff99d98"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",

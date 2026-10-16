@@ -1,8 +1,8 @@
-# R18 — substantial executable testability, NOT full feature completion
+# R20 — substantial executable testability, NOT full feature completion
 
-**47/48 modules (97.92%) meet this bounded testability standard; 1/48 (2.08%) are not established by it.**
+**47/49 modules (95.92%) meet this bounded testability standard; 2/49 (4.08%) are not established by it.**
 
-**Fully specification-accepted modules remain0/48 (0%).** Do not substitute the testability figure for delivery or acceptance.
+**Fully specification-accepted modules remain 0/49 (0%).** Do not substitute the testability figure for delivery or acceptance.
 
 At least one concrete nontrivial operational transformation, persistence operation, protocol parser/serializer, runtime integration, or executable harness with real source and an existing reproducible behavioral check. Folder presence, compilation, value types, gate/denial-only code, simulated peers and labels do not qualify. This is a reviewed lower bound on testable subsets, never full module acceptance. Test existence is not proof its complete feature works.
 
@@ -58,5 +58,6 @@ This is an assistant-authored review with executable path/source-hash checks, no
 | `:benchmark` | Yes — subset only | Actual nondebuggable API34 startup and Files open/close measurements, including profile-required compilation. `benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt`; `benchmark/src/main/java/dev/fusion/benchmark/LabJourney.kt`; `benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt` | `:benchmark:pixel6Api34BenchmarkAndroidTest (disposable opt-in; measured-profile workflow)` — `tools/collect_profile_artifact.py`; `tools/export_r16_measurements.py`; `tools/collect_r16_measurements.py` | Three iterations per measurement on emulator, not two physical reference devices, full journeys or budget acceptance. |
 | `:baselineprofile` | Yes — subset only | 855 actual measured first-party ART rules; packaged assets and profile-required startup passed at bb338a5/run38697143892. `baselineprofile/src/main/baseline-prof.txt` | `Android measured profile experiment workflow; see PROVENANCE.md` — `benchmark/src/main/java/dev/fusion/benchmark/BaselineProfileGenerator.kt`; `benchmark/src/main/java/dev/fusion/benchmark/StartupBenchmark.kt`; `tools/collect_profile_artifact.py` | First-party startup/Files journey only; no proven speedup, all-flavor/API/OEM or physical release acceptance. |
 | `:testing` | Yes — subset only | Executable production contract harness and adversarial corpora, not a user feature `testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt` | `python3 -m unittest discover -s tools -p test_*.py` — `tools/test_pilot_reporting.py` | Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records |
+| `:privacy` | Not established | Preimplementation platform spike only  | No qualifying pairing recorded | No substantive workspace implementation/evidence yet |
 
 Generated from `module-testability.json`; `python3 tools/module_testability.py --check`. SHA-256 binding rejects stale source/test pairings. Structural checks do not automatically judge the truth or sufficiency of the authored behavioral descriptions.
