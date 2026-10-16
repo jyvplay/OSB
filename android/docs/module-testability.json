@@ -778,14 +778,14 @@
         "testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt": "c27775d219ad8f224e4c89852a3925becc8b2c2122a4f44f91e97c4ce0633918",
         "tools/run_r17_interop.py": "209135fc5749ef1337942524a9aa34563b9f69c199b2232486341f017407fa85",
         "app/src/androidTest/java/dev/fusion/shell/R17TaskStoreDeviceTest.kt": "b79692a3f53eba5cba8d9e6f3587a83b554b5c15e12dca15487d54e05afb10a3",
-        "app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt": "def9b13fd1868efa98f7c98912f7e96e382ea26d64c75b2512f335c5df119fd5",
+        "app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt": "a992ebf5a7fa0dfa3dce9a786bd83118771431aeb1fb893965c18088d6921927",
         "testing/src/r18/kotlin/dev/fusion/testing/R18Checks.kt": "e2dff9a6459c3888a895446fafdc4d943aa8a1e38ea1aeda8b1a1f106088dd3a",
         "testing/src/r18/kotlin/dev/fusion/testing/R18Oracle.kt": "e842a1361a06d1330571b69678f519643244b35c17e2f8ac2edaa62d27d2d755",
         "tools/run_r18_contracts.py": "bebdab5afa500460babb0d6b6d149ef3d4bdb16a02828206843a1856494897a9",
         "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskDeviceTest.kt": "bdc34d1e78266bd1de7ad7f8938195dca348b5ffa0f30c24e29a66194dd7dade",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "6232f963f6e23ca1bca0edf48e42a1151cdabf4e00307a8b3d3cf6b7870bc571",
-        "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "b9418ab5b9460b0d128d20ee36db093304ddefeee83611c19122f0ba11c419ea"
+        "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130"
       }
     },
     {

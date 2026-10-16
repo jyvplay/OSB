@@ -1,0 +1,6 @@
+{
+  "compiler": "kotlin-compiler2.2.21",
+  "archive_sha512": "sha512-nY7ifXZsAfCTJFagHmDQuJRJSr1W/WBUrJnLTfq78/g8u+LMM97pAqspg3ANDFLBH8+de1XdRtofpaLEr3kZiQ==",
+  "verified": true,
+  "initial_extraction": "Python tarfile filter argument unavailable; extraction retried with explicit traversal/type checks, not unrestricted extractall"
+}
