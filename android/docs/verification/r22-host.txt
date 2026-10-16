@@ -1,0 +1,28 @@
+R22: 37 actual public-consumer assertions PASS; not Office/XML/ZIP universal acceptance
+
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Separately compiled actual R22 production libraries; no Android execution inferred.
+62c902cd31a85f486b8e9754608abd4cca787306231ba8376f48dfb57057c36a  feature/automation/src/main/kotlin/dev/fusion/automation/WorksheetInput.kt
+8874302c439ff4de753618f6b9264b18c82dd03ed945b6f9b3e5ec2ad570139a  format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt
+fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d  format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt
+2697f3230eb6b73b5b9e982711dcc3f69758282b9d745502baff6d8161f0041f  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt
+a404d5f45a4c3949f931266f245ac3c40bd5a311d041a295457c7ff56be916e0  format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt
+e30dc377274335c9028551879702ed69b10ff0fb43d0928d224b1d37819a03b2  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt
+e6012ae4fef688f47061294cd58164eeb2cf03a7b766ab9814a49225b7a4c563  feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt
+dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7  feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt
+42826bddd2a727e48ef9066e6a87b963d5baf434881263504da4aa152d4836f3  feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt
+b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29  testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt
+92b58818d7c8f24e61530ab66c080b056f1ad86e59da0cfcc426166c0a2d9587  testing/src/r22/kotlin/dev/fusion/testing/R22Oracle.kt
+b0249147df1e67ddf24be0c3f09e0138769b2b57833cabc19030208929a2fc58  tools/run_r22_contracts.py
+e73c55f9a904d75bbbab9fc871e4a921511a3f08e2e331737e0ecdb733969b96  testing/build/r22/WorksheetInput.jar
+7f01a2e1e9ffe105d6cbde4658509cc7dfee079454f0fd98f112764f72c2624e  testing/build/r22/StrictZip.jar
+22477433d74f710840a6f02e1d37137eec7fd910eaa21bd421e0f626dada4bf6  testing/build/r22/BoundedXml.jar
+9d343938115d894973ac0be4837b68aac6e4e7848ec0faf309d4d8bd274f2059  testing/build/r22/LiteralWorkbook.jar
+b4f39c39a6b3ca4572a9861aefb41297e6739a8063d6e5e1a7b182917f73aa92  testing/build/r22/CsvTable.jar
+4baef1cf40b0bed3c10befacabc2faffc1f8c963f1e51d43f47146e7ccd70131  testing/build/r22/LiteralXlsxImport.jar
+96426e589faca18fc262284218adf269472d2b6c58fa1c75caee0c1186b5e91a  testing/build/r22/BrowserSessions.jar
+0ecad79923e4d49bd0da36e31508486f9007d8d4aefd169c4113febb780ccda5  testing/build/r22/checks.jar

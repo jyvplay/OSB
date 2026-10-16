@@ -3,7 +3,7 @@
 import base64, hashlib, io, json, os, random, struct, subprocess, time, zipfile, xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'testing/build/r22';rng=random.Random(220022)
-requests=[];expected=[];labels=[]
+requests=[];expected=[];labels=[];exports={};pairs=[]
 def b64(b):return base64.b64encode(b).decode()
 def case(label,op,raw,result=None,names='a.txt'):
  requests.append(op+'\t'+b64(raw)+'\t'+names);expected.append('REFUSED' if result is None else 'OK\t'+b64(result.encode()));labels.append(label)
@@ -46,18 +46,23 @@ for label,raw in [('depth33','<a>'*33+'</a>'*33),('nodes32769','<a>'+'<b/>'*3276
 
 # Real independently maintained openpyxl writes valid XLSX; no Office runtime inference.
 from openpyxl import Workbook,load_workbook
+from datetime import datetime
+def newbook():
+ w=Workbook();w.properties.created=datetime(2026,1,1);w.properties.modified=datetime(2026,1,1);return w
+def canonical_zip(raw):
+ with zipfile.ZipFile(io.BytesIO(raw)) as z:return zipped([(n,z.read(n)) for n in z.namelist()])
 for i in range(40):
- wb=Workbook();ws=wb.active
+ wb=newbook();ws=wb.active
  values=[['name','value','private'],['Alpha α',str(i),'OMIT'],['=literal','😀 & < >','line\nnext']]
  for r,row in enumerate(values,1):
   for c,value in enumerate(row,1):ws.cell(r,c,value).data_type='s'
- stream=io.BytesIO();wb.save(stream);raw=stream.getvalue()
+ stream=io.BytesIO();wb.save(stream);raw=canonical_zip(stream.getvalue())
  reference=load_workbook(io.BytesIO(raw),data_only=False).active
  result='\n'.join(','.join(b64(str(v).encode()) for v in row) for row in reference.values)
  case('openpyxl text '+str(i),'W',raw,result)
 # Sparse coordinates remain attached to rows/columns, not sequential scanner positions.
-wb=Workbook();ws=wb.active;ws['C3']='end';ws['A1']=True;ws['B2']=12
-stream=io.BytesIO();wb.save(stream);sparse=stream.getvalue()
+wb=newbook();ws=wb.active;ws['C3']='end';ws['A1']=True;ws['B2']=12
+stream=io.BytesIO();wb.save(stream);sparse=canonical_zip(stream.getvalue())
 case('sparse numeric boolean','W',sparse,'\n'.join(','.join(b64(v.encode()) for v in row) for row in [['1','',''],['','12',''],['','','end']]))
 def repack(raw,edit):
  with zipfile.ZipFile(io.BytesIO(raw)) as z:parts={n:z.read(n) for n in z.namelist()}
@@ -77,22 +82,54 @@ for label,edit in [
  ('relationship-path-traversal',lambda p:p.__setitem__('xl/_rels/workbook.xml.rels',p['xl/_rels/workbook.xml.rels'].replace(b'/xl/worksheets/sheet1.xml',b'/xl/../xl/worksheets/sheet1.xml')))
 ]:case(label,'W',repack(sparse,edit))
 for label,change in [('date-style',lambda w:setattr(w.active['A1'],'number_format','yyyy-mm-dd')),('second-sheet',lambda w:w.create_sheet()),('merge',lambda w:w.active.merge_cells('A1:B1'))]:
- wb=Workbook();wb.active['A1']=123;change(wb);stream=io.BytesIO();wb.save(stream);case(label,'W',stream.getvalue())
+ wb=newbook();wb.active['A1']=123;change(wb);stream=io.BytesIO();wb.save(stream);case(label,'W',canonical_zip(stream.getvalue()))
 
 import xlsxwriter
 for i in range(30):
  stream=io.BytesIO()
  with xlsxwriter.Workbook(stream,{'in_memory':True}) as wb:
-  ws=wb.add_worksheet('Shared');ws.write_string(0,0,'=1+1');ws.write_string(2,2,'shared α '+str(i))
- raw=stream.getvalue()
+  wb.set_properties({'created':datetime(2026,1,1)});ws=wb.add_worksheet('Shared');ws.write_string(0,0,'=1+1');ws.write_string(2,2,'shared α '+str(i))
+ raw=canonical_zip(stream.getvalue())
  reference=load_workbook(io.BytesIO(raw),data_only=False).active
  result='\n'.join(','.join(b64(('' if v is None else str(v)).encode()) for v in row) for row in reference.values)
  case('XlsxWriter shared sparse '+str(i),'W',raw,result)
 if '--write-native-fixture' in __import__('sys').argv:
  fixture=ROOT/'app/src/androidTest/assets/r22-shared.xlsx';fixture.parent.mkdir(parents=True,exist_ok=True);fixture.write_bytes(raw)
+
+# Source worksheet names, package author metadata and omitted cells must not affect new export bytes.
+for pair in range(15):
+ indices=[]
+ for variant in ['Alice','Bob']:
+  wb=newbook();wb.active.title=variant;wb.properties.creator=variant
+  wb.active.append([variant,'=1+1']);wb.active['B1'].data_type='s'
+  wb.active.append(['PRIVATE-'+variant,'keep '+str(pair)])
+  stream=io.BytesIO();wb.save(stream);raw=canonical_zip(stream.getvalue())
+  indices.append(len(requests));exports[len(requests)]=[['=1+1'],['keep '+str(pair)]]
+  requests.append('E\t'+b64(raw)+'\t1');expected.append('EXPORT');labels.append('metadata/omitted-cell export '+str(pair)+' '+variant)
+ pairs.append(indices)
+for count,unit,admit in [(4096,'x',True),(4097,'x',False),(2048,'😀',True),(2049,'😀',False)]:
+ wb=newbook();wb.active['A1']=unit*count;stream=io.BytesIO();wb.save(stream)
+ case('UTF16 cell boundary '+str(count)+unit,'W',canonical_zip(stream.getvalue()),b64((unit*count).encode()) if admit else None)
+
+for value in [0.5,-12.25,1e-7,1e20]:
+ stream=io.BytesIO()
+ with xlsxwriter.Workbook(stream,{'in_memory':True}) as wb:
+  wb.set_properties({'created':datetime(2026,1,1)});wb.add_worksheet().write_number(0,0,value)
+ raw=canonical_zip(stream.getvalue())
+ with zipfile.ZipFile(io.BytesIO(raw)) as z:lexical=ET.fromstring(z.read('xl/worksheets/sheet1.xml')).find('.//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}v').text
+ case('numeric lexical '+str(value),'W',raw,b64(lexical.encode()))
 cp=os.pathsep.join(str(p) for p in sorted(OUT.glob('*.jar')));java=str(Path(os.environ['JAVA_HOME'])/'bin/java') if 'JAVA_HOME' in os.environ else 'java'
 payload='\n'.join(requests)+'\n';start=time.monotonic();r=subprocess.run([java,'-cp',cp,'dev.fusion.testing.R22Oracle'],input=payload,text=True,capture_output=True,check=True,timeout=120)
 actual=r.stdout.splitlines();assert len(actual)==len(expected),(len(actual),len(expected),r.stderr)
-for label,a,e in zip(labels,actual,expected):assert a==e,(label,a[:150],e[:150])
-report={'seed':220022,'requests':len(requests),'accepted':sum(x.startswith('OK') for x in expected),'refused':expected.count('REFUSED'),'request_sha256':hashlib.sha256(payload.encode()).hexdigest(),'output_sha256':hashlib.sha256(r.stdout.encode()).hexdigest(),'seconds_observed':round(time.monotonic()-start,3),'labels':labels,'scope':'Authored corpora; actual Python ZIP/XML producers versus actual Kotlin implementations on JDK, not Android/Office runtime or blind audit.'}
+books={}
+for i,(label,a,e) in enumerate(zip(labels,actual,expected)):
+ if e=='EXPORT':
+  assert a.startswith('OK\t'),(label,a)
+  book=base64.b64decode(base64.b64decode(a.split('\t')[1]));books[i]=book
+  sheet=load_workbook(io.BytesIO(book),data_only=False).active
+  assert [list(row) for row in sheet.values]==exports[i],label
+  assert all(c.data_type=='s' for row in sheet for c in row),label
+ else:assert a==e,(label,a[:150],e[:150])
+for a,b in pairs:assert books[a]==books[b],(labels[a],labels[b])
+report={'python':__import__('sys').version.split()[0],'openpyxl':__import__('openpyxl').__version__,'xlsxwriter':xlsxwriter.__version__,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'metadata_note':'Producer modified timestamps can vary; seed fixes cell corpus, not every input byte.','seed':220022,'requests':len(requests),'accepted':sum(x.startswith('OK') or x=='EXPORT' for x in expected),'refused':expected.count('REFUSED'),'equal_byte_pairs':len(pairs),'request_sha256':hashlib.sha256(payload.encode()).hexdigest(),'output_sha256':hashlib.sha256(r.stdout.encode()).hexdigest(),'seconds_observed':round(time.monotonic()-start,3),'labels':labels,'scope':'Authored corpora; actual Python ZIP/XML producers versus actual Kotlin implementations on JDK, not Android/Office runtime or blind audit.'}
 (ROOT/'docs/verification/r22-interop.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='labels'}))

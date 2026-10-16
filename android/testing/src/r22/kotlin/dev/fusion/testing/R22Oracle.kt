@@ -10,6 +10,7 @@ object R22Oracle {
     val fields=line.split('\t');val bytes=decoder.decode(fields[1])
     val result=when(fields[0]) {
      "Z"->StrictZip.read(bytes,fields[2].split(',').toSet()).toSortedMap().map {(name,data)->name+":"+encoder.encodeToString(data)}.joinToString("\n")
+     "E"->{val table=dev.fusion.ooxml.LiteralXlsxImport.read(bytes).project(fields[2].split(',').map {it.toInt()});encoder.encodeToString(table.workbook().bytes)}
      "W"->{val table=dev.fusion.ooxml.LiteralXlsxImport.read(bytes);table.rows.joinToString("\n") {row->row.joinToString(",") {encoder.encodeToString(it.toByteArray())}}}
      "X"->{val node=BoundedXml.parse(bytes);node.name.ns+"|"+node.name.local+"|"+node.text+"|"+node.children.size}
      else->error("Unknown operation")

@@ -1,0 +1,18 @@
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 49, "unfinished": 49, "unfinished_percent": 100.0}
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+{"not_established": 1, "not_established_percent": 2.04, "substantial_testable_subsets": 48, "testable_percent": 97.96, "total": 49}
+49 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R22: 37 actual public-consumer assertions PASS; not Office/XML/ZIP universal acceptance
+{"python": "3.11.2", "openpyxl": "3.1.5", "xlsxwriter": "3.2.5", "script_sha256": "12f1d20e0b95383b12ba9beaf66283b2c0c2bd6fe7faa2545e570d9a673256c9", "metadata_note": "Producer modified timestamps can vary; seed fixes cell corpus, not every input byte.", "seed": 220022, "requests": 327, "accepted": 271, "refused": 56, "equal_byte_pairs": 15, "request_sha256": "d10dee90840050c9b7fd510516213399563595a71cd2b04645c0dbe0f80a9dca", "output_sha256": "90b2123104bcbd4c76bf46dbb25aa663ddec0a95991d4b3686aae3b8bf0ae9ed", "seconds_observed": 1.171, "scope": "Authored corpora; actual Python ZIP/XML producers versus actual Kotlin implementations on JDK, not Android/Office runtime or blind audit."}
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R21: 376 actual public-consumer assertions PASS; no renderer or anonymity proof
+........................................................................................................................
+----------------------------------------------------------------------
+Ran 120 tests in 0.402s
+
+OK

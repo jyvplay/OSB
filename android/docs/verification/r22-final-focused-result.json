@@ -1,0 +1,56 @@
+{
+  "run": 38854643183,
+  "candidate": "fe8dca210642d42c0553c47ff4bccc16b5e17404",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38854643183",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 10,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R22PlatformDeviceTest.actualAndroidSaxPreservesNamespacesAndRefusesDtdAndBounds",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22PlatformDeviceTest.actualAndroidInflaterAcceptsPythonZipAndRejectsHeaderDisagreement",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22BoundaryDeviceTest.corruptAndOversizeXlsxRefuseThenFreshLeaseSucceeds",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22BoundaryDeviceTest.updatedXmlNodeLimitAndXincludeAreDataOnlyOnAndroid",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22BoundaryDeviceTest.literalAndIndependentSharedWorkbookRunInDistinctUid",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22BoundaryDeviceTest.suspensionBurnsPromptAndGrantUntilFreshDocument",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22BoundaryDeviceTest.maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22XlsxUiDeviceTest.actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22XlsxUiDeviceTest.cancelledRealImportPickerKeepsDraftButInvalidatesExport",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R22XlsxUiDeviceTest.malformedRealProviderImportRetainsDraftAndCannotReusePriorExport",
+      "result": "PASS"
+    }
+  ],
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

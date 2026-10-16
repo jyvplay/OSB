@@ -1,4 +1,95 @@
-# R21 — current Android build and try-out
+# R22 — native values-only XLSX import and laptop checks
+
+**Evaluated fe8dca210642d42c0553c47ff4bccc16b5e17404: full119/0/0, focused10/0/0,
+and CSV regression8/0/0 passed on managed API34; both debug builds/JVM/contracts/lint passed.**
+[Debug APKs and full evidence](https://github.com/jyvplay/OSB/actions/runs/38854643235),
+artifact `fusion-native-debug`. Later report/tooling commits are not separately native-tested candidates.
+Exact candidate/run results and retained failures are in [R22-ENGINEERING.md](R22-ENGINEERING.md).
+Do not infer current full acceptance from an older green APK or PR build. PR5 is open/unmerged;
+`main` does not contain this work. **48/49 substantial subsets;0/49 fully accepted.**
+
+## R22 laptop / Rabbit1 try-out
+
+On your laptop use branch `arena/31a7965e-osb`. Open **OSB/android** in Android Studio Rabbit1
+with compatible pinned **AGP8.13.2/Kotlin2.2.21/JDK17/SDK36**. The IDE GUI was not executed here.
+Compile36 still differs from requested compile37. Use a **disposable API34+ AVD and copied test data**.
+
+1. Run `app` / `proDebug`, open **Tasks and action plans (Automation)**, enable the session
+   experiment, return to action plans if in Tasks, then **CSV selected-column worksheet**.
+2. Use **Import values-only XLSX…** and choose a small plain single-sheet `.xlsx` from Downloads.
+   Read the visible **VALUES-ONLY LOSS REPORT**. A successful import replaces the volatile draft.
+3. Choose columns, e.g. `2`, then **Preview selected columns**. Review ALL displayed selected cells.
+   Formula-looking strings remain text; numeric/boolean source encodings become raw text, not formatted dates.
+4. **Save new literal XLSX…** creates a new document. Wait for **XLSX readback verified**.
+   The import route never opens source for output; export trusts the provider to honor new-document semantics. Failure can leave a partial new destination.
+5. Import the saved copy again through the picker. It now contains only selected columns;
+   a previous wider selection should refuse rather than reuse the old source table.
+
+Import limits: **2MiB input,1MiB expanded part,2MiB total expansion,256×32 cells,
+4096UTF16 units/cell,131072-byte table reply**. Refuses formulas, macros/extra parts, rich text,
+nonzero/custom/date number formats, hidden/custom rows, merges, unsupported ZIP/XML structures
+(including comments/CDATA). This is intentionally much narrower than general XLSX compatibility.
+Styles/layout/sheet-name/package metadata are discarded in the NEW text projection. Keep your originals.
+Closing/recreation loses imported table/draft/pending picker snapshot. No persistent source URI grant.
+
+Privacy: **network-enabled main app**, not offline companion. Selected cells/filename/provider/context
+can identify people. Parent/Android/IME/accessibility/laptop are trusted. Input briefly touches private
+temporary disk before readonly opening/unlinking; no secure erase. Cloud providers can use their own
+network. No global/retroactive anonymity, whole-host protection or Tails footprint claim.
+
+## R22 without Android Studio
+
+From `android/`, configure real **JDK17** (`JAVA_HOME`) and **Kotlin2.2.21** (`KOTLINC`). Install
+host verification packages separately, ideally in a local Python environment:
+
+```sh
+python3 -m pip install openpyxl==3.1.5 XlsxWriter==3.2.5
+python3 tools/r22_lab.py doctor
+python3 tools/r22_lab.py host
+# Actual production Kotlin compilation + ZIP/XML/XLSX interop + R21 regression + Python tooling.
+# Optional disposable sample; refuses an existing destination:
+python3 tools/make_r22_sample.py r22-example.xlsx
+```
+
+No Android SDK is needed for those host checks; they are NOT Android substitutes. The sample script
+was run here and its real XLSX accepted by the actual Kotlin importer. To use it on an AVD, drag the
+file into the emulator or use a locally installed ADB:
+
+```sh
+adb push r22-example.xlsx /sdcard/Download/
+# With an actual Android SDK, without the IDE GUI:
+./gradlew :app:assembleProDebug :app:assemblePlayDebug :testing:r22Contracts
+./gradlew :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest
+```
+
+Windows uses `gradlew.bat` and platform-appropriate JAVA_HOME/KOTLINC paths. No local SDK/ADB was
+available in this sandbox; actual Android execution used GitHub-managed API34. APK download from a
+completed run with `fusion-native-debug` (run links in engineering report):
+
+```sh
+gh run download 38854643235 -n fusion-native-debug -D ../r22-apks
+# Locate the pro-debug APK in the downloaded artifact tree, then:
+adb install -r PATH_TO_PRO_DEBUG_APK
+```
+
+Push-triggered native workflows run on the session branch. Manual dispatch previously returned403
+for the privacy workflow; no repeat or new privacy pass is inferred. `r22_lab.py dispatch-native`
+is provided for appropriately authorized installations, not claimed executed here. Never share credentials.
+Collect completed runs only, using a fresh prefix:
+
+```sh
+python3 tools/collect_native_evidence.py ACTUAL_RUN_ID NEW_PREFIX --focused
+python3 tools/r22_evidence_gate.py docs/verification/NEW_PREFIX-result.json --candidate EXACT_40_CHARACTER_SHA --claim r22_import_api34
+# Omit --focused for the full native workflow; claim r22_full_api34 requires full scope.
+```
+
+Offline receipt policy is not cryptographic authentication. Named cases, whole workflow outcome and
+exact candidate matter. Full/focused suites overlap. No physical/API36/37/AX/legal/full-Office/browser
+acceptance follows. Original compositor/browser/Office gates remain closed.
+
+---
+
+# Earlier R21 evaluated build and try-out
 
 ## R21: CSV worksheet try-out
 
