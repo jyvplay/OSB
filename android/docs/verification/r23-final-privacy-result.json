@@ -1,0 +1,80 @@
+{
+  "run": 38871422549,
+  "candidate": "4bc763700b63582107e5dbe979f9a185338f66f7",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38871422549",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 16,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.realFocusableDialogInvalidatesMarkerBeforeFreshCommittedSecureCapture",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.oneRealDiscardTouchWhileImeVisibleRetiresEditorBeforeReadback",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.actualMonotonicIdleDeadlineDiscardsWithoutFurtherInteraction",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.detachedKeyCannotMutateNewPadAndNewPadEnforcesAtomicCapacity",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.fullAndPartialObscurationDiscardRealEditorsAndDoNotResumeOnCleanUp",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.realExposureSnapshotAndMergedManifestKeepScopeAndNewScreensPrivate",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.realTouchEntryHasNoInputConnectionAndHardwareKeysCannotMutateCode",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23InputDefenseTest.realFocusableDialogDiscardsPadBeforePauseAndFocusReturnStartsEmpty",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.R23MemoryBoundaryTest.existingWritableMapSurvivesRestrictionButUnmappedReadOnlyParcelRefusesNewWrites",
+      "result": "PASS"
+    }
+  ],
+  "suite": "privacy",
+  "scope": "Actual retained API34 named outcomes (privacy companion only), not physical/full-product/AX/legal acceptance"
+}

@@ -32,3 +32,15 @@ The open interface is implementation/integration evidence: real engine callbacks
 - AGP9.1.1 release page both chunks: SDK37, Gradle9.3.1/build-tools36/JDK17/KGP2.2.10 compatibility. https://developer.android.com/build/releases/agp-9-1-0-release-notes . Built-in-Kotlin migration chunks0/2 and AGP9.0 release chunks0/1/2 confirm temporary legacy opt-outs, not preservation of every deprecated managed-device property.
 - Actual4a7aa4d experiment FAILED: runner stable catalog NOT_LISTED for37, install failed; actual compiler rejected managedDevices.devices. Three workflows0 executed native cases, no SDK37 acceptance. Full receipts in verification/r23-sdk37-failed-*. Working SDK36 pins restored; bounded stable+preview probe now tests availability instead of assuming docs install software.
 - https://services.gradle.org/distributions/gradle-8.13-bin.zip.sha256 fetched and redirected to https://downloads.gradle.org/distributions/gradle-8.13-bin.zip.sha256 ; actual plaintext20f1b1176237254a6fc204d8434196fa11a4cfb387567519c61556e8710aed78. Upstream GitHub v8.13.0 binary asset232373824 metadata has digest=null, so it was NOT used as a nonexistent digest. Initial wrong tag v8.13 returned404; corrected tag after query, no authentication issue inferred. Added canonical distribution pin, not independent provenance/cache authentication.
+
+## Final corrections/outcome from actual experiments
+
+The initial 'SDK37 unavailable' inference was TOO BROAD: real stable+preview SDK catalog includes
+platforms;android-37.0; actual metadata ApiLevel=37.0/BaseSdk=true/PreviewSdkInt0,43,044,472-byte official
+compilation jar. Correct alias + localDevices + documented legacy bridge yielded real SDK37 builds/JVM/
+contracts/lint, native memory24, privacy16. Actual API37 runtime/Rabbit GUI still unexecuted.
+Current4bc main121/1 FAILED legacy task Add (IME883px/revision0); no version-causality, global stability or
+full migration acceptance inferred. Counterexample repaired after14/2: root-global View rectangles aren't
+shared screen coordinates across Dialog windows; getLocationOnScreen plus actual presentation witness
+is required. Renderer commit/AX visibility alone didn't satisfy a positive screenshot control (15/1).
+Further independent proof needs physical/API37/AX/overlay/browser/Office/legal gates. No Tails equivalence.

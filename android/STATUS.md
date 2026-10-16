@@ -1,19 +1,28 @@
-# R23 current record
+# R23 current status — incomplete, overall regression FAILED
 
-Current branch: `arena/f77cb2a6-osb`. [R23 engineering and candidate-specific evidence](docs/R23-ENGINEERING.md)
-supersedes old branch/PR statements below. **48/49 substantial testable subsets (97.96%);0/49 fully accepted.**
-First candidate910b739 passed12/12 actual API34 companion cases and119/119 main cases; both debug builds/JVM/contracts/lint passed.
-Separate20c1fd9 and b3f2f1d runs passed all14 companion cases; no new test was accepted from an older12-case run.
-No Tails/anonymity, hardware-keylogger detection, hostile-host/firmware secrecy, full browser/Office or release claim.
-[Current laptop/no-Studio instructions](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out).
+Branch `arena/f77cb2a6-osb`; native-tested **4bc763700b63582107e5dbe979f9a185338f66f7**.
+[Current result and exact gaps](docs/R23-RESULTS.md) supersedes historical status below.
 
-R23 explicit owned-memory worksheet path now passed b3f2f1d **focused24/full122**, companion**14**;
-legacy regular-file APIs remain explicit, not fallback. Real SDK37/AGP9 experiment FAILED before tests;
-working SDK36/AGP8.13.2 pins restored and Gradle8.13 distribution checksum configured from official source.
-Rabbit1 support is documented compatibility, not a GUI run. Restored99c4405 privacy had13PASS/1FAIL (marker readiness); stricter focus/frame screenshot verifier and real Dialog reattack now require a fresh15-case pass, not inherited14-case acceptance.
+| Gate | Actual result |
+|---|---|
+| Privacy, real IME/focus/compositor/input/substrate |16PASS/0FAIL/0SKIP, run38871422549 SUCCESS|
+| Memory/wire/retained FD/CSV/XLSX picker |24PASS/0FAIL/0SKIP, run38871422568 SUCCESS|
+| Main full native regression |**121PASS/1FAIL/0SKIP**, run38871422566 FAILURE|
+| Both main APK builds, JVM/contracts/lint; privacy build/lint |SUCCESS with actual SDK37.0, AGP9.1.1/Gradle9.3.1|
+| SDK-free complete host lab |exit0/134.057s/149 Python methods;898161 R23 assertions/160000 words|
+| Original full-module acceptance |**0/49 (0%)**;49/49 unfinished|
 
-Current live pins are a second **SDK37.0/AGP9.1.1/Gradle9.3.1 experiment**, pending native verification;
-old unqualified37 install failed but actual37.0 is listed. Current privacy scope16, not inherited14.
+Main failure is existing R18 Task UI first Add: IME visible883px, disk revision0/empty tasks,10s saved-revision timeout.
+No root-cause or stability fix claimed, no successful rerun substituted. Earlier SDK37ACE main122 passed,
+but its privacy15/1 failed; a different candidate cannot authorize the current full gate.
+
+Actual compile/target37 is established (SDK37.0 metadata + compile anchor + installed target37); API37 runtime
+and Rabbit1 GUI remain unexecuted. Retained buildable configuration is experimental, not all-gates accepted.
+Separate automatic API34 profile experiment generated837 measured first-party rules; no meaningful speedup,
+physical/performance budget or current-source profile integration claimed.
+
+**48/49 substantial source/test-paired subsets (97.96%),1 unestablished (LOK);4/49 existing production modules
+newly deepened (8.16%), not completion.** No hardware logger detection/global anonymity/Tails/full browser/Office.
 
 ---
 

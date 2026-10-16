@@ -17,29 +17,24 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:48/49 (97.96%)](android/docs/MODULE-TESTABILITY.md).
 **0/49 specification-accepted modules (0%); not a production-ready beta.**
 
-## Latest R23
+## Latest R23 — real native work, overall regression still failed
 
-Current SDK37.0/AGP9.1.1/Gradle9.3.1 experiment and16-case privacy verifier need fresh native results.
-The actual catalog37.0 identifier repairs the earlier wrongly unqualified SDK package request.
+Native-tested **`4bc7637`** on `arena/f77cb2a6-osb`: **privacy16/0/0**, **memory24/0/0**,
+**full main121/1/0 (FAILED)**. An existing R18 task Add workflow timed out with the IME visible
+and actual store still empty. No rerun-to-green or blanket stability/acceptance claim.
 
-New no-IME digit pad, whole-gesture/focus/lifecycle discard and exposure observations;
-explicit no-named-parser-input-file shared-memory worksheet APIs (no silent disk fallback).
-Exact b3f2f1d passed **122 main /24 focused memory /14 privacy** API34 cases; focused cases overlap full counts.
-**4/49 production modules deepened (8.16%), not4 completed modules.** Real SDK37 experiment failed
-pre-test; working SDK36 pins restored, checksum hardened; restored privacy13/1 failure retained, stronger15-case focus/frame verifier pending.
+- Native no-IME digit pad, whole-gesture/focus/lifecycle discard and observation-only exposure review.
+- Explicit owned readonly-memory worksheet APIs and real distinct-UID/wire/FileObserver/picker tests;
+  no named parser-input fallback in these APIs. Legacy regular-file APIs remain intentional.
+- **Real SDK37.0 / AGP9.1.1 / Gradle9.3.1 / target37** builds, JVM/contracts/lint passed.
+  Runtime testing is API34; Rabbit1 GUI/API37 runtime are unexecuted. All-gates migration acceptance is not met.
+- **4/49 existing production modules deepened (8.16%),0 fully completed**. Cumulative testability48/49
+  (97.96%) is NOT product completion. No Tails replacement, all-hardware logger defense or full browser/Office.
 
-
-Native privacy/input hardening on **`arena/f77cb2a6-osb`**: no-IME decimal touch pad,
-whole-gesture obscured-touch rejection, focus/background discard, bounded lifetime and local exposure observations.
-**Not a hardware-keylogger detector, Tails replacement or anonymous OS.**
-[Try on your laptop / no-Studio checks](android/docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
-· [Evidence and exact limits](android/docs/R23-ENGINEERING.md)
+[Current results, failures, APK sizes and exact next test](android/docs/R23-RESULTS.md)
+· [Laptop/no-Studio instructions](android/docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
+· [A–J evidence and alternatives](android/docs/R23-ENGINEERING.md)
 · [Privacy/hardware PRD](android/docs/R23-PRIVACY-PRD.md).
-
-**898,161 new host assertions and160,000 exhaustive4-event touch words passed.** Subsequent
-exact-candidate reveal/AX/memory experiments passed as recorded above; no old12-case pass is inherited.
-
-Module census remains **48/49 testable subsets (97.96%),0/49 fully accepted**; not completion of the original spec.
 
 ## Historical R19
 

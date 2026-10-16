@@ -1,116 +1,117 @@
-> **Current experiment:** live pins now AGP9.1.1/Gradle9.3.1/JDK17/SDK37.0 (compile/target37),
-> Kotlin2.2.21 with documented temporary legacy opt-outs. Fresh build/native verification PENDING.
-> Actual catalog lists `platforms;android-37.0`; old unqualified `android-37` install failed.
-> Current companion suite16 includes stricter frame/focus and real IME single-tap checks;
-> prior13/1 and14/1 failures are retained. Earlier SDK36/14-case instructions/results below are historical.
-> Do not infer API37 runtime or Rabbit1 GUI execution from compilation or compatibility tables.
-
-## R23 explicit memory-route verification
-
-SharedMemory substrate14/14 passed at20c1fd9 before the production alternative was authored.
-New `evaluateMemorySheet/Csv/Xlsx` APIs have **no disk fallback**; the worksheet UI uses memory APIs.
-Old `evaluateOwned*` APIs still intentionally use unlinked private regular files; they are NOT renamed or fallback.
-No no-swap/erasure/host-secrecy claim. Exact b3f2f1d passed focused24/full122 and companion14; a restored build-pin candidate is being verified separately. This is not full-module acceptance.
-
-```bash
-cd android
-# Maintained full JDK17 + SDK required, no Studio GUI:
-python3 tools/r23_lab.py device --suite memory --disposable
-python3 tools/r23_lab.py device --suite full --disposable
-# API34 companion16 cases is the default (focus/frame + real IME single-tap verifier):
-python3 tools/r23_lab.py device --suite privacy --disposable
-```
-
 # R23 — current session / no-IME privacy try-out
 
-Use branch **`arena/f77cb2a6-osb`**, not the historical branch names in older sections below.
-The repo now starts from merged R22 work. Open **`OSB/android`**, not the legacy Vite project.
-Current evidence and exact candidates: [R23 engineering record](R23-ENGINEERING.md).
-**48/49 substantial executable subsets (97.96%);0/49 fully specification-accepted.**
+Branch **`arena/f77cb2a6-osb`**. Open **`OSB/android`**, not the legacy Vite project.
+[Current results and exact failures](R23-RESULTS.md) · [A–J record](R23-ENGINEERING.md).
+**48/49 substantial testable subsets (97.96%);0/49 fully accepted,49 unfinished.**
+
+**Exact native4bc7637:** privacy16/0/0 and memory24/0/0 passed; full main **121/1/0 FAILED**
+an existing task Add workflow with IME visible and actual store empty. Both builds/JVM/contracts/lint passed.
+This is evaluation code, not an all-green release. Do not substitute a successful rerun/different candidate.
 
 ## Android Studio Rabbit1 / laptop
 
-Use an IDE compatible with the pinned **AGP8.13.2, Gradle8.13, Kotlin2.2.21, maintained JDK17,
-SDK36**. The Rabbit1 GUI itself was NOT run here; no claim that every preview IDE version supports
-these pins. Official Rabbit1/2026.2.1 compatibility lists AGP7.1–9.4; the table was actually retrieved, but the GUI was not run. Min SDK34, compile/target36 remain. A real SDK37/AGP9 candidate FAILED before tests (SDK37 NOT_LISTED/install failure + deprecated GMD DSL); requested37 is still a recorded deviation, not silently redefined.
-Use a **disposable API34+ AVD and copied data**. A laptop emulator is not protection from its host.
+Live pins: **AGP9.1.1, Gradle9.3.1, Kotlin2.2.21, maintained JDK17, actual SDK37.0**;
+min34/compile37/target37. Use SDK Manager package **`platforms;android-37.0`**, not unqualified37.
+Temporary documented `android.builtInKotlin=false`/`android.newDsl=false` retain external Kotlin;
+GMD definitions use `localDevices`. No unsupported-API warning suppression or renamed36 SDK.
+Rabbit1's [official compatibility table](https://developer.android.com/studio/releases) covers this AGP, but **Rabbit1 GUI itself was NOT executed here**.
+Actual runtime checks above used managed API34, NOT API37/OEM/physical laptop testing.
+Use a **disposable API34+ AVD and copied data**. Guest privacy is not protection from its host.
 
-1. Open `android/`, sync and select **`privacy`** as the application/run target (its debug variant).
-   This is the separate **Fusion Offline Scratchpad** APK, not `app`/`proDebug`.
-2. Run it. Scroll to **Touch-only code pad (no keyboard)**. Opening it discards the old scratchpad.
-3. Tap/click digits instead of typing. A keyboard-only logger does not receive typed secret keys
-   on this route; an observer of the screen, pointers, accessibility, Android or laptop can still observe.
-   The keypad is digits-only, shuffled on creation/clear; no clipboard, export, submission or storage.
-4. Use **Reveal (5-second timer)**, delete or discard/reshuffle.64-digit cap+1 refuses atomically.
-   Accepted code changes renew a60s inactivity timer; background, focus loss, obscured input and recreation
-   discard immediately through the UI lifecycle. Timers use the main looper, not hard real-time scheduling.
-5. Return to the scratchpad and open **Review local input / exposure**. It reports limited counts/settings,
-   including UNKNOWN, not a keylogger detector or “safe” verdict. It does not change settings. Turn off
-   unneeded debugging AFTER evaluation through system settings; Android Studio/ADB currently needs it.
+1. Open `android/`, sync with real SDK37.0/full JDK17; choose **privacy** application/debug run target.
+   This is the separate **Fusion Offline Scratchpad** APK, not `app`/proDebug.
+2. Open **Touch-only code pad (no keyboard)**. Opening it discards the ordinary scratchpad.
+3. Tap/click digits instead of typing.64-digit ASCII cap; no input connection, clipboard, export,
+   submission or saved draft. Keyboard-only loggers need not receive typed secret keys on this route;
+   screen/pointer/AX/Android/laptop observers can still observe. Digits reshuffle on new pad/clear.
+4. Default masked; **Reveal (5-second timer)**, delete, discard/reshuffle. Accepted changes renew a60s
+   inactivity timer/action check. Focus/background/obscured input/recreation discard through actual lifecycle.
+   Timers use the main looper, **not hard real-time scheduling or forensic erasure**.
+5. **Review local input / exposure** reports limited counts/settings including UNKNOWN, not malware/
+   hardware-keylogger detection or a safe verdict. It changes no setting. Turn off unneeded debugging
+   through system settings AFTER evaluation; Studio/ADB currently needs it.
 
-The ordinary text scratchpad still uses your chosen IME and must trust it. All companion views now
-request application-overlay hiding and reject both full/partial obscuration. Focus loss may include
-notification shade/system dialogs; volatile work is deliberately lost. **No reliable RAM/flash erasure,
-Tails equivalence, global anonymity, host/firmware secrecy or all-accessibility blocking.**
-Read [privacy PRD and hardware limits](R23-PRIVACY-PRD.md) before sensitive use.
+The ordinary scratchpad still trusts your chosen IME. Secure-window/recents/overlay controls do not
+exclude privileged capture, trusted accessibility tools, host/hypervisor, camera, firmware or hardware.
+No global anonymity, no-swap/erasure, Tails equivalence or lighter-whole-system claim.
+Read [privacy/hardware PRD](R23-PRIVACY-PRD.md) before sensitive use.
 
-The main application remains `app` / **`proDebug`** (or `playDebug`). Its existing Tasks/CSV/XLSX
-and first-party shell can be tried with the R22 instructions below. It DOES have networking permission.
-The companion does not make the main app or other apps offline.
+## Main shell / explicit memory worksheet
 
-## R23 without the Android Studio GUI
+Choose **app/proDebug** (or playDebug), open **Tasks and action plans (Automation)**, enable with copied
+test data, choose **CSV selected-column worksheet**. Existing bounded CSV and **Import values-only XLSX…**
+use explicit owned readonly-memory parser-input APIs, no named parser-input-file fallback. Save creates a
+NEW literal XLSX copy and reads it back. Legacy `evaluateOwned*` APIs still intentionally use regular files.
+Original provider files, created exports, OS paging and heap copies are not disk-free/erased. Main app HAS
+network permission; the companion does not make it offline/anonymous. General XLSX/Office/LOK is not delivered.
+Detailed historical R22 picker steps below still illustrate the bounded worksheet, but old disk/branch/
+SDK/artifact statements describe that older candidate. **The task Add instability above remains unresolved.**
 
-No SDK is needed for actual Kotlin/kernel and Office-reference tests. On **Linux x86_64**:
+## Without Android Studio — actual host tests
+
+No SDK is needed for the real Kotlin kernels and Office-reference tests. Tested **Linux x86_64**:
 
 ```sh
 cd android
-python3 tools/bootstrap_host_tools.py install    # explicit public PyPI/npm downloads; no root
+python3 tools/bootstrap_host_tools.py install  # explicit hash-pinned PyPI/npm downloads; no root
 python3 tools/bootstrap_host_tools.py doctor
 python3 tools/r23_lab.py host --tools "$HOME/.cache/fusion-host-r23"
-python3 tools/inspect_usb_posture.py             # read-only Linux defaults; UNKNOWN is not safe
-# Only if a real SDK command-line install exists (no install/license command invoked):
-python3 tools/probe_android_sdk.py               # real stable+preview catalogs, NOT SDK37 build proof
+python3 tools/inspect_usb_posture.py           # read-only Linux observations; UNKNOWN is not safe
 ```
 
-The optional cache contains pinned Kotlin2.2.21 and an **OLD JRE17.0.9, not a JDK**. It is only for
-disposable host tests; do not use it as Gradle JAVA_HOME or a production security runtime. npm scripts
-are disabled; compiler integrity and PyPI wheel hashes are pinned. Registry/mirror maintainers remain
-trusted; no independent upstream binary provenance claim. No downloaded tool enters Git or an APK.
-Alternatively configure your maintained Java17/Kotlin2.2.21 and Python openpyxl3.1.5/XlsxWriter3.2.5
-(et-xmlfile2.0.0) manually, then `python3 tools/r23_lab.py host`. Windows/macOS: manual tool install;
-this cache installer is not claimed tested there. `doctor` reports availability, not execution.
+Latest whole host pipeline passed149 Python methods,898161 R23 assertions/160000 touch words and bounded
+R22/R21/Office references. Source checks are not Android compilation or hardware verification.
+The optional cache has Kotlin2.2.21 and **OLD JRE17.0.9, NOT a JDK**: disposable host tests only, NOT
+Gradle JAVA_HOME or a secure production runtime. npm scripts disabled; wheel/compiler integrity pinned;
+registries/maintainers still trusted. No downloaded tool enters Git or an APK. Native doctor correctly
+refused this local no-javac/no-SDK environment. Windows/macOS: manual maintained tool installation;
+installer/native CLI is not claimed locally tested there.
 
-With a **real maintained JDK17 and Android SDK36** installed, no IDE GUI is required:
+## Without the IDE GUI — actual native SDK needed
+
+Install a maintained full JDK17, Android command-line tools and an SDK whose licenses you have reviewed.
+Set JAVA_HOME/ANDROID_HOME to real installations; don't use the host-test JRE cache.
 
 ```sh
-# Set JAVA_HOME to a full JDK17 and ANDROID_HOME to your real SDK first.
+# Real SDK package spelling and both build tools used by current doctor/CI:
+sdkmanager 'platforms;android-37.0' 'build-tools;36.0.0' 'build-tools;35.0.0'
+python3 tools/probe_android_sdk.py             # non-installing real stable+preview catalog observation
+python3 tools/record_sdk_platform.py          # actual installed37.0 metadata/jar; not runtime proof
 python3 tools/r23_lab.py android
-python3 tools/r23_lab.py device --suite privacy --disposable
-python3 tools/r23_lab.py device --suite memory --disposable
-python3 tools/r23_lab.py device --suite full --disposable
-# Direct equivalents (Windows uses gradlew.bat):
+python3 tools/r23_lab.py device --suite privacy --disposable  #16 cases
+python3 tools/r23_lab.py device --suite memory --disposable   #24 cases
+python3 tools/r23_lab.py device --suite full --disposable     #latest actual121/1 failure retained
+# Direct build equivalent (Windows uses gradlew.bat):
 ./gradlew :app:assembleProDebug :app:assemblePlayDebug :privacy:assembleDebug :privacy:lintDebug :testing:r23Contracts
-./gradlew :privacy:pixel6Api34DebugAndroidTest
 ```
 
-The host-only cache is deliberately refused for native builds. You still need an actual Android runtime
-(AVD/device) to run APKs; pure JVM tests do not turn an APK into a laptop-native program.
-After an actually successful build, companion APK is
-`privacy/build/outputs/apk/debug/privacy-debug.apk`. Main APK paths are listed in the older sections.
-GitHub evaluated run/artifact links are in R23-ENGINEERING.md. Download through GitHub on your laptop;
-this sandbox cannot download release/Actions blob redirects under its outbound allowlist. Artifact metadata
-and actual named outcome annotations ARE retrievable; no local APK inspection is claimed here.
+Use a real AVD/runtime with hardware virtualization; test suites modify test-app state. The local Android
+CLI routes were NOT executed here; corresponding source commands actually ran in remote Linux/KVM CI.
+JVM code does not turn the APK into a laptop-native desktop program.
 
-Collect a completed privacy run and apply only its exact scope:
+APK paths after successful build:
+- `privacy/build/outputs/apk/debug/privacy-debug.apk`
+- `app/build/outputs/apk/pro/debug/app-pro-debug.apk`
+- `app/build/outputs/apk/play/debug/app-play-debug.apk`
+
+[Privacy APK run38871422549](https://github.com/jyvplay/OSB/actions/runs/38871422549), artifact `offline-privacy-companion`.
+[Main APK build/run38871422566](https://github.com/jyvplay/OSB/actions/runs/38871422566), artifact `fusion-native-debug`;
+**the build succeeded but this whole workflow FAILED its later task UI case**. Download on your laptop via
+GitHub. This sandbox's blob/log redirects failed; no local APK/signature/RAM inspection is claimed.
+Remote byte sizes/hashes are in [outcome JSON](verification/r23-outcome.json), not total footprint/Tails comparison.
 
 ```sh
-python3 tools/collect_native_evidence.py ACTUAL_RUN_ID NEW_PREFIX --privacy
-python3 tools/r23_evidence_gate.py docs/verification/NEW_PREFIX-result.json --candidate EXACT_40_HEX_SHA --claim r23_privacy_api34
+# Exact scoped gates, not all-product acceptance:
+python3 tools/r23_evidence_gate.py docs/verification/r23-final-privacy-result.json --candidate 4bc763700b63582107e5dbe979f9a185338f66f7 --claim r23_privacy_api34
+python3 tools/r23_evidence_gate.py docs/verification/r23-final-memory-result.json --candidate 4bc763700b63582107e5dbe979f9a185338f66f7 --claim r23_memory_transport_api34
 ```
 
-Receipt policy checks metadata and named cases, not cryptographic authenticity or whole-product semantics.
-Do not overwrite retained failed evidence. R22 interop now writes ignored `testing/build/r22/interop.json`
-by default; `--report NEW_PATH` explicitly records a new run instead of silently overwriting historical R22 evidence.
+Current privacy policy requires16 names; `r23_prerequisite_api34` retains old14-case substrate scope.
+Receipt gates check metadata/cases, not independent cryptographic authenticity or whole-product semantics.
+Never overwrite failed receipts. R22 interop defaults to ignored `testing/build/r22/interop.json`;
+`--report NEW_PATH` deliberately records a new artifact instead of replacing historical R22 evidence.
+Manual GitHub Actions dispatch was403 for this integration; normal push-triggered verification worked.
+No credentials requested, alternate token, PR merge/close or release was used.
 
 ---
 

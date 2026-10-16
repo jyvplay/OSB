@@ -1,28 +1,22 @@
-# R23 — native input/privacy work
+# R23 — native SDK37.0 evaluation
 
-Open this directory in Android Studio using branch **`arena/f77cb2a6-osb`**.
-Use a maintained JDK17/SDK36 and an IDE compatible with the pinned Gradle8.13/AGP8.13.2/Kotlin2.2.21;
-the Rabbit1 GUI itself was not executed here. Select `privacy` for the separate offline companion or
-`app`/`proDebug` for the main first-party shell. No browser/TypeScript replacement was built.
+Open **this Android directory**, branch `arena/f77cb2a6-osb`, in Android Studio Rabbit1 with a
+maintained full JDK17 and SDK **platforms;android-37.0**. Live pins: AGP9.1.1/Gradle9.3.1/Kotlin2.2.21,
+min34/compile37/target37, documented temporary legacy Kotlin/DSL bridge. GUI itself unexecuted.
+Select **privacy/debug** for the offline scratchpad/no-IME pad, or **app/proDebug** for the shell/worksheet.
+No browser/TypeScript replacement was built. Use a disposable API34+ AVD and copied data.
 
-New: digits-only no-IME touch pad, obscured-gesture/focus/background discard, bounded capacity/lifetime,
-secure-window/overlay requests and local exposure observations. **Not hardware-logger detection,
-Tails equivalence, privileged-host/firmware secrecy or global anonymity.**
+**Exact4bc7637:** privacy16/0/0 and memory24/0/0 passed; main **121/1/0 FAILED** an old task Add workflow.
+Both main builds/JVM/contracts/lint and privacy build/lint passed; do not call all native gates green.
+No API37 runtime, physical/AX/host trust, Tails, major-browser/full-Office or release acceptance.
 
-[Current build/laptop/no-Studio instructions](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
-· [R23 evidence/limits](docs/R23-ENGINEERING.md) · [Privacy/hardware PRD](docs/R23-PRIVACY-PRD.md).
-**48/49 substantial executable subsets (97.96%);0/49 fully accepted.** All49 still need full-scope work/acceptance.
+**48/49 substantial runnable subsets (97.96%);0/49 fully accepted;49 unfinished.**
+Four existing production modules deepened in R23 (8.16% of inventory), not four completed modules.
+[Current results](docs/R23-RESULTS.md) · [Laptop/no-Studio commands](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
+· [A–J record](docs/R23-ENGINEERING.md) · [Privacy PRD](docs/R23-PRIVACY-PRD.md)
+· [Reviewed source/test census](docs/MODULE-TESTABILITY.md).
 
-R23 explicit owned-memory worksheet path now passed b3f2f1d **focused24/full122**, companion**14**;
-legacy regular-file APIs remain explicit, not fallback. Real SDK37/AGP9 experiment FAILED before tests;
-working SDK36/AGP8.13.2 pins restored and Gradle8.13 distribution checksum configured from official source.
-Rabbit1 support is documented compatibility, not a GUI run. Restored99c4405 privacy had13PASS/1FAIL (marker readiness); stricter focus/frame screenshot verifier and real Dialog reattack now require a fresh15-case pass, not inherited14-case acceptance.
-
-Source/test file hashes and per-module commands are in [MODULE-TESTABILITY.md](docs/MODULE-TESTABILITY.md).
-Old percentages, branch names and PR statements below are historical, not current instructions.
-
-Current live pins are a second **SDK37.0/AGP9.1.1/Gradle9.3.1 experiment**, pending native verification;
-old unqualified37 install failed but actual37.0 is listed. Current privacy scope16, not inherited14.
+Old branch names/percentages/PR statements below are historical.
 
 ---
 

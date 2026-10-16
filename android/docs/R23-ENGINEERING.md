@@ -1,5 +1,19 @@
 # R23 — real native input/privacy hardening, not an anonymous OS
 
+## Authoritative final checkpoint (historical chronology follows)
+
+**Native candidate4bc7637, compile/target37 via real SDK37.0:** privacy38871422549 **16/0/0 SUCCESS**,
+focused memory38871422568 **24/0/0 SUCCESS**, main38871422566 **121/1/0 FAILURE**.
+Both main builds/JVM/contracts/lint and privacy build/lint succeeded; no all-green/native-release acceptance.
+Main R18 task Add timed out with actual revision0/empty list, IME visible883px. Cause unproven; no rerun-to-green.
+Current complete host run **134.057s/149 Python methods**, R23 assertions898161/160000 four-event words.
+Census48/49 testable (97.96%),0/49 complete,4 existing production modules deepened (8.16%).
+[Current concise results, artifacts, scopes and next falsifier](R23-RESULTS.md) · [machine record](verification/r23-outcome.json).
+
+Statements of 'pending', restored SDK36, or14/15-case thresholds in historical checkpoints below describe
+those earlier stages only. They do not override this outcome or turn a later failed full gate green.
+
+
 Work is on **`arena/f77cb2a6-osb`**, starting from merged commit7a32437. The prior turn's full free-form input is not available here; the checked-in231-row requirement register,36 cross-cutting obligations,30 spike gates and R22 records are the recovered scope. No original requirement is silently removed. Browser/Office/physical/legal/AX gates remain closed.
 
 ## Current evidence (candidate-specific, not inherited)
@@ -106,6 +120,12 @@ The exact open interfaces: real overlay/AX/OEM/physical security review; actual 
 |33|Official SDK37/Rabbit table implies installed SDK/build success|Actual4a7aa4d pre-test failures; stable NOT_LISTED and old GMD DSL compile errors outweigh a compatibility narrative|
 |34|A checksum appearing anywhere is the configured checksum|Canonical wrapper parser rejects duplicate last-key-wins overrides/Unicode-key aliases/extra fields|
 |35|Checksum config authenticates every existing cache/tool/dependency|Scope to future distribution download integrity; old caches, mutable actions/transitives and upstream trust remain|
+|36|Missing unqualified android-37 implies all SDK37 absent|Actual stable/preview catalogs list37.0; actual metadata says37.0; exact base alias policy plus real installation/compile anchor|
+|37|Renderer frame commit/AX node implies screenshot presentation|Actual post-control15/1 failure; concurrent real displayed witness, fresh second RGB and nonempty controls, never poll secure pixels until zero|
+|38|Two Views' root-global rectangles share screen coordinates|Actual d5 coordinate14/2 failure; clipped local rect + getLocationOnScreen and bottom-placement/occlusion checks; new4bc16 passes|
+|39|All new R23 cases passing erases an old whole-suite failure|Current main121/1 remains FAILED; independent privacy16/memory24 do not promote product acceptance|
+|40|Unfixable hostile hardware means useful scoped controls must be rejected|Accept actual no-IME/readonly-memory subsets under stated trust model, without pretending to solve the stronger original target|
+|41|A task failure after SDK upgrade proves compiler cause or a rollback fix|Same class of task Add failure existed earlier; capture pre-tap text/focus/bounds/IME/callback/revision, do not infer causality from version order|
 
 **Modal shortcut:** “no IME + secure window ⇒ safe on a hostile laptop.” The host can observe the guest's displayed keypad and pointer coordinates; the app cannot exclude an observer above its authority. The actual AX activation case also demonstrates that the pad is not genuine-touch authentication. `test_actual_first_r23_pass_has_only_its_named_scope` feeds a real green receipt into the evidence gate and rejects host/hardware/global/erasure claims. This test detects an invalid *claim bridge*; it is not a hostile-host penetration test.
 
@@ -148,9 +168,17 @@ All are one author's approaches recorded before their respective implementation,
 
 ## J — exact gap and next highest-information tests
 
-Strongest native artifact is exact b3f2f1d: companion14, focused memory/FD/picker24, full main122 with both builds/JVM/contracts/lint successful. Working production code now includes no-IME input and explicit no-named-parser-input-file SharedMemory transport, not an anonymous system. A documented SDK37 toolchain candidate was actually attempted and FAILED before native execution; its receipts carry0 executed cases and cannot inherit b3f2f1d passes. Working36 toolchain restored, checksum configuration hardened, fresh candidate verification pending. Independently, run a real malicious-overlay test app, TalkBack/Switch/Voice/200%/API36/37 and physical laptop/peripheral/DMA evaluation. A blinded malformed Office corpus and real engine/compositor spike have more information than adding another broad “complete” label.
+Strongest current scoped artifact is4bc7637: actual privacy16 and focused memory24 pass with real SDK37.0/target37;
+both builds/JVM/contracts/lint pass. **Whole main121/1 FAILED** the old R18 first task Add. Current all-gates
+threshold is not met; no all-module/release/fully validated upgrade claim. No rerun-to-green or skip introduced.
+Immediate cheapest falsifier is a one-tap IME-visible task Add trace with BEFORE text/geometry/focus/active-window
+generation and AFTER callback/status/disk revision. Root cause is not diagnosed from IME visibility alone.
+The buildable SDK37 tuple stays experimental; b3f2f1d SDK36 remains a rollback/reference, not a compiler-causality proof.
 
-No claim all original pieces or all hardware weaknesses are closed. No release acceptance, branch switch, merge or closing operation is authorized/performed.
+Next independent gates: actual API37/Rabbit GUI, malicious external overlay/AX service, physical/OEM/hardware,
+real browser-engine/compositor spike and blinded Office fidelity/ABI/transitive-license evaluation. No APK can
+certify hostile host/firmware secrecy, erasure of prior external logs or a lighter-than-Tails whole system.
+No PR merge/close/release or full specification acceptance was performed.
 
 ## Conditional SDK37 experiment, separate from b3f2f1d acceptance
 
@@ -226,3 +254,11 @@ leaving>3/4 marker area. Secure pixels fail immediately on first witness-present
 controls must actually show marker. Second actual parent commit/fresh witness color and real retired-marker
 rejection strengthen the verifier, no fabricated images or production FLAG_SECURE/discard weakening.
 Fresh16/24/122 still mandatory; general compositor/OEM/host/all-frame stability unaccepted.
+
+## Final empirical profile note
+
+Automatic79bb1c3 run38869279741 actually succeeded generation+3 macrobenchmark methods,837 owned
+rules and nonempty packaged ART assets. Cold/profile-compiled startup medians1619.21/1616.69ms, n=3 each;
+Files frameCPU P50≈45.98/P95≈137.55ms. No meaningful speedup or physical-budget acceptance, no profile
+asset update into current source; measured837 receipt is separate from older855 data. Full current main
+failure remains121/1 even though benchmark workflow on another candidate succeeded.

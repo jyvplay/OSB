@@ -1,5 +1,13 @@
 # R23 privacy/input refinement — NOT a Tails fork or anonymous OS
 
+**Current verification:** exact4bc7637 privacy16/0/0 and focused memory24/0/0 on managed API34 compiled/target37.
+Main overall121/1 FAILED an existing task Add workflow; no release/full-module acceptance. API37 runtime,
+Rabbit1 GUI, malicious external overlay/AX service, physical/host/firmware and whole-system/Tails gates remain open.
+Actual APK sizes:privacy2,534,628B; main28,954,907/28,954,979B, remote observations ONLY, not app/OS RAM or Tails comparison.
+[Exact results/failures](R23-RESULTS.md). New compositor witnesses and actual IME-visible single-tap case
+strengthen native verification without weakening production discard/secure behavior. No general stability proof.
+
+
 Fresh-source basis and hypotheses: [primary research](research/r23-primary.md). These are additional scoped requirements, not a rewrite or promotion of the original231-row PRD,36 cross-cutting obligations or30 spike gates. No new included module is counted.
 
 ## Delivered source and scoped acceptance
@@ -42,3 +50,15 @@ No prevalence dataset was retrieved; “all the most common vulnerabilities are 
 - **Lightweight comparison:** compare total guest+host installed bytes, peak/steady PSS/RSS, cold startup, power and network on the SAME real hardware/workload, with Tor/browser/Office functionality held constant. A2.5MB APK vs a bootable OS is not a valid comparison. No such comparison occurred.
 - **No retroactive promises:** cannot delete prior chat/GitHub/ISP/provider logs or anonymize already-published identifiers. Filenames, retained document values, host paths and user behavior can identify people.
 - **No “more private than Tails” rank:** threat models differ; no adequate verifier or measured equivalence exists here.
+
+## Additional PRD verification obligations learned from actual failures
+
+- **PRIV23-11 — real SDK identity:** treat `platforms;android-37.0` and ApiLevel37.0 as base37,
+  not a nonexistent unqualified package or every higher minor/beta. Inspect actual metadata/jar and compile
+  an official37 constant + actual installed target37. This does not test API37 runtime or the IDE GUI.
+- **PRIV23-12 — non-vacuous screen verification:** require actual focus/current marker/renderer commit,
+  real co-captured nonfocusable witness, correct cross-window screen coordinates, unoccluded area and
+  nonempty positive controls; first witness-presented secure marker pixel fails. A blank or stale frame
+  is not protection. Retain13/1,14/1,15/1,14/2 counterexamples and fresh16 result. Not an all-frame/OEM theorem.
+- Latest full native121/1 is a blocking acceptance failure; independent passed privacy/memory experiments
+  cannot certify all Task/productivity behavior, and visible IME alone cannot diagnose its cause.
