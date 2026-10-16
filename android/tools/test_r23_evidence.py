@@ -42,6 +42,18 @@ class R23EvidenceTests(unittest.TestCase):
             malformed = copy.deepcopy(first); malformed['cases'][0]['result'] = value
             self.assertFalse(assess(malformed, first['candidate'], 'r23_input_api34')[0])
 
+    def test_actual_substrate_pass_is_not_production_transfer(self):
+        substrate = json.loads((ROOT / 'docs/verification/r23-memory-prerequisite-result.json').read_text())
+        self.assertEqual({'PASS': 14, 'FAIL': 0, 'SKIP': 0}, substrate['counts'])
+        self.assertTrue(assess(substrate, substrate['candidate'], 'r23_privacy_api34')[0])
+        self.assertFalse(assess(substrate, substrate['candidate'], 'r23_memory_transport_api34')[0])
+        main = json.loads((ROOT / 'docs/verification/r23-first-native-result.json').read_text())
+        self.assertFalse(assess(main, main['candidate'], 'r23_memory_transport_api34')[0])
+        for value in [[], {}, True, None]:
+            malformed = copy.deepcopy(substrate); malformed['suite'] = value
+            self.assertFalse(assess(malformed, malformed['candidate'], 'r23_privacy_api34')[0])
+            self.assertFalse(assess(substrate, substrate['candidate'], value)[0])
+
     def test_malformed_input_is_refusal_not_exception(self):
         for receipt in [None, [], {}, {'cases': [{}]}]:
             self.assertFalse(assess(receipt, None, 'r23_input_api34')[0])

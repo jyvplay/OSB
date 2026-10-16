@@ -1,3 +1,19 @@
+## R23 explicit memory-route verification (new candidate pending)
+
+SharedMemory substrate14/14 passed at20c1fd9 before the production alternative was authored.
+New `evaluateMemorySheet/Csv/Xlsx` APIs have **no disk fallback**; the worksheet UI uses memory APIs.
+Old `evaluateOwned*` APIs still intentionally use unlinked private regular files; they are NOT renamed or fallback.
+No no-swap/erasure/host-secrecy claim. New native wire/observer/FD/picker scope is24 cases, not acceptance.
+
+```bash
+cd android
+# Maintained full JDK17 + SDK required, no Studio GUI:
+python3 tools/r23_lab.py device --suite memory --disposable
+python3 tools/r23_lab.py device --suite full --disposable
+# API34 companion14 cases is the default:
+python3 tools/r23_lab.py device --suite privacy --disposable
+```
+
 # R23 — current session / no-IME privacy try-out
 
 Use branch **`arena/f77cb2a6-osb`**, not the historical branch names in older sections below.

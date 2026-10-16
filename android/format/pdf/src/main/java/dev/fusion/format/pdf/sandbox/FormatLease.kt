@@ -23,7 +23,8 @@ class FormatLease(context: Context) : Closeable {
     data class Evidence(val uid: Int,val pid: Int,val bytes: Int,val digest: String,
                         val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int,
                         val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long,
-                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null,val table:CsvTable?=null)
+                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null,val table:CsvTable?=null,
+                        val inputTransport:String="READ_ONLY_FILE")
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -33,6 +34,7 @@ class FormatLease(context: Context) : Closeable {
     private val death=CountDownLatch(1)
     private val started=AtomicBoolean(false)
     private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
+    private val expectedTransport=java.util.concurrent.atomic.AtomicReference<String?>(null)
     private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
     private val ownedCsv=java.util.concurrent.atomic.AtomicReference<OwnedCsvRequest?>(null)
     private val ownedXlsx=java.util.concurrent.atomic.AtomicReference<OwnedXlsxRequest?>(null)
@@ -50,6 +52,10 @@ class FormatLease(context: Context) : Closeable {
             }
             if(!data.getBoolean("ok")) {
                 result.completeExceptionally(IllegalStateException(data.getString("error")?.take(240) ?: "Worker refused"));return
+            }
+            val transport=data.getString("transport")
+            if(transport !in setOf("READ_ONLY_FILE","READ_ONLY_SHARED_MEMORY") || transport!=expectedTransport.get()) {
+                result.completeExceptionally(IllegalStateException("Input transport mismatch"));return
             }
             val digest=data.getString("digest") ?: ""
             val size=data.getInt("bytes",-1)
@@ -71,7 +77,7 @@ class FormatLease(context: Context) : Closeable {
                 catch(error:Exception) {result.completeExceptionally(error);return}
             } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
-                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet,table))
+                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet,table,requireNotNull(transport)))
         }
     })
     private val connection=object: ServiceConnection {
@@ -158,6 +164,42 @@ class FormatLease(context: Context) : Closeable {
             } finally {file.delete()}
         } finally {close()}
     }
+    /** Explicit no-named-input-file route. No disk fallback: allocation/protection failure refuses.
+     * Parent/OS trusted; anonymous pages and display/parser copies are NOT securely erased or swap-proof.
+     * Legacy evaluateOwned* methods remain explicit file APIs, not fallback implementations.
+     */
+    fun evaluateMemorySheet(cells:Map<String,String>):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedSheetRequest.create(cells)
+            return requestMemory(model.frame(),FormatWorkerService.DECIMAL_SHEET,model)
+        } finally {close()}
+    }
+    fun evaluateMemoryCsv(bytes:ByteArray):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedCsvRequest(bytes);ownedCsv.set(model)
+            return requestMemory(model.bytes(),FormatWorkerService.CSV_TABLE)
+        } finally {close()}
+    }
+    fun evaluateMemoryXlsx(bytes:ByteArray):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedXlsxRequest(bytes);ownedXlsx.set(model)
+            return requestMemory(model.bytes(),FormatWorkerService.XLSX_TABLE)
+        } finally {close()}
+    }
+    private fun requestMemory(bytes:ByteArray,operation:Int,owned:OwnedSheetRequest?=null):Evidence {
+        val limit=when(operation) {
+            FormatWorkerService.DECIMAL_SHEET->SheetFrame.MAX_INPUT
+            FormatWorkerService.CSV_TABLE->CsvTable.MAX_INPUT
+            FormatWorkerService.XLSX_TABLE->dev.fusion.ooxml.LiteralXlsxImport.MAX_INPUT
+            else->throw IllegalArgumentException("Memory operation refused")
+        }
+        return OwnedFormatMemory.create(bytes,limit).use { memory ->
+            request(null,null,operation,0,owned,memory,bytes.size)
+        }
+    }
     fun probeSocket(file: File,loopbackPort: Int): Evidence {
         require(loopbackPort in 1..65535)
         return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
@@ -166,14 +208,18 @@ class FormatLease(context: Context) : Closeable {
     }
     fun digestDescriptor(input: ParcelFileDescriptor,privateProbeName: String?=null): Evidence =
         request(input,privateProbeName,FormatWorkerService.DIGEST,0)
-    private fun request(input: ParcelFileDescriptor,privateProbeName: String?,operation: Int,port: Int,owned:OwnedSheetRequest?=null): Evidence {
+    private fun request(input: ParcelFileDescriptor?,privateProbeName: String?,operation: Int,port: Int,owned:OwnedSheetRequest?=null,
+                        memory:SharedMemory?=null,memoryBytes:Int=-1): Evidence {
+        require((input==null)!=(memory==null)) { "Exactly one input transport required" }
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Wait for workers off the UI thread" }
         check(!closed.get() && started.compareAndSet(false,true)) { "One request per lease" }
         ownedRequest.set(owned)
         expectedOperation.set(operation)
+        expectedTransport.set(if(memory==null) "READ_ONLY_FILE" else "READ_ONLY_SHARED_MEMORY")
         try {
             require(privateProbeName==null || privateProbeName.matches(Regex(FormatWorkerService.PRIVATE_NAME)))
-            val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName);putInt("socketPort",port) }
+            val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName);putInt("socketPort",port)
+                if(memory!=null) {putParcelable("memory",memory);putInt("memoryBytes",memoryBytes)} }
             connected.get().send(Message.obtain(null,operation).apply { this.data=data;replyTo=reply })
             return result.get(8,TimeUnit.SECONDS)
         } finally { close() }

@@ -854,7 +854,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "1c5f1476372f11685186c3a6907be1dff9b05ea8f200e48f8a6c7356fa780969"
+      "sha256": "56f68adf98a8a4233f93375ad58e86493a6b4f835ace288bc828a3896c6c4067"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",
@@ -1016,13 +1016,19 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "72da7c087bb21c03e527d207101cb137cad26cd87df5d06e43a026a93ac7ac67"
+      "sha256": "a428579e999c9191090310e87fbeba6824a75cb68036ac7354b492ccc8db9734"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "eace506dd0d3442806b7d621d7e99fe02459eb0b361373b53c99e954fa4294ad"
+      "sha256": "dc6cc0a65e9ad80429045e9a2a335b32fa4137eaf22987230de8241f6677f921"
+    },
+    {
+      "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt",
+      "module": ":format:pdf",
+      "package": "dev.fusion.format.pdf.sandbox",
+      "sha256": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

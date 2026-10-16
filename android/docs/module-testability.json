@@ -764,7 +764,7 @@
       "module": ":feature:automation",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Historical d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export R21 native CSV worksheet added after worker spike; b96f060 focused8/8 and Task/Notes7/7 passed after exact-readback repair. Whole-app/physical/AX acceptance remains separate. R22 adds read-only picker import and explicit loss-report/new-text-projection workflow; fe8dca2 focused10/0 passed including real read-only picker/import/new-copy/reimport and malformed/cancel cases. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance.",
+      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Historical d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export R21 native CSV worksheet added after worker spike; b96f060 focused8/8 and Task/Notes7/7 passed after exact-readback repair. Whole-app/physical/AX acceptance remains separate. R22 adds read-only picker import and explicit loss-report/new-text-projection workflow; fe8dca2 focused10/0 passed including real read-only picker/import/new-copy/reimport and malformed/cancel cases. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R23 memory substrate20c1fd9 privacy14/14 passed before production transport authoring. New explicit evaluateMemory* APIs and worksheet UI path use owned read-only SharedMemory without named-input-file fallback; source authored, integration not yet compiled/executed. Legacy evaluateOwned* file APIs are retained, not silently relabelled or used as fallback.",
       "production": [
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
@@ -798,7 +798,8 @@
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt"
       ],
       "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "No permanent deletion/history/recurrence/reminders/calendar integration or Room; plaintext/same-process storage only; UI instability, keyboard/AX/physical acceptance remain open. FTS2 mutations prevent old-client downgrade reading. Action plans are not transactional/scheduled.",
@@ -825,7 +826,7 @@
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "6232f963f6e23ca1bca0edf48e42a1151cdabf4e00307a8b3d3cf6b7870bc571",
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
-        "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "1c5f1476372f11685186c3a6907be1dff9b05ea8f200e48f8a6c7356fa780969",
+        "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "56f68adf98a8a4233f93375ad58e86493a6b4f835ace288bc828a3896c6c4067",
         "app/src/androidTest/java/dev/fusion/shell/R21CsvUiDeviceTest.kt": "a00e008ea468e0fac937e7a97a03c69ea21c2bb53f64589f26675b9a923b914f",
         "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt": "fa4c541f09a6479c34817c42612ffa80ad0e25189846192ed741783927c0f754",
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
@@ -833,7 +834,8 @@
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
         "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt": "4bb340ef050df44feab671df316c199fb490da0b60f78f442454b31200976b3e",
-        "app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt": "a5cd30ef8d0713bce7a5a760c9c465e324558a13bc8e781e0e97fa1f3992726b"
+        "app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt": "a5cd30ef8d0713bce7a5a760c9c465e324558a13bc8e781e0e97fa1f3992726b",
+        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659"
       }
     },
     {
@@ -958,10 +960,11 @@
       "module": ":format:pdf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real isolated-UID/FD/watchdog/socket boundary plus bounded original arithmetic through a read-only descriptor; not PDF/Office-engine isolation. R18 additive owned arithmetic API closes writer/unlinks private input before read-only handoff and correlates result metadata/keys; actual native cases passed at9340662/run38830281113. New owned-worker cases also passed in d6f7393/run38831196589, whose full suite failed a separate older Task UI case. R21 actual isolated CSV operation passed its three-case pre-UI boundary suite; not PDF or full Office acceptance. R22 adds XLSX operation5 on owned unlinked readonly descriptor; fe8dca2 focused10/0 passed for actual owned isolated integration; not an honest-computation or universal resource proof. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance.",
+      "behavior": "Real isolated-UID/FD/watchdog/socket boundary plus bounded original arithmetic through a read-only descriptor; not PDF/Office-engine isolation. R18 additive owned arithmetic API closes writer/unlinks private input before read-only handoff and correlates result metadata/keys; actual native cases passed at9340662/run38830281113. New owned-worker cases also passed in d6f7393/run38831196589, whose full suite failed a separate older Task UI case. R21 actual isolated CSV operation passed its three-case pre-UI boundary suite; not PDF or full Office acceptance. R22 adds XLSX operation5 on owned unlinked readonly descriptor; fe8dca2 focused10/0 passed for actual owned isolated integration; not an honest-computation or universal resource proof. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R23 memory substrate20c1fd9 privacy14/14 passed before production transport authoring. New explicit evaluateMemory* APIs and worksheet UI path use owned read-only SharedMemory without named-input-file fallback; source authored, integration not yet compiled/executed. Legacy evaluateOwned* file APIs are retained, not silently relabelled or used as fallback.",
       "production": [
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt"
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt",
@@ -969,19 +972,22 @@
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "eace506dd0d3442806b7d621d7e99fe02459eb0b361373b53c99e954fa4294ad",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "72da7c087bb21c03e527d207101cb137cad26cd87df5d06e43a026a93ac7ac67",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "dc6cc0a65e9ad80429045e9a2a335b32fa4137eaf22987230de8241f6677f921",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "a428579e999c9191090310e87fbeba6824a75cb68036ac7354b492ccc8db9734",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
         "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
-        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9"
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d",
+        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659"
       }
     },
     {
@@ -1159,7 +1165,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace; R23 adds a no-IME decimal touch pad, obscured-touch/focus discard and explicit unknown exposure observations. 910b739 passed12/12 API34 cases. Additional reveal/stale-timer and SharedMemory prerequisite tests are authored, pending their own fresh native run; no transport/anonymity acceptance inferred.",
+      "behavior": "Separate no-INTERNET native volatile workspace; R23 adds a no-IME decimal touch pad, obscured-touch/focus discard and explicit unknown exposure observations. 910b739 passed12/12 API34 cases. Additional reveal/stale-timer and SharedMemory prerequisite tests are authored, pending their own fresh native run; no transport/anonymity acceptance inferred. Exact20c1fd9 run38862379063 completed14PASS/0FAIL/0SKIP, including reveal/stale callback, AX action and same-process SharedMemory prerequisite; not cross-UID production memory transport.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",

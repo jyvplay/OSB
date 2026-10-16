@@ -1,13 +1,13 @@
-name: Android R22 boundary checks
+name: Android R23 memory and R22 boundary checks
 on:
   push:
-    paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/format/archive/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R22*', '.github/workflows/android-r22.yml']
+    paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/format/archive/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R22*', 'android/app/src/androidTest/java/dev/fusion/shell/R23*', '.github/workflows/android-r22.yml']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   task-ui:
-    name: Focused actual platform R22 boundaries (not full-suite acceptance)
+    name: Focused actual platform R23 memory and R22 boundaries (not full-suite acceptance)
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     defaults:
@@ -25,18 +25,18 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Execute actual R22 ZIP/XML, isolated import and system-picker boundaries
+      - name: Execute actual R23 memory plus retained FD, ZIP/XML and system-picker boundaries
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest,dev.fusion.shell.R23MemoryTransportDeviceTest,dev.fusion.shell.FormatIsolationDeviceTest,dev.fusion.shell.R21CsvUiDeviceTest,dev.fusion.shell.R18OwnedSheetDeviceTest
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: r22-boundary-device-reports
+          name: r23-memory-boundary-device-reports
           path: |
             android/device.log
             android/device-results.json

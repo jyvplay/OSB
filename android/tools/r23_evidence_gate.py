@@ -24,19 +24,40 @@ INPUT = {PREFIX + 'R23InputDefenseTest.' + name for name in [
 ]}
 MEMORY = {PREFIX + 'R23MemoryBoundaryTest.existingWritableMapSurvivesRestrictionButUnmappedReadOnlyParcelRefusesNewWrites'}
 REVEAL = {PREFIX + 'R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately'}
-RULES = {'r23_input_api34': OLD | INPUT, 'r23_memory_api34': MEMORY, 'r23_privacy_api34': OLD | INPUT | REVEAL | MEMORY}
+APP = 'dev.fusion.shell.'
+from r22_evidence_gate import BOUNDARY as R22_BOUNDARY, PLATFORM as R22_PLATFORM, UI as R22_UI
+TRANSPORT = {APP + 'R23MemoryTransportDeviceTest.' + name for name in [
+    'memoryCallsRunInDistinctUidAndLiveObserverSeesNoNamedOwnedInput',
+    'exactCsvCapMalformedAndOversizeRefuseThenFreshMemoryLeaseSucceeds',
+    'realWireRefusesWritableMismatchedAmbiguousUnsupportedAndEmptyPaddingInputs'
+]} | {APP + 'FormatIsolationDeviceTest.' + name for name in [
+    'privatePathUnavailableWhileExplicitCapabilityReadsSameFile',
+    'distinctBindingsDoNotShareAnIsolatedProcess', 'idleWorkerIsKilledByActualWatchdog',
+    'writablePipeOffsetAndOverBudgetInputsAreRefused', 'emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse',
+    'actualLoopbackConnectionIsDeniedWithReachablePositiveControl'
+]} | {APP + 'R21CsvUiDeviceTest.' + name for name in [
+    'actualSelectionEditInvalidatesPreviewAndSystemSaveReadsBack',
+    'recreationLosesDraftAndCannotExportOldPreview', 'inFlightEditorMutationDiscardsStaleWorkerResult'
+]} | {APP + 'R18OwnedSheetDeviceTest.' + name for name in [
+    'actualUnlinkedReadOnlyDescriptorExecutesInChildAndLeavesNoNamedInput',
+    'refusedOwnedCycleCleansNamedInputAndClosesLease'
+]} | R22_BOUNDARY | R22_PLATFORM | R22_UI
+RULES = {'r23_memory_transport_api34': TRANSPORT, 'r23_input_api34': OLD | INPUT, 'r23_memory_api34': MEMORY, 'r23_privacy_api34': OLD | INPUT | REVEAL | MEMORY}
 UNSUPPORTED = ['global_anonymity', 'Tails_equivalence', 'lighter_than_Tails', 'hardware_keylogger_detected',
                'firmware_safe', 'host_hidden', 'all_IME_hidden', 'all_AX_blocked', 'RAM_erased', 'disk_erased',
                'all_USB_blocked', 'all_apps_offline', 'production_sharedmemory_transport', 'hostile_child_computation_verified',
+               'all_parser_inputs_disk_free', 'hostile_parent_memory_immutable', 'retained_writers_revoked', 'no_swap',
                'full_browser', 'full_Office', 'physical_acceptance', 'AX_accepted', 'all_modules_complete']
 
 
 def assess(receipt, candidate, claim):
-    if claim not in RULES: return False, 'No evidence bridge for the broader/different claim'
+    if not isinstance(claim, str) or claim not in RULES: return False, 'No evidence bridge for the broader/different claim'
     if not isinstance(receipt, dict): return False, 'Receipt must be an object'
     if not isinstance(candidate, str) or not re.fullmatch(r'[0-9a-f]{40}', candidate) or receipt.get('candidate') != candidate:
         return False, 'Wrong or invalid exact candidate'
-    if receipt.get('suite') != 'privacy': return False, 'Wrong APK/suite'
+    suites = {'focused', 'full'} if claim == 'r23_memory_transport_api34' else {'privacy'}
+    suite = receipt.get('suite')
+    if not isinstance(suite, str) or suite not in suites: return False, 'Wrong APK/suite'
     run = receipt.get('run')
     if type(run) is not int or run <= 0 or receipt.get('url') != f'https://github.com/jyvplay/OSB/actions/runs/{run}':
         return False, 'Invalid run locator'

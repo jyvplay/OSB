@@ -10,11 +10,15 @@ import sys
 from bootstrap_host_tools import DEFAULT, environment
 
 ROOT = Path(__file__).resolve().parents[1]
+MEMORY_CLASSES = ','.join('dev.fusion.shell.' + name for name in [
+    'R22PlatformDeviceTest', 'R22BoundaryDeviceTest', 'R22XlsxUiDeviceTest',
+    'R23MemoryTransportDeviceTest', 'FormatIsolationDeviceTest', 'R21CsvUiDeviceTest', 'R18OwnedSheetDeviceTest'])
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('mode', choices=['doctor', 'host', 'android', 'device'])
+    p.add_argument('--suite', choices=['privacy', 'memory', 'full'], default='privacy', help='Actual device suite; memory includes retained FD/picker regressions')
     p.add_argument('--tools', type=Path, help='Explicit host-test cache, not for Android/Gradle')
     p.add_argument('--disposable', action='store_true', help='Consent to run tests on a disposable managed Android device')
     a = p.parse_args()
@@ -47,7 +51,12 @@ def main():
         run([gradle, ':app:assembleProDebug', ':app:assemblePlayDebug', ':privacy:assembleDebug', ':privacy:lintDebug', ':testing:r23Contracts'])
     else:
         if not a.disposable: raise SystemExit('Refuse device tests without --disposable consent. Use disposable AVD/data only.')
-        run([gradle, ':privacy:pixel6Api34DebugAndroidTest'])
+        if a.suite == 'privacy':
+            run([gradle, ':privacy:pixel6Api34DebugAndroidTest'])
+        else:
+            command = [gradle, ':app:pixel6Api34ProDebugAndroidTest', '-Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true']
+            if a.suite == 'memory': command.append('-Pandroid.testInstrumentationRunnerArguments.class=' + MEMORY_CLASSES)
+            run(command)
 
 
 if __name__ == '__main__': main()
