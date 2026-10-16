@@ -1,0 +1,2 @@
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R22: 21 actual public-consumer assertions PASS; not Office/XML/ZIP universal acceptance
