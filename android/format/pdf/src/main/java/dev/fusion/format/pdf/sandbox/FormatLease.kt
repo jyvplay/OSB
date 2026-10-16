@@ -7,6 +7,8 @@ import android.content.ServiceConnection
 import android.os.*
 import dev.fusion.ooxml.SheetFrame
 import dev.fusion.ooxml.OwnedSheetRequest
+import dev.fusion.ooxml.OwnedCsvRequest
+import dev.fusion.ooxml.CsvTable
 import java.io.Closeable
 import java.io.File
 import java.util.UUID
@@ -20,7 +22,7 @@ class FormatLease(context: Context) : Closeable {
     data class Evidence(val uid: Int,val pid: Int,val bytes: Int,val digest: String,
                         val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int,
                         val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long,
-                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null)
+                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null,val table:CsvTable?=null)
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -31,6 +33,7 @@ class FormatLease(context: Context) : Closeable {
     private val started=AtomicBoolean(false)
     private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
     private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
+    private val ownedCsv=java.util.concurrent.atomic.AtomicReference<OwnedCsvRequest?>(null)
     private val closed=AtomicBoolean(false)
     private val id=UUID.randomUUID().toString()
     private var bound=false
@@ -58,8 +61,12 @@ class FormatLease(context: Context) : Closeable {
                     ownedRequest.get()?.accept(size,digest,frame) ?: SheetFrame.readResult(frame)
                 } catch(error:Exception) { result.completeExceptionally(error);return }
             } else null
+            val table=if(message.what==FormatWorkerService.CSV_TABLE) {
+                try {requireNotNull(ownedCsv.get()).accept(size,digest,requireNotNull(data.getByteArray("tableResult")))}
+                catch(error:Exception) {result.completeExceptionally(error);return}
+            } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
-                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet))
+                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet,table))
         }
     })
     private val connection=object: ServiceConnection {
@@ -110,6 +117,24 @@ class FormatLease(context: Context) : Closeable {
                 }
             } finally { file.delete() }
         } finally { close() }
+    }
+    /** CSV grammar runs only in the child. Caller-owned bytes are captured, synced, opened RO and unlinked.
+     * Parent validates bounded data-only reply; correlation is not a proof against a compromised worker.
+     * [U] verify on API 34/36/37: descriptor lifecycle, Binder budget and worker death.
+     */
+    fun evaluateOwnedCsv(bytes:ByteArray):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedCsvRequest(bytes)
+            val file=File.createTempFile("fusion-owned-csv-",".csv",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use {out->out.write(model.bytes());out.fd.sync()}
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->
+                    check(file.delete()) {"Could not unlink owned CSV"}
+                    ownedCsv.set(model);request(fd,null,FormatWorkerService.CSV_TABLE,0)
+                }
+            } finally {file.delete()}
+        } finally {close()}
     }
     fun probeSocket(file: File,loopbackPort: Int): Evidence {
         require(loopbackPort in 1..65535)

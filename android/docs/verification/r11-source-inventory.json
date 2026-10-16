@@ -488,6 +488,12 @@
       "sha256": "29b18d7590efb582a308fbd2f55a565b59912aa3394bf930054eef343f81f57a"
     },
     {
+      "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt",
+      "module": ":feature:browser",
+      "package": "dev.fusion.browser.model",
+      "sha256": "cb9c83774bd23d85667e4e37a096119884e619bc617823ad68bd19a6c2568510"
+    },
+    {
       "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
       "module": ":feature:browser",
       "package": "dev.fusion.browser.model",
@@ -878,6 +884,12 @@
       "sha256": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "ea44bedb5ea50676c85ee1e484c28ed706649e0206d473e735eef35102dfb2ac"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
@@ -923,13 +935,13 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "2c3530f1f47fb54e5a54a02513d7833993564be5bdfa69d484bcc9c2358f562d"
+      "sha256": "571fc8d2adc072d8a010a4ba4da337e4183695d71b62d83b8c42efb67a7fe90f"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "51a5cfa31c77df5b9e208bb8da63f04c01eeaaa73c9e4dc9b39fb2e84d8663da"
+      "sha256": "82ec98bc22ad859f0c64725de94be1bebfe4c65a8290856a86231bac3d98f499"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

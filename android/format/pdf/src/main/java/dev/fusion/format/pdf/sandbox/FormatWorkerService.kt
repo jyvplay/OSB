@@ -11,6 +11,7 @@ import android.system.OsConstants
 import java.io.File
 import java.io.ByteArrayOutputStream
 import dev.fusion.ooxml.SheetFrame
+import dev.fusion.ooxml.CsvTable
 import java.security.MessageDigest
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -22,6 +23,7 @@ class FormatWorkerService : Service() {
         const val DIGEST = 1
         const val SOCKET_PROBE = 2
         const val DECIMAL_SHEET = 3
+        const val CSV_TABLE = 4
         const val MAX_INPUT_BYTES = 16 * 1024 * 1024
         const val LIFETIME_MS = 5000L
         internal const val PRIVATE_NAME = "r11-isolation-[a-zA-Z0-9]+\\.tmp"
@@ -41,7 +43,7 @@ class FormatWorkerService : Service() {
             val id=data.getString("id")
             val privateName=data.getString("privateName")
             val socketPort=data.getInt("socketPort",0)
-            if(operation !in setOf(DIGEST,SOCKET_PROBE,DECIMAL_SHEET) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
+            if(operation !in setOf(DIGEST,SOCKET_PROBE,DECIMAL_SHEET,CSV_TABLE) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
                 input?.close();return
             }
             work.execute {
@@ -57,8 +59,8 @@ class FormatWorkerService : Service() {
                             "Read-only descriptor required"
                         }
                         val hash=MessageDigest.getInstance("SHA-256");var size=0
-                        val limit=if(operation==DECIMAL_SHEET) SheetFrame.MAX_INPUT else MAX_INPUT_BYTES
-                        val payload=if(operation==DECIMAL_SHEET) ByteArrayOutputStream() else null
+                        val limit=when(operation) {DECIMAL_SHEET->SheetFrame.MAX_INPUT;CSV_TABLE->CsvTable.MAX_INPUT;else->MAX_INPUT_BYTES}
+                        val payload=if(operation==DECIMAL_SHEET || operation==CSV_TABLE) ByteArrayOutputStream() else null
                         // A dup shares the offset with its owner. The broker must provide a fresh open, not reuse a cursor.
                         ParcelFileDescriptor.AutoCloseInputStream(ParcelFileDescriptor.dup(fd.fileDescriptor)).use { stream ->
                             val bytes=ByteArray(8192)
@@ -73,7 +75,8 @@ class FormatWorkerService : Service() {
                         response.putInt("bytes",size)
                         // Original bounded parser now runs in this actual isolated worker, never on Binder/main.
                         // [U] verify on API 34/36/37: Binder result bounds, service death and parser behavior.
-                        if(payload!=null) response.putByteArray("sheetResult",SheetFrame.execute(payload.toByteArray()))
+                        if(operation==DECIMAL_SHEET) response.putByteArray("sheetResult",SheetFrame.execute(requireNotNull(payload).toByteArray()))
+                        if(operation==CSV_TABLE) response.putByteArray("tableResult",CsvTable.parse(requireNotNull(payload).toByteArray()).frame())
                     }
                     if(operation==SOCKET_PROBE) {
                         require(socketPort in 1..65535)

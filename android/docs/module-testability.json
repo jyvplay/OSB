@@ -917,8 +917,8 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "51a5cfa31c77df5b9e208bb8da63f04c01eeaaa73c9e4dc9b39fb2e84d8663da",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "2c3530f1f47fb54e5a54a02513d7833993564be5bdfa69d484bcc9c2358f562d",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "82ec98bc22ad859f0c64725de94be1bebfe4c65a8290856a86231bac3d98f499",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "571fc8d2adc072d8a010a4ba4da337e4183695d71b62d83b8c42efb67a7fe90f",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8"

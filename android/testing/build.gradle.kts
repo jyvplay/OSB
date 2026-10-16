@@ -242,3 +242,14 @@ kotlin.sourceSets.named("r20") {
 tasks.register<JavaExec>("r20Contracts") {
     dependsOn(r20.classesTaskName);classpath=r20.runtimeClasspath;mainClass.set("dev.fusion.testing.R20Checks")
 }
+
+val r21 by sourceSets.creating
+kotlin.sourceSets.named("r21") {
+    kotlin.srcDir("src/r21/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.include("**/LiteralWorkbook.kt", "**/CsvTable.kt", "**/BrowserSessions.kt", "**/PermissionLeases.kt", "**/BrowserConsentSession.kt", "**/R21Checks.kt", "**/R21Oracle.kt")
+}
+tasks.register<JavaExec>("r21Contracts") {
+    dependsOn(r21.classesTaskName);classpath=r21.runtimeClasspath;mainClass.set("dev.fusion.testing.R21Checks")
+}
