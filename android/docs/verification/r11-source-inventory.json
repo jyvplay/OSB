@@ -215,10 +215,34 @@
       "sha256": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955"
     },
     {
+      "path": "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",
+      "module": ":privacy",
+      "package": "dev.fusion.privacy",
+      "sha256": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29"
+    },
+    {
+      "path": "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt",
+      "module": ":privacy",
+      "package": "dev.fusion.privacy",
+      "sha256": "a4ed34dbe008d9598987b6f316bffef8d0d849130aa930ab57752784fed8a60e"
+    },
+    {
+      "path": "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
+      "module": ":privacy",
+      "package": "dev.fusion.privacy",
+      "sha256": "325ec8622f36b7e8d1e5efc306a554c6167af72a1f3f72404ecfd79f399bc20a"
+    },
+    {
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "849d62266cd7dccd70e83fc3de5ab8908f67376f660e51e5eddd808d262269ee"
+      "sha256": "e9bf2bfddab06cb641ed194300e91479c528aa7ef965faf3a04b4e0315e6cbb3"
+    },
+    {
+      "path": "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt",
+      "module": ":privacy",
+      "package": "dev.fusion.privacy",
+      "sha256": "885fc3801a24abd1145ab2e1a7c96e73c6e79c7c1843c766b9da3b7d58f0ac85"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -369,6 +393,24 @@
       "module": ":core:security",
       "package": "dev.fusion.security",
       "sha256": "f6ed00aec9a528442b02302d971d02de1aaea1e43387d2c6c56eb3fc05555b9f"
+    },
+    {
+      "path": "core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "366aea8225ddeca8d77c57107ed9e7fa446a149cfad70105d46238a1498a4c51"
+    },
+    {
+      "path": "core/security/src/main/kotlin/dev/fusion/security/TouchAdmission.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "2236804e3aee3f25914b8e3371177a6165210c4c30561689c45acc2ae35629c9"
+    },
+    {
+      "path": "core/security/src/main/kotlin/dev/fusion/security/VolatileDigits.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "0ad2cda9409a7cbdd39171dc6708087b2c55fc21b4db0deca6048c4901520dca"
     },
     {
       "path": "core/perf/src/main/java/dev/fusion/perf/Perf.kt",

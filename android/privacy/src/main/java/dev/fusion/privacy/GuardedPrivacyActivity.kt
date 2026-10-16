@@ -1,0 +1,79 @@
+package dev.fusion.privacy
+
+import android.app.Activity
+import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import dev.fusion.security.TouchAdmission
+
+/** Platform mitigation, not protection from a privileged OS/host or trusted accessibility tool. */
+abstract class GuardedPrivacyActivity : Activity() {
+    private val touches = TouchAdmission()
+    private var resumed = false
+    protected abstract fun rebuildWorkspace()
+    protected abstract fun discardWorkspace(reason: String)
+    protected fun acceptsInteraction(): Boolean = resumed && hasWindowFocus()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(null)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        window.setHideOverlayWindows(true)
+        setRecentsScreenshotEnabled(false)
+    }
+
+    override fun onResume() { super.onResume(); resumed = true; touches.reset(); rebuildWorkspace() }
+    override fun onPause() {
+        resumed = false; touches.reset(); discardWorkspace("Workspace discarded on background.")
+        super.onPause()
+    }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        touches.reset()
+        if (!hasFocus) discardWorkspace("Workspace discarded on focus loss.")
+        else if (resumed) rebuildWorkspace()
+    }
+    override fun onSaveInstanceState(outState: Bundle) { super.onSaveInstanceState(outState); outState.clear() }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (!acceptsInteraction()) { touches.reset(); return true }
+        val phase = when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> TouchAdmission.Phase.DOWN
+            MotionEvent.ACTION_MOVE, MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_POINTER_UP -> TouchAdmission.Phase.CONTINUE
+            MotionEvent.ACTION_UP -> TouchAdmission.Phase.UP
+            MotionEvent.ACTION_CANCEL -> TouchAdmission.Phase.CANCEL
+            else -> TouchAdmission.Phase.OTHER
+        }
+        val obscured = event.flags and MotionEvent.FLAG_WINDOW_IS_OBSCURED != 0
+        val partial = event.flags and MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED != 0
+        if (touches.admit(phase, obscured, partial)) return super.dispatchTouchEvent(event)
+        // Cancel an already pressed child BEFORE replacing it. Never deliver the rejected UP.
+        val cancel = MotionEvent.obtain(event)
+        try { cancel.action = MotionEvent.ACTION_CANCEL; super.dispatchTouchEvent(cancel) }
+        finally { cancel.recycle() }
+        if (obscured || partial) discardWorkspace("Obscured input refused; workspace discarded. Remove the overlay and reopen this view.")
+        return true
+    }
+
+    protected fun showDiscarded(reason: String) {
+        val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; protect(this) }
+        column.addView(TextView(this).apply { text = reason; textSize = 18f; protect(this) })
+        column.addView(Button(this).apply {
+            id = R.id.restart_workspace; text = "Start an empty workspace"; protect(this)
+            setOnClickListener { if (acceptsInteraction()) rebuildWorkspace() }
+        })
+        setContentView(column)
+    }
+
+    protected fun protect(view: View) {
+        view.isSaveEnabled = false; view.isSaveFromParentEnabled = false
+        view.filterTouchesWhenObscured = true
+        view.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+        view.importantForContentCapture = View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS
+        // Does NOT exclude services that identify as legitimate accessibility tools.
+        view.setAccessibilityDataSensitive(View.ACCESSIBILITY_DATA_SENSITIVE_YES)
+    }
+}

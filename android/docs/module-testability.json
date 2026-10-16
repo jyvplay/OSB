@@ -168,22 +168,30 @@
       "module": ":core:security",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual key/crypto paths, fail closed after Android key loss; bounded offline link disclosure projection (not anonymization)",
+      "behavior": "Actual key/crypto paths, fail closed after Android key loss; bounded offline link disclosure projection (not anonymization); R23 bounded obscured-touch admission, volatile decimal buffer and explicit unknown exposure reporting (host contracts executed; new Android adapters pending fresh CI).",
       "production": [
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt",
-        "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt"
+        "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt",
+        "core/security/src/main/kotlin/dev/fusion/security/TouchAdmission.kt",
+        "core/security/src/main/kotlin/dev/fusion/security/VolatileDigits.kt",
+        "core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt",
-        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt"
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt",
+        "testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "command": ":app:pixel6Api34ProDebugAndroidTest :testing:r23Contracts",
       "limit": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
       "sha256": {
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt": "3ac11bb42295d9552e997fe3d17fd25ece8872144e580c5400e9e3fba16bddf7",
         "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt": "f6ed00aec9a528442b02302d971d02de1aaea1e43387d2c6c56eb3fc05555b9f",
+        "core/security/src/main/kotlin/dev/fusion/security/TouchAdmission.kt": "2236804e3aee3f25914b8e3371177a6165210c4c30561689c45acc2ae35629c9",
+        "core/security/src/main/kotlin/dev/fusion/security/VolatileDigits.kt": "0ad2cda9409a7cbdd39171dc6708087b2c55fc21b4db0deca6048c4901520dca",
+        "core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt": "366aea8225ddeca8d77c57107ed9e7fa446a149cfad70105d46238a1498a4c51",
         "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt": "f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0",
-        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5"
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
+        "testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt": "8b05261ac075cfa6002b7a6c3b015bc773523352b11282e689f40083ac723266"
       }
     },
     {
@@ -1151,20 +1159,30 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard, offline link projection and atomic oversized-edit refusal. f42193d passed 6/6 actual managed API34 tests, including repaired status feedback and IME/deletion attacks; not physical/AX acceptance.",
+      "behavior": "Separate no-INTERNET native volatile workspace with prior R20 API34 tests. R23 adds no-IME digits-only touch entry, obscured-touch/focus discard and local exposure observations; fresh Android compilation/execution is pending, not inherited from R20.",
       "production": [
-        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt"
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
+        "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
+        "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt",
+        "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt",
+        "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt"
       ],
       "checks": [
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt"
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt"
       ],
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
-        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "849d62266cd7dccd70e83fc3de5ab8908f67376f660e51e5eddd808d262269ee",
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "e9bf2bfddab06cb641ed194300e91479c528aa7ef965faf3a04b4e0315e6cbb3",
+        "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt": "325ec8622f36b7e8d1e5efc306a554c6167af72a1f3f72404ecfd79f399bc20a",
+        "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt": "885fc3801a24abd1145ab2e1a7c96e73c6e79c7c1843c766b9da3b7d58f0ac85",
+        "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt": "a4ed34dbe008d9598987b6f316bffef8d0d849130aa930ab57752784fed8a60e",
+        "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "88b1a74235f07e9f1b7892f7e6084245c57aa118ea03135aa60e176ced76d4b1",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94"
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "3019719b34d40827fcd6455f95ce106f4c74c224b07985d794180854e8ba43c7"
       }
     }
   ]

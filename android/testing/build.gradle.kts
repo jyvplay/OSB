@@ -268,3 +268,14 @@ kotlin.sourceSets.named("r22") {
 tasks.register<JavaExec>("r22Contracts") {
     dependsOn(r22.classesTaskName);classpath=r22.runtimeClasspath;mainClass.set("dev.fusion.testing.R22Checks")
 }
+
+// R23: original input/lifetime/exposure kernels, no Android stubs or simulated platform.
+val r23 by sourceSets.creating
+kotlin.sourceSets.named("r23") {
+    kotlin.srcDir("src/r23/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.include("**/TouchAdmission.kt", "**/VolatileDigits.kt", "**/LocalExposure.kt", "**/R23Checks.kt")
+}
+tasks.register<JavaExec>("r23Contracts") {
+    dependsOn(r23.classesTaskName); classpath = r23.runtimeClasspath; mainClass.set("dev.fusion.testing.R23Checks")
+}
