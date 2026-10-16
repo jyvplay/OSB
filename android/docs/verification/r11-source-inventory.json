@@ -167,7 +167,8 @@
     ":feature:lens": [],
     ":feature:messages": [],
     ":feature:automation": [
-      ":format:ooxml"
+      ":format:ooxml",
+      ":format:pdf"
     ],
     ":format:native": [],
     ":format:archive": [],
@@ -806,10 +807,16 @@
       "sha256": "f66857b47fba58f03f52b414f6540ef215f4064c4ad70269f9c09674d61c580d"
     },
     {
+      "path": "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "1764e608598c6f79bcc39384620af8ae7ce048fabbe0962eb6682446cbfe5b4c"
+    },
+    {
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "756f484d59f6e94e78b3d3dd075bd9a38aa41ce5a01011795a269e2c8302d24d"
+      "sha256": "5f198eaf23cc95154266e979dffc08d51850ab4f2f5c0b072f43faee15793d73"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
@@ -827,7 +834,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "86e4a047502fe0ced102795e8f777ba81f0f23e163f71be7932f08a7cf322d8d"
+      "sha256": "c61e8d3afa0d02745bb7f3e913d4429b4ee6b0656ea2387ad9fa7316835346ce"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",

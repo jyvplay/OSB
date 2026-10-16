@@ -1,7 +1,7 @@
 name: Android R21 boundary checks
 on:
   push:
-    paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/feature/browser/**', 'android/app/src/androidTest/java/dev/fusion/shell/R21*', '.github/workflows/android-r21.yml']
+    paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R21*', '.github/workflows/android-r21.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,7 +29,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R21BoundaryDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R21BoundaryDeviceTest,dev.fusion.shell.R21CsvUiDeviceTest
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py

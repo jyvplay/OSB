@@ -15,6 +15,13 @@ object R21Checks {
   bad {CsvTable.parse(byteArrayOf(0xc3.toByte(),0x28))};bad {CsvTable.parse(ByteArray(65537))};bad {CsvTable.utf8("\uD800")}
   ok(parse("x".repeat(4096)).rows[0][0].length==4096)
   ok(parse("a\n".repeat(256)).rows.size==256);ok(parse(",".repeat(31)).columns==32)
+  val exact=List(15) {"x".repeat(4096)}.plus("x".repeat(4081)).joinToString(",")
+  ok(exact.toByteArray().size==65536);ok(parse(exact).columns==16);bad {parse(exact+"x")}
+  ok(parse((",".repeat(31)+"\n").repeat(256)).rows.size==256)
+  bad {CsvTable.readFrame(ByteArray(131073))}
+  val badLength=java.nio.ByteBuffer.allocate(16).putInt(0x46435431).putInt(1).putInt(1).putInt(Int.MAX_VALUE).array()
+  bad {CsvTable.readFrame(badLength)}
+  ok(parse("safe,_x0041_").project(listOf(0)).workbook().bytes.isNotEmpty())
   val table=parse("name,amount,secret\nAlice,=1+1,password")
   ok(table.project(listOf(1,0)).rows[1]==listOf("=1+1","Alice"))
   bad {table.project(listOf(1,1))};bad {table.project(emptyList())};bad {table.project(listOf(3))}
@@ -51,6 +58,11 @@ object R21Checks {
   ok(!s.consume(invalid,tab2,kind,12)) // Patch target: failed/unsupported navigation must also revoke.
   ok(s.decide(delayed,true,12,100)==null);bad {s.request(tab2,kind)}
   s.navigate(tab2,"https://example.com/new");val repaired=requireNotNull(s.decide(s.request(tab2,kind),true,13,100));ok(s.consume(repaired,tab2,kind,14))
+  val cap=BrowserConsentSession("capacity");val tid=cap.open("https://example.org")
+  val ps=List(64) {cap.request(tid,kind)};bad {cap.request(tid,kind)}
+  ok(cap.decide(ps[0],false,0,100)==null);ok(cap.request(tid,kind)!==ps[0])
+  val expire=requireNotNull(cap.decide(ps[1],true,100,1));ok(!cap.consume(expire,tid,kind,101))
+  cap.shutdown();ok(cap.decide(ps[2],true,102,1)==null)
   s.shutdown();ok(s.snapshot().tabs.size==1)
   println("R21: $n actual public-consumer assertions PASS; no renderer or anonymity proof")
  }

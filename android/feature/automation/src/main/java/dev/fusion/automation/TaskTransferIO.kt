@@ -25,6 +25,12 @@ object TaskTransferIO {
         val r=write(resolver,created,0,counts.export().bytes,64*1024)
         return CountsReceipt(r.bytes,r.sha256)
     }
+    /** Caller supplies frozen original literal-writer output and only a fresh CreateDocument result. */
+    fun writeCreatedLiteralWorksheet(resolver:ContentResolver,created:Uri,bytes:ByteArray):CountsReceipt {
+        require(bytes.size<=2*1024*1024)
+        val r=write(resolver,created,0,bytes.copyOf(),2*1024*1024)
+        return CountsReceipt(r.bytes,r.sha256)
+    }
     private fun write(resolver:ContentResolver,created:Uri,revision:Long,bytes:ByteArray,limit:Int):Receipt {
         require(created.scheme=="content" && bytes.size<=limit)
         requireNotNull(resolver.openOutputStream(created,"wt")) {"Output unavailable"}.use {it.write(bytes)}

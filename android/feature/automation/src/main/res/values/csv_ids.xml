@@ -1,0 +1,6 @@
+<resources>
+ <item name="csv_source" type="id"/><item name="csv_columns" type="id"/>
+ <item name="csv_parse" type="id"/><item name="csv_save" type="id"/>
+ <item name="csv_status" type="id"/><item name="csv_preview" type="id"/>
+ <item name="csv_scroll" type="id"/>
+</resources>

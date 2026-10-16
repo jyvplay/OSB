@@ -1,4 +1,4 @@
-R21: 317 actual public-consumer assertions PASS; no renderer or anonymity proof
+R21: 329 actual public-consumer assertions PASS; no renderer or anonymity proof
 
 info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
 openjdk version "17.0.9" 2023-10-17
@@ -11,10 +11,10 @@ ea44bedb5ea50676c85ee1e484c28ed706649e0206d473e735eef35102dfb2ac  format/ooxml/s
 e6012ae4fef688f47061294cd58164eeb2cf03a7b766ab9814a49225b7a4c563  feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt
 dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7  feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt
 cb9c83774bd23d85667e4e37a096119884e619bc617823ad68bd19a6c2568510  feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt
-aeacdf48913c677890c036f4d0971413185de09d16465c9f4cc5145f45fa8636  testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt
+067a5ae89effcd7165a7148759a40ffd1722032b20a1f7d779720b0866574e89  testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt
 2966951f587e59256ddacf76ac116828202e442d801c5fc643fb6bfe53f901d8  testing/src/r21/kotlin/dev/fusion/testing/R21Oracle.kt
 4552dce9ad378d8a28635c89b42366dd86adaf3bff01a616ab7e50bed9661954  tools/run_r21_contracts.py
 9d343938115d894973ac0be4837b68aac6e4e7848ec0faf309d4d8bd274f2059  testing/build/r21/LiteralWorkbook.jar
 a6a80b3fe343e13669a76510fbb0edf9e97d9b4d6e382797a0a3471856e078b3  testing/build/r21/CsvTable.jar
 738505d0161119bbd129ad9ff18c684851bc9a55e7291a1dc7d77d65077e7912  testing/build/r21/BrowserSessions.jar
-efff236d748c0ebd8486bbb87d9af7010b62719ad396e4a3458762f8a3bf221e  testing/build/r21/checks.jar
+e1d966e1ee7ab4447612ce97bd9b65edaf7ce36bbc1e96d8973201d25e51e986  testing/build/r21/checks.jar
