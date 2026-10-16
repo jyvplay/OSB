@@ -26,7 +26,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Compile, lint and execute actual companion
-        run: bash tools/run_gradle_ci.sh privacy :privacy:assembleDebug :privacy:lintDebug :privacy:pixel6Api34DebugAndroidTest
+        run: bash tools/run_gradle_ci.sh device :privacy:assembleDebug :privacy:lintDebug :privacy:pixel6Api34DebugAndroidTest
       - name: Publish named actual outcomes
         if: always()
         run: python3 tools/report_device_results.py --root privacy/build/outputs/androidTest-results/managedDevice
@@ -51,6 +51,6 @@ jobs:
             android/privacy/build/outputs/apk/debug/*.apk
             android/privacy/build/reports/**
             android/privacy/build/outputs/androidTest-results/**
-            android/privacy.log
+            android/device.log
             android/privacy-apk.json
             android/device-results.json
