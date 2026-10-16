@@ -19,6 +19,9 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 
 ## Latest R23
 
+Current SDK37.0/AGP9.1.1/Gradle9.3.1 experiment and16-case privacy verifier need fresh native results.
+The actual catalog37.0 identifier repairs the earlier wrongly unqualified SDK package request.
+
 New no-IME digit pad, whole-gesture/focus/lifecycle discard and exposure observations;
 explicit no-named-parser-input-file shared-memory worksheet APIs (no silent disk fallback).
 Exact b3f2f1d passed **122 main /24 focused memory /14 privacy** API34 cases; focused cases overlap full counts.

@@ -32,21 +32,6 @@ class PrivacyPlatformTest {
         finally {Os.close(a);Os.close(b)}
     }
     private val instrumentation get()=InstrumentationRegistry.getInstrumentation()
-    private fun awaitFocus(scenario:ActivityScenario<android.app.Activity>, expected:Boolean) {
-        val ready=java.util.concurrent.CountDownLatch(1)
-        var observer:android.view.ViewTreeObserver?=null
-        val listener=android.view.ViewTreeObserver.OnWindowFocusChangeListener { focused -> if(focused==expected) ready.countDown() }
-        scenario.onActivity { activity ->
-            observer=activity.window.decorView.viewTreeObserver
-            observer!!.addOnWindowFocusChangeListener(listener)
-            if(activity.hasWindowFocus()==expected) ready.countDown()
-        }
-        try {
-            assertTrue("Actual window focus did not become $expected",ready.await(10,java.util.concurrent.TimeUnit.SECONDS))
-            instrumentation.waitForIdleSync() // Finish the actual focus callback, including production view replacement.
-            scenario.onActivity { assertEquals("Focus changed before marker staging",expected,it.hasWindowFocus()) }
-        } finally {scenario.onActivity { observer?.takeIf { it.isAlive }?.removeOnWindowFocusChangeListener(listener) }}
-    }
     private data class Marker(val view:TextView,val nonce:String)
     private fun assertCurrent(activity:android.app.Activity,marker:Marker,unsecured:Boolean) {
         assertTrue("Capture lost window focus",activity.hasWindowFocus())
@@ -57,7 +42,7 @@ class PrivacyPlatformTest {
         assertEquals(marker.nonce,marker.view.text.toString())
     }
     private fun installCommittedMarker(scenario:ActivityScenario<android.app.Activity>,unsecured:Boolean):Marker {
-        awaitFocus(scenario,true)
+        PrivacyDeviceReady.focus(scenario,true)
         val committed=java.util.concurrent.CountDownLatch(1)
         val nonce="R23 actual frame "+java.util.UUID.randomUUID()
         lateinit var marker:Marker
@@ -111,13 +96,13 @@ class PrivacyPlatformTest {
                 scenario.onActivity {activity ->dialog=android.app.Dialog(activity).apply {
                     setContentView(TextView(activity).apply {text="R23 real focus control"});show()
                 }}
-                awaitFocus(scenario,false)
+                PrivacyDeviceReady.focus(scenario,false)
                 scenario.onActivity {activity ->
                     assertFalse("Focus loss retained injected marker",retired.view.isAttachedToWindow)
                     assertNull(activity.findViewById<TextView>(retired.view.id))
                     requireNotNull(dialog).dismiss()
                 }
-                awaitFocus(scenario,true)
+                PrivacyDeviceReady.focus(scenario,true)
                 scenario.onActivity {assertNull("Focus return restored stale marker",it.findViewById<TextView>(retired.view.id))}
                 assertEquals("Fresh committed secure frame leaked after actual focus cycle",0,captureFrame(scenario,false))
             } finally {scenario.onActivity {dialog?.dismiss()}}

@@ -204,6 +204,9 @@ class R23InputDefenseTest {
 
     @Test fun realExposureSnapshotAndMergedManifestKeepScopeAndNewScreensPrivate() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+        // SDK37 compile anchor and actual installed manifest, NOT proof this API34 runtime became API37.
+        assertEquals(37, android.os.Build.VERSION_CODES.CINNAMON_BUN)
+        assertEquals(37, context.applicationInfo.targetSdkVersion)
         val exposure = ExposureProbe.read(context)
         assertTrue(exposure.describe().contains("NOT a malware/keylogger scan"))
         assertTrue(exposure.describe().contains("wireless debugging is NOT comprehensively inspected"))

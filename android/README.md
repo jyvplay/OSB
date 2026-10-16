@@ -21,6 +21,9 @@ Rabbit1 support is documented compatibility, not a GUI run. Restored99c4405 priv
 Source/test file hashes and per-module commands are in [MODULE-TESTABILITY.md](docs/MODULE-TESTABILITY.md).
 Old percentages, branch names and PR statements below are historical, not current instructions.
 
+Current live pins are a second **SDK37.0/AGP9.1.1/Gradle9.3.1 experiment**, pending native verification;
+old unqualified37 install failed but actual37.0 is listed. Current privacy scope16, not inherited14.
+
 ---
 
 # Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports

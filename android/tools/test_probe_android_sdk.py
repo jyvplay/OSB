@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from probe_android_sdk import platforms, probe
+from probe_android_sdk import platforms, probe, base37
 
 
 class SdkCatalogTests(unittest.TestCase):
@@ -22,6 +22,15 @@ class SdkCatalogTests(unittest.TestCase):
         with self.assertRaises(ValueError): platforms('\n'.join(f'platforms;android-{n} | 1' for n in range(129)))
         self.assertEqual(128, len(platforms('\n'.join(f'platforms;android-{n} | 1' for n in range(128)))))
         self.assertEqual([], platforms('repository warning only')) # Parsing empty text is NOT a real availability result.
+
+    def test_actual_catalog_not_listed_old_spelling_does_not_mean_no_sdk37(self):
+        rows=json.loads((Path(__file__).resolve().parents[1]/'docs/verification/r23-restored-native-other-job-annotations.json').read_text())
+        notice=next(a['message'] for row in rows for a in row['annotations'] if a['message'].startswith('Real stable/preview SDK catalogs'))
+        report=json.loads(notice.split(': ',1)[1])
+        for catalog in report['catalogs']:
+            self.assertFalse(catalog['sdk37_exact']) # Actual old exact-spelling observation remains false.
+            self.assertEqual(['platforms;android-37.0'],base37(catalog['platforms']))
+        self.assertEqual([],base37(['platforms;android-370','platforms;android-37.1','platforms;android-37.2-beta1']))
 
     def test_real_absent_manager_is_unknown_and_cli_nonzero(self):
         with tempfile.TemporaryDirectory() as temporary:

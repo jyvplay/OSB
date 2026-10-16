@@ -85,6 +85,12 @@ class R23EvidenceTests(unittest.TestCase):
         for claim in ['r23_input_api34', 'r23_memory_api34', 'r23_prerequisite_api34', 'r23_privacy_api34']:
             self.assertFalse(assess(receipt, receipt['candidate'], claim)[0])
 
+    def test_actual_fourteen_pass_one_failure_after_frame_repair_is_not_acceptance(self):
+        receipt = json.loads((ROOT / 'docs/verification/r23-frame-repair-privacy-failed-result.json').read_text())
+        self.assertEqual({'PASS': 14, 'FAIL': 1, 'SKIP': 0}, receipt['counts'])
+        for claim in ['r23_input_api34', 'r23_memory_api34', 'r23_prerequisite_api34', 'r23_privacy_api34']:
+            self.assertFalse(assess(receipt, receipt['candidate'], claim)[0])
+
     def test_malformed_input_is_refusal_not_exception(self):
         for receipt in [None, [], {}, {'cases': [{}]}]:
             self.assertFalse(assess(receipt, None, 'r23_input_api34')[0])

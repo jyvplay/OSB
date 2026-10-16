@@ -189,3 +189,20 @@ access still worked; no credentials requested or alternative token used. R23 pol
 changes now legitimately trigger the existing memory regression through its normal push path filters,
 so verification does not depend on manual-dispatch permission. This is CI coverage configuration,
 not a claimed manually dispatched run or a workaround to retrieve restricted artifacts.
+
+## Second SDK37 and workspace-verifier checkpoint
+
+Actual99 main122/focused24 passed; its broad stable+preview SDK probe lists **platforms;android-37.0**.
+The missing old `android-37` spelling did NOT establish all API37 SDKs unavailable. Earlier broad diagnosis
+was too strong; raw failed install remains a failure. [Second pre-edit plan](R23-SDK37-SECOND-PLAN.md)
+precedes new tuple edits: correct37.0 package, AGP9.1.1/Gradle9.3.1, temporary documented legacy bridge,
+GMD localDevices named container, actual installed source.properties/jar hash and SDK37 compile anchor.
+**Current new SDK37 candidate is not yet compiled/executed.** No renamed36/fake SDK/suppression.
+
+Actual b335172 privacy **14PASS/1FAIL/0SKIP**: stronger screenshot and actual Dialog/frame attack passed,
+old workspace assertNotSame after one native click failed. Whole gate FAILED; no historical causality or
+fixed stability inferred. [Pre-edit plan](verification/r23-workspace-repair-plan.md) retained before changes.
+Shared real-focus readiness and post-click main-idle readback now authored, no click retry, removed
+assertion or direct performClick substitute. New real IME-visible single-tap discard test expands current
+privacy scope to16. All16/24/122 fresh native gates mandatory. Python147 passed at authored checkpoint;
+source validation alone proved insufficient on prior SDK37 and UI candidates.

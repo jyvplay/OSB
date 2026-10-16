@@ -24,10 +24,16 @@ def platforms(text):
     return sorted(result)
 
 
+def base37(names):
+    # Real sdkmanager emits android-37.0. Do not confuse a missing old spelling with every SDK37 package absent.
+    return sorted(set(names) & {'platforms;android-37', 'platforms;android-37.0'})
+
+
 def probe(manager):
     manager = Path(manager).expanduser().resolve()
     report = {'kind': 'Real SDK catalog only; NOT compilation/runtime/Rabbit GUI acceptance',
               'manager': str(manager), 'version': None, 'catalogs': [], 'sdk37_in_any_observed_catalog': None,
+              'package_policy': 'Base37 accepts only released android-37 or android-37.0; not higher minors/beta/canary',
               'limits': 'Two real non-installing list commands;120s/4MiB stdout/256KiB stderr each; no fake SDK or license acceptance.'}
     if not manager.is_file():
         report['error'] = 'sdkmanager file absent; availability UNKNOWN'
@@ -43,10 +49,11 @@ def probe(manager):
             raw = capture([manager, '--list', '--channel=' + str(channel)], timeout=120, max_output=4*1024*1024)
             row['platforms'] = platforms(raw.decode('utf-8', errors='strict'))
             row['sdk37_exact'] = 'platforms;android-37' in row['platforms']
+            row['sdk37_base_packages'] = base37(row['platforms'])
         except (OSError, RuntimeError, ValueError, TimeoutError, subprocess.SubprocessError) as error:
             row['error'] = type(error).__name__ + ': ' + str(error)[:1000]
         report['catalogs'].append(row)
-    observed = [row['sdk37_exact'] for row in report['catalogs']]
+    observed = [bool(row['sdk37_base_packages']) if row['platforms'] is not None else None for row in report['catalogs']]
     report['sdk37_in_any_observed_catalog'] = True if True in observed else (None if None in observed else False)
     return report
 

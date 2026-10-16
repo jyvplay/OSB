@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Real Android laptop lab. No downloads, synthetic screenshots, or fake device results.
-Requires JDK17, SDK36/35+36 build tools, and (for visual) an already-running disposable AVD.
+Requires JDK17, SDK37.0/35+36 build tools, and (for visual) an already-running disposable AVD.
 """
 import argparse
 from datetime import datetime, timezone
@@ -85,7 +85,7 @@ def doctor(sdk_arg=None):
     checks = {
         'java17': bool(re.search(r'version "17\.', versions['java'])),
         'javac17': bool(re.search(r'javac 17\.', versions['javac'])),
-        'platform36': (sdk/'platforms/android-36/android.jar').is_file(),
+        'platform37': (sdk/'platforms/android-37.0/android.jar').is_file(),
         'buildTools35': (sdk/'build-tools/35.0.0').is_dir(),
         'buildTools36': (sdk/'build-tools/36.0.0').is_dir(),
         'wrapper': (ROOT/'gradle/wrapper/gradle-wrapper.jar').is_file(),

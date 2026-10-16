@@ -2,13 +2,13 @@
 EXPECTED = {
     'distributionBase': 'GRADLE_USER_HOME',
     'distributionPath': 'wrapper/dists',
-    'distributionUrl': r'https\://services.gradle.org/distributions/gradle-8.13-bin.zip',
+    'distributionUrl': r'https\://services.gradle.org/distributions/gradle-9.3.1-bin.zip',
     'networkTimeout': '10000',
     'validateDistributionUrl': 'true',
     'zipStoreBase': 'GRADLE_USER_HOME',
     'zipStorePath': 'wrapper/dists',
-    # Actually fetched from https://downloads.gradle.org/distributions/gradle-8.13-bin.zip.sha256.
-    'distributionSha256Sum': '20f1b1176237254a6fc204d8434196fa11a4cfb387567519c61556e8710aed78',
+    # Actually retrieved official GitHub v9.3.1 asset347704202 digest; retained upstream metadata.
+    'distributionSha256Sum': 'b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76beaff06',
 }
 
 

@@ -1165,7 +1165,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace; R23 adds a no-IME decimal touch pad, obscured-touch/focus discard and explicit unknown exposure observations. 910b739 passed12/12 API34 cases. Additional reveal/stale-timer and SharedMemory prerequisite tests are authored, pending their own fresh native run; no transport/anonymity acceptance inferred. Exact20c1fd9 run38862379063 completed14PASS/0FAIL/0SKIP, including reveal/stale callback, AX action and same-process SharedMemory prerequisite; not cross-UID production memory transport. Exact b3f2f1d/run38864044657 also14/0/0; later SDK37 candidate failed pre-test and inherits none of these passes. Restored99c4405 run38866590115 was13PASS/1FAIL (old screenshot marker wait on third secure launch). Production discard is unchanged; stronger focused/committed-frame screenshot staging and real Dialog marker-invalidation test authored, full companion scope15, pending fresh native verification. No root-cause or stability fix inferred.",
+      "behavior": "Separate no-INTERNET native volatile workspace; R23 adds a no-IME decimal touch pad, obscured-touch/focus discard and explicit unknown exposure observations. 910b739 passed12/12 API34 cases. Additional reveal/stale-timer and SharedMemory prerequisite tests are authored, pending their own fresh native run; no transport/anonymity acceptance inferred. Exact20c1fd9 run38862379063 completed14PASS/0FAIL/0SKIP, including reveal/stale callback, AX action and same-process SharedMemory prerequisite; not cross-UID production memory transport. Exact b3f2f1d/run38864044657 also14/0/0; later SDK37 candidate failed pre-test and inherits none of these passes. Restored99c4405 run38866590115 was13PASS/1FAIL (old screenshot marker wait on third secure launch). Production discard is unchanged; stronger focused/committed-frame screenshot staging and real Dialog marker-invalidation test authored, full companion scope15, pending fresh native verification. No root-cause or stability fix inferred. b335172 actual14/1: new real Dialog/frame tests passed, old UI discard identity assertion failed; whole gate failed. Added shared actual focus/main-idle staging and one real IME-visible single-tap test; current full privacy scope16 PENDING. Second documented SDK37 attempt uses observed37.0 + localDevices, not missing android-37 spelling; compile anchor/target37 added but NOT accepted before native run.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
@@ -1179,7 +1179,8 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt"
       ],
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
@@ -1191,10 +1192,11 @@
         "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29",
         "privacy/src/main/AndroidManifest.xml": "b2dfd44e13901da005915f670d6234cd9c9c97287ec2257f6d65cea1990754f3",
         "privacy/src/main/res/values/ids.xml": "616fd6709a88a16f10f02c231df7f8546e645f2cbe52506fbab58bc01d571f78",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "88b1a74235f07e9f1b7892f7e6084245c57aa118ea03135aa60e176ced76d4b1",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "dcf2d5e56b72b0fc11edecf2d25824d28c18fe11bf21b38565c5ff82e755be59",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "e6d1886fd22a598e5d9bfd2be1095f392ba16e3dfb6d111d4d8a54367727138f",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2"
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "f9ef2914a7c080dc8e82a6bd179685d30d174e7ba95e16735a041f380950a766",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "e416e8990ed59c3d6cc963c6b51811db6f95cc748cbd1a61a5ab4f7f592317a8",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "bda15be3d5e2c7ed2a2fa4bea90f18b5c60216b2a80cccda74ccdd26695052b6",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617"
       }
     }
   ]

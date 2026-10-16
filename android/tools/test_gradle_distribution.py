@@ -19,7 +19,7 @@ class DistributionPinTests(unittest.TestCase):
             with self.assertRaises(ValueError): verify(self.text + tail + '\n')
 
     def test_wrong_distribution_hash_alias_or_noncanonical_escape_refused(self):
-        for text in [self.text.replace('8.13-bin', '9.3.1-bin'),
+        for text in [self.text.replace('9.3.1-bin', '0.0.0-bin'),
                      self.text.replace(EXPECTED['distributionSha256Sum'], '0'*64),
                      self.text.replace('distributionUrl=', 'distributionUrl:'),
                      self.text + 'unknown=1\n', self.text.replace('networkTimeout=10000', 'networkTimeout=10000 '),

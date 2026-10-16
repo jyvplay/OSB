@@ -1,3 +1,10 @@
+> **Current experiment:** live pins now AGP9.1.1/Gradle9.3.1/JDK17/SDK37.0 (compile/target37),
+> Kotlin2.2.21 with documented temporary legacy opt-outs. Fresh build/native verification PENDING.
+> Actual catalog lists `platforms;android-37.0`; old unqualified `android-37` install failed.
+> Current companion suite16 includes stricter frame/focus and real IME single-tap checks;
+> prior13/1 and14/1 failures are retained. Earlier SDK36/14-case instructions/results below are historical.
+> Do not infer API37 runtime or Rabbit1 GUI execution from compilation or compatibility tables.
+
 ## R23 explicit memory-route verification
 
 SharedMemory substrate14/14 passed at20c1fd9 before the production alternative was authored.
@@ -10,7 +17,7 @@ cd android
 # Maintained full JDK17 + SDK required, no Studio GUI:
 python3 tools/r23_lab.py device --suite memory --disposable
 python3 tools/r23_lab.py device --suite full --disposable
-# API34 companion15 cases is the default (new focus/frame verifier):
+# API34 companion16 cases is the default (focus/frame + real IME single-tap verifier):
 python3 tools/r23_lab.py device --suite privacy --disposable
 ```
 

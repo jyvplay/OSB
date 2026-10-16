@@ -12,6 +12,9 @@ legacy regular-file APIs remain explicit, not fallback. Real SDK37/AGP9 experime
 working SDK36/AGP8.13.2 pins restored and Gradle8.13 distribution checksum configured from official source.
 Rabbit1 support is documented compatibility, not a GUI run. Restored99c4405 privacy had13PASS/1FAIL (marker readiness); stricter focus/frame screenshot verifier and real Dialog reattack now require a fresh15-case pass, not inherited14-case acceptance.
 
+Current live pins are a second **SDK37.0/AGP9.1.1/Gradle9.3.1 experiment**, pending native verification;
+old unqualified37 install failed but actual37.0 is listed. Current privacy scope16, not inherited14.
+
 ---
 
 # Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports

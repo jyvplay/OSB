@@ -43,9 +43,10 @@ TRANSPORT = {APP + 'R23MemoryTransportDeviceTest.' + name for name in [
     'refusedOwnedCycleCleansNamedInputAndClosesLease'
 ]} | R22_BOUNDARY | R22_PLATFORM | R22_UI
 FOCUS_FRAME = {PREFIX + 'PrivacyPlatformTest.realFocusableDialogInvalidatesMarkerBeforeFreshCommittedSecureCapture'}
+IME_DISCARD = {PREFIX + 'PrivacyWorkspaceTest.oneRealDiscardTouchWhileImeVisibleRetiresEditorBeforeReadback'}
 RULES = {'r23_memory_transport_api34': TRANSPORT, 'r23_input_api34': OLD | INPUT, 'r23_memory_api34': MEMORY,
          'r23_prerequisite_api34': OLD | INPUT | REVEAL | MEMORY,
-         'r23_privacy_api34': OLD | INPUT | REVEAL | MEMORY | FOCUS_FRAME}
+         'r23_privacy_api34': OLD | INPUT | REVEAL | MEMORY | FOCUS_FRAME | IME_DISCARD}
 UNSUPPORTED = ['global_anonymity', 'Tails_equivalence', 'lighter_than_Tails', 'hardware_keylogger_detected',
                'firmware_safe', 'host_hidden', 'all_IME_hidden', 'all_AX_blocked', 'RAM_erased', 'disk_erased',
                'all_USB_blocked', 'all_apps_offline', 'production_sharedmemory_transport', 'hostile_child_computation_verified',
