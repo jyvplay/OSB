@@ -22,6 +22,9 @@ object R21Checks {
   val badLength=java.nio.ByteBuffer.allocate(16).putInt(0x46435431).putInt(1).putInt(1).putInt(Int.MAX_VALUE).array()
   bad {CsvTable.readFrame(badLength)}
   ok(parse("safe,_x0041_").project(listOf(0)).workbook().bytes.isNotEmpty())
+  val display=parse("\"a\n\"\"b\",\u202ehidden")
+  ok(display.preview().contains("\\n"));ok(display.preview().contains("\\u202e"));ok(!display.preview().contains('\u202e'))
+  ok(display.rows[0][1].startsWith('\u202e'));ok(parse("z\n".repeat(256)).preview().contains("Row 256:"))
   val table=parse("name,amount,secret\nAlice,=1+1,password")
   ok(table.project(listOf(1,0)).rows[1]==listOf("=1+1","Alice"))
   bad {table.project(listOf(1,1))};bad {table.project(emptyList())};bad {table.project(listOf(3))}

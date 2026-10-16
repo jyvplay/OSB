@@ -30,7 +30,7 @@
   "scope": "Small conditional models, not Kotlin/CSV/Android refinement or anonymity proofs. Frame bound assumes decoded payload bytes <= source bytes; solver does not prove parser lemma. Projection model has two symbolic columns, not ZIP encoding.",
   "sha256": {
     "tools/prove_r21_models.py": "c0bac730cd767623113690eca04f623541ed728034dd639e3fc6bc4d22cb7dde",
-    "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt": "ea44bedb5ea50676c85ee1e484c28ed706649e0206d473e735eef35102dfb2ac",
+    "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt": "a404d5f45a4c3949f931266f245ac3c40bd5a311d041a295457c7ff56be916e0",
     "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt": "cb9c83774bd23d85667e4e37a096119884e619bc617823ad68bd19a6c2568510"
   }
 }

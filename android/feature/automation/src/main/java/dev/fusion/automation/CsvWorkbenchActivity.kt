@@ -38,7 +38,7 @@ class CsvWorkbenchActivity:Activity() {
         column.addView(source)
         columns=EditText(this).apply {id=R.id.csv_columns;hint="Keep columns (1-based, ordered, e.g. 1,3)";setText("1");isSingleLine=true;isSaveEnabled=false}
         column.addView(columns)
-        status=label("No preview. Draft is not saved; recreation loses input.").apply {id=R.id.csv_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
+        status=label("No preview. No recoverable draft; recreation loses input.").apply {id=R.id.csv_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
         preview=label("").apply {id=R.id.csv_preview;isSaveEnabled=false}
         parse=Button(this).apply {id=R.id.csv_parse;text="Preview selected columns";setOnClickListener {prepare()}}
         save=Button(this).apply {id=R.id.csv_save;text="Save new literal XLSX…";isEnabled=false;setOnClickListener {
@@ -49,7 +49,7 @@ class CsvWorkbenchActivity:Activity() {
             },21)} catch(_:Exception) {pending=null;busy(false);status.text="Document picker unavailable; no write attempted."}
         }}
         column.addView(parse);column.addView(save)
-        label("Preview shows first 20 rows and 120 code points/cell, with line breaks escaped; export contains ALL selected cells. Other columns are omitted deliberately. Unsupported XLSX text is refused, never silently rewritten. No source overwrite, backup, forensic erasure or physical-durability guarantee. Android/IME/host remain trusted.")
+        label("Preview contains ALL selected cells; quotes, line breaks and bidi formatting are escaped for display only. Export preserves original selected text. Other columns are omitted deliberately. Unsupported XLSX text is refused, never silently rewritten. Worker input briefly uses a private temporary file, unlinked before transfer — NOT secure disk erasure. No source overwrite, backup or physical-durability guarantee. Android/IME/host remain trusted.")
         for((field,limit) in listOf(source to 65536,columns to 100)) {
             field.filters=arrayOf(InputFilter {_,start,end,dest,a,b->
                 if(dest.length.toLong()-(b-a)+(end-start)>limit) {
@@ -84,12 +84,7 @@ class CsvWorkbenchActivity:Activity() {
                 val evidence=FormatLease(this).use {it.evaluateOwnedCsv(bytes)}
                 val table=requireNotNull(evidence.table).project(selected)
                 val workbook=table.workbook().bytes;require(workbook.size<=2*1024*1024)
-                val text="${table.rows.size} rows, ${table.columns} selected columns. Literal text only.\n"+table.rows.take(20).mapIndexed {r,row->
-                    "Row ${r+1}: "+row.mapIndexed {c,s->
-                        val limited=s.substring(0,s.offsetByCodePoints(0,minOf(120,s.codePointCount(0,s.length))))
-                        "[${c+1}] "+limited.replace("\\","\\\\").replace("\r","\\r").replace("\n","\\n").replace("\t","\\t")+(if(limited.length<s.length) "…" else "")
-                    }.joinToString(" | ")
-                }.joinToString("\n")
+                val text="${table.rows.size} rows, ${table.columns} selected columns. Literal text only.\n"+table.preview()
                 workbook to text
             }
             runOnUiThread {

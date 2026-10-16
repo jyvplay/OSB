@@ -810,7 +810,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "1764e608598c6f79bcc39384620af8ae7ce048fabbe0962eb6682446cbfe5b4c"
+      "sha256": "b78143570df7d76c1245d066b5e313e5084fb79a1b1f7ace77c17c67d68672fc"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",
@@ -894,7 +894,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "ea44bedb5ea50676c85ee1e484c28ed706649e0206d473e735eef35102dfb2ac"
+      "sha256": "a404d5f45a4c3949f931266f245ac3c40bd5a311d041a295457c7ff56be916e0"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt",

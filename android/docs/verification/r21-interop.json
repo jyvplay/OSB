@@ -15,6 +15,6 @@
   "outputs_sha256": "6d15bae19b54b3388adc925b0fee2bb07a5f91be3efef989288d9aeaa0ac4166",
   "sha256": {
     "tools/run_r21_interop.py": "6617e49e17735809596ccddcafa74983016ece34709a7bdba817fa89ff3f4d7f",
-    "testing/build/r21/result.txt": "e44e997b726f9762608e11191748e6ae79030d0250d8197678ee3f7b2edb60b8"
+    "testing/build/r21/result.txt": "c3cf4cffd6ac62b4795c9fa815cb57cca7b0a088febc2219a136c01d3d4659b0"
   }
 }

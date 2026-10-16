@@ -40,7 +40,8 @@ class R21CsvUiDeviceTest {
  }
  @Test fun recreationLosesDraftAndCannotExportOldPreview() {
   ActivityScenario.launch(CsvWorkbenchActivity::class.java).use {s->
-   node("csv_source").text="a,b\nx,y";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())};node("csv_parse").click();ready()
+   node("csv_source").text="value\n".repeat(256);s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())};node("csv_parse").click();ready()
+   s.onActivity {a->assertTrue(a.findViewById<TextView>(dev.fusion.automation.R.id.csv_preview).text.contains("Row 256:"))}
    s.recreate()
    s.onActivity {a->assertEquals("",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString());assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled)}
   }

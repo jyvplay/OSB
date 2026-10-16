@@ -15,6 +15,16 @@ class CsvTable private constructor(val rows:List<List<String>>) {
         val copy=indices.toList();require(copy.distinct().size==copy.size && copy.all {it in 0 until columns})
         return of(rows.map {row->copy.map {row[it]}})
     }
+    /** Complete bounded display; escape controls/bidi formatting ONLY in preview, never in exported cells. */
+    fun preview():String=rows.mapIndexed {r,row->
+        "Row ${r+1}: "+row.mapIndexed {c,s->
+            val shown=buildString {for(ch in s) when(ch) {
+                '\\'->append("\\\\");'"'->append("\\\"");'\r'->append("\\r");'\n'->append("\\n");'\t'->append("\\t")
+                else->if(Character.getType(ch)==Character.FORMAT.toInt()) append("\\u"+ch.code.toString(16).padStart(4,'0')) else append(ch)
+            }}
+            "[${c+1}] \"$shown\""
+        }.joinToString(" | ")
+    }.joinToString("\n")
     fun workbook():WorkbookExport=LiteralWorkbook.export("Selected columns",rows.map {r->r.map {LiteralCell.Text(it)}})
     /** Bounded data-only reply. Parent validates this frame, not the original CSV grammar. */
     fun frame():ByteArray {
