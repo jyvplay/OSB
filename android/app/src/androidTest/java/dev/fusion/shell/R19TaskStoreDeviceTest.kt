@@ -18,6 +18,9 @@ class R19TaskStoreDeviceTest {
         val repo=TaskRepository(f);val before=repo.add(0,"Original",java.time.LocalDate.of(2028,2,29))
         val commit=repo.commitUndoable(1) {it.edit(before.tasks.single().id,"Edited",null)}
         assertEquals(2L,TaskRepository(f).load().revision)
+        val beforeNoOp=f.readBytes()
+        val noOp=repo.commitUndoable(2) {it.edit(before.tasks.single().id,"Edited",null)}
+        assertNull(noOp.undo);assertEquals(2L,noOp.book.revision);assertArrayEquals(beforeNoOp,f.readBytes())
         val undo=repo.undo(requireNotNull(commit.undo));assertEquals(3L,undo.revision);assertEquals(before.tasks,undo.tasks)
         assertEquals(before.tasks,TaskRepository(f).load().tasks)
         val bytes=f.readBytes();assertTrue(runCatching {repo.undo(commit.undo!!)}.exceptionOrNull() is TaskConflict)

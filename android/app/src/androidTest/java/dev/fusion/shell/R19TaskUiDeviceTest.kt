@@ -34,6 +34,9 @@ class R19TaskUiDeviceTest {
             compose.onNodeWithTag("tasks-title").performScrollTo().performTextReplacement("R19 changed")
             compose.onNodeWithTag("tasks-date").performScrollTo().performTextClearance()
             compose.onNodeWithTag("tasks-add").performScrollTo().assertIsDisplayed().performClick();saved(2)
+            // Patch attack: a no-op edit must not erase the previous meaningful edit's undo.
+            compose.onNodeWithText("Edit task").performScrollTo().performClick()
+            compose.onNodeWithTag("tasks-add").performScrollTo().assertIsDisplayed().performClick();saved(2)
             compose.onNodeWithTag("tasks-undo").performScrollTo().assertIsDisplayed().performClick();saved(3)
             compose.onNodeWithText("R19 original").assertExists();compose.onNodeWithText("Date only: 2028-02-29").assertExists()
             compose.onNodeWithTag("tasks-undo").assertDoesNotExist()

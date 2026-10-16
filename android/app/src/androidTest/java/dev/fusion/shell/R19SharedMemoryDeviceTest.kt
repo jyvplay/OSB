@@ -24,6 +24,8 @@ class R19SharedMemoryDeviceTest {
                     assertEquals(29.toByte(),reader.get(0)) // Genuine surviving-writer counterexample.
                     val error=runCatching { memory.mapReadWrite().also { SharedMemory.unmap(it) } }.exceptionOrNull()
                     assertTrue(error is ErrnoException)
+                    val errno=(error as ErrnoException).errno
+                    assertTrue("Not a permission refusal: $errno",errno==OsConstants.EACCES || errno==OsConstants.EPERM)
                     assertFalse(memory.setProtect(OsConstants.PROT_READ or OsConstants.PROT_WRITE))
                 } finally { SharedMemory.unmap(reader) }
             } finally { SharedMemory.unmap(writer) }

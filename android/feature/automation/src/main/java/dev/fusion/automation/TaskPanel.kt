@@ -34,13 +34,13 @@ fun TaskPanel(context: Context) {
     var mergePreview by remember { mutableStateOf<TaskMergePreview?>(null) }
     var pendingExport by remember { mutableStateOf<TaskBook?>(null) }
     var pendingWorkbook by remember { mutableStateOf<TaskBook?>(null) }
-    fun execute(clearInput: Boolean=false, action: ()->TaskCommit) {
+    fun execute(clearInput: Boolean=false, keepUndoOnNoOp:Boolean=false, action: ()->TaskCommit) {
         if(busy) return
         busy=true
         scope.launch {
             try {
                 val result=withContext(Dispatchers.IO) { action() }
-                book=result.book;undo=result.undo;mergePreview=null;blocked=false;status="Loaded/saved revision ${result.book.revision}. No reminder scheduled."
+                book=result.book;undo=result.undo ?: if(keepUndoOnNoOp) undo?.takeIf {it.matchesAfter(result.book)} else null;mergePreview=null;blocked=false;status="Loaded/saved revision ${result.book.revision}. No reminder scheduled."
                 if(clearInput) { title="";date="";editingId=null }
             } catch(e:kotlinx.coroutines.CancellationException) { throw e }
             catch(_:TaskConflict) { blocked=true;status="Tasks changed elsewhere. Input retained. Reload, cancel this edit and reselect the task to review its current version." }
@@ -113,7 +113,7 @@ fun TaskPanel(context: Context) {
                 val due=LocalTask.date(date)
                 LocalTask.validate(text,due)
                 if(id==null) run(true) {repo.add(expected,text,due)}
-                else execute(true) {repo.commitUndoable(expected) {it.edit(id,text,due)}}
+                else execute(clearInput=true,keepUndoOnNoOp=true) {repo.commitUndoable(expected) {it.edit(id,text,due)}}
             } catch(_:Exception) {status="Title/date refused. Use a nonblank title and a valid date in years0001..9999, or leave the date empty."}
         }) {Text(if(editingId==null) "Add task" else "Save task changes")}
         Text(status,Modifier.testTag("tasks-status"))
@@ -166,7 +166,7 @@ fun TaskPanel(context: Context) {
         mergePreview?.let {preview ->
             Text("Preview: ${preview.added.size} new; ${preview.identical} identical. Source revision ${preview.sourceRevision} will NOT become local revision. Existing records stay unchanged.")
             preview.added.forEach {task -> Text("${task.id}: ${task.title}; date=${task.due ?: "none"}; done=${task.done}; archived=${task.archived}")}
-            Button(enabled=!busy && !blocked && editingId==null,onClick={execute {repo.merge(preview)}},modifier=Modifier.testTag("tasks-confirm-merge")) {Text("Confirm append-only merge")}
+            Button(enabled=!busy && !blocked && editingId==null,onClick={execute(keepUndoOnNoOp=true) {repo.merge(preview)}},modifier=Modifier.testTag("tasks-confirm-merge")) {Text("Confirm append-only merge")}
             Button(enabled=!busy,onClick={mergePreview=null;status="Preview discarded; no tasks changed."}) {Text("Discard merge preview")}
         }
     }
