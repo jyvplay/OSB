@@ -162,7 +162,9 @@
     ":feature:together": [],
     ":feature:lens": [],
     ":feature:messages": [],
-    ":feature:automation": [],
+    ":feature:automation": [
+      ":format:ooxml"
+    ],
     ":format:native": [],
     ":format:archive": [],
     ":format:ooxml": [],
@@ -785,13 +787,19 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "11d50ca56250c9256a6fd38eb5bc76746f1ff41871f2951232e97e5b968c5bd0"
+      "sha256": "5d403a0b7681bf6dbec4546dd75d649d61221553236565176ef963dce2faf92c"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "85543aa80ae499153c5874da07f896aaab04d6c61192439c579014b21397b62b"
+      "sha256": "7e55bab44fdf1adcea454abf8b843faf14f5cac4f8bda2d666caa95001d15ddf"
+    },
+    {
+      "path": "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "d902991cc5486e95d5f90f67eb3a6f7c915f2c0cb457ba2727ba40eb532ff238"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
@@ -806,10 +814,28 @@
       "sha256": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4"
     },
     {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskChanges.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "48c312d6b85df0152df016dc140b23f2734d1ea5aaebcb0a6b55158a439dc1c5"
+    },
+    {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
       "sha256": "c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskStreams.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "9c3f45621925e64321552c0b5a7e1a363f5cdcd0757c2ce4f8f1546767fafee5"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskWorkbook.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "69182b5a946c8873287bdb17ac502b827ec5dc983be3c6a14e8cc1934903adf2"
     },
     {
       "path": "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt",
@@ -833,7 +859,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "e81b290a5bc56aed12a4c06908752e9c5d1b838555872c99272881d05e84739b"
+      "sha256": "a425b64281ade8e3f90f4d60c36ae79127bd1c2f91f6a1f6274b58c493f611e9"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",

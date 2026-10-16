@@ -194,6 +194,7 @@ tasks.register<JavaExec>("r16Contracts") {
 
 val r17 by sourceSets.creating
 kotlin.sourceSets.named("r17") {
+    kotlin.include("**/TaskBook.kt", "**/R17Checks.kt", "**/R17Oracle.kt")
     kotlin.srcDir("src/r17/kotlin")
     kotlin.srcDir("../feature/automation/src/main/kotlin")
 }
@@ -214,4 +215,17 @@ tasks.register<JavaExec>("r18Contracts") {
     dependsOn(r18.classesTaskName)
     classpath = r18.runtimeClasspath
     mainClass.set("dev.fusion.testing.R18Checks")
+}
+
+val r19 by sourceSets.creating
+kotlin.sourceSets.named("r19") {
+    kotlin.srcDir("src/r19/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.include("**/TaskBook.kt", "**/TaskChanges.kt", "**/TaskStreams.kt", "**/TaskWorkbook.kt", "**/LiteralWorkbook.kt", "**/R19Checks.kt", "**/R19Oracle.kt")
+}
+tasks.register<JavaExec>("r19Contracts") {
+    dependsOn(r19.classesTaskName)
+    classpath = r19.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R19Checks")
 }

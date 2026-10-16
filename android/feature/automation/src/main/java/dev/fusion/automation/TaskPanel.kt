@@ -1,6 +1,8 @@
 package dev.fusion.automation
 
 import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,19 +30,71 @@ fun TaskPanel(context: Context) {
     var order by remember { mutableStateOf(TaskOrder.INSERTION) }
     var busy by remember { mutableStateOf(false) };var blocked by remember { mutableStateOf(false) }
     var status by remember { mutableStateOf("Loading local tasks…") }
-    fun run(clearInput: Boolean=false, action: ()->TaskBook) {
+    var undo by remember { mutableStateOf<TaskChange?>(null) }
+    var mergePreview by remember { mutableStateOf<TaskMergePreview?>(null) }
+    var pendingExport by remember { mutableStateOf<TaskBook?>(null) }
+    var pendingWorkbook by remember { mutableStateOf<TaskBook?>(null) }
+    fun execute(clearInput: Boolean=false, action: ()->TaskCommit) {
         if(busy) return
         busy=true
         scope.launch {
             try {
                 val result=withContext(Dispatchers.IO) { action() }
-                book=result;blocked=false;status="Loaded/saved revision ${result.revision}. No reminder scheduled."
+                book=result.book;undo=result.undo;mergePreview=null;blocked=false;status="Loaded/saved revision ${result.book.revision}. No reminder scheduled."
                 if(clearInput) { title="";date="";editingId=null }
             } catch(e:kotlinx.coroutines.CancellationException) { throw e }
             catch(_:TaskConflict) { blocked=true;status="Tasks changed elsewhere. Input retained. Reload, cancel this edit and reselect the task to review its current version." }
             catch(_:Exception) { blocked=true;status="Load/save could not be confirmed. Data and input are not cleared. Reload to inspect; do not assume rollback." }
             finally { busy=false }
         }
+    }
+    fun run(clearInput:Boolean=false,action:()->TaskBook) { execute(clearInput) {TaskCommit(action(),null)} }
+    // [U] verify on API 34/36/37: picker grants, provider readback and recreation/cancellation.
+    val exportPicker=rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) {uri ->
+        val snapshot=pendingExport;pendingExport=null
+        if(uri==null) status="Export cancelled; no app write attempted."
+        else if(snapshot==null) status="Export snapshot lost after recreation; created document may be empty. Start a new export."
+        else {
+            busy=true
+            scope.launch {
+                try {
+                    val receipt=withContext(Dispatchers.IO) {TaskTransferIO.writeCreatedDocument(context.contentResolver,uri,snapshot)}
+                    status="Export readback verified: revision ${receipt.revision}, ${receipt.bytes} bytes. Not a physical-durability guarantee."
+                } catch(e:kotlinx.coroutines.CancellationException) {throw e}
+                catch(_:Exception) {status="Export could not be confirmed; created document may be partial. Local tasks unchanged. Inspect before retrying."}
+                finally {busy=false}
+            }
+        }
+    }
+    val workbookPicker=rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {uri ->
+        val snapshot=pendingWorkbook;pendingWorkbook=null
+        if(uri==null) status="Workbook export cancelled; no app write attempted."
+        else if(snapshot==null) status="Workbook snapshot lost after recreation; created document may be empty."
+        else {
+            busy=true
+            scope.launch {
+                try {
+                    val receipt=withContext(Dispatchers.IO) {TaskTransferIO.writeCreatedWorkbook(context.contentResolver,uri,snapshot)}
+                    status="Literal XLSX report readback verified: ${receipt.bytes} bytes. Dates are text; not a task backup/import file or Office engine."
+                } catch(e:kotlinx.coroutines.CancellationException) {throw e}
+                catch(_:Exception) {status="Workbook export refused or unconfirmed; created document may be empty/partial. Tasks unchanged. Unsupported XML/escape-like text is not silently changed."}
+                finally {busy=false}
+            }
+        }
+    }
+    val importPicker=rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {uri ->
+        val snapshot=book
+        if(uri!=null && snapshot!=null) {
+            busy=true
+            scope.launch {
+                try {
+                    val preview=withContext(Dispatchers.IO) {TaskMergePreview.inspect(snapshot,TaskTransferIO.read(context.contentResolver,uri))}
+                    mergePreview=preview;status="Import preview ready; no tasks changed. Review before confirming."
+                } catch(e:kotlinx.coroutines.CancellationException) {throw e}
+                catch(_:Exception) {mergePreview=null;status="Import refused: invalid/conflicting/over-limit data or unavailable provider. No tasks changed."}
+                finally {busy=false}
+            }
+        } else status="Import cancelled or tasks not loaded; no tasks changed."
     }
     LaunchedEffect(repo) { run { repo.load() } }
     Column(verticalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -58,10 +112,15 @@ fun TaskPanel(context: Context) {
             try {
                 val due=LocalTask.date(date)
                 LocalTask.validate(text,due)
-                run(true) {if(id==null) repo.add(expected,text,due) else repo.edit(expected,id,text,due)}
+                if(id==null) run(true) {repo.add(expected,text,due)}
+                else execute(true) {repo.commitUndoable(expected) {it.edit(id,text,due)}}
             } catch(_:Exception) {status="Title/date refused. Use a nonblank title and a valid date in years0001..9999, or leave the date empty."}
         }) {Text(if(editingId==null) "Add task" else "Save task changes")}
         Text(status,Modifier.testTag("tasks-status"))
+        undo?.let {change ->
+            Text("One-step edit/import undo is session-only; another mutation or reload clears it. Undo adds a new revision, not a rollback.")
+            Button(enabled=!busy && !blocked && editingId==null,onClick={run {repo.undo(change)}},modifier=Modifier.testTag("tasks-undo")) {Text("Undo last edit/import")}
+        }
         Text("${book?.tasks?.count { !it.archived } ?: 0} active; ${book?.tasks?.count { it.archived } ?: 0} archived. Archived items still count toward128.")
         OutlinedTextField(query,{candidate ->
             try {TaskQuery.select(book ?: TaskBook(),candidate);query=candidate}
@@ -89,6 +148,26 @@ fun TaskPanel(context: Context) {
                     },modifier=Modifier.testTag("task-archive-${task.id}")) {Text(if(task.archived) "Restore task" else "Archive task")}
                 }
             }
+        }
+        Text("Manual task transfer: plaintext, including completed and archived records. Export creates a new FTS2 document; older app versions cannot read it. Import appends new IDs only, never replaces existing tasks or adopts the file's revision. Undoing an import removes its newly added records; the source file is untouched.")
+        Button(enabled=!busy && !blocked && book!=null && editingId==null,onClick={
+            pendingExport=book
+            runCatching {exportPicker.launch("fusion-tasks-r${book!!.revision}.fts")}.onFailure {pendingExport=null;status="Document picker unavailable; no app write attempted."}
+        },modifier=Modifier.testTag("tasks-export")) {Text("Export all tasks — new document")}
+        Text("Optional XLSX report: Active and Archived sheets, literal cells only, dates as text. Not import-compatible or a full Office editor. Restricted writer refuses XML/escape-like text it cannot preserve; FTS remains available.")
+        Button(enabled=!busy && !blocked && book!=null && editingId==null,onClick={
+            pendingWorkbook=book
+            runCatching {workbookPicker.launch("fusion-task-report-r${book!!.revision}.xlsx")}.onFailure {pendingWorkbook=null;status="Document picker unavailable; no workbook written."}
+        },modifier=Modifier.testTag("tasks-export-workbook")) {Text("Export task report — new XLSX")}
+        Button(enabled=!busy && !blocked && book!=null && editingId==null,onClick={
+            mergePreview=null
+            runCatching {importPicker.launch(arrayOf("*/*"))}.onFailure {status="Document picker unavailable; no tasks changed."}
+        },modifier=Modifier.testTag("tasks-import")) {Text("Open task file for merge preview")}
+        mergePreview?.let {preview ->
+            Text("Preview: ${preview.added.size} new; ${preview.identical} identical. Source revision ${preview.sourceRevision} will NOT become local revision. Existing records stay unchanged.")
+            preview.added.forEach {task -> Text("${task.id}: ${task.title}; date=${task.due ?: "none"}; done=${task.done}; archived=${task.archived}")}
+            Button(enabled=!busy && !blocked && editingId==null,onClick={execute {repo.merge(preview)}},modifier=Modifier.testTag("tasks-confirm-merge")) {Text("Confirm append-only merge")}
+            Button(enabled=!busy,onClick={mergePreview=null;status="Preview discarded; no tasks changed."}) {Text("Discard merge preview")}
         }
     }
 }

@@ -35,6 +35,21 @@ class TaskRepository(private val base: File) {
         val current=read();if(current.revision!=expectedRevision) throw TaskConflict()
         val next=current.archive(id,archived);if(next===current) current else save(next)
     }
+    /** New undoable path. Existing archive/restore API remains usable at its reserved boundary. */
+    fun commitUndoable(expectedRevision:Long, transform:(TaskBook)->TaskBook):TaskCommit = synchronized(lock) {
+        val current=read();if(current.revision!=expectedRevision) throw TaskConflict()
+        val next=transform(current);val change=TaskChange.prepare(current,next)
+        TaskCommit(if(change==null) current else save(next),change)
+    }
+    fun merge(preview:TaskMergePreview):TaskCommit = synchronized(lock) {
+        val current=read();if(!TaskChange.same(preview.before,current)) throw TaskConflict()
+        val next=preview.apply(current)
+        TaskCommit(if(preview.change==null) current else save(next),preview.change)
+    }
+    fun undo(change:TaskChange):TaskBook = synchronized(lock) {
+        val current=read();if(!change.matchesAfter(current)) throw TaskConflict()
+        save(change.undo(current))
+    }
     private fun read(): TaskBook {
         val input=try { file.openRead() } catch(e:FileNotFoundException) {
             if(!base.exists() && !File(base.path+".bak").exists() && !File(base.path+".new").exists()) return TaskBook()

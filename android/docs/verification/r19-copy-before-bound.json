@@ -1,0 +1,7 @@
+{
+  "scope": "Actual separately compiled consumer with a lazy adversarial collection; not an Android/Office application simulation",
+  "source_sha256": "802e54f6d7f2ba877d102109e7cc2fdc037705e96ca9cd4548e2982d39b0f370",
+  "producer_sha256": "8b8e14f2790ffcd74e973e2695163a79935d185be0fc82db32e2e4b0b60e3144",
+  "consumer": "import dev.fusion.ooxml.*\nfun main() {\n    var visited=false\n    val rows=object:AbstractList<List<LiteralCell>>() {\n        override val size=1001\n        override fun get(index:Int):List<LiteralCell> {visited=true;error(\"Visited inadmissible row collection\")}\n    }\n    try {LiteralWorkbook.exportSheets(listOf(LiteralWorksheet(\"Data\",rows)))} catch(e:Exception) {println(e.javaClass.simpleName+\": \"+e.message)}\n    println(\"over-limit input visited before rejection=$visited\")\n}\n",
+  "stdout": "IllegalStateException: Visited inadmissible row collection\nover-limit input visited before rejection=true\n"
+}

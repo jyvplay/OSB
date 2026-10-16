@@ -1,0 +1,19 @@
+R19: 539 assertions PASS; bounded undo/merge/stream and literal multi-sheet export. Not Android, Office parity or release acceptance.
+
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Separately compiled task changes and literal workbook production libraries; no Android execution inferred.
+a425b64281ade8e3f90f4d60c36ae79127bd1c2f91f6a1f6274b58c493f611e9  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt
+48c312d6b85df0152df016dc140b23f2734d1ea5aaebcb0a6b55158a439dc1c5  feature/automation/src/main/kotlin/dev/fusion/automation/TaskChanges.kt
+d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
+9c3f45621925e64321552c0b5a7e1a363f5cdcd0757c2ce4f8f1546767fafee5  feature/automation/src/main/kotlin/dev/fusion/automation/TaskStreams.kt
+69182b5a946c8873287bdb17ac502b827ec5dc983be3c6a14e8cc1934903adf2  feature/automation/src/main/kotlin/dev/fusion/automation/TaskWorkbook.kt
+03be70800998859902bc2978f2b46c602b9919fd70a59d3419c606df67eac921  testing/src/r19/kotlin/dev/fusion/testing/R19Checks.kt
+98e0103bdb9a48b244522faa4822579c4eac2d45550d121316f24cdac20f31b4  testing/src/r19/kotlin/dev/fusion/testing/R19Oracle.kt
+d970afbbfa96755ffc3b72f77dea3c1f35e5b1901447576160899daa170c863c  tools/run_r19_contracts.py
+f3208fe4dba04adf0bab474ed7c30859f7e53445e5782c78f41f8677bbd7582b  testing/build/r19/LiteralWorkbook.jar
+b40119764a90c6e29bc413502a91310cce714f9f8fb6af98cc6043dcccfbe3d4  testing/build/r19/TaskChanges.jar
+91b818e1d7402e2c723ee9218d1e25cf1b90e35e6a1f60fbe6a0e05b5ba6538b  testing/build/r19/checks.jar
