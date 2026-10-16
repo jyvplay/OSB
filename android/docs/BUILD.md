@@ -1,35 +1,43 @@
-# R17 — current Android build and try-out
+# R18 — current Android build and try-out
 
 Open **OSB/android** in Android Studio Rabbit1 with compatible AGP8.13.2,
-Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is verified remotely;
+Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is remote;
 the Rabbit1 desktop IDE itself was not run here. Current min/compile/target34/36/36
-still differs from requested compile37. These remain evaluation builds, not release clearance.
+still differs from requested compile37. These are evaluation builds, not release clearance.
 
-**47/48 (97.92%) bounded testable modules;0/48 fully accepted.** Only LOK lacks an
-established subset. R16 experiments are closed with their stated positive/negative outcomes;
-see [R16-ENGINEERING.md](R16-ENGINEERING.md) and [R17-ENGINEERING.md](R17-ENGINEERING.md).
+**47/48 (97.92%) substantial executable subsets;0/48 fully accepted (0%).** Only LOK
+lacks an established subset. See [R18-ENGINEERING.md](R18-ENGINEERING.md) for exact
+A–J evidence, alternatives, failures and remaining gates.
 
-Native **ddc7fec/run38700509084 passed79/79**, both flavors, JVM/contracts and lint.
-[Debug APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38700509084).
-An earlier Task UI timeout is retained; later focused/full runs passed without a causal production
-repair. This is an evaluation workflow, not a stability or accessibility release claim.
+**Latest tested d6f7393/run38831196589:85 PASS,1 FAIL,0 SKIP**; focused2/2 passed.
+[Latest evaluated APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38831196589)
+include `fusion-native-debug`; both builds/JVM/contracts/lint passed, but the full native gate FAILED.
+The older task-add test timed out with real persisted revision0/no task; all seven new R18 cases passed.
+Use disposable data only. Do not treat this as stable or release-ready.
 
-## New try-out: local tasks
+[Earlier9340662 full run](https://github.com/jyvplay/OSB/actions/runs/38830281113) passed86/86,
+but its focused run failed0/2. Both results remain; no causal repair/stability claim is made.
+Later docs/evidence commits are not the same tested revision. Historical79-case R17 results are in its report.
 
-1. Run the **proDebug** app on a disposable API34+ AVD; acknowledge the pilot warning.
-2. Open **Automation** from the horizontally scrollable shelf, enable the session with test data,
-   then choose **Local tasks**.
-3. Enter a title and optionally a date such as2028-02-29; press **Add task**. Check/uncheck completion.
-4. Close/reopen or recreate the Activity, re-enable the session, and open Local tasks again.
-   Confirmed tasks load from private no-backup storage. **Reload tasks** handles stale views.
+## Try-out: editable local tasks
 
-Limits:128 tasks,256 UTF16 title units, date-only years0001..9999, plaintext local storage.
-No reminders, notifications, recurrence, task deletion/editing, calendar sync or backup.
-If loading/saving cannot be confirmed, input is retained and mutations block until reload.
-An error can follow publication; never assume rollback or blindly duplicate a task.
+1. Use **proDebug** on a disposable API34+ AVD and acknowledge the pilot warning.
+2. Open **Automation** from the horizontally scrollable shelf; enable this session with test data,
+   then choose **Local tasks**. Action plans remain the separate default view.
+3. Add a title and optional date such as2028-02-29. Check/uncheck completion.
+4. **Edit task** fills title/date; **Save task changes** preserves ID/completion. **Cancel edit**
+   does not change stored data. A stale edit blocks and retains input for review.
+5. **Archive task** retains the record; choose **ARCHIVED** and **Restore task** to return it.
+   Archived records still count toward128; no permanent deletion is implemented.
+6. Use the literal title query, ACTIVE/OPEN/COMPLETED/ARCHIVED controls and date/insertion order.
+   View changes do not save a new task revision. Recreate/reopen and reload to inspect persistence.
 
-Existing **Action plans** remain the default view and are session-only. Tasks are persistent;
-the consent panel now distinguishes them. No external command, network or provider grant is added.
+Limits:128 active+archived tasks,256 UTF16 title/query units, date-only years0001..9999,
+plaintext private no-backup storage, same-process lock, no reminders/recurrence/calendar sync.
+Loading/no-op preserves FTS1 bytes; explicit mutation writesFTS2, unreadable by older app versions.
+No downgrade backup is provided. If saving cannot be confirmed, input is retained and mutations
+block until reload; an error may follow publication, so never assume rollback or blindly retry.
+The owned-sheet API is an integration API/tested worker path, **not** a new complete Office UI.
 
 ## Reproduce checks
 
@@ -38,10 +46,12 @@ From `android/`, set JAVA_HOME to JDK17 and KOTLINC to Kotlin2.2.21:
 ```sh
 LC_ALL=C.UTF-8 python3 tools/run_r16_contracts.py
 LC_ALL=C.UTF-8 python3 tools/run_r17_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r18_contracts.py
+python3 tools/run_r18_interop.py
 python3 tools/run_r17_interop.py
 python3 tools/check_project.py
 python3 -m unittest discover -s tools -p 'test_*.py'
-./gradlew :app:assembleProDebug :testing:r17Contracts
+./gradlew :app:assembleProDebug :testing:r17Contracts :testing:r18Contracts
 ```
 
 Use `gradlew.bat` on Windows. R16's independent socket verifier additionally needs host-only
@@ -49,9 +59,10 @@ cryptography46.0.3 (`PYTHONPATH` as in the historical R15 instructions below).
 Native tests require explicit `fusionDisposable=true` and a disposable emulator, as documented
 below. Never point reset/instrumentation routines at personal app data.
 
-Optional conditional-model verifier (host only; NOT an implementation proof):
+Optional Linux-host conditional-model verifier (NOT an implementation proof):
 `python3 -m pip install --target "$HOME/.cache/fusion-provers" z3-solver==5.3.0.0`, then
-`PYTHONPATH="$HOME/.cache/fusion-provers" python3 tools/prove_r17_models.py`.
+`PYTHONPATH="$HOME/.cache/fusion-provers" python3 tools/prove_r18_models.py`.
+This also executes a labeled Linux writable-alias experiment; it is not Android verification.
 
 The baseline module now ships855 actual measured first-party startup/Files ART rules.
 Generation, packaging and profile-required startup passed atbb338a5/run38697143892.

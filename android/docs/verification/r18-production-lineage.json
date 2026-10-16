@@ -1,0 +1,6 @@
+{
+  "tested_candidate": "93406626410d7b8526b24ffffc057a919a095e32",
+  "diagnostic_candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+  "main_source_changes_between_commits": [],
+  "scope": "Git main-source comparison only. Tests/tooling differ; no new native pass inherited."
+}

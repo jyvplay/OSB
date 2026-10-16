@@ -1,0 +1,85 @@
+{
+  "total_count": 4,
+  "artifacts": [
+    {
+      "id": 12017016933,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAxNzAxNjkzMw==",
+      "name": "native-test-reports",
+      "size_in_bytes": 170665,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12017016933",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12017016933/zip",
+      "expired": false,
+      "digest": "sha256:418a0b8b17c1c0ebffb642a624ab16182f284feb1b48ac53c26d9ecb1bc90a9c",
+      "created_at": "2026-10-16T00:35:31Z",
+      "updated_at": "2026-10-16T00:35:31Z",
+      "expires_at": "2027-01-14T00:30:32Z",
+      "workflow_run": {
+        "id": 38829869927,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/31a7965e-osb",
+        "head_sha": "3361afea93cf6c172914f1e8f1dac49814eeb2ac"
+      }
+    },
+    {
+      "id": 12016852413,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAxNjg1MjQxMw==",
+      "name": "sdk-setup-diagnostics",
+      "size_in_bytes": 28519,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12016852413",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12016852413/zip",
+      "expired": false,
+      "digest": "sha256:825660c3ee32a796d5423120a5ba04ec6d2b0d38b9cbfcbe175f50abdf96c1f4",
+      "created_at": "2026-10-16T00:35:29Z",
+      "updated_at": "2026-10-16T00:35:29Z",
+      "expires_at": "2027-01-14T00:30:32Z",
+      "workflow_run": {
+        "id": 38829869927,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/31a7965e-osb",
+        "head_sha": "3361afea93cf6c172914f1e8f1dac49814eeb2ac"
+      }
+    },
+    {
+      "id": 12016828786,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAxNjgyODc4Ng==",
+      "name": "device-reports",
+      "size_in_bytes": 1326718,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12016828786",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12016828786/zip",
+      "expired": false,
+      "digest": "sha256:0bbd9ff062c0640edfb17239e9b6dfe5bfeeb1df2a8e13097666b022218fe8a6",
+      "created_at": "2026-10-16T00:42:05Z",
+      "updated_at": "2026-10-16T00:42:05Z",
+      "expires_at": "2027-01-14T00:30:32Z",
+      "workflow_run": {
+        "id": 38829869927,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/31a7965e-osb",
+        "head_sha": "3361afea93cf6c172914f1e8f1dac49814eeb2ac"
+      }
+    },
+    {
+      "id": 12016802741,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAxNjgwMjc0MQ==",
+      "name": "fusion-native-debug",
+      "size_in_bytes": 20741858,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12016802741",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12016802741/zip",
+      "expired": false,
+      "digest": "sha256:8598bcd3dc5d4b4544a4d0596a1b63a280ab3988fe170e89dd1179036ec25d6d",
+      "created_at": "2026-10-16T00:35:29Z",
+      "updated_at": "2026-10-16T00:35:29Z",
+      "expires_at": "2027-01-14T00:30:32Z",
+      "workflow_run": {
+        "id": 38829869927,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/31a7965e-osb",
+        "head_sha": "3361afea93cf6c172914f1e8f1dac49814eeb2ac"
+      }
+    }
+  ]
+}

@@ -1,4 +1,15 @@
-# Latest: R17 — bounded R16 closure and persistent local tasks
+# Latest: R18 — editable/archiveable tasks and owned sandbox requests
+
+- **47/48 modules (97.92%) have substantial executable subsets;1/48 (2.08%) remains unestablished: LOK.**
+- **0/48 fully accepted (0%);48/48 unfinished (100%).** All30 formal spikes remain unpassed.
+- Tasks now have title/date editing, durable archive/restore, literal query/scope/date ordering, FTS1 read/FTS2 write compatibility, and a checked revision reserve so archived tasks remain restorable.
+- Additive owned-sheet API uses an unlinked read-only input and request metadata/key-set correlation. **Not arithmetic authenticity or full Office/LOK.**
+- **Latest d6f7393/run38831196589:85 PASS,1 FAIL,0 SKIP**; focused2/2 passed. Older task-add timed out with actual store still revision0/empty. All seven R18 cases and both builds/JVM/contracts/lint passed; the full native gate FAILED.
+- Earlier9340662/run38830281113 passed86/86 but failed its focused run0/2. Both outcomes are retained; UI instability is not marked fixed.
+- **906 R18 assertions +1,200 Python/JVM cases;90 tooling tests;6 conditional Z3 checks.** Fresh R14/R15/R16/R17 regressions also passed. None proves full product acceptance.
+- [R18 report, failures, alternatives and A–J](docs/R18-ENGINEERING.md), [census](docs/MODULE-TESTABILITY.md), [evaluation APK/try-out](docs/BUILD.md).
+
+# Historical: R17 — bounded R16 closure and persistent local tasks
 
 - **47/48 modules (97.92%) have executable subsets;1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted;48/48 unfinished.** All original full workflow/physical/legal/AX gates remain separate.

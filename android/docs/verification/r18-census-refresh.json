@@ -1,0 +1,10 @@
+{
+  "kind": "Retained excerpt of an actually observed local tooling failure, transcribed from tool output; not a new execution",
+  "command": "python -m unittest discover -s android/tools -p 'test_*.py'",
+  "result_before": "90 methods; 1 error",
+  "test": "test_current_pairings_and_denominator",
+  "exception": "ValueError: Census review stale: app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt",
+  "repair": "Reviewed the diagnostic-only UI-test edit and refreshed its census SHA256. Validator was not weakened.",
+  "after": "90 methods PASS; current receipt r18-python.txt",
+  "scope": "Metadata tripwire behavior, not Android functionality"
+}

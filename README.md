@@ -17,7 +17,20 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:47/48 (97.92%)](android/docs/MODULE-TESTABILITY.md).
 **0/48 specification-accepted modules (0%); not a production-ready beta.**
 
-## Latest R17
+## Latest R18
+
+[R18 engineering/evidence report](android/docs/R18-ENGINEERING.md): editable date-only tasks,
+reversible archive/restore with protected revision capacity, versioned persistence and query/order;
+plus caller-owned arithmetic requests through the real isolated worker.
+**Latest d6f7393/run38831196589:85/86 API34 cases passed; one older task-add timeout remains.**
+Its focused run passed2/2; all seven new R18 cases and both builds/JVM/contracts/lint passed.
+Earlier9340662 passed86/86 full but failed0/2 focused. UI instability remains unresolved.
+**906 new host assertions +1,200 reference cases;47/48 executable subsets,0/48 fully accepted.**
+No complete desktop browser, Office/LOK, physical/AX/legal or production-release claim.
+Try **Automation → enable with test data → Local tasks**. Archive retains data/capacity;
+explicit edits upgrade legacy data to FTS2; no reminders are implemented.
+
+## Historical R17
 
 [R17 report](android/docs/R17-ENGINEERING.md): R16 experiments closed,855 actual measured ART rules,
 and persistent local Tasks added. Latest verified native candidate **ddc7fec passed79/79 API34 cases**,
