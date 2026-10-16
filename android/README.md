@@ -12,12 +12,18 @@ Tails equivalence, privileged-host/firmware secrecy or global anonymity.**
 [Current build/laptop/no-Studio instructions](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
 · [R23 evidence/limits](docs/R23-ENGINEERING.md) · [Privacy/hardware PRD](docs/R23-PRIVACY-PRD.md).
 **48/49 substantial executable subsets (97.96%);0/49 fully accepted.** All49 still need full-scope work/acceptance.
+
+R23 explicit owned-memory worksheet path now passed b3f2f1d **focused24/full122**, companion**14**;
+legacy regular-file APIs remain explicit, not fallback. Real SDK37/AGP9 experiment FAILED before tests;
+working SDK36/AGP8.13.2 pins restored and Gradle8.13 distribution checksum configured from official source.
+Rabbit1 support is documented compatibility, not a GUI run. A fresh restored candidate is pending verification.
+
 Source/test file hashes and per-module commands are in [MODULE-TESTABILITY.md](docs/MODULE-TESTABILITY.md).
 Old percentages, branch names and PR statements below are historical, not current instructions.
 
 ---
 
-# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+# Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.

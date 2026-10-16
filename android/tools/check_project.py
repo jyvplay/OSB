@@ -12,12 +12,10 @@ subprocess.run([sys.executable, str(root/'tools/requirements.py'), '--check'], c
 subprocess.run([sys.executable, str(root/'tools/module_audit.py'), '--check'], check=True)
 catalog=tomllib.loads((root/'gradle/libs.versions.toml').read_text())
 assert catalog['versions']['minSdk']=='34'
-assert catalog['versions']['targetSdk']=='37'
-assert catalog['versions']['compileSdk']=='37'  # Configured, NOT an API37 runtime/GUI acceptance.
-assert catalog['versions']['agp']=='9.1.1'
-wrapper=(root/'gradle/wrapper/gradle-wrapper.properties').read_text()
-if 'gradle-9.3.1-bin.zip' not in wrapper or 'distributionSha256Sum=b266d5ff6b90eada6dc3b20cb090e3731302e553a27c5d3e4df1f0d76beaff06' not in wrapper:
-    raise ValueError('Unreviewed Gradle distribution/integrity pin')
+assert catalog['versions']['targetSdk']=='36'
+assert catalog['versions']['compileSdk']=='36'  # Explicit API37 deferral, docs/BUILD.md.
+from gradle_distribution import verify as verify_distribution
+verify_distribution((root/'gradle/wrapper/gradle-wrapper.properties').read_text())
 modules=re.findall(r'"(:[\w:]+)"', (root/'settings.gradle.kts').read_text())
 for module in modules:
     p=root/module[1:].replace(':','/')/'build.gradle.kts'

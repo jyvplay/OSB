@@ -70,6 +70,14 @@ class R23EvidenceTests(unittest.TestCase):
             bad['counts'] = {key: sum(c['result'] == key for c in bad['cases']) for key in ['PASS', 'FAIL', 'SKIP']}
             self.assertFalse(assess(bad, bad['candidate'], 'r23_memory_transport_api34')[0])
 
+    def test_actual_sdk37_failed_candidate_inherits_no_native_pass(self):
+        for name in ['native', 'privacy', 'focused']:
+            receipt = json.loads((ROOT / f'docs/verification/r23-sdk37-failed-{name}-result.json').read_text())
+            self.assertEqual('failure', receipt['conclusion'])
+            self.assertEqual({'PASS': 0, 'FAIL': 0, 'SKIP': 0}, receipt['counts'])
+            for claim in ['r23_privacy_api34', 'r23_memory_transport_api34']:
+                self.assertFalse(assess(receipt, receipt['candidate'], claim)[0])
+
     def test_malformed_input_is_refusal_not_exception(self):
         for receipt in [None, [], {}, {'cases': [{}]}]:
             self.assertFalse(assess(receipt, None, 'r23_input_api34')[0])

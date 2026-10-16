@@ -41,7 +41,7 @@ class TouchCodeActivity : GuardedPrivacyActivity() {
         fun label(text: String) = TextView(this).apply { this.text = text; textSize = 17f; protect(this); column.addView(this) }
         label("Touch-only code pad — digits only").textSize = 23f
         label("No Android keyboard, hardware text keys, clipboard, import, export or saved code. This bypasses a KEYBOARD-ONLY logger only when you click/tap instead of typing. It does not defeat a hostile laptop/OS, accessibility tool, camera or screen/pointer observer. Not an authentication service.")
-        label("64 digits maximum. Discard on background, focus loss, obscured touch, recreation or 60 seconds without an accepted code change. Reveal lasts at most 5 seconds. Clearing is NOT a forensic-erasure guarantee. Back exits. Use the ordinary scratchpad for keyboard/Switch Access workflows with their different trust boundary.")
+        label("64 digits maximum. Discard on background, focus loss, obscured touch, recreation or 60 seconds without an accepted code change. Reveal hides on a 5-second UI timer, not a hard real-time bound. Clearing is NOT a forensic-erasure guarantee. Back exits. Use the ordinary scratchpad for keyboard/Switch Access workflows with their different trust boundary.")
         val value = label("").apply { id = R.id.touch_code_output; textSize = 23f; setTextIsSelectable(false) }
         output = value
         val status = label("Code empty.").apply { id = R.id.touch_code_status; accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE }
@@ -91,7 +91,7 @@ class TouchCodeActivity : GuardedPrivacyActivity() {
         button("Delete last digit", R.id.touch_delete) {
             revealed = false; buffer.backspace(SystemClock.elapsedRealtime()); status.text = "Code hidden."; render(); schedule()
         }
-        button("Reveal for up to 5 seconds", R.id.touch_reveal) {
+        button("Reveal (5-second timer)", R.id.touch_reveal) {
             revealed = true; status.text = "Visible to people/cameras and trusted accessibility tools. Not anonymous."; render()
             handler.postDelayed({ if (token === generation) { revealed = false; render() } }, 5_000)
         }

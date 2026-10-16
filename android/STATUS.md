@@ -3,13 +3,18 @@
 Current branch: `arena/f77cb2a6-osb`. [R23 engineering and candidate-specific evidence](docs/R23-ENGINEERING.md)
 supersedes old branch/PR statements below. **48/49 substantial testable subsets (97.96%);0/49 fully accepted.**
 First candidate910b739 passed12/12 actual API34 companion cases and119/119 main cases; both debug builds/JVM/contracts/lint passed.
-Additional reveal/shared-memory tests need their own fresh candidate result; do not inherit earlier acceptance.
+Separate20c1fd9 and b3f2f1d runs passed all14 companion cases; no new test was accepted from an older12-case run.
 No Tails/anonymity, hardware-keylogger detection, hostile-host/firmware secrecy, full browser/Office or release claim.
 [Current laptop/no-Studio instructions](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out).
 
+R23 explicit owned-memory worksheet path now passed b3f2f1d **focused24/full122**, companion**14**;
+legacy regular-file APIs remain explicit, not fallback. Real SDK37/AGP9 experiment FAILED before tests;
+working SDK36/AGP8.13.2 pins restored and Gradle8.13 distribution checksum configured from official source.
+Rabbit1 support is documented compatibility, not a GUI run. A fresh restored candidate is pending verification.
+
 ---
 
-# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+# Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.

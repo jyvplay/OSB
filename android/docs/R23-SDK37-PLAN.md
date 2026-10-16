@@ -19,3 +19,8 @@ Boundary: API37 compile/target does NOT execute API37 runtime or physical/OEM/AX
 Cheapest falsifier: real CI SDK37 install + both app flavors/companion assemble. Then entire JVM/contracts/lint, actual API34 companion14, memory/FD/picker24 and full native122 required, whole workflows success, exact new candidate. New toolchain inherits **no** b3f2f1d runtime/build acceptance. If no adequate verifier or time to repair, restore last known working production toolchain and retain this failed experiment/gap; do not leave an unverified SDK37 promise or quietly call SDK36 equivalent.
 
 No broad API warning suppression or fake SDK stubs. Real SDK installation is required. No secret credential or license-acceptance bypass is authorized.
+
+## Actual outcome, not a retrospective pass
+
+Candidate4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b: main38865132612, privacy38865132640, focused38865132614 all FAILED before native execution. Stable SDK catalog NOT_LISTED; install failed; real Gradle9/AGP9 parsing rejected old managedDevices.devices DSL. Each receipt0/0/0 means no cases executed, NOT success. Unit gate now refuses this actual repaired/failed candidate without inheriting b3f2f1d24/14/122 success.
+Working8.13.2/Gradle8.13/SDK36 configuration restored. Original SDK37 deviation remains open. Preview/stable catalog observation and a future localDevices DSL migration are the next cheap falsifiers, not a justification to fakeSDK37 or suppress unsupportedAPI warnings. Studio chunk25 subsequently fetched the actual compatibility table; this still does not execute Rabbit1 GUI or install a platform.

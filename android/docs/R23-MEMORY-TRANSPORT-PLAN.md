@@ -1,4 +1,4 @@
-# R23 conditional production-memory transport design — not yet delivered
+# R23 pre-implementation production-memory transport plan — outcome below
 
 Recorded after initial12-case input/native119-case regression pass, before production transport code. Implementation is CONDITIONAL on exact-candidate actual SharedMemory prerequisite case and successful whole companion workflow. No candidate inherits acceptance merely from documentation. Existing FD route stays intact for file/digest/socket probes.
 
@@ -26,3 +26,12 @@ Trusted parent is assumed to create the region fresh, retain no old writable map
 7. Every changed module source/test hash regenerated and all affected source/host/Android gates rerun. A compiler or test failure stays in the ledger with a patch-specific reattack.
 
 If the prerequisite or integration cannot be verified in this turn, keep the strongest actual experiment and exact remaining interface; do not enable speculative production code or claim the alternative delivered.
+
+## Actual outcome
+
+20c1fd9 platform14/14 passed and decision was committed in18d3f6e BEFORE production code.
+Production b3f2f1d then passed actual focused24 and full122 with both builds/JVM/contracts/lint;
+companion14 also passed. Explicit evaluateMemory* APIs/worksheet UI use anonymous memory; historical
+evaluateOwned* regular-file APIs remain intact, not renamed or a silent fallback. Subsequent SDK37
+candidate failed before native execution and inherited no acceptance; restored build-pin candidate
+must pass its own gates. See R23-ENGINEERING.md and candidate-specific receipts.

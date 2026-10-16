@@ -34,12 +34,13 @@ jobs:
             exit 1
           fi
           "$SDK_MANAGER" --version
-          if "$SDK_MANAGER" --list > sdk-available.log 2>&1; then
-            python3 -c 'from pathlib import Path; lines=Path("sdk-available.log").read_text().splitlines(); matches=[x.strip() for x in lines if x.split("|")[0].strip()=="platforms;android-37"]; print("::notice::SDK37 catalog observation (not AGP/build/API acceptance): "+("; ".join(matches) if matches else "NOT_LISTED"))'
+          # Observation only. No automatic toolchain change or SDK37 build pass inferred.
+          if python3 tools/probe_android_sdk.py --sdkmanager "$SDK_MANAGER" --report sdk-probe.json; then
+            python3 -c 'from pathlib import Path; import json; r=json.loads(Path("sdk-probe.json").read_text()); print("::notice::Real stable/preview SDK catalogs (NOT build/runtime acceptance): "+json.dumps(r))'
           else
-            echo "::notice::SDK inventory unavailable; no API37 availability conclusion."
+            echo "::notice::SDK catalog probe UNKNOWN; no SDK37 availability conclusion."
           fi
-          if ! "$SDK_MANAGER" 'platforms;android-37' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
+          if ! "$SDK_MANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
             cat sdk-setup.log
             echo "::error::SDK component installation failed before Android compilation. See sdk-setup.log artifact."
             exit 1
@@ -47,6 +48,18 @@ jobs:
           python3 tools/native_lab.py doctor
       - name: Assemble both flavors
         run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assemblePlayDebug
+      - name: Record actual APK byte sizes and hashes
+        run: |
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          files=sorted(Path('app/build/outputs/apk').glob('*/debug/*.apk'))
+          if len(files)!=2: raise SystemExit('Expected exactly two built main debug APKs; no footprint inferred')
+          report={'scope':'Actual compressed APK bytes ONLY, NOT installed/RSS/host/Tails comparison',
+                  'apks':[{'file':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
+          Path('main-apk-footprint.json').write_text(json.dumps(report,indent=2)+'\n')
+          print('::notice::Main APK byte observations (NOT total footprint): '+json.dumps(report))
+          PY
       - name: Run all JVM unit tests (not device evidence)
         run: >
           bash tools/run_gradle_ci.sh unit-tests --continue
@@ -72,7 +85,8 @@ jobs:
           name: sdk-setup-diagnostics
           path: |
             android/sdk-setup.log
-            android/sdk-available.log
+            android/sdk-probe.json
+            android/main-apk-footprint.json
             android/assemble.log
             android/unit-tests.log
             android/contracts.log

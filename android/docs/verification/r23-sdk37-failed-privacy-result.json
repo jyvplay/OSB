@@ -1,0 +1,15 @@
+{
+  "run": 38865132640,
+  "candidate": "4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38865132640",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [],
+  "suite": "privacy",
+  "scope": "Actual retained API34 named outcomes (privacy companion only), not physical/full-product/AX/legal acceptance"
+}

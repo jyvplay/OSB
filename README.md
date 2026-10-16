@@ -19,6 +19,13 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 
 ## Latest R23
 
+New no-IME digit pad, whole-gesture/focus/lifecycle discard and exposure observations;
+explicit no-named-parser-input-file shared-memory worksheet APIs (no silent disk fallback).
+Exact b3f2f1d passed **122 main /24 focused memory /14 privacy** API34 cases; focused cases overlap full counts.
+**4/49 production modules deepened (8.16%), not4 completed modules.** Real SDK37 experiment failed
+pre-test; working SDK36 pins restored, checksum hardened, fresh restored verification pending.
+
+
 Native privacy/input hardening on **`arena/f77cb2a6-osb`**: no-IME decimal touch pad,
 whole-gesture obscured-touch rejection, focus/background discard, bounded lifetime and local exposure observations.
 **Not a hardware-keylogger detector, Tails replacement or anonymous OS.**
@@ -26,8 +33,9 @@ whole-gesture obscured-touch rejection, focus/background discard, bounded lifeti
 · [Evidence and exact limits](android/docs/R23-ENGINEERING.md)
 · [Privacy/hardware PRD](android/docs/R23-PRIVACY-PRD.md).
 
-**898,161 new host assertions,12/12 API34 privacy cases and119/119 main API34 cases passed at910b739; both debug builds/JVM/contracts/lint passed.**
-Further reveal/shared-memory prerequisite checks require their separately recorded exact-candidate result.
+**898,161 new host assertions and160,000 exhaustive4-event touch words passed.** Subsequent
+exact-candidate reveal/AX/memory experiments passed as recorded above; no old12-case pass is inherited.
+
 Module census remains **48/49 testable subsets (97.96%),0/49 fully accepted**; not completion of the original spec.
 
 ## Historical R19

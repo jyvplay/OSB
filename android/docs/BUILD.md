@@ -1,9 +1,9 @@
-## R23 explicit memory-route verification (new candidate pending)
+## R23 explicit memory-route verification
 
 SharedMemory substrate14/14 passed at20c1fd9 before the production alternative was authored.
 New `evaluateMemorySheet/Csv/Xlsx` APIs have **no disk fallback**; the worksheet UI uses memory APIs.
 Old `evaluateOwned*` APIs still intentionally use unlinked private regular files; they are NOT renamed or fallback.
-No no-swap/erasure/host-secrecy claim. New native wire/observer/FD/picker scope is24 cases, not acceptance.
+No no-swap/erasure/host-secrecy claim. Exact b3f2f1d passed focused24/full122 and companion14; a restored build-pin candidate is being verified separately. This is not full-module acceptance.
 
 ```bash
 cd android
@@ -25,7 +25,7 @@ Current evidence and exact candidates: [R23 engineering record](R23-ENGINEERING.
 
 Use an IDE compatible with the pinned **AGP8.13.2, Gradle8.13, Kotlin2.2.21, maintained JDK17,
 SDK36**. The Rabbit1 GUI itself was NOT run here; no claim that every preview IDE version supports
-these pins. Min SDK34, compile/target36 remain; requested compile37 is still a recorded deviation.
+these pins. Official Rabbit1/2026.2.1 compatibility lists AGP7.1–9.4; the table was actually retrieved, but the GUI was not run. Min SDK34, compile/target36 remain. A real SDK37/AGP9 candidate FAILED before tests (SDK37 NOT_LISTED/install failure + deprecated GMD DSL); requested37 is still a recorded deviation, not silently redefined.
 Use a **disposable API34+ AVD and copied data**. A laptop emulator is not protection from its host.
 
 1. Open `android/`, sync and select **`privacy`** as the application/run target (its debug variant).
@@ -34,7 +34,7 @@ Use a **disposable API34+ AVD and copied data**. A laptop emulator is not protec
 3. Tap/click digits instead of typing. A keyboard-only logger does not receive typed secret keys
    on this route; an observer of the screen, pointers, accessibility, Android or laptop can still observe.
    The keypad is digits-only, shuffled on creation/clear; no clipboard, export, submission or storage.
-4. Use **Reveal for up to5seconds**, delete or discard/reshuffle.64-digit cap+1 refuses atomically.
+4. Use **Reveal (5-second timer)**, delete or discard/reshuffle.64-digit cap+1 refuses atomically.
    Accepted code changes renew a60s inactivity timer; background, focus loss, obscured input and recreation
    discard immediately through the UI lifecycle. Timers use the main looper, not hard real-time scheduling.
 5. Return to the scratchpad and open **Review local input / exposure**. It reports limited counts/settings,
@@ -61,6 +61,8 @@ python3 tools/bootstrap_host_tools.py install    # explicit public PyPI/npm down
 python3 tools/bootstrap_host_tools.py doctor
 python3 tools/r23_lab.py host --tools "$HOME/.cache/fusion-host-r23"
 python3 tools/inspect_usb_posture.py             # read-only Linux defaults; UNKNOWN is not safe
+# Only if a real SDK command-line install exists (no install/license command invoked):
+python3 tools/probe_android_sdk.py               # real stable+preview catalogs, NOT SDK37 build proof
 ```
 
 The optional cache contains pinned Kotlin2.2.21 and an **OLD JRE17.0.9, not a JDK**. It is only for
@@ -76,7 +78,9 @@ With a **real maintained JDK17 and Android SDK36** installed, no IDE GUI is requ
 ```sh
 # Set JAVA_HOME to a full JDK17 and ANDROID_HOME to your real SDK first.
 python3 tools/r23_lab.py android
-python3 tools/r23_lab.py device --disposable
+python3 tools/r23_lab.py device --suite privacy --disposable
+python3 tools/r23_lab.py device --suite memory --disposable
+python3 tools/r23_lab.py device --suite full --disposable
 # Direct equivalents (Windows uses gradlew.bat):
 ./gradlew :app:assembleProDebug :app:assemblePlayDebug :privacy:assembleDebug :privacy:lintDebug :testing:r23Contracts
 ./gradlew :privacy:pixel6Api34DebugAndroidTest
@@ -103,7 +107,7 @@ by default; `--report NEW_PATH` explicitly records a new run instead of silently
 
 ---
 
-# R22 — native values-only XLSX import and laptop checks
+# Historical R22 — native values-only XLSX import and laptop checks
 
 **Evaluated fe8dca210642d42c0553c47ff4bccc16b5e17404: full119/0/0, focused10/0/0,
 and CSV regression8/0/0 passed on managed API34; both debug builds/JVM/contracts/lint passed.**

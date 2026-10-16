@@ -242,7 +242,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "885fc3801a24abd1145ab2e1a7c96e73c6e79c7c1843c766b9da3b7d58f0ac85"
+      "sha256": "9cb5534e35bcece84f311113243e8daa569c5d61fde6467976f571999c07ed2b"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",

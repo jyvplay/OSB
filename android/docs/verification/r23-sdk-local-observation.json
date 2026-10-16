@@ -1,0 +1,9 @@
+{
+  "kind": "Real SDK catalog only; NOT compilation/runtime/Rabbit GUI acceptance",
+  "manager": "/SDK-NOT-CONFIGURED/cmdline-tools/latest/bin/sdkmanager",
+  "version": null,
+  "catalogs": [],
+  "sdk37_in_any_observed_catalog": null,
+  "limits": "Two real non-installing list commands;120s/4MiB stdout/256KiB stderr each; no fake SDK or license acceptance.",
+  "error": "sdkmanager file absent; availability UNKNOWN"
+}

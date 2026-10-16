@@ -34,6 +34,17 @@ def collect(run_id,prefix,focused=False,privacy=False):
         annotations+=batch
         if len(batch)<100:break
         page+=1
+    # Retain ancillary build/SDK/APK-byte observations separately, never mix them into native case outcomes.
+    other_annotations=[]
+    for job in jobs['jobs']:
+        if job['id']==device[0]['id']:continue
+        values=[];page=1
+        while True:
+            batch=api(job['check_run_url']+f'/annotations?per_page=100&page={page}')
+            values+=batch
+            if len(batch)<100:break
+            page+=1
+        other_annotations.append({'job':job['name'],'conclusion':job['conclusion'],'annotations':values})
     cases=parse_cases(annotations)
     counts={s:sum(c['result']==s for c in cases) for s in ['PASS','FAIL','SKIP']}
     result={'run':run_id,'candidate':run['head_sha'],'url':run['html_url'],'conclusion':run['conclusion'],
@@ -41,7 +52,7 @@ def collect(run_id,prefix,focused=False,privacy=False):
             'suite':'privacy' if privacy else ('focused' if focused else 'full'),
             'scope':'Actual retained API34 named outcomes ('+('privacy companion only' if privacy else ('focused only' if focused else 'full suite'))+'), not physical/full-product/AX/legal acceptance'}
     artifacts=api(f'{base}/actions/runs/{run_id}/artifacts?per_page=100')
-    for name,value in [('run',run),('jobs',jobs),('annotations',annotations),('artifacts',artifacts),('result',result)]:
+    for name,value in [('run',run),('jobs',jobs),('annotations',annotations),('artifacts',artifacts),('other-job-annotations',other_annotations),('result',result)]:
         (ROOT/f'docs/verification/{prefix}-{name}.json').write_text(json.dumps(value,indent=2)+'\n')
     return result
 
