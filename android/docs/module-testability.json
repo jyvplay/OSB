@@ -168,7 +168,7 @@
       "module": ":core:security",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual key/crypto paths, fail closed after Android key loss; bounded offline link disclosure projection (not anonymization); R23 bounded obscured-touch admission, volatile decimal buffer and explicit unknown exposure reporting (host contracts executed; new Android adapters pending fresh CI).",
+      "behavior": "Actual key/crypto paths fail closed after Android key loss; bounded link disclosure (not anonymization). R23 original touch/lifetime/exposure kernels passed898,161 host assertions; 910b739 privacy CI passed12 named API34 cases including real consumers. Not a hardware/OS secrecy proof.",
       "production": [
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt",
         "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt",
@@ -1159,18 +1159,21 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace with prior R20 API34 tests. R23 adds no-IME digits-only touch entry, obscured-touch/focus discard and local exposure observations; fresh Android compilation/execution is pending, not inherited from R20.",
+      "behavior": "Separate no-INTERNET native volatile workspace; R23 adds a no-IME decimal touch pad, obscured-touch/focus discard and explicit unknown exposure observations. 910b739 passed12/12 API34 cases. Additional reveal/stale-timer and SharedMemory prerequisite tests are authored, pending their own fresh native run; no transport/anonymity acceptance inferred.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt",
-        "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt"
+        "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",
+        "privacy/src/main/AndroidManifest.xml",
+        "privacy/src/main/res/values/ids.xml"
       ],
       "checks": [
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt"
       ],
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
@@ -1180,9 +1183,12 @@
         "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt": "885fc3801a24abd1145ab2e1a7c96e73c6e79c7c1843c766b9da3b7d58f0ac85",
         "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt": "a4ed34dbe008d9598987b6f316bffef8d0d849130aa930ab57752784fed8a60e",
         "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29",
+        "privacy/src/main/AndroidManifest.xml": "b2dfd44e13901da005915f670d6234cd9c9c97287ec2257f6d65cea1990754f3",
+        "privacy/src/main/res/values/ids.xml": "616fd6709a88a16f10f02c231df7f8546e645f2cbe52506fbab58bc01d571f78",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "88b1a74235f07e9f1b7892f7e6084245c57aa118ea03135aa60e176ced76d4b1",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "3019719b34d40827fcd6455f95ce106f4c74c224b07985d794180854e8ba43c7"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "e6d1886fd22a598e5d9bfd2be1095f392ba16e3dfb6d111d4d8a54367727138f",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2"
       }
     }
   ]

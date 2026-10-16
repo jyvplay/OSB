@@ -14,10 +14,23 @@ See [build instructions](android/docs/BUILD.md),
 [231-row requirement ledger](android/requirements.csv).
 
 Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md).
-[Current substantial testable subsets:47/48 (97.92%)](android/docs/MODULE-TESTABILITY.md).
-**0/48 specification-accepted modules (0%); not a production-ready beta.**
+[Current substantial testable subsets:48/49 (97.96%)](android/docs/MODULE-TESTABILITY.md).
+**0/49 specification-accepted modules (0%); not a production-ready beta.**
 
-## Latest R19
+## Latest R23
+
+Native privacy/input hardening on **`arena/f77cb2a6-osb`**: no-IME decimal touch pad,
+whole-gesture obscured-touch rejection, focus/background discard, bounded lifetime and local exposure observations.
+**Not a hardware-keylogger detector, Tails replacement or anonymous OS.**
+[Try on your laptop / no-Studio checks](android/docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
+· [Evidence and exact limits](android/docs/R23-ENGINEERING.md)
+· [Privacy/hardware PRD](android/docs/R23-PRIVACY-PRD.md).
+
+**898,161 new host assertions,12/12 API34 privacy cases and119/119 main API34 cases passed at910b739; both debug builds/JVM/contracts/lint passed.**
+Further reveal/shared-memory prerequisite checks require their separately recorded exact-candidate result.
+Module census remains **48/49 testable subsets (97.96%),0/49 fully accepted**; not completion of the original spec.
+
+## Historical R19
 
 [R19 engineering/evidence report](android/docs/R19-ENGINEERING.md): exact-snapshot edit/import undo,
 confirmed append-only task merge, real system-picker FTS interchange, and Active/Archived literal

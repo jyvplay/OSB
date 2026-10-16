@@ -1,3 +1,22 @@
+# R23 — native input/privacy work
+
+Open this directory in Android Studio using branch **`arena/f77cb2a6-osb`**.
+Use a maintained JDK17/SDK36 and an IDE compatible with the pinned Gradle8.13/AGP8.13.2/Kotlin2.2.21;
+the Rabbit1 GUI itself was not executed here. Select `privacy` for the separate offline companion or
+`app`/`proDebug` for the main first-party shell. No browser/TypeScript replacement was built.
+
+New: digits-only no-IME touch pad, obscured-gesture/focus/background discard, bounded capacity/lifetime,
+secure-window/overlay requests and local exposure observations. **Not hardware-logger detection,
+Tails equivalence, privileged-host/firmware secrecy or global anonymity.**
+
+[Current build/laptop/no-Studio instructions](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
+· [R23 evidence/limits](docs/R23-ENGINEERING.md) · [Privacy/hardware PRD](docs/R23-PRIVACY-PRD.md).
+**48/49 substantial executable subsets (97.96%);0/49 fully accepted.** All49 still need full-scope work/acceptance.
+Source/test file hashes and per-module commands are in [MODULE-TESTABILITY.md](docs/MODULE-TESTABILITY.md).
+Old percentages, branch names and PR statements below are historical, not current instructions.
+
+---
+
 # Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**

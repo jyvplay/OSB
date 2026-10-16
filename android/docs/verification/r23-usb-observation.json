@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "kind": "READ_ONLY_USB_DEFAULTS_NOT_A_SECURITY_VERDICT",
+  "inventory": "UNKNOWN",
+  "buses": [],
+  "limits": [
+    "Only Linux root-hub default authorization attributes; no existing-device audit.",
+    "Zero buses or unreadable attributes are UNKNOWN, not an all-clear.",
+    "A default of 0 affects NEW devices; it does not revoke already-authorized devices.",
+    "Descriptor/vendor/product identities are forgeable; inline passive loggers can be invisible.",
+    "Cannot verify firmware, physical custody, host keyloggers, pointer/screen/camera observation or DMA isolation.",
+    "No settings changed. USB allowlisting must be configured separately with a tested recovery input/boot path."
+  ]
+}

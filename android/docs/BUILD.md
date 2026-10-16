@@ -1,3 +1,92 @@
+# R23 — current session / no-IME privacy try-out
+
+Use branch **`arena/f77cb2a6-osb`**, not the historical branch names in older sections below.
+The repo now starts from merged R22 work. Open **`OSB/android`**, not the legacy Vite project.
+Current evidence and exact candidates: [R23 engineering record](R23-ENGINEERING.md).
+**48/49 substantial executable subsets (97.96%);0/49 fully specification-accepted.**
+
+## Android Studio Rabbit1 / laptop
+
+Use an IDE compatible with the pinned **AGP8.13.2, Gradle8.13, Kotlin2.2.21, maintained JDK17,
+SDK36**. The Rabbit1 GUI itself was NOT run here; no claim that every preview IDE version supports
+these pins. Min SDK34, compile/target36 remain; requested compile37 is still a recorded deviation.
+Use a **disposable API34+ AVD and copied data**. A laptop emulator is not protection from its host.
+
+1. Open `android/`, sync and select **`privacy`** as the application/run target (its debug variant).
+   This is the separate **Fusion Offline Scratchpad** APK, not `app`/`proDebug`.
+2. Run it. Scroll to **Touch-only code pad (no keyboard)**. Opening it discards the old scratchpad.
+3. Tap/click digits instead of typing. A keyboard-only logger does not receive typed secret keys
+   on this route; an observer of the screen, pointers, accessibility, Android or laptop can still observe.
+   The keypad is digits-only, shuffled on creation/clear; no clipboard, export, submission or storage.
+4. Use **Reveal for up to5seconds**, delete or discard/reshuffle.64-digit cap+1 refuses atomically.
+   Accepted code changes renew a60s inactivity timer; background, focus loss, obscured input and recreation
+   discard immediately through the UI lifecycle. Timers use the main looper, not hard real-time scheduling.
+5. Return to the scratchpad and open **Review local input / exposure**. It reports limited counts/settings,
+   including UNKNOWN, not a keylogger detector or “safe” verdict. It does not change settings. Turn off
+   unneeded debugging AFTER evaluation through system settings; Android Studio/ADB currently needs it.
+
+The ordinary text scratchpad still uses your chosen IME and must trust it. All companion views now
+request application-overlay hiding and reject both full/partial obscuration. Focus loss may include
+notification shade/system dialogs; volatile work is deliberately lost. **No reliable RAM/flash erasure,
+Tails equivalence, global anonymity, host/firmware secrecy or all-accessibility blocking.**
+Read [privacy PRD and hardware limits](R23-PRIVACY-PRD.md) before sensitive use.
+
+The main application remains `app` / **`proDebug`** (or `playDebug`). Its existing Tasks/CSV/XLSX
+and first-party shell can be tried with the R22 instructions below. It DOES have networking permission.
+The companion does not make the main app or other apps offline.
+
+## R23 without the Android Studio GUI
+
+No SDK is needed for actual Kotlin/kernel and Office-reference tests. On **Linux x86_64**:
+
+```sh
+cd android
+python3 tools/bootstrap_host_tools.py install    # explicit public PyPI/npm downloads; no root
+python3 tools/bootstrap_host_tools.py doctor
+python3 tools/r23_lab.py host --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/inspect_usb_posture.py             # read-only Linux defaults; UNKNOWN is not safe
+```
+
+The optional cache contains pinned Kotlin2.2.21 and an **OLD JRE17.0.9, not a JDK**. It is only for
+disposable host tests; do not use it as Gradle JAVA_HOME or a production security runtime. npm scripts
+are disabled; compiler integrity and PyPI wheel hashes are pinned. Registry/mirror maintainers remain
+trusted; no independent upstream binary provenance claim. No downloaded tool enters Git or an APK.
+Alternatively configure your maintained Java17/Kotlin2.2.21 and Python openpyxl3.1.5/XlsxWriter3.2.5
+(et-xmlfile2.0.0) manually, then `python3 tools/r23_lab.py host`. Windows/macOS: manual tool install;
+this cache installer is not claimed tested there. `doctor` reports availability, not execution.
+
+With a **real maintained JDK17 and Android SDK36** installed, no IDE GUI is required:
+
+```sh
+# Set JAVA_HOME to a full JDK17 and ANDROID_HOME to your real SDK first.
+python3 tools/r23_lab.py android
+python3 tools/r23_lab.py device --disposable
+# Direct equivalents (Windows uses gradlew.bat):
+./gradlew :app:assembleProDebug :app:assemblePlayDebug :privacy:assembleDebug :privacy:lintDebug :testing:r23Contracts
+./gradlew :privacy:pixel6Api34DebugAndroidTest
+```
+
+The host-only cache is deliberately refused for native builds. You still need an actual Android runtime
+(AVD/device) to run APKs; pure JVM tests do not turn an APK into a laptop-native program.
+After an actually successful build, companion APK is
+`privacy/build/outputs/apk/debug/privacy-debug.apk`. Main APK paths are listed in the older sections.
+GitHub evaluated run/artifact links are in R23-ENGINEERING.md. Download through GitHub on your laptop;
+this sandbox cannot download release/Actions blob redirects under its outbound allowlist. Artifact metadata
+and actual named outcome annotations ARE retrievable; no local APK inspection is claimed here.
+
+Collect a completed privacy run and apply only its exact scope:
+
+```sh
+python3 tools/collect_native_evidence.py ACTUAL_RUN_ID NEW_PREFIX --privacy
+python3 tools/r23_evidence_gate.py docs/verification/NEW_PREFIX-result.json --candidate EXACT_40_HEX_SHA --claim r23_privacy_api34
+```
+
+Receipt policy checks metadata and named cases, not cryptographic authenticity or whole-product semantics.
+Do not overwrite retained failed evidence. R22 interop now writes ignored `testing/build/r22/interop.json`
+by default; `--report NEW_PATH` explicitly records a new run instead of silently overwriting historical R22 evidence.
+
+---
+
 # R22 — native values-only XLSX import and laptop checks
 
 **Evaluated fe8dca210642d42c0553c47ff4bccc16b5e17404: full119/0/0, focused10/0/0,

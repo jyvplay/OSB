@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Actual Python zipfile/ElementTree producers versus separately compiled Kotlin readers. No Android inference."""
-import base64, hashlib, io, json, os, random, struct, subprocess, time, zipfile, xml.etree.ElementTree as ET
+import argparse, base64, hashlib, io, json, os, random, struct, subprocess, time, zipfile, xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'testing/build/r22';rng=random.Random(220022)
+parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--report',type=Path,default=OUT/'interop.json');options=parser.parse_args()
 requests=[];expected=[];labels=[];exports={};pairs=[]
 def b64(b):return base64.b64encode(b).decode()
 def case(label,op,raw,result=None,names='a.txt'):
@@ -131,5 +132,6 @@ for i,(label,a,e) in enumerate(zip(labels,actual,expected)):
   assert all(c.data_type=='s' for row in sheet for c in row),label
  else:assert a==e,(label,a[:150],e[:150])
 for a,b in pairs:assert books[a]==books[b],(labels[a],labels[b])
-report={'python':__import__('sys').version.split()[0],'openpyxl':__import__('openpyxl').__version__,'xlsxwriter':xlsxwriter.__version__,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'metadata_note':'Producer modified timestamps can vary; seed fixes cell corpus, not every input byte.','seed':220022,'requests':len(requests),'accepted':sum(x.startswith('OK') or x=='EXPORT' for x in expected),'refused':expected.count('REFUSED'),'equal_byte_pairs':len(pairs),'request_sha256':hashlib.sha256(payload.encode()).hexdigest(),'output_sha256':hashlib.sha256(r.stdout.encode()).hexdigest(),'seconds_observed':round(time.monotonic()-start,3),'labels':labels,'scope':'Authored corpora; actual Python ZIP/XML producers versus actual Kotlin implementations on JDK, not Android/Office runtime or blind audit.'}
-(ROOT/'docs/verification/r22-interop.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='labels'}))
+report={'python':__import__('sys').version.split()[0],'openpyxl':__import__('openpyxl').__version__,'xlsxwriter':xlsxwriter.__version__,'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'metadata_note':'Producer modified timestamps can vary; seed fixes cell corpus, not every input byte.','seed':220022,'requests':len(requests),'accepted':sum(x.startswith('OK') or x=='EXPORT' for x in expected),'refused':expected.count('REFUSED'),'equal_byte_pairs':len(pairs),'request_sha256':hashlib.sha256(payload.encode()).hexdigest(),'output_sha256':hashlib.sha256(r.stdout.encode()).hexdigest(),'seconds_observed':round(time.monotonic()-start,3),'labels':labels,'scope':'Authored corpora; actual Python ZIP/XML producers versus actual Kotlin implementations on JVM, not Android/Office runtime or blind audit.'}
+options.report.parent.mkdir(parents=True,exist_ok=True)
+options.report.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='labels'}))

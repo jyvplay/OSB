@@ -1,3 +1,14 @@
+# R23 current record
+
+Current branch: `arena/f77cb2a6-osb`. [R23 engineering and candidate-specific evidence](docs/R23-ENGINEERING.md)
+supersedes old branch/PR statements below. **48/49 substantial testable subsets (97.96%);0/49 fully accepted.**
+First candidate910b739 passed12/12 actual API34 companion cases and119/119 main cases; both debug builds/JVM/contracts/lint passed.
+Additional reveal/shared-memory tests need their own fresh candidate result; do not inherit earlier acceptance.
+No Tails/anonymity, hardware-keylogger detection, hostile-host/firmware secrecy, full browser/Office or release claim.
+[Current laptop/no-Studio instructions](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out).
+
+---
+
 # Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**

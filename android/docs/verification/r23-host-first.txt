@@ -1,0 +1,16 @@
+R23: 898161 assertions PASS; 160000 exhaustive touch traces; no Android or hardware execution inferred.
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Real separately compiled Kotlin; no Android/hardware/security-certification claim.
+2236804e3aee3f25914b8e3371177a6165210c4c30561689c45acc2ae35629c9  core/security/src/main/kotlin/dev/fusion/security/TouchAdmission.kt
+0ad2cda9409a7cbdd39171dc6708087b2c55fc21b4db0deca6048c4901520dca  core/security/src/main/kotlin/dev/fusion/security/VolatileDigits.kt
+366aea8225ddeca8d77c57107ed9e7fa446a149cfad70105d46238a1498a4c51  core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt
+8b05261ac075cfa6002b7a6c3b015bc773523352b11282e689f40083ac723266  testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt
+a05ae7a9e2b638eb461f58dc049f8f1c93cb230d154ddbded60c8194dcb514fb  testing/build/r23/TouchAdmission.jar
+de9579123e29be384c02ee9ae99ff5fe2263c8a861a228efbd6f5e72377c33e3  testing/build/r23/VolatileDigits.jar
+61c902ee2b6741e27199e55e02ccc889622e08d8ca08f20797b25c47239b6594  testing/build/r23/LocalExposure.jar
+0c38e5bd30b7932f033762a972820fd3f431bb65e11991e47a0946b3bfdbf42a  testing/build/r23/checks.jar
+910522706c8fc6462f06d67f395233b756a5d52d71db5a9f737625e69051ca00  tools/run_r23_contracts.py

@@ -78,8 +78,11 @@ class R23InputDefenseTest {
                 }
                 assertTrue(a.dispatchKeyShortcutEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_V, 0, KeyEvent.META_CTRL_ON)))
                 assertEquals("• (1/64)", output.text.toString())
+                // Concrete boundary: trusted accessibility activation is intentionally NOT genuine-touch authentication.
+                assertTrue(a.findViewById<Button>(R.id.touch_key_2).performAccessibilityAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK, null))
+                assertEquals("•• (2/64)", output.text.toString())
             }
-            click("touch_reveal"); s.onActivity { assertEquals("7 (1/64)", it.findViewById<TextView>(R.id.touch_code_output).text.toString()) }
+            click("touch_reveal"); s.onActivity { assertEquals("72 (2/64)", it.findViewById<TextView>(R.id.touch_code_output).text.toString()) }
         }
     }
 
@@ -172,6 +175,30 @@ class R23InputDefenseTest {
                 assertEquals(" (0/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
                 assertEquals("Code discarded after 60 seconds without a code change.", a.findViewById<TextView>(R.id.touch_code_status).text.toString())
             }
+        }
+    }
+
+    @Test fun actualRevealDeadlineRehidesAndNextInputMasksImmediately() {
+        ActivityScenario.launch(TouchCodeActivity::class.java).use { s ->
+            focused(s)
+            s.onActivity { a ->
+                a.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                a.findViewById<Button>(R.id.touch_key_6).performClick()
+                a.findViewById<Button>(R.id.touch_reveal).performClick()
+                assertEquals("6 (1/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
+            }
+            SystemClock.sleep(6_000); instrumentation.waitForIdleSync()
+            s.onActivity { a ->
+                assertEquals("• (1/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
+                a.findViewById<Button>(R.id.touch_reveal).performClick()
+                a.findViewById<Button>(R.id.touch_key_5).performClick()
+                assertEquals("•• (2/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
+                a.findViewById<Button>(R.id.touch_reveal).performClick()
+                a.findViewById<Button>(R.id.touch_clear).performClick()
+            }
+            // Attack the stale reveal Runnable: it must not publish into the replacement pad.
+            SystemClock.sleep(6_000); instrumentation.waitForIdleSync()
+            s.onActivity { assertEquals(" (0/64)", it.findViewById<TextView>(R.id.touch_code_output).text.toString()) }
         }
     }
 
