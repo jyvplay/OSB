@@ -82,7 +82,7 @@ class PrivacyActivity: Activity() {
             isSaveEnabled=false;isSaveFromParentEnabled=false;isLongClickable=false
             importantForAutofill=View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
             importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO
-            textClassifier=TextClassifier.NO_OP
+            setTextClassifier(TextClassifier.NO_OP)
             val noMenu=object:ActionMode.Callback {
                 override fun onCreateActionMode(mode:ActionMode,menu:Menu)=false
                 override fun onPrepareActionMode(mode:ActionMode,menu:Menu)=false

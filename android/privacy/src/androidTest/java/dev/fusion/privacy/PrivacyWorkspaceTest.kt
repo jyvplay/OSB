@@ -46,6 +46,7 @@ class PrivacyWorkspaceTest {
             s.onActivity {a ->
                 val input=a.findViewById<EditText>(R.id.scratch_text)
                 input.setText("temporary");a.findViewById<EditText>(R.id.link_text).setText("https://example.com/name?secret=x")
+                assertSame(android.view.textclassifier.TextClassifier.NO_OP,input.textClassifier) // Patch-specific check, not just compilation.
                 assertFalse(input.isSaveEnabled);assertFalse(input.isSaveFromParentEnabled)
                 assertEquals(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS,input.importantForAutofill)
                 val info=EditorInfo();input.onCreateInputConnection(info)
