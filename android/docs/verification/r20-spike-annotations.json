@@ -1,0 +1,38 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/8871a48e0147f92a4aa82163235c6025cd8a3cda/.github",
+    "start_line": 11,
+    "start_column": null,
+    "end_line": 11,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/8871a48e0147f92a4aa82163235c6025cd8a3cda/.github",
+    "start_line": 25,
+    "start_column": null,
+    "end_line": 25,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Privacy APK footprint (compressed APK only, not RAM/installed size/Tails comparison): [{\"file\": \"privacy/build/outputs/apk/debug/privacy-debug.apk\", \"bytes\": 2450248, \"sha256\": \"2d6561295b913f25d73986f848450b95de40305b14ff0950735fa764bc4676af\"}]",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/8871a48e0147f92a4aa82163235c6025cd8a3cda/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl=PASS; dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes=PASS",
+    "raw_details": ""
+  }
+]

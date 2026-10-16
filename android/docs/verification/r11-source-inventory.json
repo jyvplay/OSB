@@ -98,7 +98,9 @@
       ":format:pdf",
       ":format:psd"
     ],
-    ":privacy": [],
+    ":privacy": [
+      ":core:security"
+    ],
     ":core:documents": [],
     ":core:windowing": [],
     ":core:files": [
@@ -213,7 +215,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "8032b952bdec4b8e29a8d717d868aabd8068558352dc0a058fb88a688e6a2280"
+      "sha256": "bef56c4e26a517b1375dd0b1e235008da2d4c9899c2c55918a5e08f55ed1b25a"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",

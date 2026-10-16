@@ -1097,14 +1097,23 @@
     },
     {
       "module": ":privacy",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "Preimplementation platform spike only",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No substantive workspace implementation/evidence yet",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard and offline link projection. Fresh feature native tests required; initial platform spike passed separately.",
+      "production": [
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt"
+      ],
+      "checks": [
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt"
+      ],
+      "command": ":privacy:pixel6Api34DebugAndroidTest",
+      "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
+      "sha256": {
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "bef56c4e26a517b1375dd0b1e235008da2d4c9899c2c55918a5e08f55ed1b25a",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "4c7e749b810fcf9c7b03e7be1dc292c63909beda0db8c643d25ec8c9c40e4104",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94"
+      }
     }
   ]
 }

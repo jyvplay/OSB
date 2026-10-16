@@ -350,8 +350,8 @@
     {
       "module": ":privacy",
       "status": "incomplete",
-      "present_scope": "R20 separate-UID no-INTERNET platform spike; no production workspace yet",
-      "remaining_gap": "Actual platform evidence, volatile editing, lifecycle/IME/AX and physical security review; no anonymity or OS replacement",
+      "present_scope": "Separate no-INTERNET volatile native workspace and link projection; platform spike passed, fresh feature native run required",
+      "remaining_gap": "Full anonymity/OS replacement not claimed; actual workspace lifecycle/AX/IME and physical security gates remain",
       "evidence_level": "android_uncompiled"
     }
   ],
@@ -678,6 +678,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R20 preimplementation",
+  "revision": "R20 bounded privacy/disclosure increments",
   "build_evidence": "R12 continuation:30/48 substantial-testable subsets (62.50%), separately from full acceptance0/48. Latest0a23219/run38682595367: both-flavor assembly, invoked unit/contracts/lint and APK upload passed, but native49 PASS/1 FAIL/0 SKIP (new Editor200%-font long-text test timed out awaiting actual IME visibility). Earlier67fbd3949/49 predates this stronger test and is not inherited. All new module-specific cases passed. Pure kernels:2394 new plus183179 rerun host assertions;1188 new cross-language checks;74 local Python methods. All failures and exact next test: R12B-ENGINEERING.md. Full browser/Office/sandbox, human AX, physical/API37/16K and legal acceptance remain open."
 }

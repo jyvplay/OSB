@@ -1,0 +1,7 @@
+<resources>
+    <item name="scratch_text" type="id"/>
+    <item name="link_text" type="id"/>
+    <item name="link_output" type="id"/>
+    <item name="discard_text" type="id"/>
+    <item name="project_link" type="id"/>
+</resources>

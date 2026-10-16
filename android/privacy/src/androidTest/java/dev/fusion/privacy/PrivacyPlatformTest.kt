@@ -40,8 +40,9 @@ class PrivacyPlatformTest {
             finally {image.recycle()}
         }
         fun capture(unsecured:Boolean):Int {
-            val intent=android.content.Intent(context,PrivacyActivity::class.java).putExtra("unsecuredPositiveControl",unsecured)
-            return ActivityScenario.launch<PrivacyActivity>(intent).use {scenario ->
+            val intent=android.content.Intent(context,if(unsecured) ScreenshotControlActivity::class.java else PrivacyActivity::class.java).putExtra("unsecuredPositiveControl",true)
+            return ActivityScenario.launch<android.app.Activity>(intent).use {scenario ->
+                if(!unsecured) scenario.onActivity {a ->a.setContentView(TextView(a).apply {text="R20 screenshot marker";setBackgroundColor(Color.rgb(237,19,180))})}
                 assertTrue(UiDevice.getInstance(instrumentation).wait(androidx.test.uiautomator.Until.hasObject(androidx.test.uiautomator.By.text("R20 screenshot marker")),10000))
                 UiDevice.getInstance(instrumentation).waitForIdle()
                 scenario.onActivity {assertEquals(!unsecured,it.window.attributes.flags and WindowManager.LayoutParams.FLAG_SECURE!=0)}
