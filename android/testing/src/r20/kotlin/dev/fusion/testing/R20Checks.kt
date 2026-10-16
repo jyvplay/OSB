@@ -45,6 +45,16 @@ object R20Checks {
             yes(cx.total==n);yes(cx==cy);yes(cx.export().bytes.contentEquals(cy.export().bytes))
             yes(TaskFrame.decode(TaskFrame.encode(x)).tasks==x.tasks)
         }
+        run {
+            val l=PermissionLeases();val token=l.issue(a,kind,0,60000)
+            val start=java.util.concurrent.CountDownLatch(1);val done=java.util.concurrent.CountDownLatch(2)
+            val wins=java.util.concurrent.atomic.AtomicInteger();val error=java.util.concurrent.atomic.AtomicReference<Throwable>()
+            repeat(2) {Thread {
+                try {start.await();if(l.consume(token,a,kind,1)) wins.incrementAndGet()}
+                catch(e:Throwable) {error.set(e)} finally {done.countDown()}
+            }.apply {isDaemon=true;start()}}
+            start.countDown();yes(done.await(5,java.util.concurrent.TimeUnit.SECONDS));yes(error.get()==null);yes(wins.get()==1)
+        }
         println("R20: $checks actual public-consumer assertions PASS")
     }
 }

@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "cases": 430,
+  "breakdown": {
+    "merge_reference": 150,
+    "edit_undo_reference": 150,
+    "multi_sheet_openpyxl_readback": 80,
+    "task_report_openpyxl_readback": 50
+  },
+  "openpyxl": "3.1.5",
+  "scope": "Actual separately compiled Kotlin outputs; independent Python struct/zlib and external openpyxl. Same-author corpus, not Excel/LibreOffice fidelity or expert review.",
+  "sha256": {
+    "tools/run_r19_interop.py": "be913c48d7508f6a07785678d8bd8adddb26e3a39a49e37f90078b29c2c1f4c6",
+    "testing/build/r19/checks.jar": "91b818e1d7402e2c723ee9218d1e25cf1b90e35e6a1f60fbe6a0e05b5ba6538b",
+    "testing/build/r19/TaskChanges.jar": "b40119764a90c6e29bc413502a91310cce714f9f8fb6af98cc6043dcccfbe3d4",
+    "testing/build/r19/LiteralWorkbook.jar": "f3208fe4dba04adf0bab474ed7c30859f7e53445e5782c78f41f8677bbd7582b"
+  }
+}

@@ -11,6 +11,6 @@
   "outputs_sha256": "6e4937ca970186827b7b2e5ef2bdad7215d3b4d3ffa054352a27f150f20a3404",
   "sha256": {
     "tools/run_r20_interop.py": "94ccc526573a6f433b94e1f4819e80bd6282bd0f2b0c0d0e42ff6f621096a6e1",
-    "testing/build/r20/result.txt": "051182c22fb223b8d1f57ca0c4e837156b9e79c49fd6293733280e4d30c3b01b"
+    "testing/build/r20/result.txt": "42b0241066fb01b2de9eeb3b1cc18d2d4fa521ad4fe5fc7a9de00cc2b43ba9ff"
   }
 }

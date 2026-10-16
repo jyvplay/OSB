@@ -17,7 +17,7 @@
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "04272975efc285d94edc500c4e8a7dfb9a0a2307d09b98de0b535aa5a988c584"
       }
     },
     {
@@ -183,7 +183,7 @@
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt": "3ac11bb42295d9552e997fe3d17fd25ece8872144e580c5400e9e3fba16bddf7",
         "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt": "f6ed00aec9a528442b02302d971d02de1aaea1e43387d2c6c56eb3fc05555b9f",
         "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt": "f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0",
-        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548"
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5"
       }
     },
     {
@@ -299,7 +299,7 @@
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "04272975efc285d94edc500c4e8a7dfb9a0a2307d09b98de0b535aa5a988c584"
       }
     },
     {
@@ -337,7 +337,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "af917bdba8d516c4bbdbdb1d9725546867e319a5f3f668329759f6f2444869ed"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "04272975efc285d94edc500c4e8a7dfb9a0a2307d09b98de0b535aa5a988c584"
       }
     },
     {
@@ -383,7 +383,7 @@
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt": "dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7",
         "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt": "ead3541b5e0e31da1d49ef735db6a43e88f445e821fb9f77f766c954b4f1d3a1",
-        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548"
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5"
       }
     },
     {
@@ -797,7 +797,7 @@
         "app/src/androidTest/java/dev/fusion/shell/R18TaskDeviceTest.kt": "bdc34d1e78266bd1de7ad7f8938195dca348b5ffa0f30c24e29a66194dd7dade",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "6232f963f6e23ca1bca0edf48e42a1151cdabf4e00307a8b3d3cf6b7870bc571",
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
-        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548"
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5"
       }
     },
     {
