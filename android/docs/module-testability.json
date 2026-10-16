@@ -875,7 +875,7 @@
       "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "sha256": {
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt": "a425b64281ade8e3f90f4d60c36ae79127bd1c2f91f6a1f6274b58c493f611e9",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt": "2697f3230eb6b73b5b9e982711dcc3f69758282b9d745502baff6d8161f0041f",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt": "913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt": "d2845e2365719ae640159d08d47c58346a9c89e26de9d2755cd3224536fb4fdd",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OwnedSheetRequest.kt": "cf1d127e2d4d6fed8e90d3e2c4c33638106ac692cabd1642ab17de68001e76d1",
@@ -1099,7 +1099,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard and offline link projection. Fresh feature native tests required; initial platform spike passed separately.",
+      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard and offline link projection. Workspace passed 6/6 at 8b634f4; later input feedback failed at 62b5c2f (5/6). Current feedback repair requires fresh native execution.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt"
       ],
@@ -1110,8 +1110,8 @@
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
-        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "443266eea25fde9e3eb61bcfbd6e5cc6de52b265e99089de3bdfc6b7363b35d5",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "bbeb6487bdaa71c122a816361b9f9f0532cda06c60df9a777279b3f5b7a6ba5a",
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "849d62266cd7dccd70e83fc3de5ab8908f67376f660e51e5eddd808d262269ee",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "88b1a74235f07e9f1b7892f7e6084245c57aa118ea03135aa60e176ced76d4b1",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94"
       }
     }

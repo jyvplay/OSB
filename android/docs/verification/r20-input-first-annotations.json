@@ -1,0 +1,74 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/62b5c2f73861ff40cc844d705675acccec094718/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/62b5c2f73861ff40cc844d705675acccec094718/.github",
+    "start_line": 25,
+    "start_column": null,
+    "end_line": 25,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Privacy APK footprint (compressed APK only, not RAM/installed size/Tails comparison): [{\"file\": \"privacy/build/outputs/apk/debug/privacy-debug.apk\", \"bytes\": 2485686, \"sha256\": \"7a0f6a7583732e472e8e71f6aa668dc187e064c6292cc8a777af546e481c147e\"}]",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/62b5c2f73861ff40cc844d705675acccec094718/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline:  \njava.lang.AssertionError\nat org.junit.Assert.fail(Assert.java:87)\nat org.junit.Assert.assertTrue(Assert.java:42)\nat org.junit.Assert.assertNotNull(Assert.java:713)\nat org.junit.Assert.assertNotNull(Assert.java:723)\nat dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline$lambda$0$0(PrivacyWorkspaceTest.kt:75)\nat dev.fusion.privacy.PrivacyWorkspaceTest.$r8$lambda$8pl7QkipIPit1aCsMcc1Z2YtBKY(Unknown Source:0)\nat dev.fusion.privacy.PrivacyWorkspaceTest$$ExternalSyntheticLambda0.perform(D8$$SyntheticClass:0)\nat androidx.test.core.app.ActivityScenario.lambda$onActivity$2$androidx-test-core-app-ActivityScenario(ActivityScenario.java:794)\nat androidx.test.core.app.ActivityScenario$$ExternalSyntheticLambda2.run(D8$$SyntheticClass:0)\nat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)\nat java.util.concurrent.FutureTask.run(FutureTask.java:264)\nat android.app.Instrumentation$SyncRunnable.run(Instrumentation.java:2420)\nat android.os.Handler.handleCallback(Handler.java:958)\nat android.os.Handler.dispatchMessage(Handler.java:99)\nat android.os.Looper.loopOnce(Looper.java:205)\nat android.os.Looper.loop(Looper.java:294)\nat android.app.ActivityThread.main(ActivityThread.java:8177)\nat java.lang.reflect.Method.invoke(Native Method)\nat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)\nat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/62b5c2f73861ff40cc844d705675acccec094718/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl=PASS; dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline=FAIL; dev.fusion.privacy.PrivacyWorkspaceTest.richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/62b5c2f73861ff40cc844d705675acccec094718/.github",
+    "start_line": 285,
+    "start_column": null,
+    "end_line": 285,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/62b5c2f73861ff40cc844d705675acccec094718/.github",
+    "start_line": 242,
+    "start_column": null,
+    "end_line": 242,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\n34 Tests 3/6 completed. (0 skipped) (0 failed)\n\n> Task :privacy:pixel6Api34DebugAndroidTest\n\ndev.fusion.privacy.PrivacyWorkspaceTest > externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline[pixel6Api34] ^[[31mFAILED ^[[0m\n\tjava.lang.AssertionError\n\tat org.junit.Assert.fail(Assert.java:87)\n\npixel6Api34 Tests 4/6 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 5/6 completed. (0 skipped) (1 failed)\nFinished 6 tests on pixel6Api34\n\n> Task :privacy:pixel6Api34DebugAndroidTest\nTests on pixel6Api34 failed: There was 1 failure(s).\n\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792120641501.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights.\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 4m 43s\n117 actionable tasks: 117 executed",
+    "raw_details": ""
+  }
+]

@@ -76,7 +76,11 @@ object LiteralWorkbook {
         ZipOutputStream(out).use { zip ->
             for((path,content) in parts) {
                 val bytes=content.toByteArray(Charsets.UTF_8)
-                val entry=ZipEntry(path).apply { method=ZipEntry.STORED;size=bytes.size.toLong();compressedSize=size;crc=CRC32().also { it.update(bytes) }.value;time=315532800000L }
+                // A 1980 UTC epoch leaks the default timezone through DOS fields/extra-field presence.
+                // Use the fixed Unix epoch: pre-DOS dates clamp, and any extended timestamp is fixed UTC zero.
+                // No source creation time is inferred. setTimeLocal is API35, not our min34 contract.
+                // [U] verify metadata behavior on API 34/36/37 and independent ZIP readers.
+                val entry=ZipEntry(path).apply { method=ZipEntry.STORED;size=bytes.size.toLong();compressedSize=size;crc=CRC32().also { it.update(bytes) }.value;time=0L }
                 zip.putNextEntry(entry);zip.write(bytes);zip.closeEntry()
             }
         }

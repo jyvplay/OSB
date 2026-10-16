@@ -215,7 +215,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "443266eea25fde9e3eb61bcfbd6e5cc6de52b265e99089de3bdfc6b7363b35d5"
+      "sha256": "849d62266cd7dccd70e83fc3de5ab8908f67376f660e51e5eddd808d262269ee"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -887,7 +887,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "a425b64281ade8e3f90f4d60c36ae79127bd1c2f91f6a1f6274b58c493f611e9"
+      "sha256": "2697f3230eb6b73b5b9e982711dcc3f69758282b9d745502baff6d8161f0041f"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",

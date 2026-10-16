@@ -48,4 +48,17 @@ class R20DisclosureDeviceTest {
         assertFalse(l.consume(u,PermissionLeases.Scope("p",1,"https://other.example"),PermissionLeases.Kind.CAMERA,SystemClock.elapsedRealtime()))
         assertFalse(l.consume(u,s,PermissionLeases.Kind.CAMERA,SystemClock.elapsedRealtime()))
     }
+    @Test fun generatedWorkbookMetadataDoesNotDiscloseTestedDefaultTimezones() {
+        val original=java.util.TimeZone.getDefault()
+        try {
+            val c=TaskCounts(1,2,3,4);var baseline:ByteArray?=null
+            for(zone in listOf("UTC","America/New_York","Asia/Tokyo","Pacific/Chatham")) {
+                java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone(zone))
+                val bytes=c.export().bytes
+                if(baseline==null) baseline=bytes else assertArrayEquals("Timezone $zone influenced package",baseline,bytes)
+                ZipInputStream(bytes.inputStream()).use {zip ->var entries=0;while(zip.nextEntry!=null) {assertTrue(zip.readBytes().isNotEmpty());entries++};assertEquals(5,entries)}
+            }
+        } finally {java.util.TimeZone.setDefault(original)}
+    }
+
 }

@@ -53,12 +53,14 @@ class PrivacyActivity: Activity() {
         label("Fusion Offline Scratchpad").textSize=23f
         label("Separate offline app — NOT anonymous. No Internet permission. No saved drafts, imports, exports, accounts, telemetry or clipboard actions.")
         label("Text is discarded from this workspace whenever it pauses (including Home, switching apps or dialogs), on recreation, or when you press Discard. Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
-        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768)}
-        editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2))
+        val scratchStatus=TextView(this).apply {id=R.id.scratch_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
+        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768,scratchStatus)}
+        editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2));column.addView(scratchStatus)
         column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
         label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
-        val address=PrivateText(this).apply {id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096);maxLines=3}
-        link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2))
+        val linkStatus=TextView(this).apply {id=R.id.link_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
+        val address=PrivateText(this).apply {id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096,linkStatus);maxLines=3}
+        link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2));column.addView(linkStatus)
         val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
         column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
             result.text=try {val p=LinkDisclosure.project(address.text.toString());p.text+"\nRemoved query: ${p.removedQuery}; removed fragment: ${p.removedFragment}. Host/path retained, not anonymous."}
@@ -72,15 +74,16 @@ class PrivacyActivity: Activity() {
         }
         setContentView(scroll);column.isFocusableInTouchMode=true;column.requestFocus()
     }
-    private fun plainFilters(field:EditText,limit:Int)=arrayOf(InputFilter {source,start,end,_,_,_ ->
+    private fun plainFilters(field:EditText,limit:Int,status:TextView)=arrayOf(InputFilter {source,start,end,_,_,_ ->
         if(source is Spanned) source.subSequence(start,end).toString() else null
     },InputFilter {_,start,end,dest,dstart,dend ->
         if(dest.length.toLong()-(dend-dstart)+(end-start)>limit) {
-            field.error="Input change refused: maximum $limit UTF-16 units."
+            // TextView may clear its own error after setText; keep feedback outside the edited widget.
+            status.text="Input change refused: maximum $limit UTF-16 units."
             // TextView.setText (including accessibility replacement) filters against an empty dest,
             // while Editable.replace supplies the real old range. Preserve both paths.
             if(dest.isEmpty()) field.text.toString() else dest.subSequence(dstart,dend).toString()
-        } else {field.error=null;null}
+        } else {status.text="";null}
     })
     private class PrivateText(context:Context):EditText(context) {
         init {

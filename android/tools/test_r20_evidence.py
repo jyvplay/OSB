@@ -25,7 +25,8 @@ class R20EvidenceTests(unittest.TestCase):
 
  def test_actual_earlier_main_candidate_is_only_its_own_gate(self):
   r=json.loads((ROOT/'docs/verification/r20-first-native-result.json').read_text())
-  for claim in ['counts_export_api34','origin_lease_api34']:self.assertTrue(assess(r,r['candidate'],claim)[0])
+  self.assertTrue(assess(r,r['candidate'],'origin_lease_api34')[0])
+  self.assertFalse(assess(r,r['candidate'],'counts_export_api34')[0]) # New timezone attack is required after repair.
   self.assertFalse(assess(r,'f'*40,'counts_export_api34')[0])
  def test_actual_later_main_failure_cannot_be_cherry_picked(self):
   r=json.loads((ROOT/'docs/verification/r20-native-result.json').read_text())

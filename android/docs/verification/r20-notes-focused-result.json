@@ -1,0 +1,44 @@
+{
+  "run": 38844546774,
+  "candidate": "3db7fdbd1446be24b5b3b05c2602bc8fd554188f",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38844546774",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 7,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R17TaskUiDeviceTest.addCompleteAndReopenPersistedTaskThroughActualShell",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.editUndoUsesRealTouchAndRecreationDoesNotInventAnUndoToken",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.actualPickerImportConfirmExportAndUndoPreserveSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R20CountsUiDeviceTest.actualCountsPreviewAndSystemSaveDoNotMutatePrivateTasks",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+      "result": "PASS"
+    }
+  ],
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

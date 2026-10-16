@@ -4,4 +4,6 @@
     <item name="link_output" type="id"/>
     <item name="discard_text" type="id"/>
     <item name="project_link" type="id"/>
+    <item name="scratch_status" type="id"/>
+    <item name="link_status" type="id"/>
 </resources>
