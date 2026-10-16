@@ -1,0 +1,7 @@
+{
+  "kind": "Actual separately compiled framing consumer, not a forged Android Binder exploit",
+  "scope": "Schema-only result checker has no request correlation; additive owned-request API addresses this gap, not arithmetic truth",
+  "consumer": "import dev.fusion.ooxml.SheetFrame\nfun main() {\n    val request=SheetFrame.encode(mapOf(\"A1\" to \"2\"))\n    println(\"Request bytes=${request.size}; unrelated schema-valid result=\"+SheetFrame.readResult(\"FSR1\\nB1\\t999\\n\".toByteArray()))\n}\n",
+  "stdout": "Request bytes=13; unrelated schema-valid result={B1=999}\n",
+  "old_library_sha256": "82ef3a28b85afcf7f4d26f512187b9164d160cc53e295c00f1c6caf94a75829b"
+}

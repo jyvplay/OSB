@@ -842,6 +842,12 @@
       "sha256": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OwnedSheetRequest.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "cf1d127e2d4d6fed8e90d3e2c4c33638106ac692cabd1642ab17de68001e76d1"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
@@ -863,7 +869,7 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "1a011a784a263f5d8b58ba171ec2a61bb55e679a457a53a82490adf5291e4306"
+      "sha256": "2c3530f1f47fb54e5a54a02513d7833993564be5bdfa69d484bcc9c2358f562d"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",

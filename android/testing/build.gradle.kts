@@ -205,6 +205,8 @@ tasks.register<JavaExec>("r17Contracts") {
 
 val r18 by sourceSets.creating
 kotlin.sourceSets.named("r18") {
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.include("**/TaskBook.kt", "**/TaskQuery.kt", "**/OwnedSheetRequest.kt", "**/SheetFrame.kt", "**/DecimalSheet.kt", "**/R18Checks.kt", "**/R18Oracle.kt")
     kotlin.srcDir("src/r18/kotlin")
     kotlin.srcDir("../feature/automation/src/main/kotlin")
 }

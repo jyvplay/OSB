@@ -4,7 +4,7 @@ import base64,datetime,hashlib,json,os,random,struct,subprocess,uuid,zlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'testing/build/r18';rng=random.Random(1801)
 java=str(Path(os.environ['JAVA_HOME'])/'bin/java') if 'JAVA_HOME' in os.environ else 'java'
-cp=os.pathsep.join(str(OUT/n) for n in ['checks.jar','TaskBook.jar']);epoch=datetime.date(1970,1,1)
+cp=os.pathsep.join(str(OUT/n) for n in ['checks.jar','TaskBook.jar','OwnedSheetRequest.jar']);epoch=datetime.date(1970,1,1)
 def wire(rev,tasks,version=2):
     raw=struct.pack('>4sqI',b'FTS1' if version==1 else b'FTS2',rev,len(tasks))
     for t in tasks:

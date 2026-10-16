@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
 import dev.fusion.ooxml.SheetFrame
+import dev.fusion.ooxml.OwnedSheetRequest
 import java.io.Closeable
 import java.io.File
 import java.util.UUID
@@ -29,6 +30,7 @@ class FormatLease(context: Context) : Closeable {
     private val death=CountDownLatch(1)
     private val started=AtomicBoolean(false)
     private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
+    private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
     private val closed=AtomicBoolean(false)
     private val id=UUID.randomUUID().toString()
     private var bound=false
@@ -53,7 +55,7 @@ class FormatLease(context: Context) : Closeable {
                 try {
                     val frame=requireNotNull(data.getByteArray("sheetResult"))
                     require(size<=SheetFrame.MAX_INPUT)
-                    SheetFrame.readResult(frame)
+                    ownedRequest.get()?.accept(size,digest,frame) ?: SheetFrame.readResult(frame)
                 } catch(error:Exception) { result.completeExceptionally(error);return }
             } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
@@ -90,6 +92,25 @@ class FormatLease(context: Context) : Closeable {
     fun evaluateSheet(file:File):Evidence = ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
         request(it,null,FormatWorkerService.DECIMAL_SHEET,0)
     }
+    /** Original bounded caller-owned arithmetic only. Writer is closed before a read-only FD
+     * is opened; path is unlinked before sending. No path/URI grant is sent to the worker.
+     * Assumes the trusted app process/private directory are not compromised. Not an OS sealed
+     * memfd or all-parser sandbox. [U] verify on API 34/36/37 and OEM filesystems.
+     */
+    fun evaluateOwnedSheet(cells:Map<String,String>):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedSheetRequest.create(cells)
+            val file=File.createTempFile("fusion-owned-sheet-",".fsc",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use { out ->out.write(model.frame());out.fd.sync() }
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use { fd ->
+                    check(file.delete()) { "Could not unlink owned request" }
+                    request(fd,null,FormatWorkerService.DECIMAL_SHEET,0,model)
+                }
+            } finally { file.delete() }
+        } finally { close() }
+    }
     fun probeSocket(file: File,loopbackPort: Int): Evidence {
         require(loopbackPort in 1..65535)
         return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
@@ -98,9 +119,10 @@ class FormatLease(context: Context) : Closeable {
     }
     fun digestDescriptor(input: ParcelFileDescriptor,privateProbeName: String?=null): Evidence =
         request(input,privateProbeName,FormatWorkerService.DIGEST,0)
-    private fun request(input: ParcelFileDescriptor,privateProbeName: String?,operation: Int,port: Int): Evidence {
+    private fun request(input: ParcelFileDescriptor,privateProbeName: String?,operation: Int,port: Int,owned:OwnedSheetRequest?=null): Evidence {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Wait for workers off the UI thread" }
         check(!closed.get() && started.compareAndSet(false,true)) { "One request per lease" }
+        ownedRequest.set(owned)
         expectedOperation.set(operation)
         try {
             require(privateProbeName==null || privateProbeName.matches(Regex(FormatWorkerService.PRIVATE_NAME)))

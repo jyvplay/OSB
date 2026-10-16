@@ -8,8 +8,8 @@
     "archive": 100
   },
   "sha256": {
-    "tools/run_r18_interop.py": "9d4a93e78642670af6e9e4e92b7104c51e79d39a7a19ee0f113a135839e4d4ec",
-    "testing/build/r18/checks.jar": "5e21a6d823a89ab8e12f84777d5cbbe42f9e2d11cd5b06902d40ed573340d05c",
+    "tools/run_r18_interop.py": "97233860d683eeb82386ffa13a45550fd59dcdf62feb8037f531bd011b4c0b5e",
+    "testing/build/r18/checks.jar": "bf2b39aad586394f724e1774892e47d9cfb766947aa3fa6e9fb3f6b8e19516a7",
     "testing/build/r18/TaskBook.jar": "8c8d3a5f6212a25a35492a19f604b685284742032a70cd4056ef1336937f478e"
   },
   "scope": "Same-author corpus using independent Python struct/zlib/date/sort reference and separate JVM producer; not independent expert review or Android/AX/reminder acceptance"

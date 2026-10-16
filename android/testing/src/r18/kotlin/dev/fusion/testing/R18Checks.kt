@@ -61,6 +61,16 @@ object R18Checks {
             book=TaskFrame.decode(TaskFrame.encode(book));eq(true,book.tasks.single().archived)
             book=book.archive(t.id,false);eq("Task $i",book.tasks.single().title);eq(true,book.tasks.single().done)
         }
+        val caller=linkedMapOf("A1" to "2","B1" to "=A1*3")
+        val owned=dev.fusion.ooxml.OwnedSheetRequest.create(caller);caller.clear()
+        val bytes=owned.frame();bytes.fill(0)
+        val result=dev.fusion.ooxml.SheetFrame.execute(owned.frame())
+        eq(mapOf("A1" to "2","B1" to "6"),owned.accept(owned.bytes,owned.sha256,result))
+        no {owned.accept(owned.bytes-1,owned.sha256,result)};no {owned.accept(owned.bytes,"0".repeat(64),result)}
+        for(text in listOf("FSR1\nA1\t2\n","FSR1\nB1\t6\nC1\t2\n","FSR1\nA1\t2\nB1\t6\nC1\t2\n")) no {owned.accept(owned.bytes,owned.sha256,text.toByteArray())}
+        val empty=dev.fusion.ooxml.OwnedSheetRequest.create(emptyMap());eq(emptyMap<String,String>(),empty.accept(empty.bytes,empty.sha256,"FSR1\n".toByteArray()))
+        // Honest negative: matching metadata/keys do NOT prove arithmetic truth from a malicious worker.
+        eq("999",owned.accept(owned.bytes,owned.sha256,"FSR1\nA1\t999\nB1\t999\n".toByteArray())["A1"])
         println("R18: $checks assertions PASS; editing/archive/query/versioned codec, not reminders or full Tasks acceptance.")
     }
 }
