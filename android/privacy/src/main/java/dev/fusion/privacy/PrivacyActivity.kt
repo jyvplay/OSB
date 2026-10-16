@@ -52,12 +52,12 @@ class PrivacyActivity: Activity() {
         fun label(value:String)=TextView(this).apply {text=value;textSize=16f;column.addView(this)}
         label("Fusion Offline Scratchpad").textSize=23f
         label("Separate offline app — NOT anonymous. No Internet permission. No saved drafts, imports, exports, accounts, telemetry or clipboard actions.")
-        label("Text is discarded from this workspace whenever it pauses (including Home, switching apps or dialogs), on recreation, or when you press Discard. Maximum 32,768 UTF-16 units. Do not use this for work you need to keep.")
-        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;filters=plainFilters(32768)}
+        label("Text is discarded from this workspace whenever it pauses (including Home, switching apps or dialogs), on recreation, or when you press Discard. Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
+        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768)}
         editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2))
         column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
         label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
-        val address=PrivateText(this).apply {id=R.id.link_text;hint="Explicit HTTP(S) URL";filters=plainFilters(4096);maxLines=3}
+        val address=PrivateText(this).apply {id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096);maxLines=3}
         link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2))
         val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
         column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
@@ -72,9 +72,14 @@ class PrivacyActivity: Activity() {
         }
         setContentView(scroll);column.isFocusableInTouchMode=true;column.requestFocus()
     }
-    private fun plainFilters(limit:Int)=arrayOf(InputFilter {source,start,end,_,_,_ ->
+    private fun plainFilters(field:EditText,limit:Int)=arrayOf(InputFilter {source,start,end,_,_,_ ->
         if(source is Spanned) source.subSequence(start,end).toString() else null
-    },InputFilter.LengthFilter(limit))
+    },InputFilter {_,start,end,dest,dstart,dend ->
+        if(dest.length.toLong()-(dend-dstart)+(end-start)>limit) {
+            field.error="Input change refused: maximum $limit UTF-16 units."
+            dest.subSequence(dstart,dend).toString() // Preserve exactly the replaced range; never insert a truncated prefix.
+        } else {field.error=null;null}
+    })
     private class PrivateText(context:Context):EditText(context) {
         init {
             inputType=InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS

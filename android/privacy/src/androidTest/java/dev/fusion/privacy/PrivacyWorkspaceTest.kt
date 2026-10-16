@@ -62,7 +62,15 @@ class PrivacyWorkspaceTest {
         ActivityScenario.launch<PrivacyActivity>(Intent(context,PrivacyActivity::class.java).putExtra("unsecuredPositiveControl",true).putExtra(Intent.EXTRA_TEXT,"injected payload")).use {s ->s.onActivity {a ->
             assertTrue(a.window.attributes.flags and WindowManager.LayoutParams.FLAG_SECURE!=0)
             val input=a.findViewById<EditText>(R.id.scratch_text);assertEquals("",input.text.toString())
-            input.setText("x".repeat(32769));assertEquals(32768,input.length())
+            // Native counterexample/control: ordinary LengthFilter silently keeps a prefix.
+            val truncating=EditText(a);truncating.filters=arrayOf(android.text.InputFilter.LengthFilter(32768))
+            truncating.setText("x".repeat(32769));assertEquals(32768,truncating.length())
+            input.setText("x".repeat(32769));assertEquals(0,input.length());assertNotNull(input.error)
+            input.setText("x".repeat(32768));assertEquals(32768,input.length());assertNull(input.error);assertEquals(8,input.maxLines)
+            input.append("!");assertEquals("x".repeat(32768),input.text.toString());assertNotNull(input.error)
+            val url=a.findViewById<EditText>(R.id.link_text);url.setText("https://example.com/original")
+            url.text.replace(0,url.length(),"https://example.com/"+"x".repeat(4096))
+            assertEquals("https://example.com/original",url.text.toString());assertNotNull(url.error)
             a.findViewById<EditText>(R.id.link_text).setText("https://example.com/Alice?token=secret#private")
         }
             touch("project_link")

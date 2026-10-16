@@ -1110,8 +1110,8 @@
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
-        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "d6601c470a50be27b9ffab9f7930ffb431e76bebd64eed1d82a3f0854cf0d127",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "cc348ea3091e34c4ca4c8a7e01e5e845631d87aa5a5f33bdfc223bdcef150468",
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "6c21d4c731ec984db1ff60b63888d502a27ee812fd400e6d429fa96d08fe3a62",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "bdf2f6b2f2ea708067f9bb675337454e69cc72ddcdd90c5db5c255d32598a2cf",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94"
       }
     }
