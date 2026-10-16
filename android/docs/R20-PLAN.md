@@ -14,3 +14,12 @@ Mechanism branches before implementation:
 H+: bounded controls/projections are implementable under trusted Android/IME/caller assumptions. H-: an ordinary app cannot make the host OS, external services, user identity disclosure or all traffic anonymous; no universal Tails superiority claim is admissible. H-boundary: UID/permission boundary, lifecycle, screenshot backend, timestamps, same-origin identity, aggregate equality and verifier scope.
 
 Threshold: fresh platform spike before companion feature code; production/public-consumer compilation, independent Python/openpyxl references, actual native cases for UI/OS claims; retain failures and add a patch-specific attack after repair. No fresh native pass inferred from R19. No agents, physical devices or expert/legal reviewers available. Search/fetch tools, gh/git, shell/Python, cached Kotlin/JRE/oracles and GitHub managed Android are available subject to actual execution.
+
+## Postimplementation qualification (R20)
+
+The same-count byte contract above is conditional on the same writer/runtime environment,
+not a cross-runtime anonymity theorem. A subsequent four-timezone JVM experiment found
+that the original fixed 1980 UTC timestamp disclosed timezone through DOS headers/ZIP extras.
+The counterexample was retained before a fixed Unix epoch repair, and new host and native
+checks are recorded in R20-ENGINEERING.md. This addition is not a claim that this specific
+repair/spike had already been run when the original plan was written.

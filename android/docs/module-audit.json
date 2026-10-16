@@ -350,7 +350,7 @@
     {
       "module": ":privacy",
       "status": "incomplete",
-      "present_scope": "Separate no-INTERNET volatile native workspace and link projection; 8b634f4 native 6/6, 62b5c2f native 5/6; current feedback repair unverified on Android",
+      "present_scope": "Separate no-INTERNET volatile native workspace and link projection; f42193d native 6/6 with atomic input refusal, persistent feedback and IME/deletion attacks; historical 62b5c2f failure retained",
       "remaining_gap": "Full anonymity/OS replacement not claimed; actual workspace lifecycle/AX/IME and physical security gates remain",
       "evidence_level": "partial_android_execution"
     }

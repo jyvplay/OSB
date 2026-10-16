@@ -28,6 +28,19 @@ class R20EvidenceTests(unittest.TestCase):
   self.assertTrue(assess(r,r['candidate'],'origin_lease_api34')[0])
   self.assertFalse(assess(r,r['candidate'],'counts_export_api34')[0]) # New timezone attack is required after repair.
   self.assertFalse(assess(r,'f'*40,'counts_export_api34')[0])
+  repaired=json.loads((ROOT/'docs/verification/r20-final-native-result.json').read_text())
+  self.assertEqual({'PASS':101,'FAIL':0,'SKIP':0},repaired['counts'])
+  for claim in ['counts_export_api34','origin_lease_api34']:self.assertTrue(assess(repaired,repaired['candidate'],claim)[0])
+  self.assertFalse(assess(repaired,r['candidate'],'counts_export_api34')[0])
  def test_actual_later_main_failure_cannot_be_cherry_picked(self):
-  r=json.loads((ROOT/'docs/verification/r20-native-result.json').read_text())
-  for claim in ['counts_export_api34','origin_lease_api34']:self.assertFalse(assess(r,r['candidate'],claim)[0])
+  for prefix in ['r20-native','r20-notes-main','r20-input-latest-main']:
+   r=json.loads((ROOT/f'docs/verification/{prefix}-result.json').read_text())
+   for claim in ['counts_export_api34','origin_lease_api34']:self.assertFalse(assess(r,r['candidate'],claim)[0])
+
+ def test_actual_input_feedback_failure_cannot_promote_workspace(self):
+  r=json.loads((ROOT/'docs/verification/r20-input-first-result.json').read_text())
+  self.assertEqual({'PASS':5,'FAIL':1,'SKIP':0},r['counts'])
+  self.assertFalse(assess(r,r['candidate'],'offline_workspace_api34')[0])
+  repaired=json.loads((ROOT/'docs/verification/r20-feedback-privacy-result.json').read_text())
+  self.assertTrue(assess(repaired,repaired['candidate'],'offline_workspace_api34')[0])
+  self.assertFalse(assess(repaired,r['candidate'],'offline_workspace_api34')[0])

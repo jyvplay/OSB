@@ -1099,7 +1099,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard and offline link projection. Workspace passed 6/6 at 8b634f4; later input feedback failed at 62b5c2f (5/6). Current feedback repair requires fresh native execution.",
+      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard, offline link projection and atomic oversized-edit refusal. f42193d passed 6/6 actual managed API34 tests, including repaired status feedback and IME/deletion attacks; not physical/AX acceptance.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt"
       ],

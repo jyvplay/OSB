@@ -1,22 +1,28 @@
-# R19 — current Android build and try-out
+# R20 — current Android build and try-out
 
 Open **OSB/android** in Android Studio Rabbit1 with compatible AGP8.13.2,
 Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is remote;
 the Rabbit1 desktop IDE itself was not run here. Current min/compile/target34/36/36
 still differs from requested compile37. These are evaluation builds, not release clearance.
 
-**47/48 (97.92%) substantial executable subsets;0/48 fully accepted (0%).** Only LOK
-lacks an established subset. See [R19-ENGINEERING.md](R19-ENGINEERING.md) for exact
-A–J evidence, alternatives, failures and remaining gates.
+**48/49 (97.96%) substantial executable subsets; 0/49 fully accepted (0%).**
+LOK lacks an established subset. The extra module is a separate no-INTERNET APK,
+not a renamed feature. See [R20-ENGINEERING.md](R20-ENGINEERING.md) for exact
+A–J evidence and the [R20 instructions below](#r20-laptop-try-out-and-checks-without-android-studio).
 
-**Latest tested 58e6566: 96 PASS, 0 FAIL, 0 SKIP; focused 5/5 passed.**
-[Evaluated debug APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38839938215)
-include `fusion-native-debug`; both debug flavors, JVM/contracts and lint passed.
-This is actual managed API34 pro-debug execution, not physical-device or release clearance.
-The stronger actual import/confirm/save/reopen/discard/undo picker sequence passed in both runs.
-The older task-add timeout remains undiagnosed. Retained contradictory full/focused outcomes are
-in the R18 report; successful runs do not prove causal repair or general stability.
-Use disposable data only. Later evidence/docs revisions are not the same tested commit.
+**Candidate-specific evidence:** main eb7f2c4 passed 100/100; focused 3db7fdb
+passed 7/7; privacy 8b634f4 passed 6/6 but later 62b5c2f failed 5/6 at rejection
+feedback. Later full runs 3db7fdb and 62b5c2f each failed 99/100 with Compose cross-thread
+semantics errors (Notes input / editor 200%-font). Current f42193d privacy feedback repair passed **6/6**; its main ZIP metadata run
+passed **101/101**, with both debug builds/JVM/contracts/lint green.
+No earlier pass is inherited.
+[Evaluated f42193d privacy APK artifact](https://github.com/jyvplay/OSB/actions/runs/38845693136)
+is `offline-privacy-companion` (debug APK inside); 2,486,434 compressed bytes.
+[Evaluated f42193d main APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38845693182)
+are `fusion-native-debug`. Later report/tooling commits do not inherit an exact-candidate native pass. Download artifacts only from the specifically evaluated
+run linked in the R20 ledger. All are debug evaluation artifacts, not release clearance.
+The original task-add timeout and Notes visibility root cause remain undiagnosed;
+subsequent green runs do not prove general UI stability. Use disposable data only.
 
 ## Try-out: reversible tasks, merge and export
 
@@ -571,3 +577,70 @@ directions and checks parser fixture PNGs with Pillow. Those fixtures are not
 native screenshots. No new APK dependency was introduced. See `R8-ENGINEERING.md`
 for actual results, bounds and unimplemented product scope. Encrypted Find is not
 wired to live sources; no feature/spike is promoted by this kernel work.
+
+## R20: laptop try-out and checks without Android Studio
+
+This section is current for R20; older round-specific limitations above are historical.
+Android Studio Rabbit1 GUI has **not** been exercised in this sandbox. Open `android/`
+and use JDK17/platform36 as above; IDE branding alone is not a compatibility test.
+Compile36 still deviates from requested compile37. Release/full acceptance stays blocked.
+
+Two distinct APKs:
+- `app` / `proDebug`: original shell including Tasks → counts-only report. Counts omit
+  titles/IDs/dates/revision but can identify through context. This app has Internet permission.
+- `privacy` / `debug`: `dev.fusion.privacy`, separate UID, no Internet permission,
+  volatile native scratchpad and offline URL projection. **Everything typed is discarded
+  on pause/discard/recreation.** No clipboard/import/export or saved draft. Do not put
+  work here that you need to keep. IME, accessibility, Android and the laptop remain trusted.
+
+From `android/` (Windows uses `gradlew.bat`):
+
+```sh
+./gradlew :privacy:assembleDebug :privacy:lintDebug
+# Run privacy on a disposable API34+ AVD using Studio's privacy run target, or:
+adb install -r privacy/build/outputs/apk/debug/privacy-debug.apk
+adb shell am start -n dev.fusion.privacy/.PrivacyActivity
+# Actual managed emulator; not a host model:
+./gradlew :privacy:pixel6Api34DebugAndroidTest
+```
+
+The debug companion includes a non-exported fixed-marker screenshot control, absent from
+release. Neither this APK's compressed size nor an emulator measurement establishes
+lower total footprint than Tails. Verify permission/merged manifest/dependencies before
+release; no full anonymity, forensic-erasure or all-device screenshot claim is made.
+
+Without Android Studio or a local SDK, host checks require Python3, JDK17, Kotlin2.2.21,
+openpyxl3.1.5 and z3-solver (the recorded solver version is 5.3.0). Install host verification
+packages separately; they are not APK dependencies. Set `JAVA_HOME` and `KOTLINC` to
+real installed tools, and make the Python packages importable.
+
+```sh
+python3 tools/r20_lab.py doctor
+python3 tools/r20_lab.py host
+# Includes production Kotlin compilation, 642 assertions, 760 references/readbacks,
+# conditional models, four actual JVM timezone checks and Python tooling tests.
+```
+
+Optional legacy regression scripts: `run_r13_contracts.py`, `run_r13_interop.py`
+(requires icalendar), `run_r19_contracts.py`, `run_r19_interop.py`, and
+`run_r19_report_stress.py`. Interop scripts require their matching preceding compilation.
+These write local reports; preserve historical receipts under separate names when auditing.
+
+For actual Android execution without installing Studio, push the current session branch
+and use the existing GitHub Actions. Do not confuse PR build-only success with device success.
+With already configured GitHub CLI authorization:
+
+```sh
+python3 tools/r20_lab.py dispatch-native
+# Dispatches android.yml + android-privacy.yml for the current REMOTE branch commit.
+# This dispatch mode is provided, not claimed executed here. Normal push runs were used.
+gh run list --branch arena/31a7965e-osb
+# Then use an actual completed RUN_ID and a NEW receipt prefix:
+python3 tools/collect_native_evidence.py RUN_ID NEW_PREFIX --privacy
+# Omit --privacy for main full suite. --focused is only the focused diagnostic workflow.
+```
+
+Queued/running is not passed. The collector refuses incomplete runs. Read exact candidate,
+whole workflow conclusion, named cases, failure/skip counts and artifacts. API34 managed
+execution does not accept physical/API36/37/keyboard/AX/legal/LOK requirements. See
+[R20-ENGINEERING.md](R20-ENGINEERING.md) for the failure ledger and scope boundaries.

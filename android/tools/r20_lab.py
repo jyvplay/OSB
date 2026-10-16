@@ -15,6 +15,7 @@ elif a.mode=='host':
  d=doctor()
  if not d['java'] or not d['kotlinc']:raise SystemExit('Set JAVA_HOME (JDK17) and KOTLINC (Kotlin2.2.21); no compilation inferred.')
  for script in ['check_project.py','run_r20_contracts.py','run_r20_interop.py','prove_r20_models.py']:run([sys.executable,'tools/'+script])
+ run([sys.executable,'tools/check_r20_zip_timezone.py','--expect','equal','--report','r20-zip-timezone-after.json'])
  run([sys.executable,'-m','unittest','discover','-s','tools','-p','test_*.py'])
 else:
  branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()

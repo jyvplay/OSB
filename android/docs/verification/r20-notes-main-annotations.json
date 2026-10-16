@@ -1,0 +1,110 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 5,
+    "start_column": null,
+    "end_line": 5,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4, gradle/actions/wrapper-validation@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 20,
+    "start_column": null,
+    "end_line": 20,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation:  \njava.lang.IllegalArgumentException: Detected multithreaded access to SnapshotStateObserver: previousThreadId=2), currentThread={id=40, name=Instr: androidx.test.runner.AndroidJUnitRunner}. Note that observation on multiple threads in layout/draw is not supported. Make sure your measure/layout/draw for each Owner (AndroidComposeView) is executed on the same thread.\nat androidx.compose.runtime.PreconditionsKt.throwIllegalArgumentException(Preconditions.kt:26)\nat androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(SnapshotStateObserver.kt:708)\nat androidx.compose.ui.node.OwnerSnapshotObserver.observeReads$ui_release(OwnerSnapshotObserver.kt:133)\nat androidx.compose.ui.node.OwnerSnapshotObserver.observeSemanticsReads$ui_release(OwnerSnapshotObserver.kt:121)\nat androidx.compose.ui.node.LayoutNode.getCollapsedSemantics$ui_release(LayoutNode.kt:433)\nat androidx.compose.ui.semantics.SemanticsNode$parent$1.invoke(SemanticsNode.kt:354)\nat androidx.compose.ui.semantics.SemanticsNode$parent$1.invoke(SemanticsNode.kt:353)\nat androidx.compose.ui.semantics.SemanticsNodeKt.findClosestParentNode(SemanticsNode.kt:473)\nat androidx.compose.ui.semantics.SemanticsNode.getParent(SemanticsNode.kt:353)\nat androidx.compose.ui.test.OutputKt.printToStringInner(Output.kt:181)\nat androidx.compose.ui.test.OutputKt.printToString(Output.kt:138)\nat androidx.compose.ui.test.OutputKt.printToString$default(Output.kt:136)\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrThrow(SemanticsNodeInteraction.kt:189)\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrThrow$default(SemanticsNodeInteraction.kt:150)\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:84)\nat androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:263)\nat androidx.compose.ui.test.TextActionsKt.getNodeAndFocus(TextActions.kt:116)\nat androidx.compose.ui.test.TextActionsKt.getNodeAndFocus$default(TextActions.kt:108)\nat androidx.compose.ui.test.TextActionsKt.performTextInput(TextActions.kt:44)\nat dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation(ShellSmokeTest.kt:192)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 19,
+    "start_column": null,
+    "end_line": 19,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction=PASS; dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText=PASS; dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls=PASS; dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess=PASS; dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus=PASS; dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation=PASS; dev.fusion.shell.ShellSmokeTest.savedNoteTrashAtTwoHundredPercentFontScale=PASS; dev.fusion.shell.ShellSmokeTest.densityReviewCancelAndApplyChangeActualDesktopState=PASS; dev.fusion.shell.ShellSmokeTest.explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates=PASS; dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale=PASS; dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles=PASS; dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent=PASS; dev.fusion.shell.ShellSmokeTest.editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont=PASS; dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent=PASS; dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf=PASS; dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit=PASS; dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows=PASS; dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication=PASS; dev.fusion.shell.SubsetDeviceTest.settingsExportReadsRealPreferencesAndInspectionDoesNotApply=PASS; dev.fusion.shell.SubsetDeviceTest.strictSubtitleStreamOverlapAndHalfOpenEndpointsOnArt=PASS; dev.fusion.shell.SubsetDeviceTest.malformedUtf8IsRefusedOnArt=PASS; dev.fusion.shell.SubsetDeviceTest.csvPreservesMultilineAndEmptyFieldsOnArt=PASS; dev.fusion.shell.SubsetDeviceTest.backupContentRoundTripsRealFileWithoutRestoringOrChangingSource=PASS; dev.fusion.shell.SubsetDeviceTest.missingCatalogTargetsDoNotDestroyStoredPins=PASS; dev.fusion.shell.SubsetDeviceTest.realSoftwareBitmapCropRotateAndFlipDoNotMutateSource=PASS; dev.fusion.shell.SubtitleUiDeviceTest.actualTextInputSelectsLiteralCueWithoutPretendingToPlay=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 18,
+    "start_column": null,
+    "end_line": 18,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R18TaskDeviceTest.archiveSurvivesReopenRestorePreservesIdentityAndStaleEditCannotWin=PASS; dev.fusion.shell.R18TaskDeviceTest.persistedRevisionReserveCannotBeConsumedByAnUnrelatedEdit=PASS; dev.fusion.shell.R18TaskDeviceTest.legacyLoadAndNoOpPreserveBytesButExplicitEditWritesVersionTwo=PASS; dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell=PASS; dev.fusion.shell.R19SharedMemoryDeviceTest.protectionRestrictsFutureMapsButDoesNotRevokeExistingWriter=PASS; dev.fusion.shell.R19TaskStoreDeviceTest.staleMergeAndSameRevisionDifferentDataRefuseWithoutWriting=PASS; dev.fusion.shell.R19TaskStoreDeviceTest.fullArchivedImportIgnoresForeignRevisionAndCanBeUndone=PASS; dev.fusion.shell.R19TaskStoreDeviceTest.undoHeadroomFailureLeavesBytesAndLegacyRestoreBoundaryUsable=PASS; dev.fusion.shell.R19TaskStoreDeviceTest.editUndoReopensAtNewRevisionAndReplayDoesNotWrite=PASS; dev.fusion.shell.R19TaskTransferDeviceTest.actualProviderTwoSheetReportIsLiteralAndNotATaskImport=PASS; dev.fusion.shell.R19TaskTransferDeviceTest.actualProviderSnapshotWriteReadbackImportAndCorruptionRefusal=PASS; dev.fusion.shell.R19TaskUiDeviceTest.editUndoUsesRealTouchAndRecreationDoesNotInventAnUndoToken=PASS; dev.fusion.shell.R19TaskUiDeviceTest.actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation=PASS; dev.fusion.shell.R19TaskUiDeviceTest.actualPickerImportConfirmExportAndUndoPreserveSource=PASS; dev.fusion.shell.R20CountsUiDeviceTest.actualCountsPreviewAndSystemSaveDoNotMutatePrivateTasks=PASS; dev.fusion.shell.R20DisclosureDeviceTest.countsProjectionWritesAndReopensRealProviderWithoutIdentifiers=PASS; dev.fusion.shell.R20DisclosureDeviceTest.linkProjectionAgreesWithAndroidUriAndRetainsPathIdentityCounterexample=PASS; dev.fusion.shell.R20DisclosureDeviceTest.permissionLeaseUsesActualElapsedClockAndBurnsWrongContext=PASS; dev.fusion.shell.RealImeDeviceTest.realImeAndLongEditorTextAtTwoHundredPercentWithoutComposeInputInjection=PASS; dev.fusion.shell.RuntimeInventoryDeviceTest.hardwareInventoryReflectsCodecDeclarationsNotAssumedWorkingReceivers=PASS; dev.fusion.shell.RuntimeInventoryDeviceTest.capabilityReportMatchesRuntimeWithoutInventingNpuDesktopOrDisplayOut=PASS; dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf=PASS; dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision=PASS; dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation=FAIL",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R13SubsetDeviceTest.localBuiltinHonorsQuotedArgumentsWithoutShellExpansion=PASS; dev.fusion.shell.R14SubsetDeviceTest.opaqueSrgbContrastSelectsSufficientForeground=PASS; dev.fusion.shell.R14SubsetDeviceTest.actualFileMetadataIsNaturallyOrderedWithoutChangingBytes=PASS; dev.fusion.shell.R14SubsetDeviceTest.redactionCannotBePreventedByClockRollback=PASS; dev.fusion.shell.R14SubsetDeviceTest.geometricTraversalSkipsDisabledTargets=PASS; dev.fusion.shell.R14SubsetDeviceTest.settingsConflictHasNoPartialEffect=PASS; dev.fusion.shell.R14SubsetDeviceTest.originalArithmeticResultsEnterLiteralWorkbookWithoutFormulaExecution=PASS; dev.fusion.shell.R15SubsetDeviceTest.originalSheetParserActuallyExecutesInDifferentUidWithReadOnlyFileCapability=PASS; dev.fusion.shell.R15SubsetDeviceTest.canonicalLaunchLinkAgreesWithAndroidUriWithoutDispatchingAnIntent=PASS; dev.fusion.shell.R15SubsetDeviceTest.recorderAccountingUsesActualElapsedClockWithoutClaimingMediaDuration=PASS; dev.fusion.shell.R15SubsetDeviceTest.transcriptWritesAndReadsRealFileWithoutAccessingSystemMessages=PASS; dev.fusion.shell.R15SubsetDeviceTest.isolatedSheetCycleAndConsumedInputBudgetAreRefused=PASS; dev.fusion.shell.R15SubsetDeviceTest.lensCoordinatesAgreeWithActualAndroidBitmapQuarterTurnsAndMirror=PASS; dev.fusion.shell.R15SubsetDeviceTest.vaultEnvelopeAuthenticatesActualCiphertextFileAndContext=PASS; dev.fusion.shell.R16TogetherDeviceTest.actualAndroidSocketsExchangeAuthenticatedStateAndClockSample=PASS; dev.fusion.shell.R16TogetherDeviceTest.wrongKeyRefusesWithoutReturningPeerStateAndClosesSockets=PASS; dev.fusion.shell.R16TogetherDeviceTest.wholeCallDeadlineClosesAnUnauthenticatedStalledSocket=PASS; dev.fusion.shell.R17TaskStoreDeviceTest.actualExplicitAtomicWriteAbortPreservesConfirmedSnapshot=PASS; dev.fusion.shell.R17TaskStoreDeviceTest.actualAtomicFileReopenAndConcurrentStaleWriterRefusal=PASS; dev.fusion.shell.R17TaskStoreDeviceTest.corruptBaseRefusesMutationAndPreservesExactBytes=PASS; dev.fusion.shell.R17TaskStoreDeviceTest.oversizedBaseAndOrphanUnpublishedWriteRefuse=PASS; dev.fusion.shell.R17TaskUiDeviceTest.addCompleteAndReopenPersistedTaskThroughActualShell=PASS; dev.fusion.shell.R18OwnedSheetDeviceTest.actualUnlinkedReadOnlyDescriptorExecutesInChildAndLeavesNoNamedInput=PASS; dev.fusion.shell.R18OwnedSheetDeviceTest.refusedOwnedCycleCleansNamedInputAndClosesLease=PASS; dev.fusion.shell.R18TaskDeviceTest.allArchivedStillCountTowardCapacityAndRestoreNeedsNoFreeSlot=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles=PASS; dev.fusion.shell.BrowserSurfaceDeviceTest.realPixelsAndInputRemainIndependentAcrossTwoRemoteWebViewsAndResize=PASS; dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint=PASS; dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity=PASS; dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported=PASS; dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation=PASS; dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss=PASS; dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess=PASS; dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile=PASS; dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse=PASS; dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog=PASS; dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl=PASS; dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused=PASS; dev.fusion.shell.NotesProcessDeathDeviceTest.acknowledgedDraftCheckpointSurvivesActualWriterProcessDeath=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.firstReadyStateIncludesInventoryBeforeAcceptingActions=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.recoveredStaleRevisionCannotOverwriteNewerSavedBytes=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.unreadableRecoveryBlocksEditsAndPreservesExactFile=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.distinctRecoveryOwnersCannotBlindlyOverwriteEachOther=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.deletedEmptyCheckpointDoesNotEqualNeverObservedAbsence=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.freshOwnerRecoversCheckpointWithoutSavingOrReplayingPendingDelete=PASS; dev.fusion.shell.NotesRecoveryDeviceTest.repeatedCheckpointRequestsUseOneWriterMailbox=PASS; dev.fusion.shell.R13SubsetDeviceTest.originalWorkbookWritesLiteralFormulaLikeTextWithoutMacroParts=PASS; dev.fusion.shell.R13SubsetDeviceTest.foldedCalendarTextDoesNotInjectASecondEvent=PASS; dev.fusion.shell.R13SubsetDeviceTest.invalidPlanCannotStartAnyCallback=PASS; dev.fusion.shell.R13SubsetDeviceTest.digestChecksActualFileAndLeavesSourceUnchanged=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 1215,
+    "start_column": null,
+    "end_line": 1215,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 1175,
+    "start_column": null,
+    "end_line": 1175,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\n0 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 83/100 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 84/100 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 86/100 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 87/100 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 89/100 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 99/100 completed. (0 skipped) (1 failed)\nFinished 100 tests on pixel6Api34\n\n> Task :app:pixel6Api34ProDebugAndroidTest\nTests on pixel6Api34 failed: There was 1 failure(s).\n\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1792120813375.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights.\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 7m 24s\n787 actionable tasks: 12 executed, 775 up-to-date",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3db7fdbd1446be24b5b3b05c2602bc8fd554188f/.github",
+    "start_line": 18,
+    "start_column": null,
+    "end_line": 18,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Historical focus experiment REPRODUCED (candidate regression remains mandatory): \njava.lang.AssertionError: Failed to assert the following: (Focused = 'true')\nSemantics of the node:\nNode #167 at (l=32.0, t=670.0, r=1048.0, b=1143.0)px, Tag: 'editor-content'\nEditableText = 'retained'\nTextSelectionRange = 'TextRange(8, 8)'\nIsEditable = 'true'\nImeAction = 'Default'\nFocused = 'false'\nText = '[Untitled.txt \u2014 Unsaved changes]'\nActions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, SetTextSubstitution, ShowTextSubstitution, ClearTextSubstitution]\nMergeDescendants = 'true'\nHas 8 siblings\nSelector used: (TestTag = 'editor-content')\n\nat androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:265)\nat androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:255)\nat androidx.compose.ui.test.AssertionsKt.assertIsFocused(Assertions.kt:116)\nat dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus(ShellSmokeTest.kt:92)\n",
+    "raw_details": ""
+  }
+]
