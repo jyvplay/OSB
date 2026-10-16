@@ -25,7 +25,7 @@ def collect(run_id,prefix,focused=False,privacy=False):
     jobs=api(f'{base}/actions/runs/{run_id}/jobs?per_page=100')
     assert len(jobs['jobs'])==jobs['total_count']
     assert all(j['head_sha']==run['head_sha'] for j in jobs['jobs'])
-    job_prefix='API34 privacy companion' if privacy else ('Focused actual Task UI' if focused else 'API34 managed-device')
+    job_prefix='API34 privacy companion' if privacy else (('Focused actual Task UI','Focused actual platform') if focused else 'API34 managed-device')
     device=[j for j in jobs['jobs'] if j['name'].startswith(job_prefix)]
     if len(device)!=1:raise ValueError('Exactly one actual managed-device job required')
     annotations=[];page=1

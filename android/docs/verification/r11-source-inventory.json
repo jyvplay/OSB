@@ -492,7 +492,7 @@
       "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt",
       "module": ":feature:browser",
       "package": "dev.fusion.browser.model",
-      "sha256": "cb9c83774bd23d85667e4e37a096119884e619bc617823ad68bd19a6c2568510"
+      "sha256": "42826bddd2a727e48ef9066e6a87b963d5baf434881263504da4aa152d4836f3"
     },
     {
       "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
@@ -891,10 +891,22 @@
       "sha256": "ce587cf733fc8130ae3488d7ebce5d8e605163a87806fe2a6a297f3bae2709c1"
     },
     {
+      "path": "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt",
+      "module": ":format:archive",
+      "package": "dev.fusion.archive",
+      "sha256": "8874302c439ff4de753618f6b9264b18c82dd03ed945b6f9b3e5ec2ad570139a"
+    },
+    {
       "path": "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt",
       "module": ":format:archive",
       "package": "dev.fusion.archive",
       "sha256": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "5db5a7b994a66e240bebe0b3c184963f0dd582419e8f9e11c6aad6cf68356b02"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
