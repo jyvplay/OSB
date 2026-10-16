@@ -27,9 +27,8 @@ class PrivacyWorkspaceTest {
     @Test fun actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty() {
         ActivityScenario.launch(PrivacyActivity::class.java).use {s ->
             val device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-            val scratch=androidx.test.uiautomator.UiScrollable(androidx.test.uiautomator.UiSelector().scrollable(true))
+            androidx.test.uiautomator.UiScrollable(androidx.test.uiautomator.UiSelector().scrollable(true))
                 .scrollIntoView(androidx.test.uiautomator.UiSelector().resourceId("dev.fusion.privacy:id/scratch_text"))
-            assertTrue("Scratchpad editor must be reachable by scrolling",scratch.exists())
             val input=device.wait(Until.findObject(By.res("dev.fusion.privacy","scratch_text")),10000);assertNotNull(input)
             input.text="private native input"
             var old:EditText?=null
