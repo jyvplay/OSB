@@ -182,3 +182,10 @@ No production discard/secure behavior weakened. **Authored, not yet compiled/run
 Gate alias `r23_prerequisite_api34` preserves the old14-case substrate scope; current `r23_privacy_api34`
 requires15. Actual13/1 receipt rejected even for passed input/memory subsets because whole workflow failed.
 All fresh15/24/122 gates remain mandatory. Earlier14-case success is not a repair pass.
+
+Manual exact-branch `gh workflow run android-r22.yml --ref arena/f77cb2a6-osb` was attempted after
+b335172 push, but GitHub returned403 Resource not accessible by integration. Git push/read/API
+access still worked; no credentials requested or alternative token used. R23 policy/privacy-harness
+changes now legitimately trigger the existing memory regression through its normal push path filters,
+so verification does not depend on manual-dispatch permission. This is CI coverage configuration,
+not a claimed manually dispatched run or a workaround to retrieve restricted artifacts.
