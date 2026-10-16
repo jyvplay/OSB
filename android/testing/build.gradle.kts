@@ -245,6 +245,8 @@ tasks.register<JavaExec>("r20Contracts") {
 
 val r21 by sourceSets.creating
 kotlin.sourceSets.named("r21") {
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.include("**/ExactReadback.kt")
     kotlin.srcDir("src/r21/kotlin")
     kotlin.srcDir("../format/ooxml/src/main/kotlin")
     kotlin.srcDir("../feature/browser/src/main/kotlin")

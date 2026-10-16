@@ -834,13 +834,19 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "c61e8d3afa0d02745bb7f3e913d4429b4ee6b0656ea2387ad9fa7316835346ce"
+      "sha256": "2e8d39fb32f9ce648ad43bf2fe64e8cce8e4341a7835fb9ed9d8d5e2b6e120c9"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
       "sha256": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "fa4c541f09a6479c34817c42612ffa80ad0e25189846192ed741783927c0f754"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",

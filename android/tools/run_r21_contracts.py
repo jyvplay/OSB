@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'testing/build/r21';OUT.mkdir(parents=True,exist_ok=True)
 (OUT/'result.txt').unlink(missing_ok=True)
 compiler=os.environ.get('KOTLINC','kotlinc');java=str(Path(os.environ['JAVA_HOME'])/'bin/java') if 'JAVA_HOME' in os.environ else 'java'
-groups=[['format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt'],['format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt'],['feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt','feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt','feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt']]
+groups=[['feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt'],['format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt'],['format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt'],['feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt','feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt','feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt']]
 sources=[ROOT/p for group in groups for p in group];jars=[]
 version=subprocess.run([compiler,'-version'],capture_output=True,text=True,check=True)
 print(version.stdout+version.stderr,end='')

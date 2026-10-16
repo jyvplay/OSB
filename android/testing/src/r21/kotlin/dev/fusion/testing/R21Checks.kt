@@ -1,5 +1,6 @@
 package dev.fusion.testing
 import dev.fusion.ooxml.*
+import dev.fusion.automation.ExactReadback
 import dev.fusion.browser.model.*
 import java.util.concurrent.*
 object R21Checks {
@@ -43,6 +44,16 @@ object R21Checks {
    ok(CsvTable.readFrame(t.frame()).rows==t.rows)
    ok(t.project(listOf(0)).rows==t.rows.map {listOf(it[0])})
   }
+  fun different(f:()->Unit) {var thrown=false;try {f()} catch(_:IllegalStateException) {thrown=true};ok(thrown)}
+  for(size in listOf(0,1,8191,8192,8193,524288,524289,2097152)) {
+   val expected=ByteArray(size) {(it%251).toByte()}
+   ok(ExactReadback.verify(expected.inputStream(),expected)==size)
+   val extra=(expected+byteArrayOf(42,43)).inputStream();different {ExactReadback.verify(extra,expected)};ok(extra.available()==1)
+   if(size>0) {different {ExactReadback.verify(expected.copyOf(size-1).inputStream(),expected)};val altered=expected.copyOf();altered[size/2]=(altered[size/2].toInt() xor 1).toByte();different {ExactReadback.verify(altered.inputStream(),expected)}}
+  }
+  val unconsumed=byteArrayOf(1,2,3).inputStream();bad {ExactReadback.verify(unconsumed,ByteArray(2097153))};ok(unconsumed.available()==3)
+  val denseBook=CsvTable.of(List(256) {List(32) {""}}).workbook().bytes
+  ok(denseBook.size>512*1024);ok(ExactReadback.verify(denseBook.inputStream(),denseBook)==denseBook.size)
   val kind=PermissionLeases.Kind.CAMERA
   val s=BrowserConsentSession("local");val tab=s.open("https://example.com/a")
   val p=s.request(tab,kind);s.navigate(tab,"https://example.com/a");ok(s.decide(p,true,0,100)==null)

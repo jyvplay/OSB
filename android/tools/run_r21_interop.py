@@ -23,7 +23,7 @@ for i in range(80):
  first=len(requests);add(wire(a),a,[0,1]);add(wire(b),b,[0,1]);pairs.append((first,first+1))
 for raw in [b'a"b',b'"x" trailing',b'"open',b'a\rb',b'a,b\nc',b'\xff',b'\xc0\x80',b'\x00',b'x'*4097,b','*32,b'x\n'*257,b'x'*65537,b'_x0041_']:
  requests.append(base64.b64encode(raw).decode());expected.append(None)
-cp=os.pathsep.join(str(OUT/n) for n in ['checks.jar','LiteralWorkbook.jar','CsvTable.jar','BrowserSessions.jar'])
+cp=os.pathsep.join(str(OUT/n) for n in ['checks.jar','ExactReadback.jar','LiteralWorkbook.jar','CsvTable.jar','BrowserSessions.jar'])
 r=subprocess.run([str(Path(os.environ['JAVA_HOME'])/'bin/java'),'-cp',cp,'dev.fusion.testing.R21Oracle'],input='\n'.join(requests)+'\n',capture_output=True,text=True,check=True)
 lines=r.stdout.splitlines();assert len(lines)==len(expected);sizes=[];packages=[]
 for line,want in zip(lines,expected):

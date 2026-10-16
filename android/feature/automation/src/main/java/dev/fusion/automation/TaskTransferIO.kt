@@ -34,8 +34,7 @@ object TaskTransferIO {
     private fun write(resolver:ContentResolver,created:Uri,revision:Long,bytes:ByteArray,limit:Int):Receipt {
         require(created.scheme=="content" && bytes.size<=limit)
         requireNotNull(resolver.openOutputStream(created,"wt")) {"Output unavailable"}.use {it.write(bytes)}
-        val observed=requireNotNull(resolver.openInputStream(created)) {"Readback unavailable"}.use {TaskStreams.bytes(it,limit)}
-        check(bytes.contentEquals(observed)) {"Export readback differs; created document may be incomplete"}
+        requireNotNull(resolver.openInputStream(created)) {"Readback unavailable"}.use {ExactReadback.verify(it,bytes)}
         return Receipt(revision,bytes.size,MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") {"%02x".format(it)})
     }
 }

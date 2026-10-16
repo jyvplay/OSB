@@ -50,4 +50,23 @@ class R21BoundaryDeviceTest {
   assertEquals(256,b.table!!.rows.size);assertEquals(32,b.table!!.columns);assertEquals(32780,b.table!!.frame().size)
  }
 
+ @Test fun literalWorksheetBeyondTaskBudgetWritesAndReopensRealProvider() {
+  val bytes=CsvTable.of(List(256) {List(32) {""}}).workbook().bytes
+  assertTrue(bytes.size>512*1024)
+  val resolver=context.contentResolver
+  val uri=requireNotNull(resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,android.content.ContentValues().apply {
+   put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME,"r21-large-${java.util.UUID.randomUUID()}.xlsx")
+   put(android.provider.MediaStore.MediaColumns.MIME_TYPE,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+   put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH,android.os.Environment.DIRECTORY_DOWNLOADS)
+  }))
+  try {
+   val receipt=dev.fusion.automation.TaskTransferIO.writeCreatedLiteralWorksheet(resolver,uri,bytes)
+   assertEquals(bytes.size,receipt.bytes)
+   resolver.openInputStream(uri)!!.use {assertArrayEquals(bytes,it.readBytes())}
+   // Patch attack: a matching prefix plus trailing provider bytes must be refused by the comparator.
+   resolver.openOutputStream(uri,"wa")!!.use {it.write(42)}
+   assertTrue(runCatching {resolver.openInputStream(uri)!!.use {dev.fusion.automation.ExactReadback.verify(it,bytes)}}.isFailure)
+  } finally {resolver.delete(uri,null,null)}
+ }
+
 }

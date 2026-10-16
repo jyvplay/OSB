@@ -34,7 +34,10 @@ class R21CsvUiDeviceTest {
    val name=device.wait(Until.findObject(By.clazz("android.widget.EditText")),10000);assertNotNull(name);name.text="r21-columns-${UUID.randomUUID()}.xlsx"
    val save=device.wait(Until.findObject(By.text(Pattern.compile("(?i)save"))),10000);assertNotNull(save);save.click()
    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
-   assertTrue(device.wait(Until.hasObject(By.res(pkg,"csv_status").textStartsWith("XLSX readback verified:")),15000))
+   val verified=device.wait(Until.hasObject(By.res(pkg,"csv_status").textStartsWith("XLSX readback verified:")),15000)
+   var outcome=""
+   s.onActivity {a->outcome=a.findViewById<TextView>(dev.fusion.automation.R.id.csv_status).text.toString()}
+   assertTrue("Export outcome: $outcome; foreground ${device.currentPackageName}",verified)
    s.onActivity {a->assertTrue(a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.contains("DO_NOT_EXPORT"))}
   }
  }
