@@ -2,7 +2,7 @@
 
 R23 adds an observation-only device posture panel to the separate no-INTERNET `:privacy` app: current IME package, system-reported accessibility services, secure-lock/ADB setting, OS patch string, and currently reported non-virtual keyboard names. Values are bounded and missing/filtered results stay unknown. The panel has refresh and user-directed Android Settings buttons. It never writes a system setting, stores/sends the snapshot, or declares a device safe.
 
-**This R23 Kotlin change has not been compiled or run in this sandbox. No R23 APK is available.** The R22 API34 receipts below are for a different source candidate and do not verify this change. No physical USB/keyboard/hardware test, Android Studio Rabbit1 GUI run, or privacy/anonymity acceptance is claimed.
+**R23 has not compiled successfully or run on Android.** First remote privacy CI ([38859445946](https://github.com/jyvplay/OSB/actions/runs/38859445946)) failed at `:privacy:compileDebugKotlin` on an unresolved `InputDevice.hasSource`; no APK or device case was produced. A public `sources`-bitmask fix is in the worktree and awaits retry. No Android compiler is available in this sandbox. The R22 API34 receipts below concern a different candidate and do not verify R23. No physical USB/keyboard/hardware test, Rabbit1 GUI run, or privacy/anonymity acceptance is claimed.
 
 ## Try the R23 privacy companion in Android Studio Rabbit1
 

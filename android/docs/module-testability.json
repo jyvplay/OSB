@@ -1151,7 +1151,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard, offline link projection and atomic oversized-edit refusal. R23 adds bounded read-only IME/accessibility/ADB/screen-lock/patch/keyboard observations; unavailable settings or inventories remain unknown, untrusted control/bidirectional text is sanitized, and Settings changes remain user-directed. Previous f42193d API34 6/6 receipt does not cover R23; new Kotlin tests are authored but not compiled/run on this checkout.",
+      "behavior": "Separate no-INTERNET native volatile workspace; whole-editor lifecycle discard, offline link projection and atomic oversized-edit refusal. R23 adds bounded read-only IME/accessibility/ADB/screen-lock/patch/keyboard observations; unavailable settings or inventories remain unknown, untrusted control/bidirectional text is sanitized, and Settings changes remain user-directed. The first remote R23 CI run (38859445946) failed Kotlin compilation on InputDevice.hasSource before APK/device tests; a bitmask fix is pending retry. Previous f42193d API34 6/6 receipt does not cover R23.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/DevicePrivacySnapshot.kt"
@@ -1167,7 +1167,7 @@
       "limit": "No Tails equivalence/anonymity, global network lockdown, hardware/firmware/IME authenticity or external-device inspection; no RAM/flash erasure; R23 source/tests require fresh Android compilation/execution and physical USB/AX review.",
       "sha256": {
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "cd2caf14c2995786686fb7a5431e44bb6027f5ab802495702a2967094524a47d",
-        "privacy/src/main/java/dev/fusion/privacy/DevicePrivacySnapshot.kt": "6e522cb69a7d7f479f92e2274ce2e540de0d2d6c7fce16b731c007a333c75e47",
+        "privacy/src/main/java/dev/fusion/privacy/DevicePrivacySnapshot.kt": "4d1448f55ed7862d1857ff0ed82603fb72f4c14c28fe74accbc7a8e2d29353b6",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "88b1a74235f07e9f1b7892f7e6084245c57aa118ea03135aa60e176ced76d4b1",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "329fb6006c9526e888a42efc33c830dae499cdf81886526afdc646870c4cef94",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPostureTest.kt": "948b9044057b7aef0e8baf9531cf18f253e9cd24098348962419e726e4dca991",

@@ -218,7 +218,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/DevicePrivacySnapshot.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "6e522cb69a7d7f479f92e2274ce2e540de0d2d6c7fce16b731c007a333c75e47"
+      "sha256": "4d1448f55ed7862d1857ff0ed82603fb72f4c14c28fe74accbc7a8e2d29353b6"
     },
     {
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",

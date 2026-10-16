@@ -84,7 +84,10 @@ internal object DevicePrivacyProbe {
             InputDevice.getDeviceIds()
                 .asSequence()
                 .mapNotNull(InputDevice::getDevice)
-                .filter { !it.isVirtual && it.hasSource(InputDevice.SOURCE_KEYBOARD) }
+                .filter {
+                    !it.isVirtual &&
+                        (it.sources and InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD
+                }
                 .map { it.name.displaySafe(MAX_DEVICE_NAME_UNITS) }
                 .distinct()
                 .take(MAX_LIST_ITEMS)

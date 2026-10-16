@@ -81,7 +81,7 @@ For **global anonymity or hardware-keylogger prevention**, the success quantifie
 - **H− (larger target impossible under this ordinary-UID contract):** this app alone cannot claim to make all device traffic anonymous, establish a Tails-equivalent boot session, enforce USB data signaling for the whole device, or inspect an inline hardware keylogger/firmware. This is an authority/interface boundary, not a claim about a custom OS, root, or a managed device.
 - **H∂ (conditions change result):** device-owner policy, a supported Advanced Protection implementation, API/OEM behavior, boot state, and physical access change what can be enforced or observed. The actual model/OS must be tested; an app cannot infer those conditions from a generic “privacy” setting.
 
-**Evidence threshold for calling R23 delivered:** Kotlin/Android build and lint, full API34 privacy companion tests on the exact source snapshot, targeted lifecycle/Settings/unknown-state tests, and source/manifest audit. A separate physical-device review is still required for supported USB hardware behavior. The evidence threshold is not met in this sandbox: source/tests have been added but not compiled or executed here.
+**Evidence threshold for calling R23 delivered:** successful Kotlin/Android build and lint, full API34 privacy companion tests on the exact source snapshot, targeted lifecycle/Settings/unknown-state tests, and source/manifest audit. A separate physical-device review is still required for supported USB hardware behavior. The threshold is not met: the first remote CI attempt failed at Kotlin compilation before producing an APK or executing device cases. The compile finding is repaired in the worktree; a new run is pending.
 
 ## Product requirements and implementation status
 
@@ -90,7 +90,7 @@ For **global anonymity or hardware-keylogger prevention**, the success quantifie
 | PRIV-R23-01 | Keep companion in separate UID; no `INTERNET`, backup, or cleartext route | Existing manifest | Re-run manifest check and actual IPv4/IPv6 socket-denial test on the current build. Does not constrain other apps. |
 | PRIV-R23-02 | Do not restore/persist scratch text; discard whole editor on pause/recreation | Existing app behavior | Preserve prior native lifecycle/IME tests; no forensic-erase claim. |
 | PRIV-R23-03 | Secure-window screenshots/non-secure display exclusion; clipboard and rich content refused | Existing app behavior | Re-run existing marker positive/negative control. No defense against camera, hostile OS, or keylogger. |
-| PRIV-R23-04 | Show read-only local API observations with per-field unknowns and bounded values | R23 source and Android tests authored | `DevicePrivacySnapshot.kt`, `PrivacyPostureTest.kt`; not compiled/run in this sandbox. No trust verdict. |
+| PRIV-R23-04 | Show read-only local API observations with per-field unknowns and bounded values | R23 source and Android tests authored; first remote compile failed, repair pending retry | `DevicePrivacySnapshot.kt`, `PrivacyPostureTest.kt`; no APK or device case. No trust verdict. |
 | PRIV-R23-05 | Link to keyboard, accessibility, developer, and security Settings; never toggle settings itself | R23 source and UI assertions authored | Actual Settings transitions/OEM availability still require managed API34/36/37 and physical review. Returning from Settings discards the scratch session by design. |
 | PRIV-R23-06 | Explain supported OS-level USB protection and limitations; advise user not to trust unknown hardware | R23 copy authored | The app does not read/attest USB Protection state or block USB. Confirm current device support in the OS UI/docs. |
 | PRIV-R23-07 | No “Tails mode,” global anonymity, secure deletion, or lighter-than-Tails claim | Documentation and UI copy | Keep this boundary in every future network/backup/browser feature and marketing surface. |
@@ -307,11 +307,11 @@ No row gains trust because another mechanism exists. A repair must rerun its gat
 
 ### Not available or not used
 
-- No `java`, `gradle`, `kotlinc`, `adb`, `sdkmanager`, Android SDK, Android Studio Rabbit1 GUI, emulator, physical device, receiver, or test phone was available.
-- No Android compiler/simulator, theorem prover, database, independent agent/reviewer, expert counsel/AX reviewer, or local Android experiment was run.
-- GitHub Action evidence cited for R22 is from its exact older candidate; it is not evidence for the R23 changes. No new workflow run or APK is claimed.
+- No local `java`, `gradle`, `kotlinc`, `adb`, `sdkmanager`, Android SDK, Android Studio Rabbit1 GUI, emulator, physical device, receiver, or test phone was available.
+- No successful R23 Android compile/test, theorem prover, database, independent agent/reviewer, expert counsel/AX reviewer, or local Android experiment was obtained.
+- GitHub privacy run [38859445946](https://github.com/jyvplay/OSB/actions/runs/38859445946) at `a0b9de7e41ed33773a127ced95d299e712d85e71` **failed before tests**: `:privacy:compileDebugKotlin` could not resolve `InputDevice.hasSource` at `DevicePrivacySnapshot.kt:87`; no APK or device cases were produced. The code has been repaired to use the public `sources` mask; retry pending. R22 receipts concern an older candidate and do not verify this patch.
 
-Local scripts can validate XML/manifest structure, ledger hashes, Python tooling, and authored source contracts. They cannot type-check Kotlin, resolve Android API methods, install the application, observe real Settings transitions, or verify USB hardware behavior. R23 claims therefore remain **source-authored / runtime-unverified** until CI or a real Android environment executes them.
+Local scripts can validate XML/manifest structure, ledger hashes, Python tooling, and authored source contracts. They cannot type-check Kotlin, install the application, observe real Settings transitions, or verify USB hardware behavior. R23 remains **not successfully compiled / runtime-unverified** until the repaired source passes CI and a physical hardware review is separately performed.
 
 ## I. Repair and re-verification gate
 

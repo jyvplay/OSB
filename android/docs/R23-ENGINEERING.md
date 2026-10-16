@@ -2,16 +2,16 @@
 
 **Outcome:** one scoped app-level increment was added to the existing separate offline companion. It reports selected Android system observations, retains “unknown” when a value cannot be observed, points the user to Settings, and keeps a permanent disclaimer that it is not a keylogger/malware scan and cannot prove safety or anonymity. The proposed PRD and external research are recorded separately.
 
-**Not delivered:** Tails OS, Tor routing, a global privacy mode, USB policy enforcement, hardware/firmware inspection, a full browser/Office engine, or completion of the original v2.0/v2.1 product. R23 Kotlin and Android instrumentation have **not** been compiled or executed in this sandbox.
+**Not delivered:** Tails OS, Tor routing, a global privacy mode, USB policy enforcement, hardware/firmware inspection, a full browser/Office engine, or completion of the original v2.0/v2.1 product. R23 has not compiled successfully and no Android instrumentation case has executed.
 
-**Evidence:** Python source/manifest guard and its host unittest were run successfully. They are structural checks only. No R23 Android build, APK, emulator/device, Rabbit1 GUI, Kotlin compiler, JVM test, USB device, or physical hardware experiment was available.
+**Evidence:** Local Python source/manifest guard and host suite passed, but they are structural only. The first current-source GitHub privacy CI run failed at Kotlin compilation; no APK/device case was produced. The compiler finding has been repaired in the worktree and a rerun is pending. Android Studio Rabbit1 GUI, local Android SDK/emulator, USB device and physical hardware are unavailable in this sandbox.
 
 ## Runtime inventory — tools actually available/used
 
 - Used: filesystem/shell, local Git, Python **3.11.2**, and the repository's Python validation; new web search and page fetch; source editing.
-- Used this turn: Node **22.22.3** / npm **10.9.8** for `npm ci`, the root landing page's `npm run build`, `npx tsc --noEmit`, and `npm audit`; `gh` was installed but not used. The Vite build and TypeScript check passed. `npm audit` reported **5 advisories (4 high, 1 low)** in the existing root web dependency tree; no dependency upgrades were made because it is outside the Android privacy patch. No GitHub Action was dispatched.
+- Used this turn: Node **22.22.3** / npm **10.9.8** for `npm ci`, the root landing page's `npm run build`, `npx tsc --noEmit`, and `npm audit`; `gh` was used to inspect/watch GitHub checks. The Vite build and TypeScript check passed. `npm audit` reported **5 advisories (4 high, 1 low)** in the existing root web dependency tree; no dependency upgrades were made because it is outside the Android privacy patch.
 - Not installed/available: `java`, Gradle runtime, `kotlinc`, Android SDK, `adb`, `sdkmanager`, Android Studio Rabbit1 GUI, emulator, physical Android device, or USB/hardware test fixture.
-- No independent agents, compiler, Android simulator, theorem prover, database, browser/Office engine, independent human, lawyer, or accessibility reviewer was used. Multiple tool calls are not independent researchers.
+- No independent agents, local Android compiler/simulator, theorem prover, database, browser/Office engine, independent human, lawyer, or accessibility reviewer was used. One remote Kotlin compiler was invoked and failed as recorded in H; multiple tool calls are not independent researchers.
 - Fresh primary-source observations and failed page fetch are listed in [R23 research](research/r23-primary.md). Internet research is not a hardware experiment or expert audit.
 
 ## A. Formal model
@@ -304,13 +304,15 @@ The patch-specific attack for R23 is E1's most dangerous false inference: a deli
 - `python3 tools/module_testability.py` then `--check` — **PASS**, 48/49 narrow subset count; source hashes checked against reviewed inventory.
 - `python3 tools/native_source_audit.py` then `--check` — **PASS**, requirement/ownership inventory regenerated for the added Kotlin source. This is lexical/source ownership, not compiler validation.
 - `python3 tools/check_project.py` — **PASS**, 231 requirement rows, 30 spike IDs, 49 modules, catalog/XML/privacy/traceability/source checks.
+- GitHub privacy workflow [38859445946](https://github.com/jyvplay/OSB/actions/runs/38859445946), commit `a0b9de7e41ed33773a127ced95d299e712d85e71` — **FAIL before tests**: `:privacy:compileDebugKotlin` reported unresolved `InputDevice.hasSource` in `DevicePrivacySnapshot.kt:87`. The workflow reported no APK and no executed device cases. Fixed in the current worktree by using the public `sources` bitmask; the privacy-workflow retry is pending.
+- Separate Android native workflow [38859445862](https://github.com/jyvplay/OSB/actions/runs/38859445862) completed at the same commit: traceability, app assemble, JVM tests, contracts and lint job **PASS**; the `:app` API34 managed-device test job **FAIL**. That job did not run the new `:privacy` posture tests, so it neither verifies nor clears the R23 privacy failure. Exact device-case counts were not recovered because the artifact-host download returned EOF; no case totals are inferred.
 - `npm ci`, `npm run build`, and `npx tsc --noEmit` — **PASS** for the root Vite landing page only; no Android source is included. `npm audit` reported **5 advisories (4 high, 1 low)** in the existing root web dependency tree; no dependency upgrades were made in this Android-focused patch.
-- Runtime checks confirmed Python 3.11.2, Node 22.22.3 and npm 10.9.8; `java`, `gradle`, `kotlinc`, `adb`, and `sdkmanager` are absent. `gh` was installed but not used; no GitHub Action was dispatched.
+- Runtime checks confirmed Python 3.11.2, Node 22.22.3 and npm 10.9.8; local `java`, `gradle`, `kotlinc`, `adb`, and `sdkmanager` are absent. `gh` was used to inspect/watch GitHub checks.
 - Fresh web queries/page fetches are recorded in `research/r23-primary.md`; the direct English Tails warnings fetch failed HTTP500 and its current official search result was used for that snippet. The AOSP USB signaling guide was fetched. No independent expert/reviewer or hardware test.
 
 ### Not executed
 
-No Kotlin compilation, Android Gradle sync/assemble/lint, JVM suite, Android instrumentation, screenshot, installed APK, emulator, external browser, Office engine, network leak test, USB device, physical device, thermal/RSS/footprint measurement, formal proof, or CI run was performed. Historical R22 receipts concern a different candidate and do not verify the R23 patch.
+No **successful** Kotlin compile, Android assemble/lint, JVM suite or Android instrumentation run exists for R23. One remote CI attempt invoked Kotlin compilation but failed before APK creation or device cases. No successful installed APK, screenshot, emulator test, external browser, Office engine, network leak test, USB device, physical device, thermal/RSS/footprint measurement or formal proof is available. Historical R22 receipts concern a different candidate and do not verify this patch.
 
 ## I. Repair and fresh gates
 
