@@ -33,21 +33,24 @@ class PrivacyPlatformTest {
     }
     @Test fun secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl() {
         val instrumentation=InstrumentationRegistry.getInstrumentation()
-        ActivityScenario.launch(PrivacyActivity::class.java).use { scenario ->
-            scenario.onActivity {a ->
-                a.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-                a.setContentView(TextView(a).apply {text="R20 screenshot positive control";setBackgroundColor(Color.rgb(237,19,180))})
-            }
-            UiDevice.getInstance(instrumentation).waitForIdle()
-            fun markers():Int {
-                val image=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-                try { var n=0;for(y in 0 until image.height step 8) for(x in 0 until image.width step 8) if(image.getPixel(x,y)==Color.rgb(237,19,180)) n++;return n }
-                finally {image.recycle()}
-            }
-            assertTrue("Missing visible screenshot positive control",markers()>1000)
-            scenario.onActivity {it.window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)}
-            UiDevice.getInstance(instrumentation).waitForIdle()
-            assertEquals("Secure pixels leaked into screenshot",0,markers())
+        val context=ApplicationProvider.getApplicationContext<android.content.Context>()
+        fun markers():Int {
+            val image=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+            try {var n=0;for(y in 0 until image.height step 8) for(x in 0 until image.width step 8) if(image.getPixel(x,y)==Color.rgb(237,19,180)) n++;return n}
+            finally {image.recycle()}
         }
+        fun capture(unsecured:Boolean):Int {
+            val intent=android.content.Intent(context,PrivacyActivity::class.java).putExtra("unsecuredPositiveControl",unsecured)
+            return ActivityScenario.launch<PrivacyActivity>(intent).use {scenario ->
+                assertTrue(UiDevice.getInstance(instrumentation).wait(androidx.test.uiautomator.Until.hasObject(androidx.test.uiautomator.By.text("R20 screenshot marker")),10000))
+                UiDevice.getInstance(instrumentation).waitForIdle()
+                scenario.onActivity {assertEquals(!unsecured,it.window.attributes.flags and WindowManager.LayoutParams.FLAG_SECURE!=0)}
+                markers()
+            }
+        }
+        // Patch attack: protected from first publication, not a late flag followed by an old-frame screenshot.
+        assertEquals("Initially secure pixels leaked",0,capture(false))
+        assertTrue("Missing separately launched unprotected positive control",capture(true)>1000)
+        assertEquals("Reopened secure window leaked after unprotected control",0,capture(false))
     }
 }

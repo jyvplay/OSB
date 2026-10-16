@@ -1,0 +1,24 @@
+{
+  "run": 38842126545,
+  "candidate": "80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38842126545",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 1,
+    "FAIL": 1,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes",
+      "result": "PASS"
+    }
+  ],
+  "suite": "privacy",
+  "scope": "Actual retained API34 named outcomes (privacy companion only), not physical/full-product/AX/legal acceptance"
+}
