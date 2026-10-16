@@ -77,7 +77,9 @@ class PrivacyActivity: Activity() {
     },InputFilter {_,start,end,dest,dstart,dend ->
         if(dest.length.toLong()-(dend-dstart)+(end-start)>limit) {
             field.error="Input change refused: maximum $limit UTF-16 units."
-            dest.subSequence(dstart,dend).toString() // Preserve exactly the replaced range; never insert a truncated prefix.
+            // TextView.setText (including accessibility replacement) filters against an empty dest,
+            // while Editable.replace supplies the real old range. Preserve both paths.
+            if(dest.isEmpty()) field.text.toString() else dest.subSequence(dstart,dend).toString()
         } else {field.error=null;null}
     })
     private class PrivateText(context:Context):EditText(context) {
