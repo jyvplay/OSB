@@ -1,0 +1,9 @@
+# R23 workspace input verifier — pre-edit checkpoint
+
+Actual b335172/run38867868974:14PASS/1FAIL/0SKIP. New real Dialog/frame screenshot test and stricter original screenshot test PASSED; old `actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty` failed assertNotSame at line37 after one UiObject2 discard click. Whole privacy gate FAILED. Source/test raw receipt retained; do not call14/1 a15-case pass or erase earlier13/1.
+
+Hypotheses H1: UiObject2 click can return before posted View.performClick/UI work settles; H2: an unfinished focus transition makes production correctly refuse the input; H3: real IME/scroll layout covers/clips the target. Log has no post-click view/focus/IME trace, so no historical root cause is asserted.
+
+Construction: use the real focus callback readiness helper for all workspace scenarios; require idle after native UI click/scroll before reading state, no repeat clicks, direct performClick replacement, larger pixel threshold, ignored assertion or automatic test rerun. Retain physical UIAutomator tap, old-editor identity, undo refusal and recreation assertions. Add an actual ordinary scratchpad IME-visible test: request/show the real platform IME, observe real root insets, perform exactly one real discard tap, require a detached/cleared old editor and empty distinct new editor. This is a new attack, not a simulation/forged callback. It must fail if the visible control cannot actually be reached.
+
+Full companion threshold becomes16 names; whole success/noFAIL/noSKIP and exact candidate mandatory, with fresh memory24/full main122 and JVM/contracts/lint. Screenshot replacement does not weaken production GuardedPrivacyActivity; its focus discard stays intact. NewSDK37 attempt is separately predeclared in R23-SDK37-SECOND-PLAN.md, using actual37.0 package and localDevices. No blanket UI-stability/root-cause claim even if repaired cases pass; general OEM/API37/AX/physical gates remain open.
