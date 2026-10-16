@@ -33,6 +33,8 @@ fun TaskPanel(context: Context) {
     var undo by remember { mutableStateOf<TaskChange?>(null) }
     var mergePreview by remember { mutableStateOf<TaskMergePreview?>(null) }
     var pendingExport by remember { mutableStateOf<TaskBook?>(null) }
+    var countsPreview by remember { mutableStateOf<TaskCounts?>(null) }
+    var pendingCounts by remember { mutableStateOf<TaskCounts?>(null) }
     var pendingWorkbook by remember { mutableStateOf<TaskBook?>(null) }
     fun execute(clearInput: Boolean=false, keepUndoOnNoOp:Boolean=false, action: ()->TaskCommit) {
         if(busy) return
@@ -40,7 +42,7 @@ fun TaskPanel(context: Context) {
         scope.launch {
             try {
                 val result=withContext(Dispatchers.IO) { action() }
-                book=result.book;undo=result.undo ?: if(keepUndoOnNoOp) undo?.takeIf {it.matchesAfter(result.book)} else null;mergePreview=null;blocked=false;status="Loaded/saved revision ${result.book.revision}. No reminder scheduled."
+                book=result.book;undo=result.undo ?: if(keepUndoOnNoOp) undo?.takeIf {it.matchesAfter(result.book)} else null;mergePreview=null;countsPreview=null;blocked=false;status="Loaded/saved revision ${result.book.revision}. No reminder scheduled."
                 if(clearInput) { title="";date="";editingId=null }
             } catch(e:kotlinx.coroutines.CancellationException) { throw e }
             catch(_:TaskConflict) { blocked=true;status="Tasks changed elsewhere. Input retained. Reload, cancel this edit and reselect the task to review its current version." }
@@ -78,6 +80,22 @@ fun TaskPanel(context: Context) {
                     status="Literal XLSX report readback verified: ${receipt.bytes} bytes. Dates are text; not a task backup/import file or Office engine."
                 } catch(e:kotlinx.coroutines.CancellationException) {throw e}
                 catch(_:Exception) {status="Workbook export refused or unconfirmed; created document may be empty/partial. Tasks unchanged. Unsupported XML/escape-like text is not silently changed."}
+                finally {busy=false}
+            }
+        }
+    }
+    val countsPicker=rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {uri ->
+        val snapshot=pendingCounts;pendingCounts=null
+        if(uri==null) status="Counts export cancelled; no app write attempted."
+        else if(snapshot==null) status="Counts snapshot lost after recreation; created document may be empty."
+        else {
+            busy=true
+            scope.launch {
+                try {
+                    val receipt=withContext(Dispatchers.IO) {TaskTransferIO.writeCreatedCounts(context.contentResolver,uri,snapshot)}
+                    status="Counts-only XLSX readback verified: ${receipt.bytes} bytes. Titles, IDs, dates and revision omitted; counts/context can still identify you."
+                } catch(e:kotlinx.coroutines.CancellationException) {throw e}
+                catch(_:Exception) {status="Counts export unconfirmed; new document may be empty/partial. Local tasks unchanged."}
                 finally {busy=false}
             }
         }
@@ -159,6 +177,16 @@ fun TaskPanel(context: Context) {
             pendingWorkbook=book
             runCatching {workbookPicker.launch("fusion-task-report-r${book!!.revision}.xlsx")}.onFailure {pendingWorkbook=null;status="Document picker unavailable; no workbook written."}
         },modifier=Modifier.testTag("tasks-export-workbook")) {Text("Export task report — new XLSX")}
+        Text("Optional counts-only report: explicitly omits titles, IDs, dates, order and revision. Counts and sharing context may still identify people. Not anonymous, not a backup. Preview uses the loaded snapshot; reload first if another window changed tasks.")
+        Button(enabled=!busy && !blocked && book!=null && editingId==null,onClick={countsPreview=TaskCounts.from(book!!)},modifier=Modifier.testTag("tasks-preview-counts")) {Text("Preview counts-only report")}
+        countsPreview?.let {counts ->
+            Text("Counts: active open ${counts.activeOpen}, active completed ${counts.activeDone}; archived open ${counts.archivedOpen}, archived completed ${counts.archivedDone}.")
+            Button(enabled=!busy && !blocked && editingId==null,onClick={
+                pendingCounts=counts
+                runCatching {countsPicker.launch("fusion-task-counts.xlsx")}.onFailure {pendingCounts=null;status="Document picker unavailable; no counts written."}
+            },modifier=Modifier.testTag("tasks-export-counts")) {Text("Export reviewed counts — new XLSX")}
+            Button(enabled=!busy,onClick={countsPreview=null}) {Text("Discard counts preview")}
+        }
         Button(enabled=!busy && !blocked && book!=null && editingId==null,onClick={
             mergePreview=null
             runCatching {importPicker.launch(arrayOf("*/*"))}.onFailure {status="Document picker unavailable; no tasks changed."}

@@ -213,7 +213,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "f89401cf1435b011a8c51b177de499bce4dade07bafb84d7b3ff00d4eff99d98"
+      "sha256": "8032b952bdec4b8e29a8d717d868aabd8068558352dc0a058fb88a688e6a2280"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
@@ -360,6 +360,12 @@
       "sha256": "8c4a53326accaad319686ae6597d81ea0904bcd66666208826399513a2b65dcb"
     },
     {
+      "path": "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "f6ed00aec9a528442b02302d971d02de1aaea1e43387d2c6c56eb3fc05555b9f"
+    },
+    {
       "path": "core/perf/src/main/java/dev/fusion/perf/Perf.kt",
       "module": ":core:perf",
       "package": "dev.fusion.perf",
@@ -490,6 +496,12 @@
       "module": ":feature:browser",
       "package": "dev.fusion.browser.model",
       "sha256": "e6012ae4fef688f47061294cd58164eeb2cf03a7b766ab9814a49225b7a4c563"
+    },
+    {
+      "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt",
+      "module": ":feature:browser",
+      "package": "dev.fusion.browser.model",
+      "sha256": "dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7"
     },
     {
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/LocalShell.kt",
@@ -795,7 +807,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "2fc77fe283903f0c77019726fe714e8c10bec39670eab40e264691dae4cbdd21"
+      "sha256": "a7409f5b4a9f34cafd58a8d71c2d6d8cae0ee81371fb04d127598389f687eb78"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",
@@ -807,7 +819,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "d902991cc5486e95d5f90f67eb3a6f7c915f2c0cb457ba2727ba40eb532ff238"
+      "sha256": "86e4a047502fe0ced102795e8f777ba81f0f23e163f71be7932f08a7cf322d8d"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
@@ -826,6 +838,12 @@
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
       "sha256": "48c312d6b85df0152df016dc140b23f2734d1ea5aaebcb0a6b55158a439dc1c5"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "a0cb99d077c6179b91c5ee9aebc8c79773fd7db7f109f5cd693cacedd157a36b"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt",

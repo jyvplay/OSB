@@ -1,7 +1,7 @@
 name: Android Tasks focused diagnostic
 on:
   push:
-    paths: ['android/app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R19TaskUiDeviceTest.kt', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt', 'android/tools/report_device_results.py', '.github/workflows/android-task-diagnostic.yml']
+    paths: ['android/app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R19TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R20CountsUiDeviceTest.kt', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt', 'android/tools/report_device_results.py', '.github/workflows/android-task-diagnostic.yml']
 permissions:
   contents: read
 jobs:
@@ -28,7 +28,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R17TaskUiDeviceTest,dev.fusion.shell.R18TaskUiDeviceTest,dev.fusion.shell.R19TaskUiDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R17TaskUiDeviceTest,dev.fusion.shell.R18TaskUiDeviceTest,dev.fusion.shell.R19TaskUiDeviceTest,dev.fusion.shell.R20CountsUiDeviceTest
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py

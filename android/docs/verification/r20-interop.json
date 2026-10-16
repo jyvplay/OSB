@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "cases": 760,
+  "summary_readbacks": 320,
+  "link_references": 140,
+  "lease_references": 300,
+  "summary_bytes_min": 2473,
+  "summary_bytes_max": 2477,
+  "scope": "Actual separate Java libraries/public consumer plus Python references and openpyxl 3.1.5. Authored postimplementation corpus, not independent authorship or blind holdout. Equal count vectors give identical payloads in this runtime; no anonymity or all-Office claim.",
+  "requests_sha256": "b0155dc88d30032214ecf446a9c39c972357a7da5eb7822a8f759ed97b56813d",
+  "outputs_sha256": "6e4937ca970186827b7b2e5ef2bdad7215d3b4d3ffa054352a27f150f20a3404",
+  "sha256": {
+    "tools/run_r20_interop.py": "94ccc526573a6f433b94e1f4819e80bd6282bd0f2b0c0d0e42ff6f621096a6e1",
+    "testing/build/r20/result.txt": "051182c22fb223b8d1f57ca0c4e837156b9e79c49fd6293733280e4d30c3b01b"
+  }
+}

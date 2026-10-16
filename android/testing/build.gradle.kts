@@ -229,3 +229,16 @@ tasks.register<JavaExec>("r19Contracts") {
     classpath = r19.runtimeClasspath
     mainClass.set("dev.fusion.testing.R19Checks")
 }
+
+val r20 by sourceSets.creating
+kotlin.sourceSets.named("r20") {
+    kotlin.srcDir("src/r20/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.include("**/TaskBook.kt", "**/TaskCounts.kt", "**/LiteralWorkbook.kt", "**/LinkDisclosure.kt", "**/BrowserSessions.kt", "**/PermissionLeases.kt", "**/R20Checks.kt", "**/R20Oracle.kt")
+}
+tasks.register<JavaExec>("r20Contracts") {
+    dependsOn(r20.classesTaskName);classpath=r20.runtimeClasspath;mainClass.set("dev.fusion.testing.R20Checks")
+}

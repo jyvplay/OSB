@@ -168,18 +168,22 @@
       "module": ":core:security",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual key/crypto paths, fail closed after Android key loss",
+      "behavior": "Actual key/crypto paths, fail closed after Android key loss; bounded offline link disclosure projection (not anonymization)",
       "production": [
-        "core/security/src/main/java/dev/fusion/security/IndexKeys.kt"
+        "core/security/src/main/java/dev/fusion/security/IndexKeys.kt",
+        "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt"
       ],
       "checks": [
-        "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt",
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
       "sha256": {
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt": "3ac11bb42295d9552e997fe3d17fd25ece8872144e580c5400e9e3fba16bddf7",
-        "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt": "f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0"
+        "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt": "f6ed00aec9a528442b02302d971d02de1aaea1e43387d2c6c56eb3fc05555b9f",
+        "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt": "f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0",
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548"
       }
     },
     {
@@ -364,18 +368,22 @@
       "module": ":feature:browser",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app",
+      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI)",
       "production": [
-        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt"
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt"
       ],
       "checks": [
-        "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt"
+        "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt",
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt"
       ],
       "command": ":testing:browserSessionContracts",
       "limit": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "sha256": {
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
-        "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt": "ead3541b5e0e31da1d49ef735db6a43e88f445e821fb9f77f766c954b4f1d3a1"
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt": "dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7",
+        "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt": "ead3541b5e0e31da1d49ef735db6a43e88f445e821fb9f77f766c954b4f1d3a1",
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548"
       }
     },
     {
@@ -738,13 +746,14 @@
       "module": ":feature:automation",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Latest d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.",
+      "behavior": "Own-app action plans and immutable date-only tasks with editing, archive/restore revision reserve, FTS1 read/FTS2 write, bounded query/order and revision-checked private storage. R18 host checks pass. Latest d6f7393 native85/86 and focused2/2: all new R18 cases pass, but older add UI timed out with revision0/empty store. Prior9340662 full86/86 is retained; no stability claim.; R20 counts-only disclosure projection and preview/new-document export",
       "production": [
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
         "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",
         "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
-        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt"
+        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
@@ -761,7 +770,8 @@
         "tools/run_r18_interop.py",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt"
+        "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt",
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt"
       ],
       "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py",
       "limit": "No permanent deletion/history/recurrence/reminders/calendar integration or Room; plaintext/same-process storage only; UI instability, keyboard/AX/physical acceptance remain open. FTS2 mutations prevent old-client downgrade reading. Action plans are not transactional/scheduled.",
@@ -769,8 +779,9 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4",
         "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt": "7e55bab44fdf1adcea454abf8b843faf14f5cac4f8bda2d666caa95001d15ddf",
-        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "2fc77fe283903f0c77019726fe714e8c10bec39670eab40e264691dae4cbdd21",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "a7409f5b4a9f34cafd58a8d71c2d6d8cae0ee81371fb04d127598389f687eb78",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt": "c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt": "a0cb99d077c6179b91c5ee9aebc8c79773fd7db7f109f5cd693cacedd157a36b",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
         "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
@@ -785,7 +796,8 @@
         "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskDeviceTest.kt": "bdc34d1e78266bd1de7ad7f8938195dca348b5ffa0f30c24e29a66194dd7dade",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "6232f963f6e23ca1bca0edf48e42a1151cdabf4e00307a8b3d3cf6b7870bc571",
-        "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130"
+        "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
+        "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548"
       }
     },
     {

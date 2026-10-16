@@ -20,6 +20,11 @@ object TaskTransferIO {
     }
     fun writeCreatedWorkbook(resolver:ContentResolver,created:Uri,book:TaskBook):Receipt =
         write(resolver,created,book.revision,TaskWorkbook.export(book).bytes,512*1024)
+    data class CountsReceipt(val bytes:Int,val sha256:String)
+    fun writeCreatedCounts(resolver:ContentResolver,created:Uri,counts:TaskCounts):CountsReceipt {
+        val r=write(resolver,created,0,counts.export().bytes,64*1024)
+        return CountsReceipt(r.bytes,r.sha256)
+    }
     private fun write(resolver:ContentResolver,created:Uri,revision:Long,bytes:ByteArray,limit:Int):Receipt {
         require(created.scheme=="content" && bytes.size<=limit)
         requireNotNull(resolver.openOutputStream(created,"wt")) {"Output unavailable"}.use {it.write(bytes)}

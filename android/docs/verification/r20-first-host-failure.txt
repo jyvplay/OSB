@@ -1,0 +1,7 @@
+Exception in thread "main" java.nio.charset.MalformedInputException: Input length = 1
+	at java.base/java.nio.charset.CoderResult.throwException(Unknown Source)
+	at java.base/java.nio.charset.CharsetEncoder.encode(Unknown Source)
+	at dev.fusion.security.LinkDisclosure.project(LinkDisclosure.kt:16)
+	at dev.fusion.testing.R20Checks.main$lambda$9(R20Checks.kt:35)
+	at dev.fusion.testing.R20Checks.no(R20Checks.kt:10)
+	at dev.fusion.testing.R20Checks.main(R20Checks.kt:35)

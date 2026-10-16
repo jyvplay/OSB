@@ -106,7 +106,10 @@ class R19TaskUiDeviceTest {
             phase="reopen actual exported copy"
             compose.onNodeWithTag("tasks-import").performScrollTo().assertIsDisplayed().performClick();picker();selectFile(reportName)
             compose.waitUntil(10000) {compose.onAllNodesWithText("Preview: 0 new; 1 identical.",substring=true).fetchSemanticsNodes().isNotEmpty()}
-            compose.onNodeWithText("Discard merge preview").performScrollTo().performClick()
+            // R20 patch attack: actual no-op confirmation must preserve the older meaningful import token.
+            compose.onNodeWithTag("tasks-confirm-merge").performScrollTo().performClick()
+            compose.waitUntil(10000) {compose.onAllNodes(hasTestTag("tasks-undo") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+            compose.onNodeWithTag("tasks-confirm-merge").assertDoesNotExist()
             phase="undo merge after read-only export/preview"
             compose.onNodeWithTag("tasks-undo").performScrollTo().assertIsDisplayed().performClick();saved(2)
             assertTrue(TaskRepository(File(context.noBackupFilesDir,"tasks-v1.bin")).load().tasks.isEmpty())

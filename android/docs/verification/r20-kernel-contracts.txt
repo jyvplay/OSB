@@ -1,0 +1,22 @@
+R20: 639 actual public-consumer assertions PASS
+
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Separately compiled actual R20 production libraries; no Android execution inferred.
+a425b64281ade8e3f90f4d60c36ae79127bd1c2f91f6a1f6274b58c493f611e9  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt
+a0cb99d077c6179b91c5ee9aebc8c79773fd7db7f109f5cd693cacedd157a36b  feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt
+d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
+f6ed00aec9a528442b02302d971d02de1aaea1e43387d2c6c56eb3fc05555b9f  core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt
+dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7  feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt
+e6012ae4fef688f47061294cd58164eeb2cf03a7b766ab9814a49225b7a4c563  feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessions.kt
+23c1d40268637ba665398a29f8a9f2105a4a3131ec220375c0c82746d67d8548  testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt
+768cc5b0feaf89d43817d3e8d40c86258d695d47ed31d30e9537b29a7ee51f49  testing/src/r20/kotlin/dev/fusion/testing/R20Oracle.kt
+80fdb2efd5d5facb6fc201b103a6b51b2eeb259729130234f669c415ff59ee26  tools/run_r20_contracts.py
+f3208fe4dba04adf0bab474ed7c30859f7e53445e5782c78f41f8677bbd7582b  testing/build/r20/LiteralWorkbook.jar
+d2500e80d7e8f2ffd96f0129494885789666e3b7b061d8c5896211352754d58a  testing/build/r20/TaskCounts.jar
+6b43a029e5be2ae5a4fc543e717e9db445f8a4662cb2f88d1f53cb1659183790  testing/build/r20/LinkDisclosure.jar
+3a9c778bef7a41d8d0824c770776e5de47ccfd54108d313ea7b5982bf9992404  testing/build/r20/PermissionLeases.jar
+0329f8ab787adf2f0deaec270361944f7673e47deb438c20912079cf7016e13e  testing/build/r20/checks.jar
