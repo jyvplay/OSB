@@ -1,7 +1,7 @@
 name: Android R23 memory and R22 boundary checks
 on:
   push:
-    paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/format/archive/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R22*', 'android/app/src/androidTest/java/dev/fusion/shell/R23*', '.github/workflows/android-r22.yml']
+    paths: ['android/gradle/**', 'android/gradle.properties', 'android/format/pdf/**', 'android/format/ooxml/**', 'android/format/archive/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R22*', 'android/app/src/androidTest/java/dev/fusion/shell/R23*', '.github/workflows/android-r22.yml']
   workflow_dispatch:
 permissions:
   contents: read

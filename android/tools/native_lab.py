@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Real Android laptop lab. No downloads, synthetic screenshots, or fake device results.
-Requires JDK17, SDK36/35+36 build tools, and (for visual) an already-running disposable AVD.
+Requires JDK17, SDK37/35+36 build tools, and (for visual) an already-running disposable AVD.
 """
 import argparse
 from datetime import datetime, timezone
@@ -85,7 +85,7 @@ def doctor(sdk_arg=None):
     checks = {
         'java17': bool(re.search(r'version "17\.', versions['java'])),
         'javac17': bool(re.search(r'javac 17\.', versions['javac'])),
-        'platform36': (sdk/'platforms/android-36/android.jar').is_file(),
+        'platform37': (sdk/'platforms/android-37/android.jar').is_file(),
         'buildTools35': (sdk/'build-tools/35.0.0').is_dir(),
         'buildTools36': (sdk/'build-tools/36.0.0').is_dir(),
         'wrapper': (ROOT/'gradle/wrapper/gradle-wrapper.jar').is_file(),
@@ -93,7 +93,7 @@ def doctor(sdk_arg=None):
     adb = sdk/'platform-tools'/('adb'+suffix)
     report = {'checks': checks, 'versions': versions, 'sdk': str(sdk), 'adb': str(adb),
               'adbPresent': adb.is_file(), 'buildPrerequisitesPresent': all(checks.values()),
-              'limitations': 'No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Distribution SHA-256 remains unpinned; release supply-chain gate open.'}
+              'limitations': 'No dependency resolution, Gradle build, emulator, UI or network check performed by doctor. Gradle distribution SHA-256 is pinned from upstream GitHub metadata; no independent provenance or release supply-chain acceptance.'}
     return report
 
 

@@ -54,6 +54,22 @@ class R23EvidenceTests(unittest.TestCase):
             self.assertFalse(assess(malformed, malformed['candidate'], 'r23_privacy_api34')[0])
             self.assertFalse(assess(substrate, substrate['candidate'], value)[0])
 
+    def test_actual_memory_transfer_has_narrow_scope_and_exact_candidate(self):
+        receipt = json.loads((ROOT / 'docs/verification/r23-memory-transport-result.json').read_text())
+        self.assertEqual({'PASS': 24, 'FAIL': 0, 'SKIP': 0}, receipt['counts'])
+        self.assertTrue(assess(receipt, receipt['candidate'], 'r23_memory_transport_api34')[0])
+        self.assertFalse(assess(receipt, 'f' * 40, 'r23_memory_transport_api34')[0])
+        self.assertFalse(assess(receipt, receipt['candidate'], 'r23_privacy_api34')[0])
+        for claim in UNSUPPORTED:
+            self.assertFalse(assess(receipt, receipt['candidate'], claim)[0])
+        for mode in ['FAIL', 'SKIP', 'missing', 'duplicate']:
+            bad = copy.deepcopy(receipt)
+            if mode == 'missing': bad['cases'].pop()
+            elif mode == 'duplicate': bad['cases'].append(bad['cases'][0])
+            else: bad['cases'][0]['result'] = mode
+            bad['counts'] = {key: sum(c['result'] == key for c in bad['cases']) for key in ['PASS', 'FAIL', 'SKIP']}
+            self.assertFalse(assess(bad, bad['candidate'], 'r23_memory_transport_api34')[0])
+
     def test_malformed_input_is_refusal_not_exception(self):
         for receipt in [None, [], {}, {'cases': [{}]}]:
             self.assertFalse(assess(receipt, None, 'r23_input_api34')[0])

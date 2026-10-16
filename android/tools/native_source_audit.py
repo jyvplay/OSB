@@ -22,7 +22,7 @@ FAMILIES={
 FOUNDATIONS=[
  ('Native H1 desktop, not stock desktop replacement','Partial own Compose host; external display is still a noninteractive session mirror.'),
  ('v2.1 below-floor Compat, not hardware hard block','No floor hard block; measured Compat/Standard/Studio policy incomplete.'),
- ('API34 minimum / compile37 / target36→37','min34/compile36/target36; compile37 deviation remains.'),
+ ('API34 minimum / compile37 / target36→37','min34/compile37/target37 declared with AGP9.1.1/Gradle9.3.1; new build verification pending; API37 runtime/physical/GUI acceptance still open.'),
  ('arm64 and 4K/16K native pages','No linked native/transitive APK audit or physical page-size test.'),
  ('Immutable deterministic WindowEngine / effects / versioned restore','Published list snapshots protected, deterministic kernel tests; full effect/session integration incomplete.'),
  ('Open idempotency / command replay','Ordered epoch/sequence stream and codec v3 tested across Close/recovery; raw Open keys still deduplicate only live windows. No durable acknowledgement or multi-writer log.'),

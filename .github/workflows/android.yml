@@ -39,7 +39,7 @@ jobs:
           else
             echo "::notice::SDK inventory unavailable; no API37 availability conclusion."
           fi
-          if ! "$SDK_MANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
+          if ! "$SDK_MANAGER" 'platforms;android-37' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
             cat sdk-setup.log
             echo "::error::SDK component installation failed before Android compilation. See sdk-setup.log artifact."
             exit 1
