@@ -1,0 +1,169 @@
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 49, "unfinished": 49, "unfinished_percent": 100.0}
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+{"not_established": 1, "not_established_percent": 2.04, "substantial_testable_subsets": 48, "testable_percent": 97.96, "total": 49}
+49 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+R23: 898161 assertions PASS; 160000 exhaustive touch traces; no Android or hardware execution inferred.
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R22: 37 actual public-consumer assertions PASS; not Office/XML/ZIP universal acceptance
+{"python": "3.11.2", "openpyxl": "3.1.5", "xlsxwriter": "3.2.5", "script_sha256": "56d2182d77c143673e78bec309a379cda39c2203537b1a8d7698d6e5d2659875", "metadata_note": "Producer modified timestamps can vary; seed fixes cell corpus, not every input byte.", "seed": 220022, "requests": 327, "accepted": 271, "refused": 56, "equal_byte_pairs": 15, "request_sha256": "33d617084eb69b7b02d28c805146c306acc5f1e0195bdde36b0319026239d840", "output_sha256": "90b2123104bcbd4c76bf46dbb25aa663ddec0a95991d4b3686aae3b8bf0ae9ed", "seconds_observed": 1.435, "scope": "Authored corpora; actual Python ZIP/XML producers versus actual Kotlin implementations on JVM, not Android/Office runtime or blind audit."}
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R21: 376 actual public-consumer assertions PASS; no renderer or anonymity proof
+test_nonzero_timeout_and_bad_limits (test_bounded_process.BoundedProcessChecks.test_nonzero_timeout_and_bad_limits) ... ok
+test_overflow_both_pipes (test_bounded_process.BoundedProcessChecks.test_overflow_both_pipes) ... ok
+test_success_exact_byte_boundary_and_stderr (test_bounded_process.BoundedProcessChecks.test_success_exact_byte_boundary_and_stderr) ... ok
+test_command_injection_is_escaped (test_ci_annotations.AnnotationChecks.test_command_injection_is_escaped) ... ok
+test_compiler_error_and_tail (test_ci_annotations.AnnotationChecks.test_compiler_error_and_tail) ... ok
+test_empty_log_does_not_invent_a_cause (test_ci_annotations.AnnotationChecks.test_empty_log_does_not_invent_a_cause) ... ok
+test_github_truncation_budget_and_task_noise (test_ci_annotations.AnnotationChecks.test_github_truncation_budget_and_task_noise) ... ok
+test_large_binary_log_has_bounded_output (test_ci_annotations.AnnotationChecks.test_large_binary_log_has_bounded_output) ... ok
+test_missing_log_is_an_error (test_ci_annotations.AnnotationChecks.test_missing_log_is_an_error) ... ok
+test_phase_does_not_mislabel_unit_failures_as_assembly (test_ci_annotations.AnnotationChecks.test_phase_does_not_mislabel_unit_failures_as_assembly) ... ok
+test_unicode_budget_is_bytes_not_characters (test_ci_annotations.AnnotationChecks.test_unicode_budget_is_bytes_not_characters) ... ok
+test_cases_not_inferred_from_success (test_collect_native_evidence.NativeReceiptChecks.test_cases_not_inferred_from_success) ... ok
+test_conflicting_execution_claims_refused (test_collect_native_evidence.NativeReceiptChecks.test_conflicting_execution_claims_refused) ... ok
+test_duplicate_refused_across_annotations (test_collect_native_evidence.NativeReceiptChecks.test_duplicate_refused_across_annotations) ... ok
+test_exact_statuses (test_collect_native_evidence.NativeReceiptChecks.test_exact_statuses) ... ok
+test_explicit_no_execution_is_zero_not_pass (test_collect_native_evidence.NativeReceiptChecks.test_explicit_no_execution_is_zero_not_pass) ... ok
+test_unknown_or_truncated_status_refused (test_collect_native_evidence.NativeReceiptChecks.test_unknown_or_truncated_status_refused) ... ok
+test_conflicting_duplicate_is_refused (test_device_results.DeviceReportChecks.test_conflicting_duplicate_is_refused) ... ok
+test_failure_error_skip_and_success_are_distinct (test_device_results.DeviceReportChecks.test_failure_error_skip_and_success_are_distinct) ... ok
+test_long_failure_retains_own_frame_and_stays_bounded (test_device_results.DeviceReportChecks.test_long_failure_retains_own_frame_and_stays_bounded) ... ok
+test_missing_is_not_a_pass (test_device_results.DeviceReportChecks.test_missing_is_not_a_pass) ... ok
+test_workflow_command_escaping (test_device_results.DeviceReportChecks.test_workflow_command_escaping) ... ok
+test_actual_canonical_distribution_pin (test_gradle_distribution.DistributionPinTests.test_actual_canonical_distribution_pin) ... ok
+test_presence_is_not_configuration_duplicate_last_value_is_refused (test_gradle_distribution.DistributionPinTests.test_presence_is_not_configuration_duplicate_last_value_is_refused) ... ok
+test_wrong_distribution_hash_alias_or_noncanonical_escape_refused (test_gradle_distribution.DistributionPinTests.test_wrong_distribution_hash_alias_or_noncanonical_escape_refused) ... ok
+test_all_included_modules_accounted_for (test_module_audit.ModuleAuditChecks.test_all_included_modules_accounted_for) ... ok
+test_duplicate_module_is_rejected (test_module_audit.ModuleAuditChecks.test_duplicate_module_is_rejected) ... ok
+test_missing_module_is_rejected (test_module_audit.ModuleAuditChecks.test_missing_module_is_rejected) ... ok
+test_nonexistent_alias_is_rejected (test_module_audit.ModuleAuditChecks.test_nonexistent_alias_is_rejected) ... ok
+test_report_is_reproducible (test_module_audit.ModuleAuditChecks.test_report_is_reproducible) ... ok
+test_source_presence_cannot_bypass_acceptance (test_module_audit.ModuleAuditChecks.test_source_presence_cannot_bypass_acceptance) ... ok
+test_current_pairings_and_denominator (test_module_testability.TestabilityCensusChecks.test_current_pairings_and_denominator) ... ok
+test_duplicate_module_rejected (test_module_testability.TestabilityCensusChecks.test_duplicate_module_rejected) ... ok
+test_generated_report (test_module_testability.TestabilityCensusChecks.test_generated_report) ... ok
+test_label_without_behavioral_check_rejected (test_module_testability.TestabilityCensusChecks.test_label_without_behavioral_check_rejected) ... ok
+test_other_modules_source_cannot_earn_credit (test_module_testability.TestabilityCensusChecks.test_other_modules_source_cannot_earn_credit) ... ok
+test_source_presence_does_not_upgrade_full_acceptance (test_module_testability.TestabilityCensusChecks.test_source_presence_does_not_upgrade_full_acceptance) ... ok
+test_stale_source_rejected (test_module_testability.TestabilityCensusChecks.test_stale_source_rejected) ... ok
+test_apk_metadata_identity_path_and_split_guards (test_native_lab.NativeLabChecks.test_apk_metadata_identity_path_and_split_guards) ... ok
+test_explicit_serial_and_consent (test_native_lab.NativeLabChecks.test_explicit_serial_and_consent) ... ok
+test_font_restore_input_bounds (test_native_lab.NativeLabChecks.test_font_restore_input_bounds) ... ok
+test_instrumentation_requires_exact_completion (test_native_lab.NativeLabChecks.test_instrumentation_requires_exact_completion) ... ok
+test_missing_or_truncated_capture_refused (test_native_lab.NativeLabChecks.test_missing_or_truncated_capture_refused) ... ok
+test_titlebar_and_pending_copy_source_regressions (test_native_lab.NativeLabChecks.test_titlebar_and_pending_copy_source_regressions) ... ok
+test_backend_denial_replaces_dangerous_legacy_bodies (test_native_source_audit.NativeSourceAuditChecks.test_backend_denial_replaces_dangerous_legacy_bodies) ... ok
+test_complete_scope_register_and_foundations_accounted_for (test_native_source_audit.NativeSourceAuditChecks.test_complete_scope_register_and_foundations_accounted_for) ... ok
+test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible) ... ok
+test_database_upgrade_and_write_failures_are_not_hidden (test_native_source_audit.NativeSourceAuditChecks.test_database_upgrade_and_write_failures_are_not_hidden) ... ok
+test_external_documentfile_public_signature_is_exported (test_native_source_audit.NativeSourceAuditChecks.test_external_documentfile_public_signature_is_exported) ... ok
+test_implementation_is_not_blindly_exported (test_native_source_audit.NativeSourceAuditChecks.test_implementation_is_not_blindly_exported) ... ok
+test_keystore_read_paths_do_not_regenerate_keys (test_native_source_audit.NativeSourceAuditChecks.test_keystore_read_paths_do_not_regenerate_keys) ... ok
+test_native_actions_and_capture_evidence_remain_real (test_native_source_audit.NativeSourceAuditChecks.test_native_actions_and_capture_evidence_remain_real) ... ok
+test_native_encryption_obligation_is_in_real_lab (test_native_source_audit.NativeSourceAuditChecks.test_native_encryption_obligation_is_in_real_lab) ... ok
+test_notes_adapter_and_ui_do_not_use_unchecked_filename_io (test_native_source_audit.NativeSourceAuditChecks.test_notes_adapter_and_ui_do_not_use_unchecked_filename_io) ... ok
+test_pro_sms_keeps_telephony_hardware_optional (test_native_source_audit.NativeSourceAuditChecks.test_pro_sms_keeps_telephony_hardware_optional) ... ok
+test_removed_real_notes_dependency_is_detected (test_native_source_audit.NativeSourceAuditChecks.test_removed_real_notes_dependency_is_detected) ... ok
+test_stale_picker_results_cannot_bypass_module_gates (test_native_source_audit.NativeSourceAuditChecks.test_stale_picker_results_cannot_bypass_module_gates) ... ok
+test_default_commands_do_not_collect_identifiers_or_private_data (test_pilot_reporting.PilotReportTest.test_default_commands_do_not_collect_identifiers_or_private_data) ... ok
+test_empty_property_is_unknown_not_false (test_pilot_reporting.PilotReportTest.test_empty_property_is_unknown_not_false) ... ok
+test_failed_command_does_not_become_an_observation (test_pilot_reporting.PilotReportTest.test_failed_command_does_not_become_an_observation) ... ok
+test_observations_are_bounded (test_pilot_reporting.PilotReportTest.test_observations_are_bounded) ... ok
+test_deflate_length_end_extra_stream_and_filter_attacks (test_png_capture.PngCaptureChecks.test_deflate_length_end_extra_stream_and_filter_attacks) ... ok
+test_every_single_byte_corruption_and_truncation_refused (test_png_capture.PngCaptureChecks.test_every_single_byte_corruption_and_truncation_refused) ... ok
+test_idat_order_unknown_critical_and_animation (test_png_capture.PngCaptureChecks.test_idat_order_unknown_critical_and_animation) ... ok
+test_parameter_and_chunk_count_bounds (test_png_capture.PngCaptureChecks.test_parameter_and_chunk_count_bounds) ... ok
+test_recorded_header_only_counterexample (test_png_capture.PngCaptureChecks.test_recorded_header_only_counterexample) ... ok
+test_small_color_metadata_and_profile_refusal (test_png_capture.PngCaptureChecks.test_small_color_metadata_and_profile_refusal) ... ok
+test_supported_rgb_rgba_and_all_row_filters (test_png_capture.PngCaptureChecks.test_supported_rgb_rgba_and_all_row_filters) ... ok
+test_actual_catalog_not_listed_old_spelling_does_not_mean_no_sdk37 (test_probe_android_sdk.SdkCatalogTests.test_actual_catalog_not_listed_old_spelling_does_not_mean_no_sdk37) ... ok
+test_catalog_consumed_output_and_count_caps (test_probe_android_sdk.SdkCatalogTests.test_catalog_consumed_output_and_count_caps) ... ok
+test_exact_platform_tokens_and_lookalikes (test_probe_android_sdk.SdkCatalogTests.test_exact_platform_tokens_and_lookalikes) ... ok
+test_real_absent_manager_is_unknown_and_cli_nonzero (test_probe_android_sdk.SdkCatalogTests.test_real_absent_manager_is_unknown_and_cli_nonzero) ... ok
+test_actual_historical_classifications (test_r17_evidence.EvidenceTests.test_actual_historical_classifications) ... ok
+test_api_limit_and_roundtrip (test_r17_evidence.EvidenceTests.test_api_limit_and_roundtrip) ... ok
+test_duplicate_refused (test_r17_evidence.EvidenceTests.test_duplicate_refused) ... ok
+test_hash_refused (test_r17_evidence.EvidenceTests.test_hash_refused) ... ok
+test_missing_refused (test_r17_evidence.EvidenceTests.test_missing_refused) ... ok
+test_profile_hash_refused (test_r17_evidence.EvidenceTests.test_profile_hash_refused) ... ok
+test_truncation_refused (test_r17_evidence.EvidenceTests.test_truncation_refused) ... ok
+test_build_or_queue_cannot_replace_execution (test_r18_evidence.R18EvidenceTests.test_build_or_queue_cannot_replace_execution) ... ok
+test_duplicate_or_lied_counts (test_r18_evidence.R18EvidenceTests.test_duplicate_or_lied_counts) ... ok
+test_exact_subset_fixture (test_r18_evidence.R18EvidenceTests.test_exact_subset_fixture) ... ok
+test_failure_or_skip_not_green (test_r18_evidence.R18EvidenceTests.test_failure_or_skip_not_green) ... ok
+test_missing_required_case (test_r18_evidence.R18EvidenceTests.test_missing_required_case) ... ok
+test_no_modal_promotions (test_r18_evidence.R18EvidenceTests.test_no_modal_promotions) ... ok
+test_patch_does_not_inherit_trust (test_r18_evidence.R18EvidenceTests.test_patch_does_not_inherit_trust) ... ok
+test_run_locator_consistency_not_authentication (test_r18_evidence.R18EvidenceTests.test_run_locator_consistency_not_authentication) ... ok
+test_actual_95_case_candidate_cannot_inherit_new_picker_workflow (test_r19_evidence.R19EvidenceTests.test_actual_95_case_candidate_cannot_inherit_new_picker_workflow) ... ok
+test_actual_spike_is_only_its_own_named_experiment (test_r19_evidence.R19EvidenceTests.test_actual_spike_is_only_its_own_named_experiment) ... ok
+test_corrupted_receipt_refused (test_r19_evidence.R19EvidenceTests.test_corrupted_receipt_refused) ... ok
+test_modal_shortcuts_refused (test_r19_evidence.R19EvidenceTests.test_modal_shortcuts_refused) ... ok
+test_repaired_candidate_inherits_no_pass (test_r19_evidence.R19EvidenceTests.test_repaired_candidate_inherits_no_pass) ... ok
+test_actual_earlier_main_candidate_is_only_its_own_gate (test_r20_evidence.R20EvidenceTests.test_actual_earlier_main_candidate_is_only_its_own_gate) ... ok
+test_actual_input_feedback_failure_cannot_promote_workspace (test_r20_evidence.R20EvidenceTests.test_actual_input_feedback_failure_cannot_promote_workspace) ... ok
+test_actual_later_main_failure_cannot_be_cherry_picked (test_r20_evidence.R20EvidenceTests.test_actual_later_main_failure_cannot_be_cherry_picked) ... ok
+test_actual_workspace_receipt_passes_only_its_narrow_claim (test_r20_evidence.R20EvidenceTests.test_actual_workspace_receipt_passes_only_its_narrow_claim) ... ok
+test_candidate_suite_and_counts_mutations_refused (test_r20_evidence.R20EvidenceTests.test_candidate_suite_and_counts_mutations_refused) ... ok
+test_duplicate_case_refused (test_r20_evidence.R20EvidenceTests.test_duplicate_case_refused) ... ok
+test_modal_shortcuts_refused (test_r20_evidence.R20EvidenceTests.test_modal_shortcuts_refused) ... ok
+test_spike_cannot_promote_later_workspace (test_r20_evidence.R20EvidenceTests.test_spike_cannot_promote_later_workspace) ... ok
+test_actual_full_repair_and_failed_prior_full_runs (test_r21_evidence.R21EvidenceTests.test_actual_full_repair_and_failed_prior_full_runs) ... ok
+test_actual_repaired_focused_gate_only_accepts_its_candidate_scope (test_r21_evidence.R21EvidenceTests.test_actual_repaired_focused_gate_only_accepts_its_candidate_scope) ... ok
+test_actual_worker_spike_is_narrowly_admissible (test_r21_evidence.R21EvidenceTests.test_actual_worker_spike_is_narrowly_admissible) ... ok
+test_earlier_104_case_green_run_is_not_later_workbench (test_r21_evidence.R21EvidenceTests.test_earlier_104_case_green_run_is_not_later_workbench) ... ok
+test_failed_real_ui_run_cannot_be_cherry_picked (test_r21_evidence.R21EvidenceTests.test_failed_real_ui_run_cannot_be_cherry_picked) ... ok
+test_modal_shortcuts_are_refused_even_with_green_spike (test_r21_evidence.R21EvidenceTests.test_modal_shortcuts_are_refused_even_with_green_spike) ... ok
+test_mutated_counts_and_suite_are_refused (test_r21_evidence.R21EvidenceTests.test_mutated_counts_and_suite_are_refused) ... ok
+test_spike_is_not_workbench_or_full_gate (test_r21_evidence.R21EvidenceTests.test_spike_is_not_workbench_or_full_gate) ... ok
+test_wrong_candidate_is_refused (test_r21_evidence.R21EvidenceTests.test_wrong_candidate_is_refused) ... ok
+test_actual_final_focused_scope_and_candidate (test_r22_evidence.R22EvidenceTests.test_actual_final_focused_scope_and_candidate) ... ok
+test_actual_final_full_gate_and_retained_failures (test_r22_evidence.R22EvidenceTests.test_actual_final_full_gate_and_retained_failures) ... ok
+test_actual_platform_spike_has_only_its_scope (test_r22_evidence.R22EvidenceTests.test_actual_platform_spike_has_only_its_scope) ... ok
+test_failed_import_workflows_cannot_be_cherry_picked (test_r22_evidence.R22EvidenceTests.test_failed_import_workflows_cannot_be_cherry_picked) ... ok
+test_inherited_failures_are_not_full_acceptance (test_r22_evidence.R22EvidenceTests.test_inherited_failures_are_not_full_acceptance) ... ok
+test_missing_duplicate_failed_and_skipped_cases (test_r22_evidence.R22EvidenceTests.test_missing_duplicate_failed_and_skipped_cases) ... ok
+test_mutated_metadata (test_r22_evidence.R22EvidenceTests.test_mutated_metadata) ... ok
+test_no_modal_shortcut (test_r22_evidence.R22EvidenceTests.test_no_modal_shortcut) ... ok
+test_wrong_candidate (test_r22_evidence.R22EvidenceTests.test_wrong_candidate) ... ok
+test_actual_first_r23_pass_has_only_its_named_scope (test_r23_evidence.R23EvidenceTests.test_actual_first_r23_pass_has_only_its_named_scope) ... ok
+test_actual_fourteen_pass_one_failure_after_frame_repair_is_not_acceptance (test_r23_evidence.R23EvidenceTests.test_actual_fourteen_pass_one_failure_after_frame_repair_is_not_acceptance) ... ok
+test_actual_memory_transfer_has_narrow_scope_and_exact_candidate (test_r23_evidence.R23EvidenceTests.test_actual_memory_transfer_has_narrow_scope_and_exact_candidate) ... ok
+test_actual_sdk37_failed_candidate_inherits_no_native_pass (test_r23_evidence.R23EvidenceTests.test_actual_sdk37_failed_candidate_inherits_no_native_pass) ... ok
+test_actual_substrate_pass_is_not_production_transfer (test_r23_evidence.R23EvidenceTests.test_actual_substrate_pass_is_not_production_transfer) ... ok
+test_actual_thirteen_pass_one_failure_is_not_narrow_or_full_privacy_pass (test_r23_evidence.R23EvidenceTests.test_actual_thirteen_pass_one_failure_is_not_narrow_or_full_privacy_pass) ... ok
+test_counterfeit_shape_never_widens_claim (test_r23_evidence.R23EvidenceTests.test_counterfeit_shape_never_widens_claim) ... ok
+test_historical_companion_pass_is_not_r23 (test_r23_evidence.R23EvidenceTests.test_historical_companion_pass_is_not_r23) ... ok
+test_malformed_input_is_refusal_not_exception (test_r23_evidence.R23EvidenceTests.test_malformed_input_is_refusal_not_exception) ... ok
+test_wrong_candidate_or_apk_is_rejected (test_r23_evidence.R23EvidenceTests.test_wrong_candidate_or_apk_is_rejected) ... ok
+test_actual_sysfs_observation_remains_scoped (test_r23_input_tools.UsbPostureTests.test_actual_sysfs_observation_remains_scoped) ... ok
+test_bounded_read_does_not_truncate_invalid_attribute_or_change_files (test_r23_input_tools.UsbPostureTests.test_bounded_read_does_not_truncate_invalid_attribute_or_change_files) ... ok
+test_explicit_byte_values_and_interface_boundary (test_r23_input_tools.UsbPostureTests.test_explicit_byte_values_and_interface_boundary) ... ok
+test_missing_is_unknown_not_zero_or_all_clear (test_r23_input_tools.UsbPostureTests.test_missing_is_unknown_not_zero_or_all_clear) ... ok
+test_overflow_refuses_inventory_instead_of_clean_truncated_report (test_r23_input_tools.UsbPostureTests.test_overflow_refuses_inventory_instead_of_clean_truncated_report) ... ok
+test_absent_sdk_refuses_without_attempting_a_fake_build (test_r23_lab.R23LabTests.test_absent_sdk_refuses_without_attempting_a_fake_build) ... ok
+test_empty_cache_does_not_invent_runtime_or_compiler (test_r23_lab.R23LabTests.test_empty_cache_does_not_invent_runtime_or_compiler) ... ok
+test_host_cache_cannot_be_promoted_to_android_jdk (test_r23_lab.R23LabTests.test_host_cache_cannot_be_promoted_to_android_jdk) ... ok
+test_incomplete_cache_env_is_refused (test_r23_lab.R23LabTests.test_incomplete_cache_env_is_refused) ... ok
+test_actual_absent_platform_refuses_without_manufacturing_sdk_or_report (test_record_sdk_platform.InstalledSdkTests.test_actual_absent_platform_refuses_without_manufacturing_sdk_or_report) ... ok
+test_exact_semantically_equivalent_base_release_only (test_record_sdk_platform.InstalledSdkTests.test_exact_semantically_equivalent_base_release_only) ... ok
+test_p1_only_flags_do_not_authorize_release (test_release_gate.ReleaseGateChecks.test_p1_only_flags_do_not_authorize_release) ... ok
+test_real_file_digest_tampering_and_symlink (test_release_gate.ReleaseGateChecks.test_real_file_digest_tampering_and_symlink) ... ok
+test_source_binding_without_attestation_hash_cycle (test_release_gate.ReleaseGateChecks.test_source_binding_without_attestation_hash_cycle) ... ok
+test_traceability_validation_survives_python_optimization (test_release_gate.ReleaseGateChecks.test_traceability_validation_survives_python_optimization) ... ok
+test_truthy_evidence_missing_and_outside_paths_refused (test_release_gate.ReleaseGateChecks.test_truthy_evidence_missing_and_outside_paths_refused) ... ok
+test_every_row_has_a_route_and_a_test_obligation (test_requirements.TraceabilityTest.test_every_row_has_a_route_and_a_test_obligation) ... ok
+test_generated_csv_matches_register (test_requirements.TraceabilityTest.test_generated_csv_matches_register) ... ok
+test_missing_and_duplicate_features_are_rejected (test_requirements.TraceabilityTest.test_missing_and_duplicate_features_are_rejected) ... ok
+test_spike_pass_requires_evidence (test_requirements.TraceabilityTest.test_spike_pass_requires_evidence) ... ok
+test_unknown_gate_is_rejected (test_requirements.TraceabilityTest.test_unknown_gate_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 149 tests in 0.692s
+
+OK
+Host pipeline completed. This does NOT compile Android or verify hardware anonymity.

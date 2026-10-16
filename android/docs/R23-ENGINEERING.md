@@ -212,3 +212,17 @@ No successful inspection notice; source properties/path/size diagnosis not yet v
 redirect EOF. [Pre-repair inspector diagnostic checkpoint](verification/r23-sdk37-inspector-repair-plan.md)
 retained; exception/actual platform metadata now annotated and SDK stderr failure tail preserved.
 Only exact base37/37.0 metadata normalization accepted, not higher minors/betas or an inferred build pass.
+
+## Actual SDK37 compile checkpoint and concurrent-display reattack
+
+Actualaceea3a installed official SDK37.0; raw source.properties really says ApiLevel=37.0 (not integer37),
+baseSdk=true/PreviewSdkInt0. Jar43,044,472bytes/SHA bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177.
+Both main builds/JVM/contracts/lint now actually succeeded with9.1.1/9.3.1/target37; focused workflow
+succeeded, counts to collect. Native companion15/1 FAILED: compile37 constant/target37, original discard,
+new real IME one-tap and all input/memory tests passed; post-focus unprotected screenshot control failed.
+No all-black/failed-control pass admitted. [Pre-edit concurrent-witness plan](verification/r23-compositor-witness-plan.md)
+adds a real test-only nondimming/nonfocusable small Dialog, unique actual displayed RGB and geometry
+leaving>3/4 marker area. Secure pixels fail immediately on first witness-presented frame; positive
+controls must actually show marker. Second actual parent commit/fresh witness color and real retired-marker
+rejection strengthen the verifier, no fabricated images or production FLAG_SECURE/discard weakening.
+Fresh16/24/122 still mandatory; general compositor/OEM/host/all-frame stability unaccepted.

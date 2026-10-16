@@ -61,18 +61,76 @@ class PrivacyPlatformTest {
         scenario.onActivity {assertCurrent(it,marker,unsecured)}
         return marker
     }
+    companion object {private val witnessIds=java.util.concurrent.atomic.AtomicInteger()}
     private fun captureFrame(scenario:ActivityScenario<android.app.Activity>,unsecured:Boolean):Int {
         val marker=installCommittedMarker(scenario,unsecured)
-        val image=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        val count=try {
-            var n=0
-            for(y in 0 until image.height step 8) for(x in 0 until image.width step 8)
-                if(image.getPixel(x,y)==Color.rgb(237,19,180)) n++
-            n
-        } finally {image.recycle()}
-        // Zero pixels are not accepted if lifecycle/focus removed the test content during capture.
-        scenario.onActivity {assertCurrent(it,marker,unsecured)}
-        return count
+        lateinit var witness:TextView
+        lateinit var dialog:android.app.Dialog
+        scenario.onActivity {activity ->
+            witness=TextView(activity).apply {text="R23 compositor witness"}
+            dialog=android.app.Dialog(activity).apply {
+                requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+                setContentView(witness)
+                requireNotNull(window).apply {
+                    assertEquals("Witness unexpectedly secure; unavailable verifier",0,attributes.flags and WindowManager.LayoutParams.FLAG_SECURE)
+                    addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                    setBackgroundDrawable(android.graphics.drawable.ColorDrawable(Color.TRANSPARENT))
+                    setGravity(android.view.Gravity.BOTTOM)
+                }
+                show()
+                requireNotNull(window).setLayout(-1,(80*activity.resources.displayMetrics.density).toInt())
+            }
+        }
+        fun presented():Int {
+            val id=witnessIds.incrementAndGet();assertTrue("Witness color budget exhausted",id<100)
+            val color=Color.rgb(11,91,100+id)
+            scenario.onActivity {witness.setBackgroundColor(color)}
+            val deadline=android.os.SystemClock.elapsedRealtime()+10000
+            var last="No display image"
+            do {
+                val root=android.graphics.Rect();val strip=android.graphics.Rect()
+                var laidOut=false
+                scenario.onActivity {activity ->
+                    assertCurrent(activity,marker,unsecured)
+                    laidOut=marker.view.getGlobalVisibleRect(root) && witness.getGlobalVisibleRect(strip)
+                    if(laidOut) {
+                        assertTrue("Witness must be inside marker ROI",root.contains(strip))
+                        assertTrue("Witness obscures too much of marker",root.width().toLong()*root.height()>4L*strip.width()*strip.height())
+                    }
+                }
+                if(laidOut) {
+                    val image=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+                    var pink=0;var visibleWitness=0
+                    try {
+                        for(y in maxOf(0,root.top) until minOf(image.height,root.bottom) step 8)
+                            for(x in maxOf(0,root.left) until minOf(image.width,root.right) step 8) {
+                                val pixel=image.getPixel(x,y)
+                                if(strip.contains(x,y) && pixel==color) visibleWitness++
+                                if(!strip.contains(x,y) && pixel==Color.rgb(237,19,180)) pink++
+                            }
+                    } finally {image.recycle()}
+                    scenario.onActivity {assertCurrent(it,marker,unsecured)}
+                    last="witness=$visibleWitness marker=$pink root=$root strip=$strip unsecured=$unsecured"
+                    if(visibleWitness>1000) {
+                        // Never poll security outcome until zero: the FIRST presented secure frame must exclude ALL marker samples.
+                        if(!unsecured) assertEquals("Presented secure frame leaked: $last",0,pink)
+                        if(!unsecured || pink>1000) return pink
+                    }
+                }
+                android.os.SystemClock.sleep(16)
+            } while(android.os.SystemClock.elapsedRealtime()<deadline)
+            throw AssertionError("Actual compositor/positive-control readiness unavailable: $last")
+        }
+        try {
+            val first=presented()
+            // An actual subsequent renderer commit plus NEW displayed witness color, not the same stale bitmap twice.
+            val committed=java.util.concurrent.CountDownLatch(1)
+            scenario.onActivity {marker.view.viewTreeObserver.registerFrameCommitCallback {committed.countDown()};marker.view.invalidate()}
+            assertTrue("No subsequent renderer commit",committed.await(10,java.util.concurrent.TimeUnit.SECONDS))
+            val second=presented()
+            return if(unsecured) minOf(first,second) else maxOf(first,second)
+        } finally {scenario.onActivity {dialog.dismiss()}}
     }
     private fun capture(unsecured:Boolean):Int {
         val context=ApplicationProvider.getApplicationContext<android.content.Context>()
@@ -103,7 +161,12 @@ class PrivacyPlatformTest {
                     requireNotNull(dialog).dismiss()
                 }
                 PrivacyDeviceReady.focus(scenario,true)
-                scenario.onActivity {assertNull("Focus return restored stale marker",it.findViewById<TextView>(retired.view.id))}
+                scenario.onActivity {activity ->
+                    assertNull("Focus return restored stale marker",activity.findViewById<TextView>(retired.view.id))
+                    val rejected=runCatching {assertCurrent(activity,retired,false)}.exceptionOrNull()
+                    assertTrue("Retired marker incorrectly authorized capture",rejected is AssertionError)
+                    assertTrue(rejected?.message?.contains("Lifecycle replaced the staged marker")==true)
+                }
                 assertEquals("Fresh committed secure frame leaked after actual focus cycle",0,captureFrame(scenario,false))
             } finally {scenario.onActivity {dialog?.dismiss()}}
         }
