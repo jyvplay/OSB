@@ -31,7 +31,7 @@ object R17Checks {
             val raw=bytes.copyOfRange(0,bytes.size-4)
             return raw+java.nio.ByteBuffer.allocate(4).putInt(java.util.zip.CRC32().apply{update(raw)}.value.toInt()).array()
         }
-        val invalidFlag=frame.copyOf();invalidFlag[52]=2;no {TaskFrame.decode(recalc(invalidFlag))}
+        val invalidFlag=frame.copyOf();invalidFlag[52]=4;no {TaskFrame.decode(recalc(invalidFlag))}
         val invalidRevision=frame.copyOf();java.nio.ByteBuffer.wrap(invalidRevision,4,8).putLong(-1);no {TaskFrame.decode(recalc(invalidRevision))}
         val invalidCount=frame.copyOf();java.nio.ByteBuffer.wrap(invalidCount,12,4).putInt(129);no {TaskFrame.decode(recalc(invalidCount))}
         val invalidUtf=frame.copyOf();invalidUtf[55]=0xff.toByte();no {TaskFrame.decode(recalc(invalidUtf))}

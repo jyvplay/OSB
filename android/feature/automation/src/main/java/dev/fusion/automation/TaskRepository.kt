@@ -27,6 +27,14 @@ class TaskRepository(private val base: File) {
         val current=read();if(current.revision!=expectedRevision) throw TaskConflict()
         val next=current.mark(id,done);if(next===current) current else save(next)
     }
+    fun edit(expectedRevision: Long, id: String, title: String, due: LocalDate?): TaskBook = synchronized(lock) {
+        val current=read();if(current.revision!=expectedRevision) throw TaskConflict()
+        val next=current.edit(id,title,due);if(next===current) current else save(next)
+    }
+    fun archive(expectedRevision: Long, id: String, archived: Boolean): TaskBook = synchronized(lock) {
+        val current=read();if(current.revision!=expectedRevision) throw TaskConflict()
+        val next=current.archive(id,archived);if(next===current) current else save(next)
+    }
     private fun read(): TaskBook {
         val input=try { file.openRead() } catch(e:FileNotFoundException) {
             if(!base.exists() && !File(base.path+".bak").exists() && !File(base.path+".new").exists()) return TaskBook()

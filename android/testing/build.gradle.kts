@@ -202,3 +202,14 @@ tasks.register<JavaExec>("r17Contracts") {
     classpath = r17.runtimeClasspath
     mainClass.set("dev.fusion.testing.R17Checks")
 }
+
+val r18 by sourceSets.creating
+kotlin.sourceSets.named("r18") {
+    kotlin.srcDir("src/r18/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+}
+tasks.register<JavaExec>("r18Contracts") {
+    dependsOn(r18.classesTaskName)
+    classpath = r18.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R18Checks")
+}

@@ -311,7 +311,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "98c3b0cbea70efc0a0f4a7597923f46e01c043b937469fc65d9cfeefa545ce0a"
+      "sha256": "325c2a37974c0b4fab6bee45cf41ff1b312502b8b6de0c50160ea47391046b5d"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -785,13 +785,13 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "311ae0218ded03b902402a59b1dcab102c6c7e49e18d810091e73816230b9337"
+      "sha256": "a17d11b99bf7ebf12690171f158d1419e6474af662d233ae37d12ff007e09d2f"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "415b5cdf537cb70c6140be47b791bb5776a1914f3eef99ca777002cb6091dfe3"
+      "sha256": "85543aa80ae499153c5874da07f896aaab04d6c61192439c579014b21397b62b"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
@@ -803,7 +803,13 @@
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "e539e547e6bcaca0fdd94877dcc6124285981dac866a40830a238c127140ac3f"
+      "sha256": "549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5"
     },
     {
       "path": "format/native/src/main/kotlin/dev/fusion/native/TextFormats.kt",

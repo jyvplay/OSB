@@ -10,7 +10,7 @@ for i in range(100):
     title=f'Task {i} 界🙂';uid=str(uuid.UUID(int=rng.getrandbits(128)));done=i%2
     date=None if i%3==0 else datetime.date(rng.randrange(1,10000),rng.randrange(1,13),rng.randrange(1,29))
     revision=rng.randrange(2**63);utf=title.encode();day=(date-epoch).days if date else -(2**63)
-    raw=struct.pack('>4sqI',b'FTS1',revision,1)+uid.encode()+struct.pack('>BH',done,len(utf))+utf+struct.pack('>q',day)
+    raw=struct.pack('>4sqI',b'FTS2',revision,1)+uid.encode()+struct.pack('>BH',done,len(utf))+utf+struct.pack('>q',day)
     frame=raw+struct.pack('>I',zlib.crc32(raw));encoded=base64.b64encode(frame).decode();btitle=base64.b64encode(utf).decode();d=date.isoformat() if date else ''
     requests += [f'E\t{uid}\t{btitle}\t{d}\t{done}\t{revision}',f'D\t{encoded}']
     expected += [encoded,f'{revision}\t{uid}\t{btitle}\t{d}\t{done}']

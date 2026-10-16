@@ -1,0 +1,15 @@
+R18: 888 assertions PASS; editing/archive/query/versioned codec, not reminders or full Tasks acceptance.
+
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+openjdk version "17.0.9" 2023-10-17
+OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)
+
+Separately compiled Tasks production library; no Android execution inferred.
+549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432  feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt
+c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5  feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt
+96043928379999d1fa461b81ce5075e74f7caf11e4b386f3fc69a9e4312090dc  testing/src/r18/kotlin/dev/fusion/testing/R18Checks.kt
+a3b89d8f52b1d1a22b640e3c8fe34eb737052815f09265f2812fb11c10152c34  testing/src/r18/kotlin/dev/fusion/testing/R18Oracle.kt
+8b4c9bac1c0185abd536a8327867483d03ca89508e70318160145e949010eea8  tools/run_r18_contracts.py
+8c8d3a5f6212a25a35492a19f604b685284742032a70cd4056ef1336937f478e  testing/build/r18/TaskBook.jar
+5e21a6d823a89ab8e12f84777d5cbbe42f9e2d11cd5b06902d40ed573340d05c  testing/build/r18/checks.jar
