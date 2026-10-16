@@ -18,13 +18,14 @@ def parse_cases(annotations):
     return cases
 
 def api(path):return json.loads(subprocess.check_output(['gh','api',path],text=True))
-def collect(run_id,prefix):
+def collect(run_id,prefix,focused=False):
     base='repos/jyvplay/OSB';run=api(f'{base}/actions/runs/{run_id}')
     if run['status']!='completed':raise ValueError('Run not complete; cannot publish final evidence')
     jobs=api(f'{base}/actions/runs/{run_id}/jobs?per_page=100')
     assert len(jobs['jobs'])==jobs['total_count']
     assert all(j['head_sha']==run['head_sha'] for j in jobs['jobs'])
-    device=[j for j in jobs['jobs'] if j['name'].startswith('API34 managed-device')]
+    job_prefix='Focused actual Task UI' if focused else 'API34 managed-device'
+    device=[j for j in jobs['jobs'] if j['name'].startswith(job_prefix)]
     if len(device)!=1:raise ValueError('Exactly one actual managed-device job required')
     annotations=[];page=1
     while True:
@@ -36,14 +37,15 @@ def collect(run_id,prefix):
     counts={s:sum(c['result']==s for c in cases) for s in ['PASS','FAIL','SKIP']}
     result={'run':run_id,'candidate':run['head_sha'],'url':run['html_url'],'conclusion':run['conclusion'],
             'device_conclusion':device[0]['conclusion'],'counts':counts,'cases':cases,
-            'scope':'Actual retained API34 named outcomes, not physical/full-product/AX/legal acceptance'}
+            'suite':'focused' if focused else 'full',
+            'scope':'Actual retained API34 named outcomes ('+('focused only' if focused else 'full suite')+'), not physical/full-product/AX/legal acceptance'}
     artifacts=api(f'{base}/actions/runs/{run_id}/artifacts?per_page=100')
     for name,value in [('run',run),('jobs',jobs),('annotations',annotations),('artifacts',artifacts),('result',result)]:
         (ROOT/f'docs/verification/{prefix}-{name}.json').write_text(json.dumps(value,indent=2)+'\n')
     return result
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=int);p.add_argument('prefix');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=int);p.add_argument('prefix');p.add_argument('--focused',action='store_true');a=p.parse_args()
     if not re.fullmatch(r'[a-z0-9-]+',a.prefix):raise ValueError('Invalid evidence prefix')
-    r=collect(a.run,a.prefix);print(json.dumps({k:v for k,v in r.items() if k!='cases'}))
+    r=collect(a.run,a.prefix,a.focused);print(json.dumps({k:v for k,v in r.items() if k!='cases'}))
 if __name__=='__main__':main()

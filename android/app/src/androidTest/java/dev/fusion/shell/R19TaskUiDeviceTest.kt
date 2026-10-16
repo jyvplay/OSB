@@ -37,6 +37,9 @@ class R19TaskUiDeviceTest {
             // Patch attack: a no-op edit must not erase the previous meaningful edit's undo.
             compose.onNodeWithText("Edit task").performScrollTo().performClick()
             compose.onNodeWithTag("tasks-add").performScrollTo().assertIsDisplayed().performClick();saved(2)
+            // Same revision is not completion evidence for a no-op; observe the actual enabled undo control.
+            compose.waitUntil(10000) {compose.onAllNodes(hasTestTag("tasks-undo") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+            compose.onNodeWithTag("tasks-cancel-edit").assertDoesNotExist()
             compose.onNodeWithTag("tasks-undo").performScrollTo().assertIsDisplayed().performClick();saved(3)
             compose.onNodeWithText("R19 original").assertExists();compose.onNodeWithText("Date only: 2028-02-29").assertExists()
             compose.onNodeWithTag("tasks-undo").assertDoesNotExist()
