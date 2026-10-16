@@ -1,0 +1,317 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 116819270326,
+      "run_id": 38853356911,
+      "workflow_name": "Android native",
+      "head_branch": "arena/31a7965e-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/38853356911",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbMviatg",
+      "head_sha": "f6ab831d71a893998d6f62867c93b36d019fc1da",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/116819270326",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/38853356911/job/116819270326",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-16T04:58:34Z",
+      "started_at": "2026-10-16T04:58:36Z",
+      "completed_at": "2026-10-16T05:13:10Z",
+      "name": "API34 managed-device checks (not physical-device spike passes)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-16T04:58:37Z",
+          "completed_at": "2026-10-16T04:58:38Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-16T04:58:38Z",
+          "completed_at": "2026-10-16T04:58:39Z"
+        },
+        {
+          "name": "Run gradle/actions/wrapper-validation@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-16T04:58:39Z",
+          "completed_at": "2026-10-16T04:58:39Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-16T04:58:39Z",
+          "completed_at": "2026-10-16T04:58:40Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-16T04:58:40Z",
+          "completed_at": "2026-10-16T04:58:45Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-16T04:58:45Z",
+          "completed_at": "2026-10-16T04:58:46Z"
+        },
+        {
+          "name": "Reproduce prior-source child-focus failure on real Android",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-16T04:58:46Z",
+          "completed_at": "2026-10-16T05:03:57Z"
+        },
+        {
+          "name": "Run pro managed-device tests",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8,
+          "started_at": "2026-10-16T05:03:57Z",
+          "completed_at": "2026-10-16T05:13:06Z"
+        },
+        {
+          "name": "Publish actual device case outcomes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-16T05:13:06Z",
+          "completed_at": "2026-10-16T05:13:06Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-16T05:13:06Z",
+          "completed_at": "2026-10-16T05:13:08Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-16T05:13:08Z",
+          "completed_at": "2026-10-16T05:13:08Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-16T05:13:08Z",
+          "completed_at": "2026-10-16T05:13:08Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-16T05:13:08Z",
+          "completed_at": "2026-10-16T05:13:08Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-16T05:13:08Z",
+          "completed_at": "2026-10-16T05:13:08Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/116819270326",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000296,
+      "runner_name": "GitHub Actions 1000000296",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 116819270602,
+      "run_id": 38853356911,
+      "workflow_name": "Android native",
+      "head_branch": "arena/31a7965e-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/38853356911",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbMvibyg",
+      "head_sha": "f6ab831d71a893998d6f62867c93b36d019fc1da",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/116819270602",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/38853356911/job/116819270602",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-16T04:58:34Z",
+      "started_at": "2026-10-16T04:58:37Z",
+      "completed_at": "2026-10-16T05:05:31Z",
+      "name": "Traceability, assemble both flavors, JVM tests",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-16T04:58:38Z",
+          "completed_at": "2026-10-16T04:58:41Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-16T04:58:41Z",
+          "completed_at": "2026-10-16T04:58:43Z"
+        },
+        {
+          "name": "Run gradle/actions/wrapper-validation@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-16T04:58:43Z",
+          "completed_at": "2026-10-16T04:58:44Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-16T04:58:44Z",
+          "completed_at": "2026-10-16T04:58:44Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-16T04:58:44Z",
+          "completed_at": "2026-10-16T04:58:54Z"
+        },
+        {
+          "name": "Check source contracts and generated traceability",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-16T04:58:54Z",
+          "completed_at": "2026-10-16T04:58:57Z"
+        },
+        {
+          "name": "Inspect runner SDK and install pinned platform",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-16T04:58:57Z",
+          "completed_at": "2026-10-16T04:59:11Z"
+        },
+        {
+          "name": "Assemble both flavors",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-16T04:59:11Z",
+          "completed_at": "2026-10-16T05:01:28Z"
+        },
+        {
+          "name": "Run all JVM unit tests (not device evidence)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-16T05:01:28Z",
+          "completed_at": "2026-10-16T05:02:08Z"
+        },
+        {
+          "name": "Production Kotlin pilot contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-16T05:02:08Z",
+          "completed_at": "2026-10-16T05:03:08Z"
+        },
+        {
+          "name": "Lint both manifests and Android sources",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-16T05:03:08Z",
+          "completed_at": "2026-10-16T05:05:18Z"
+        },
+        {
+          "name": "Upload debug APKs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-16T05:05:18Z",
+          "completed_at": "2026-10-16T05:05:22Z"
+        },
+        {
+          "name": "Upload SDK setup diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-16T05:05:22Z",
+          "completed_at": "2026-10-16T05:05:23Z"
+        },
+        {
+          "name": "Upload test and lint reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-16T05:05:23Z",
+          "completed_at": "2026-10-16T05:05:27Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-16T05:05:27Z",
+          "completed_at": "2026-10-16T05:05:27Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-16T05:05:27Z",
+          "completed_at": "2026-10-16T05:05:28Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-16T05:05:28Z",
+          "completed_at": "2026-10-16T05:05:28Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-16T05:05:28Z",
+          "completed_at": "2026-10-16T05:05:28Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/116819270602",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000297,
+      "runner_name": "GitHub Actions 1000000297",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/2339c96cbbb4dc53fc2a460c3a19f04d57ffb989/.github",
+    "start_line": 13,
+    "start_column": null,
+    "end_line": 13,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/2339c96cbbb4dc53fc2a460c3a19f04d57ffb989/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R22BoundaryDeviceTest.maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget:  \njava.util.concurrent.ExecutionException: java.lang.IllegalStateException: Worker died\nat java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:372)\nat java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2072)\nat dev.fusion.format.pdf.sandbox.FormatLease.request(FormatLease.kt:178)\nat dev.fusion.format.pdf.sandbox.FormatLease.request$default(FormatLease.kt:169)\nat dev.fusion.format.pdf.sandbox.FormatLease.evaluateOwnedXlsx(FormatLease.kt:156)\nat dev.fusion.shell.R22BoundaryDeviceTest.maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget(R22BoundaryDeviceTest.kt:36)\n... 32 trimmed\nCaused by: java.lang.IllegalStateException: Worker died\nat dev.fusion.format.pdf.sandbox.FormatLease.unavailable(FormatLease.kt:97)\nat dev.fusion.format.pdf.sandbox.FormatLease.access$unavailable(FormatLease.kt:22)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1.onServiceConnected$lambda$0(FormatLease.kt:80)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1.$r8$lambda$0mdI3g3-0omg8Q7A-75OMWvxl-E(Unknown Source:0)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1$$ExternalSyntheticLambda0.binderDied(D8$$SyntheticClass:0)\nat android.os.IBinder$DeathRecipient.binderDied(IBinder.java:319)\nat android.os.BinderProxy.sendDeathNotice(BinderProxy.java:704)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/2339c96cbbb4dc53fc2a460c3a19f04d57ffb989/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R22PlatformDeviceTest.actualAndroidSaxPreservesNamespacesAndRefusesDtdAndBounds=PASS; dev.fusion.shell.R22PlatformDeviceTest.actualAndroidInflaterAcceptsPythonZipAndRejectsHeaderDisagreement=PASS; dev.fusion.shell.R22BoundaryDeviceTest.corruptAndOversizeXlsxRefuseThenFreshLeaseSucceeds=PASS; dev.fusion.shell.R22BoundaryDeviceTest.updatedXmlNodeLimitAndXincludeAreDataOnlyOnAndroid=PASS; dev.fusion.shell.R22BoundaryDeviceTest.literalAndIndependentSharedWorkbookRunInDistinctUid=PASS; dev.fusion.shell.R22BoundaryDeviceTest.suspensionBurnsPromptAndGrantUntilFreshDocument=PASS; dev.fusion.shell.R22BoundaryDeviceTest.maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget=FAIL; dev.fusion.shell.R22XlsxUiDeviceTest.actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.cancelledRealImportPickerKeepsDraftButInvalidatesExport=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.malformedRealProviderImportRetainsDraftAndCannotReusePriorExport=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/2339c96cbbb4dc53fc2a460c3a19f04d57ffb989/.github",
+    "start_line": 1237,
+    "start_column": null,
+    "end_line": 1237,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/2339c96cbbb4dc53fc2a460c3a19f04d57ffb989/.github",
+    "start_line": 1196,
+    "start_column": null,
+    "end_line": 1196,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\nED ^[[0m\n\tjava.util.concurrent.ExecutionException: java.lang.IllegalStateException: Worker died\n\tat java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:372)\n\npixel6Api34 Tests 7/10 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 8/10 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 9/10 completed. (0 skipped) (1 failed)\npixel6Api34 Tests 10/10 completed. (0 skipped) (1 failed)\nFinished 10 tests on pixel6Api34\n\n> Task :app:pixel6Api34ProDebugAndroidTest\nTests on pixel6Api34 failed: There was 1 failure(s).\n\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792127113146.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights.\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 5m 53s\n787 actionable tasks: 787 executed",
+    "raw_details": ""
+  }
+]

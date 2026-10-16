@@ -1,3 +1,264 @@
+# R22 — native values-only XLSX import and laptop checks
+
+**Evaluated fe8dca210642d42c0553c47ff4bccc16b5e17404: full119/0/0, focused10/0/0,
+and CSV regression8/0/0 passed on managed API34; both debug builds/JVM/contracts/lint passed.**
+[Debug APKs and full evidence](https://github.com/jyvplay/OSB/actions/runs/38854643235),
+artifact `fusion-native-debug`. Later report/tooling commits are not separately native-tested candidates.
+Exact candidate/run results and retained failures are in [R22-ENGINEERING.md](R22-ENGINEERING.md).
+Do not infer current full acceptance from an older green APK or PR build. PR5 is open/unmerged;
+`main` does not contain this work. **48/49 substantial subsets;0/49 fully accepted.**
+
+## R22 laptop / Rabbit1 try-out
+
+On your laptop use branch `arena/31a7965e-osb`. Open **OSB/android** in Android Studio Rabbit1
+with compatible pinned **AGP8.13.2/Kotlin2.2.21/JDK17/SDK36**. The IDE GUI was not executed here.
+Compile36 still differs from requested compile37. Use a **disposable API34+ AVD and copied test data**.
+
+1. Run `app` / `proDebug`, open **Tasks and action plans (Automation)**, enable the session
+   experiment, return to action plans if in Tasks, then **CSV selected-column worksheet**.
+2. Use **Import values-only XLSX…** and choose a small plain single-sheet `.xlsx` from Downloads.
+   Read the visible **VALUES-ONLY LOSS REPORT**. A successful import replaces the volatile draft.
+3. Choose columns, e.g. `2`, then **Preview selected columns**. Review ALL displayed selected cells.
+   Formula-looking strings remain text; numeric/boolean source encodings become raw text, not formatted dates.
+4. **Save new literal XLSX…** creates a new document. Wait for **XLSX readback verified**.
+   The import route never opens source for output; export trusts the provider to honor new-document semantics. Failure can leave a partial new destination.
+5. Import the saved copy again through the picker. It now contains only selected columns;
+   a previous wider selection should refuse rather than reuse the old source table.
+
+Import limits: **2MiB input,1MiB expanded part,2MiB total expansion,256×32 cells,
+4096UTF16 units/cell,131072-byte table reply**. Refuses formulas, macros/extra parts, rich text,
+nonzero/custom/date number formats, hidden/custom rows, merges, unsupported ZIP/XML structures
+(including comments/CDATA). This is intentionally much narrower than general XLSX compatibility.
+Styles/layout/sheet-name/package metadata are discarded in the NEW text projection. Keep your originals.
+Closing/recreation loses imported table/draft/pending picker snapshot. No persistent source URI grant.
+
+Privacy: **network-enabled main app**, not offline companion. Selected cells/filename/provider/context
+can identify people. Parent/Android/IME/accessibility/laptop are trusted. Input briefly touches private
+temporary disk before readonly opening/unlinking; no secure erase. Cloud providers can use their own
+network. No global/retroactive anonymity, whole-host protection or Tails footprint claim.
+
+## R22 without Android Studio
+
+From `android/`, configure real **JDK17** (`JAVA_HOME`) and **Kotlin2.2.21** (`KOTLINC`). Install
+host verification packages separately, ideally in a local Python environment:
+
+```sh
+python3 -m pip install openpyxl==3.1.5 XlsxWriter==3.2.5
+python3 tools/r22_lab.py doctor
+python3 tools/r22_lab.py host
+# Actual production Kotlin compilation + ZIP/XML/XLSX interop + R21 regression + Python tooling.
+# Optional disposable sample; refuses an existing destination:
+python3 tools/make_r22_sample.py r22-example.xlsx
+```
+
+No Android SDK is needed for those host checks; they are NOT Android substitutes. The sample script
+was run here and its real XLSX accepted by the actual Kotlin importer. To use it on an AVD, drag the
+file into the emulator or use a locally installed ADB:
+
+```sh
+adb push r22-example.xlsx /sdcard/Download/
+# With an actual Android SDK, without the IDE GUI:
+./gradlew :app:assembleProDebug :app:assemblePlayDebug :testing:r22Contracts
+./gradlew :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest
+```
+
+Windows uses `gradlew.bat` and platform-appropriate JAVA_HOME/KOTLINC paths. No local SDK/ADB was
+available in this sandbox; actual Android execution used GitHub-managed API34. APK download from a
+completed run with `fusion-native-debug` (run links in engineering report):
+
+```sh
+gh run download 38854643235 -n fusion-native-debug -D ../r22-apks
+# Locate the pro-debug APK in the downloaded artifact tree, then:
+adb install -r PATH_TO_PRO_DEBUG_APK
+```
+
+Push-triggered native workflows run on the session branch. Manual dispatch previously returned403
+for the privacy workflow; no repeat or new privacy pass is inferred. `r22_lab.py dispatch-native`
+is provided for appropriately authorized installations, not claimed executed here. Never share credentials.
+Collect completed runs only, using a fresh prefix:
+
+```sh
+python3 tools/collect_native_evidence.py ACTUAL_RUN_ID NEW_PREFIX --focused
+python3 tools/r22_evidence_gate.py docs/verification/NEW_PREFIX-result.json --candidate EXACT_40_CHARACTER_SHA --claim r22_import_api34
+# Omit --focused for the full native workflow; claim r22_full_api34 requires full scope.
+```
+
+Offline receipt policy is not cryptographic authentication. Named cases, whole workflow outcome and
+exact candidate matter. Full/focused suites overlap. No physical/API36/37/AX/legal/full-Office/browser
+acceptance follows. Original compositor/browser/Office gates remain closed.
+
+---
+
+# Earlier R21 evaluated build and try-out
+
+## R21: CSV worksheet try-out
+
+**Evaluated candidate b96f060:** full109/109, R21 focused8/8 and Task/Notes7/7 passed
+on managed API34; both debug builds/JVM/contracts/lint passed. [Download debug artifacts](https://github.com/jyvplay/OSB/actions/runs/38849172796)
+from `fusion-native-debug`. Later report/tooling commits are not separately native-tested
+application candidates. This is not physical/AX/full-product release acceptance.
+
+On your laptop, check out `arena/31a7965e-osb` first: PR #5 is not merged, so `main` does not contain these R21 changes.
+Open `android/` in Rabbit1 with the pinned AGP8.13.2/Kotlin2.2.21/JDK17/SDK36 setup below.
+The IDE GUI itself has not been exercised here. Use a disposable API34+ AVD and test data.
+
+1. Run `app` / `proDebug`; open **Tasks and action plans (Automation)** and enable the
+   experiment for this session. Stay in action plans (Back to action plans if in Tasks).
+2. Choose **CSV selected-column worksheet**. This opens a real native Activity, not a browser page.
+3. Paste, for example:
+
+   ```csv
+   Name,Value,Private
+   Alice,=1+1,omit-this
+   ```
+
+4. Enter `2` under columns, then **Preview selected columns**. The table is parsed in a
+   fresh isolated child; every selected cell is shown. Formula-looking text stays text.
+   `1,2` deliberately keeps Name too—it is not anonymous. Editing source/selection invalidates
+   the previous preview. Display escapes controls without changing exported cell contents.
+5. **Save new literal XLSX…**, choose a new DocumentsUI destination, and wait for an explicit
+   **XLSX readback verified** result. Open a disposable copy in your actual spreadsheet app
+   to test fidelity there. Failure may leave an empty/partial destination; inspect before retry.
+
+Limits:64KiB UTF8,256 rectangular rows,32 columns,4096 UTF16 units/cell. No delimiter/type
+sniffing; no original Office package opening, formulas, styles or macros. Unsupported XLSX
+text is refused. Draft is session-only: closing/recreation loses it; an outstanding export
+snapshot is not restored. Do not use your only copy of important data.
+
+**Privacy boundary:** this is the network-enabled MAIN app, not the separate offline APK.
+CSV input briefly touches a private temporary file before readonly opening/unlinking. That is
+not secure disk erasure. Parent, Android, IME/accessibility, provider and laptop remain trusted.
+Selected content, filenames and sharing context may identify you. The original browser/Office
+entry gates are not unlocked by this bounded worksheet feature.
+
+From `android/`, without an IDE GUI:
+
+```sh
+python3 tools/r21_lab.py doctor
+# Real installed JDK17 + Kotlin2.2.21; make openpyxl3.1.5 and z3-solver importable:
+python3 tools/r21_lab.py host
+python3 tools/run_r21_stress.py
+# With a real Android SDK, not available locally in this sandbox:
+./gradlew :app:assembleProDebug :app:assemblePlayDebug :testing:r21Contracts
+./gradlew :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R21BoundaryDeviceTest,dev.fusion.shell.R21CsvUiDeviceTest
+```
+
+Windows uses `gradlew.bat`; set JAVA_HOME/KOTLINC according to your installed tools.
+Actual push-triggered native CI is `.github/workflows/android-r21.yml` (focused) and
+`android.yml` (full). `r21_lab.py dispatch-native` is provided but not claimed executed.
+A separate manual privacy dispatch attempted here returned GitHub403 (integration permission);
+no run or pass was inferred. Push CI still works; manual dispatch may require reconnecting
+GitHub in Arena with the needed permissions. No credentials should be shared in chat.
+
+Collect only completed actual run IDs with `collect_native_evidence.py RUN_ID NEW_PREFIX`
+(`--focused` for the R21 workflow). Do not overwrite historical failed receipts or conflate
+focused with full. See [R21-ENGINEERING.md](R21-ENGINEERING.md) for exact candidates/outcomes,
+A–J contract, privacy research and residuals. **48/49 substantial subsets;0/49 fully accepted.**
+
+## Earlier R20 build/evidence baseline
+
+Open **OSB/android** in Android Studio Rabbit1 with compatible AGP8.13.2,
+Kotlin2.2.21, JDK17 and SDK36 tooling. Gradle/Android execution is remote;
+the Rabbit1 desktop IDE itself was not run here. Current min/compile/target34/36/36
+still differs from requested compile37. These are evaluation builds, not release clearance.
+
+**48/49 (97.96%) substantial executable subsets; 0/49 fully accepted (0%).**
+LOK lacks an established subset. The extra module is a separate no-INTERNET APK,
+not a renamed feature. See [R20-ENGINEERING.md](R20-ENGINEERING.md) for exact
+A–J evidence and the [R20 instructions below](#r20-laptop-try-out-and-checks-without-android-studio).
+
+**Candidate-specific evidence:** main eb7f2c4 passed 100/100; focused 3db7fdb
+passed 7/7; privacy 8b634f4 passed 6/6 but later 62b5c2f failed 5/6 at rejection
+feedback. Later full runs 3db7fdb and 62b5c2f each failed 99/100 with Compose cross-thread
+semantics errors (Notes input / editor 200%-font). Current f42193d privacy feedback repair passed **6/6**; its main ZIP metadata run
+passed **101/101**, with both debug builds/JVM/contracts/lint green.
+No earlier pass is inherited.
+[Evaluated f42193d privacy APK artifact](https://github.com/jyvplay/OSB/actions/runs/38845693136)
+is `offline-privacy-companion` (debug APK inside); 2,486,434 compressed bytes.
+[Evaluated f42193d main APK artifacts](https://github.com/jyvplay/OSB/actions/runs/38845693182)
+are `fusion-native-debug`. Later report/tooling commits do not inherit an exact-candidate native pass. Download artifacts only from the specifically evaluated
+run linked in the R20 ledger. All are debug evaluation artifacts, not release clearance.
+The original task-add timeout and Notes visibility root cause remain undiagnosed;
+subsequent green runs do not prove general UI stability. Use disposable data only.
+
+## Try-out: reversible tasks, merge and export
+
+1. Use **proDebug** on a disposable API34+ AVD and acknowledge the pilot warning.
+2. Open **Automation** from the horizontally scrollable shelf; enable this session with test data,
+   then choose **Local tasks**. Action plans remain the separate default view.
+3. Add a title and optional date such as2028-02-29. Check/uncheck completion.
+4. **Edit task** fills title/date; **Save task changes** preserves ID/completion. **Cancel edit**
+   does not change stored data. A stale edit blocks and retains input for review.
+5. **Archive task** retains the record; choose **ARCHIVED** and **Restore task** to return it.
+   Archived records still count toward128; no permanent deletion is implemented.
+6. Use the literal title query, ACTIVE/OPEN/COMPLETED/ARCHIVED controls and date/insertion order.
+   View changes do not save a new task revision. Recreate/reopen and reload to inspect persistence.
+7. Edit and save, then **Undo last edit/import**: prior task data returns at a new revision, not a
+   rolled-back revision. No-op edit/import retains a still-valid earlier undo. Reload/recreation
+   clears the session token; this is not durable or multi-level history.
+8. **Export all tasks — new document** captures the currently loaded snapshot as plaintext FTS.
+   Reload first if another window changed the store. Choose a new destination in the system picker.
+   Successful status means exact reopen/readback, not provider honesty or power-loss durability.
+9. **Open task file for merge preview** reads FTS1/FTS2 without changing local tasks. Inspect new/
+   identical counts; **Confirm append-only merge** appends new UUIDs only. Conflicting existing IDs,
+   stale previews or capacity/headroom violations refuse the whole plan. Imported revision is not
+   adopted. Discard leaves data unchanged; a changed confirmed merge can be immediately undone.
+10. **Export task report — new XLSX** produces Active/Archived sheets with IDs, literal titles,
+    date strings and booleans. It is a report, not an FTS backup or full Office engine. Some XML/
+    escaped-string text cannot be represented and is refused; use FTS rather than silently losing text.
+
+Cancellation/recreation/provider errors may leave an empty or partial **new** document. Do not
+interpret an error as rollback or delete an unrelated destination. Pending export state and undo
+are session-only. Task input remains capped at 128KiB; generated report readback is separately
+capped at 512KiB. No storage/provider deadlines, encrypted task database or all-provider guarantee.
+
+Limits:128 active+archived tasks,256 UTF16 title/query units, date-only years0001..9999,
+plaintext private no-backup storage, same-process lock, no reminders/recurrence/calendar sync.
+Loading/no-op preserves FTS1 bytes; explicit mutation writesFTS2, unreadable by older app versions.
+No downgrade backup is provided. If saving cannot be confirmed, input is retained and mutations
+block until reload; an error may follow publication, so never assume rollback or blindly retry.
+The owned-sheet API is an integration API/tested worker path, **not** a new complete Office UI.
+
+## Reproduce checks
+
+From `android/`, set JAVA_HOME to JDK17 and KOTLINC to Kotlin2.2.21:
+
+```sh
+LC_ALL=C.UTF-8 python3 tools/run_r16_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r17_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r18_contracts.py
+LC_ALL=C.UTF-8 python3 tools/run_r19_contracts.py
+python3 tools/run_r19_interop.py
+python3 tools/run_r19_report_stress.py
+python3 tools/run_r18_interop.py
+python3 tools/run_r17_interop.py
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+./gradlew :app:assembleProDebug :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts
+```
+
+The stress script uses Linux resource accounting; run it on a Linux host.
+R19 readers require host-only openpyxl 3.1.5; R13 calendar regression uses calibrated icalendar 7.3.0.
+`tools/prove_r19_models.py` requires z3-solver 5.3.0.0 and checks conditional models, not Kotlin proofs.
+
+Use `gradlew.bat` on Windows. R16's independent socket verifier additionally needs host-only
+cryptography46.0.3 (`PYTHONPATH` as in the historical R15 instructions below).
+Native tests require explicit `fusionDisposable=true` and a disposable emulator, as documented
+below. Never point reset/instrumentation routines at personal app data.
+
+Optional Linux-host conditional-model verifier (NOT an implementation proof):
+`python3 -m pip install --target "$HOME/.cache/fusion-provers" z3-solver==5.3.0.0`, then
+`PYTHONPATH="$HOME/.cache/fusion-provers" python3 tools/prove_r18_models.py`.
+This also executes a labeled Linux writable-alias experiment; it is not Android verification.
+
+The baseline module now ships855 actual measured first-party startup/Files ART rules.
+Generation, packaging and profile-required startup passed atbb338a5/run38697143892.
+See `baselineprofile/PROVENANCE.md`; no physical speedup/budget acceptance is claimed.
+
+---
+
+## Historical R15 instructions and receipts (superseded census)
+
 # R15 current build and executable entry points
 
 Open **OSB/android** in Android Studio Rabbit1 with tooling compatible with
@@ -473,3 +734,70 @@ directions and checks parser fixture PNGs with Pillow. Those fixtures are not
 native screenshots. No new APK dependency was introduced. See `R8-ENGINEERING.md`
 for actual results, bounds and unimplemented product scope. Encrypted Find is not
 wired to live sources; no feature/spike is promoted by this kernel work.
+
+## R20: laptop try-out and checks without Android Studio
+
+This section is current for R20; older round-specific limitations above are historical.
+Android Studio Rabbit1 GUI has **not** been exercised in this sandbox. Open `android/`
+and use JDK17/platform36 as above; IDE branding alone is not a compatibility test.
+Compile36 still deviates from requested compile37. Release/full acceptance stays blocked.
+
+Two distinct APKs:
+- `app` / `proDebug`: original shell including Tasks → counts-only report. Counts omit
+  titles/IDs/dates/revision but can identify through context. This app has Internet permission.
+- `privacy` / `debug`: `dev.fusion.privacy`, separate UID, no Internet permission,
+  volatile native scratchpad and offline URL projection. **Everything typed is discarded
+  on pause/discard/recreation.** No clipboard/import/export or saved draft. Do not put
+  work here that you need to keep. IME, accessibility, Android and the laptop remain trusted.
+
+From `android/` (Windows uses `gradlew.bat`):
+
+```sh
+./gradlew :privacy:assembleDebug :privacy:lintDebug
+# Run privacy on a disposable API34+ AVD using Studio's privacy run target, or:
+adb install -r privacy/build/outputs/apk/debug/privacy-debug.apk
+adb shell am start -n dev.fusion.privacy/.PrivacyActivity
+# Actual managed emulator; not a host model:
+./gradlew :privacy:pixel6Api34DebugAndroidTest
+```
+
+The debug companion includes a non-exported fixed-marker screenshot control, absent from
+release. Neither this APK's compressed size nor an emulator measurement establishes
+lower total footprint than Tails. Verify permission/merged manifest/dependencies before
+release; no full anonymity, forensic-erasure or all-device screenshot claim is made.
+
+Without Android Studio or a local SDK, host checks require Python3, JDK17, Kotlin2.2.21,
+openpyxl3.1.5 and z3-solver (the recorded solver version is 5.3.0). Install host verification
+packages separately; they are not APK dependencies. Set `JAVA_HOME` and `KOTLINC` to
+real installed tools, and make the Python packages importable.
+
+```sh
+python3 tools/r20_lab.py doctor
+python3 tools/r20_lab.py host
+# Includes production Kotlin compilation, 642 assertions, 760 references/readbacks,
+# conditional models, four actual JVM timezone checks and Python tooling tests.
+```
+
+Optional legacy regression scripts: `run_r13_contracts.py`, `run_r13_interop.py`
+(requires icalendar), `run_r19_contracts.py`, `run_r19_interop.py`, and
+`run_r19_report_stress.py`. Interop scripts require their matching preceding compilation.
+These write local reports; preserve historical receipts under separate names when auditing.
+
+For actual Android execution without installing Studio, push the current session branch
+and use the existing GitHub Actions. Do not confuse PR build-only success with device success.
+With already configured GitHub CLI authorization:
+
+```sh
+python3 tools/r20_lab.py dispatch-native
+# Dispatches android.yml + android-privacy.yml for the current REMOTE branch commit.
+# This dispatch mode is provided, not claimed executed here. Normal push runs were used.
+gh run list --branch arena/31a7965e-osb
+# Then use an actual completed RUN_ID and a NEW receipt prefix:
+python3 tools/collect_native_evidence.py RUN_ID NEW_PREFIX --privacy
+# Omit --privacy for main full suite. --focused is only the focused diagnostic workflow.
+```
+
+Queued/running is not passed. The collector refuses incomplete runs. Read exact candidate,
+whole workflow conclusion, named cases, failure/skip counts and artifacts. API34 managed
+execution does not accept physical/API36/37/keyboard/AX/legal/LOK requirements. See
+[R20-ENGINEERING.md](R20-ENGINEERING.md) for the failure ledger and scope boundaries.

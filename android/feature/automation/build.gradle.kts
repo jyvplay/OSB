@@ -15,6 +15,10 @@ android {
     buildFeatures { compose = true }
 }
 dependencies {
+    implementation(project(":format:ooxml"))
+    implementation(project(":format:pdf"))
+    implementation(libs.androidx.activity.activity.compose)
+    implementation(libs.kotlinx.kotlinx.coroutines.android)
     implementation(platform(libs.androidx.compose.compose.bom))
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.foundation.foundation)

@@ -24,7 +24,11 @@ def collect(root):
             if failure is None: failure=case.find('error')
             if failure is not None:
                 detail=failure.get('type','')+' '+failure.get('message','')+'\n'+(failure.text or '')
-                row['failure_detail']=detail.encode('utf-8')[:1800].decode('utf-8','replace')
+                def bounded(text,limit):return text.encode('utf-8')[:limit].decode('utf-8','replace')
+                if len(detail.encode('utf-8'))>2600:
+                    frames='\n'.join(line for line in detail.splitlines() if 'dev.fusion.' in line or 'Caused by:' in line)
+                    detail=bounded(detail,900)+'\n[Relevant frames; middle omitted]\n'+bounded(frames,1100)+'\n[Stack tail]\n'+detail.encode('utf-8')[-500:].decode('utf-8','replace')
+                row['failure_detail']=detail
             if identity in cases and cases[identity]!=row: raise ValueError('Conflicting duplicate results')
             cases[identity]=row
             if len(cases)>1000: raise ValueError('Too many cases')
@@ -55,6 +59,8 @@ def messages(report):
             yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
 
 if __name__=='__main__':
-    report=collect('app/build/outputs/androidTest-results/managedDevice')
+    import argparse
+    parser=argparse.ArgumentParser();parser.add_argument('--root',default='app/build/outputs/androidTest-results/managedDevice');args=parser.parse_args()
+    report=collect(args.root)
     Path('device-results.json').write_text(json.dumps(report,indent=2)+'\n')
     for message in messages(report): print(message)

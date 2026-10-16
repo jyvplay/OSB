@@ -1,0 +1,53 @@
+{
+  "midpoint_counterexample": {
+    "result": "sat",
+    "values": {
+      "t0": "0",
+      "t1": "2",
+      "t2": "2",
+      "t3": "2",
+      "offset": "0",
+      "lower": "0",
+      "upper": "2",
+      "midpoint": "1"
+    },
+    "scope": "Mathematical asymmetric-delay model, NOT a measured network"
+  },
+  "solver": "5.3.0",
+  "source_sha256": "742566134a9d8e0e85bf089c5a6cf77412f840bc8494e128515d81ea553d7dee",
+  "claims": "UNSAT means no counterexample in these mathematical models. NOT a Kotlin, JCA, Android, AtomicFile or cryptographic proof.",
+  "results": [
+    {
+      "model": "causal equal-rate clock interval and representable midpoint",
+      "result": "unsat",
+      "hypotheses": "Exact integer clock readings, equal rates/constant offset, nonnegative path/processing delays, all timestamps0..Long.MAX. Not oscillator/drift/quantization or dishonest-peer verification.",
+      "assumptions_result": "sat",
+      "assumption_witness": "[processing = 0,\n start = 0,\n forward = 0,\n offset = 0,\n back = 0]",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun forward () Int)\n(declare-fun back () Int)\n(declare-fun processing () Int)\n(declare-fun start () Int)\n(declare-fun offset () Int)\n(assert\n (>= forward 0))\n(assert\n (>= back 0))\n(assert\n (>= processing 0))\n(assert\n (>= start 0))\n(assert\n (let ((?x10 (+ start forward)))\n (let ((?x11 (+ ?x10 offset)))\n (>= ?x11 0))))\n(assert\n (let ((?x10 (+ start forward)))\n (let ((?x11 (+ ?x10 offset)))\n (let ((?x12 (+ ?x11 processing)))\n (>= ?x12 0)))))\n(assert\n (let ((?x14 (+ (+ (+ start forward) processing) back)))\n (>= ?x14 0)))\n(assert\n (<= start 9223372036854775807))\n(assert\n (let ((?x10 (+ start forward)))\n (let ((?x11 (+ ?x10 offset)))\n (<= ?x11 9223372036854775807))))\n(assert\n (let ((?x10 (+ start forward)))\n (let ((?x11 (+ ?x10 offset)))\n (let ((?x12 (+ ?x11 processing)))\n (<= ?x12 9223372036854775807)))))\n(assert\n (let ((?x14 (+ (+ (+ start forward) processing) back)))\n (<= ?x14 9223372036854775807)))\n(assert\n (let ((?x10 (+ start forward)))\n(let ((?x11 (+ ?x10 offset)))\n(let ((?x12 (+ ?x11 processing)))\n(let ((?x19 (- (- (+ (+ ?x10 processing) back) start) (- ?x12 ?x11))))\n(let ((?x14 (+ (+ ?x10 processing) back)))\n(let ((?x15 (- ?x12 ?x14)))\n(let ((?x22 (+ ?x15 (div ?x19 2))))\n(or (< offset ?x15) (> offset (- ?x11 start)) (and (distinct (- (- ?x11 start) ?x15) ?x19) true) (< ?x19 0) (> ?x19 9223372036854775807) (< ?x22 ?x15) (> ?x22 (- ?x11 start)) (< ?x22 (- 9223372036854775808)) (> ?x22 9223372036854775807))))))))))\n(check-sat)\n"
+    },
+    {
+      "model": "two serialized successful mutations cannot share one expected revision",
+      "result": "unsat",
+      "hypotheses": "First successful mutation publishes r+1 under a process-global lock before second comparison; no rollback/external writer. Does not prove locking or persistence implementation.",
+      "assumptions_result": "sat",
+      "assumption_witness": "[revision = 0, expected = 0]",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun expected () Int)\n(assert\n (>= revision 0))\n(assert\n (< revision 9223372036854775807))\n(assert\n (= expected revision))\n(assert\n (let (($x111 (= expected revision)))\n(and $x111 (= expected (+ revision 1)))))\n(check-sat)\n"
+    },
+    {
+      "model": "UTF8 scalar bytes <= three times UTF16 units",
+      "result": "unsat",
+      "hypotheses": "Explicit standard UTF8/UTF16 scalar-width model; rejects unpaired surrogates. Not proof of a platform encoder.",
+      "assumptions_result": "sat",
+      "assumption_witness": "[scalar = 1044480]",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun scalar () Int)\n(assert\n (>= scalar 0))\n(assert\n (<= scalar 1114111))\n(assert\n (or (< scalar 55296) (> scalar 57343)))\n(assert\n (let (($x69 (<= scalar 65535)))\n(let ((?x63 (ite $x69 3 4)))\n(let (($x49 (<= scalar 2047)))\n(let ((?x59 (ite $x49 2 ?x63)))\n(let (($x68 (<= scalar 127)))\n(let ((?x62 (ite $x68 1 ?x59)))\n(> ?x62 (* 3 (ite $x69 1 2))))))))))\n(check-sat)\n"
+    },
+    {
+      "model": "max canonical task snapshot <=104340 bytes <128KiB",
+      "result": "unsat",
+      "hypotheses": "Count<=128, title<=256 UTF16 units and preceding scalar-width bound;20 total header/CRC bytes and47 per-record fixed bytes. Not process RSS/latency.",
+      "assumptions_result": "sat",
+      "assumption_witness": "[task_count = 0]",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun task_count () Int)\n(assert\n (>= task_count 0))\n(assert\n (<= task_count 128))\n(assert\n (or (> (+ 20 (* task_count 815)) 104340) (> (+ 20 (* task_count 815)) 131072)))\n(check-sat)\n"
+    }
+  ]
+}

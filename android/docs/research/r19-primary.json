@@ -1,0 +1,86 @@
+{
+  "scope": "Nine pinned primary files re-fetched and hash checked; not exhaustive frontier or legal audit",
+  "records": [
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "android/README.md",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/android/README.md",
+      "sha256": "cb6d1a21737dc994f9aee26f1ab8c595cc374b5b827ec649ce3cd38c79b36e19",
+      "git_blob": "17331b5ef7a3447659bef5704481bd4ad85b36a9",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "COPYING.MPL",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING.MPL",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+      "git_blob": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "libreofficekit/README.md",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/libreofficekit/README.md",
+      "sha256": "88e2717b169484a8ff47eff2fe99c6f84213dc69acbc4ef31ae3dcd3f0c850cf",
+      "git_blob": "148879ec57fc3bfd6e5d38d9ecfbc88540943a07",
+      "reverified": true
+    },
+    {
+      "repository": "pyca/cryptography",
+      "commit": "c0af4dd7b75921bbe9f1d41a03dbd4b64a9e3403",
+      "path": "docs/hazmat/primitives/aead.rst",
+      "url": "https://github.com/pyca/cryptography/blob/c0af4dd7b75921bbe9f1d41a03dbd4b64a9e3403/docs/hazmat/primitives/aead.rst",
+      "sha256": "73a17ff5e8c4fc824a1ef31c789a530109f74c491c04c1f23db2ca9cc29bee16",
+      "git_blob": "e30bc6c5fdb2e4830987bbe19ed989fccdd1e75f",
+      "reverified": true
+    },
+    {
+      "repository": "androidx/androidx",
+      "commit": "f8f5e9c42b562e58bfca57d793d57e9471bc0d50",
+      "path": "benchmark/benchmark-macro-junit4/src/main/java/androidx/benchmark/macro/junit4/BaselineProfileRule.kt",
+      "url": "https://github.com/androidx/androidx/blob/f8f5e9c42b562e58bfca57d793d57e9471bc0d50/benchmark/benchmark-macro-junit4/src/main/java/androidx/benchmark/macro/junit4/BaselineProfileRule.kt",
+      "sha256": "89b2037336f1b8b53e685dd8f4972ee5d7e458b1d15a789d1dcbf92cf915a5e8",
+      "git_blob": "a59b1848ab728c894007a9589991b9f4fb15f319",
+      "reverified": true
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/util/AtomicFile.java",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/util/AtomicFile.java",
+      "sha256": "fd8e9350b0d12648e9886162e4cbd2fb64311a3a4c9bcf7144ceaaaa145fc8fe",
+      "git_blob": "be8e2c2d745c16e62d0b80e7f841c4a67524ad16",
+      "reverified": true
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/webkit/WebView.java",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/webkit/WebView.java",
+      "sha256": "63cda6f8f6263fb27258df32f21df076eb1b8ef620034c7a638920967f1899c1",
+      "git_blob": "6523fffc4b91a2acf41f3629f65d311e47500d6f",
+      "reverified": true
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/os/SharedMemory.java",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/os/SharedMemory.java",
+      "sha256": "143fb5d6bec53d644a5f8c7c47c76cc58f0ba6d84b073c4bf5d19e10f5d11c48",
+      "git_blob": "cba4423831a27a5b323431e80cf18154313689e9",
+      "reverified": true
+    }
+  ]
+}

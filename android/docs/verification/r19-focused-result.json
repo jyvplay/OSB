@@ -1,0 +1,32 @@
+{
+  "run": 38838667176,
+  "candidate": "cce38cbd15b8c2b253da665834bb156c981c983c",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38838667176",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 4,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R17TaskUiDeviceTest.addCompleteAndReopenPersistedTaskThroughActualShell",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.editUndoUsesRealTouchAndRecreationDoesNotInventAnUndoToken",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation",
+      "result": "PASS"
+    }
+  ],
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

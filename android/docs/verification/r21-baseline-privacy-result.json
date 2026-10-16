@@ -1,0 +1,40 @@
+{
+  "run": 38846791129,
+  "candidate": "4af1efe13f01076299833589f0bb37b78bfc885c",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38846791129",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 6,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.privacy.PrivacyWorkspaceTest.pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions",
+      "result": "PASS"
+    }
+  ],
+  "suite": "privacy",
+  "scope": "Actual retained API34 named outcomes (privacy companion only), not physical/full-product/AX/legal acceptance"
+}

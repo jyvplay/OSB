@@ -1,0 +1,6 @@
+{
+  "observed": "R13 interop failed at corpus index2 with icalendar6.3.2; escaped backslashes lost by returned summary/description",
+  "scope": "Actual verifier execution failure; not attributed to the R19 workbook change. Keep and investigate oracle version before any regression claim.",
+  "command": "PYTHONPATH=/home/user/.cache/fusion-tools/oracles python android/tools/run_r13_interop.py",
+  "compiler_contract": "503 assertions passed before cross-reader failure"
+}

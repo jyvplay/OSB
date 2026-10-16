@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "cases": 200,
+  "direction": "100 JVM encoded frames match Python bytes;100 Python frames read by JVM",
+  "sha256": {
+    "tools/run_r17_interop.py": "209135fc5749ef1337942524a9aa34563b9f69c199b2232486341f017407fa85",
+    "testing/build/r17/TaskBook.jar": "dd47d1c3bdbc1164ca82d71eb23fbeb5de622696ee758f2c4677507ade2237fc",
+    "testing/build/r17/checks.jar": "4921e2e0b34744a3abd523307188f6cd869215e9852e59627954712c55c487fa"
+  },
+  "scope": "Bounded plaintext task framing/date semantics; no authentication, Android persistence or reminder acceptance"
+}

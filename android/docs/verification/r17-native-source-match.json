@@ -1,0 +1,6 @@
+{
+  "native_candidate": "ddc7fecfa6b50d20aae9cda8ff3feb6384e14818",
+  "run": 38700509084,
+  "differences": [],
+  "scope": "Production/native instrumentation/Gradle/catalog/native workflows unchanged; final docs, census, receipts and host SMT model verifier only. Not a new native execution or reproducible binary attestation."
+}

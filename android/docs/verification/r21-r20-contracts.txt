@@ -1,0 +1,2 @@
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R20: 642 actual public-consumer assertions PASS

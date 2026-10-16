@@ -1,0 +1,20 @@
+{
+  "passed": 404,
+  "failed": 0,
+  "seed": 130014,
+  "oracles": {
+    "openpyxl": "3.1.5",
+    "icalendar": "7.3.0",
+    "other": "Python hashlib/shlex/zipfile/ElementTree"
+  },
+  "counts": {
+    "D": 100,
+    "T": 100,
+    "C": 104,
+    "W": 100
+  },
+  "script_sha256": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805",
+  "compiled_receipt_sha256": "07ecb63c473c6268a0431660c9cc499cdb8de664e87205471a81a255bc56740e",
+  "requests_sha256": "630c4d826e82ac20166f60cbe8e3d7a3133985ab9bf240d63190f11a6283ca06",
+  "scope": "Same-agent corpus, independent maintained readers; no LibreOffice/Excel/Android execution inferred"
+}

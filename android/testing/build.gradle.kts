@@ -191,3 +191,80 @@ tasks.register<JavaExec>("r16Contracts") {
     classpath = r16.runtimeClasspath
     mainClass.set("dev.fusion.testing.R16Checks")
 }
+
+val r17 by sourceSets.creating
+kotlin.sourceSets.named("r17") {
+    kotlin.include("**/TaskBook.kt", "**/R17Checks.kt", "**/R17Oracle.kt")
+    kotlin.srcDir("src/r17/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+}
+tasks.register<JavaExec>("r17Contracts") {
+    dependsOn(r17.classesTaskName)
+    classpath = r17.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R17Checks")
+}
+
+val r18 by sourceSets.creating
+kotlin.sourceSets.named("r18") {
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.include("**/TaskBook.kt", "**/TaskQuery.kt", "**/OwnedSheetRequest.kt", "**/SheetFrame.kt", "**/DecimalSheet.kt", "**/R18Checks.kt", "**/R18Oracle.kt")
+    kotlin.srcDir("src/r18/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+}
+tasks.register<JavaExec>("r18Contracts") {
+    dependsOn(r18.classesTaskName)
+    classpath = r18.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R18Checks")
+}
+
+val r19 by sourceSets.creating
+kotlin.sourceSets.named("r19") {
+    kotlin.srcDir("src/r19/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.include("**/TaskBook.kt", "**/TaskChanges.kt", "**/TaskStreams.kt", "**/TaskWorkbook.kt", "**/LiteralWorkbook.kt", "**/R19Checks.kt", "**/R19Oracle.kt")
+}
+tasks.register<JavaExec>("r19Contracts") {
+    dependsOn(r19.classesTaskName)
+    classpath = r19.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R19Checks")
+}
+
+val r20 by sourceSets.creating
+kotlin.sourceSets.named("r20") {
+    kotlin.srcDir("src/r20/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.include("**/TaskBook.kt", "**/TaskCounts.kt", "**/LiteralWorkbook.kt", "**/LinkDisclosure.kt", "**/BrowserSessions.kt", "**/PermissionLeases.kt", "**/R20Checks.kt", "**/R20Oracle.kt")
+}
+tasks.register<JavaExec>("r20Contracts") {
+    dependsOn(r20.classesTaskName);classpath=r20.runtimeClasspath;mainClass.set("dev.fusion.testing.R20Checks")
+}
+
+val r21 by sourceSets.creating
+kotlin.sourceSets.named("r21") {
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.include("**/ExactReadback.kt")
+    kotlin.srcDir("src/r21/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.include("**/LiteralWorkbook.kt", "**/CsvTable.kt", "**/BrowserSessions.kt", "**/PermissionLeases.kt", "**/BrowserConsentSession.kt", "**/R21Checks.kt", "**/R21Oracle.kt")
+}
+tasks.register<JavaExec>("r21Contracts") {
+    dependsOn(r21.classesTaskName);classpath=r21.runtimeClasspath;mainClass.set("dev.fusion.testing.R21Checks")
+}
+
+val r22 by sourceSets.creating
+kotlin.sourceSets.named("r22") {
+    kotlin.srcDir("src/r22/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.include("**/WorksheetInput.kt", "**/StrictZip.kt", "**/BoundedXml.kt", "**/LiteralXlsxImport.kt", "**/LiteralWorkbook.kt", "**/CsvTable.kt", "**/BrowserSessions.kt", "**/PermissionLeases.kt", "**/BrowserConsentSession.kt", "**/R22Checks.kt", "**/R22Oracle.kt")
+}
+tasks.register<JavaExec>("r22Contracts") {
+    dependsOn(r22.classesTaskName);classpath=r22.runtimeClasspath;mainClass.set("dev.fusion.testing.R22Checks")
+}

@@ -1,0 +1,420 @@
+{
+  "run": 38845693182,
+  "candidate": "f42193d5b97aae4d03399286029c101c9f73088a",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38845693182",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 101,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.notesSaveAndMemoryDraftSurviveActivityRecreation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.paletteExecutesARealModuleAction",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorTabsDoNotReplaceEachOthersText",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.distinctWindowPanesDoNotMergeTheirControls",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.filesDeclaresMissingAccess",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.activatingWindowKeepsChildFocus",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorRejectsAccidentalDiscardAndSurvivesActivityRecreation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashAtTwoHundredPercentFontScale",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.densityReviewCancelAndApplyChangeActualDesktopState",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorTabsAtTwoHundredPercentFontScale",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.blockedBeamCannotBeEnabledByPilotConsent",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.openingCalculatorRendersItsContent",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorCanBeRestoredFromMinimizedShelf",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.StorageBoundaryDeviceTest.unsupportedUpgradeDoesNotDropRows",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.StorageBoundaryDeviceTest.nativeFilesystemSupportsConfirmedNotePublication",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.settingsExportReadsRealPreferencesAndInspectionDoesNotApply",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.strictSubtitleStreamOverlapAndHalfOpenEndpointsOnArt",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.malformedUtf8IsRefusedOnArt",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.csvPreservesMultilineAndEmptyFieldsOnArt",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.backupContentRoundTripsRealFileWithoutRestoringOrChangingSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.missingCatalogTargetsDoNotDestroyStoredPins",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubsetDeviceTest.realSoftwareBitmapCropRotateAndFlipDoNotMutateSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.SubtitleUiDeviceTest.actualTextInputSelectsLiteralCueWithoutPretendingToPlay",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskDeviceTest.archiveSurvivesReopenRestorePreservesIdentityAndStaleEditCannotWin",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskDeviceTest.persistedRevisionReserveCannotBeConsumedByAnUnrelatedEdit",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskDeviceTest.legacyLoadAndNoOpPreserveBytesButExplicitEditWritesVersionTwo",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19SharedMemoryDeviceTest.protectionRestrictsFutureMapsButDoesNotRevokeExistingWriter",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskStoreDeviceTest.staleMergeAndSameRevisionDifferentDataRefuseWithoutWriting",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskStoreDeviceTest.fullArchivedImportIgnoresForeignRevisionAndCanBeUndone",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskStoreDeviceTest.undoHeadroomFailureLeavesBytesAndLegacyRestoreBoundaryUsable",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskStoreDeviceTest.editUndoReopensAtNewRevisionAndReplayDoesNotWrite",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskTransferDeviceTest.actualProviderTwoSheetReportIsLiteralAndNotATaskImport",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskTransferDeviceTest.actualProviderSnapshotWriteReadbackImportAndCorruptionRefusal",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.editUndoUsesRealTouchAndRecreationDoesNotInventAnUndoToken",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R19TaskUiDeviceTest.actualPickerImportConfirmExportAndUndoPreserveSource",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R20CountsUiDeviceTest.actualCountsPreviewAndSystemSaveDoNotMutatePrivateTasks",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R20DisclosureDeviceTest.countsProjectionWritesAndReopensRealProviderWithoutIdentifiers",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R20DisclosureDeviceTest.linkProjectionAgreesWithAndroidUriAndRetainsPathIdentityCounterexample",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R20DisclosureDeviceTest.generatedWorkbookMetadataDoesNotDiscloseTestedDefaultTimezones",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R20DisclosureDeviceTest.permissionLeaseUsesActualElapsedClockAndBurnsWrongContext",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.RealImeDeviceTest.realImeAndLongEditorTextAtTwoHundredPercentWithoutComposeInputInjection",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.RuntimeInventoryDeviceTest.hardwareInventoryReflectsCodecDeclarationsNotAssumedWorkingReceivers",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.RuntimeInventoryDeviceTest.capabilityReportMatchesRuntimeWithoutInventingNpuDesktopOrDisplayOut",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.shellRendersWithShelf",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.savedNoteTrashRestoresWithoutLosingItsRevision",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R13SubsetDeviceTest.localBuiltinHonorsQuotedArgumentsWithoutShellExpansion",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R14SubsetDeviceTest.opaqueSrgbContrastSelectsSufficientForeground",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R14SubsetDeviceTest.actualFileMetadataIsNaturallyOrderedWithoutChangingBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R14SubsetDeviceTest.redactionCannotBePreventedByClockRollback",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R14SubsetDeviceTest.geometricTraversalSkipsDisabledTargets",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R14SubsetDeviceTest.settingsConflictHasNoPartialEffect",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R14SubsetDeviceTest.originalArithmeticResultsEnterLiteralWorkbookWithoutFormulaExecution",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.originalSheetParserActuallyExecutesInDifferentUidWithReadOnlyFileCapability",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.canonicalLaunchLinkAgreesWithAndroidUriWithoutDispatchingAnIntent",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.recorderAccountingUsesActualElapsedClockWithoutClaimingMediaDuration",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.transcriptWritesAndReadsRealFileWithoutAccessingSystemMessages",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.isolatedSheetCycleAndConsumedInputBudgetAreRefused",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.lensCoordinatesAgreeWithActualAndroidBitmapQuarterTurnsAndMirror",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R15SubsetDeviceTest.vaultEnvelopeAuthenticatesActualCiphertextFileAndContext",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R16TogetherDeviceTest.actualAndroidSocketsExchangeAuthenticatedStateAndClockSample",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R16TogetherDeviceTest.wrongKeyRefusesWithoutReturningPeerStateAndClosesSockets",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R16TogetherDeviceTest.wholeCallDeadlineClosesAnUnauthenticatedStalledSocket",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R17TaskStoreDeviceTest.actualExplicitAtomicWriteAbortPreservesConfirmedSnapshot",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R17TaskStoreDeviceTest.actualAtomicFileReopenAndConcurrentStaleWriterRefusal",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R17TaskStoreDeviceTest.corruptBaseRefusesMutationAndPreservesExactBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R17TaskStoreDeviceTest.oversizedBaseAndOrphanUnpublishedWriteRefuse",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R17TaskUiDeviceTest.addCompleteAndReopenPersistedTaskThroughActualShell",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18OwnedSheetDeviceTest.actualUnlinkedReadOnlyDescriptorExecutesInChildAndLeavesNoNamedInput",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18OwnedSheetDeviceTest.refusedOwnedCycleCleansNamedInputAndClosesLease",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskDeviceTest.allArchivedStillCountTowardCapacityAndRestoreNeedsNoFreeSlot",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.BrowserSurfaceDeviceTest.realPixelsAndInputRemainIndependentAcrossTwoRemoteWebViewsAndResize",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CheckpointDeviceTest.readbackAndEncoderFailureKeepPriorCheckpoint",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CopyContractDeviceTest.selectedResultRetainsItsOriginalIdentity",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CopyContractDeviceTest.brokerIsExplicitAndNotExported",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.CopyContractDeviceTest.uncorrelatedResultNeverBecomesCurrentCancellation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.EncryptedIndexDeviceTest.encryptedIndexUsesExistingKeyAndFailsClosedAfterKeyLoss",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesProcessDeathDeviceTest.acknowledgedDraftCheckpointSurvivesActualWriterProcessDeath",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.firstReadyStateIncludesInventoryBeforeAcceptingActions",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.recoveredStaleRevisionCannotOverwriteNewerSavedBytes",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.unreadableRecoveryBlocksEditsAndPreservesExactFile",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.distinctRecoveryOwnersCannotBlindlyOverwriteEachOther",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.deletedEmptyCheckpointDoesNotEqualNeverObservedAbsence",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.freshOwnerRecoversCheckpointWithoutSavingOrReplayingPendingDelete",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.NotesRecoveryDeviceTest.repeatedCheckpointRequestsUseOneWriterMailbox",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R13SubsetDeviceTest.originalWorkbookWritesLiteralFormulaLikeTextWithoutMacroParts",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R13SubsetDeviceTest.foldedCalendarTextDoesNotInjectASecondEvent",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R13SubsetDeviceTest.invalidPlanCannotStartAnyCallback",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R13SubsetDeviceTest.digestChecksActualFileAndLeavesSourceUnchanged",
+      "result": "PASS"
+    }
+  ],
+  "suite": "full",
+  "scope": "Actual retained API34 named outcomes (full suite), not physical/full-product/AX/legal acceptance"
+}

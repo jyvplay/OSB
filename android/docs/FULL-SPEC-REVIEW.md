@@ -3,7 +3,7 @@
 **231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**
 This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.
 
-48 included modules; 131 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
+49 included modules; 152 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
 
 ## Cross-cutting contract (v2.1 supersedes conflicting v2.0 clauses)
 
@@ -31,7 +31,7 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | Real browser z-order/extensions/security S29/S30 | Blocked; no generic WebView substituted as completed browser. |
 | Own Beam / trust / secure exclusion / stop / codec/latency indicator | Blocked pending S17–21 and security/hardware review; no delegated system-cast equivalence. |
 | AirPlay legal boundary / GPL receiver separate APK | No mirroring/FairPlay claim; counsel/hardware and separate receiver APK absent. |
-| Together own-media Syncplay compatibility /≤40ms | Local model only; real transport/clocks/S22/S24 absent. |
+| Together own-media Syncplay compatibility /≤40ms | Bounded real authenticated TCP exchange and conditional clock intervals passed host/OpenSSL/API34 tests. Pairing, rooms, player/Syncplay integration and multi-device S22/S24 acceptance absent. |
 | Lens LN-01–15 / Meet / per-site / PC webcam / recording | Physical camera preview only; S25–28 and processed-track routes absent. |
 | No native third-party Android virtual camera/mic claim | Boundary maintained; does not implement own Meet/browser/PC alternatives. |
 | Own-Mac Messages / SMS role / Matrix/XMPP / RCS handoff | Transport/role scope incomplete; no no-Mac iMessage, hosted Apple relay or fake RCS API. |
@@ -42,9 +42,9 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 | $19.99 + $14.99 Pro /14day / signed offline entitlement | Commerce and signed entitlement absent; no fabricated trial/ownership state. |
 | Offline no feature loss/no wipe / expiry read-only Files/Find | No remote wipe path introduced; complete entitlement lifecycle absent. |
 | Permissive main APK / isolated MPL / no forbidden copyleft assets | No new APK dependency added this pass; optional external host verifiers are not bundled. Full transitive/legal audit still required. |
-| Two reference devices / E0 budgets / no invented measurements | No reference-device measurements; budgets remain E0. |
+| Two reference devices / E0 budgets / no invented measurements | API34 emulator startup/Files measurements and855 measured first-party ART rules retained. No two physical reference-device acceptance; budgets remain E0. |
 | Requested47 slots vs included48 / dedicated modules | 41 exact,2 partial owners,4 absent (quickpanel/office/photos/ime); Meet/GPL ownership also unresolved. |
-| Actual Android build and native visual inspection | R11 both-flavor build/tests/lint and24 API34 named cases passed remotely at1ee1589, including5 elementary isolated-FD cases. Full parser isolation, visual/AX/physical acceptance absent. |
+| Actual Android build and native visual inspection | R16 both-flavor build/tests/lint and74 API34 named cases passed, including actual bounded arithmetic in isolated UID and real authenticated sockets. R17 Tasks native results are revision-specific; full parser containment, visual/AX/physical acceptance absent. |
 
 ## Every recorded requirement
 

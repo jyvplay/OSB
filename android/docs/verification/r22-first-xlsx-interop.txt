@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/run_r22_interop.py", line 84, in <module>
+    for label,a,e in zip(labels,actual,expected):assert a==e,(label,a[:150],e[:150])
+                                                        ^^^^
+AssertionError: ('openpyxl text 0', 'REFUSED', 'OK\tYm1GdFpRPT0sZG1Gc2RXVT0sY0hKcGRtRjBaUT09ClFXeHdhR0VnenJFPSxNQT09LFQwMUpWQT09ClBXeHBkR1Z5WVd3PSw4SitZZ0NBbUlEd2dQZz09LGJHbHVaUXB1WlhoMA==')

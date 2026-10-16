@@ -1,0 +1,23 @@
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+Exception in thread "main" java.lang.IllegalArgumentException: Failed requirement.
+	at dev.fusion.ooxml.BoundedXml$parse$handler$1.startElement(BoundedXml.kt:40)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.startElement(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.scanStartElement(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
+	at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at dev.fusion.ooxml.BoundedXml.parse(BoundedXml.kt:56)
+	at dev.fusion.ooxml.LiteralXlsxImport.read(LiteralXlsxImport.kt:38)
+	at dev.fusion.testing.R22Checks.main(R22Checks.kt:25)
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/run_r22_contracts.py", line 22, in <module>
+    r.check_returncode()
+  File "/usr/lib/python3.11/subprocess.py", line 502, in check_returncode
+    raise CalledProcessError(self.returncode, self.args, self.stdout,
+subprocess.CalledProcessError: Command '['/home/user/.cache/fusion-tools/java/jdk4py/java-runtime/bin/java', '-cp', '/home/user/OSB/android/testing/build/r22/checks.jar:/home/user/OSB/android/testing/build/r22/StrictZip.jar:/home/user/OSB/android/testing/build/r22/BoundedXml.jar:/home/user/OSB/android/testing/build/r22/LiteralWorkbook.jar:/home/user/OSB/android/testing/build/r22/CsvTable.jar:/home/user/OSB/android/testing/build/r22/LiteralXlsxImport.jar:/home/user/OSB/android/testing/build/r22/BrowserSessions.jar', 'dev.fusion.testing.R22Checks']' returned non-zero exit status 1.

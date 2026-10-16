@@ -222,10 +222,31 @@ class ShellSmokeTest {
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Backlink: $source")).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText("Backlink: $source").performScrollTo().assertIsDisplayed()
             compose.onNodeWithTag("notes-text").performScrollTo().performTextReplacement("unsaved target draft")
-            compose.onNodeWithText("Backlink: $source").performScrollTo().performClick()
-            compose.onNodeWithText("Discard this memory draft?").assertIsDisplayed()
-            compose.onNodeWithText("Keep editing").performClick()
-            compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains("unsaved target draft")
+            fun requestAndKeepDraft() {
+                val link=compose.onNodeWithText("Backlink: $source")
+                link.performScrollTo().assertIsDisplayed()
+                val before=TaskUiEvidence.geometry(compose.activity)+"; link="+link.fetchSemanticsNode().boundsInRoot
+                link.performClick() // Actual touch; no semantics onClick shortcut.
+                try {
+                    // A touch return is not proof a new platform dialog has completed presentation.
+                    // Observe the actual displayed dialog/decision control, under the existing 10s UI budget.
+                    compose.waitUntil(10000) {runCatching {
+                        compose.onNodeWithText("Discard this memory draft?").assertIsDisplayed()
+                        compose.onNodeWithText("Keep editing").assertIsDisplayed().assertIsEnabled()
+                    }.isSuccess}
+                    compose.onNodeWithText("Keep editing").performClick()
+                } catch(failure:Throwable) {
+                    var observed="unavailable"
+                    compose.activityRule.scenario.onActivity {a ->
+                        val state=androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value
+                        observed="pending=${state.pending}; dirty=${state.dirty}; busy=${state.busy}; name=${state.name}; recovery=${state.recoveryStatus}"
+                    }
+                    throw AssertionError("Actual Notes backlink: $observed; before=$before; after=${TaskUiEvidence.geometry(compose.activity)}",failure)
+                }
+                compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains("unsaved target draft")
+            }
+            requestAndKeepDraft()
+            requestAndKeepDraft() // Patch attack: a second prompt/cancel must not reuse stale dialog state or lose the draft.
             org.junit.Assert.assertEquals("Saved target",store.load(target).text)
             org.junit.Assert.assertEquals("[[$target]]",store.load(source).text)
         } finally {
@@ -255,6 +276,17 @@ class ShellSmokeTest {
             compose.onNodeWithText("Move saved note to trash?").assertIsDisplayed()
             compose.onNodeWithText("Move saved revision").performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Saved revision moved to trash.",substring=true)).fetchSemanticsNodes().isNotEmpty() }
+            // The status is published while busy=true, before the final inventory/trash reads.
+            // Observe actual ViewModel completion before another store lock owner reads the files.
+            // Do not retry mutations or suppress NotesBusy; the previous test raced those real reads.
+            compose.waitUntil(10000) {
+                var finished=false
+                compose.activityRule.scenario.onActivity {a ->
+                    val state=androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value
+                    finished=!state.busy && state.status.startsWith("Saved revision moved to trash.")
+                }
+                finished
+            }
             val receipt=store.trash().single { it.name==name }
             org.junit.Assert.assertFalse(store.list().contains(name))
             compose.activityRule.scenario.recreate()
@@ -263,6 +295,15 @@ class ShellSmokeTest {
             compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("notes-restore-${receipt.token}") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithTag("notes-restore-${receipt.token}").performScrollTo().performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Restored saved revision without overwriting another note.")).fetchSemanticsNodes().isNotEmpty() }
+            // Same race attack on the reverse operation: restored text precedes the final trash scan.
+            compose.waitUntil(10000) {
+                var finished=false
+                compose.activityRule.scenario.onActivity {a ->
+                    val state=androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value
+                    finished=!state.busy && state.status=="Restored saved revision without overwriting another note."
+                }
+                finished
+            }
             org.junit.Assert.assertEquals(original,store.load(name))
             compose.onNodeWithTag("notes-text").performScrollTo().assertTextContains(original.text)
         } finally {

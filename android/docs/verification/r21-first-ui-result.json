@@ -1,0 +1,40 @@
+{
+  "run": 38847993916,
+  "candidate": "883a8d972ca1b1d1a754786b62338dcc7e2c6d4b",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/38847993916",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 4,
+    "FAIL": 2,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.csvGrammarRunsInDistinctUidAndOwnedInputIsUnlinked",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.malformedCsvRefusesAndCleansUpThenFreshChildSucceeds",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.consentCannotSurviveSameUrlOrUnsupportedNavigationOrReplay",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21CsvUiDeviceTest.inFlightEditorMutationDiscardsStaleWorkerResult",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21CsvUiDeviceTest.actualSelectionEditInvalidatesPreviewAndSystemSaveReadsBack",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.shell.R21CsvUiDeviceTest.recreationLosesDraftAndCannotExportOldPreview",
+      "result": "FAIL"
+    }
+  ],
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

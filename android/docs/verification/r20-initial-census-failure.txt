@@ -1,0 +1,13 @@
+............................F..................................................................
+======================================================================
+FAIL: test_current_pairings_and_denominator (test_module_testability.TestabilityCensusChecks.test_current_pairings_and_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/test_module_testability.py", line 12, in test_current_pairings_and_denominator
+    self.assertEqual(48,c['total'])
+AssertionError: 48 != 49
+
+----------------------------------------------------------------------
+Ran 95 tests in 0.445s
+
+FAILED (failures=1)

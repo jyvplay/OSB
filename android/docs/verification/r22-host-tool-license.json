@@ -1,0 +1,12 @@
+{
+  "package": "XlsxWriter",
+  "version": "3.2.5",
+  "usage": "Host verification only; not an APK dependency",
+  "metadata_license": "BSD-2-Clause",
+  "requires_dist": [],
+  "reviewed_files": {
+    "LICENSE.txt": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87",
+    "METADATA": "2fb1681d2ff248efb780153e6dc3be74c9ea8310d08d55e816aba7ad6447f00e"
+  },
+  "limit": "Installed package text reviewed; no blanket clearance of an Office engine"
+}

@@ -1,0 +1,6 @@
+{
+  "result": "consumer compilation failed",
+  "source_sha256": "1515dc0a18c395b0f9be616f43b2252bf9027b592ba05114712847723581c121",
+  "diagnostic": "R18Checks.kt:44:114 smart cast to LocalDate is impossible, because due is a public API property declared in different module",
+  "repair": "Snapshot nullable external public properties in local vals before checking and comparing. No production change."
+}

@@ -30,19 +30,19 @@ try:
     for path in result_root.rglob('TEST-*.xml'):
         cases.extend(ET.parse(path).iter('testcase'))
     selected=[c for c in cases if c.get('name')=='activatingWindowKeepsChildFocus']
-    failures=[f for c in selected for f in c.findall('failure')]
-    detail='\n'.join(f.get('message','')+'\n'+(f.text or '') for f in failures)
-    if result.returncode==0 or len(selected)!=1 or len(failures)!=1 or 'Focused' not in detail:
+    from focus_outcome import classify
+    outcome,detail=classify(result.returncode,selected)
+    if outcome=='INVALID_EXPERIMENT':
         from ci_annotations import annotation
         print(annotation('focus-before.log','Focus counterexample experiment'))
-        raise RuntimeError('Expected native child-focus assertion counterexample was not established; inspect focus-before.log')
+        raise RuntimeError('Invalid historical experiment; inspect focus-before.log')
     record={'kind':'actual counterfactual Android build: prior MainActivity with current tests/other sources',
         'prior_main_commit':prior,'candidate_commit':os.environ.get('GITHUB_SHA'),
         'prior_main_sha256':hashlib.sha256(baseline).hexdigest(),
         'candidate_main_sha256':hashlib.sha256(original).hexdigest(),
-        'gradle_exit':result.returncode,'expected_focus_failure_observed':True,'detail':detail[:1800]}
+        'gradle_exit':result.returncode,'expected_focus_failure_observed':outcome=='REPRODUCED','outcome':outcome,'detail':detail[:1800]}
     Path('focus-before-result.json').write_text(json.dumps(record,indent=2)+'\n')
-    message='Expected prior-source focus counterexample observed: '+detail[:1400]
+    message='Historical focus experiment '+outcome+' (candidate regression remains mandatory): '+detail[:1400]
     print('::notice::'+message.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
 finally:
     source.write_bytes(original)

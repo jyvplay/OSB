@@ -1,0 +1,10 @@
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+Exception in thread "main" java.lang.IllegalStateException: Check failed.
+	at dev.fusion.testing.R21Checks.main$ok(R21Checks.kt:8)
+	at dev.fusion.testing.R21Checks.main(R21Checks.kt:50)
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/run_r21_contracts.py", line 22, in <module>
+    r.check_returncode()
+  File "/usr/lib/python3.11/subprocess.py", line 502, in check_returncode
+    raise CalledProcessError(self.returncode, self.args, self.stdout,
+subprocess.CalledProcessError: Command '['/home/user/.cache/fusion-tools/java/jdk4py/java-runtime/bin/java', '-cp', '/home/user/OSB/android/testing/build/r21/checks.jar:/home/user/OSB/android/testing/build/r21/LiteralWorkbook.jar:/home/user/OSB/android/testing/build/r21/CsvTable.jar:/home/user/OSB/android/testing/build/r21/BrowserSessions.jar', 'dev.fusion.testing.R21Checks']' returned non-zero exit status 1.

@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "cases": 30,
+  "seed": 190919,
+  "input_bytes_max": 104340,
+  "output_bytes_min": 3414,
+  "output_bytes_max": 240566,
+  "producer_child_peak_rss_kib_linux": 103288,
+  "scope": "Actual host Java process and openpyxl, thirty postimplementation report corpora. RSS is one host observation, not a bound/Android physical budget, and excludes Python reader memory. Not an independently authored blind holdout.",
+  "requests_sha256": "b8e90a9f99fbe8fd0b8156a10db762db02a660fab24ec487eb41b56fe8b7b9ef",
+  "outputs_sha256": "569712c7f1630d81a561578dc95d42077037eddd1197b5c01ed623b427864125",
+  "sha256": {
+    "tools/run_r19_report_stress.py": "8a4c99f0bee25d44c0ed254a9a9560ba44e892104cea603b1c4579aaaa6ae51d",
+    "testing/build/r19/checks.jar": "91b818e1d7402e2c723ee9218d1e25cf1b90e35e6a1f60fbe6a0e05b5ba6538b",
+    "testing/build/r19/TaskChanges.jar": "b40119764a90c6e29bc413502a91310cce714f9f8fb6af98cc6043dcccfbe3d4",
+    "testing/build/r19/LiteralWorkbook.jar": "9d343938115d894973ac0be4837b68aac6e4e7848ec0faf309d4d8bd274f2059"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "requests": 493,
+  "successful_reader_cases": 480,
+  "refusals": 13,
+  "omitted_column_equal_byte_pairs": 80,
+  "workbook_bytes": [
+    2141,
+    12641
+  ],
+  "openpyxl": "3.1.5",
+  "seed": 210021,
+  "scope": "Real separately compiled Java producer; Python csv/struct/zipfile/openpyxl consumers. Authored, not blind holdout. Formula execution in Excel/LibreOffice not tested. Equal-byte pairs are environment-scoped, not anonymity.",
+  "requests_sha256": "1e278312c4bf9a75293282f0b6e5d98b23db59c65c17532bc96fea6714f87074",
+  "outputs_sha256": "6d15bae19b54b3388adc925b0fee2bb07a5f91be3efef989288d9aeaa0ac4166",
+  "sha256": {
+    "tools/run_r21_interop.py": "a63a908963db48e9ba6ddea4af6a8c9bf28dd142185682c7308a558d23ef1365",
+    "testing/build/r21/result.txt": "c8efe6162a91f0296f1aa3c3d6a1846a391a9fed1730732760c2feb7f0fb2c77"
+  }
+}

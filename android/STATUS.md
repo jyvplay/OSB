@@ -1,4 +1,41 @@
-# Latest: R12 continuation — full specification still incomplete
+# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+
+- **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
+- **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.
+- Exact-state one-step edit/import undo at a new revision; no-op preservation; append-only merge preview/confirmation with stale/conflict refusal.
+- Real system document pickers, bounded plaintext FTS input/export with exact readback, and Active/Archived XLSX reports. Original literal writer now supports 1..16 sheets with aggregate pre-copy budgets. No full Office/LOK claim.
+- **Collected cce38cb: 95/95 full API34 cases and 4/4 focused UI cases PASS.** Both debug builds/JVM/contracts/lint passed. Native compilation failures are retained; the missing test-only UIAutomator dependency was repaired.
+- **Latest 58e6566: 96/96 full API34 cases and 5/5 focused UI cases PASS; both builds/JVM/contracts/lint PASS.** It actually selects/imports/confirms/saves/reopens/undoes through DocumentsUI and verifies source preservation; cancellation now explicitly checks foreground return.
+- **539 R19 host assertions + 430 reference/readback cases + 30 report stress cases PASS; 95 Python tooling methods PASS.** Four conditional UNSAT checks have SAT premises; two boundary models are SAT. These are not Kotlin implementation proofs.
+- Actual SharedMemory old-writer alias counterexample; production transport unchanged. Earlier intermittent task-add failures remain undiagnosed; passing runs are not stability proof.
+- [R19 A–J report, exact limits and alternatives](docs/R19-ENGINEERING.md), [48-module census](docs/MODULE-TESTABILITY.md), [evaluation APK/try-out](docs/BUILD.md).
+
+# Historical: R18 — editable/archiveable tasks and owned sandbox requests
+
+- **47/48 modules (97.92%) have substantial executable subsets;1/48 (2.08%) remains unestablished: LOK.**
+- **0/48 fully accepted (0%);48/48 unfinished (100%).** All30 formal spikes remain unpassed.
+- Tasks now have title/date editing, durable archive/restore, literal query/scope/date ordering, FTS1 read/FTS2 write compatibility, and a checked revision reserve so archived tasks remain restorable.
+- Additive owned-sheet API uses an unlinked read-only input and request metadata/key-set correlation. **Not arithmetic authenticity or full Office/LOK.**
+- **Latest d6f7393/run38831196589:85 PASS,1 FAIL,0 SKIP**; focused2/2 passed. Older task-add timed out with actual store still revision0/empty. All seven R18 cases and both builds/JVM/contracts/lint passed; the full native gate FAILED.
+- Earlier9340662/run38830281113 passed86/86 but failed its focused run0/2. Both outcomes are retained; UI instability is not marked fixed.
+- **906 R18 assertions +1,200 Python/JVM cases;90 tooling tests;6 conditional Z3 checks.** Fresh R14/R15/R16/R17 regressions also passed. None proves full product acceptance.
+- [R18 report, failures, alternatives and A–J](docs/R18-ENGINEERING.md), [census](docs/MODULE-TESTABILITY.md), [evaluation APK/try-out](docs/BUILD.md).
+
+# Historical: R17 — bounded R16 closure and persistent local tasks
+
+- **47/48 modules (97.92%) have executable subsets;1/48 (2.08%) remains unestablished: LOK.**
+- **0/48 fully accepted;48/48 unfinished.** All original full workflow/physical/legal/AX gates remain separate.
+- R16: real authenticated TCP/clock tests, actual benchmark journeys and855 measured first-party ART rules.
+- R17: local Tasks with date-only labels, reversible completion, revision-checked private persistence and corrupt-data refusal; no reminders.
+- **ddc7fec/run38700509084:79/79 API34 cases PASS**, both debug builds, JVM/contracts and lint.
+- Earlier6164211:78/79 with a Task UI timeout. Focused/full reruns passed without a production change;
+  causal diagnosis/stability remains open, not silently marked fixed.
+- **397 Tasks assertions +200 independent wire/date cases;17131 R16 assertions +64 actual socket cases;
+  81 Python tests; four conditional Z3 integer-model checks.** None proves the complete application.
+- [R17 engineering/evidence/alternatives](docs/R17-ENGINEERING.md), [R16 closure](docs/R16-ENGINEERING.md),
+  [per-module census](docs/MODULE-TESTABILITY.md), [Studio try-out](docs/BUILD.md).
+
+# Historical: R12 continuation — full specification still incomplete
 
 - **30/48 modules (62.50%) have substantial testable subsets;18/48 (37.50%) not established.**
 - **0/48 fully accepted (0%);48/48 outstanding (100%).** All30 spikes unpassed.

@@ -1,0 +1,74 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e/.github",
+    "start_line": 11,
+    "start_column": null,
+    "end_line": 11,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e/.github",
+    "start_line": 25,
+    "start_column": null,
+    "end_line": 25,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Privacy APK footprint (compressed APK only, not RAM/installed size/Tails comparison): [{\"file\": \"privacy/build/outputs/apk/debug/privacy-debug.apk\", \"bytes\": 2449764, \"sha256\": \"c3626c9c5a78b544c5a258b9050a06800024d348a5931143a93b1cef12d42850\"}]",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl:  \njava.lang.AssertionError: Secure pixels leaked into screenshot expected:<0> but was:<37318>\nat org.junit.Assert.fail(Assert.java:89)\nat org.junit.Assert.failNotEquals(Assert.java:835)\nat org.junit.Assert.assertEquals(Assert.java:120)\nat dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl(PrivacyPlatformTest.kt:50)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl=FAIL; dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e/.github",
+    "start_line": 223,
+    "start_column": null,
+    "end_line": 223,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/80ae8d9fb680d8c0f69a16daeafa1c3d4e9cb07e/.github",
+    "start_line": 182,
+    "start_column": null,
+    "end_line": 182,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\n 34 (revision 14)\" complete.\n\"Install Google APIs Intel x86_64 Atom System Image API 34 (revision 14)\" finished.\n\n> Task :privacy:pixel6Api34DebugAndroidTest\nStarting 2 tests on pixel6Api34\n\ndev.fusion.privacy.PrivacyPlatformTest > secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl[pixel6Api34] ^[[31mFAILED ^[[0m\n\tjava.lang.AssertionError: Secure pixels leaked into screenshot expected:<0> but was:<37318>\n\tat org.junit.Assert.fail(Assert.java:89)\nTests on pixel6Api34 failed: There was 1 failure(s).\n\nFinished 2 tests on pixel6Api34\n\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792118794294.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights.\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 3m 3s\n76 actionable tasks: 76 executed",
+    "raw_details": ""
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "solver": "5.3.0",
+  "scope": "Four nonvacuous conditional UNSAT counterexample checks and two SAT boundary models. Not Kotlin, persistence, Office or full-system proof.",
+  "sha256": {
+    "tools/prove_r19_models.py": "4ee63c0517e29ee1c1ab866d56db91f132fd93b6dfa5ed5efb87fa6e920d2a48",
+    "feature/automation/src/main/kotlin/dev/fusion/automation/TaskChanges.kt": "48c312d6b85df0152df016dc140b23f2734d1ea5aaebcb0a6b55158a439dc1c5",
+    "feature/automation/src/main/kotlin/dev/fusion/automation/TaskStreams.kt": "9c3f45621925e64321552c0b5a7e1a363f5cdcd0757c2ce4f8f1546767fafee5",
+    "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt": "a425b64281ade8e3f90f4d60c36ae79127bd1c2f91f6a1f6274b58c493f611e9"
+  },
+  "positive": [
+    {
+      "name": "admitted undoable transition has representable immediate undo",
+      "assumptions_result": "sat",
+      "witness": "[archived_after = 0, archived_before = 0, revision = 0]",
+      "result": "unsat",
+      "hypotheses": "Exact +1 commit and +1 undo, exact before/after data binding, archive counts unchanged by serialization. Does not verify code, IO or concurrency.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived_before () Int)\n(declare-fun archived_after () Int)\n(assert\n (>= revision 0))\n(assert\n (>= archived_before 0))\n(assert\n (<= archived_before 128))\n(assert\n (>= archived_after 0))\n(assert\n (<= archived_after 128))\n(assert\n (let ((?x15 (+ revision archived_before)))\n (<= ?x15 9223372036854775807)))\n(assert\n (<= (+ (+ revision 1) archived_after) 9223372036854775807))\n(assert\n (let ((?x23 (+ revision 2)))\n (let ((?x24 (+ ?x23 archived_before)))\n (<= ?x24 9223372036854775807))))\n(assert\n (or (> (+ revision 2) 9223372036854775807) (> (+ (+ revision 2) archived_before) 9223372036854775807) (<= (+ revision 2) (+ revision 1))))\n(check-sat)\n"
+    },
+    {
+      "name": "serialized successful transition invalidates an old expected revision",
+      "assumptions_result": "sat",
+      "witness": "[revision = 0, expected = 0]",
+      "result": "unsat",
+      "hypotheses": "First publication completes r+1 under the same process lock before second comparison; no rollback/external writer. Content equality is separately tested.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun expected () Int)\n(assert\n (>= revision 0))\n(assert\n (< revision 9223372036854775807))\n(assert\n (= expected revision))\n(assert\n (let ((?x19 (+ revision 1)))\n(= expected ?x19)))\n(check-sat)\n"
+    },
+    {
+      "name": "bounded stream consumes at most limit plus one",
+      "assumptions_result": "sat",
+      "witness": "[consumed = 0, read_count = 1, limit = 1]",
+      "result": "unsat",
+      "hypotheses": "InputStream obeys requested read length; each non-EOF read returns. Zero progress is refused. No wall-clock bound or guarantee a provider returns.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun limit () Int)\n(declare-fun consumed () Int)\n(declare-fun read_count () Int)\n(assert\n (>= limit 1))\n(assert\n (<= limit 524288))\n(assert\n (>= consumed 0))\n(assert\n (<= consumed limit))\n(assert\n (>= read_count 1))\n(assert\n (<= read_count 8192))\n(assert\n (<= read_count (+ (- limit consumed) 1)))\n(assert\n (> (+ consumed read_count) (+ limit 1)))\n(check-sat)\n"
+    },
+    {
+      "name": "append-only admitted merge keeps archive count within total capacity",
+      "assumptions_result": "sat",
+      "witness": "[old_count = 0,\n added_archived = 0,\n added_count = 0,\n old_archived = 0]",
+      "result": "unsat",
+      "hypotheses": "Unique IDs, identical IDs not added, conflicts refused; the model assumes the implementation computes these counts correctly.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun old_count () Int)\n(declare-fun added_count () Int)\n(declare-fun old_archived () Int)\n(declare-fun added_archived () Int)\n(assert\n (>= old_count 0))\n(assert\n (>= added_count 0))\n(assert\n (let ((?x124 (+ old_count added_count)))\n (<= ?x124 128)))\n(assert\n (>= old_archived 0))\n(assert\n (<= old_archived old_count))\n(assert\n (>= added_archived 0))\n(assert\n (<= added_archived added_count))\n(assert\n (or (> (+ old_archived added_archived) 128) (> (+ old_archived added_archived) (+ old_count added_count))))\n(check-sat)\n"
+    }
+  ],
+  "negative": [
+    {
+      "name": "forward-valid is not always undoable",
+      "result": "sat",
+      "witness": "[revision = 9223372036854775806,\n archived_before = 1,\n archived_after = 0]",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived_before () Int)\n(declare-fun archived_after () Int)\n(assert\n (= revision 9223372036854775806))\n(assert\n (= archived_before 1))\n(assert\n (= archived_after 0))\n(assert\n (let ((?x15 (+ revision archived_before)))\n (<= ?x15 9223372036854775807)))\n(assert\n (<= (+ (+ revision 1) archived_after) 9223372036854775807))\n(assert\n (let ((?x24 (+ (+ revision 2) archived_before)))\n(> ?x24 9223372036854775807)))\n(check-sat)\n",
+      "scope": "Restore at the old reserved boundary remains available through the old API, but cannot promise an additional revision-consuming undo."
+    },
+    {
+      "name": "per-sheet cell bounds do not imply a workbook cell bound",
+      "result": "sat",
+      "witness": "[added_count = 15000, old_count = 15000]",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun old_count () Int)\n(declare-fun added_count () Int)\n(assert\n (= old_count 15000))\n(assert\n (= added_count 15000))\n(assert\n (<= old_count 20000))\n(assert\n (<= added_count 20000))\n(assert\n (let ((?x124 (+ old_count added_count)))\n(> ?x124 20000)))\n(check-sat)\n",
+      "scope": "Two independently valid sheet counts violate the aggregate workbook cap; new implementation checks the sum before copying."
+    }
+  ]
+}

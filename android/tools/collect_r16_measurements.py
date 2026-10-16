@@ -12,7 +12,7 @@ def decode(annotations):
         m=re.fullmatch(r'R16BUNDLE (\d+)/(\d+) ([0-9a-f]{64}) ([A-Za-z0-9+/=]+)',msg)
         if not m:raise ValueError('Malformed receipt')
         i,n=int(m[1]),int(m[2])
-        if not 1<=i<=n<=9 or i in parts:raise ValueError('Invalid/duplicate chunk')
+        if not 1<=i<=n<=40 or i in parts:raise ValueError('Invalid/duplicate chunk')
         if total is not None and (total!=n or digest!=m[3]):raise ValueError('Inconsistent chunk identity')
         total,digest=n,m[3];parts[i]=m[4]
     if total is None:raise ValueError('No receipt; do not infer execution')

@@ -1,0 +1,2 @@
+info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)
+R13: 503 assertions PASS; real stream/file/callback effects and bounded serializers. Not full Office/Files/PTY/calendar/automation acceptance.

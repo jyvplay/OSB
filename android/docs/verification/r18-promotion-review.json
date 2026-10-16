@@ -1,0 +1,261 @@
+{
+  "tool_sha256": "b2db41921a1fd05582f8e3e3986e9867d88508f05fd0062e343ea066064e0e1a",
+  "scope": "Executed policy checks on actual collected receipts; no natural-language/proof/authentication oracle. A positive is a named exact-run subset, not UI stability.",
+  "checks": [
+    {
+      "receipt": "android/docs/verification/r18-inherited-result.json",
+      "receipt_sha256": "02e8634d9deb0237315478d8f809e09c035210c60f21262d8a27c91c21dadf8e",
+      "candidate": "da4949138445197a63172737a1e507ba1ff30649",
+      "claim": "tasks_native_subset",
+      "allowed": false,
+      "reason": "Required executed cases missing; source/build/other tests are not a substitute"
+    },
+    {
+      "receipt": "android/docs/verification/r18-inherited-result.json",
+      "receipt_sha256": "02e8634d9deb0237315478d8f809e09c035210c60f21262d8a27c91c21dadf8e",
+      "candidate": "da4949138445197a63172737a1e507ba1ff30649",
+      "claim": "owned_sheet_native_subset",
+      "allowed": false,
+      "reason": "Required executed cases missing; source/build/other tests are not a substitute"
+    },
+    {
+      "receipt": "android/docs/verification/r18-inherited-result.json",
+      "receipt_sha256": "02e8634d9deb0237315478d8f809e09c035210c60f21262d8a27c91c21dadf8e",
+      "candidate": "da4949138445197a63172737a1e507ba1ff30649",
+      "claim": "arithmetic_truth",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-inherited-result.json",
+      "receipt_sha256": "02e8634d9deb0237315478d8f809e09c035210c60f21262d8a27c91c21dadf8e",
+      "candidate": "da4949138445197a63172737a1e507ba1ff30649",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-inherited-result.json",
+      "receipt_sha256": "02e8634d9deb0237315478d8f809e09c035210c60f21262d8a27c91c21dadf8e",
+      "candidate": "da4949138445197a63172737a1e507ba1ff30649",
+      "claim": "Kotlin_formal_proof",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-tasks-before-result.json",
+      "receipt_sha256": "3ea5fbbcfc7474f143377c8722de3ea1da2190e46382232228462aa7c1cca5ef",
+      "candidate": "ad5cf8061a772d7418948b5e4c8a0215ff15cf9e",
+      "claim": "tasks_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-tasks-before-result.json",
+      "receipt_sha256": "3ea5fbbcfc7474f143377c8722de3ea1da2190e46382232228462aa7c1cca5ef",
+      "candidate": "ad5cf8061a772d7418948b5e4c8a0215ff15cf9e",
+      "claim": "owned_sheet_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-tasks-before-result.json",
+      "receipt_sha256": "3ea5fbbcfc7474f143377c8722de3ea1da2190e46382232228462aa7c1cca5ef",
+      "candidate": "ad5cf8061a772d7418948b5e4c8a0215ff15cf9e",
+      "claim": "arithmetic_truth",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-tasks-before-result.json",
+      "receipt_sha256": "3ea5fbbcfc7474f143377c8722de3ea1da2190e46382232228462aa7c1cca5ef",
+      "candidate": "ad5cf8061a772d7418948b5e4c8a0215ff15cf9e",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-tasks-before-result.json",
+      "receipt_sha256": "3ea5fbbcfc7474f143377c8722de3ea1da2190e46382232228462aa7c1cca5ef",
+      "candidate": "ad5cf8061a772d7418948b5e4c8a0215ff15cf9e",
+      "claim": "Kotlin_formal_proof",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-owned-before-result.json",
+      "receipt_sha256": "17debf849fc15907fadc12ead5fc522f093ec70147b4700e773562bfdf24394e",
+      "candidate": "3361afea93cf6c172914f1e8f1dac49814eeb2ac",
+      "claim": "tasks_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-owned-before-result.json",
+      "receipt_sha256": "17debf849fc15907fadc12ead5fc522f093ec70147b4700e773562bfdf24394e",
+      "candidate": "3361afea93cf6c172914f1e8f1dac49814eeb2ac",
+      "claim": "owned_sheet_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-owned-before-result.json",
+      "receipt_sha256": "17debf849fc15907fadc12ead5fc522f093ec70147b4700e773562bfdf24394e",
+      "candidate": "3361afea93cf6c172914f1e8f1dac49814eeb2ac",
+      "claim": "arithmetic_truth",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-owned-before-result.json",
+      "receipt_sha256": "17debf849fc15907fadc12ead5fc522f093ec70147b4700e773562bfdf24394e",
+      "candidate": "3361afea93cf6c172914f1e8f1dac49814eeb2ac",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-owned-before-result.json",
+      "receipt_sha256": "17debf849fc15907fadc12ead5fc522f093ec70147b4700e773562bfdf24394e",
+      "candidate": "3361afea93cf6c172914f1e8f1dac49814eeb2ac",
+      "claim": "Kotlin_formal_proof",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-reserve-before-ui-result.json",
+      "receipt_sha256": "14056943c1ae14aef13c4573ba2aef8f4e232883a6987822663b36891fbabbb6",
+      "candidate": "9590ff1aca27572aa3e6f562632556046062a83b",
+      "claim": "tasks_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-reserve-before-ui-result.json",
+      "receipt_sha256": "14056943c1ae14aef13c4573ba2aef8f4e232883a6987822663b36891fbabbb6",
+      "candidate": "9590ff1aca27572aa3e6f562632556046062a83b",
+      "claim": "owned_sheet_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-reserve-before-ui-result.json",
+      "receipt_sha256": "14056943c1ae14aef13c4573ba2aef8f4e232883a6987822663b36891fbabbb6",
+      "candidate": "9590ff1aca27572aa3e6f562632556046062a83b",
+      "claim": "arithmetic_truth",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-reserve-before-ui-result.json",
+      "receipt_sha256": "14056943c1ae14aef13c4573ba2aef8f4e232883a6987822663b36891fbabbb6",
+      "candidate": "9590ff1aca27572aa3e6f562632556046062a83b",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-reserve-before-ui-result.json",
+      "receipt_sha256": "14056943c1ae14aef13c4573ba2aef8f4e232883a6987822663b36891fbabbb6",
+      "candidate": "9590ff1aca27572aa3e6f562632556046062a83b",
+      "claim": "Kotlin_formal_proof",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-wrapped-full-result.json",
+      "receipt_sha256": "530b45101fff33b6d1a58fc011a32c30896ac25ca98ed64ec5610f09e42afbf9",
+      "candidate": "93406626410d7b8526b24ffffc057a919a095e32",
+      "claim": "tasks_native_subset",
+      "allowed": true,
+      "reason": "Only this named API34 subset at this exact candidate; no full-product, physical, legal, AX or universal claim"
+    },
+    {
+      "receipt": "android/docs/verification/r18-wrapped-full-result.json",
+      "receipt_sha256": "530b45101fff33b6d1a58fc011a32c30896ac25ca98ed64ec5610f09e42afbf9",
+      "candidate": "93406626410d7b8526b24ffffc057a919a095e32",
+      "claim": "owned_sheet_native_subset",
+      "allowed": true,
+      "reason": "Only this named API34 subset at this exact candidate; no full-product, physical, legal, AX or universal claim"
+    },
+    {
+      "receipt": "android/docs/verification/r18-wrapped-full-result.json",
+      "receipt_sha256": "530b45101fff33b6d1a58fc011a32c30896ac25ca98ed64ec5610f09e42afbf9",
+      "candidate": "93406626410d7b8526b24ffffc057a919a095e32",
+      "claim": "arithmetic_truth",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-wrapped-full-result.json",
+      "receipt_sha256": "530b45101fff33b6d1a58fc011a32c30896ac25ca98ed64ec5610f09e42afbf9",
+      "candidate": "93406626410d7b8526b24ffffc057a919a095e32",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-wrapped-full-result.json",
+      "receipt_sha256": "530b45101fff33b6d1a58fc011a32c30896ac25ca98ed64ec5610f09e42afbf9",
+      "candidate": "93406626410d7b8526b24ffffc057a919a095e32",
+      "claim": "Kotlin_formal_proof",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "claim": "tasks_native_subset",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "allowed": false,
+      "reason": "Different or invalid source candidate; a repaired candidate inherits no pass",
+      "scope": "Actual green predecessor cannot promote diagnostic candidate automatically"
+    },
+    {
+      "receipt": "android/docs/verification/r18-diagnostic-focused-result.json",
+      "receipt_sha256": "ff2c77319a24ea6b8756eacc46a18429380dbadfab98d12a1b9e802809e0fd7b",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "claim": "tasks_native_subset",
+      "allowed": false,
+      "reason": "Required executed cases missing; source/build/other tests are not a substitute"
+    },
+    {
+      "receipt": "android/docs/verification/r18-diagnostic-focused-result.json",
+      "receipt_sha256": "ff2c77319a24ea6b8756eacc46a18429380dbadfab98d12a1b9e802809e0fd7b",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "claim": "owned_sheet_native_subset",
+      "allowed": false,
+      "reason": "Required executed cases missing; source/build/other tests are not a substitute"
+    },
+    {
+      "receipt": "android/docs/verification/r18-diagnostic-focused-result.json",
+      "receipt_sha256": "ff2c77319a24ea6b8756eacc46a18429380dbadfab98d12a1b9e802809e0fd7b",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    },
+    {
+      "receipt": "android/docs/verification/r18-diagnostic-full-result.json",
+      "receipt_sha256": "2d18100db45cc0ec3aadd39b35ac96f342e38682d1e59f45f477220fd7729215",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "claim": "tasks_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-diagnostic-full-result.json",
+      "receipt_sha256": "2d18100db45cc0ec3aadd39b35ac96f342e38682d1e59f45f477220fd7729215",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "claim": "owned_sheet_native_subset",
+      "allowed": false,
+      "reason": "Queued, partial, failed or absent whole native gate"
+    },
+    {
+      "receipt": "android/docs/verification/r18-diagnostic-full-result.json",
+      "receipt_sha256": "2d18100db45cc0ec3aadd39b35ac96f342e38682d1e59f45f477220fd7729215",
+      "candidate": "d6f73934101ae4532accac55fd1d3dd09960116a",
+      "claim": "full_modules",
+      "allowed": false,
+      "reason": "No admissible bridge for this claim in R18"
+    }
+  ]
+}

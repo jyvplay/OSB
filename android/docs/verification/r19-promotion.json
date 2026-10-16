@@ -1,0 +1,25 @@
+{
+  "candidate": "58e65660881e7e5b4663dd9e3c31dd86ab651a05",
+  "receipt": "android/docs/verification/r19-picker-native-result.json",
+  "claims": {
+    "task_edit_undo_native": {
+      "allowed": true,
+      "reason": "Named exact-candidate API34 experiment only; not all inputs/providers/devices, UI stability, full Office, authenticated data or sealed-memory proof"
+    },
+    "task_transfer_native": {
+      "allowed": true,
+      "reason": "Named exact-candidate API34 experiment only; not all inputs/providers/devices, UI stability, full Office, authenticated data or sealed-memory proof"
+    },
+    "shared_memory_spike": {
+      "allowed": true,
+      "reason": "Named exact-candidate API34 experiment only; not all inputs/providers/devices, UI stability, full Office, authenticated data or sealed-memory proof"
+    }
+  },
+  "prior_95_cases_meet_strengthened_transfer_gate": false,
+  "scope": "Executed closed-vocabulary exact-candidate policy; not offline receipt authentication, universal correctness or full module acceptance.",
+  "sha256": {
+    "android/docs/verification/r19-picker-native-result.json": "9ed2a6cbbe7b4ecf87ed24c9bd28bc20b01b1fc3e150fb50e8e778b5e8f3bf95",
+    "android/tools/r19_evidence_gate.py": "d14490071da032598bcdcef3324f207e8e91b2bf7faf5aa8c4895b39fc2b8e6e",
+    "android/tools/r18_evidence_gate.py": "b2db41921a1fd05582f8e3e3986e9867d88508f05fd0062e343ea066064e0e1a"
+  }
+}

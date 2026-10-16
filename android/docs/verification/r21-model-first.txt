@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/prove_r21_models.py", line 17, in <module>
+    a,b=z3.Arrays('left right',z3.IntSort(),z3.IntSort());i,j=z3.Ints('first_column second_column')
+        ^^^^^^^^^
+AttributeError: module 'z3' has no attribute 'Arrays'

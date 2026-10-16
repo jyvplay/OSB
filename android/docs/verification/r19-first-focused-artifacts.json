@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12020291503,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAyMDI5MTUwMw==",
+      "name": "tasks-focused-device-reports",
+      "size_in_bytes": 6471,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12020291503",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12020291503/zip",
+      "expired": false,
+      "digest": "sha256:2dc9857a24d9de1f789d1ec5182401630ffca57199458a607e70f87a1cb21915",
+      "created_at": "2026-10-16T02:03:13Z",
+      "updated_at": "2026-10-16T02:03:13Z",
+      "expires_at": "2027-01-14T02:00:53Z",
+      "workflow_run": {
+        "id": 38838202649,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/31a7965e-osb",
+        "head_sha": "2ee4e9ebe7c786954b14d54d2d742943f2a50962"
+      }
+    }
+  ]
+}

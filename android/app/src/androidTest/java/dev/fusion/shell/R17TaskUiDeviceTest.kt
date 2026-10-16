@@ -1,0 +1,41 @@
+package dev.fusion.shell
+
+import androidx.compose.ui.test.*
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.RuleChain
+
+/** Real MainActivity entry, consent, local persistence and recreation. No reminder claimed. */
+class R17TaskUiDeviceTest {
+    private val compose=createAndroidComposeRule<MainActivity>()
+    @get:Rule val rules:RuleChain=RuleChain.outerRule(DisposableEmulatorRule()).around(compose)
+    private fun open() {
+        compose.waitUntil(10000) {compose.onAllNodes(hasTestTag("shelf-automation") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+        compose.onNodeWithTag("shelf-automation").performScrollTo().performClick()
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("tasks-mode").performScrollTo().performClick()
+        compose.waitUntil(10000) {compose.onAllNodes(hasTestTag("tasks-add") and isEnabled()).fetchSemanticsNodes().isNotEmpty()}
+    }
+    @Test fun addCompleteAndReopenPersistedTaskThroughActualShell() {
+        open()
+        compose.onNodeWithTag("tasks-title").performScrollTo().performTextInput("R17 local task")
+        compose.onNodeWithTag("tasks-date").performScrollTo().performTextInput("2028-02-29")
+        compose.onNodeWithTag("tasks-title").assertTextContains("R17 local task")
+        compose.onNodeWithTag("tasks-date").assertTextContains("2028-02-29")
+        compose.onNodeWithTag("tasks-add").performScrollTo().assertIsEnabled()
+        val before="bounds="+compose.onAllNodesWithTag("tasks-add").fetchSemanticsNodes().map {it.boundsInRoot}+"; "+TaskUiEvidence.geometry(compose.activity)
+        compose.onNodeWithTag("tasks-add").performClick()
+        try { compose.waitUntil(10000) {compose.onAllNodesWithContentDescription("Completed: R17 local task").fetchSemanticsNodes().isNotEmpty()} }
+        catch(e:Throwable) {
+            val status=runCatching {compose.onAllNodesWithTag("tasks-status").fetchSemanticsNodes().joinToString {it.config[SemanticsProperties.Text].joinToString {text->text.text}}}.getOrElse {"Status read failed: ${it.javaClass.simpleName}"}
+            throw TaskUiEvidence.failure(compose.activity,"R17 add observation",e,status,before)
+        }
+        compose.onNodeWithContentDescription("Completed: R17 local task").performScrollTo().performClick()
+        compose.waitUntil(10000) {compose.onAllNodesWithText("Loaded/saved revision 2. No reminder scheduled.").fetchSemanticsNodes().isNotEmpty()}
+        compose.activityRule.scenario.recreate();open()
+        compose.onNodeWithContentDescription("Completed: R17 local task").performScrollTo().assertIsOn()
+        compose.onNodeWithText("Date only: 2028-02-29").assertExists()
+    }
+}

@@ -1,0 +1,670 @@
+{
+  "scope": "Limited primary-source verification, not best-known global survey or legal acceptance",
+  "records": [
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "android/README.md",
+      "git_blob": "17331b5ef7a3447659bef5704481bd4ad85b36a9",
+      "sha256": "cb6d1a21737dc994f9aee26f1ab8c595cc374b5b827ec649ce3cd38c79b36e19",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/android/README.md",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "COPYING.MPL",
+      "git_blob": "a612ad9813b006ce81d1ee438dd784da99a54007",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/COPYING.MPL",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "libreofficekit/README.md",
+      "git_blob": "148879ec57fc3bfd6e5d38d9ecfbc88540943a07",
+      "sha256": "88e2717b169484a8ff47eff2fe99c6f84213dc69acbc4ef31ae3dcd3f0c850cf",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/libreofficekit/README.md",
+      "reverified": true
+    },
+    {
+      "repository": "LibreOffice/core",
+      "commit": "0f91d58472b9a1b3289e070e4c03335d5935b4eb",
+      "path": "include/LibreOfficeKit/LibreOfficeKit.h",
+      "git_blob": "9c28a3ff348d65ee72af95760b9b12c1e8abefba",
+      "sha256": "27def65f5772e74066547556374c9ab204eaa934d29215f074b54a0d8a0b9759",
+      "url": "https://github.com/LibreOffice/core/blob/0f91d58472b9a1b3289e070e4c03335d5935b4eb/include/LibreOfficeKit/LibreOfficeKit.h",
+      "reverified": true
+    },
+    {
+      "repository": "pyca/cryptography",
+      "commit": "c0af4dd7b75921bbe9f1d41a03dbd4b64a9e3403",
+      "path": "docs/hazmat/primitives/aead.rst",
+      "git_blob": "e30bc6c5fdb2e4830987bbe19ed989fccdd1e75f",
+      "sha256": "73a17ff5e8c4fc824a1ef31c789a530109f74c491c04c1f23db2ca9cc29bee16",
+      "url": "https://github.com/pyca/cryptography/blob/c0af4dd7b75921bbe9f1d41a03dbd4b64a9e3403/docs/hazmat/primitives/aead.rst",
+      "reverified": true
+    },
+    {
+      "repository": "androidx/androidx",
+      "commit": "f8f5e9c42b562e58bfca57d793d57e9471bc0d50",
+      "path": "benchmark/benchmark-macro-junit4/src/main/java/androidx/benchmark/macro/junit4/BaselineProfileRule.kt",
+      "git_blob": "a59b1848ab728c894007a9589991b9f4fb15f319",
+      "sha256": "89b2037336f1b8b53e685dd8f4972ee5d7e458b1d15a789d1dcbf92cf915a5e8",
+      "url": "https://github.com/androidx/androidx/blob/f8f5e9c42b562e58bfca57d793d57e9471bc0d50/benchmark/benchmark-macro-junit4/src/main/java/androidx/benchmark/macro/junit4/BaselineProfileRule.kt",
+      "reverified": true
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/util/AtomicFile.java",
+      "git_blob": "be8e2c2d745c16e62d0b80e7f841c4a67524ad16",
+      "sha256": "fd8e9350b0d12648e9886162e4cbd2fb64311a3a4c9bcf7144ceaaaa145fc8fe",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/util/AtomicFile.java",
+      "excerpts": [
+        {
+          "line": 41,
+          "text": " * Atomic file guarantees file integrity by ensuring that a file has been completely written and"
+        },
+        {
+          "line": 42,
+          "text": " * sync'd to disk before renaming it to the original file. Previously this is done by renaming the"
+        },
+        {
+          "line": 43,
+          "text": " * original file to a backup file beforehand, but this approach couldn't handle the case where the"
+        },
+        {
+          "line": 44,
+          "text": " * file is created for the first time. This class will also handle the backup file created by the"
+        },
+        {
+          "line": 45,
+          "text": " * old implementation properly."
+        },
+        {
+          "line": 46,
+          "text": " * <p>"
+        },
+        {
+          "line": 47,
+          "text": " * Atomic file does not confer any file locking semantics. Do not use this class when the file may"
+        },
+        {
+          "line": 48,
+          "text": " * be accessed or modified concurrently by multiple threads or processes. The caller is responsible"
+        },
+        {
+          "line": 49,
+          "text": " * for ensuring appropriate mutual exclusion invariants whenever it accesses the file."
+        },
+        {
+          "line": 50,
+          "text": " */"
+        },
+        {
+          "line": 51,
+          "text": "public class AtomicFile {"
+        },
+        {
+          "line": 110,
+          "text": "     * to which you can write the new file data.  The existing file is replaced"
+        },
+        {
+          "line": 111,
+          "text": "     * with the new data.  You <em>must not</em> directly close the given"
+        },
+        {
+          "line": 112,
+          "text": "     * FileOutputStream; instead call either {@link #finishWrite(FileOutputStream)}"
+        },
+        {
+          "line": 113,
+          "text": "     * or {@link #failWrite(FileOutputStream)}."
+        },
+        {
+          "line": 114,
+          "text": "     *"
+        },
+        {
+          "line": 115,
+          "text": "     * <p>Note that if another thread is currently performing"
+        },
+        {
+          "line": 116,
+          "text": "     * a write, this will simply replace whatever that thread is writing"
+        },
+        {
+          "line": 117,
+          "text": "     * with the new file being written by this thread, and when the other"
+        },
+        {
+          "line": 120,
+          "text": "     * access to AtomicFile."
+        },
+        {
+          "line": 121,
+          "text": "     */"
+        },
+        {
+          "line": 122,
+          "text": "    public FileOutputStream startWrite() throws IOException {"
+        },
+        {
+          "line": 123,
+          "text": "        return startWrite(0);"
+        },
+        {
+          "line": 124,
+          "text": "    }"
+        },
+        {
+          "line": 125,
+          "text": ""
+        },
+        {
+          "line": 126,
+          "text": "    /**"
+        },
+        {
+          "line": 127,
+          "text": "     * @hide Internal version of {@link #startWrite()} that allows you to specify an earlier"
+        },
+        {
+          "line": 128,
+          "text": "     * start time of the operation to adjust how the commit is logged."
+        },
+        {
+          "line": 129,
+          "text": "     * @param startTime The effective start time of the operation, in the time"
+        },
+        {
+          "line": 130,
+          "text": "     * base of {@link SystemClock#uptimeMillis()}."
+        },
+        {
+          "line": 131,
+          "text": "     *"
+        },
+        {
+          "line": 132,
+          "text": "     * @deprecated Use {@link SystemConfigFileCommitEventLogger#setStartTime} followed"
+        },
+        {
+          "line": 133,
+          "text": "     * by {@link #startWrite()}"
+        },
+        {
+          "line": 134,
+          "text": "     */"
+        },
+        {
+          "line": 135,
+          "text": "    @Deprecated"
+        },
+        {
+          "line": 136,
+          "text": "    public FileOutputStream startWrite(long startTime) throws IOException {"
+        },
+        {
+          "line": 137,
+          "text": "        if (mCommitEventLogger != null) {"
+        },
+        {
+          "line": 138,
+          "text": "            if (startTime != 0) {"
+        },
+        {
+          "line": 139,
+          "text": "                mCommitEventLogger.setStartTime(startTime);"
+        },
+        {
+          "line": 140,
+          "text": "            }"
+        },
+        {
+          "line": 144,
+          "text": ""
+        },
+        {
+          "line": 145,
+          "text": "        if (mLegacyBackupName.exists()) {"
+        },
+        {
+          "line": 146,
+          "text": "            rename(mLegacyBackupName, mBaseName);"
+        },
+        {
+          "line": 147,
+          "text": "        }"
+        },
+        {
+          "line": 148,
+          "text": ""
+        },
+        {
+          "line": 149,
+          "text": "        try {"
+        },
+        {
+          "line": 150,
+          "text": "            return new FileOutputStream(mNewName);"
+        },
+        {
+          "line": 166,
+          "text": "    /**"
+        },
+        {
+          "line": 167,
+          "text": "     * Call when you have successfully finished writing to the stream"
+        },
+        {
+          "line": 168,
+          "text": "     * returned by {@link #startWrite()}.  This will close, sync, and"
+        },
+        {
+          "line": 169,
+          "text": "     * commit the new data.  The next attempt to read the atomic file"
+        },
+        {
+          "line": 170,
+          "text": "     * will return the new file stream."
+        },
+        {
+          "line": 171,
+          "text": "     */"
+        },
+        {
+          "line": 172,
+          "text": "    public void finishWrite(FileOutputStream str) {"
+        },
+        {
+          "line": 173,
+          "text": "        if (str == null) {"
+        },
+        {
+          "line": 174,
+          "text": "            return;"
+        },
+        {
+          "line": 175,
+          "text": "        }"
+        },
+        {
+          "line": 176,
+          "text": "        if (!FileUtils.sync(str)) {"
+        },
+        {
+          "line": 177,
+          "text": "            Log.e(LOG_TAG, \"Failed to sync file output stream\");"
+        },
+        {
+          "line": 178,
+          "text": "        }"
+        },
+        {
+          "line": 179,
+          "text": "        try {"
+        },
+        {
+          "line": 180,
+          "text": "            str.close();"
+        },
+        {
+          "line": 182,
+          "text": "            Log.e(LOG_TAG, \"Failed to close file output stream\", e);"
+        },
+        {
+          "line": 183,
+          "text": "        }"
+        },
+        {
+          "line": 184,
+          "text": "        rename(mNewName, mBaseName);"
+        },
+        {
+          "line": 185,
+          "text": "        if (mCommitEventLogger != null) {"
+        },
+        {
+          "line": 186,
+          "text": "            mCommitEventLogger.onFinishWrite();"
+        },
+        {
+          "line": 187,
+          "text": "        }"
+        },
+        {
+          "line": 188,
+          "text": "    }"
+        },
+        {
+          "line": 190,
+          "text": "    /**"
+        },
+        {
+          "line": 191,
+          "text": "     * Call when you have failed for some reason at writing to the stream"
+        },
+        {
+          "line": 192,
+          "text": "     * returned by {@link #startWrite()}.  This will close the current"
+        },
+        {
+          "line": 193,
+          "text": "     * write stream, and delete the new file."
+        },
+        {
+          "line": 194,
+          "text": "     */"
+        },
+        {
+          "line": 195,
+          "text": "    public void failWrite(FileOutputStream str) {"
+        },
+        {
+          "line": 196,
+          "text": "        if (str == null) {"
+        },
+        {
+          "line": 197,
+          "text": "            return;"
+        },
+        {
+          "line": 198,
+          "text": "        }"
+        },
+        {
+          "line": 199,
+          "text": "        if (!FileUtils.sync(str)) {"
+        },
+        {
+          "line": 200,
+          "text": "            Log.e(LOG_TAG, \"Failed to sync file output stream\");"
+        },
+        {
+          "line": 201,
+          "text": "        }"
+        },
+        {
+          "line": 202,
+          "text": "        try {"
+        },
+        {
+          "line": 203,
+          "text": "            str.close();"
+        },
+        {
+          "line": 216,
+          "text": "        try {"
+        },
+        {
+          "line": 217,
+          "text": "            FileOutputStream fos = new FileOutputStream(mBaseName);"
+        },
+        {
+          "line": 218,
+          "text": "            FileUtils.sync(fos);"
+        },
+        {
+          "line": 219,
+          "text": "            fos.close();"
+        },
+        {
+          "line": 220,
+          "text": "        } catch (FileNotFoundException e) {"
+        },
+        {
+          "line": 221,
+          "text": "            throw new IOException(\"Couldn't append \" + mBaseName);"
+        },
+        {
+          "line": 222,
+          "text": "        } catch (IOException e) {"
+        },
+        {
+          "line": 241,
+          "text": "     * You must do your own threading protection for access to AtomicFile."
+        },
+        {
+          "line": 242,
+          "text": "     */"
+        },
+        {
+          "line": 243,
+          "text": "    public FileInputStream openRead() throws FileNotFoundException {"
+        },
+        {
+          "line": 244,
+          "text": "        if (mLegacyBackupName.exists()) {"
+        },
+        {
+          "line": 245,
+          "text": "            rename(mLegacyBackupName, mBaseName);"
+        },
+        {
+          "line": 246,
+          "text": "        }"
+        },
+        {
+          "line": 247,
+          "text": ""
+        },
+        {
+          "line": 248,
+          "text": "        // It was okay to call openRead() between startWrite() and finishWrite() for the first time"
+        },
+        {
+          "line": 249,
+          "text": "        // (because there is no backup file), where openRead() would open the file being written,"
+        },
+        {
+          "line": 250,
+          "text": "        // which makes no sense, but finishWrite() would still persist the write properly. For all"
+        },
+        {
+          "line": 251,
+          "text": "        // subsequent writes, if openRead() was called in between, it would see a backup file and"
+        },
+        {
+          "line": 252,
+          "text": "        // delete the file being written, the same behavior as our new implementation. So we only"
+        },
+        {
+          "line": 253,
+          "text": "        // need a special case for the first write, and don't delete the new file in this case so"
+        },
+        {
+          "line": 254,
+          "text": "        // that finishWrite() can still work."
+        },
+        {
+          "line": 255,
+          "text": "        if (mNewName.exists() && mBaseName.exists()) {"
+        },
+        {
+          "line": 256,
+          "text": "            if (!mNewName.delete()) {"
+        },
+        {
+          "line": 257,
+          "text": "                Log.e(LOG_TAG, \"Failed to delete outdated new file \" + mNewName);"
+        },
+        {
+          "line": 258,
+          "text": "            }"
+        },
+        {
+          "line": 263,
+          "text": "    /**"
+        },
+        {
+          "line": 264,
+          "text": "     * @hide"
+        },
+        {
+          "line": 265,
+          "text": "     * Checks if the original or legacy backup file exists."
+        },
+        {
+          "line": 266,
+          "text": "     * @return whether the original or legacy backup file exists."
+        },
+        {
+          "line": 267,
+          "text": "     */"
+        },
+        {
+          "line": 268,
+          "text": "    public boolean exists() {"
+        },
+        {
+          "line": 269,
+          "text": "        return mBaseName.exists() || mLegacyBackupName.exists();"
+        },
+        {
+          "line": 270,
+          "text": "    }"
+        },
+        {
+          "line": 285,
+          "text": ""
+        },
+        {
+          "line": 286,
+          "text": "    /**"
+        },
+        {
+          "line": 287,
+          "text": "     * A convenience for {@link #openRead()} that also reads all of the"
+        },
+        {
+          "line": 288,
+          "text": "     * file contents into a byte array which is returned."
+        },
+        {
+          "line": 289,
+          "text": "     */"
+        },
+        {
+          "line": 290,
+          "text": "    public byte[] readFully() throws IOException {"
+        },
+        {
+          "line": 291,
+          "text": "        FileInputStream stream = openRead();"
+        },
+        {
+          "line": 292,
+          "text": "        try {"
+        },
+        {
+          "line": 293,
+          "text": "            int pos = 0;"
+        },
+        {
+          "line": 294,
+          "text": "            int avail = stream.available();"
+        },
+        {
+          "line": 295,
+          "text": "            byte[] data = new byte[avail];"
+        },
+        {
+          "line": 320,
+          "text": "        FileOutputStream out = null;"
+        },
+        {
+          "line": 321,
+          "text": "        try {"
+        },
+        {
+          "line": 322,
+          "text": "            out = startWrite();"
+        },
+        {
+          "line": 323,
+          "text": "            writeContent.accept(out);"
+        },
+        {
+          "line": 324,
+          "text": "            finishWrite(out);"
+        },
+        {
+          "line": 325,
+          "text": "        } catch (Throwable t) {"
+        },
+        {
+          "line": 326,
+          "text": "            failWrite(out);"
+        },
+        {
+          "line": 327,
+          "text": "            throw ExceptionUtils.propagate(t);"
+        },
+        {
+          "line": 328,
+          "text": "        } finally {"
+        },
+        {
+          "line": 329,
+          "text": "            IoUtils.closeQuietly(out);"
+        },
+        {
+          "line": 330,
+          "text": "        }"
+        },
+        {
+          "line": 336,
+          "text": "    }"
+        },
+        {
+          "line": 337,
+          "text": ""
+        },
+        {
+          "line": 338,
+          "text": "    private static void rename(File source, File target) {"
+        },
+        {
+          "line": 339,
+          "text": "        // We used to delete the target file before rename, but that isn't atomic, and the rename()"
+        },
+        {
+          "line": 340,
+          "text": "        // syscall should atomically replace the target file. However in the case where the target"
+        },
+        {
+          "line": 341,
+          "text": "        // file is a directory, a simple rename() won't work. We need to delete the file in this"
+        },
+        {
+          "line": 342,
+          "text": "        // case because there are callers who erroneously called mBaseName.mkdirs() (instead of"
+        },
+        {
+          "line": 343,
+          "text": "        // mBaseName.getParentFile().mkdirs()) before creating the AtomicFile, and it worked"
+        },
+        {
+          "line": 344,
+          "text": "        // regardless, so this deletion became some kind of API."
+        },
+        {
+          "line": 345,
+          "text": "        if (target.isDirectory()) {"
+        }
+      ]
+    }
+  ]
+}

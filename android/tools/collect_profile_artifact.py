@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Collect actual generated rules, or verify packaged ART profile. Never invent missing output."""
-import argparse, hashlib, json, zipfile
+import argparse, hashlib, json, zipfile, re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def collect():
@@ -9,9 +9,14 @@ def collect():
     source=candidates[0];raw=source.read_bytes();lines=raw.decode('utf-8').splitlines()
     rules=[s for s in lines if s and not s.startswith('#')]
     if not rules or not any('Ldev/fusion/' in s for s in rules):raise ValueError('No generated Fusion rules')
+    # Retain measured first-party rules only; never synthesize or claim full-profile speedup.
+    selected=[s for s in rules if re.match(r'^[HSP]*Ldev/fusion/',s)]
+    if not selected:raise ValueError('No measured first-party owned rules')
+    original_sha256=hashlib.sha256(raw).hexdigest()
+    raw=('\n'.join(selected)+'\n').encode()
     target=ROOT/'baselineprofile/src/main/baseline-prof.txt';target.write_bytes(raw)
     result={'source':str(source.relative_to(ROOT)),'sha256':hashlib.sha256(raw).hexdigest(),
-        'rules':len(rules),'fusion_rules':sum('Ldev/fusion/' in s for s in rules),
+        'rules':len(selected),'fusion_rules':len(selected),'original_rules':len(rules),'original_sha256':original_sha256,'selection':'Measured first-party owned rules only',
         'scope':'Actual API34 emulator startup/Files journey; not performance improvement or physical acceptance'}
     (ROOT/'profile-generation.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 def packaged():

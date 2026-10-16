@@ -115,7 +115,7 @@ dependencies {
     implementation(project(":cast:dlna"))
     implementation(project(":cast:airplay"))
     implementation(project(":cast:castv2"))
-    // Ships the (currently empty) baseline profile via ProfileInstaller.
+    // Ships measured first-party startup/Files rules; no physical speedup claim.
     implementation(project(":baselineprofile"))
 
     implementation(platform(libs.androidx.compose.compose.bom))
@@ -133,6 +133,7 @@ dependencies {
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.uiautomator.uiautomator)
     androidTestImplementation(libs.androidx.test.core.ktx)
     androidTestImplementation(platform(libs.androidx.compose.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.ui.test.junit4)

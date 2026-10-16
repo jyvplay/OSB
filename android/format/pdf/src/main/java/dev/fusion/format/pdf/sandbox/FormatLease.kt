@@ -6,6 +6,10 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
 import dev.fusion.ooxml.SheetFrame
+import dev.fusion.ooxml.OwnedSheetRequest
+import dev.fusion.ooxml.OwnedCsvRequest
+import dev.fusion.ooxml.OwnedXlsxRequest
+import dev.fusion.ooxml.CsvTable
 import java.io.Closeable
 import java.io.File
 import java.util.UUID
@@ -19,7 +23,7 @@ class FormatLease(context: Context) : Closeable {
     data class Evidence(val uid: Int,val pid: Int,val bytes: Int,val digest: String,
                         val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int,
                         val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long,
-                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null)
+                        val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null,val table:CsvTable?=null)
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -29,6 +33,9 @@ class FormatLease(context: Context) : Closeable {
     private val death=CountDownLatch(1)
     private val started=AtomicBoolean(false)
     private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
+    private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
+    private val ownedCsv=java.util.concurrent.atomic.AtomicReference<OwnedCsvRequest?>(null)
+    private val ownedXlsx=java.util.concurrent.atomic.AtomicReference<OwnedXlsxRequest?>(null)
     private val closed=AtomicBoolean(false)
     private val id=UUID.randomUUID().toString()
     private var bound=false
@@ -53,11 +60,18 @@ class FormatLease(context: Context) : Closeable {
                 try {
                     val frame=requireNotNull(data.getByteArray("sheetResult"))
                     require(size<=SheetFrame.MAX_INPUT)
-                    SheetFrame.readResult(frame)
+                    ownedRequest.get()?.accept(size,digest,frame) ?: SheetFrame.readResult(frame)
                 } catch(error:Exception) { result.completeExceptionally(error);return }
             } else null
+            val table=if(message.what==FormatWorkerService.CSV_TABLE) {
+                try {requireNotNull(ownedCsv.get()).accept(size,digest,requireNotNull(data.getByteArray("tableResult")))}
+                catch(error:Exception) {result.completeExceptionally(error);return}
+            } else if(message.what==FormatWorkerService.XLSX_TABLE) {
+                try {requireNotNull(ownedXlsx.get()).accept(size,digest,requireNotNull(data.getByteArray("tableResult")))}
+                catch(error:Exception) {result.completeExceptionally(error);return}
+            } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
-                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet))
+                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet,table))
         }
     })
     private val connection=object: ServiceConnection {
@@ -90,6 +104,60 @@ class FormatLease(context: Context) : Closeable {
     fun evaluateSheet(file:File):Evidence = ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
         request(it,null,FormatWorkerService.DECIMAL_SHEET,0)
     }
+    /** Original bounded caller-owned arithmetic only. Writer is closed before a read-only FD
+     * is opened; path is unlinked before sending. No path/URI grant is sent to the worker.
+     * Assumes the trusted app process/private directory are not compromised. Not an OS sealed
+     * memfd or all-parser sandbox. [U] verify on API 34/36/37 and OEM filesystems.
+     */
+    fun evaluateOwnedSheet(cells:Map<String,String>):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedSheetRequest.create(cells)
+            val file=File.createTempFile("fusion-owned-sheet-",".fsc",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use { out ->out.write(model.frame());out.fd.sync() }
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use { fd ->
+                    check(file.delete()) { "Could not unlink owned request" }
+                    request(fd,null,FormatWorkerService.DECIMAL_SHEET,0,model)
+                }
+            } finally { file.delete() }
+        } finally { close() }
+    }
+    /** CSV grammar runs only in the child. Caller-owned bytes are captured, synced, opened RO and unlinked.
+     * Parent validates bounded data-only reply; correlation is not a proof against a compromised worker.
+     * [U] verify on API 34/36/37: descriptor lifecycle, Binder budget and worker death.
+     */
+    fun evaluateOwnedCsv(bytes:ByteArray):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedCsvRequest(bytes)
+            val file=File.createTempFile("fusion-owned-csv-",".csv",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use {out->out.write(model.bytes());out.fd.sync()}
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->
+                    check(file.delete()) {"Could not unlink owned CSV"}
+                    ownedCsv.set(model);request(fd,null,FormatWorkerService.CSV_TABLE,0)
+                }
+            } finally {file.delete()}
+        } finally {close()}
+    }
+    /** Values-only XLSX parse in child. Same owned/unlinked capability and correlation limits as CSV.
+     * [U] verify on API34/36/37; neither unlink nor digest is secure erase/computation authentication.
+     */
+    fun evaluateOwnedXlsx(bytes:ByteArray):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedXlsxRequest(bytes)
+            val file=File.createTempFile("fusion-owned-xlsx-",".xlsx",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use {out->out.write(model.bytes());out.fd.sync()}
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->
+                    check(file.delete()) {"Could not unlink owned XLSX"}
+                    ownedXlsx.set(model);request(fd,null,FormatWorkerService.XLSX_TABLE,0)
+                }
+            } finally {file.delete()}
+        } finally {close()}
+    }
     fun probeSocket(file: File,loopbackPort: Int): Evidence {
         require(loopbackPort in 1..65535)
         return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {
@@ -98,9 +166,10 @@ class FormatLease(context: Context) : Closeable {
     }
     fun digestDescriptor(input: ParcelFileDescriptor,privateProbeName: String?=null): Evidence =
         request(input,privateProbeName,FormatWorkerService.DIGEST,0)
-    private fun request(input: ParcelFileDescriptor,privateProbeName: String?,operation: Int,port: Int): Evidence {
+    private fun request(input: ParcelFileDescriptor,privateProbeName: String?,operation: Int,port: Int,owned:OwnedSheetRequest?=null): Evidence {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Wait for workers off the UI thread" }
         check(!closed.get() && started.compareAndSet(false,true)) { "One request per lease" }
+        ownedRequest.set(owned)
         expectedOperation.set(operation)
         try {
             require(privateProbeName==null || privateProbeName.matches(Regex(FormatWorkerService.PRIVATE_NAME)))

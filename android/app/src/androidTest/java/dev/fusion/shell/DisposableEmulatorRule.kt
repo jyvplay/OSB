@@ -19,7 +19,7 @@ class DisposableEmulatorRule : ExternalResource() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         check(context.getSharedPreferences("fusion", Context.MODE_PRIVATE).edit().clear()
             .putBoolean("pilot-notice-v2", true).commit()) { "Preference reset failed" }
-        for (name in listOf("notes-recovery-v1.bin", "calculator-v1.bin", "desktop-v1.bin", "editor-session-v1.bin")) {
+        for (name in listOf("tasks-v1.bin", "notes-recovery-v1.bin", "calculator-v1.bin", "desktop-v1.bin", "editor-session-v1.bin")) {
             for (suffix in listOf("", ".bak", ".new")) {
                 val file = File(context.noBackupFilesDir, name + suffix)
                 check(!file.exists() || file.delete()) { "Draft reset failed: $name$suffix" }

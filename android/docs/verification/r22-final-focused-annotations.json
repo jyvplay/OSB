@@ -1,0 +1,26 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/fe8dca210642d42c0553c47ff4bccc16b5e17404/.github",
+    "start_line": 8,
+    "start_column": null,
+    "end_line": 8,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/fe8dca210642d42c0553c47ff4bccc16b5e17404/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R22PlatformDeviceTest.actualAndroidSaxPreservesNamespacesAndRefusesDtdAndBounds=PASS; dev.fusion.shell.R22PlatformDeviceTest.actualAndroidInflaterAcceptsPythonZipAndRejectsHeaderDisagreement=PASS; dev.fusion.shell.R22BoundaryDeviceTest.corruptAndOversizeXlsxRefuseThenFreshLeaseSucceeds=PASS; dev.fusion.shell.R22BoundaryDeviceTest.updatedXmlNodeLimitAndXincludeAreDataOnlyOnAndroid=PASS; dev.fusion.shell.R22BoundaryDeviceTest.literalAndIndependentSharedWorkbookRunInDistinctUid=PASS; dev.fusion.shell.R22BoundaryDeviceTest.suspensionBurnsPromptAndGrantUntilFreshDocument=PASS; dev.fusion.shell.R22BoundaryDeviceTest.maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.cancelledRealImportPickerKeepsDraftButInvalidatesExport=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.malformedRealProviderImportRetainsDraftAndCannotReusePriorExport=PASS",
+    "raw_details": ""
+  }
+]

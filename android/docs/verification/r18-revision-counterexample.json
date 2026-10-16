@@ -1,0 +1,8 @@
+{
+  "scope": "Actual separately compiled public consumer; mathematical boundary, not billions of UI operations",
+  "source_sha256": "549a2dadf00bddff708b6c9e28e2f9d96ada737f3ee097535d2daebdda342432",
+  "producer_sha256": "8c8d3a5f6212a25a35492a19f604b685284742032a70cd4056ef1336937f478e",
+  "consumer": "import dev.fusion.automation.*\nfun main() {\n    val task=LocalTask(\"00000000-0000-0000-0000-000000000001\",\"Retain\")\n    val archived=TaskBook(Long.MAX_VALUE-1,listOf(task)).archive(task.id,true)\n    println(\"archive succeeded at revision ${archived.revision}\")\n    try {archived.archive(task.id,false);println(\"restored\")} catch(e:Exception) {println(\"restore refused: ${e.javaClass.simpleName}\")}\n}\n",
+  "stdout": "archive succeeded at revision 9223372036854775807\nrestore refused: ArithmeticException\n",
+  "failure": "An archive succeeded but could not be reversed because revision was exhausted."
+}
