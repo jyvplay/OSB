@@ -24,7 +24,13 @@ jobs:
         run: |
           SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           if [[ ! -x "$SDK_MANAGER" ]]; then SDK_MANAGER="$(command -v sdkmanager)"; fi
-          "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0'
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' > sdk37-install.log 2>&1; then
+            cat sdk37-install.log
+          else
+            result=$?;cat sdk37-install.log
+            python3 tools/ci_annotations.py sdk37-install.log sdk37-install
+            exit "$result"
+          fi
           python3 tools/record_sdk_platform.py --report installed-sdk37.json
       - name: Enable KVM
         run: |

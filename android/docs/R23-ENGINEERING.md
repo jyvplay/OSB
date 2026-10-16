@@ -206,3 +206,9 @@ Shared real-focus readiness and post-click main-idle readback now authored, no c
 assertion or direct performClick substitute. New real IME-visible single-tap discard test expands current
 privacy scope to16. All16/24/122 fresh native gates mandatory. Python147 passed at authored checkpoint;
 source validation alone proved insufficient on prior SDK37 and UI candidates.
+
+Actual79bb1c3 second SDK tuple failed at SDK install/inspection on all3 workflows,0 native cases.
+No successful inspection notice; source properties/path/size diagnosis not yet visible because raw log
+redirect EOF. [Pre-repair inspector diagnostic checkpoint](verification/r23-sdk37-inspector-repair-plan.md)
+retained; exception/actual platform metadata now annotated and SDK stderr failure tail preserved.
+Only exact base37/37.0 metadata normalization accepted, not higher minors/betas or an inferred build pass.

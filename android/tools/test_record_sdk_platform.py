@@ -4,10 +4,15 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from record_sdk_platform import record
+from record_sdk_platform import record, base_release37
 
 
 class InstalledSdkTests(unittest.TestCase):
+    def test_exact_semantically_equivalent_base_release_only(self):
+        self.assertTrue(base_release37(['37']));self.assertTrue(base_release37(['37.0']))
+        for bad in [[], ['37','37'], ['37.1'], ['37.2-beta1'], ['370'], ['37.00'], ['37.0canary'], ['36']]:
+            self.assertFalse(base_release37(bad))
+
     def test_actual_absent_platform_refuses_without_manufacturing_sdk_or_report(self):
         with tempfile.TemporaryDirectory() as temporary:
             root=Path(temporary);report=root/'report.json'
