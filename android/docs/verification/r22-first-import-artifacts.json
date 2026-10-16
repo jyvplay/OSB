@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12025593532,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAyNTU5MzUzMg==",
+      "name": "r22-boundary-device-reports",
+      "size_in_bytes": 137448,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12025593532",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12025593532/zip",
+      "expired": false,
+      "digest": "sha256:f7e216dfaf8e22f1b63e5d7e8e8e1d8f59f9f69d6416230933fb81e66f2861df",
+      "created_at": "2026-10-16T04:57:43Z",
+      "updated_at": "2026-10-16T04:57:43Z",
+      "expires_at": "2027-01-14T04:52:21Z",
+      "workflow_run": {
+        "id": 38852835011,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/31a7965e-osb",
+        "head_sha": "4e0b9b2c268769e8379a160d9f07b4efc1ca4162"
+      }
+    }
+  ]
+}

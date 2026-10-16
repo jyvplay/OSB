@@ -18,8 +18,9 @@ class R22XlsxUiDeviceTest {
  private val context get()=InstrumentationRegistry.getInstrumentation().targetContext
  private val pkg get()=context.packageName
  private fun node(id:String):UiObject2 {
+  val initialized=device // Legacy UiScrollable constructor requires the instrumentation-backed singleton first.
   UiScrollable(UiSelector().resourceId("$pkg:id/csv_scroll")).scrollIntoView(UiSelector().resourceId("$pkg:id/$id"))
-  return requireNotNull(device.wait(Until.findObject(By.res(pkg,id)),10000))
+  return requireNotNull(initialized.wait(Until.findObject(By.res(pkg,id)),10000))
  }
  private fun status(prefix:String) {assertTrue("Missing status $prefix",device.wait(Until.hasObject(By.res(pkg,"csv_status").textStartsWith(prefix)),15000))}
  @Test fun actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource() {
@@ -68,4 +69,27 @@ class R22XlsxUiDeviceTest {
    s.onActivity {a->assertEquals("KEEP",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString());assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled)}
   }
  }
+ @Test fun malformedRealProviderImportRetainsDraftAndCannotReusePriorExport() {
+  val resolver=context.contentResolver;val name="r22-malformed-${UUID.randomUUID()}.xlsx"
+  val bytes=byteArrayOf(1,2,3,4)
+  val uri=requireNotNull(resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI,ContentValues().apply {
+   put(MediaStore.MediaColumns.DISPLAY_NAME,name);put(MediaStore.MediaColumns.MIME_TYPE,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+   put(MediaStore.MediaColumns.RELATIVE_PATH,android.os.Environment.DIRECTORY_DOWNLOADS);put(MediaStore.MediaColumns.IS_PENDING,1)
+  }))
+  try {
+   resolver.openOutputStream(uri,"wt")!!.use {it.write(bytes)};resolver.update(uri,ContentValues().apply {put(MediaStore.MediaColumns.IS_PENDING,0)},null,null)
+   ActivityScenario.launch(CsvWorkbenchActivity::class.java).use {s->
+    node("csv_source").text="retained";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())}
+    node("csv_parse").click();node("csv_status");status("Preview ready.")
+    node("csv_import").click();assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    requireNotNull(device.wait(Until.findObject(By.text(name)),10000)).click()
+    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    node("csv_status");status("XLSX refused or unavailable.")
+    s.onActivity {a->assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled);assertEquals("retained",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString())}
+    resolver.openInputStream(uri)!!.use {assertArrayEquals(bytes,it.readBytes())}
+    node("csv_parse").click();node("csv_status");status("Preview ready.")
+   }
+  } finally {resolver.delete(uri,null,null)}
+ }
+
 }
