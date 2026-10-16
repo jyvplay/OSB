@@ -1,0 +1,19 @@
+{
+  "passed": 600,
+  "failed": 0,
+  "seed": 140015,
+  "counts": {
+    "C": 100,
+    "D": 100,
+    "F": 100,
+    "S": 100,
+    "N": 100,
+    "G": 100
+  },
+  "contrast_absolute_tolerance": "1e-11",
+  "numeric_comparison": "decimal numerical equality, precision34 HALF_EVEN",
+  "scope": "Same-author cross-language reference corpus; maintained Python decimal/AST. Not independent review, actual Office engine, Android, AX or isolation verification.",
+  "script_sha256": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+  "compiled_receipt_sha256": "237524bddaafcc4e1b232dff1af20da5b000edd176dd835c87ba8a21d407dd89",
+  "requests_sha256": "b804ad2f9d7fce2f5062d3dd16b10390cdc1c8ac7834b8c0c8f0cf252cd1d30f"
+}

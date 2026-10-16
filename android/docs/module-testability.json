@@ -769,7 +769,7 @@
         "testing/src/r17/kotlin/dev/fusion/testing/R17Checks.kt": "c27775d219ad8f224e4c89852a3925becc8b2c2122a4f44f91e97c4ce0633918",
         "tools/run_r17_interop.py": "209135fc5749ef1337942524a9aa34563b9f69c199b2232486341f017407fa85",
         "app/src/androidTest/java/dev/fusion/shell/R17TaskStoreDeviceTest.kt": "b79692a3f53eba5cba8d9e6f3587a83b554b5c15e12dca15487d54e05afb10a3",
-        "app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt": "f6c3e0c316e80f3015b36f770083bf93f0636a4dfe3d3a1f8aa1bd1c049fe01c"
+        "app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt": "def9b13fd1868efa98f7c98912f7e96e382ea26d64c75b2512f335c5df119fd5"
       }
     },
     {

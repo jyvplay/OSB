@@ -1,7 +1,7 @@
 name: Android Tasks focused diagnostic
 on:
   push:
-    paths: ['android/app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt', 'android/feature/automation/**', '.github/workflows/android-task-diagnostic.yml']
+    paths: ['android/app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt', 'android/tools/report_device_results.py', '.github/workflows/android-task-diagnostic.yml']
 permissions:
   contents: read
 jobs:

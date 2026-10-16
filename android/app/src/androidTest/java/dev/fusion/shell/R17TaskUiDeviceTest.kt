@@ -25,13 +25,7 @@ class R17TaskUiDeviceTest {
         compose.onNodeWithTag("tasks-date").assertTextContains("2028-02-29")
         compose.onNodeWithTag("tasks-add").performScrollTo().assertIsEnabled().performClick()
         try { compose.waitUntil(10000) {compose.onAllNodesWithContentDescription("Completed: R17 local task").fetchSemanticsNodes().isNotEmpty()} }
-        catch(e:Exception) {
-            val context=compose.activity
-            val disk=runCatching {dev.fusion.automation.TaskRepository(java.io.File(context.noBackupFilesDir,"tasks-v1.bin")).load()}
-                .fold({"revision=${it.revision}, tasks=${it.tasks}"},{"${it.javaClass.simpleName}: ${it.message}"})
-            throw AssertionError("Task UI observation failed; actual disk=$disk; status="+
-                compose.onNodeWithTag("tasks-status").printToString()+"; semantics="+compose.onRoot().printToString().takeLast(1600),e)
-        }
+        catch(e:Throwable) {throw TaskUiEvidence.failure(compose.activity,"R17 add observation",e)}
         compose.onNodeWithContentDescription("Completed: R17 local task").performScrollTo().performClick()
         compose.waitUntil(10000) {compose.onAllNodesWithText("Loaded/saved revision 2. No reminder scheduled.").fetchSemanticsNodes().isNotEmpty()}
         compose.activityRule.scenario.recreate();open()

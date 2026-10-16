@@ -1,0 +1,70 @@
+{
+  "solver": "5.3.0",
+  "claims": "Six conditional mathematical UNSAT counterexample checks, satisfiable premises, one SAT old-boundary witness. No Kotlin/AtomicFile/Android/cryptographic proof. Linux alias witness is separately labeled.",
+  "sha256": {
+    "tools/prove_r18_models.py": "50829b2be8e0f0f7e4de55dcf8541f6bc15ec64c0069c272c88fc27bfe42834a",
+    "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4"
+  },
+  "results": [
+    {
+      "model": "one restore is representable and preserves reserve",
+      "assumptions_result": "sat",
+      "assumption_witness": "[revision = 0, archived = 1]",
+      "result": "unsat",
+      "hypotheses": "Existing archived ID; exact update (r,a)->(r+1,a-1). No failed IO, external writer, rollback or miscount.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived () Int)\n(assert\n (>= revision 0))\n(assert\n (>= archived 0))\n(assert\n (<= archived 128))\n(assert\n (let ((?x13 (+ revision archived)))\n (<= ?x13 9223372036854775807)))\n(assert\n (>= archived 1))\n(assert\n (or (> (+ revision 1) 9223372036854775807) (> (+ (+ revision 1) (- archived 1)) 9223372036854775807) (< (- archived 1) 0)))\n(check-sat)\n"
+    },
+    {
+      "model": "every prefix of restoring all archived records remains valid",
+      "assumptions_result": "sat",
+      "assumption_witness": "[restorations = 0, revision = 0, archived = 0]",
+      "result": "unsat",
+      "hypotheses": "Each restore consumes one distinct archived ID; no new archive between steps. IDs/data/implementation not modeled.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived () Int)\n(declare-fun restorations () Int)\n(assert\n (>= revision 0))\n(assert\n (>= archived 0))\n(assert\n (<= archived 128))\n(assert\n (let ((?x13 (+ revision archived)))\n (<= ?x13 9223372036854775807)))\n(assert\n (>= restorations 0))\n(assert\n (<= restorations archived))\n(assert\n (let (($x32 (> (+ (+ revision restorations) (- archived restorations)) 9223372036854775807)))\n(or (> (+ revision restorations) 9223372036854775807) $x32 (< (- archived restorations) 0))))\n(check-sat)\n"
+    },
+    {
+      "model": "guarded nonarchive edit cannot steal restore reserve",
+      "assumptions_result": "sat",
+      "assumption_witness": "[restorations = 0, revision = 0, archived = 0]",
+      "result": "unsat",
+      "hypotheses": "Constructor guard enforces r+1+a<=MAX; ordinary edit leaves archive count unchanged.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived () Int)\n(declare-fun restorations () Int)\n(assert\n (>= revision 0))\n(assert\n (>= archived 0))\n(assert\n (<= archived 128))\n(assert\n (let ((?x13 (+ revision archived)))\n (<= ?x13 9223372036854775807)))\n(assert\n (<= (+ (+ revision archived) 1) 9223372036854775807))\n(assert\n (>= restorations 0))\n(assert\n (<= restorations archived))\n(assert\n (let ((?x58 (+ (+ revision 1) restorations)))\n(or (> ?x58 9223372036854775807) (> (+ ?x58 (- archived restorations)) 9223372036854775807))))\n(check-sat)\n"
+    },
+    {
+      "model": "archive requires two free revision positions",
+      "assumptions_result": "sat",
+      "assumption_witness": "[revision = 0, archived = 0]",
+      "result": "unsat",
+      "hypotheses": "Existing active ID, exact archive update, explicit admission guard. This is algebra, not verification of constructor control flow.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived () Int)\n(assert\n (>= revision 0))\n(assert\n (>= archived 0))\n(assert\n (<= archived 128))\n(assert\n (let ((?x13 (+ revision archived)))\n (<= ?x13 9223372036854775807)))\n(assert\n (< archived 128))\n(assert\n (<= (+ (+ revision archived) 2) 9223372036854775807))\n(assert\n (or (> (+ revision 1) 9223372036854775807) (> (+ (+ revision 1) (+ archived 1)) 9223372036854775807)))\n(check-sat)\n"
+    },
+    {
+      "model": "UTF8 bytes <= three times UTF16 units",
+      "assumptions_result": "sat",
+      "assumption_witness": "[unicode_scalar = 1042432]",
+      "result": "unsat",
+      "hypotheses": "Explicit Unicode scalar-width model excluding surrogates; not platform encoder verification.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun unicode_scalar () Int)\n(assert\n (>= unicode_scalar 0))\n(assert\n (<= unicode_scalar 1114111))\n(assert\n (or (< unicode_scalar 55296) (> unicode_scalar 57343)))\n(assert\n (let (($x33 (<= unicode_scalar 65535)))\n(let ((?x30 (ite $x33 1 2)))\n(let ((?x48 (* 3 ?x30)))\n(let ((?x29 (ite $x33 3 4)))\n(let (($x34 (<= unicode_scalar 2047)))\n(let ((?x47 (ite $x34 2 ?x29)))\n(let (($x58 (<= unicode_scalar 127)))\n(let ((?x54 (ite $x58 1 ?x47)))\n(> ?x54 ?x48))))))))))\n(check-sat)\n"
+    },
+    {
+      "model": "FTS1 and FTS2 maximum canonical snapshot size",
+      "assumptions_result": "sat",
+      "assumption_witness": "[records = 0]",
+      "result": "unsat",
+      "hypotheses": "Fixed-width UUID/flags/date fields, 256 UTF16-unit titles and preceding scalar bound. Not heap/RSS/time bound.",
+      "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun records () Int)\n(assert\n (>= records 0))\n(assert\n (<= records 128))\n(assert\n (or (> (+ 20 (* records 815)) 104340) (> (+ 20 (* records 815)) 131072)))\n(check-sat)\n"
+    }
+  ],
+  "old_boundary": {
+    "result": "sat",
+    "values": "[archived = 0, revision = 9223372036854775806]",
+    "smt2": "; benchmark generated from python API\n(set-info :status unknown)\n(declare-fun revision () Int)\n(declare-fun archived () Int)\n(assert\n (= revision 9223372036854775806))\n(assert\n (= archived 0))\n(assert\n (< revision 9223372036854775807))\n(assert\n (> (+ (+ revision 1) (+ archived 1)) 9223372036854775807))\n(check-sat)\n",
+    "scope": "Old archive admission can succeed without enough revision space to restore. Mathematical witness; separately compiled Kotlin witness is retained separately."
+  },
+  "unlink_alias": {
+    "before": "first",
+    "after": "other",
+    "link_count": 0,
+    "scope": "Actual Linux IO: a preexisting writable alias defeats immutability despite unlink and read-only reader. Production closes its writer and assumes a trusted private owner; this is NOT a reproduced Android exploit."
+  }
+}

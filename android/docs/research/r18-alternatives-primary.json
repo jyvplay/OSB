@@ -1,0 +1,41 @@
+{
+  "scope": "Pinned additional primary review. Not exhaustive frontier, deployed WebView version verification, legal review or proof of Android behavior.",
+  "records": [
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/webkit/WebView.java",
+      "git_blob": "6523fffc4b91a2acf41f3629f65d311e47500d6f",
+      "sha256": "63cda6f8f6263fb27258df32f21df076eb1b8ef620034c7a638920967f1899c1",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/webkit/WebView.java",
+      "excerpts": [
+        {
+          "line": 2067,
+          "text": "     * Most applications should simply ensure that all components of the app\n     * that rely on WebView are in the same process, to avoid needing multiple\n     * data directories. The {@link #disableWebView} method can be used to ensure\n     * that the other processes do not use WebView by accident in this case.\n     * <p>\n     * This API must be called before any instances of WebView are created in\n     * this process and before any other methods in the android.webkit package\n     * are called by this process.\n     *\n     * @param suffix The directory name suffix to be used for the current\n     *               process. Must not contain a path separator.\n     * @throws IllegalStateException if WebView has already been initialized\n     *                               in the current process.\n     * @throws IllegalArgumentException if the suffix contains a path separator.\n     */\n    public static void setDataDirectorySuffix(@NonNull String suffix) {\n        WebViewFactory.setDataDirectorySuffix(suffix);\n    }\n\n    /**\n     * Indicate that the current process does not intend to use WebView, and\n     * that an exception should be thrown if a WebView is created or any other\n     * methods in the android.webkit package are used.\n     * <p>"
+        },
+        {
+          "line": 2068,
+          "text": "     * that rely on WebView are in the same process, to avoid needing multiple\n     * data directories. The {@link #disableWebView} method can be used to ensure\n     * that the other processes do not use WebView by accident in this case.\n     * <p>\n     * This API must be called before any instances of WebView are created in\n     * this process and before any other methods in the android.webkit package\n     * are called by this process.\n     *\n     * @param suffix The directory name suffix to be used for the current\n     *               process. Must not contain a path separator.\n     * @throws IllegalStateException if WebView has already been initialized\n     *                               in the current process.\n     * @throws IllegalArgumentException if the suffix contains a path separator.\n     */\n    public static void setDataDirectorySuffix(@NonNull String suffix) {\n        WebViewFactory.setDataDirectorySuffix(suffix);\n    }\n\n    /**\n     * Indicate that the current process does not intend to use WebView, and\n     * that an exception should be thrown if a WebView is created or any other\n     * methods in the android.webkit package are used.\n     * <p>\n     * Applications with multiple processes may wish to call this in processes"
+        },
+        {
+          "line": 2080,
+          "text": "     * @throws IllegalArgumentException if the suffix contains a path separator.\n     */\n    public static void setDataDirectorySuffix(@NonNull String suffix) {\n        WebViewFactory.setDataDirectorySuffix(suffix);\n    }\n\n    /**\n     * Indicate that the current process does not intend to use WebView, and\n     * that an exception should be thrown if a WebView is created or any other\n     * methods in the android.webkit package are used.\n     * <p>\n     * Applications with multiple processes may wish to call this in processes\n     * that are not intended to use WebView to avoid accidentally incurring\n     * the memory usage of initializing WebView in long-lived processes that\n     * have no need for it, and to prevent potential data directory conflicts\n     * (see {@link #setDataDirectorySuffix}).\n     * <p>\n     * For example, an audio player application with one process for its\n     * activities and another process for its playback service may wish to call\n     * this method in the playback service's {@link android.app.Service#onCreate}.\n     *\n     * @throws IllegalStateException if WebView has already been initialized\n     *                               in the current process.\n     */"
+        }
+      ]
+    },
+    {
+      "repository": "aosp-mirror/platform_frameworks_base",
+      "commit": "299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368",
+      "path": "core/java/android/os/SharedMemory.java",
+      "git_blob": "cba4423831a27a5b323431e80cf18154313689e9",
+      "sha256": "143fb5d6bec53d644a5f8c7c47c76cc58f0ba6d84b073c4bf5d19e10f5d11c48",
+      "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/299fe6f5d6fc6f1af7c3411dcf4e5efdf7217368/core/java/android/os/SharedMemory.java",
+      "excerpts": [
+        {
+          "line": 150,
+          "text": "     * mmaps of the shared memory retain whatever protection they had when they were created.\n     *\n     * A common usage of this is to share a read-only copy of the data with something else. To do\n     * that first create the read/write mapping with PROT_READ | PROT_WRITE,\n     * then call setProtect(PROT_READ) to remove write capability, then send the SharedMemory\n     * to another process. That process will only be able to mmap with PROT_READ.\n     *\n     * @param prot Any bitwise-or'ed combination of\n     *                  {@link android.system.OsConstants#PROT_READ},\n     *                  {@link android.system.OsConstants#PROT_WRITE}, and\n     *                  {@link android.system.OsConstants#PROT_EXEC}; or\n     *                  {@link android.system.OsConstants#PROT_NONE}\n     * @return Whether or not the requested protection was applied. Returns true on success,\n     * false if the requested protection was broader than the existing protection.\n     */\n    public boolean setProtect(int prot) {\n        checkOpen();\n        validateProt(prot);\n        int errno = nSetProt(mFileDescriptor, prot);\n        return errno == 0;\n    }\n\n    /**\n     * Returns the backing {@link FileDescriptor} for this SharedMemory object. The SharedMemory"
+        }
+      ]
+    }
+  ]
+}
