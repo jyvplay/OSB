@@ -70,4 +70,20 @@ class PrivacyWorkspaceTest {
             assertTrue(result.startsWith("https://example.com/Alice\n"));assertFalse(result.contains("secret"));assertFalse(result.contains("#private"))
         }}
     }
+    @Test fun richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped() {
+        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->s.onActivity {a ->
+            val payload=android.text.SpannableString("plain words")
+            payload.setSpan(android.text.style.URLSpan("https://example.com/identity"),0,payload.length,android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val control=EditText(a);control.setText(payload)
+            assertEquals(1,control.text.getSpans(0,control.length(),android.text.style.URLSpan::class.java).size)
+            val input=a.findViewById<EditText>(R.id.scratch_text);input.setText(payload)
+            assertEquals("plain words",input.text.toString());assertEquals(0,input.text.getSpans(0,input.length(),android.text.style.URLSpan::class.java).size)
+            input.requestFocus()
+            val connection=requireNotNull(input.onCreateInputConnection(EditorInfo()))
+            val content=android.view.inputmethod.InputContentInfo(android.net.Uri.parse("content://r20.invalid/never-opened"),android.content.ClipDescription("refused",arrayOf("image/png")),null)
+            assertFalse(connection.commitContent(content,0,null))
+            assertEquals("plain words",input.text.toString())
+        }}
+    }
+
 }

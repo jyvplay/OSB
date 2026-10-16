@@ -6,6 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
+import android.text.Spanned
+import android.view.inputmethod.InputConnection
+import android.view.inputmethod.InputConnectionWrapper
+import android.view.inputmethod.InputContentInfo
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -49,11 +53,11 @@ class PrivacyActivity: Activity() {
         label("Fusion Offline Scratchpad").textSize=23f
         label("Separate offline app — NOT anonymous. No Internet permission. No saved drafts, imports, exports, accounts, telemetry or clipboard actions.")
         label("Text is discarded from this workspace whenever it pauses (including Home, switching apps or dialogs), on recreation, or when you press Discard. Maximum 32,768 UTF-16 units. Do not use this for work you need to keep.")
-        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;filters=arrayOf(InputFilter.LengthFilter(32768))}
+        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;filters=plainFilters(32768)}
         editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2))
         column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
         label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
-        val address=PrivateText(this).apply {id=R.id.link_text;hint="Explicit HTTP(S) URL";filters=arrayOf(InputFilter.LengthFilter(4096));maxLines=3}
+        val address=PrivateText(this).apply {id=R.id.link_text;hint="Explicit HTTP(S) URL";filters=plainFilters(4096);maxLines=3}
         link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2))
         val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
         column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
@@ -68,6 +72,9 @@ class PrivacyActivity: Activity() {
         }
         setContentView(scroll);column.isFocusableInTouchMode=true;column.requestFocus()
     }
+    private fun plainFilters(limit:Int)=arrayOf(InputFilter {source,start,end,_,_,_ ->
+        if(source is Spanned) source.subSequence(start,end).toString() else null
+    },InputFilter.LengthFilter(limit))
     private class PrivateText(context:Context):EditText(context) {
         init {
             inputType=InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
@@ -83,6 +90,14 @@ class PrivacyActivity: Activity() {
                 override fun onDestroyActionMode(mode:ActionMode) {}
             }
             customSelectionActionModeCallback=noMenu;customInsertionActionModeCallback=noMenu
+        }
+        // Do not let default EditText drag/drop or IME rich content become an implicit provider route.
+        override fun onDragEvent(event:DragEvent)=false
+        override fun onCreateInputConnection(outAttrs:EditorInfo):InputConnection? {
+            val base=super.onCreateInputConnection(outAttrs) ?: return null
+            return object:InputConnectionWrapper(base,false) {
+                override fun commitContent(inputContentInfo:InputContentInfo,flags:Int,opts:Bundle?)=false
+            }
         }
         override fun onTextContextMenuItem(id:Int):Boolean = when(id) {
             android.R.id.copy,android.R.id.cut,android.R.id.paste,android.R.id.pasteAsPlainText,android.R.id.shareText -> false

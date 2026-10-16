@@ -215,7 +215,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "bef56c4e26a517b1375dd0b1e235008da2d4c9899c2c55918a5e08f55ed1b25a"
+      "sha256": "5418902dd02f869ff7ad1a40f469704302e2e3b4764cb9797d918aeb828489cd"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
