@@ -7,7 +7,7 @@ TRANSFER='dev.fusion.shell.R19TaskTransferDeviceTest.'
 UI='dev.fusion.shell.R19TaskUiDeviceTest.'
 REQUIRED={
  'task_edit_undo_native':{STORE+'editUndoReopensAtNewRevisionAndReplayDoesNotWrite',STORE+'undoHeadroomFailureLeavesBytesAndLegacyRestoreBoundaryUsable',UI+'editUndoUsesRealTouchAndRecreationDoesNotInventAnUndoToken'},
- 'task_transfer_native':{STORE+'staleMergeAndSameRevisionDifferentDataRefuseWithoutWriting',STORE+'fullArchivedImportIgnoresForeignRevisionAndCanBeUndone',TRANSFER+'actualProviderSnapshotWriteReadbackImportAndCorruptionRefusal',TRANSFER+'actualProviderTwoSheetReportIsLiteralAndNotATaskImport',UI+'actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation'},
+ 'task_transfer_native':{STORE+'staleMergeAndSameRevisionDifferentDataRefuseWithoutWriting',STORE+'fullArchivedImportIgnoresForeignRevisionAndCanBeUndone',TRANSFER+'actualProviderSnapshotWriteReadbackImportAndCorruptionRefusal',TRANSFER+'actualProviderTwoSheetReportIsLiteralAndNotATaskImport',UI+'actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation',UI+'actualPickerImportConfirmExportAndUndoPreserveSource'},
  'shared_memory_spike':{'dev.fusion.shell.R19SharedMemoryDeviceTest.protectionRestrictsFutureMapsButDoesNotRevokeExistingWriter'}
 }
 def assess(receipt,candidate,claim):
