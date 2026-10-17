@@ -23,7 +23,7 @@
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "bac30c2c6d6fc29ae5933534a1e82a5947da772c2924df3eff73ab53c40307af",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "14a2ccde7491b3ed22c59f0a96023dd2dec5305b63a4c64fa81596e1062f6e59"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9"
       }
     },
     {
@@ -65,7 +65,7 @@
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "14a2ccde7491b3ed22c59f0a96023dd2dec5305b63a4c64fa81596e1062f6e59"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9"
       }
     },
     {

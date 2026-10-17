@@ -132,8 +132,20 @@ class R24TaskInputDeviceTest {
             assertEquals(0L,before.revision)
             println("R24 BEFORE SINGLE TAP layout=$layout target=$rect viewport=$viewport title=${tag("tasks-title")?.text} ${TaskUiEvidence.geometry(scenarioActivity(s))}")
             click(target) // EXACTLY ONE touch DOWN/UP pair; no direct callback, hidden keyboard or retry.
-            waitFor("single-tap actual revision1") {tag("tasks-status")?.text?.contains("Loaded/saved revision 1.")==true}
-            val after=TaskRepository(File(instrumentation.targetContext.noBackupFilesDir,"tasks-v1.bin")).load()
+            val stored=TaskRepository(File(instrumentation.targetContext.noBackupFilesDir,"tasks-v1.bin"))
+            var observed="not read"
+            try {
+                // Offscreen AA status nodes are not storage receipts. Observe the REAL shared-lock/codec file.
+                waitFor("single-tap actual revision1; disk observer") {
+                    val value=stored.load();observed="revision=${value.revision}; tasks=${value.tasks}"
+                    value.revision==1L && value.tasks.size==1 && value.tasks.single().title=="R24 $layout one native tap"
+                }
+            } catch(error:Throwable) {
+                throw TaskUiEvidence.failure(scenarioActivity(s),"R24 one physical Add $layout",error,
+                    status=tag("tasks-status")?.text?.toString() ?: "offscreen/not published",
+                    before="target=$rect viewport=$viewport; actual after=$observed")
+            }
+            val after=stored.load()
             assertEquals(1L,after.revision);assertEquals("R24 $layout one native tap",after.tasks.single().title)
             assertTrue("Store must have exactly one task after one tap",after.tasks.size==1)
         }
