@@ -57,6 +57,7 @@ UNSUPPORTED = ['global_anonymity', 'Tails_equivalence', 'lighter_than_Tails', 'h
 def assess(receipt, candidate, claim):
     if not isinstance(claim, str) or claim not in RULES: return False, 'No evidence bridge for the broader/different claim'
     if not isinstance(receipt, dict): return False, 'Receipt must be an object'
+    if receipt.get('platform_api',34)!=34:return False,'Wrong actual runtime context'
     if not isinstance(candidate, str) or not re.fullmatch(r'[0-9a-f]{40}', candidate) or receipt.get('candidate') != candidate:
         return False, 'Wrong or invalid exact candidate'
     suites = {'focused', 'full'} if claim == 'r23_memory_transport_api34' else {'privacy'}

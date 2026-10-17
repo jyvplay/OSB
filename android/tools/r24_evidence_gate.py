@@ -23,10 +23,12 @@ def assess(data,candidate,claim):
     if not isinstance(data,dict) or not isinstance(candidate,str) or not re.fullmatch('[0-9a-f]{40}',candidate):return False,'Malformed receipt/candidate'
     if claim not in RULES:return False,'No bridge for this broader/different claim'
     if data.get('candidate')!=candidate:return False,'Wrong exact candidate'
+    run=data.get('run')
+    if type(run)is not int or run<=0 or data.get('url')!=f'https://github.com/jyvplay/OSB/actions/runs/{run}':return False,'Inconsistent run identity'
     if data.get('conclusion')!='success' or data.get('device_conclusion')!='success':return False,'Whole workflow/device gate is not successful'
     if data.get('platform_api',34)!=(37 if claim.endswith('api37') else 34):return False,'Wrong actual runtime context'
     allowed={'privacy'} if claim.startswith('r24_screenoff_') else {'focused','full'}
-    if data.get('suite') not in allowed:return False,'Wrong suite context'
+    if not isinstance(data.get('suite'),str) or data.get('suite') not in allowed:return False,'Wrong suite context'
     cases=data.get('cases');counts=data.get('counts')
     if not isinstance(cases,list) or not isinstance(counts,dict) or set(counts)!={'PASS','FAIL','SKIP'} or any(type(v)is not int or v<0 for v in counts.values()):return False,'Malformed cases/counts'
     names=[]

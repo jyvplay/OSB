@@ -21,7 +21,7 @@ class R24EvidenceTests(unittest.TestCase):
             self.assertFalse(assess(actual,actual['candidate'],claim)[0])
     def test_declared_policy_names_cannot_be_omitted_duplicated_or_marked_nonpass(self):
         for claim,names in RULES.items():
-            base={'platform_api':37 if claim.endswith('api37') else 34,'candidate':'a'*40,'conclusion':'success','device_conclusion':'success','suite':'privacy' if 'screenoff' in claim else 'focused',
+            base={'run':1,'url':'https://github.com/jyvplay/OSB/actions/runs/1','platform_api':37 if claim.endswith('api37') else 34,'candidate':'a'*40,'conclusion':'success','device_conclusion':'success','suite':'privacy' if 'screenoff' in claim else 'focused',
                   'cases':[{'case':n,'result':'PASS'} for n in sorted(names)],'counts':{'PASS':len(names),'FAIL':0,'SKIP':0}}
             self.assertTrue(assess(base,'a'*40,claim)[0]) # Policy grammar, NOT a native execution receipt.
             for i in range(len(names)):
@@ -34,3 +34,14 @@ class R24EvidenceTests(unittest.TestCase):
                 elif mutation=='bool':bad['counts']['FAIL']=False
                 else:bad['suite']='full' if 'screenoff' in claim else 'privacy'
                 self.assertFalse(assess(bad,'a'*40,claim)[0])
+
+    def test_actual_api34_receipt_never_proves_api37_or_malformed_run(self):
+        actual=json.loads((ROOT/'docs/verification/r24-first-privacy-result.json').read_text())
+        from r23_evidence_gate import assess as old_assess
+        bad=copy.deepcopy(actual);bad['platform_api']=37
+        self.assertFalse(old_assess(bad,bad['candidate'],'r23_privacy_api34')[0])
+        for value in [True,-1,'1',None]:
+            bad=copy.deepcopy(actual);bad['run']=value
+            self.assertFalse(assess(bad,bad['candidate'],'r24_screenoff_api34')[0])
+        bad=copy.deepcopy(actual);bad['suite']=[]
+        self.assertFalse(assess(bad,bad['candidate'],'r24_screenoff_api34')[0])

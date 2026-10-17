@@ -1,7 +1,7 @@
 name: Android R24 actual API37 privacy experiment
 on:
   push:
-    paths: ['android/privacy/**', 'android/core/security/**', 'android/gradle/**', 'android/gradle.properties', '.github/workflows/android-r24-api37.yml']
+    paths: ['android/tools/*r24*', 'android/tools/r23_evidence_gate.py', 'android/privacy/**', 'android/core/security/**', 'android/gradle/**', 'android/gradle.properties', '.github/workflows/android-r24-api37.yml']
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
