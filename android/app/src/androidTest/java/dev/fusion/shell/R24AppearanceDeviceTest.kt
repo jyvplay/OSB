@@ -35,7 +35,7 @@ class R24AppearanceDeviceTest {
     }
     private fun capture(name:String) {
         val raw=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        val width=minOf(400,raw.width);val height=(raw.height.toLong()*width/raw.width).toInt()
+        val width=minOf(280,raw.width);val height=(raw.height.toLong()*width/raw.width).toInt()
         val resized=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888)
         try {
             Canvas(resized).drawBitmap(raw,null,android.graphics.Rect(0,0,width,height),null)
@@ -113,28 +113,28 @@ class R24AppearanceDeviceTest {
     @Test fun realMouseMagnifiesDrawingNotHitboxAndMotionOffRestoresBaseSize() {
         control();compose.onNodeWithTag("control-layout-art").performClick();done()
         compose.onNodeWithTag("shelf-editor").performScrollTo()
-        mouse(5f,200f,MotionEvent.ACTION_HOVER_EXIT);mouse(5f,200f)
+        mouse(5f,200f);mouse(5f,200f)
         compose.onNodeWithTag("desktop-find").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
         compose.waitUntil(10000) {compose.onNodeWithTag("shelf-editor").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.StateDescription].contains("normal")}
         val hitBefore=screenRect("shelf-editor");val glyph=screenRect("dock-glyph-editor")
         val roi=android.graphics.Rect(glyph).apply {inset(-24,-24)}
         val accent=ProfessionalPalettes.colors(ProfessionalPalette.OFFICE_BLUE).primary
         val before=accentWidth(roi,accent);assertTrue("Missing actual base icon pixels",before>20)
-        mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY(),MotionEvent.ACTION_HOVER_ENTER)
+        mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
         mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
         compose.waitUntil(10000) {accentWidth(roi,accent)>before*1.15}
         compose.onNodeWithTag("shelf-editor").assert(SemanticsMatcher("actual hover state") {it.config[androidx.compose.ui.semantics.SemanticsProperties.StateDescription].contains("enlarged")})
         assertEquals(hitBefore,screenRect("shelf-editor"))
-        mouse(5f,200f,MotionEvent.ACTION_HOVER_EXIT);mouse(5f,200f)
+        mouse(5f,200f);mouse(5f,200f)
         // Patch-specific independent attack: focus alone must magnify with the pointer outside the dock.
         compose.onNodeWithTag("shelf-editor").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
         compose.waitUntil(10000) {accentWidth(roi,accent)>before*1.15}
         compose.onNodeWithTag("desktop-find").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
         control();compose.onNodeWithTag("control-dock-zoom").performScrollTo().performClick();done()
-        mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY(),MotionEvent.ACTION_HOVER_ENTER);mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
+        mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY());mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
         compose.waitUntil(10000) {accentWidth(roi,accent)<=before*1.08}
         compose.onNodeWithTag("shelf-editor").assert(SemanticsMatcher("motion off") {it.config[androidx.compose.ui.semantics.SemanticsProperties.StateDescription].contains("normal")})
-        mouse(5f,200f,MotionEvent.ACTION_HOVER_EXIT)
+        mouse(5f,200f)
     }
     @Test fun invalidAppearancePatchAndCorruptPreferenceTypeCannotPartiallyApplyOrResetData() {
         compose.activityRule.scenario.onActivity {a->

@@ -15,7 +15,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=int);a=p.parse_args()
     run=api(f'repos/jyvplay/OSB/actions/runs/{a.run}')
     if run['status']!='completed':raise SystemExit('Run is not complete; no final capture inference')
-    jobs=api(f'repos/jyvplay/OSB/actions/runs/{a.run}/jobs?per_page=100');images={};chunks={}
+    jobs=api(f'repos/jyvplay/OSB/actions/runs/{a.run}/jobs?per_page=100');images={};chunks={};incomplete={}
     for job in jobs['jobs']:
         page=1
         while True:
@@ -32,13 +32,14 @@ def main():
             if len(values)<100:break
             page+=1
     for name,row in chunks.items():
-        if len(row['parts'])!=row['n']:raise ValueError('Missing actual capture chunks; refuse incomplete picture')
+        if len(row['parts'])!=row['n']:
+            incomplete[name]={'received':len(row['parts']),'required':row['n']};continue # Never display a missing/guessed PNG; independent complete images may still be reviewed.
         data=base64.b64decode(''.join(row['parts'][i] for i in range(1,row['n']+1)),validate=True)
         if len(data)>128*1024 or hashlib.sha256(data).hexdigest()!=row['digest']:raise ValueError('Capture hash/budget mismatch')
         width,height=dimensions(data)
         path=ROOT/'testing/build/r24/captures'/run['head_sha']/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
         images[name]={'path':str(path),'bytes':len(data),'width':width,'height':height,'sha256':row['digest']}
-    result={'run':a.run,'candidate':run['head_sha'],'whole_conclusion':run['conclusion'],'scope':'Actual downsampled native test images, NOT expert AX/physical/whole-product acceptance','images':images}
+    result={'run':a.run,'candidate':run['head_sha'],'whole_conclusion':run['conclusion'],'scope':'Actual downsampled native test images, NOT expert AX/physical/whole-product acceptance','images':images,'incomplete_not_displayed':incomplete}
     print(json.dumps(result,indent=2))
     if not images:raise SystemExit('No actual capture mirrored; do not fabricate screenshots')
 if __name__=='__main__':main()

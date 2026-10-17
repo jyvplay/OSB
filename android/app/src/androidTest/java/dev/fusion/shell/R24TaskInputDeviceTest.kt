@@ -28,7 +28,7 @@ class R24TaskInputDeviceTest {
     private fun find(predicate:(AccessibilityNodeInfo)->Boolean):AccessibilityNodeInfo? {
         val root=instrumentation.uiAutomation.rootInActiveWindow ?: return null
         val q=java.util.ArrayDeque<AccessibilityNodeInfo>();q.add(root);var n=0
-        while(q.isNotEmpty()) {val node=q.removeFirst();check(++n<=4000);if(predicate(node))return node
+        while(q.isNotEmpty()) {val node=q.removeFirst();check(++n<=4000);if(predicate(node) && node.refresh())return node
             for(i in 0 until node.childCount) node.getChild(i)?.let(q::add)}
         return null
     }
@@ -63,7 +63,20 @@ class R24TaskInputDeviceTest {
         val end=SystemClock.uptimeMillis()+15000;var scrolls=0;var observation="node absent"
         do {
             val node=lookup()
-            if(node==null) {SystemClock.sleep(60);continue}
+            if(node==null) {
+                // Offscreen Compose descendants may not be published in the external accessibility tree.
+                // Scroll the REAL visible body first; do not wait for a nonexistent offscreen node.
+                val body=tag("tasks-body") ?: tag("notes-body")
+                if(body!=null) {
+                    val r=Rect();body.getBoundsInScreen(r);val viewport=Rect()
+                    scenario.onActivity {it.window.decorView.getWindowVisibleDisplayFrame(viewport)}
+                    check(r.intersect(viewport) && r.height()>48) {"Body viewport unavailable: $r / $viewport"}
+                    observation="offscreen node absent; body=${body.viewIdResourceName}; viewport=$r"
+                    swipeUp(r);scrolls++;check(scrolls<=24)
+                    instrumentation.waitForIdleSync()
+                }
+                SystemClock.sleep(80);continue
+            }
             if(visible(scenario,node)) return node
             val target=Rect();node.getBoundsInScreen(target)
             // An ACTION_SHOW_ON_SCREEN true return is NOT evidence that the scroller actually moved.

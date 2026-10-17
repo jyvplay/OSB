@@ -13,6 +13,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--name',required=True);parser.add_argument('--group',required=True,type=int,choices=range(6));args=parser.parse_args()
     if not NAME.fullmatch(args.name):raise ValueError('Unknown capture name')
+    # Checks has an observed50-annotation/job cap. Mirror two complementary280px previews only;
+    # all four actual PNG files remain in the normal artifact.
+    selected={'r24-business-office_blue.png','r24-art-studio_graphite.png'}
+    if args.name not in selected:return
     found={}
     for p in (ROOT/'app/build/outputs/managed_device_android_test_additional_output').rglob('r24-*.png'):
         if not NAME.fullmatch(p.name) or p.name!=args.name:continue
