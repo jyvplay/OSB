@@ -42,3 +42,10 @@ Fresh searches retrieved primary Tails warnings/virtualization, Android tapjacki
 ## G / H / I / J
 
 Each patch gets its own specific attacker: duplicate property/unknown preference; pointer identity vs draw size; IME-moving target; screen-off spoof/lifecycle; dual-carrier/malformed raw-PDF metadata/hostile worker; fake Tor/global-privacy implication. Bind claims to actual separately compiled production kernels, real Android case receipts or explicit causal bounds. Hold out native UI cases from pure-model tests. Preserve failed candidates. Before a repair, retain actual counterexample/plan; rerun affected and regression gates, add at least one targeted new attack. If no verifier exists, downgrade. Continue within real finite budget; if any mandatory gate fails, report strongest scoped artifact and exact failed gate/next experiment, never a full/A-grade release claim. No all49 module completion credit from these subsets.
+
+## Actual checkpoints before third candidate
+
+- a333887 actual privacy18/0 succeeded, but Main/UI compiler failed (Stroke.width API correction),0 native Main cases. Host policies did NOT establish that compilation.
+- cf898df real UI5/2: all4 appearance/hover/raster/persistence/draft tests and original R18 passed; new standalone IME tests failed at separate-dialog navigation before Add. Whole UI gate failed. Same candidate memory/PDF27/0 and privacy18/0 succeeded. New input navigator requires actual dialog title/editable/result and closed-root transition; new PDF UI binds immutable requestedPage and serialized render, with rapid-page pixel attack. No inherited acceptance.
+- Actual image annotations truncated at4096 characters and local decoder REFUSED rather than guessing padding. New bounded3700character chunk protocol must pass sequence/hash/PNG checks before a native image is shown.
+- Actual host ELF23,971,072B inspected without dlopen: x86_64, strict16K-header conditionFALSE, not an Android engine. Real wrapper JAR had zero native libraries. Host sysfs USBUNKNOWN/IOMMUgroupcount0 means no hardware/anonymity verdict. No settings changed.

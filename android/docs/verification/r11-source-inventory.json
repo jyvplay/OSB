@@ -1036,13 +1036,13 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/PdfDocument.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf",
-      "sha256": "ea915a0d9644fd03eeee0e2bbeb3bd3eba8bd366aebf41acaa36e39440d17216"
+      "sha256": "7672ec2c52f4ce94c7206f11c275c1cee84b0c3dfc7c6ad06f09ba45d736952c"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/PdfScreen.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf",
-      "sha256": "1f9d2a6bdc432e23d0526dd520fcea0051fb6b84e1e7b22f87dd9cf72b6490d6"
+      "sha256": "8e5537b24fc5467d906a6acf19635862e7b5d7d02cddd94c653f95376017c8f4"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",

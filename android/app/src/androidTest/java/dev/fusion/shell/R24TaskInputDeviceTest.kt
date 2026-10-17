@@ -71,10 +71,13 @@ class R24TaskInputDeviceTest {
             s.onActivity {a->SettingsGraph(a).use {assertTrue(it.setAppearance(mapOf("layout" to layout)))}}
             waitFor("Find") {text("Find")!=null}
             click(show(s){text("Find")})
-            waitFor("actual palette edit") {tag("palette-query")!=null}
-            set(requireNotNull(tag("palette-query")),"automation")
-            waitFor("automation result") {tag("palette-hit-module:automation")!=null}
-            click(show(s){tag("palette-hit-module:automation")})
+            // AlertDialog has a separate accessibility root; parent resource-tag export is not inherited.
+            waitFor("actual Find dialog and editable field") {text("Find local actions")!=null && find {it.isEditable && it.isEnabled}!=null}
+            set(requireNotNull(find {it.isEditable && it.isEnabled}),"automation")
+            val result={find {it.text?.contains("Tasks and action plans")==true && it.isEnabled}}
+            waitFor("actual automation result text") {result()!=null}
+            click(show(s,result))
+            waitFor("Find dialog closed after actual result touch") {text("Find local actions")==null}
             click(show(s){text("Enable for this session with test data")})
             click(show(s){tag("tasks-mode")})
             waitFor("loaded Task add") {tag("tasks-add")?.isEnabled==true}

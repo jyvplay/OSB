@@ -53,10 +53,11 @@ fun PdfScreen(context: Context, uri: Uri?, onPick: () -> Unit) {
 
     LaunchedEffect(doc, page) {
         val d = doc ?: return@LaunchedEffect
+        val requestedPage=page
         bitmap=null;renderedPage=-1
-        d.renderPage(page, 320).fold(
-            onSuccess = { bitmap = it;renderedPage=page },
-            onFailure = { status = "Render failed: ${it.message}" }
+        d.renderPage(requestedPage, 320).fold(
+            onSuccess = { if(doc===d && page==requestedPage) {bitmap=it;renderedPage=requestedPage} else it.recycle() },
+            onFailure = { if(doc===d && page==requestedPage) status = "Render failed: ${it.message}" }
         )
     }
 

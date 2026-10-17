@@ -129,6 +129,10 @@ class R24PdfDeviceTest {
             compose.waitUntil(15000) {compose.onAllNodesWithContentDescription("PDF page 2").fetchSemanticsNodes().isNotEmpty()}
             // A changed label is not a new page: prove the independent cyan marker reached actual display pixels.
             compose.waitUntil(10000) {displayedColor(0x13b4ed)>100}
+            compose.onNodeWithTag("pdf-prev").performClick()
+            compose.onNodeWithTag("pdf-next").performClick()
+            compose.onNodeWithTag("pdf-prev").performClick()
+            compose.waitUntil(15000) {compose.onAllNodesWithContentDescription("PDF page 1").fetchSemanticsNodes().isNotEmpty() && displayedColor(0xed13b4)>100}
             resolver.openInputStream(uri)!!.use {assertArrayEquals(bytes,it.readBytes())}
             compose.activityRule.scenario.recreate()
             // Session consent must not survive recreation, nor can the picker URI implicitly authorize parsing.

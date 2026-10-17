@@ -8,6 +8,7 @@ import dev.fusion.format.pdf.sandbox.PdfPreview
 import dev.fusion.format.pdf.sandbox.PdfPreviewLimits
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.withLock
 import java.io.ByteArrayOutputStream
 import java.io.Closeable
 
@@ -17,16 +18,17 @@ import java.io.Closeable
 class PdfDocument private constructor(private val context:Context,private val source:ByteArray,
                                      private var first:PdfPreview?):Closeable {
     private val lock=Any();private var closed=false
+    private val renders=kotlinx.coroutines.sync.Mutex()
     val pageCount=requireNotNull(first).pages
     suspend fun renderPage(index:Int,targetWidth:Int):Result<Bitmap> = withContext(Dispatchers.IO) {
-        runCatching {
+        renders.withLock {runCatching {
             require(targetWidth==PdfPreviewLimits.MAX_SIDE) {"Bounded preview requests exactly320px maximum; no silent full-resolution claim"}
             val (bytes,cached)=synchronized(lock) {check(!closed);require(index in 0 until pageCount);source.copyOf() to first?.takeIf {index==0}}
             val frame=cached ?: FormatLease(context).use {requireNotNull(it.previewOwnedPdf(bytes,index).pdf)}
             require(frame.pages==pageCount) {"Worker page count changed for the same snapshot"}
             synchronized(lock) {check(!closed)}
             Bitmap.createBitmap(frame.pixels(),frame.width,frame.height,Bitmap.Config.ARGB_8888)
-        }
+        }}
     }
     override fun close() {synchronized(lock) {closed=true;source.fill(0);first=null}} // Copies/OS buffers are NOT securely erased.
     companion object {

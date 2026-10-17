@@ -23,7 +23,7 @@
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "1f40c9328482cb15c1b5a5861d60c89ce70b0fec337b72f09045e645754af003"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "545e4381ccd10a6a9f0123ac0af5e117c30412850fd9beaac540b96bbdc08465"
       }
     },
     {
@@ -65,7 +65,7 @@
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "1f40c9328482cb15c1b5a5861d60c89ce70b0fec337b72f09045e645754af003"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "545e4381ccd10a6a9f0123ac0af5e117c30412850fd9beaac540b96bbdc08465"
       }
     },
     {
@@ -1020,7 +1020,7 @@
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d",
         "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659",
         "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt": "739b9403a3bf4bf4932b75ade480fd294c168372b010604e2e3f4b86d93bb246",
-        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "77ed128b832d8ff6c8e368c5c0343975925dd568fbb0fffb5127f242704283bd",
+        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "3028155b7e55f7e0504ca6fad17338226c72fe78c9c9a39b8ba9967951b499f7",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac"
       }
     },

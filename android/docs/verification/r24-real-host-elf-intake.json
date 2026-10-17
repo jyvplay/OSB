@@ -1,0 +1,50 @@
+{
+  "artifact": "libjvm.so",
+  "bytes": 23971072,
+  "sha256": "29f5106e9c0c760e0b6f381e7910192c6712c5096e381bd1ac64ac8ece1b4439",
+  "integrated": false,
+  "runtime_verified": false,
+  "legal_accepted": false,
+  "elf": {
+    "elf_class": 64,
+    "machine": 62,
+    "abi": "x86_64",
+    "loads": [
+      {
+        "offset": 0,
+        "virtual": 0,
+        "file_bytes": 2434296,
+        "memory_bytes": 2434296,
+        "alignment": 4096,
+        "strict_16k_condition": false
+      },
+      {
+        "offset": 2437120,
+        "virtual": 2437120,
+        "file_bytes": 13751333,
+        "memory_bytes": 13751333,
+        "alignment": 4096,
+        "strict_16k_condition": false
+      },
+      {
+        "offset": 16191488,
+        "virtual": 16191488,
+        "file_bytes": 2667212,
+        "memory_bytes": 2667212,
+        "alignment": 4096,
+        "strict_16k_condition": false
+      },
+      {
+        "offset": 18859376,
+        "virtual": 18863472,
+        "file_bytes": 969976,
+        "memory_bytes": 1339280,
+        "alignment": 4096,
+        "strict_16k_condition": false
+      }
+    ],
+    "strict_16k_header_condition": false,
+    "scope": "Header condition only; not APK zip alignment, symbol/API closure, execution or Android compatibility-mode behavior"
+  },
+  "gap": "An ELF is not an Android engine integration. PT_LOAD16K is only one necessary strict-intake condition; test actual APK/NDK/ABI/runtime."
+}

@@ -1,0 +1,9 @@
+# R24 second actual counterexample / no inherited trust
+
+Actualcf898df UI39068286325 was5PASS/2FAIL/0SKIP: all4 appearance tests and original R18 workflow passed; both NEW standalone task/IME cases timed out BEFORE Add at palette edit lookup. SourceFind palette uses a separate AlertDialog accessibility root; parent testTagsAsResourceId is not inherited. Do not call this a task-save failure or a7-case success. Native PDF/boundary39068286331 really passed27/0 and privacy39068286334 passed18/0. All raw receipts retained.
+
+Navigator patch uses actual dialog title + enabled editable accessibility node, real ACTION_SET_TEXT, visible actual action result text and a real result touch, and requires dialog closure. It does not replace Add with a callback, hide IME, alter revision checks, repeat save or increase the original R18 success timeout. New attack asserts the right dialog/result and closed-root transition instead of trusting an inherited tag. Fresh7/27/18/full required.
+
+Additional code-review hardening: PDF rendering serializes per document; UI captures immutable requestedPage and rejects late results if doc/page no longer match. Native PDF picker attack now rapidly requests Prev/Next/Prev then requires actual final magenta pixels, not just a changed label. No new native pass claimed for that repair before fresh execution.
+
+Actual Checks image transport truncated both Business PNG annotations at4096 characters (base64 incorrect padding; collector REFUSED, no image fabricated). Art files exceeded initial32KiB mirror. New version uses≤3700character chunks, strict sequence/count/hash/PNG validation and≤128KiB/image. No padding guess, generated UI picture or screenshot pass from a hash alone. Native pixel/hover assertions in the4 passed cases remain real observations even though local visual-file review was initially unavailable.

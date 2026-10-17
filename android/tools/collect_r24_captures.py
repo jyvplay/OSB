@@ -15,22 +15,29 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=int);a=p.parse_args()
     run=api(f'repos/jyvplay/OSB/actions/runs/{a.run}')
     if run['status']!='completed':raise SystemExit('Run is not complete; no final capture inference')
-    jobs=api(f'repos/jyvplay/OSB/actions/runs/{a.run}/jobs?per_page=100');images={}
+    jobs=api(f'repos/jyvplay/OSB/actions/runs/{a.run}/jobs?per_page=100');images={};chunks={}
     for job in jobs['jobs']:
         page=1
         while True:
             values=api(job['check_run_url']+f'/annotations?per_page=100&page={page}')
             for row in values:
-                m=re.fullmatch(r'R24PNG (r24-(?:business|art)-(?:office_blue|studio_graphite)\.png) ([0-9a-f]{64}) ([A-Za-z0-9+/=]+)',row.get('message',''))
-                if not m:continue
-                if m[1] in images or len(m[3])>44000:raise ValueError('Duplicate/oversize capture')
-                data=base64.b64decode(m[3],validate=True)
-                if len(data)>32768 or hashlib.sha256(data).hexdigest()!=m[2]:raise ValueError('Capture hash/budget mismatch')
-                width,height=dimensions(data)
-                path=ROOT/'testing/build/r24/captures'/run['head_sha']/m[1];path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
-                images[m[1]]={'path':str(path),'bytes':len(data),'width':width,'height':height,'sha256':m[2]}
+                message=row.get('message','')
+                m=re.fullmatch(r'R24PNG2 (r24-(?:business|art)-(?:office_blue|studio_graphite)\.png) (\d+)/(\d+) ([0-9a-f]{64}) ([A-Za-z0-9+/=]+)',message)
+                if m:
+                    name,i,n,digest,payload=m[1],int(m[2]),int(m[3]),m[4],m[5]
+                    if not 1<=i<=n<=48 or len(payload)>3700:raise ValueError('Invalid bounded capture chunk')
+                    current=chunks.setdefault(name,{'n':n,'digest':digest,'parts':{}})
+                    if current['n']!=n or current['digest']!=digest or i in current['parts']:raise ValueError('Duplicate/inconsistent capture chunk')
+                    current['parts'][i]=payload
             if len(values)<100:break
             page+=1
+    for name,row in chunks.items():
+        if len(row['parts'])!=row['n']:raise ValueError('Missing actual capture chunks; refuse incomplete picture')
+        data=base64.b64decode(''.join(row['parts'][i] for i in range(1,row['n']+1)),validate=True)
+        if len(data)>128*1024 or hashlib.sha256(data).hexdigest()!=row['digest']:raise ValueError('Capture hash/budget mismatch')
+        width,height=dimensions(data)
+        path=ROOT/'testing/build/r24/captures'/run['head_sha']/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
+        images[name]={'path':str(path),'bytes':len(data),'width':width,'height':height,'sha256':row['digest']}
     result={'run':a.run,'candidate':run['head_sha'],'whole_conclusion':run['conclusion'],'scope':'Actual downsampled native test images, NOT expert AX/physical/whole-product acceptance','images':images}
     print(json.dumps(result,indent=2))
     if not images:raise SystemExit('No actual capture mirrored; do not fabricate screenshots')
