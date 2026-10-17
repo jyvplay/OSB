@@ -279,3 +279,16 @@ kotlin.sourceSets.named("r23") {
 tasks.register<JavaExec>("r23Contracts") {
     dependsOn(r23.classesTaskName); classpath = r23.runtimeClasspath; mainClass.set("dev.fusion.testing.R23Checks")
 }
+
+// R24 actual shared appearance/dock/input policies; Android consumers verified separately.
+val r24 by sourceSets.creating
+kotlin.sourceSets.named("r24") {
+    kotlin.srcDir("src/r24/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.srcDir("../core/designsystem/src/main/kotlin")
+    kotlin.srcDir("../core/windowing/src/main/kotlin")
+    kotlin.include("**/Appearance.kt","**/ProfessionalPalettes.kt","**/Contrast.kt","**/WindowEngine.kt","**/DesktopCommandStream.kt","**/InputPresentation.kt","**/R24Checks.kt")
+}
+tasks.register<JavaExec>("r24Contracts") {
+    dependsOn(r24.classesTaskName);classpath=r24.runtimeClasspath;mainClass.set("dev.fusion.testing.R24Checks")
+}

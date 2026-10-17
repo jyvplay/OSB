@@ -64,6 +64,10 @@ class R18TaskUiDeviceTest {
             else compose.onNodeWithText("Renamed task").assertDoesNotExist()
             saved(4) // View changes must not write another task revision.
         }
-        } catch(failure:Throwable) {throw TaskUiEvidence.failure(compose.activity,phase,failure)}
+        } catch(failure:Throwable) {
+            // Observe failure only; no wait, retry, altered tap or longer success timeout.
+            val status=runCatching {compose.onNodeWithTag("tasks-status").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].joinToString {it.text}}.getOrElse {"unavailable"}
+            throw TaskUiEvidence.failure(compose.activity,phase,failure,status=status)
+        }
     }
 }

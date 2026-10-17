@@ -19,6 +19,8 @@ fun SettingsScreen(graph: SettingsGraph, probeText: String, density: String,
     var pending by remember { mutableStateOf<SettingsPatch?>(null) }
     var patchStatus by remember { mutableStateOf("") }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp)) {
+        AppearanceControls(graph,"settings")
+        HorizontalDivider(Modifier.padding(vertical=8.dp))
         Text("Window geometry density: $density")
         Row(Modifier.horizontalScroll(rememberScrollState())) {
             listOf("COMPACT", "BALANCED", "TOUCH").forEach { name ->

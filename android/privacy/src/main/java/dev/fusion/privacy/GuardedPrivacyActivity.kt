@@ -14,18 +14,42 @@ import dev.fusion.security.TouchAdmission
 abstract class GuardedPrivacyActivity : Activity() {
     private val touches = TouchAdmission()
     private var resumed = false
+    private var screenOn=false
+    private var receiverRegistered=false
+    private fun interactive()=getSystemService(android.os.PowerManager::class.java)?.isInteractive==true
+    private val displayState=object:android.content.BroadcastReceiver() {
+        override fun onReceive(context:android.content.Context,intent:android.content.Intent) {
+            if(intent.action !in setOf(android.content.Intent.ACTION_SCREEN_OFF,android.content.Intent.ACTION_SCREEN_ON)) return
+            touches.reset();screenOn=interactive()
+            if(intent.action==android.content.Intent.ACTION_SCREEN_OFF) screenOn=false
+            if(!screenOn) discardWorkspace("Workspace discarded on screen off. No forensic-erasure guarantee.")
+            else if(resumed && screenOn && hasWindowFocus()) rebuildWorkspace()
+        }
+    }
     protected abstract fun rebuildWorkspace()
     protected abstract fun discardWorkspace(reason: String)
-    protected fun acceptsInteraction(): Boolean = resumed && hasWindowFocus()
+    protected fun acceptsInteraction(): Boolean = resumed && screenOn && hasWindowFocus()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         window.setHideOverlayWindows(true)
         setRecentsScreenshotEnabled(false)
+        screenOn=interactive()
+        registerReceiver(displayState,android.content.IntentFilter().apply {
+            addAction(android.content.Intent.ACTION_SCREEN_OFF);addAction(android.content.Intent.ACTION_SCREEN_ON)
+        },android.content.Context.RECEIVER_NOT_EXPORTED)
+        receiverRegistered=true
     }
 
-    override fun onResume() { super.onResume(); resumed = true; touches.reset(); rebuildWorkspace() }
+    override fun onResume() {
+        super.onResume();resumed=true;screenOn=interactive();touches.reset()
+        if(screenOn) rebuildWorkspace() else discardWorkspace("Display is not interactive; workspace discarded.")
+    }
+    override fun onDestroy() {
+        if(receiverRegistered) {unregisterReceiver(displayState);receiverRegistered=false}
+        super.onDestroy()
+    }
     override fun onPause() {
         resumed = false; touches.reset(); discardWorkspace("Workspace discarded on background.")
         super.onPause()
@@ -34,7 +58,7 @@ abstract class GuardedPrivacyActivity : Activity() {
         super.onWindowFocusChanged(hasFocus)
         touches.reset()
         if (!hasFocus) discardWorkspace("Workspace discarded on focus loss.")
-        else if (resumed) rebuildWorkspace()
+        else if (resumed && screenOn) rebuildWorkspace()
     }
     override fun onSaveInstanceState(outState: Bundle) { super.onSaveInstanceState(outState); outState.clear() }
 

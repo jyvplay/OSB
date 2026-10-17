@@ -22,24 +22,22 @@ data class FusionDensity(val target: Dp, val titleBar: Dp) {
 }
 val LocalDensityProfile = staticCompositionLocalOf { FusionDensity.Balanced }
 
-private val Scheme = darkColorScheme(
-    primary = Color(0xFF65DDB4),
-    // Opaque sRGB foreground calculation; not a rendered accessibility pass.
-    onPrimary = Color(0xFF000000L or requireNotNull(Contrast.foreground(0,0x65DDB4)).toLong()),
-    background = Color(0xFF0C1011),
-    surface = Color(0xFF191E20),
-    onBackground = Color(0xFFE4E4E7),
-    onSurface = Color(0xFFE4E4E7)
-)
+private fun rgb(value:Int)=Color(0xff000000L or value.toLong())
 
 @Composable
-fun FusionTheme(profile: DensityProfile = DensityProfile.BALANCED, content: @Composable () -> Unit) {
-    val d = when (profile) {
-        DensityProfile.COMPACT -> FusionDensity.Compact
-        DensityProfile.BALANCED -> FusionDensity.Balanced
-        DensityProfile.TOUCH -> FusionDensity.Touch
-    }
-    CompositionLocalProvider(LocalDensityProfile provides d) {
-        MaterialTheme(colorScheme = Scheme, content = content)
-    }
+fun FusionTheme(profile: DensityProfile = DensityProfile.BALANCED,
+                palette: dev.fusion.settings.ProfessionalPalette = dev.fusion.settings.ProfessionalPalette.OFFICE_BLUE,
+                content: @Composable () -> Unit) {
+    val c=ProfessionalPalettes.colors(palette)
+    val base=if(palette.dark) darkColorScheme() else androidx.compose.material3.lightColorScheme()
+    val scheme=base.copy(primary=rgb(c.primary),onPrimary=rgb(c.onPrimary),
+        primaryContainer=rgb(c.selection),onPrimaryContainer=rgb(c.onSelection),
+        secondary=rgb(c.primary),onSecondary=rgb(c.onPrimary),secondaryContainer=rgb(c.selection),onSecondaryContainer=rgb(c.onSelection),
+        tertiary=rgb(c.primary),onTertiary=rgb(c.onPrimary),background=rgb(c.background),onBackground=rgb(c.text),
+        surface=rgb(c.surface),onSurface=rgb(c.text),surfaceVariant=rgb(c.raised),onSurfaceVariant=rgb(c.muted),
+        outline=rgb(c.outline),outlineVariant=rgb(c.outline),surfaceTint=rgb(c.primary),
+        surfaceContainerLowest=rgb(c.background),surfaceContainerLow=rgb(c.surface),surfaceContainer=rgb(c.surface),
+        surfaceContainerHigh=rgb(c.raised),surfaceContainerHighest=rgb(c.raised))
+    val d=when(profile) {DensityProfile.COMPACT->FusionDensity.Compact;DensityProfile.BALANCED->FusionDensity.Balanced;DensityProfile.TOUCH->FusionDensity.Touch}
+    CompositionLocalProvider(LocalDensityProfile provides d) {MaterialTheme(colorScheme=scheme,content=content)}
 }

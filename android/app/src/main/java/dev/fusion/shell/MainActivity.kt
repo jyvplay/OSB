@@ -32,6 +32,15 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import dev.fusion.settings.AppearancePreferences
+import dev.fusion.settings.DesktopLayout
+import dev.fusion.designsystem.FusionTheme
+import dev.fusion.settingsui.AppearanceControls
+import dev.fusion.windowing.InputPresentation
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -141,10 +150,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
-private val bg = Color(0xFF0C1011)
-private val panel = Color(0xFF191E20)
-private val border = Color(0xFF384044)
-private val mint = Color(0xFF65DDB4)
+private val bg:Color @Composable get()=MaterialTheme.colorScheme.background
+private val panel:Color @Composable get()=MaterialTheme.colorScheme.surface
+private val border:Color @Composable get()=MaterialTheme.colorScheme.outline
+private val mint:Color @Composable get()=MaterialTheme.colorScheme.primary
 
 private val MODULES = PilotPolicy.modules.map { it.id }
 
@@ -275,6 +284,7 @@ class MainActivity : ComponentActivity() {
 
     // ---- lifecycle ---------------------------------------------------------
 
+    @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // [U] verify on API 34/36/37: system bars, cutouts and IME inset reflow on real UI.
@@ -290,13 +300,21 @@ class MainActivity : ComponentActivity() {
         }
         handleShare(intent)
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(primary = mint, onPrimary = Color(0xFF000000L or requireNotNull(dev.fusion.designsystem.Contrast.foreground(0,0x65DDB4)).toLong()), background = bg, surface = panel)) {
+            val preferences by settingsGraph.snapshots.collectAsState()
+            val appearance=AppearancePreferences.read(preferences)
+            LaunchedEffect(appearance.palette) {
+                val light=android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or android.view.WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                window.insetsController?.setSystemBarsAppearance(if(appearance.palette.dark) 0 else light,light)
+            }
+            FusionTheme(palette=appearance.palette) {
                 Surface(Modifier.fillMaxSize(), color = bg) {
-                    Box(Modifier.fillMaxSize().safeDrawingPadding()) { ShellScreen() }
+                    Box(Modifier.fillMaxSize().safeDrawingPadding().semantics {testTagsAsResourceId=true}) { ShellScreen() }
                 }
             }
         }
     }
+
+    override fun onDestroy() {settingsGraph.close();super.onDestroy()}
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -358,7 +376,8 @@ class MainActivity : ComponentActivity() {
         presentation = null
 
         val created = DesktopPresentation(this, target) {
-            ExternalDesktopScreen(desktop, externalDisplayLabel ?: target.name)
+            val values by settingsGraph.snapshots.collectAsState()
+            FusionTheme(palette=AppearancePreferences.read(values).palette) {ExternalDesktopScreen(desktop, externalDisplayLabel ?: target.name)}
         }
         try {
             created.show()
@@ -446,6 +465,10 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun ShellScreen() {
+        val preferences by settingsGraph.snapshots.collectAsState()
+        val appearance=AppearancePreferences.read(preferences)
+        val imeVisible=WindowInsets.ime.getBottom(LocalDensity.current)>0
+        var controlVisible by remember {mutableStateOf(false)}
         var paletteVisible by remember { mutableStateOf(false) }
         val focusRequester = remember { FocusRequester() }
         LaunchedEffect(Unit) { runCatching { focusRequester.requestFocus() } }
@@ -482,6 +505,19 @@ class MainActivity : ComponentActivity() {
                 confirmButton={ TextButton(onClick={ desktopModel.dispatch(WindowCommand.Close(id)); closingNotesWindow=null }) { Text("Hide note window") } },
                 dismissButton={ TextButton(onClick={ closingNotesWindow=null }) { Text("Keep editing") } })
         }
+        if(controlVisible) AlertDialog(onDismissRequest={controlVisible=false},
+            title={Text("Control panel")}, text={
+                Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+                    AppearanceControls(settingsGraph,"control")
+                    Text("Workspaces")
+                    Row(Modifier.horizontalScroll(rememberScrollState())) {repeat(WindowEngine.WORKSPACES) {ws->
+                        OutlinedButton(onClick={dispatch(WindowCommand.SwitchWorkspace(ws))},modifier=Modifier.testTag("control-workspace-$ws")) {Text("${ws+1}")}
+                    }}
+                    Text("Main shell has networking permission. Appearance is not anonymity; the offline privacy compartment is a separate APK.")
+                    TextButton(onClick={openModule("settings");controlVisible=false}) {Text("Open full Fusion settings")}
+                    TextButton(onClick={runCatching {startActivity(Intent(android.provider.Settings.ACTION_SETTINGS))}.onFailure {message="Android settings unavailable."}}) {Text("Android settings…")}
+                }
+            },confirmButton={TextButton(onClick={controlVisible=false},modifier=Modifier.testTag("control-done")) {Text("Done")}})
         Column(
             Modifier.fillMaxSize().focusRequester(focusRequester).onPreviewKeyEvent { event ->
                 if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
@@ -495,6 +531,7 @@ class MainActivity : ComponentActivity() {
                         else -> null
                     }
                     when {
+                        delta != null && active != null && imeVisible -> {message="Dismiss the keyboard before moving/resizing windows.";return@onPreviewKeyEvent true}
                         delta != null && active != null -> {
                             dispatch(if (event.isShiftPressed) WindowCommand.Resize(active, delta.first, delta.second, sw, sh)
                                 else WindowCommand.Move(active, delta.first, delta.second, sw, sh)); return@onPreviewKeyEvent true
@@ -522,36 +559,23 @@ class MainActivity : ComponentActivity() {
                 }
             }.focusable()
         ) {
-            Row(
-                Modifier.fillMaxWidth().heightIn(min = 48.dp).background(panel).horizontalScroll(rememberScrollState()).padding(horizontal = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(onClick = { openModule("pilot") }, enabled = !desktopModel.loading && !desktopModel.blocked) { Text("Pilot safety") }
-                Text("F / FUSION", color = mint, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.width(20.dp))
-                Text("Find", Modifier.clickable { paletteVisible = true }, color = Color.LightGray)
-                Spacer(Modifier.width(20.dp))
-                Text("WORKSPACE ${desktop.workspace + 1}", fontSize = 11.sp, color = Color.Gray)
-            }
+            DesktopTopBar(appearance,desktop.windows.find {it.id==desktop.activeId}?.title ?: "Fusion",desktop.workspace,
+                onFind={paletteVisible=true},onSafety={openModule("pilot")},onControl={controlVisible=true})
 
-            BoxWithConstraints(Modifier.weight(1f).fillMaxWidth().background(bg)) {
+            BoxWithConstraints(Modifier.weight(1f).fillMaxWidth().background(bg).testTag("desktop-canvas")) {
                 val sw = maxWidth.value
                 val sh = maxHeight.value
                 val scale = LocalDensity.current.density
-                LaunchedEffect(sw, sh, desktopModel.loading) {
-                    if (!desktopModel.loading) dispatch(WindowCommand.SetViewport(sw, sh))
+                LaunchedEffect(sw, sh, desktopModel.loading,imeVisible) {
+                    // Keyboard presentation is transient, not a new persistent desktop geometry.
+                    if (!desktopModel.loading && !imeVisible) dispatch(WindowCommand.SetViewport(sw, sh))
                 }
 
-                Column(Modifier.padding(20.dp)) {
-                    Text("Fusion Shell", fontSize = 34.sp, color = mint, fontWeight = FontWeight.Bold)
-                    Text("Android desktop / local-first", color = Color.Gray)
-                    Spacer(Modifier.height(14.dp))
-                    Text("Pick a module from the shelf below, or press Ctrl+K.", fontSize = 12.sp)
-                }
+                DesktopWallpaper(appearance.layout==DesktopLayout.ART)
 
                 desktop.windows.filter { it.workspace == desktop.workspace && !it.minimized }
                     .sortedBy { it.z }.forEach { w -> key(w.id) {
-                        val adjusted = w.bounds.constrained(sw, sh, desktop.density)
+                        val adjusted = InputPresentation.fit(w.bounds,sw.coerceAtLeast(1f),sh.coerceAtLeast(1f),desktop.density,imeVisible)
                         val windowFocus = remember { FocusRequester() }
                         var windowHasFocus by remember { mutableStateOf(false) }
                         LaunchedEffect(desktop.activeId) {
@@ -561,7 +585,8 @@ class MainActivity : ComponentActivity() {
                             Modifier.offset(adjusted.x.dp, adjusted.y.dp)
                                 .size(adjusted.width.dp, adjusted.height.dp)
                                 .zIndex(w.z.toFloat())
-                                .border(1.dp, if (desktop.activeId == w.id) mint else border)
+                                .clip(RoundedCornerShape(if(appearance.layout==DesktopLayout.ART) 14.dp else 4.dp))
+                                .border(1.dp, if (desktop.activeId == w.id) mint else border,RoundedCornerShape(if(appearance.layout==DesktopLayout.ART) 14.dp else 4.dp))
                                 .background(panel)
                                 .focusRequester(windowFocus)
                                 .onFocusChanged {
@@ -573,16 +598,16 @@ class MainActivity : ComponentActivity() {
                                     paneTitle = w.title
                                     customActions = listOf(
                                         CustomAccessibilityAction("Focus") { dispatch(WindowCommand.Focus(w.id)); true },
-                                        CustomAccessibilityAction("Move left") { dispatch(WindowCommand.Move(w.id, -16f, 0f, sw, sh)); true },
-                                        CustomAccessibilityAction("Move right") { dispatch(WindowCommand.Move(w.id, 16f, 0f, sw, sh)); true },
-                                        CustomAccessibilityAction("Move up") { dispatch(WindowCommand.Move(w.id, 0f, -16f, sw, sh)); true },
-                                        CustomAccessibilityAction("Move down") { dispatch(WindowCommand.Move(w.id, 0f, 16f, sw, sh)); true },
-                                        CustomAccessibilityAction("Increase width") { dispatch(WindowCommand.Resize(w.id, 16f, 0f, sw, sh)); true },
-                                        CustomAccessibilityAction("Decrease width") { dispatch(WindowCommand.Resize(w.id, -16f, 0f, sw, sh)); true },
-                                        CustomAccessibilityAction("Increase height") { dispatch(WindowCommand.Resize(w.id, 0f, 16f, sw, sh)); true },
-                                        CustomAccessibilityAction("Decrease height") { dispatch(WindowCommand.Resize(w.id, 0f, -16f, sw, sh)); true },
-                                        CustomAccessibilityAction("Maximize") { dispatch(WindowCommand.TileWindow(w.id, Tile.MAXIMIZE, sw, sh)); true },
-                                        CustomAccessibilityAction("Restore previous size") { dispatch(WindowCommand.RestoreBounds(w.id)); true },
+                                        CustomAccessibilityAction("Move left") { if(imeVisible) false else {dispatch(WindowCommand.Move(w.id, -16f, 0f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Move right") { if(imeVisible) false else {dispatch(WindowCommand.Move(w.id, 16f, 0f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Move up") { if(imeVisible) false else {dispatch(WindowCommand.Move(w.id, 0f, -16f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Move down") { if(imeVisible) false else {dispatch(WindowCommand.Move(w.id, 0f, 16f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Increase width") { if(imeVisible) false else {dispatch(WindowCommand.Resize(w.id, 16f, 0f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Decrease width") { if(imeVisible) false else {dispatch(WindowCommand.Resize(w.id, -16f, 0f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Increase height") { if(imeVisible) false else {dispatch(WindowCommand.Resize(w.id, 0f, 16f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Decrease height") { if(imeVisible) false else {dispatch(WindowCommand.Resize(w.id, 0f, -16f, sw, sh)); true} },
+                                        CustomAccessibilityAction("Maximize") { if(imeVisible) false else {dispatch(WindowCommand.TileWindow(w.id, Tile.MAXIMIZE, sw, sh)); true} },
+                                        CustomAccessibilityAction("Restore previous size") { if(imeVisible) false else {dispatch(WindowCommand.RestoreBounds(w.id)); true} },
                                         CustomAccessibilityAction("Move to next workspace") { dispatch(WindowCommand.MoveToWorkspace(w.id,(w.workspace+1)%WindowEngine.WORKSPACES)); true },
                                         CustomAccessibilityAction("Minimize") { dispatch(WindowCommand.Minimize(w.id)); true },
                                         CustomAccessibilityAction("Close") { dispatch(WindowCommand.Close(w.id)); true }
@@ -600,15 +625,23 @@ class MainActivity : ComponentActivity() {
                                 }
                         ) {
                             Row(
-                                Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("window-title-${w.module}").background(Color(0xFF252C2D))
-                                    .pointerInput(w.id, sw, sh) {
+                                Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("window-title-${w.module}").background(MaterialTheme.colorScheme.surfaceVariant)
+                                    .pointerInput(w.id, sw, sh,imeVisible) {
                                         detectDragGestures { change, drag ->
                                             change.consume()
-                                            dispatch(WindowCommand.Move(w.id, drag.x / scale, drag.y / scale, sw, sh))
+                                            if(!imeVisible) dispatch(WindowCommand.Move(w.id, drag.x / scale, drag.y / scale, sw, sh))
                                         }
                                     }.padding(horizontal = 10.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
+                                if(appearance.layout==DesktopLayout.ART) {
+                                    TitleAction("X",description="Close window",tint=Color(0xffb42318)) {dispatch(WindowCommand.Close(w.id))}
+                                    TitleAction("_",description="Minimize",tint=MaterialTheme.colorScheme.onSurfaceVariant) {dispatch(WindowCommand.Minimize(w.id))}
+                                    TitleAction("+",description="Maximize or restore",enabled=!imeVisible) {
+                                        if(w.restoreBounds!=null) dispatch(WindowCommand.RestoreBounds(w.id))
+                                        else dispatch(WindowCommand.TileWindow(w.id,Tile.MAXIMIZE,sw,sh))
+                                    }
+                                }
                                 Text(w.title, Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 // Three 48dp controls leave a title/drag region even at 240dp.
                                 // Density changes layout, never which window actions are available.
@@ -618,12 +651,12 @@ class MainActivity : ComponentActivity() {
                                     DropdownMenu(expanded = actionsOpen, onDismissRequest = { actionsOpen = false }) {
                                         listOf("Tile left" to Tile.LEFT, "Tile right" to Tile.RIGHT, "Maximize" to Tile.MAXIMIZE).forEach { (label, tile) ->
                                             DropdownMenuItem(text = { Text(if(WindowEngine.canTile(desktop,tile)) label else "$label — viewport too small") },
-                                                enabled=WindowEngine.canTile(desktop,tile), onClick = {
+                                                enabled=!imeVisible && WindowEngine.canTile(desktop,tile), onClick = {
                                                 actionsOpen = false
                                                 dispatch(WindowCommand.TileWindow(w.id, tile, sw, sh))
                                             })
                                         }
-                                        DropdownMenuItem(text={ Text("Restore previous size") },enabled=w.restoreBounds!=null,onClick={
+                                        DropdownMenuItem(text={ Text("Restore previous size") },enabled=!imeVisible && w.restoreBounds!=null,onClick={
                                             actionsOpen=false; dispatch(WindowCommand.RestoreBounds(w.id))
                                         })
                                         repeat(WindowEngine.WORKSPACES) { workspace ->
@@ -634,17 +667,19 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 }
-                                TitleAction("_") { dispatch(WindowCommand.Minimize(w.id)) }
-                                TitleAction("X") { dispatch(WindowCommand.Close(w.id)) }
+                                if(appearance.layout==DesktopLayout.BUSINESS) {
+                                    TitleAction("_") { dispatch(WindowCommand.Minimize(w.id)) }
+                                    TitleAction("X") { dispatch(WindowCommand.Close(w.id)) }
+                                }
                             }
                             Box(Modifier.weight(1f).fillMaxWidth()) {
                                 ModuleContent(w.module)
                                 Text(
                                     "/",
-                                    Modifier.align(Alignment.BottomEnd).pointerInput(w.id, sw, sh) {
+                                    Modifier.align(Alignment.BottomEnd).pointerInput(w.id, sw, sh,imeVisible) {
                                         detectDragGestures { change, drag ->
                                             change.consume()
-                                            dispatch(WindowCommand.Resize(w.id, drag.x / scale, drag.y / scale, sw, sh))
+                                            if(!imeVisible) dispatch(WindowCommand.Resize(w.id, drag.x / scale, drag.y / scale, sw, sh))
                                         }
                                     }.padding(6.dp),
                                     color = mint
@@ -683,44 +718,29 @@ class MainActivity : ComponentActivity() {
                 Text(desktopModel.status, Modifier.padding(8.dp).semantics { liveRegion = LiveRegionMode.Polite })
                 if (desktopModel.blocked) Button(onClick = { resetLayoutPrompt = true }) { Text("Reset window layout…") }
             }
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+            if(!imeVisible) Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
                 desktop.windows.filter { it.workspace == desktop.workspace }.forEach { w ->
                     OutlinedButton(onClick = { dispatch(WindowCommand.Focus(w.id)) }) {
                         Text((if (w.minimized) "Restore: " else "Focus: ") + w.title)
                     }
                 }
             }
-            Row(
-                Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).background(panel).padding(4.dp),
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                MODULES.forEach { module ->
-                    Button(
-                        modifier = Modifier.testTag("shelf-$module"),
-                        enabled = !desktopModel.loading && !desktopModel.blocked,
-                        onClick = { openModule(module) },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF303A39), contentColor = Color(0xFF000000L or requireNotNull(dev.fusion.designsystem.Contrast.foreground(0xE4E4E7,0x303A39)).toLong()))
-                    ) { Text(module.replaceFirstChar { it.uppercase() }) }
-                }
-                (0..2).forEach { ws ->
-                    OutlinedButton(onClick = { dispatch(WindowCommand.SwitchWorkspace(ws)) }) {
-                        Text(if (ws == desktop.workspace) "[${ws + 1}]" else "${ws + 1}")
-                    }
-                }
-            }
+            DesktopShelf(MODULES.map {module->ShelfApp(module,module.replaceFirstChar {it.uppercase()},
+                desktop.windows.any {it.module==module},desktop.windows.any {it.module==module && it.id==desktop.activeId && !it.minimized})},
+                appearance,imeVisible,!desktopModel.loading && !desktopModel.blocked,::openModule)
 
             Text(
-                message, Modifier.fillMaxWidth().background(Color(0xFF12191A)).padding(6.dp),
-                fontSize = 11.sp, color = mint, maxLines = 2
+                message, Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceVariant).padding(6.dp),
+                fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = if(imeVisible) 1 else 2
             )
         }
     }
 
     @Composable
-    private fun TitleAction(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
-        val name = when(label) { "⋮" -> "Window actions"; "L" -> "Tile left"; "R" -> "Tile right"; "[]" -> "Maximize"; "_" -> "Minimize"; "X" -> "Close window"; else -> label }
-        TextButton(onClick = onClick, contentPadding = androidx.compose.foundation.layout.PaddingValues(2.dp),
-            modifier = modifier.width(48.dp).heightIn(min = 48.dp).semantics { contentDescription = name }) { Text(label, color = mint, fontSize = 12.sp) }
+    private fun TitleAction(label: String, modifier: Modifier = Modifier, description:String?=null,tint:Color=mint,enabled:Boolean=true,onClick: () -> Unit) {
+        val name = description ?: when(label) { "⋮" -> "Window actions"; "L" -> "Tile left"; "R" -> "Tile right"; "[]" -> "Maximize"; "_" -> "Minimize"; "X" -> "Close window"; else -> label }
+        TextButton(onClick = onClick, enabled=enabled,contentPadding = androidx.compose.foundation.layout.PaddingValues(2.dp),
+            modifier = modifier.width(48.dp).heightIn(min = 48.dp).semantics { contentDescription = name }) { Text(label, color = tint, fontSize = 12.sp) }
     }
 
     @Composable

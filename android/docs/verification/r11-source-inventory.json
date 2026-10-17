@@ -117,7 +117,9 @@
     ],
     ":core:index": [],
     ":core:storage": [],
-    ":core:designsystem": [],
+    ":core:designsystem": [
+      ":core:settings"
+    ],
     ":feature:editor": [
       ":core:documents",
       ":core:files",
@@ -191,6 +193,12 @@
   "missing_internal_edges": [],
   "source_inventory": [
     {
+      "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
+      "module": ":app",
+      "package": "dev.fusion.shell",
+      "sha256": "ffbc2bfaaee462cae7c21d21ee35175b7b370d50a5d66abfecce99c56899c5ed"
+    },
+    {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
@@ -212,7 +220,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955"
+      "sha256": "8c23bebcf192eac7fb24cfdebfcb199e7b7a297e91800cbfc07f90103194167f"
     },
     {
       "path": "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",
@@ -230,7 +238,7 @@
       "path": "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
-      "sha256": "325ec8622f36b7e8d1e5efc306a554c6167af72a1f3f72404ecfd79f399bc20a"
+      "sha256": "fc9b906e7647498373f820123d411ef8ce2188b9eaa808bcb30ce4023502e967"
     },
     {
       "path": "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
@@ -299,6 +307,12 @@
       "sha256": "befbf7132bd65ae982f954588b98ca83efbba0451985b6140be5f7e38fe2e295"
     },
     {
+      "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt",
+      "module": ":core:windowing",
+      "package": "dev.fusion.windowing",
+      "sha256": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481"
+    },
+    {
       "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt",
       "module": ":core:windowing",
       "package": "dev.fusion.windowing",
@@ -362,7 +376,13 @@
       "path": "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt",
       "module": ":core:settings",
       "package": "dev.fusion.settings",
-      "sha256": "4e83784d8a76343ad2b32cdf7fd8366ca4701598dbfd34a04a48620e0fb96c78"
+      "sha256": "08531e4edb15125edefbd833d97728e556a999adbc11cbaa48ee50538b13c522"
+    },
+    {
+      "path": "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt",
+      "module": ":core:settings",
+      "package": "dev.fusion.settings",
+      "sha256": "83c978c7fd188e5bb97f1988181557574e0ba0bcb5775eb870e5a2ad359bc740"
     },
     {
       "path": "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
@@ -464,13 +484,19 @@
       "path": "core/designsystem/src/main/java/dev/fusion/designsystem/Theme.kt",
       "module": ":core:designsystem",
       "package": "dev.fusion.designsystem",
-      "sha256": "817423666e7adb88f98cddee46fc60f1143e3ba7c0da3e039a8a71b63322c889"
+      "sha256": "3378f84eebcbc626bef274383ffa4e8729f84e8485287b8ce4ccee826abde152"
     },
     {
       "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt",
       "module": ":core:designsystem",
       "package": "dev.fusion.designsystem",
       "sha256": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc"
+    },
+    {
+      "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt",
+      "module": ":core:designsystem",
+      "package": "dev.fusion.designsystem",
+      "sha256": "f1de07705e7b5c7d12dedf83a8f02fc3ff7e2285c64b925e0f48fa13306091f5"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt",
@@ -665,10 +691,16 @@
       "sha256": "e71f046b25950086a4bef6d3e96cce4d38e46a109d73cfba541c2a9672112b9b"
     },
     {
+      "path": "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt",
+      "module": ":feature:settings",
+      "package": "dev.fusion.settingsui",
+      "sha256": "e0c7413486c2babc0f4a7c5536cf68d0035240c3a2c25681224c90ccdb610948"
+    },
+    {
       "path": "feature/settings/src/main/java/dev/fusion/settingsui/SettingsScreen.kt",
       "module": ":feature:settings",
       "package": "dev.fusion.settingsui",
-      "sha256": "313b671c6f8ef61002a3f753eb1fddc546fd8c9ad2c478e2fe073f582fe86ce7"
+      "sha256": "19c7ec975a0b30ef4843f6f340345ffe90020b2ffa95e3432d2749e0c1a6b8f7"
     },
     {
       "path": "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt",
@@ -860,13 +892,13 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "5f198eaf23cc95154266e979dffc08d51850ab4f2f5c0b072f43faee15793d73"
+      "sha256": "5471dc208079a0d88b2262ab9ee56b712ef297d9a27ac58ccdc84914432cae84"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "a7409f5b4a9f34cafd58a8d71c2d6d8cae0ee81371fb04d127598389f687eb78"
+      "sha256": "1626afab35877b8a9eccc5683ce7e7bdc0aa94cab2a618b0ffef3cff2afb2594"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",

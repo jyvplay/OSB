@@ -6,18 +6,24 @@
       "module": ":app",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Own-window focus and real module action dispatch",
+      "behavior": "Own-window focus and real module action dispatch R24 actual policy host checks passed; new appearance/input/screen-off native consumers AUTHORED and PENDING fresh device verification. No inherited native pass.",
       "production": [
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt"
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt",
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt"
       ],
       "checks": [
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "6cea88353c89dca63f62a4fda61506f4f439071b975678340c5780a6c0e49955",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe"
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "8c23bebcf192eac7fb24cfdebfcb199e7b7a297e91800cbfc07f90103194167f",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "ffbc2bfaaee462cae7c21d21ee35175b7b370d50a5d66abfecce99c56899c5ed",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455",
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "1f40c9328482cb15c1b5a5861d60c89ce70b0fec337b72f09045e645754af003"
       }
     },
     {
@@ -42,18 +48,24 @@
       "module": ":core:windowing",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Deterministic window reducer and versioned restore",
+      "behavior": "Deterministic window reducer and versioned restore R24 actual policy host checks passed; new appearance/input/screen-off native consumers AUTHORED and PENDING fresh device verification. No inherited native pass.",
       "production": [
-        "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt"
+        "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt",
+        "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt"
       ],
       "checks": [
-        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt"
+        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt"
       ],
       "command": ":testing:windowRestoreContracts",
       "limit": "Full WM-01\u201316 semantics, Compose host/input/display integration, Room, physical a11y/perf",
       "sha256": {
         "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt": "80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574",
-        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074"
+        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
+        "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "1acbd7c4b132f770f0e609b81073e3913eab0249314ea69bf5ba01fe596e5aa2",
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "1f40c9328482cb15c1b5a5861d60c89ce70b0fec337b72f09045e645754af003"
       }
     },
     {
@@ -146,22 +158,28 @@
       "module": ":core:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native inspection passed at67fbd39",
+      "behavior": "Canonical bounded UTF8 settings snapshot encode/decode and locale-stable registry search; SharedPreferences adapter uses catalog, native inspection passed at67fbd39 R24 actual policy host checks passed; new appearance/input/screen-off native consumers AUTHORED and PENDING fresh device verification. No inherited native pass.",
       "production": [
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
-        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt"
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt",
+        "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt"
       ],
       "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
       "sha256": {
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc",
-        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt": "4e83784d8a76343ad2b32cdf7fd8366ca4701598dbfd34a04a48620e0fb96c78",
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt": "08531e4edb15125edefbd833d97728e556a999adbc11cbaa48ee50538b13c522",
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
+        "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt": "83c978c7fd188e5bb97f1988181557574e0ba0bcb5775eb870e5a2ad359bc740",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "1acbd7c4b132f770f0e609b81073e3913eab0249314ea69bf5ba01fe596e5aa2",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455"
       }
     },
     {
@@ -270,15 +288,18 @@
       "module": ":core:designsystem",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Opaque sRGB contrast and preferred/black/white foreground selection, consumed by shell theme; independent high-precision arithmetic comparisons.",
+      "behavior": "Opaque sRGB contrast and preferred/black/white foreground selection, consumed by shell theme; independent high-precision arithmetic comparisons. R24 actual policy host checks passed; new appearance/input/screen-off native consumers AUTHORED and PENDING fresh device verification. No inherited native pass.",
       "production": [
-        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt"
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
-        "tools/run_r14_interop.py"
+        "tools/run_r14_interop.py",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt"
       ],
       "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
       "limit": "Not alpha/HDR/rendered text contrast, density completeness, physical display or full accessibility acceptance.",
@@ -287,7 +308,10 @@
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
-        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "f1de07705e7b5c7d12dedf83a8f02fc3ff7e2285c64b925e0f48fa13306091f5",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "1acbd7c4b132f770f0e609b81073e3913eab0249314ea69bf5ba01fe596e5aa2",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455"
       }
     },
     {
@@ -504,15 +528,17 @@
       "module": ":feature:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Three-way conflict-detecting settings patch, idempotent apply and unrelated-edit preservation; actual density review/cancel/apply UI.",
+      "behavior": "Three-way conflict-detecting settings patch, idempotent apply and unrelated-edit preservation; actual density review/cancel/apply UI. R24 actual policy host checks passed; new appearance/input/screen-off native consumers AUTHORED and PENDING fresh device verification. No inherited native pass.",
       "production": [
-        "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt"
+        "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt",
+        "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
-        "tools/run_r14_interop.py"
+        "tools/run_r14_interop.py",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt"
       ],
       "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
       "limit": "No durable transaction, authenticated import, permission grant or arbitrary-setting enablement. Host applies only density; native UI evidence pending.",
@@ -521,7 +547,9 @@
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
-        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+        "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt": "e0c7413486c2babc0f4a7c5536cf68d0035240c3a2c25681224c90ccdb610948",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455"
       }
     },
     {
@@ -807,7 +835,7 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4",
         "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt": "7e55bab44fdf1adcea454abf8b843faf14f5cac4f8bda2d666caa95001d15ddf",
-        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "a7409f5b4a9f34cafd58a8d71c2d6d8cae0ee81371fb04d127598389f687eb78",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "1626afab35877b8a9eccc5683ce7e7bdc0aa94cab2a618b0ffef3cff2afb2594",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt": "c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt": "a0cb99d077c6179b91c5ee9aebc8c79773fd7db7f109f5cd693cacedd157a36b",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
@@ -823,7 +851,7 @@
         "tools/run_r18_contracts.py": "bebdab5afa500460babb0d6b6d149ef3d4bdb16a02828206843a1856494897a9",
         "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskDeviceTest.kt": "bdc34d1e78266bd1de7ad7f8938195dca348b5ffa0f30c24e29a66194dd7dade",
-        "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "6232f963f6e23ca1bca0edf48e42a1151cdabf4e00307a8b3d3cf6b7870bc571",
+        "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "7d0572c50b3b073988d5948b10f572daa2091a2633c526e84624b859ad602156",
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
         "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "56f68adf98a8a4233f93375ad58e86493a6b4f835ace288bc828a3896c6c4067",
@@ -1165,7 +1193,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Separate no-INTERNET offline scratchpad and no-IME digit pad, guarded focus/background/obscuration discard and exposure review. Current4bc7637/run38871422549 actual16PASS/0FAIL/0SKIP on API34 compiled/target37, including real IME single-tap, real focusable Dialog, fresh compositor witnesses, secure pixels and retained-writer boundary. Earlier13/1,14/1,15/1,14/2 failures retained; no blanket UI-stability, API37-runtime, host/hardware/firmware secrecy or Tails acceptance.",
+      "behavior": "Separate no-INTERNET offline scratchpad and no-IME digit pad, guarded focus/background/obscuration discard and exposure review. Current4bc7637/run38871422549 actual16PASS/0FAIL/0SKIP on API34 compiled/target37, including real IME single-tap, real focusable Dialog, fresh compositor witnesses, secure pixels and retained-writer boundary. Earlier13/1,14/1,15/1,14/2 failures retained; no blanket UI-stability, API37-runtime, host/hardware/firmware secrecy or Tails acceptance. R24 actual policy host checks passed; new appearance/input/screen-off native consumers AUTHORED and PENDING fresh device verification. No inherited native pass.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
@@ -1180,13 +1208,14 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt"
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt"
       ],
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "e9bf2bfddab06cb641ed194300e91479c528aa7ef965faf3a04b4e0315e6cbb3",
-        "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt": "325ec8622f36b7e8d1e5efc306a554c6167af72a1f3f72404ecfd79f399bc20a",
+        "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt": "fc9b906e7647498373f820123d411ef8ce2188b9eaa808bcb30ce4023502e967",
         "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt": "9cb5534e35bcece84f311113243e8daa569c5d61fde6467976f571999c07ed2b",
         "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt": "a4ed34dbe008d9598987b6f316bffef8d0d849130aa930ab57752784fed8a60e",
         "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29",
@@ -1196,7 +1225,8 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "b6c740d00edccc9dd447b17c4f9ff8d7ebd7faa6f0c661b2359e2a4771de1fc8",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "bda15be3d5e2c7ed2a2fa4bea90f18b5c60216b2a80cccda74ccdd26695052b6",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617"
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "3386d2d3e7cb6c3b0337a95351f632e8809b6964e9995d6e65f5b8588b22e2ea"
       }
     }
   ]
