@@ -13,7 +13,7 @@ def main():
     appearance=ROOT/'core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt'
     design=[ROOT/'core/designsystem/src/main/kotlin/dev/fusion/designsystem'/name for name in ['Contrast.kt','ProfessionalPalettes.kt']]
     windows=[ROOT/'core/windowing/src/main/kotlin/dev/fusion/windowing'/name for name in ['WindowEngine.kt','DesktopCommandStream.kt','InputPresentation.kt']]
-    groups=[('appearance',[appearance,ROOT/'core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt']),('design',design),('windows',windows),('pdf',[ROOT/'format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt'])]
+    groups=[('appearance',[appearance,ROOT/'core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt']),('design',design),('windows',windows),('pdf',[ROOT/'format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt']),('codec',[ROOT/'format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt',ROOT/'format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt'])]
     jars=[];sources=[]
     for name,files in groups:
         jar=out/(name+'.jar');cmd=[compiler,'-jvm-target','17','-module-name',name]

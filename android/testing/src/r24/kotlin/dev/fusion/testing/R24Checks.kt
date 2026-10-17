@@ -1,6 +1,7 @@
 package dev.fusion.testing
 
 import dev.fusion.settings.*
+import dev.fusion.ooxml.CsvTable
 import dev.fusion.model.PilotPolicy
 import dev.fusion.model.PilotAccess
 import dev.fusion.designsystem.*
@@ -75,6 +76,19 @@ object R24Checks {
             val dim=PdfPreviewLimits.dimensions(w,h);ok(dim.first in 1..320 && dim.second in 1..320)
         }
         refuses {PdfPreviewLimits.dimensions(Int.MAX_VALUE,1)}
+        // Exact empty fast path differential: no parser grammar/caps/shape change.
+        val strict=Charsets.UTF_8.newEncoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+        for(value in listOf("","α","emoji \uD83D\uDE00","line\r\ntext")+(0..127).map {it.toChar().toString()}) {
+            val b=strict.reset().encode(java.nio.CharBuffer.wrap(value));val expected=ByteArray(b.remaining());b.get(expected)
+            ok(CsvTable.utf8(value).contentEquals(expected))
+        }
+        refuses {CsvTable.utf8("\uD800")}
+        refuses {CsvTable.parse(byteArrayOf(0xff.toByte()))}
+        ok(CsvTable.parse(ByteArray(0)).rows.isEmpty())
+        ok(CsvTable.parse("\n".toByteArray()).rows==listOf(listOf("")))
+        ok(CsvTable.parse(",\n".toByteArray()).rows==listOf(listOf("","")))
+        val dense=CsvTable.of(List(256) {List(32) {""}});val denseFrame=dense.frame()
+        ok(denseFrame.size==32780);ok(CsvTable.readFrame(denseFrame).rows==dense.rows)
         println("R24 PASS: $checks assertions;8 appearance combinations;16640 dock configurations; $cases input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.")
     }
 }

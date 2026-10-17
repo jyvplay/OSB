@@ -1,0 +1,62 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/5543887408ee848b9d123269a41f037ee934ab1e/.github",
+    "start_line": 23,
+    "start_column": null,
+    "end_line": 23,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/5543887408ee848b9d123269a41f037ee934ab1e/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R21BoundaryDeviceTest.exactByteCapAndDenseEmptyTableCrossRealBinder:  \njava.util.concurrent.ExecutionException: java.lang.IllegalStateException: Worker died; op=4; since parent connection=4567ms; since parent send=4496ms\nat java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:372)\nat java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2072)\nat dev.fusion.format.pdf.sandbox.FormatLease.request(FormatLease.kt:252)\nat dev.fusion.format.pdf.sandbox.FormatLease.request$default(FormatLease.kt:238)\nat dev.fusion.format.pdf.sandbox.FormatLease.evaluateOwnedCsv(FormatLease.kt:155)\nat dev.fusion.shell.R21BoundaryDeviceTest.exactByteCapAndDenseEmptyTableCrossRealBinder(R21BoundaryDeviceTest.kt:49)\n... 32 trimmed\nCaused by: java.lang.IllegalStateException: Worker died; op=4; since parent connection=4567ms; since parent send=4496ms\nat dev.fusion.format.pdf.sandbox.FormatLease.unavailable(FormatLease.kt:113)\nat dev.fusion.format.pdf.sandbox.FormatLease.access$unavailable(FormatLease.kt:22)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1.onServiceConnected$lambda$0(FormatLease.kt:94)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1$$ExternalSyntheticLambda0.binderDied(D8$$SyntheticClass:0)\nat android.os.IBinder$DeathRecipient.binderDied(IBinder.java:319)\nat android.os.BinderProxy.sendDeathNotice(BinderProxy.java:704)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/5543887408ee848b9d123269a41f037ee934ab1e/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R21BoundaryDeviceTest.exactByteCapAndDenseEmptyTableCrossRealBinder=FAIL; dev.fusion.shell.R21BoundaryDeviceTest.csvGrammarRunsInDistinctUidAndOwnedInputIsUnlinked=PASS; dev.fusion.shell.R21BoundaryDeviceTest.malformedCsvRefusesAndCleansUpThenFreshChildSucceeds=PASS; dev.fusion.shell.R21BoundaryDeviceTest.consentCannotSurviveSameUrlOrUnsupportedNavigationOrReplay=PASS; dev.fusion.shell.R21BoundaryDeviceTest.literalWorksheetBeyondTaskBudgetWritesAndReopensRealProvider=PASS; dev.fusion.shell.R21CsvUiDeviceTest.inFlightEditorMutationDiscardsStaleWorkerResult=PASS; dev.fusion.shell.R21CsvUiDeviceTest.actualSelectionEditInvalidatesPreviewAndSystemSaveReadsBack=PASS; dev.fusion.shell.R21CsvUiDeviceTest.recreationLosesDraftAndCannotExportOldPreview=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/5543887408ee848b9d123269a41f037ee934ab1e/.github",
+    "start_line": 1428,
+    "start_column": null,
+    "end_line": 1428,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/5543887408ee848b9d123269a41f037ee934ab1e/.github",
+    "start_line": 1389,
+    "start_column": null,
+    "end_line": 1389,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\nExecute dev.fusion.shell.R21BoundaryDeviceTest.exactByteCapAndDenseEmptyTableCrossRealBinder: FAILED\njava.lang.IllegalStateException: java.util.concurrent.ExecutionException: java.lang.IllegalStateException: Worker died; op=4; since parent connection=4567ms; since parent send=4496ms\nat java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:372)\nat java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2072)\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\nat.pdf.sandbox.FormatLease.unavailable(FormatLease.kt:113)\nat dev.fusion.format.pdf.sandbox.FormatLease.access$unavailable(FormatLease.kt:22)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1.onServiceConnected$lambda$0(FormatLease.kt:94)\nat dev.fusion.format.pdf.sandbox.FormatLease$connection$1$$ExternalSyntheticLambda0.binderDied(D8$$SyntheticClass:0)\nat android.os.IBinder$DeathRecipient.binderDied(IBinder.java:319)\nat android.os.BinderProxy.sendDeathNotice(BinderProxy.java:704)\n\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792275665811.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights from a Build Scan (powered by Develocity).\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 7m 55s\n752 actionable tasks: 752 executed",
+    "raw_details": ""
+  }
+]

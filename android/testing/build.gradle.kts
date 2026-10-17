@@ -288,8 +288,9 @@ kotlin.sourceSets.named("r24") {
     kotlin.srcDir("../core/designsystem/src/main/kotlin")
     kotlin.srcDir("../core/windowing/src/main/kotlin")
     kotlin.srcDir("../format/pdf/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
     kotlin.srcDir("../core/model/src/main/kotlin")
-    kotlin.include("**/PilotPolicy.kt","**/OwnedPdfRequest.kt","**/Appearance.kt","**/ProfessionalPalettes.kt","**/Contrast.kt","**/WindowEngine.kt","**/DesktopCommandStream.kt","**/InputPresentation.kt","**/R24Checks.kt")
+    kotlin.include("**/CsvTable.kt","**/LiteralWorkbook.kt","**/PilotPolicy.kt","**/OwnedPdfRequest.kt","**/Appearance.kt","**/ProfessionalPalettes.kt","**/Contrast.kt","**/WindowEngine.kt","**/DesktopCommandStream.kt","**/InputPresentation.kt","**/R24Checks.kt")
 }
 tasks.register<JavaExec>("r24Contracts") {
     dependsOn(r24.classesTaskName);classpath=r24.runtimeClasspath;mainClass.set("dev.fusion.testing.R24Checks")

@@ -994,7 +994,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "a404d5f45a4c3949f931266f245ac3c40bd5a311d041a295457c7ff56be916e0"
+      "sha256": "898541782316410c0d149ddaf277ed41492859f752598b83245fc9bc2deebfc1"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt",
