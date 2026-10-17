@@ -1,5 +1,17 @@
 # R24 A–J engineering record
 
+## Authoritative final result
+
+Exact23e8868bf2d23a26f29f0fcc6a7dc592d429069b: full main39075701942 **133/0/0 SUCCESS**,
+desktop39075701917 **9/0/0**, PDF/boundary39075701922 **27/0/0**, CSV39075701921 **8/0/0**,
+privacyAPI34/39075701923 **18/0/0**, privacyAPI37/39075701918 **18/0/0**, all whole workflowsSUCCESS.
+Builds/JVM/contracts/lint succeeded. Parent main aggregate briefly lagged completed jobs; no successful
+receipt inferred until it actually finalized. Current complete host observed child exit0/162.067s,
+158 Python tests/65074 R24 assertions; final CLI reproduction-only correction described in results.
+Cumulative48/49 testable97.96%,11 existing production modules deepened22.45%,0/49 full-spec accepted.
+Historical 'pending'/failure/threshold checkpoints below do not override this exact result.
+
+
 2026-10-17. Work stays on `arena/f77cb2a6-osb`. **No full original-spec module or all-hardware/privacy acceptance.** Latest exact outcomes belong in R24-RESULTS.md once collected; intermediate checkpoints below are not a green current HEAD.
 
 ## Runtime honesty

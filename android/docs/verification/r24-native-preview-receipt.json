@@ -1,0 +1,23 @@
+{
+  "run": 39075701917,
+  "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+  "whole_conclusion": "success",
+  "scope": "Actual downsampled native test images, NOT expert AX/physical/whole-product acceptance",
+  "images": {
+    "r24-art-studio_graphite.png": {
+      "path": "/home/user/OSB/android/testing/build/r24/captures/23e8868bf2d23a26f29f0fcc6a7dc592d429069b/r24-art-studio_graphite.png",
+      "bytes": 52509,
+      "width": 280,
+      "height": 622,
+      "sha256": "43f830be7dde167fe6575edb7af9711b3d3b4fdf818059a0f51103d543f56aef"
+    },
+    "r24-business-office_blue.png": {
+      "path": "/home/user/OSB/android/testing/build/r24/captures/23e8868bf2d23a26f29f0fcc6a7dc592d429069b/r24-business-office_blue.png",
+      "bytes": 14615,
+      "width": 280,
+      "height": 622,
+      "sha256": "88da415da4710cdab29710310ef8109a14e71450091e4baf7f89ea7adb421fcc"
+    }
+  },
+  "incomplete_not_displayed": {}
+}

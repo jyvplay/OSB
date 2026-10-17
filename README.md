@@ -17,24 +17,25 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:48/49 (97.96%)](android/docs/MODULE-TESTABILITY.md).
 **0/49 specification-accepted modules (0%); not a production-ready beta.**
 
-## Latest R23 — real native work, overall regression still failed
+## Latest R24 — native professional desktop and safer input/documents
 
-Native-tested **`4bc7637`** on `arena/f77cb2a6-osb`: **privacy16/0/0**, **memory24/0/0**,
-**full main121/1/0 (FAILED)**. An existing R18 task Add workflow timed out with the IME visible
-and actual store still empty. No rerun-to-green or blanket stability/acceptance claim.
+**Office Blue / Studio Graphite**, independent **Business / Art** layouts in both **Settings and Control Panel**.
+Art has a centered own-app dock with real mouse/keyboard-focus magnification, running dots and left window controls;
+Business has a full-width bottom taskbar. No stock OS/third-party task authority is implied.
 
-- Native no-IME digit pad, whole-gesture/focus/lifecycle discard and observation-only exposure review.
-- Explicit owned readonly-memory worksheet APIs and real distinct-UID/wire/FileObserver/picker tests;
-  no named parser-input fallback in these APIs. Legacy regular-file APIs remain intentional.
-- **Real SDK37.0 / AGP9.1.1 / Gradle9.3.1 / target37** builds, JVM/contracts/lint passed.
-  Runtime testing is API34; Rabbit1 GUI/API37 runtime are unexecuted. All-gates migration acceptance is not met.
-- **4/49 existing production modules deepened (8.16%),0 fully completed**. Cumulative testability48/49
-  (97.96%) is NOT product completion. No Tails replacement, all-hardware logger defense or full browser/Office.
+Exact native-tested **23e8868**: desktop/input**9/0**, PDF/boundary**27/0**, CSV**8/0**, privacy**18/0 on API34 AND API37**.
+Main full workflow completed**133/0 SUCCESS**, including both build/JVM/contracts/lint jobs;
+earlier aggregate bookkeeping lag was retained, then the actual completed receipt collected. All earlier failures retained.
 
-[Current results, failures, APK sizes and exact next test](android/docs/R23-RESULTS.md)
-· [Laptop/no-Studio instructions](android/docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
-· [A–J evidence and alternatives](android/docs/R23-ENGINEERING.md)
-· [Privacy/hardware PRD](android/docs/R23-PRIVACY-PRD.md).
+Genuine isolated readonly PDF preview (<=2MiB/1024pages/320px) and real IME pinned Task/Notes actions are implemented.
+**48/49 substantial testable subsets (97.96%),0/49 fully original-spec accepted.** Eleven existing production modules
+deepened (22.45% inventory), not eleven completed modules. No full browser/Office/host-hardware anonymity/Tails claim.
+
+[Current results and actual native screenshots](android/docs/R24-RESULTS.md)
+· [Try on laptop / no-Studio scripts](android/docs/BUILD.md#r24-current-native-evaluation)
+· [A–J engineering](android/docs/R24-ENGINEERING.md)
+· [Privacy PRD](android/docs/R24-PRIVACY-PRD.md)
+· [Engine alternatives](android/docs/R24-ENGINE-PORTFOLIO.md).
 
 ## Historical R19
 

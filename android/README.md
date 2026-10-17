@@ -1,22 +1,21 @@
-# R23 — native SDK37.0 evaluation
+# R24 current native evaluation
 
-Open **this Android directory**, branch `arena/f77cb2a6-osb`, in Android Studio Rabbit1 with a
-maintained full JDK17 and SDK **platforms;android-37.0**. Live pins: AGP9.1.1/Gradle9.3.1/Kotlin2.2.21,
-min34/compile37/target37, documented temporary legacy Kotlin/DSL bridge. GUI itself unexecuted.
-Select **privacy/debug** for the offline scratchpad/no-IME pad, or **app/proDebug** for the shell/worksheet.
-No browser/TypeScript replacement was built. Use a disposable API34+ AVD and copied data.
+Use branch `arena/f77cb2a6-osb`; open **android/** in Rabbit1 with maintained full JDK17 + SDK **platforms;android-37.0**.
+Pins AGP9.1.1/Gradle9.3.1/Kotlin2.2.21, min34/compile37/target37. Rabbit1 GUI not run here; actual managed OS34 and37 were.
 
-**Exact4bc7637:** privacy16/0/0 and memory24/0/0 passed; main **121/1/0 FAILED** an old task Add workflow.
-Both main builds/JVM/contracts/lint and privacy build/lint passed; do not call all native gates green.
-No API37 runtime, physical/AX/host trust, Tails, major-browser/full-Office or release acceptance.
+New professional Office Blue/Studio Graphite palettes + Business/Art in both Settings and Control Panel;
+real dock magnification/indicators/own window actions, pinned Task/Notes actions, isolated readonly PDF preview,
+protected guest screen-off discard. Not Windows/macOS emulation or whole-host anonymity.
 
-**48/49 substantial runnable subsets (97.96%);0/49 fully accepted;49 unfinished.**
-Four existing production modules deepened in R23 (8.16% of inventory), not four completed modules.
-[Current results](docs/R23-RESULTS.md) · [Laptop/no-Studio commands](docs/BUILD.md#r23--current-session--no-ime-privacy-try-out)
-· [A–J record](docs/R23-ENGINEERING.md) · [Privacy PRD](docs/R23-PRIVACY-PRD.md)
-· [Reviewed source/test census](docs/MODULE-TESTABILITY.md).
+Exact23e8868 workflows: UI9/0, PDF/boundary27/0, CSV8/0, privacy18/0 on API34 and18/0 on API37 succeeded.
+Main full workflow completed133/0 SUCCESS with build/JVM/contracts/lint jobs successful. Earlier parent
+finalization lag was not inferred green; the actual completed receipt is now collected. Earlier failures retained, no rerun-to-green or larger deadlines.
 
-Old branch names/percentages/PR statements below are historical.
+**48/49 substantial runnable subsets97.96%;0/49 full-spec accepted;49 unfinished.** Eleven existing production modules
+deepened22.45%, not new completed modules. [Results/screenshots](docs/R24-RESULTS.md) · [Try/no-Studio](docs/BUILD.md#r24-current-native-evaluation)
+· [A–J](docs/R24-ENGINEERING.md) · [Privacy](docs/R24-PRIVACY-PRD.md).
+
+Old status below is historical.
 
 ---
 

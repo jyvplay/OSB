@@ -1,28 +1,21 @@
-# R23 current status — incomplete, overall regression FAILED
+# R24 current native evaluation
 
-Branch `arena/f77cb2a6-osb`; native-tested **4bc763700b63582107e5dbe979f9a185338f66f7**.
-[Current result and exact gaps](docs/R23-RESULTS.md) supersedes historical status below.
+Use branch `arena/f77cb2a6-osb`; open **android/** in Rabbit1 with maintained full JDK17 + SDK **platforms;android-37.0**.
+Pins AGP9.1.1/Gradle9.3.1/Kotlin2.2.21, min34/compile37/target37. Rabbit1 GUI not run here; actual managed OS34 and37 were.
 
-| Gate | Actual result |
-|---|---|
-| Privacy, real IME/focus/compositor/input/substrate |16PASS/0FAIL/0SKIP, run38871422549 SUCCESS|
-| Memory/wire/retained FD/CSV/XLSX picker |24PASS/0FAIL/0SKIP, run38871422568 SUCCESS|
-| Main full native regression |**121PASS/1FAIL/0SKIP**, run38871422566 FAILURE|
-| Both main APK builds, JVM/contracts/lint; privacy build/lint |SUCCESS with actual SDK37.0, AGP9.1.1/Gradle9.3.1|
-| SDK-free complete host lab |exit0/134.057s/149 Python methods;898161 R23 assertions/160000 words|
-| Original full-module acceptance |**0/49 (0%)**;49/49 unfinished|
+New professional Office Blue/Studio Graphite palettes + Business/Art in both Settings and Control Panel;
+real dock magnification/indicators/own window actions, pinned Task/Notes actions, isolated readonly PDF preview,
+protected guest screen-off discard. Not Windows/macOS emulation or whole-host anonymity.
 
-Main failure is existing R18 Task UI first Add: IME visible883px, disk revision0/empty tasks,10s saved-revision timeout.
-No root-cause or stability fix claimed, no successful rerun substituted. Earlier SDK37ACE main122 passed,
-but its privacy15/1 failed; a different candidate cannot authorize the current full gate.
+Exact23e8868 workflows: UI9/0, PDF/boundary27/0, CSV8/0, privacy18/0 on API34 and18/0 on API37 succeeded.
+Main full workflow completed133/0 SUCCESS with build/JVM/contracts/lint jobs successful. Earlier parent
+finalization lag was not inferred green; the actual completed receipt is now collected. Earlier failures retained, no rerun-to-green or larger deadlines.
 
-Actual compile/target37 is established (SDK37.0 metadata + compile anchor + installed target37); API37 runtime
-and Rabbit1 GUI remain unexecuted. Retained buildable configuration is experimental, not all-gates accepted.
-Separate automatic API34 profile experiment generated837 measured first-party rules; no meaningful speedup,
-physical/performance budget or current-source profile integration claimed.
+**48/49 substantial runnable subsets97.96%;0/49 full-spec accepted;49 unfinished.** Eleven existing production modules
+deepened22.45%, not new completed modules. [Results/screenshots](docs/R24-RESULTS.md) · [Try/no-Studio](docs/BUILD.md#r24-current-native-evaluation)
+· [A–J](docs/R24-ENGINEERING.md) · [Privacy](docs/R24-PRIVACY-PRD.md).
 
-**48/49 substantial source/test-paired subsets (97.96%),1 unestablished (LOK);4/49 existing production modules
-newly deepened (8.16%), not completion.** No hardware logger detection/global anonymity/Tails/full browser/Office.
+Old status below is historical.
 
 ---
 

@@ -1,0 +1,50 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/23e8868bf2d23a26f29f0fcc6a7dc592d429069b/.github",
+    "start_line": 11,
+    "start_column": null,
+    "end_line": 11,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/23e8868bf2d23a26f29f0fcc6a7dc592d429069b/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R24PdfDeviceTest.actualPickerIsolatedPreviewNextPageAndRecreationNeverWriteOriginalPdf=PASS; dev.fusion.shell.R24PdfDeviceTest.malformedOversizeWrongPageAndMemoryCarrierRefuseThenFreshPdfLeaseRecovers=PASS; dev.fusion.shell.R24PdfDeviceTest.genuinePdfRendersInDistinctUidWithReadonlyCapabilityAndBoundedRawPixels=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/23e8868bf2d23a26f29f0fcc6a7dc592d429069b/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R22PlatformDeviceTest.actualAndroidSaxPreservesNamespacesAndRefusesDtdAndBounds=PASS; dev.fusion.shell.R22PlatformDeviceTest.actualAndroidInflaterAcceptsPythonZipAndRejectsHeaderDisagreement=PASS; dev.fusion.shell.R22BoundaryDeviceTest.corruptAndOversizeXlsxRefuseThenFreshLeaseSucceeds=PASS; dev.fusion.shell.R22BoundaryDeviceTest.updatedXmlNodeLimitAndXincludeAreDataOnlyOnAndroid=PASS; dev.fusion.shell.R22BoundaryDeviceTest.literalAndIndependentSharedWorkbookRunInDistinctUid=PASS; dev.fusion.shell.R22BoundaryDeviceTest.suspensionBurnsPromptAndGrantUntilFreshDocument=PASS; dev.fusion.shell.R22BoundaryDeviceTest.maximumDenseLiteralRoundTripCrossesBinderWithNewXmlNodeBudget=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.cancelledRealImportPickerKeepsDraftButInvalidatesExport=PASS; dev.fusion.shell.R22XlsxUiDeviceTest.malformedRealProviderImportRetainsDraftAndCannotReusePriorExport=PASS; dev.fusion.shell.R23MemoryTransportDeviceTest.memoryCallsRunInDistinctUidAndLiveObserverSeesNoNamedOwnedInput=PASS; dev.fusion.shell.R23MemoryTransportDeviceTest.realWireRefusesWritableMismatchedAmbiguousUnsupportedAndEmptyPaddingInputs=PASS; dev.fusion.shell.R23MemoryTransportDeviceTest.exactCsvCapMalformedAndOversizeRefuseThenFreshMemoryLeaseSucceeds=PASS; dev.fusion.shell.FormatIsolationDeviceTest.distinctBindingsDoNotShareAnIsolatedProcess=PASS; dev.fusion.shell.FormatIsolationDeviceTest.privatePathUnavailableWhileExplicitCapabilityReadsSameFile=PASS; dev.fusion.shell.FormatIsolationDeviceTest.emptyInputIsNotMistakenForFailureAndLeasesAreSingleUse=PASS; dev.fusion.shell.FormatIsolationDeviceTest.idleWorkerIsKilledByActualWatchdog=PASS; dev.fusion.shell.FormatIsolationDeviceTest.actualLoopbackConnectionIsDeniedWithReachablePositiveControl=PASS; dev.fusion.shell.FormatIsolationDeviceTest.writablePipeOffsetAndOverBudgetInputsAreRefused=PASS; dev.fusion.shell.R21CsvUiDeviceTest.inFlightEditorMutationDiscardsStaleWorkerResult=PASS; dev.fusion.shell.R21CsvUiDeviceTest.actualSelectionEditInvalidatesPreviewAndSystemSaveReadsBack=PASS; dev.fusion.shell.R21CsvUiDeviceTest.recreationLosesDraftAndCannotExportOldPreview=PASS; dev.fusion.shell.R18OwnedSheetDeviceTest.actualUnlinkedReadOnlyDescriptorExecutesInChildAndLeavesNoNamedInput=PASS; dev.fusion.shell.R18OwnedSheetDeviceTest.refusedOwnedCycleCleansNamedInputAndClosesLease=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/23e8868bf2d23a26f29f0fcc6a7dc592d429069b/.github",
+    "start_line": 40,
+    "start_column": null,
+    "end_line": 40,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+    "raw_details": ""
+  }
+]

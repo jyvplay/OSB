@@ -18,3 +18,10 @@ class RunnerFreshnessTests(unittest.TestCase):
             runner.ROOT=old
             if compiler is None:os.environ.pop('KOTLINC',None)
             else:os.environ['KOTLINC']=compiler
+
+    def test_full_cli_matches_real_ci_manual_capture_exclusion(self):
+        # Command/source contract, NOT a locally executed Android run.
+        root=Path(__file__).resolve().parents[1]
+        option='-Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest'
+        self.assertIn(option,(root/'tools/r23_lab.py').read_text())
+        self.assertIn(option,(root.parent/'.github/workflows/android.yml').read_text())

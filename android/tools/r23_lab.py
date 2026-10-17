@@ -56,6 +56,7 @@ def main():
         else:
             command = [gradle, ':app:pixel6Api34ProDebugAndroidTest', '-Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true']
             if a.suite == 'memory': command.append('-Pandroid.testInstrumentationRunnerArguments.class=' + MEMORY_CLASSES)
+            else: command.append('-Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest') # Dedicated manual capture requires its own run/font arguments; same exclusion as actual CI.
             run(command)
 
 
