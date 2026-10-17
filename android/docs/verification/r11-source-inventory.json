@@ -220,7 +220,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "43c72ea2dc91b2456142d54cc95bf7b68119941b668c92d02f47efee3932e219"
+      "sha256": "34d0bc54cfb25012d23ca8b85e7e04a71173314a437ca364d9702ef85dd6f56b"
     },
     {
       "path": "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",

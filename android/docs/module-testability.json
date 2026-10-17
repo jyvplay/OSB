@@ -19,7 +19,7 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "43c72ea2dc91b2456142d54cc95bf7b68119941b668c92d02f47efee3932e219",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "34d0bc54cfb25012d23ca8b85e7e04a71173314a437ca364d9702ef85dd6f56b",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "fed11b46f1588cacc58899fd5279b421a3836ae40a0d9cfc34d0f6be2d430870",

@@ -174,7 +174,7 @@ class MainActivity : ComponentActivity() {
     private var pilotIntro by mutableStateOf(false)
     private var resetLayoutPrompt by mutableStateOf(false)
     private var treeUri by mutableStateOf<Uri?>(null)
-    private var message by mutableStateOf("Local-first. Nothing leaves this device unless you share it.")
+    private var message by mutableStateOf("Local first. No app telemetry configured; main shell, providers and host are not anonymous.")
     private val calculatorModel by lazy { ViewModelProvider(this)[CalculatorViewModel::class.java] }
     private val editorModel by lazy { ViewModelProvider(this)[EditorViewModel::class.java] }
     private var closingEditorWindow by mutableStateOf<Long?>(null)
