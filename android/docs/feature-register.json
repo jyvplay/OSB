@@ -4,7 +4,7 @@
     "feature": "Launcher pinned/all-apps/folders/recents/search",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Bounded immutable pin/reorder/search/catalog reconciliation kernel tested; caller-supplied targets only. Actual LauncherApps/Home/folders/widgets/recents and persistent host integration remain missing.",
     "tests": [
       "plan:T-SH-01",
@@ -21,12 +21,14 @@
     "feature": "Shelf pinned/running/badges/previews/edges",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
-    "route": "Pin versus running-target reconciliation tested without dropping temporarily absent pins; not yet wired to durable host shelf controls/badges/previews/edges.",
+    "sources": "owner:v2.0 §7.1",
+    "route": "R24 native own-app full-width Business taskbar / centered Art dock, real running indicators, bounded pointer/focus magnification and shared persistence. Full pinning/badges/previews/edge/third-party task integration and physical/AX matrix remain.",
     "tests": [
       "plan:T-SH-02",
       "jvm:SubsetChecks",
-      "android:SubsetDeviceTest"
+      "android:SubsetDeviceTest",
+      "android:R24AppearanceDeviceTest",
+      "host:R24Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -36,10 +38,11 @@
     "feature": "Top bar menus/status/clock/Beam indicator",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "sources": "owner:v2.0 §7.1",
+    "route": "R24 native active-app menu/title, real local clock, Find and Control Panel; only actual app/workspace/appearance actions. Full menus/status/Beam indicator and external-display acceptance remain.",
     "tests": [
-      "plan:T-SH-03"
+      "plan:T-SH-03",
+      "android:R24AppearanceDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -49,12 +52,13 @@
     "feature": "Desktop wallpaper/icons/folders/widgets/context menu/layouts",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "sources": "owner:v2.0 §7.1",
+    "route": "R24 Business/Art layout and native gradient/flat workspace with professional palettes. Desktop icons/folders/widget host/context-menu scope remains missing; no stock OS replacement.",
     "tests": [
-      "plan:T-SH-04"
+      "plan:T-SH-04",
+      "android:R24AppearanceDeviceTest"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -62,7 +66,7 @@
     "feature": "Widget host with suspend and crash isolation",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "plan:T-SH-05"
@@ -75,7 +79,7 @@
     "feature": "Hot corners/edge triggers/mouse gestures",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "plan:T-SH-06"
@@ -88,7 +92,7 @@
     "feature": "Local-first onboarding/permission explainers/config/license",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -102,7 +106,7 @@
     "feature": "Session restore after death/reboot",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Bounded versioned checksummed geometry snapshot; single-writer AtomicFile; legacy migration and explicit retained-byte reset. Room migration remains deferred.",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -116,7 +120,7 @@
     "feature": "Configurable mouse navigation buttons (alias IN-01 contract)",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "plan:T-SH-09"
@@ -131,7 +135,7 @@
     "feature": "BlackTop external compositor/phone blackout/foreground session",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "plan:T-SH-10"
@@ -146,7 +150,7 @@
     "feature": "Phone-as-touchpad/keyboard for own compositor",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.1",
+    "sources": "owner:v2.0 §7.1",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "plan:T-SH-11"
@@ -161,7 +165,7 @@
     "feature": "OEM throttle detector and guidance",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "plan:T-SH-12"
@@ -176,7 +180,7 @@
     "feature": "Move/resize/minimize/maximize/close/z/focus/title/menu compositor",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Own native H1 host; JVM snapshot ownership plus maximize/tile/restore geometry. Android UI/AX unrun.",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -193,7 +197,7 @@
     "feature": "Half/third/quarter/custom tiling/edge drag/named groups",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent.",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -210,7 +214,7 @@
     "feature": "Named/reorderable/per-window workspaces",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-03"
@@ -223,7 +227,7 @@
     "feature": "Overview grid/search/live own-window thumbnails",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-04"
@@ -236,7 +240,7 @@
     "feature": "App/window/workspace switcher modes",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -250,7 +254,7 @@
     "feature": "Probe-chosen S1-S4 external-app broker and display pinning",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-06"
@@ -265,7 +269,7 @@
     "feature": "Multi-display layouts/hotplug/open-where-acted",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-07"
@@ -280,7 +284,7 @@
     "feature": "Window rules and remembered geometry",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-08"
@@ -293,7 +297,7 @@
     "feature": "Keyboard-only move/resize/tile",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -309,7 +313,7 @@
     "feature": "Distraction-free focus mode",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-10"
@@ -322,7 +326,7 @@
     "feature": "Always-on-top mini windows",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-11"
@@ -335,7 +339,7 @@
     "feature": "Per-app density override with limits label",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-12"
@@ -350,7 +354,7 @@
     "feature": "Move windows across workspaces with drag/menu/keyboard",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Native workspace menu and Ctrl+Alt+Shift+1/2/3 wiring; pure reducer checked. Drag and native acceptance incomplete.",
     "tests": [
       "plan:T-WM-13",
@@ -364,7 +368,7 @@
     "feature": "Key-to-touch mapper overlay",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-14"
@@ -377,7 +381,7 @@
     "feature": "Fusion window-to-cast render-to-Surface",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.2",
+    "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-15"
@@ -392,7 +396,7 @@
     "feature": "Cursor confinement on external display",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-16"
@@ -407,7 +411,7 @@
     "feature": "Palette apps/commands/windows/settings/files/contacts/events/notes/targets",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Native module/window/workspace command palette wired. File/contact/event/note/target index integration remains absent.",
     "tests": [
       "plan:T-SR-01",
@@ -423,7 +427,7 @@
     "feature": "Index health/exclusions/rebuild/churn quarantine",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Local index/command registry; opt-in provider adapters",
     "tests": [
       "plan:T-SR-02"
@@ -438,7 +442,7 @@
     "feature": "Exact/fuzzy search then opt-in semantic embeddings",
     "tier": "A",
     "phase": "P1/P3",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Bounded local literal index only, locale-stable ranking and capacity refusal. No fuzzy/semantic engine.",
     "tests": [
       "plan:T-SR-03",
@@ -454,7 +458,7 @@
     "feature": "Opt-in web results below local results",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Local index/command registry; opt-in provider adapters",
     "tests": [
       "plan:T-SR-04"
@@ -467,7 +471,7 @@
     "feature": "In-folder scoped search",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Local index/command registry; opt-in provider adapters",
     "tests": [
       "plan:T-SR-05"
@@ -482,7 +486,7 @@
     "feature": "Palette calculator/conversion/notes/focus/settings/routines/casting",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Local index/command registry; opt-in provider adapters",
     "tests": [
       "plan:T-SR-06"
@@ -495,7 +499,7 @@
     "feature": "Opt-in external app content via AppSearch/AppFunctions",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Local index/command registry; opt-in provider adapters",
     "tests": [
       "plan:T-SR-07"
@@ -508,7 +512,7 @@
     "feature": "Search coverage and missing-result diagnostics",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.3",
+    "sources": "owner:v2.0 §7.3",
     "route": "Local index/command registry; opt-in provider adapters",
     "tests": [
       "plan:T-SR-08"
@@ -521,7 +525,7 @@
     "feature": "Tabbed file browser/list/grid/column/gallery/tree/tags/favorites/F2",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-01"
@@ -534,7 +538,7 @@
     "feature": "Dual pane/split and optional terminal pane",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-02"
@@ -547,7 +551,7 @@
     "feature": "Journaled copy/move/delete/rename/batch/conflicts/undo/pause/checksums",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "Backend mutation entry points explicitly unavailable until S6; unsafe legacy provider copy/delete paths removed. Full journal unimplemented.",
     "tests": [
       "plan:T-FM-03",
@@ -563,7 +567,7 @@
     "feature": "Isolated Forge Peek for image/PDF/text/media/archive/Office/PSD/HEIC",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-04"
@@ -576,7 +580,7 @@
     "feature": "Archive browse/read/write/encrypted ZIP/slip-bomb guards",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-05"
@@ -589,7 +593,7 @@
     "feature": "Concise/full/custom context menus/terminal/path/cast",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-06"
@@ -602,7 +606,7 @@
     "feature": "Storage overview/cleanup/duplicates/large files",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-07"
@@ -615,7 +619,7 @@
     "feature": "USB/SD/SMB/SFTP/WebDAV/FTP and reconnect diagnostics",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-08"
@@ -628,7 +632,7 @@
     "feature": "Cloud/placeholder state badges",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-09"
@@ -641,7 +645,7 @@
     "feature": "DocumentsProvider for network/cloud/archive",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-10"
@@ -654,7 +658,7 @@
     "feature": "Trash with origin/date/size/retention",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "Legacy receipt inspection only, bounded and corruption-visible; trash/restore/purge backend refuses pending S6.",
     "tests": [
       "plan:T-FM-11",
@@ -670,7 +674,7 @@
     "feature": "Android data/obb via Shizuku/ADB",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-12"
@@ -683,7 +687,7 @@
     "feature": "New-file templates and context-menu New",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-13"
@@ -696,7 +700,7 @@
     "feature": "Cross-window/app ClipData drag-drop with URI grants",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-14"
@@ -709,7 +713,7 @@
     "feature": "Selection count/size/batch toolbar",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-15"
@@ -722,7 +726,7 @@
     "feature": "Quick filter bar",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-16"
@@ -735,7 +739,7 @@
     "feature": "Cached background folder sizes",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.4",
+    "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-17"
@@ -748,8 +752,8 @@
     "feature": "SAF session-copy safe-save/reopen verification/Save a Copy fallback",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
-    "route": "Strict UTF-8 session; durable picker snapshot; new SAF copy only; closed-output exact readback; never claims atomic replacement; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "sources": "owner:v2.1 §1.3/§4",
+    "route": "Strict UTF-8 session; durable picker snapshot; new SAF copy only; closed-output exact readback; never claims atomic replacement; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
     "tests": [
       "core:documents/DocumentSafetyTest",
       "plan:SAF-provider-and-editor-device-matrix",
@@ -765,7 +769,7 @@
     "feature": "Grouped alerts/history/snooze/reply/rules/pin/search/batch dismiss",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.5",
+    "sources": "owner:v2.0 §7.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
       "plan:T-NC-01"
@@ -778,7 +782,7 @@
     "feature": "Focus modes by workspace/time/app/display with reason",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.5",
+    "sources": "owner:v2.0 §7.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
       "plan:T-NC-02"
@@ -791,7 +795,7 @@
     "feature": "Quick panel audio/brightness/media/DND/light/battery/Beam/radio panels",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.5",
+    "sources": "owner:v2.0 §7.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
       "plan:T-NC-03"
@@ -804,7 +808,7 @@
     "feature": "Notification diagnostics",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.5",
+    "sources": "owner:v2.0 §7.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
       "plan:T-NC-04"
@@ -817,7 +821,7 @@
     "feature": "Observable own-operation progress/live updates",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.5",
+    "sources": "owner:v2.0 §7.5",
     "route": "Capture foreground Stop action and finalization status; universal long-operation service layer still pending",
     "tests": [
       "plan:T-NC-05"
@@ -830,7 +834,7 @@
     "feature": "Volume/brightness/layout OSD",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.5",
+    "sources": "owner:v2.0 §7.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
       "plan:T-NC-06"
@@ -843,12 +847,14 @@
     "feature": "Settings graph IDs/aliases/lock reasons/history/undo/export/import",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.6",
-    "route": "Bounded canonical settings snapshot export/inspection and locale-stable alias search; Android SharedPreferences adapter tested. Inspection does not apply settings; DataStore/migrations/atomic import/full history remain missing.",
+    "sources": "owner:v2.0 §7.6",
+    "route": "R24 typed professional palette/layout/magnification values and one observable SharedPreferences graph drive Settings and Control Panel. Bounded canonical snapshot inspection still never applies values. Full DataStore/migration/history/atomic import/lock reasons remain.",
     "tests": [
       "plan:T-ST-01",
       "jvm:SubsetChecks",
-      "android:SubsetDeviceTest"
+      "android:SubsetDeviceTest",
+      "host:R24Checks",
+      "android:R24AppearanceDeviceTest"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -858,7 +864,7 @@
     "feature": "Curated system-settings deep links per OEM",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-02"
@@ -871,7 +877,7 @@
     "feature": "Default-apps guide",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-03"
@@ -884,7 +890,7 @@
     "feature": "Capabilities/fingerprint/thermal/memory/codec/redacted diagnostics",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-04"
@@ -897,7 +903,7 @@
     "feature": "Theme/dynamic color/accent/density/motion/font scale",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Window geometry density only (minimum size/title controls), not full theme/font/spacing profiles",
     "tests": [
       "plan:T-ST-05"
@@ -910,7 +916,7 @@
     "feature": "Shortcut presets/conflict detection/per-device profiles",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-06"
@@ -923,7 +929,7 @@
     "feature": "External-display UI scale independent of system",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-07"
@@ -936,7 +942,7 @@
     "feature": "RestrictionsManager managed configuration",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-08"
@@ -949,7 +955,7 @@
     "feature": "Phone/desktop per-context profiles",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.6",
+    "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-09"
@@ -962,7 +968,7 @@
     "feature": "App info hub",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.7",
+    "sources": "owner:v2.0 §7.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
       "plan:T-AP-01"
@@ -975,7 +981,7 @@
     "feature": "Own-data uninstall assistant",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.7",
+    "sources": "owner:v2.0 §7.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
       "plan:T-AP-02"
@@ -988,7 +994,7 @@
     "feature": "Pro APK install manager",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.7",
+    "sources": "owner:v2.0 §7.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
       "plan:T-AP-03"
@@ -1001,7 +1007,7 @@
     "feature": "App update links/inventory",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.7",
+    "sources": "owner:v2.0 §7.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
       "plan:T-AP-04"
@@ -1014,7 +1020,7 @@
     "feature": "Own background/startup inventory; Shizuku for others",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.7",
+    "sources": "owner:v2.0 §7.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
       "plan:T-AP-05"
@@ -1027,7 +1033,7 @@
     "feature": "Terminal emulator tabs/profiles/true color/mouse/search/safe paste",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.8",
+    "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-01"
@@ -1042,7 +1048,7 @@
     "feature": "Local shell plus PTY",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.8",
+    "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-02"
@@ -1057,7 +1063,7 @@
     "feature": "SSH/SFTP/USB serial",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.8",
+    "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-03"
@@ -1070,7 +1076,7 @@
     "feature": "Read-only 16KB-compatible Linux proot payload",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.8",
+    "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-04"
@@ -1085,7 +1091,7 @@
     "feature": "Non-protected AVF VM where available",
     "tier": "C",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.8",
+    "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-05"
@@ -1098,7 +1104,7 @@
     "feature": "Pro wireless-debugging helper",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.8",
+    "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-06"
@@ -1111,7 +1117,7 @@
     "feature": "Text/Markdown editor encodings/large files/autosave/diff/regex",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Bounded8-draft encoding-preserving native editor, undo/literal tools, current-source line diff and correlated Save-a-Copy/recovery. Host contracts and selected API34 UI cases executed; streaming large files, regex, autosave/provider/process-death/IME/AX acceptance incomplete.",
     "tests": [
       "core:documents/DocumentSafetyTest",
@@ -1130,7 +1136,7 @@
     "feature": "Local Markdown notes/attachments/backlinks/OCR/export",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Real bounded/revision-checked Markdown, saved-note backlinks, trash/restore and separate strict local draft recovery with coalesced single-writer checkpoints. Native stale/corrupt/recreated-owner/writer-process-death/queue and cross-owner tests passed at2c2b5bc; see R12 exact limits. Attachments/OCR/import/export, version history, full Markdown and physical/AX acceptance remain incomplete.",
     "tests": [
       "plan:T-PR-02",
@@ -1148,7 +1154,7 @@
     "feature": "Tasks/reminders without exact alarms",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-03"
@@ -1161,7 +1167,7 @@
     "feature": "CalendarContract calendar",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-04"
@@ -1174,7 +1180,7 @@
     "feature": "ContactsContract/API37 picker",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-05"
@@ -1187,7 +1193,7 @@
     "feature": "Mail handoff/triage then native IMAP",
     "tier": "A",
     "phase": "P2/P4",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-06"
@@ -1200,7 +1206,7 @@
     "feature": "Desktop-class browser (parent requirement)",
     "tier": "A",
     "phase": "P2/P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "New bounded immutable browser session metadata/codec, executed host contracts only; old in-process BrowserScreen blocked and not connected. Renderer/profile/process/native UI integrations absent; S29/S30 unpassed.",
     "tests": [
       "plan:T-PR-07"
@@ -1216,7 +1222,7 @@
     "feature": "Visible horizontal browser tab strip",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07a"
@@ -1229,7 +1235,7 @@
     "feature": "Vertical tab sidebar/reorder/groups/pins/search",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07b"
@@ -1242,7 +1248,7 @@
     "feature": "Named/colored/collapsible tab groups",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07c"
@@ -1255,7 +1261,7 @@
     "feature": "Horizontal split tab view with independent navigation",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07d"
@@ -1270,7 +1276,7 @@
     "feature": "Vertical split tab view",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07e"
@@ -1285,7 +1291,7 @@
     "feature": "Pinned browser tabs",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07f"
@@ -1298,7 +1304,7 @@
     "feature": "Sleeping tabs and restore by URL",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07g"
@@ -1313,7 +1319,7 @@
     "feature": "Desktop UA on display/keyboard with per-site override",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07h"
@@ -1326,7 +1332,7 @@
     "feature": "Full browser keyboard shortcuts",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07i"
@@ -1339,7 +1345,7 @@
     "feature": "Tab drag-out/drag-in between compositor windows",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07j"
@@ -1352,7 +1358,7 @@
     "feature": "Reader mode",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07k"
@@ -1365,7 +1371,7 @@
     "feature": "Per-site camera/mic/location/notification/popup/JS permissions",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07l"
@@ -1378,7 +1384,7 @@
     "feature": "Downloads integrated with Files",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07m"
@@ -1391,7 +1397,7 @@
     "feature": "Find in page",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07n"
@@ -1404,7 +1410,7 @@
     "feature": "Separate-data-directory browser profiles",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07o"
@@ -1417,7 +1423,7 @@
     "feature": "License-verified content/tracker filtering with per-site disable",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07p"
@@ -1432,7 +1438,7 @@
     "feature": "Batch tab close/bookmark/select/group/window/send actions",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07q"
@@ -1445,7 +1451,7 @@
     "feature": "Named browser sessions restoring windows/tabs/groups/splits",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07r"
@@ -1458,7 +1464,7 @@
     "feature": "Page-media cast to Beam",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07s"
@@ -1471,7 +1477,7 @@
     "feature": "PDF/image viewer annotations/signing",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-08"
@@ -1484,7 +1490,7 @@
     "feature": "Basic/scientific/programmer/unit calculator with history",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted.",
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
@@ -1499,7 +1505,7 @@
     "feature": "Clock/timers/inexact alarms",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-10"
@@ -1512,7 +1518,7 @@
     "feature": "Native Office via Forge with optional external open",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-11"
@@ -1527,7 +1533,7 @@
     "feature": "Optional IME global clipboard; in-module history/sensitive/expiry/remap",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-12"
@@ -1542,7 +1548,7 @@
     "feature": "Desktop sticky notes",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.9",
+    "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-13"
@@ -1555,7 +1561,7 @@
     "feature": "LOKit Office open/render/edit/save",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-01"
@@ -1570,7 +1576,7 @@
     "feature": "Shaded POI headless Office read/write/convert/extract",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-02"
@@ -1585,10 +1591,12 @@
     "feature": "PDF render/annotate/sign/export",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "sources": "owner:v2.0 §7.10",
+    "route": "R24 separate consent-gated readonly PDF preview: actual platform renderer only in isolated child with readonly seekable FD, source≤2MiB/pages≤1024/preview≤320px per side, bounded raw ARGB parent. Full PDF editing/signing/export/fidelity and full Office gates remain blocked.",
     "tests": [
-      "plan:T-FF-03"
+      "plan:T-FF-03",
+      "android:R24PdfDeviceTest",
+      "host:R24Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1598,7 +1606,7 @@
     "feature": "PDF-compatible AI; non-PDF AI boundary",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-04"
@@ -1611,7 +1619,7 @@
     "feature": "Raster open/edit/export",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Decoded ARGB integer crop/rotation/flip kernel and actual Android software Bitmap adapters tested; no complete image editor/format pipeline/fidelity/export acceptance.",
     "tests": [
       "plan:T-FF-05",
@@ -1626,7 +1634,7 @@
     "feature": "HEIC/HEIF/AVIF decode via platform/audited fallback",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-06"
@@ -1641,7 +1649,7 @@
     "feature": "Platform hardware HEIC encode/export",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-07"
@@ -1656,7 +1664,7 @@
     "feature": "PSD/PSB layers/composite/export",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-08"
@@ -1671,7 +1679,7 @@
     "feature": "SVG render/export and text/Markdown/CSV/RTF edit; vector editor later",
     "tier": "A",
     "phase": "P2/P3",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Bounded strict CSV and UTF8 kernels tested including multiline/empty-cell preservation; existing text/Markdown subsets only. No complete SVG/RTF/edit/export Forge route.",
     "tests": [
       "plan:T-FF-09",
@@ -1686,7 +1694,7 @@
     "feature": "EPUB reader",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-10"
@@ -1699,7 +1707,7 @@
     "feature": "Save-As/export fidelity warning",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-11"
@@ -1712,7 +1720,7 @@
     "feature": "Isolated format sandbox/watchdogs/bomb guards",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Real isolated UID/read-only FD opaque-digest precursor:5/5 elementary API34 boundary cases passed at1ee1589, including exact-path/inode and positive-FD controls after ENOENT counterexample. Full parser sandbox, parent watchdog/RSS/CPU/socket/output guards absent; no S-gate promoted.",
     "tests": [
       "plan:T-FF-12"
@@ -1725,7 +1733,7 @@
     "feature": "Thumbnail/metadata service",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.10",
+    "sources": "owner:v2.0 §7.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-13"
@@ -1738,7 +1746,7 @@
     "feature": "formats.yaml engine/grade/boundary registry",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-14"
@@ -1751,8 +1759,8 @@
     "feature": "Open/dirty/save/recovery/close-confirm document lifecycle",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
-    "route": "Activity-scoped text sessions; bounded versioned AtomicFile recovery; tabs; discard confirmation; other Forge formats deferred; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "sources": "owner:v2.1 §1.3/§4",
+    "route": "Activity-scoped text sessions; bounded versioned AtomicFile recovery; tabs; discard confirmation; other Forge formats deferred; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
     "tests": [
       "core:documents/DocumentSafetyTest",
       "plan:SAF-provider-and-editor-device-matrix",
@@ -1768,7 +1776,7 @@
     "feature": "Conversion/loss report before lossy save",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-16"
@@ -1781,7 +1789,7 @@
     "feature": "Macros disabled by default",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-17"
@@ -1794,7 +1802,7 @@
     "feature": "Capture recording/audio/annotation/blur/redact/OCR/commit-first",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-01"
@@ -1809,7 +1817,7 @@
     "feature": "Hardware media player/subtitles/PiP/gapless/Beam",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "Real bounded read-only UTF8 SRT picker/inspection UI with millisecond half-open/overlap lookup and canonical export kernel. No native player, synchronized subtitles, PiP/gapless or Beam acceptance.",
     "tests": [
       "plan:T-MD-02",
@@ -1824,7 +1832,7 @@
     "feature": "Photos with non-destructive edits/HEIC",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-03"
@@ -1837,7 +1845,7 @@
     "feature": "Voice recorder",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-04"
@@ -1850,7 +1858,7 @@
     "feature": "Camera/scan/QR hooks",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-05"
@@ -1863,7 +1871,7 @@
     "feature": "Audio devices panel",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-06"
@@ -1876,7 +1884,7 @@
     "feature": "API37 color picker",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-07"
@@ -1889,7 +1897,7 @@
     "feature": "Hardware video trim/export",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-08"
@@ -1902,7 +1910,7 @@
     "feature": "Own-module audio focus/volume dashboard",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.11",
+    "sources": "owner:v2.0 §7.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
       "plan:T-MD-09"
@@ -1915,7 +1923,7 @@
     "feature": "Passwords/passkeys/TOTP/notes/provider/autofill/StrongBox/import/export",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-01"
@@ -1928,7 +1936,7 @@
     "feature": "Module app lock",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-02"
@@ -1941,7 +1949,7 @@
     "feature": "Permission/special-access audit",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-03"
@@ -1954,7 +1962,7 @@
     "feature": "Pro VpnService per-app firewall/DNS filter",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-04"
@@ -1967,7 +1975,7 @@
     "feature": "Privacy dashboard",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-05"
@@ -1980,7 +1988,7 @@
     "feature": "FLAG_SECURE per window",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-06"
@@ -1993,7 +2001,7 @@
     "feature": "Tink encrypted containers",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-07"
@@ -2006,7 +2014,7 @@
     "feature": "Telemetry off/local logs/redacted export",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-08"
@@ -2019,7 +2027,7 @@
     "feature": "Cast excludes Vault/secure surfaces; red indicator; stop on lock",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.12",
+    "sources": "owner:v2.0 §7.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
       "plan:T-SC-09"
@@ -2032,7 +2040,7 @@
     "feature": "Timeline encrypted incremental backup/remote targets/restore browser",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.13",
+    "sources": "owner:v2.0 §7.13",
     "route": "New bounded noncompressed FBC1 content codec validated before returning entries; not encryption, legacy migration, restore publication or full backup. Legacy restore remains blocked by S7.",
     "tests": [
       "plan:T-BK-01",
@@ -2049,7 +2057,7 @@
     "feature": "Folder sync with conflict inbox",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.13",
+    "sources": "owner:v2.0 §7.13",
     "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
     "tests": [
       "plan:T-BK-02"
@@ -2062,7 +2070,7 @@
     "feature": "Configuration export/import",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.13",
+    "sources": "owner:v2.0 §7.13",
     "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
     "tests": [
       "plan:T-BK-03"
@@ -2075,7 +2083,7 @@
     "feature": "New-device checklist",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.13",
+    "sources": "owner:v2.0 §7.13",
     "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
     "tests": [
       "plan:T-BK-04"
@@ -2088,7 +2096,7 @@
     "feature": "Backup health and monthly sampled restore drill",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.13",
+    "sources": "owner:v2.0 §7.13",
     "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
     "tests": [
       "plan:T-BK-05"
@@ -2103,7 +2111,7 @@
     "feature": "User-held recovery keys/no default cloud escrow",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.13",
+    "sources": "owner:v2.0 §7.13",
     "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
     "tests": [
       "plan:T-BK-06"
@@ -2118,7 +2126,7 @@
     "feature": "Share-sheet send/receive and Quick Share",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.14",
+    "sources": "owner:v2.0 §7.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-01"
@@ -2131,7 +2139,7 @@
     "feature": "Clean-room KDE-Connect-protocol PC bridge",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.14",
+    "sources": "owner:v2.0 §7.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-02"
@@ -2144,7 +2152,7 @@
     "feature": "API37 Handoff/Continue-On",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.14",
+    "sources": "owner:v2.0 §7.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-03"
@@ -2157,7 +2165,7 @@
     "feature": "Cast/present superseded by CA family",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.14",
+    "sources": "owner:v2.0 §7.14",
     "route": "CA-01 through CA-15; not an additional transport",
     "tests": [
       "plan:T-CT-04"
@@ -2170,7 +2178,7 @@
     "feature": "RDP/VNC/SSH remote desktop clients",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.14",
+    "sources": "owner:v2.0 §7.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-05"
@@ -2183,7 +2191,7 @@
     "feature": "Peripheral manager",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.14",
+    "sources": "owner:v2.0 §7.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-06"
@@ -2196,7 +2204,7 @@
     "feature": "RAOP/AirPlay2 audio sender/pairing/sync/volume/metadata",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-01"
@@ -2211,7 +2219,7 @@
     "feature": "AirPlay URL video/pairing/Range server/HW transcode/scrub",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-02"
@@ -2226,7 +2234,7 @@
     "feature": "AirPlay photo/slideshow",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-03"
@@ -2239,7 +2247,7 @@
     "feature": "Pro legal-gated AirPlay screen mirror/FairPlay client",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-04"
@@ -2254,7 +2262,7 @@
     "feature": "Beam discovery/source/route chooser/indicator/quality/latency/audio routes",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15; owner:v2.1 \u00a71.3",
+    "sources": "owner:v2.0 §7.15; owner:v2.1 §1.3",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-05"
@@ -2267,7 +2275,7 @@
     "feature": "Separate GPL APK AirPlay audio receiver",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-06"
@@ -2282,7 +2290,7 @@
     "feature": "Separate GPL APK AirPlay mirroring/video receiver",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-07"
@@ -2297,7 +2305,7 @@
     "feature": "Cast SDK play/own castv2 pro; files/URLs/queue/scrub/volume",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-08"
@@ -2312,7 +2320,7 @@
     "feature": "Custom Cast web receiver plus WebRTC screen/window mirror",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-09"
@@ -2327,7 +2335,7 @@
     "feature": "Own DLNA SSDP/AVTransport/RenderingControl sender and renderer",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-10"
@@ -2340,7 +2348,7 @@
     "feature": "Together sync/controls/chat/presence/QR; Syncplay/own-copy mode",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.15; owner:v2.1 \u00a71.3",
+    "sources": "owner:v2.0 §7.15; owner:v2.1 §1.3",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-11"
@@ -2355,7 +2363,7 @@
     "feature": "Miracast settings panel and active-session adaptation",
     "tier": "C",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-12"
@@ -2368,7 +2376,7 @@
     "feature": "Measured-link/thermal/receiver-aware cast quality ladder",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-13"
@@ -2383,7 +2391,7 @@
     "feature": "Cast exclusions/lock-critical stop/trust/no default relay",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.15",
+    "sources": "owner:v2.0 §7.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-14"
@@ -2396,7 +2404,7 @@
     "feature": "Shared-clock multi-receiver synchronized casting",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "sources": "owner:v2.1 §1.3/§4",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-15"
@@ -2411,7 +2419,7 @@
     "feature": "Semantics/panes and TalkBack/Switch/Voice release gate",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-01"
@@ -2426,7 +2434,7 @@
     "feature": "Keyboard-complete shell",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-02"
@@ -2441,7 +2449,7 @@
     "feature": "Font scale/contrast/reduced motion adaptation",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-03"
@@ -2454,7 +2462,7 @@
     "feature": "Pointer/touch/touchpad/focus rings",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-04"
@@ -2469,7 +2477,7 @@
     "feature": "Fusion IME input remap",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-05"
@@ -2484,7 +2492,7 @@
     "feature": "Voice palette input",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-06"
@@ -2497,7 +2505,7 @@
     "feature": "Player captions",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-07"
@@ -2510,7 +2518,7 @@
     "feature": "Accessibility test automation",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.16",
+    "sources": "owner:v2.0 §7.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-08"
@@ -2525,7 +2533,7 @@
     "feature": "Routines triggers/actions/dry-run/audit/per-action permissions",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.17",
+    "sources": "owner:v2.0 §7.17",
     "route": "Own local automation registry with dry-run/permission/audit boundaries",
     "tests": [
       "plan:T-AU-01"
@@ -2538,7 +2546,7 @@
     "feature": "Workspace presets",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.17",
+    "sources": "owner:v2.0 §7.17",
     "route": "Own local automation registry with dry-run/permission/audit boundaries",
     "tests": [
       "plan:T-AU-02"
@@ -2551,7 +2559,7 @@
     "feature": "AppFunctions exposure",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.17",
+    "sources": "owner:v2.0 §7.17",
     "route": "Own local automation registry with dry-run/permission/audit boundaries",
     "tests": [
       "plan:T-AU-03"
@@ -2564,7 +2572,7 @@
     "feature": "Opt-in local assistant/visible tool calls/memory/no idle process",
     "tier": "A/B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.17",
+    "sources": "owner:v2.0 §7.17",
     "route": "Own local automation registry with dry-run/permission/audit boundaries",
     "tests": [
       "plan:T-AU-04"
@@ -2577,7 +2585,7 @@
     "feature": "Third-party automation Intent API",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.17",
+    "sources": "owner:v2.0 §7.17",
     "route": "Own local automation registry with dry-run/permission/audit boundaries",
     "tests": [
       "plan:T-AU-05"
@@ -2590,7 +2598,7 @@
     "feature": "Five-state thermal governor for index/effects/backup/cast",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.18; owner:v2.1 \u00a71.3",
+    "sources": "owner:v2.0 §7.18; owner:v2.1 §1.3",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -2604,7 +2612,7 @@
     "feature": "ADPF then sustained-performance then own-governor fallback",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.18; owner:v2.1 \u00a71.3",
+    "sources": "owner:v2.0 §7.18; owner:v2.1 §1.3",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-02"
@@ -2617,7 +2625,7 @@
     "feature": "Interaction/idle refresh policy",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.18",
+    "sources": "owner:v2.0 §7.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-03"
@@ -2630,7 +2638,7 @@
     "feature": "Own-process PSS/CPU/wakeups/IO/net/exit/memory-limiter monitor",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.18",
+    "sources": "owner:v2.0 §7.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -2644,7 +2652,7 @@
     "feature": "OEM game overlay/cooler coexistence spike",
     "tier": "C",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.18",
+    "sources": "owner:v2.0 §7.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-05"
@@ -2657,7 +2665,7 @@
     "feature": "Charging/battery/metered-aware work",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.18",
+    "sources": "owner:v2.0 §7.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-06"
@@ -2670,7 +2678,7 @@
     "feature": "Low-RAM mode",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 \u00a77.18",
+    "sources": "owner:v2.0 §7.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-07"
@@ -2685,7 +2693,7 @@
     "feature": "Hardware codec/NPU/Vulkan report and routing",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.18",
+    "sources": "owner:v2.0 §7.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-08"
@@ -2698,7 +2706,7 @@
     "feature": "Separate Wine/Box64 APK with user installers",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 \u00a77.19",
+    "sources": "owner:v2.0 §7.19",
     "route": "Optional compatibility boundary, never part of main APK",
     "tests": [
       "plan:T-CM-01"
@@ -2711,7 +2719,7 @@
     "feature": "Web-app windows",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 \u00a77.19",
+    "sources": "owner:v2.0 §7.19",
     "route": "Optional compatibility boundary, never part of main APK",
     "tests": [
       "plan:T-CM-02"
@@ -2723,8 +2731,8 @@
     "id": "CM-03",
     "feature": "No macOS application execution",
     "tier": "X",
-    "phase": "\u2014",
-    "sources": "owner:v2.0 \u00a77.19",
+    "phase": "—",
+    "sources": "owner:v2.0 §7.19",
     "route": "Optional compatibility boundary, never part of main APK",
     "tests": [
       "plan:T-CM-03"
@@ -2737,7 +2745,7 @@
     "feature": "One-time purchase $19.99 and optional $14.99 Pro pack",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.20; owner:v2.1 \u00a71.3",
+    "sources": "owner:v2.0 §7.20; owner:v2.1 §1.3",
     "route": "Play Billing play; signed offline-tolerant own entitlements pro",
     "tests": [
       "plan:T-BL-01"
@@ -2750,7 +2758,7 @@
     "feature": "Signed Keystore-bound offline/grace entitlement cache",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.20",
+    "sources": "owner:v2.0 §7.20",
     "route": "Play Billing play; signed offline-tolerant own entitlements pro",
     "tests": [
       "plan:T-BL-02"
@@ -2763,7 +2771,7 @@
     "feature": "Pro Ed25519 license keys/optional device binding/transfers",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.20",
+    "sources": "owner:v2.0 §7.20",
     "route": "Play Billing play; signed offline-tolerant own entitlements pro",
     "tests": [
       "plan:T-BL-03"
@@ -2776,7 +2784,7 @@
     "feature": "14-day full trial then read-only Files/Find and nag-free state",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.20",
+    "sources": "owner:v2.0 §7.20",
     "route": "Play Billing play; signed offline-tolerant own entitlements pro",
     "tests": [
       "plan:T-BL-04"
@@ -2789,7 +2797,7 @@
     "feature": "Refund-safe revocation/no user-data wipe",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 \u00a77.20",
+    "sources": "owner:v2.0 §7.20",
     "route": "Play Billing play; signed offline-tolerant own entitlements pro",
     "tests": [
       "plan:T-BL-05"
@@ -2802,7 +2810,7 @@
     "feature": "Mouse press-release/scroll mapping/hover/Learn my mouse",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 \u03943",
+    "sources": "owner:v2.1 Δ3",
     "route": "Compose desktopMouse/per-device learning; own input routing only",
     "tests": [
       "plan:T-IN-01"
@@ -2817,7 +2825,7 @@
     "feature": "Game-controller pointer mode",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 \u03943",
+    "sources": "owner:v2.1 Δ3",
     "route": "Compose desktopMouse/per-device learning; own input routing only",
     "tests": [
       "plan:T-IN-07"
@@ -2830,7 +2838,7 @@
     "feature": "External-keyboard IME switcher",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u03943",
+    "sources": "owner:v2.1 Δ3",
     "route": "Compose desktopMouse/per-device learning; own input routing only",
     "tests": [
       "plan:T-IN-08"
@@ -2843,7 +2851,7 @@
     "feature": "Segmented background blur/replace/remove",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-01"
@@ -2858,7 +2866,7 @@
     "feature": "Smoothed auto-frame/multi-person crop",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-02"
@@ -2873,7 +2881,7 @@
     "feature": "Gaze-aware framing; eye-contact redirect research only",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-03"
@@ -2886,7 +2894,7 @@
     "feature": "Video denoise/low-light shaders",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-04"
@@ -2901,7 +2909,7 @@
     "feature": "License-verified FSR1 upscale",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-05"
@@ -2914,7 +2922,7 @@
     "feature": "Studio face-normal virtual relight",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-06"
@@ -2929,7 +2937,7 @@
     "feature": "WebRTC APM/RNNoise microphone noise removal",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-07"
@@ -2944,7 +2952,7 @@
     "feature": "AEC3 room echo removal",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-08"
@@ -2959,7 +2967,7 @@
     "feature": "Vignette/LUT/color/.cube import",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-09"
@@ -2972,7 +2980,7 @@
     "feature": "Hand-landmark gesture actions",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-10"
@@ -2985,7 +2993,7 @@
     "feature": "Procedural/parallax/user-image scenes",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-11"
@@ -2998,7 +3006,7 @@
     "feature": "License/RAM-gated on-device generative scenes",
     "tier": "A/B",
     "phase": "P4",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-12"
@@ -3013,7 +3021,7 @@
     "feature": "Presenter person/slides/screen/pointer/ink composition",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-13"
@@ -3028,7 +3036,7 @@
     "feature": "Lens presets/hotkeys/per-app memory",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-14"
@@ -3041,7 +3049,7 @@
     "feature": "Thermal/quality ladder",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-15"
@@ -3056,7 +3064,7 @@
     "feature": "Fusion Meet owned WebRTC processed tracks/screen share",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-20"
@@ -3071,7 +3079,7 @@
     "feature": "Browser per-site processed camera/mic/display route",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-21"
@@ -3087,7 +3095,7 @@
     "feature": "PC companion webcam route",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-22"
@@ -3102,7 +3110,7 @@
     "feature": "Lens recording/RTMP/SRT route",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 \u00a72.3",
+    "sources": "owner:v2.1 §2.3",
     "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
     "tests": [
       "plan:T-LN-23"
@@ -3117,7 +3125,7 @@
     "feature": "BlueBubbles-compatible client requires user-owned Mac and Apple ID",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a73",
+    "sources": "owner:v2.1 §3",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-01"
@@ -3129,8 +3137,8 @@
     "id": "MS-02",
     "feature": "No on-phone no-Mac iMessage/rustpush/private FairPlay certificates",
     "tier": "X",
-    "phase": "\u2014",
-    "sources": "owner:v2.1 \u00a73",
+    "phase": "—",
+    "sources": "owner:v2.1 §3",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-02"
@@ -3142,8 +3150,8 @@
     "id": "MS-03",
     "feature": "No hosted Apple-account relay sold by Fusion",
     "tier": "X",
-    "phase": "\u2014",
-    "sources": "owner:v2.1 \u00a73",
+    "phase": "—",
+    "sources": "owner:v2.1 §3",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-03"
@@ -3155,8 +3163,8 @@
     "id": "MS-04",
     "feature": "RCS system-app handoff only",
     "tier": "C",
-    "phase": "\u2014",
-    "sources": "owner:v2.1 \u00a73",
+    "phase": "—",
+    "sources": "owner:v2.1 §3",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-04"
@@ -3169,7 +3177,7 @@
     "feature": "SMS/MMS with SMS role",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.1 \u00a73",
+    "sources": "owner:v2.1 §3",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-05"
@@ -3182,7 +3190,7 @@
     "feature": "Permissive Matrix/XMPP clients; no AGPL Signal client",
     "tier": "A",
     "phase": "P3/P4",
-    "sources": "owner:v2.1 \u00a73",
+    "sources": "owner:v2.1 §3",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-06"

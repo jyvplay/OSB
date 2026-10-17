@@ -19,11 +19,11 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "099e449a8ef26d0f2a67bf8d98ddeccbf2104216fd1bfd21d105f91d0f293465",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "43c72ea2dc91b2456142d54cc95bf7b68119941b668c92d02f47efee3932e219",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "df0514b8bc33743b394100b397cd682bbab1b3fbf34b727d97d7059f931c3634",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "eb203b05d2b192cca869fda66002f232b71f1f57d9cc9b8e3037d27e30b54031"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d03bc86aa036b7c95a2b62bb0b0512de6aa07f86c74aa3154f5509d46630e628"
       }
     },
     {
@@ -65,7 +65,7 @@
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "eb203b05d2b192cca869fda66002f232b71f1f57d9cc9b8e3037d27e30b54031"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d03bc86aa036b7c95a2b62bb0b0512de6aa07f86c74aa3154f5509d46630e628"
       }
     },
     {

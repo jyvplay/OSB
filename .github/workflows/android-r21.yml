@@ -3,6 +3,9 @@ on:
   push:
     paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R21*', '.github/workflows/android-r21.yml']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

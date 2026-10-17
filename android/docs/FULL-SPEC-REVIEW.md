@@ -55,7 +55,7 @@ Owner candidates below identify where work belongs, not implementation completen
 | SH-01 | Launcher pinned/all-apps/folders/recents/search | partial_unverified | `:app`, `:feature:launcher` | S2 |
 | SH-02 | Shelf pinned/running/badges/previews/edges | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-03 | Top bar menus/status/clock/Beam indicator | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
-| SH-04 | Desktop wallpaper/icons/folders/widgets/context menu/layouts | not_implemented | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
+| SH-04 | Desktop wallpaper/icons/folders/widgets/context menu/layouts | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-05 | Widget host with suspend and crash isolation | not_implemented | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-06 | Hot corners/edge triggers/mouse gestures | not_implemented | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-07 | Local-first onboarding/permission explainers/config/license | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
@@ -284,6 +284,6 @@ Owner candidates below identify where work belongs, not implementation completen
 | MS-05 | SMS/MMS with SMS role | partial_unverified | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 | MS-06 | Permissive Matrix/XMPP clients; no AGPL Signal client | not_implemented | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 
-Status counts: {"excluded": 3, "not_implemented": 169, "partial_unverified": 58, "superseded": 1}.
+Status counts: {"excluded": 3, "not_implemented": 168, "partial_unverified": 59, "superseded": 1}.
 
 Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r11-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R11-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.

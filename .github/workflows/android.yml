@@ -5,6 +5,9 @@ on:
   pull_request:
     paths: ['android/**', '.github/workflows/android.yml']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

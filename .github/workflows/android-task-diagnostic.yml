@@ -2,6 +2,9 @@ name: Android Tasks focused diagnostic
 on:
   push:
     paths: ['android/app/src/androidTest/java/dev/fusion/shell/R17TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R19TaskUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/R20CountsUiDeviceTest.kt', 'android/app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt', 'android/tools/report_device_results.py', '.github/workflows/android-task-diagnostic.yml']
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

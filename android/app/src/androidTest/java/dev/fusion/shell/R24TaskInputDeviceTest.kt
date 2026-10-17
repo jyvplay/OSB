@@ -52,9 +52,10 @@ class R24TaskInputDeviceTest {
         require(bottom>top)
         val down=SystemClock.uptimeMillis()
         for(i in 0..10) {
+            if(i>0) SystemClock.sleep(25)
             val action=if(i==0) MotionEvent.ACTION_DOWN else if(i==10) MotionEvent.ACTION_UP else MotionEvent.ACTION_MOVE
             val y=bottom+(top-bottom)*i/10f
-            val event=MotionEvent.obtain(down,down+i*25L,action,x,y,0).apply {source=InputDevice.SOURCE_TOUCHSCREEN}
+            val event=MotionEvent.obtain(down,SystemClock.uptimeMillis(),action,x,y,0).apply {source=InputDevice.SOURCE_TOUCHSCREEN}
             try {assertTrue(instrumentation.uiAutomation.injectInputEvent(event,true))} finally {event.recycle()}
         }
     }

@@ -3,6 +3,9 @@ on:
   push:
     paths: ['android/app/**', 'android/core/designsystem/**', 'android/core/settings/**', 'android/core/windowing/**', 'android/feature/settings/**', 'android/feature/automation/**', 'android/tools/*r24*', 'android/gradle/**', 'android/gradle.properties', '.github/workflows/android-r24.yml']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

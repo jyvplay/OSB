@@ -3,6 +3,9 @@ on:
   push:
     paths: ['android/privacy/src/androidTest/**', 'android/tools/*r23*', 'android/gradle/**', 'android/gradle.properties', 'android/format/pdf/**', 'android/format/ooxml/**', 'android/format/archive/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R22*', 'android/app/src/androidTest/java/dev/fusion/shell/R23*', '.github/workflows/android-r22.yml']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

@@ -725,14 +725,15 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-            DesktopShelf(MODULES.map {module->ShelfApp(module,module.replaceFirstChar {it.uppercase()},
-                desktop.windows.any {it.module==module},desktop.windows.any {it.module==module && it.id==desktop.activeId && !it.minimized})},
-                appearance,imeVisible,!desktopModel.loading && !desktopModel.blocked,::openModule)
-
             Text(
                 message, Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceVariant).padding(6.dp),
                 fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = if(imeVisible) 1 else 2
             )
+
+            DesktopShelf(MODULES.map {module->ShelfApp(module,module.replaceFirstChar {it.uppercase()},
+                desktop.windows.any {it.module==module},desktop.windows.any {it.module==module && it.id==desktop.activeId && !it.minimized})},
+                appearance,imeVisible,!desktopModel.loading && !desktopModel.blocked,::openModule)
+
         }
     }
 
