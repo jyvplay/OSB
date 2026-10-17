@@ -16,6 +16,7 @@ android {
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }
     testOptions.managedDevices.localDevices {
+        maybeCreate("pixel6Api37").apply {device="Pixel 6";apiLevel=37;systemImageSource="google"}
         maybeCreate("pixel6Api34").apply {
             device="Pixel 6";apiLevel=34;systemImageSource="google"
         }

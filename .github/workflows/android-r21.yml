@@ -1,7 +1,7 @@
 name: Android R21 boundary checks
 on:
   push:
-    paths: ['android/format/pdf/**', 'android/format/ooxml/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R21*', '.github/workflows/android-r21.yml']
+    paths: ['android/app/**', 'android/tools/*r24*', 'android/format/pdf/**', 'android/format/ooxml/**', 'android/feature/browser/**', 'android/feature/automation/**', 'android/app/src/androidTest/java/dev/fusion/shell/R21*', '.github/workflows/android-r21.yml']
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

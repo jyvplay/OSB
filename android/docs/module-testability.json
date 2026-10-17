@@ -1232,7 +1232,7 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "bda15be3d5e2c7ed2a2fa4bea90f18b5c60216b2a80cccda74ccdd26695052b6",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "3386d2d3e7cb6c3b0337a95351f632e8809b6964e9995d6e65f5b8588b22e2ea"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "2b2e1649d076d57271f871018e8f852c1c3b1fc3f4991cce3ff9bd1a5bf6cfee"
       }
     }
   ]

@@ -11,7 +11,12 @@ import org.junit.Test
 
 /** Actual Android sleep/wake and protected-broadcast permission, NOT a manually invoked lifecycle. */
 class R24ScreenOffDeviceTest {
+    private fun assertActualRuntime() {
+        val expected=InstrumentationRegistry.getArguments().getString("fusionExpectedRuntime","34").toInt()
+        require(expected in setOf(34,37));assertEquals("Actual OS runtime, not compileSdk constant",expected,android.os.Build.VERSION.SDK_INT)
+    }
     @Test fun realScreenOffDiscardsRevealedPadAndOldButtonCannotEnterOnWake() {
+        assertActualRuntime()
         val instrumentation=InstrumentationRegistry.getInstrumentation();val device=UiDevice.getInstance(instrumentation)
         ActivityScenario.launch(TouchCodeActivity::class.java).use {scenario->
             PrivacyDeviceReady.focus(scenario)
@@ -34,6 +39,7 @@ class R24ScreenOffDeviceTest {
         }
     }
     @Test fun ordinaryUidCannotSpoofProtectedScreenOffBroadcast() {
+        assertActualRuntime()
         val context=androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
         val error=runCatching {context.sendBroadcast(Intent(Intent.ACTION_SCREEN_OFF).setPackage(context.packageName))}.exceptionOrNull()
         assertTrue("Protected OS screen-state event accepted from ordinary app",error is SecurityException)

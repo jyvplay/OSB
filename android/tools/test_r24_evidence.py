@@ -17,11 +17,11 @@ class R24EvidenceTests(unittest.TestCase):
         self.assertEqual({'PASS':18,'FAIL':0,'SKIP':0},actual['counts'])
         self.assertTrue(assess(actual,actual['candidate'],'r24_screenoff_api34')[0])
         self.assertFalse(assess(actual,'f'*40,'r24_screenoff_api34')[0])
-        for claim in ['r24_desktop_api34','r24_pdf_boundary_api34','all_hardware_secure','full_product','tails_equivalent']:
+        for claim in ['r24_screenoff_api37','r24_desktop_api34','r24_pdf_boundary_api34','all_hardware_secure','full_product','tails_equivalent']:
             self.assertFalse(assess(actual,actual['candidate'],claim)[0])
     def test_declared_policy_names_cannot_be_omitted_duplicated_or_marked_nonpass(self):
         for claim,names in RULES.items():
-            base={'candidate':'a'*40,'conclusion':'success','device_conclusion':'success','suite':'privacy' if 'screenoff' in claim else 'focused',
+            base={'platform_api':37 if claim.endswith('api37') else 34,'candidate':'a'*40,'conclusion':'success','device_conclusion':'success','suite':'privacy' if 'screenoff' in claim else 'focused',
                   'cases':[{'case':n,'result':'PASS'} for n in sorted(names)],'counts':{'PASS':len(names),'FAIL':0,'SKIP':0}}
             self.assertTrue(assess(base,'a'*40,claim)[0]) # Policy grammar, NOT a native execution receipt.
             for i in range(len(names)):

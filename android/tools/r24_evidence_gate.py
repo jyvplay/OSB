@@ -17,14 +17,15 @@ PDF={P+'R24PdfDeviceTest.'+n for n in ['genuinePdfRendersInDistinctUidWithReadon
  'malformedOversizeWrongPageAndMemoryCarrierRefuseThenFreshPdfLeaseRecovers','actualPickerIsolatedPreviewNextPageAndRecreationNeverWriteOriginalPdf']}
 SCREEN=PREVIOUS['r23_privacy_api34']|{'dev.fusion.privacy.R24ScreenOffDeviceTest.'+n for n in [
  'realScreenOffDiscardsRevealedPadAndOldButtonCannotEnterOnWake','ordinaryUidCannotSpoofProtectedScreenOffBroadcast']}
-RULES={'r24_desktop_api34':UI,'r24_pdf_boundary_api34':PREVIOUS['r23_memory_transport_api34']|PDF,'r24_screenoff_api34':SCREEN}
+RULES={'r24_desktop_api34':UI,'r24_pdf_boundary_api34':PREVIOUS['r23_memory_transport_api34']|PDF,'r24_screenoff_api34':SCREEN,'r24_screenoff_api37':SCREEN}
 
 def assess(data,candidate,claim):
     if not isinstance(data,dict) or not isinstance(candidate,str) or not re.fullmatch('[0-9a-f]{40}',candidate):return False,'Malformed receipt/candidate'
     if claim not in RULES:return False,'No bridge for this broader/different claim'
     if data.get('candidate')!=candidate:return False,'Wrong exact candidate'
     if data.get('conclusion')!='success' or data.get('device_conclusion')!='success':return False,'Whole workflow/device gate is not successful'
-    allowed={'privacy'} if claim=='r24_screenoff_api34' else {'focused','full'}
+    if data.get('platform_api',34)!=(37 if claim.endswith('api37') else 34):return False,'Wrong actual runtime context'
+    allowed={'privacy'} if claim.startswith('r24_screenoff_') else {'focused','full'}
     if data.get('suite') not in allowed:return False,'Wrong suite context'
     cases=data.get('cases');counts=data.get('counts')
     if not isinstance(cases,list) or not isinstance(counts,dict) or set(counts)!={'PASS','FAIL','SKIP'} or any(type(v)is not int or v<0 for v in counts.values()):return False,'Malformed cases/counts'
