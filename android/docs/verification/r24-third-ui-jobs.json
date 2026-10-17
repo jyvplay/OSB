@@ -1,0 +1,145 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 117504449878,
+      "run_id": 39069661665,
+      "workflow_name": "Android R24 appearance, input and PDF boundaries",
+      "head_branch": "arena/f77cb2a6-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39069661665",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbW8-dVg",
+      "head_sha": "e30ce84452f336b6884e8dda327126ad6c83dd8c",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/117504449878",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39069661665/job/117504449878",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-17T21:08:17Z",
+      "started_at": "2026-10-17T21:08:20Z",
+      "completed_at": "2026-10-17T21:17:37Z",
+      "name": "Focused actual R24 appearance and task inputs (not full-suite acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-17T21:08:21Z",
+          "completed_at": "2026-10-17T21:08:24Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-17T21:08:24Z",
+          "completed_at": "2026-10-17T21:08:25Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-17T21:08:25Z",
+          "completed_at": "2026-10-17T21:08:25Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-17T21:08:25Z",
+          "completed_at": "2026-10-17T21:08:33Z"
+        },
+        {
+          "name": "Install and inspect actual SDK37.0 compilation platform (not runtime37)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-17T21:08:33Z",
+          "completed_at": "2026-10-17T21:08:38Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-17T21:08:38Z",
+          "completed_at": "2026-10-17T21:08:38Z"
+        },
+        {
+          "name": "Execute actual R24 appearance, task input and PDF boundaries",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-10-17T21:08:38Z",
+          "completed_at": "2026-10-17T21:17:30Z"
+        },
+        {
+          "name": "Publish actual outcomes and diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-17T21:17:30Z",
+          "completed_at": "2026-10-17T21:17:31Z"
+        },
+        {
+          "name": "Publish bounded actual native screenshots, if exported by the device",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-17T21:17:31Z",
+          "completed_at": "2026-10-17T21:17:31Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-17T21:17:31Z",
+          "completed_at": "2026-10-17T21:17:33Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-17T21:17:33Z",
+          "completed_at": "2026-10-17T21:17:33Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-17T21:17:33Z",
+          "completed_at": "2026-10-17T21:17:33Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-17T21:17:33Z",
+          "completed_at": "2026-10-17T21:17:33Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-17T21:17:33Z",
+          "completed_at": "2026-10-17T21:17:33Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/117504449878",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000393,
+      "runner_name": "GitHub Actions 1000000393",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

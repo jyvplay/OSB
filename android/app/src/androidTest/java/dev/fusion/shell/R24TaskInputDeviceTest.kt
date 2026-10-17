@@ -47,19 +47,41 @@ class R24TaskInputDeviceTest {
         scenario.onActivity {it.window.decorView.getWindowVisibleDisplayFrame(viewport)}
         return node.isVisibleToUser && !r.isEmpty && viewport.contains(r.centerX(),r.centerY())
     }
-    private fun show(scenario:ActivityScenario<MainActivity>,lookup:()->AccessibilityNodeInfo?):AccessibilityNodeInfo {
-        repeat(24) {
-            val node=lookup() ?: run {SystemClock.sleep(80);return@repeat}
-            if(visible(scenario,node)) return node
-            if(!node.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SHOW_ON_SCREEN.id)) {
-                var p=node.parent
-                while(p!=null && !p.isScrollable) p=p.parent
-                assertNotNull("No real scroll ancestor for offscreen control",p)
-                assertTrue(p!!.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD))
-            }
-            instrumentation.waitForIdleSync();SystemClock.sleep(80)
+    private fun swipeUp(rect:Rect) {
+        val x=rect.exactCenterX();val bottom=rect.bottom-12f;val top=rect.top+12f
+        require(bottom>top)
+        val down=SystemClock.uptimeMillis()
+        for(i in 0..10) {
+            val action=if(i==0) MotionEvent.ACTION_DOWN else if(i==10) MotionEvent.ACTION_UP else MotionEvent.ACTION_MOVE
+            val y=bottom+(top-bottom)*i/10f
+            val event=MotionEvent.obtain(down,down+i*25L,action,x,y,0).apply {source=InputDevice.SOURCE_TOUCHSCREEN}
+            try {assertTrue(instrumentation.uiAutomation.injectInputEvent(event,true))} finally {event.recycle()}
         }
-        throw AssertionError("Actual control did not become visible")
+    }
+    private fun show(scenario:ActivityScenario<MainActivity>,lookup:()->AccessibilityNodeInfo?):AccessibilityNodeInfo {
+        val end=SystemClock.uptimeMillis()+15000;var scrolls=0;var observation="node absent"
+        do {
+            val node=lookup()
+            if(node==null) {SystemClock.sleep(60);continue}
+            if(visible(scenario,node)) return node
+            val target=Rect();node.getBoundsInScreen(target)
+            // An ACTION_SHOW_ON_SCREEN true return is NOT evidence that the scroller actually moved.
+            node.performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SHOW_ON_SCREEN.id)
+            instrumentation.waitForIdleSync();SystemClock.sleep(60)
+            val fresh=lookup()
+            if(fresh!=null && visible(scenario,fresh)) return fresh
+            var parent=tag("tasks-body") ?: tag("notes-body") ?: node.parent
+            while(parent!=null && !parent.isScrollable) parent=parent.parent
+            requireNotNull(parent) {"No real scrolling ancestor for $target"}
+            val r=Rect();parent.getBoundsInScreen(r);val viewport=Rect()
+            scenario.onActivity {it.window.decorView.getWindowVisibleDisplayFrame(viewport)}
+            check(r.intersect(viewport) && r.height()>48) {"Real form viewport too small: $r / $viewport"}
+            observation="target=$target parent=${parent.className} scroll=$r viewport=$viewport"
+            // Real native scroll gesture, never a setter/scroll offset injection; Save still gets ONE tap.
+            swipeUp(r);scrolls++;check(scrolls<=24)
+            instrumentation.waitForIdleSync();SystemClock.sleep(60)
+        } while(SystemClock.uptimeMillis()<end)
+        throw AssertionError("Actual control did not become visible: $observation")
     }
     private fun set(node:AccessibilityNodeInfo,value:String) {
         assertTrue(node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,Bundle().apply {

@@ -34,6 +34,8 @@ class FormatLease(context: Context) : Closeable {
     private val death=CountDownLatch(1)
     private val started=AtomicBoolean(false)
     private val expectedOperation=java.util.concurrent.atomic.AtomicInteger(0)
+    private val connectedAt=java.util.concurrent.atomic.AtomicLong(-1)
+    private val sentAt=java.util.concurrent.atomic.AtomicLong(-1)
     private val expectedTransport=java.util.concurrent.atomic.AtomicReference<String?>(null)
     private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
     private val ownedCsv=java.util.concurrent.atomic.AtomicReference<OwnedCsvRequest?>(null)
@@ -90,7 +92,7 @@ class FormatLease(context: Context) : Closeable {
         override fun onServiceConnected(name: ComponentName,binder: IBinder) {
             try {
                 binder.linkToDeath({ death.countDown();unavailable("Worker died") },0)
-                connected.complete(Messenger(binder))
+                connectedAt.set(SystemClock.elapsedRealtime());connected.complete(Messenger(binder))
             } catch(error: Exception) { connected.completeExceptionally(error) }
         }
         override fun onServiceDisconnected(name: ComponentName) { death.countDown();unavailable("Worker disconnected") }
@@ -106,7 +108,9 @@ class FormatLease(context: Context) : Closeable {
         } catch(error: Exception) { close();throw error }
     }
     private fun unavailable(reason: String) {
-        val error=IllegalStateException(reason)
+        val now=SystemClock.elapsedRealtime()
+        fun age(value:Long)=if(value<0) "not observed" else "${now-value}ms"
+        val error=IllegalStateException("$reason; op=${expectedOperation.get()}; since parent connection=${age(connectedAt.get())}; since parent send=${age(sentAt.get())}")
         connected.completeExceptionally(error);result.completeExceptionally(error)
     }
     /** A fresh open is mandatory: dup alone shares file position with its owner. Caller owns the source. */
@@ -243,6 +247,7 @@ class FormatLease(context: Context) : Closeable {
             require(privateProbeName==null || privateProbeName.matches(Regex(FormatWorkerService.PRIVATE_NAME)))
             val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName);putInt("socketPort",port);putInt("pdfPage",pdfPage)
                 if(memory!=null) {putParcelable("memory",memory);putInt("memoryBytes",memoryBytes)} }
+            sentAt.set(SystemClock.elapsedRealtime())
             connected.get().send(Message.obtain(null,operation).apply { this.data=data;replyTo=reply })
             return result.get(8,TimeUnit.SECONDS)
         } finally { close() }

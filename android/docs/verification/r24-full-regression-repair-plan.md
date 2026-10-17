@@ -11,3 +11,7 @@ Declared repairs/new attacks:
 - Publish case counts and failure diagnostics in separate steps; do not change case statuses. Actual PNG annotations must be≤3700chars and≤8 chunk notices per step, grouped over steps to avoid observed10 notice cap; checksum/PNG verification still mandatory. No generated/repaired-padding images.
 
 New candidate inherits no trust: fresh expanded UI9, memory/PDF27, privacy18, full main133 plus builds/JVM/contracts/lint required. These are declared name counts, NOT observed passes. Full original modules0/49 acceptance remains independent. Derive accepted names from actual receipts.
+
+Additional actuale30ce84 UI5/2 progressed past real Find dialog but both standalone cases failed bringing the TITLE field onscreen; original R18 passed. True ACTION_SHOW_ON_SCREEN ACK is not actual movement. Navigator now observes bounds and, when still clipped, performs bounded REAL swipes on the actual task/notes body scroller. Save remains one tap; no field value/callback/scroll-offset injection. Body tags only identify real rendered scrollers. No historical save failure attributed to this navigation issue.
+
+Actuale30 R21 CSV regression7/1: dense empty CSV lease died, no root cause inferred. Do NOT lengthen the existing5s watchdog or8s reply deadline. Add parent-observed connection/send age/op to death diagnostics and rerun unchanged original dense-case predicate. A one-off timeout is not a parser correctness or compiler-causality proof.

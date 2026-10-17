@@ -622,7 +622,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "084aad2cd5d98f79d9cd3f496c5d56757ee224a01d9479e14f4e3fbfc71935ed"
+      "sha256": "3eea66da788b09ed6f0cd10185113b5a29b7c12942bd12dbb594ba3fec5f2801"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt",
@@ -898,7 +898,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "1626afab35877b8a9eccc5683ce7e7bdc0aa94cab2a618b0ffef3cff2afb2594"
+      "sha256": "ebc44f8a333d692b58f6e347b3c7d115dd68242c96374802a9bc4f6287fe7fdb"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",
@@ -1048,7 +1048,7 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "af7651821e32e68fbbab1c3e216a7f3db5537889bca6eefceb32ab29880067d5"
+      "sha256": "affec3616b00e62c3a7513fde851bb179b8165537c08c48a0f265da98dfb20d0"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",

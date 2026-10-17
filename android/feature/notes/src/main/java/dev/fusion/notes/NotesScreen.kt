@@ -29,7 +29,7 @@ fun NotesScreen(model: NotesViewModel) {
             OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
             if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Move note to trash…") }
         }
-        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).semantics {paneTitle="Local Markdown notes"},
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("notes-body").semantics {paneTitle="Local Markdown notes"},
             verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Local Markdown • ${if(state.dirty) "Unsaved note draft" else "No unsaved changes"}")
         Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")

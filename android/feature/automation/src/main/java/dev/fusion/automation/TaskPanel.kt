@@ -133,7 +133,7 @@ fun TaskPanel(context: Context,modifier:Modifier=Modifier) {
         }) {Text(if(editingId==null) "Add task" else "Save task changes")}
         Button(onClick={run {repo.load()}},enabled=!busy,modifier=Modifier.testTag("tasks-reload")) { Text("Reload tasks") }
         }
-        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tasks-body"),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Local tasks",style=MaterialTheme.typography.titleSmall)
         Text("Plaintext on this device, excluded from Android backup. Up to128 active and archived tasks combined. Archive is reversible and retains data; permanent deletion is not implemented. Date labels only: no reminders, recurrence or calendar sync. Saving a change upgrades old task data to FTS2; older app versions cannot read it. Loading alone does not upgrade.")
         OutlinedTextField(title,{if(it.length<=256) title=it},Modifier.fillMaxWidth().testTag("tasks-title"),label={Text("Task title")},singleLine=true,enabled=!busy)

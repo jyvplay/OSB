@@ -23,7 +23,7 @@
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "df0514b8bc33743b394100b397cd682bbab1b3fbf34b727d97d7059f931c3634",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "41323609be4305e8a33ad7bc921da3035267557eab1b28e3bb770f38319420e8"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "eb203b05d2b192cca869fda66002f232b71f1f57d9cc9b8e3037d27e30b54031"
       }
     },
     {
@@ -65,7 +65,7 @@
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "41323609be4305e8a33ad7bc921da3035267557eab1b28e3bb770f38319420e8"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "eb203b05d2b192cca869fda66002f232b71f1f57d9cc9b8e3037d27e30b54031"
       }
     },
     {
@@ -835,7 +835,7 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt": "d015d69ab37125903aab47190d33ca9a7683d2bb4b508bffe32449cfffed2cb4",
         "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt": "7e55bab44fdf1adcea454abf8b843faf14f5cac4f8bda2d666caa95001d15ddf",
-        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "1626afab35877b8a9eccc5683ce7e7bdc0aa94cab2a618b0ffef3cff2afb2594",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "ebc44f8a333d692b58f6e347b3c7d115dd68242c96374802a9bc4f6287fe7fdb",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt": "c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt": "a0cb99d077c6179b91c5ee9aebc8c79773fd7db7f109f5cd693cacedd157a36b",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
@@ -1010,7 +1010,7 @@
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "0df998468d7c64228e2406c1ae1d56273dade36ee2e7a1b1e1d786d32854d9e1",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "af7651821e32e68fbbab1c3e216a7f3db5537889bca6eefceb32ab29880067d5",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "affec3616b00e62c3a7513fde851bb179b8165537c08c48a0f265da98dfb20d0",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
