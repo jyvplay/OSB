@@ -10,6 +10,7 @@ import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -119,12 +120,12 @@ fun DesktopShelf(apps:List<ShelfApp>,appearance:Appearance,imeVisible:Boolean,en
                 apps.forEachIndexed {index,app ->
                     val interactions=remember(app.id) {MutableInteractionSource()}
                     val hovered by interactions.collectIsHoveredAsState()
-                    var focused by remember(app.id) {mutableStateOf(false)}
+                    val focused by interactions.collectIsFocusedAsState()
                     LaunchedEffect(hovered,focused) {if(hovered || focused) hot=index else if(hot==index) hot=null}
                     val target=DockMagnification.scale(index,hot,appearance.layout,appearance.dockZoom && !imeVisible)
                     val scale by animateFloatAsState(target,animationSpec=tween(if(appearance.dockZoom) 120 else 0),label="dock-${app.id}")
                     Column(Modifier.width(DockMagnification.SLOT_DP.dp).height(if(imeVisible) 60.dp else 76.dp)
-                        .testTag("shelf-${app.id}").onFocusChanged {focused=it.hasFocus}.hoverable(interactions,enabled)
+                        .testTag("shelf-${app.id}").hoverable(interactions,enabled)
                         .clickable(enabled=enabled,role=Role.Button,interactionSource=interactions,indication=androidx.compose.foundation.LocalIndication.current) {onOpen(app.id)}
                         .semantics(mergeDescendants=true) {
                             stateDescription=(if(app.active) "Active" else if(app.running) "Running" else "Closed")+"; magnification "+(if(target>1f) "enlarged" else "normal")

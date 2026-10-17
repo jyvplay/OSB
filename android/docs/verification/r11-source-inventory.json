@@ -196,7 +196,7 @@
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed"
+      "sha256": "bac30c2c6d6fc29ae5933534a1e82a5947da772c2924df3eff73ab53c40307af"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",
@@ -622,7 +622,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "3eea66da788b09ed6f0cd10185113b5a29b7c12942bd12dbb594ba3fec5f2801"
+      "sha256": "90785f1d8d66ff23d24e0304c9e70905e87fd525187fe4be8a9bc8018e951f0b"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt",
@@ -898,7 +898,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "ebc44f8a333d692b58f6e347b3c7d115dd68242c96374802a9bc4f6287fe7fdb"
+      "sha256": "20c8d94095d770d9803d377a629ae7c55ae1e5c101d3222b10bb8bf0bcc726b7"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/TaskRepository.kt",

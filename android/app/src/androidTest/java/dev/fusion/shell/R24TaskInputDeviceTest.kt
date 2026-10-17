@@ -48,13 +48,13 @@ class R24TaskInputDeviceTest {
         return node.isVisibleToUser && !r.isEmpty && viewport.contains(r.centerX(),r.centerY())
     }
     private fun swipeUp(rect:Rect) {
-        val x=rect.exactCenterX();val bottom=rect.bottom-12f;val top=rect.top+12f
+        val x=rect.exactCenterX();val bottom=rect.bottom-12f;val top=rect.exactCenterY()
         require(bottom>top)
         val down=SystemClock.uptimeMillis()
-        for(i in 0..10) {
+        for(i in 0..20) {
             if(i>0) SystemClock.sleep(25)
-            val action=if(i==0) MotionEvent.ACTION_DOWN else if(i==10) MotionEvent.ACTION_UP else MotionEvent.ACTION_MOVE
-            val y=bottom+(top-bottom)*i/10f
+            val action=if(i==0) MotionEvent.ACTION_DOWN else if(i==20) MotionEvent.ACTION_UP else MotionEvent.ACTION_MOVE
+            val y=bottom+(top-bottom)*i/20f
             val event=MotionEvent.obtain(down,SystemClock.uptimeMillis(),action,x,y,0).apply {source=InputDevice.SOURCE_TOUCHSCREEN}
             try {assertTrue(instrumentation.uiAutomation.injectInputEvent(event,true))} finally {event.recycle()}
         }
@@ -93,7 +93,7 @@ class R24TaskInputDeviceTest {
             observation="target=$target parent=${parent.className} scroll=$r viewport=$viewport"
             // Real native scroll gesture, never a setter/scroll offset injection; Save still gets ONE tap.
             swipeUp(r);scrolls++;check(scrolls<=24)
-            instrumentation.waitForIdleSync();SystemClock.sleep(60)
+            instrumentation.waitForIdleSync();SystemClock.sleep(120)
         } while(SystemClock.uptimeMillis()<end)
         throw AssertionError("Actual control did not become visible: $observation")
     }

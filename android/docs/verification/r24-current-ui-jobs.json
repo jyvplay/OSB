@@ -1,0 +1,329 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 117512822493,
+      "run_id": 39072394396,
+      "workflow_name": "Android R24 appearance, input and PDF boundaries",
+      "head_branch": "arena/f77cb2a6-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39072394396",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbXE9e3Q",
+      "head_sha": "f001e7b89da374416735bf2ad0f718c4a484bbd6",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/117512822493",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39072394396/job/117512822493",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-17T21:48:46Z",
+      "started_at": "2026-10-17T21:48:48Z",
+      "completed_at": "2026-10-17T21:49:57Z",
+      "name": "Focused actual R24 appearance and task inputs (not full-suite acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-17T21:48:49Z",
+          "completed_at": "2026-10-17T21:48:52Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-17T21:48:52Z",
+          "completed_at": "2026-10-17T21:48:54Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-17T21:48:54Z",
+          "completed_at": "2026-10-17T21:48:54Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-17T21:48:54Z",
+          "completed_at": "2026-10-17T21:49:02Z"
+        },
+        {
+          "name": "Install and inspect actual SDK37.0 compilation platform (not runtime37)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-17T21:49:02Z",
+          "completed_at": "2026-10-17T21:49:11Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-17T21:49:11Z",
+          "completed_at": "2026-10-17T21:49:11Z"
+        },
+        {
+          "name": "Execute actual R24 appearance, task input and PDF boundaries",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-10-17T21:49:11Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Publish actual outcomes and diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business office_blue PNG chunks 1-8",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business office_blue PNG chunks 9-16",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business office_blue PNG chunks 17-24",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business office_blue PNG chunks 25-32",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business office_blue PNG chunks 33-40",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business office_blue PNG chunks 41-48",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business studio_graphite PNG chunks 1-8",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business studio_graphite PNG chunks 9-16",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business studio_graphite PNG chunks 17-24",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business studio_graphite PNG chunks 25-32",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business studio_graphite PNG chunks 33-40",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual business studio_graphite PNG chunks 41-48",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual art office_blue PNG chunks 1-8",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual art office_blue PNG chunks 9-16",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual art office_blue PNG chunks 17-24",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:46Z"
+        },
+        {
+          "name": "Actual art office_blue PNG chunks 25-32",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-10-17T21:49:46Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art office_blue PNG chunks 33-40",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art office_blue PNG chunks 41-48",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art studio_graphite PNG chunks 1-8",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art studio_graphite PNG chunks 9-16",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art studio_graphite PNG chunks 17-24",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art studio_graphite PNG chunks 25-32",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art studio_graphite PNG chunks 33-40",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Actual art studio_graphite PNG chunks 41-48",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 32,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:47Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33,
+          "started_at": "2026-10-17T21:49:47Z",
+          "completed_at": "2026-10-17T21:49:48Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 64,
+          "started_at": "2026-10-17T21:49:48Z",
+          "completed_at": "2026-10-17T21:49:48Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 65,
+          "started_at": "2026-10-17T21:49:48Z",
+          "completed_at": "2026-10-17T21:49:48Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 66,
+          "started_at": "2026-10-17T21:49:48Z",
+          "completed_at": "2026-10-17T21:49:49Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 67,
+          "started_at": "2026-10-17T21:49:49Z",
+          "completed_at": "2026-10-17T21:49:49Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/117512822493",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000440,
+      "runner_name": "GitHub Actions 1000000440",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

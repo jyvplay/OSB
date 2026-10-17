@@ -39,7 +39,7 @@ def assess(data,candidate,claim):
     actual={k:sum(r['result']==k for r in cases) for k in counts}
     if actual!=counts or counts['FAIL'] or counts['SKIP']:return False,'Missing/failed/skipped or inconsistent cases'
     if not RULES[claim]<=set(names):return False,'Required new attack/regression names missing'
-    return True,'Named exact-candidate API34 subset ONLY, not all-spec/AX/physical/host/firmware/anonymity acceptance'
+    return True,f"Named exact-candidate API{data.get('platform_api',34)} subset ONLY, not all-spec/AX/physical/host/firmware/anonymity acceptance"
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('receipt',type=Path);p.add_argument('--candidate',required=True);p.add_argument('--claim',required=True);a=p.parse_args()

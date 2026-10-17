@@ -32,10 +32,11 @@ fun NotesScreen(model: NotesViewModel) {
         Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("notes-body").semantics {paneTitle="Local Markdown notes"},
             verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Local Markdown • ${if(state.dirty) "Unsaved note draft" else "No unsaved changes"}")
-        Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")
-        Text(state.recoveryStatus,Modifier.testTag("notes-recovery-status").semantics { liveRegion=LiveRegionMode.Polite })
+        Text("Plaintext local note • not encrypted",style=MaterialTheme.typography.labelSmall)
         OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
         OutlinedTextField(state.text,model::edit,Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).testTag("notes-text"),enabled=ready,label={ Text("Markdown source") })
+        Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")
+        Text(state.recoveryStatus,Modifier.testTag("notes-recovery-status").semantics { liveRegion=LiveRegionMode.Polite })
         if(state.busy) CircularProgressIndicator()
         Text(state.status,Modifier.semantics { liveRegion=LiveRegionMode.Polite })
         OutlinedButton(onClick=model::refreshLinks,enabled=ready,modifier=Modifier.testTag("notes-scan-links")) { Text("Scan saved-note backlinks") }

@@ -135,9 +135,10 @@ fun TaskPanel(context: Context,modifier:Modifier=Modifier) {
         }
         Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tasks-body"),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Local tasks",style=MaterialTheme.typography.titleSmall)
-        Text("Plaintext on this device, excluded from Android backup. Up to128 active and archived tasks combined. Archive is reversible and retains data; permanent deletion is not implemented. Date labels only: no reminders, recurrence or calendar sync. Saving a change upgrades old task data to FTS2; older app versions cannot read it. Loading alone does not upgrade.")
+        Text("Plaintext local tasks • no reminders or sync",style=MaterialTheme.typography.labelSmall)
         OutlinedTextField(title,{if(it.length<=256) title=it},Modifier.fillMaxWidth().testTag("tasks-title"),label={Text("Task title")},singleLine=true,enabled=!busy)
         OutlinedTextField(date,{if(it.length<=10) date=it},Modifier.fillMaxWidth().testTag("tasks-date"),label={Text("Due date yyyy-mm-dd (optional)")},singleLine=true,enabled=!busy)
+        Text("Plaintext on this device, excluded from Android backup. Up to128 active and archived tasks combined. Archive is reversible and retains data; permanent deletion is not implemented. Date labels only: no reminders, recurrence or calendar sync. Saving a change upgrades old task data to FTS2; older app versions cannot read it. Loading alone does not upgrade.")
         if(editingId!=null) {
             Text("Editing selected task at revision $editingRevision; ID and completion are preserved.")
             Button(onClick={editingId=null;title="";date=""},enabled=!busy,modifier=Modifier.testTag("tasks-cancel-edit")) {Text("Cancel edit")}

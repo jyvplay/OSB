@@ -132,7 +132,14 @@ class R24AppearanceDeviceTest {
         assertEquals(hitBefore,screenRect("shelf-editor"))
         mouse(5f,200f);mouse(5f,200f)
         // Patch-specific independent attack: focus alone must magnify with the pointer outside the dock.
-        compose.onNodeWithTag("shelf-editor").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
+        var keyboardFocused=false
+        for(i in 0 until 64) {
+            // Real keyboard event changes input mode; a focus request ACK in touch mode is not focus.
+            instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_TAB);compose.waitForIdle()
+            if(compose.onAllNodes(hasTestTag("shelf-editor") and isFocused()).fetchSemanticsNodes().isNotEmpty()) {keyboardFocused=true;break}
+        }
+        assertTrue("Real keyboard traversal never focused the dock Editor",keyboardFocused)
+        compose.onNodeWithTag("shelf-editor").assertIsFocused()
         compose.waitUntil(10000) {accentWidth(roi,accent)>before*1.15}
         compose.onNodeWithTag("desktop-find").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
         control();compose.onNodeWithTag("control-dock-zoom").performScrollTo().performClick();done()
