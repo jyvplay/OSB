@@ -111,6 +111,8 @@ class R24AppearanceDeviceTest {
         } finally {image.recycle()}
     }
     @Test fun realMouseMagnifiesDrawingNotHitboxAndMotionOffRestoresBaseSize() {
+        val expectedFont=android.provider.Settings.System.getFloat(compose.activity.contentResolver,"font_scale",1f)
+        compose.waitUntil(10000) {kotlin.math.abs(compose.activity.resources.configuration.fontScale-expectedFont)<.01f && compose.activity.hasWindowFocus()}
         control();compose.onNodeWithTag("control-layout-art").performClick();done()
         compose.onNodeWithTag("shelf-editor").performScrollTo()
         mouse(5f,200f);mouse(5f,200f)
@@ -119,6 +121,9 @@ class R24AppearanceDeviceTest {
         val hitBefore=screenRect("shelf-editor");val glyph=screenRect("dock-glyph-editor")
         val roi=android.graphics.Rect(glyph).apply {inset(-24,-24)}
         val accent=ProfessionalPalettes.colors(ProfessionalPalette.OFFICE_BLUE).primary
+        val expectedBase=dev.fusion.designsystem.DockMagnification.GLYPH_DP*compose.activity.resources.displayMetrics.density
+        // A 'normal' target label is not proof an old120ms animation has reached base raster size.
+        compose.waitUntil(10000) {accentWidth(roi,accent).toFloat() in expectedBase*.9f..expectedBase*1.08f}
         val before=accentWidth(roi,accent);assertTrue("Missing actual base icon pixels",before>20)
         mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
         mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
