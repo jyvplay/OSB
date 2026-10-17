@@ -11,7 +11,7 @@ UI_CLASSES='dev.fusion.shell.R24AppearanceDeviceTest,dev.fusion.shell.R24TaskInp
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('mode',choices=['doctor','host','android','device'])
-    p.add_argument('--tools',type=Path);p.add_argument('--suite',choices=['ui','privacy','memory','full'],default='ui');p.add_argument('--disposable',action='store_true')
+    p.add_argument('--tools',type=Path);p.add_argument('--suite',choices=['ui','privacy','memory','full','pdf'],default='ui');p.add_argument('--disposable',action='store_true')
     a=p.parse_args();env=environment(a.tools.expanduser().resolve()) if a.tools else os.environ.copy()
     def run(args):subprocess.run(args,cwd=ROOT,env=env,check=True)
     if a.mode=='host':
@@ -23,6 +23,8 @@ def main():
     if a.mode=='android':
         run([sys.executable,'tools/r23_lab.py','android']);run([str(ROOT/'gradlew'),':testing:r24Contracts']);return
     if not a.disposable:raise SystemExit('Disposable Android/data consent required')
+    if a.suite=='pdf':
+        run([str(ROOT/'gradlew'),':app:pixel6Api34ProDebugAndroidTest','-Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true','-Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24PdfDeviceTest']);return
     if a.suite in ['privacy','memory','full']:
         run([sys.executable,'tools/r23_lab.py','device','--suite',a.suite,'--disposable']);return
     if not env.get('JAVA_HOME') or not Path(env['JAVA_HOME'],'bin/javac').is_file() or not (env.get('ANDROID_HOME') or env.get('ANDROID_SDK_ROOT')):

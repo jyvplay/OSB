@@ -41,7 +41,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest,dev.fusion.shell.R23MemoryTransportDeviceTest,dev.fusion.shell.FormatIsolationDeviceTest,dev.fusion.shell.R21CsvUiDeviceTest,dev.fusion.shell.R18OwnedSheetDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R22PlatformDeviceTest,dev.fusion.shell.R22BoundaryDeviceTest,dev.fusion.shell.R22XlsxUiDeviceTest,dev.fusion.shell.R23MemoryTransportDeviceTest,dev.fusion.shell.FormatIsolationDeviceTest,dev.fusion.shell.R21CsvUiDeviceTest,dev.fusion.shell.R18OwnedSheetDeviceTest,dev.fusion.shell.R24PdfDeviceTest
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py

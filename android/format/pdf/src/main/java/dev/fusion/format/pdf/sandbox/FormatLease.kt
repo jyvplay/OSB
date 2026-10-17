@@ -24,7 +24,7 @@ class FormatLease(context: Context) : Closeable {
                         val internetGranted: Boolean,val privateAccessDenied: Boolean,val privateErrno: Int,
                         val privateProbePath: String?,val sourceDevice: Long,val sourceInode: Long,
                         val socketOutcome: String?,val socketErrno: Int,val sheet:Map<String,String>?=null,val table:CsvTable?=null,
-                        val inputTransport:String="READ_ONLY_FILE")
+                        val inputTransport:String="READ_ONLY_FILE",val pdf:PdfPreview?=null)
     private val context=context.applicationContext.also {
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Open sandbox leases off the UI thread" }
     }
@@ -38,6 +38,7 @@ class FormatLease(context: Context) : Closeable {
     private val ownedRequest=java.util.concurrent.atomic.AtomicReference<OwnedSheetRequest?>(null)
     private val ownedCsv=java.util.concurrent.atomic.AtomicReference<OwnedCsvRequest?>(null)
     private val ownedXlsx=java.util.concurrent.atomic.AtomicReference<OwnedXlsxRequest?>(null)
+    private val ownedPdf=java.util.concurrent.atomic.AtomicReference<OwnedPdfRequest?>(null)
     private val closed=AtomicBoolean(false)
     private val id=UUID.randomUUID().toString()
     private var bound=false
@@ -76,8 +77,13 @@ class FormatLease(context: Context) : Closeable {
                 try {requireNotNull(ownedXlsx.get()).accept(size,digest,requireNotNull(data.getByteArray("tableResult")))}
                 catch(error:Exception) {result.completeExceptionally(error);return}
             } else null
+            val pdf=if(message.what==FormatWorkerService.PDF_PREVIEW) {
+                try {requireNotNull(ownedPdf.get()).accept(size,digest,data.getInt("pdfPages",-1),data.getInt("pdfPage",-1),
+                    data.getInt("pdfWidth",-1),data.getInt("pdfHeight",-1),requireNotNull(data.getIntArray("pdfPixels")))}
+                catch(error:Exception) {result.completeExceptionally(error);return}
+            } else null
             result.complete(Evidence(uid,data.getInt("pid"),size,digest,data.getBoolean("internetGranted"),data.getBoolean("privateAccessDenied"),data.getInt("privateErrno",-1),
-                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet,table,requireNotNull(transport)))
+                data.getString("privateProbePath"),data.getLong("sourceDevice"),data.getLong("sourceInode"),data.getString("socketOutcome"),data.getInt("socketErrno",-1),sheet,table,requireNotNull(transport),pdf))
         }
     })
     private val connection=object: ServiceConnection {
@@ -164,6 +170,23 @@ class FormatLease(context: Context) : Closeable {
             } finally {file.delete()}
         } finally {close()}
     }
+    /** Native PDF renderer only in child; seekable readonly regular FD, NOT memory/disk-free fallback.
+     * Parent validates bounded raw ARGB and source metadata, never decodes child PNG/JPEG.
+     */
+    fun previewOwnedPdf(bytes:ByteArray,page:Int):Evidence {
+        try {
+            check(!closed.get() && !started.get())
+            val model=OwnedPdfRequest(bytes,page);ownedPdf.set(model)
+            val file=File.createTempFile("fusion-owned-pdf-",".pdf",context.cacheDir)
+            try {
+                java.io.FileOutputStream(file).use {out->out.write(model.bytes());out.fd.sync()}
+                return ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY).use {fd->
+                    check(file.delete()) {"Could not unlink owned PDF"}
+                    request(fd,null,FormatWorkerService.PDF_PREVIEW,0,pdfPage=page)
+                }
+            } finally {file.delete()}
+        } finally {close()}
+    }
     /** Explicit no-named-input-file route. No disk fallback: allocation/protection failure refuses.
      * Parent/OS trusted; anonymous pages and display/parser copies are NOT securely erased or swap-proof.
      * Legacy evaluateOwned* methods remain explicit file APIs, not fallback implementations.
@@ -209,7 +232,7 @@ class FormatLease(context: Context) : Closeable {
     fun digestDescriptor(input: ParcelFileDescriptor,privateProbeName: String?=null): Evidence =
         request(input,privateProbeName,FormatWorkerService.DIGEST,0)
     private fun request(input: ParcelFileDescriptor?,privateProbeName: String?,operation: Int,port: Int,owned:OwnedSheetRequest?=null,
-                        memory:SharedMemory?=null,memoryBytes:Int=-1): Evidence {
+                        memory:SharedMemory?=null,memoryBytes:Int=-1,pdfPage:Int=-1): Evidence {
         require((input==null)!=(memory==null)) { "Exactly one input transport required" }
         check(Looper.myLooper()!=Looper.getMainLooper()) { "Wait for workers off the UI thread" }
         check(!closed.get() && started.compareAndSet(false,true)) { "One request per lease" }
@@ -218,7 +241,7 @@ class FormatLease(context: Context) : Closeable {
         expectedTransport.set(if(memory==null) "READ_ONLY_FILE" else "READ_ONLY_SHARED_MEMORY")
         try {
             require(privateProbeName==null || privateProbeName.matches(Regex(FormatWorkerService.PRIVATE_NAME)))
-            val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName);putInt("socketPort",port)
+            val data=Bundle().apply { putString("id",id);putParcelable("input",input);putString("privateName",privateProbeName);putInt("socketPort",port);putInt("pdfPage",pdfPage)
                 if(memory!=null) {putParcelable("memory",memory);putInt("memoryBytes",memoryBytes)} }
             connected.get().send(Message.obtain(null,operation).apply { this.data=data;replyTo=reply })
             return result.get(8,TimeUnit.SECONDS)

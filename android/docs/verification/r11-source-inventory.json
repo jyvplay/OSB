@@ -196,7 +196,7 @@
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "ffbc2bfaaee462cae7c21d21ee35175b7b370d50a5d66abfecce99c56899c5ed"
+      "sha256": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",
@@ -220,7 +220,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "8c23bebcf192eac7fb24cfdebfcb199e7b7a297e91800cbfc07f90103194167f"
+      "sha256": "099e449a8ef26d0f2a67bf8d98ddeccbf2104216fd1bfd21d105f91d0f293465"
     },
     {
       "path": "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",
@@ -364,7 +364,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "325c2a37974c0b4fab6bee45cf41ff1b312502b8b6de0c50160ea47391046b5d"
+      "sha256": "f57deb432327c0fbb5c59bd80dfea9135863c90e1bd4a761effcb373e421f59b"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -1036,31 +1036,37 @@
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/PdfDocument.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf",
-      "sha256": "27466266f12e47832597554b3add7c05de9c9d546099a46fcdc4b0154d35575a"
+      "sha256": "ea915a0d9644fd03eeee0e2bbeb3bd3eba8bd366aebf41acaa36e39440d17216"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/PdfScreen.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf",
-      "sha256": "5449bfc92c99f12d2992ef618b52b06b403e760fc45fa9d28e1564171e32f606"
+      "sha256": "1f9d2a6bdc432e23d0526dd520fcea0051fb6b84e1e7b22f87dd9cf72b6490d6"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "a428579e999c9191090310e87fbeba6824a75cb68036ac7354b492ccc8db9734"
+      "sha256": "af7651821e32e68fbbab1c3e216a7f3db5537889bca6eefceb32ab29880067d5"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
-      "sha256": "dc6cc0a65e9ad80429045e9a2a335b32fa4137eaf22987230de8241f6677f921"
+      "sha256": "0df998468d7c64228e2406c1ae1d56273dade36ee2e7a1b1e1d786d32854d9e1"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt",
       "module": ":format:pdf",
       "package": "dev.fusion.format.pdf.sandbox",
       "sha256": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d"
+    },
+    {
+      "path": "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt",
+      "module": ":format:pdf",
+      "package": "dev.fusion.format.pdf.sandbox",
+      "sha256": "739b9403a3bf4bf4932b75ade480fd294c168372b010604e2e3f4b86d93bb246"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",

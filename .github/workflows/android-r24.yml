@@ -1,4 +1,4 @@
-name: Android R23 memory and R22 boundary checks
+name: Android R24 appearance, input and PDF boundaries
 on:
   push:
     paths: ['android/app/**', 'android/core/designsystem/**', 'android/core/settings/**', 'android/core/windowing/**', 'android/feature/settings/**', 'android/feature/automation/**', 'android/tools/*r24*', 'android/gradle/**', 'android/gradle.properties', '.github/workflows/android-r24.yml']
@@ -37,7 +37,7 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Execute actual R23 memory plus retained FD, ZIP/XML and system-picker boundaries
+      - name: Execute actual R24 appearance, task input and PDF boundaries
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
@@ -45,11 +45,15 @@ jobs:
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py
+      - name: Publish bounded actual native screenshots, if exported by the device
+        if: always()
+        run: python3 tools/export_r24_captures.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: r23-memory-boundary-device-reports
+          name: r24-native-device-reports
           path: |
             android/device.log
             android/device-results.json
             android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**

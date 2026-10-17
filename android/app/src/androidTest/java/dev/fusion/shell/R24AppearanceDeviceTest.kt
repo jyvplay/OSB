@@ -35,7 +35,7 @@ class R24AppearanceDeviceTest {
     }
     private fun capture(name:String) {
         val raw=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        val width=minOf(720,raw.width);val height=(raw.height.toLong()*width/raw.width).toInt()
+        val width=minOf(400,raw.width);val height=(raw.height.toLong()*width/raw.width).toInt()
         val resized=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888)
         try {
             Canvas(resized).drawBitmap(raw,null,android.graphics.Rect(0,0,width,height),null)

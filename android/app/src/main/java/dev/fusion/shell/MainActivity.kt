@@ -259,7 +259,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private val openPdf = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null && PilotPolicy.mayRun("pdf", acknowledgedExperiments)) pdfUri = uri
+        if (uri != null && PilotPolicy.mayRun("pdf-preview", acknowledgedExperiments)) pdfUri = uri
     }
 
     private val openPsd = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -776,7 +776,7 @@ class MainActivity : ComponentActivity() {
             "editor" -> EditorScreen(editorModel) { request -> saveCopy.launch(request) }
 
             "docs" -> DocsContent()
-            "pdf" -> PdfScreen(this, pdfUri) { openPdf.launch(arrayOf("application/pdf")) }
+            "pdf", "pdf-preview" -> PdfScreen(this, pdfUri) { openPdf.launch(arrayOf("application/pdf")) }
             "image" -> ImageContent()
             "psd" -> dev.fusion.psd.PsdScreen(this, psdUri) { openPsd.launch(arrayOf("image/vnd.adobe.photoshop", "application/x-photoshop", "*/*")) }
             "browser" -> BrowserScreen()

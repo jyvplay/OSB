@@ -53,16 +53,16 @@ private fun AppGlyph(id:String,modifier:Modifier) {
                 val p=Path().apply {moveTo(0f,h*.22f);lineTo(w*.38f,h*.22f);lineTo(w*.5f,h*.38f);lineTo(w,h*.38f);lineTo(w,h*.88f);lineTo(0f,h*.88f);close()}
                 drawPath(p,ink,style=line)
             }
-            "browser" -> {drawCircle(ink,radius=w*.43f,style=line);drawLine(ink,Offset(w*.3f,h*.7f),Offset(w*.7f,h*.3f),line.strokeWidth);drawCircle(ink,w*.08f)}
+            "browser" -> {drawCircle(ink,radius=w*.43f,style=line);drawLine(ink,Offset(w*.3f,h*.7f),Offset(w*.7f,h*.3f),line.width);drawCircle(ink,w*.08f)}
             "calculator" -> {
                 drawRoundRect(ink,cornerRadius=androidx.compose.ui.geometry.CornerRadius(2f,2f),style=line)
-                drawLine(ink,Offset(w*.18f,h*.25f),Offset(w*.82f,h*.25f),line.strokeWidth)
+                drawLine(ink,Offset(w*.18f,h*.25f),Offset(w*.82f,h*.25f),line.width)
                 for(x in 0..1) for(y in 0..1) drawCircle(ink,w*.075f,Offset(w*(.3f+x*.4f),h*(.5f+y*.27f)))
             }
-            "settings" -> for(i in 0..2) {val y=h*(.2f+i*.3f);drawLine(ink,Offset(0f,y),Offset(w,y),line.strokeWidth);drawCircle(ink,w*.12f,Offset(w*(if(i==1) .7f else .3f),y))}
+            "settings" -> for(i in 0..2) {val y=h*(.2f+i*.3f);drawLine(ink,Offset(0f,y),Offset(w,y),line.width);drawCircle(ink,w*.12f,Offset(w*(if(i==1) .7f else .3f),y))}
             "apps","pilot" -> for(x in 0..1) for(y in 0..1) drawRect(ink,Offset(x*w*.58f,y*h*.58f),Size(w*.36f,h*.36f))
             else -> {drawRoundRect(ink,cornerRadius=androidx.compose.ui.geometry.CornerRadius(2f,2f),style=line)
-                for(i in 0..2) drawLine(ink,Offset(w*.18f,h*(.25f+i*.24f)),Offset(w*.82f,h*(.25f+i*.24f)),line.strokeWidth)}
+                for(i in 0..2) drawLine(ink,Offset(w*.18f,h*(.25f+i*.24f)),Offset(w*.82f,h*(.25f+i*.24f)),line.width)}
         }
     }
 }
@@ -71,15 +71,20 @@ private fun AppGlyph(id:String,modifier:Modifier) {
 fun DesktopTopBar(appearance:Appearance,activeTitle:String,workspace:Int,onFind:()->Unit,onSafety:()->Unit,onControl:()->Unit) {
     var clock by remember {mutableStateOf(LocalTime.now())}
     LaunchedEffect(Unit) {while(true) {clock=LocalTime.now();delay(15000)}}
-    Row(Modifier.fillMaxWidth().height(56.dp).background(MaterialTheme.colorScheme.surface).horizontalScroll(rememberScrollState()).padding(horizontal=12.dp),
-        verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-        Text("F",fontWeight=FontWeight.Black,color=MaterialTheme.colorScheme.primary,fontSize=24.sp)
-        Text(if(appearance.layout==DesktopLayout.ART) activeTitle else "FUSION  /  BUSINESS",fontWeight=FontWeight.SemiBold,maxLines=1)
-        TextButton(onClick=onFind,modifier=Modifier.testTag("desktop-find")) {Text("Find")}
-        TextButton(onClick=onSafety) {Text("Pilot safety")}
-        Text("Workspace ${workspace+1}",color=MaterialTheme.colorScheme.onSurfaceVariant)
-        TextButton(onClick=onControl,modifier=Modifier.testTag("control-panel")) {Text("Control panel")}
-        Text(clock.format(DateTimeFormatter.ofPattern("HH:mm")),color=MaterialTheme.colorScheme.onSurfaceVariant)
+    Row(Modifier.fillMaxWidth().height(56.dp).background(MaterialTheme.colorScheme.surface).padding(horizontal=8.dp),
+        verticalAlignment=Alignment.CenterVertically) {
+        Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()),verticalAlignment=Alignment.CenterVertically,
+            horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            Text("F",fontWeight=FontWeight.Black,color=MaterialTheme.colorScheme.primary,fontSize=24.sp)
+            Text(if(appearance.layout==DesktopLayout.ART) activeTitle else "FUSION / BUSINESS",fontWeight=FontWeight.SemiBold,maxLines=1)
+            TextButton(onClick=onFind,modifier=Modifier.testTag("desktop-find")) {Text("Find")}
+            TextButton(onClick=onSafety) {Text("Pilot safety")}
+            Text("Workspace ${workspace+1}",color=MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(clock.format(DateTimeFormatter.ofPattern("HH:mm")),color=MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Row(Modifier.widthIn(max=148.dp).horizontalScroll(rememberScrollState())) {
+            TextButton(onClick=onControl,modifier=Modifier.testTag("control-panel")) {Text("Control panel")}
+        }
     }
 }
 

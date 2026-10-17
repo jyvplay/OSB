@@ -58,7 +58,7 @@ class NativeSourceAuditChecks(unittest.TestCase):
 
     def test_stale_picker_results_cannot_bypass_module_gates(self):
         source=(audit.ROOT/'app/src/main/java/dev/fusion/shell/MainActivity.kt').read_text()
-        for name,module in [('openDoc','docs'),('openImage','image'),('openPdf','pdf'),('openPsd','psd'),('exportBackup','backup'),('importBackup','backup')]:
+        for name,module in [('openDoc','docs'),('openImage','image'),('openPdf','pdf-preview'),('openPsd','psd'),('exportBackup','backup'),('importBackup','backup')]:
             section=source.split('private val '+name+' = ',1)[1].split('private val ',1)[0]
             self.assertIn('PilotPolicy.mayRun("'+module+'", acknowledgedExperiments)',section)
         files=(audit.ROOT/'feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt').read_text()

@@ -19,10 +19,10 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "8c23bebcf192eac7fb24cfdebfcb199e7b7a297e91800cbfc07f90103194167f",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "099e449a8ef26d0f2a67bf8d98ddeccbf2104216fd1bfd21d105f91d0f293465",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
-        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "ffbc2bfaaee462cae7c21d21ee35175b7b370d50a5d66abfecce99c56899c5ed",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455",
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "1f40c9328482cb15c1b5a5861d60c89ce70b0fec337b72f09045e645754af003"
       }
     },
@@ -64,7 +64,7 @@
         "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt": "80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574",
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "1acbd7c4b132f770f0e609b81073e3913eab0249314ea69bf5ba01fe596e5aa2",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "1f40c9328482cb15c1b5a5861d60c89ce70b0fec337b72f09045e645754af003"
       }
     },
@@ -178,8 +178,8 @@
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt": "83c978c7fd188e5bb97f1988181557574e0ba0bcb5775eb870e5a2ad359bc740",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "1acbd7c4b132f770f0e609b81073e3913eab0249314ea69bf5ba01fe596e5aa2",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b"
       }
     },
     {
@@ -310,8 +310,8 @@
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "f1de07705e7b5c7d12dedf83a8f02fc3ff7e2285c64b925e0f48fa13306091f5",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "1acbd7c4b132f770f0e609b81073e3913eab0249314ea69bf5ba01fe596e5aa2",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b"
       }
     },
     {
@@ -549,7 +549,7 @@
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
         "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt": "e0c7413486c2babc0f4a7c5536cf68d0035240c3a2c25681224c90ccdb610948",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "23d6734d48b62b6cbcf36f2242b38f7c10da14fc776be5d02a3827a23ce33455"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b"
       }
     },
     {
@@ -988,11 +988,12 @@
       "module": ":format:pdf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded isolated arithmetic/CSV/literal-XLSX worker plus explicit OwnedFormatMemory/evaluateMemory* APIs: fresh owned writer unmapped before future READ restriction, no named parser-input fallback, strict dual-carrier/wire/size/operation validation, real UID/permission and retained FD controls. Current4bc7637/run38871422568 focused24/0 passed on API34 compiled37; main run121/1 failed a legacy task UI case, NOT a full regression pass. Legacy evaluateOwned* file APIs retained; trusted-parent ownership essential; no all-writer revocation, honest-worker, full PDF/Office or no-swap/erasure claim.",
+      "behavior": "Bounded isolated arithmetic/CSV/literal-XLSX worker plus explicit OwnedFormatMemory/evaluateMemory* APIs: fresh owned writer unmapped before future READ restriction, no named parser-input fallback, strict dual-carrier/wire/size/operation validation, real UID/permission and retained FD controls. Current4bc7637/run38871422568 focused24/0 passed on API34 compiled37; main run121/1 failed a legacy task UI case, NOT a full regression pass. Legacy evaluateOwned* file APIs retained; trusted-parent ownership essential; no all-writer revocation, honest-worker, full PDF/Office or no-swap/erasure claim. R24 native isolated readonly PDF preview/320px raw reply + real picker consumer authored, PENDING new renderer/native gates. Original full PDF editing remains blocked.",
       "production": [
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt"
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt",
+        "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt",
@@ -1001,13 +1002,15 @@
         "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "dc6cc0a65e9ad80429045e9a2a335b32fa4137eaf22987230de8241f6677f921",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "a428579e999c9191090310e87fbeba6824a75cb68036ac7354b492ccc8db9734",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "0df998468d7c64228e2406c1ae1d56273dade36ee2e7a1b1e1d786d32854d9e1",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "af7651821e32e68fbbab1c3e216a7f3db5537889bca6eefceb32ab29880067d5",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
@@ -1015,7 +1018,10 @@
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d",
-        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659"
+        "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659",
+        "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt": "739b9403a3bf4bf4932b75ade480fd294c168372b010604e2e3f4b86d93bb246",
+        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "77ed128b832d8ff6c8e368c5c0343975925dd568fbb0fffb5127f242704283bd",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac"
       }
     },
     {

@@ -1,8 +1,11 @@
 package dev.fusion.testing
 
 import dev.fusion.settings.*
+import dev.fusion.model.PilotPolicy
+import dev.fusion.model.PilotAccess
 import dev.fusion.designsystem.*
 import dev.fusion.windowing.*
+import dev.fusion.format.pdf.sandbox.*
 
 object R24Checks {
     private var checks=0
@@ -49,6 +52,29 @@ object R24Checks {
                     ok(InputPresentation.fit(normal,w,h,d,false)==normal.constrained(w,h,d));cases++
                 }
         refuses {InputPresentation.fit(Bounds(0f,0f,1f,1f),Float.NaN,600f,WindowDensity.TOUCH,true)}
+        ok(PilotPolicy.module("pdf").access==PilotAccess.BLOCKED)
+        ok(PilotPolicy.module("pdf-preview").access==PilotAccess.CONSENT_REQUIRED)
+        ok(!PilotPolicy.mayRun("pdf",setOf("pdf-preview")))
+        ok(!PilotPolicy.mayRun("pdf-preview",setOf("pdf")))
+        ok(PilotPolicy.mayRun("pdf-preview",setOf("pdf-preview")))
+        // Opaque request/frame policy vectors, NOT fake PDFs or a substitute native renderer.
+        val original=byteArrayOf(1,2,3);val request=OwnedPdfRequest(original,0);original.fill(9)
+        ok(request.bytes().contentEquals(byteArrayOf(1,2,3)))
+        val width=320;val height=320;val pixels=IntArray(width*height) {0x00ed13b4}
+        val page=request.accept(3,request.digest,2,0,width,height,pixels)
+        ok(page.width==320 && page.height==320 && page.pages==2)
+        pixels.fill(0);val output=page.pixels();ok(output[0]==0xffed13b4.toInt());output.fill(0);ok(page.pixels()[0]==0xffed13b4.toInt())
+        for(w in listOf(0,-1,321,Int.MAX_VALUE)) refuses {request.accept(3,request.digest,2,0,w,320,IntArray(0))}
+        for(n in listOf(0,-1,1025,Int.MAX_VALUE)) refuses {request.accept(3,request.digest,n,0,1,1,intArrayOf(0))}
+        for(i in listOf(-1,1,1024,Int.MAX_VALUE)) refuses {request.accept(3,request.digest,2,i,1,1,intArrayOf(0))}
+        refuses {request.accept(2,request.digest,2,0,1,1,intArrayOf(0))}
+        refuses {request.accept(3,"0".repeat(64),2,0,1,1,intArrayOf(0))}
+        refuses {request.accept(3,request.digest,2,0,320,320,IntArray(102399))}
+        refuses {OwnedPdfRequest(ByteArray(0),0)};refuses {OwnedPdfRequest(ByteArray(PdfPreviewLimits.MAX_BYTES+1),0)}
+        for(w in listOf(1,2,120,320,600,14400)) for(h in listOf(1,2,120,320,600,14400)) {
+            val dim=PdfPreviewLimits.dimensions(w,h);ok(dim.first in 1..320 && dim.second in 1..320)
+        }
+        refuses {PdfPreviewLimits.dimensions(Int.MAX_VALUE,1)}
         println("R24 PASS: $checks assertions;8 appearance combinations;16640 dock configurations; $cases input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.")
     }
 }

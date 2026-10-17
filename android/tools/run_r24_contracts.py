@@ -8,11 +8,12 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     out=ROOT/'testing/build/r24';out.mkdir(parents=True,exist_ok=True)
+    (out/'result.txt').unlink(missing_ok=True) # A failed compiler must never leave an earlier success marker.
     compiler=os.environ.get('KOTLINC','kotlinc');java=str(Path(os.environ['JAVA_HOME'])/'bin/java') if os.environ.get('JAVA_HOME') else 'java'
     appearance=ROOT/'core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt'
     design=[ROOT/'core/designsystem/src/main/kotlin/dev/fusion/designsystem'/name for name in ['Contrast.kt','ProfessionalPalettes.kt']]
     windows=[ROOT/'core/windowing/src/main/kotlin/dev/fusion/windowing'/name for name in ['WindowEngine.kt','DesktopCommandStream.kt','InputPresentation.kt']]
-    groups=[('appearance',[appearance]),('design',design),('windows',windows)]
+    groups=[('appearance',[appearance,ROOT/'core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt']),('design',design),('windows',windows),('pdf',[ROOT/'format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt'])]
     jars=[];sources=[]
     for name,files in groups:
         jar=out/(name+'.jar');cmd=[compiler,'-jvm-target','17','-module-name',name]
