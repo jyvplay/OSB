@@ -66,19 +66,22 @@ class R24TaskInputDeviceTest {
             putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,value)
         }))
     }
-    private fun exercise(layout:String) {
-        ActivityScenario.launch(MainActivity::class.java).use {s->
-            s.onActivity {a->SettingsGraph(a).use {assertTrue(it.setAppearance(mapOf("layout" to layout)))}}
+    private fun openExperiment(s:ActivityScenario<MainActivity>,query:String,title:String) {
             waitFor("Find") {text("Find")!=null}
             click(show(s){text("Find")})
             // AlertDialog has a separate accessibility root; parent resource-tag export is not inherited.
             waitFor("actual Find dialog and editable field") {text("Find local actions")!=null && find {it.isEditable && it.isEnabled}!=null}
-            set(requireNotNull(find {it.isEditable && it.isEnabled}),"automation")
-            val result={find {it.text?.contains("Tasks and action plans")==true && it.isEnabled}}
+            set(requireNotNull(find {it.isEditable && it.isEnabled}),query)
+            val result={find {it.text?.contains(title)==true && it.isEnabled}}
             waitFor("actual automation result text") {result()!=null}
             click(show(s,result))
             waitFor("Find dialog closed after actual result touch") {text("Find local actions")==null}
             click(show(s){text("Enable for this session with test data")})
+    }
+    private fun exercise(layout:String) {
+        ActivityScenario.launch(MainActivity::class.java).use {s->
+            s.onActivity {a->SettingsGraph(a).use {assertTrue(it.setAppearance(mapOf("layout" to layout)))}}
+            openExperiment(s,"automation","Tasks and action plans")
             click(show(s){tag("tasks-mode")})
             waitFor("loaded Task add") {tag("tasks-add")?.isEnabled==true}
             val input=show(s){tag("tasks-title")};click(input)
@@ -102,4 +105,26 @@ class R24TaskInputDeviceTest {
     private fun scenarioActivity(s:ActivityScenario<MainActivity>):MainActivity {lateinit var result:MainActivity;s.onActivity {result=it};return result}
     @Test fun oneActualImeVisibleAddInBusinessWritesExactlyOneRevision()=exercise("business")
     @Test fun oneActualImeVisibleAddInArtWritesExactlyOneRevision()=exercise("art")
+    @Test fun oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft() {
+        ActivityScenario.launch(MainActivity::class.java).use {s->
+            openExperiment(s,"notes","Notes")
+            waitFor("ready note name") {tag("notes-name")?.isEnabled==true}
+            set(show(s){tag("notes-name")},"r24-native-draft")
+            val field=show(s){tag("notes-text")};click(field);set(requireNotNull(tag("notes-text")),"R24 native dirty draft")
+            s.onActivity {it.window.insetsController?.show(WindowInsets.Type.ime())}
+            var ime=false
+            waitFor("real Notes IME") {s.onActivity {ime=it.window.decorView.rootWindowInsets?.isVisible(WindowInsets.Type.ime())==true};ime}
+            val button=show(s){text("New note")}
+            click(button) // ONE real touch, not model.request()/semantics callback/retry.
+            waitFor("actual discard dialog") {text("Discard this memory draft?")!=null}
+            s.onActivity {a->
+                val state=androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value
+                assertEquals(dev.fusion.notes.NoteAction.New,state.pending);assertEquals("R24 native dirty draft",state.text)
+            }
+            click(show(s){text("Keep editing")})
+            waitFor("discard really canceled") {text("Discard this memory draft?")==null}
+            s.onActivity {a->assertEquals("R24 native dirty draft",androidx.lifecycle.ViewModelProvider(a)[dev.fusion.notes.NotesViewModel::class.java].state.value.text)}
+        }
+    }
+
 }

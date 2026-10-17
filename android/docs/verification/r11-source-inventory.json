@@ -622,7 +622,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "0879f26501c6785004236e009e838a73ba0e86408bd72228c4547331f595cd2a"
+      "sha256": "084aad2cd5d98f79d9cd3f496c5d56757ee224a01d9479e14f4e3fbfc71935ed"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt",
@@ -700,7 +700,7 @@
       "path": "feature/settings/src/main/java/dev/fusion/settingsui/SettingsScreen.kt",
       "module": ":feature:settings",
       "package": "dev.fusion.settingsui",
-      "sha256": "19c7ec975a0b30ef4843f6f340345ffe90020b2ffa95e3432d2749e0c1a6b8f7"
+      "sha256": "f42f45bdc2f0056757f47d8bcc4a5074be37ad3310f90b57810228fcd1000231"
     },
     {
       "path": "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt",

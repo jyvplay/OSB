@@ -45,9 +45,78 @@ jobs:
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py
-      - name: Publish bounded actual native screenshots, if exported by the device
+      - name: Actual business office_blue PNG chunks 1-8
         if: always()
-        run: python3 tools/export_r24_captures.py
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 0
+      - name: Actual business office_blue PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 1
+      - name: Actual business office_blue PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 2
+      - name: Actual business office_blue PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 3
+      - name: Actual business office_blue PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 4
+      - name: Actual business office_blue PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 5
+      - name: Actual business studio_graphite PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 0
+      - name: Actual business studio_graphite PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 1
+      - name: Actual business studio_graphite PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 2
+      - name: Actual business studio_graphite PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 3
+      - name: Actual business studio_graphite PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 4
+      - name: Actual business studio_graphite PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 5
+      - name: Actual art office_blue PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 0
+      - name: Actual art office_blue PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 1
+      - name: Actual art office_blue PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 2
+      - name: Actual art office_blue PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 3
+      - name: Actual art office_blue PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 4
+      - name: Actual art office_blue PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 5
+      - name: Actual art studio_graphite PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 0
+      - name: Actual art studio_graphite PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 1
+      - name: Actual art studio_graphite PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 2
+      - name: Actual art studio_graphite PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 3
+      - name: Actual art studio_graphite PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 4
+      - name: Actual art studio_graphite PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 5
       - uses: actions/upload-artifact@v4
         if: always()
         with:

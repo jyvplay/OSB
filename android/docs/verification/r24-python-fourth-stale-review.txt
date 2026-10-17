@@ -1,0 +1,27 @@
+.................................E..............F..........................................................................................................
+======================================================================
+ERROR: test_current_pairings_and_denominator (test_module_testability.TestabilityCensusChecks.test_current_pairings_and_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/test_module_testability.py", line 10, in test_current_pairings_and_denominator
+    census.validate(self.data)
+  File "/home/user/OSB/android/tools/module_testability.py", line 33, in validate
+    require(row.get('sha256',{}).get(path)==hashlib.sha256(file.read_bytes()).hexdigest(),'Census review stale: '+path)
+  File "/home/user/OSB/android/tools/module_testability.py", line 11, in require
+    if not ok: raise ValueError(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Census review stale: app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt
+
+======================================================================
+FAIL: test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/test_native_source_audit.py", line 16, in test_current_source_report_is_reproducible
+    self.assertEqual(data,(audit.ROOT/'docs/verification/r11-source-inventory.json').read_text())
+AssertionError: '{\n [22773 chars]: "084aad2cd5d98f79d9cd3f496c5d56757ee224a01d9[24268 chars]n}\n' != '{\n [22773 chars]: "0879f26501c6785004236e009e838a73ba0e86408bd[24268 chars]n}\n'
+Diff is 48458 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 155 tests in 0.655s
+
+FAILED (failures=1, errors=1)

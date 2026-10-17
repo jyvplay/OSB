@@ -22,8 +22,8 @@
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "099e449a8ef26d0f2a67bf8d98ddeccbf2104216fd1bfd21d105f91d0f293465",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "f5bc7ac773e983f1c28e0a2adc6f717f7b9aee32c09ea2c73a411b69f097dbed",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "545e4381ccd10a6a9f0123ac0af5e117c30412850fd9beaac540b96bbdc08465"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "df0514b8bc33743b394100b397cd682bbab1b3fbf34b727d97d7059f931c3634",
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "41323609be4305e8a33ad7bc921da3035267557eab1b28e3bb770f38319420e8"
       }
     },
     {
@@ -65,7 +65,7 @@
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "545e4381ccd10a6a9f0123ac0af5e117c30412850fd9beaac540b96bbdc08465"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "41323609be4305e8a33ad7bc921da3035267557eab1b28e3bb770f38319420e8"
       }
     },
     {
@@ -179,7 +179,7 @@
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt": "83c978c7fd188e5bb97f1988181557574e0ba0bcb5775eb870e5a2ad359bc740",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "df0514b8bc33743b394100b397cd682bbab1b3fbf34b727d97d7059f931c3634"
       }
     },
     {
@@ -311,7 +311,7 @@
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "f1de07705e7b5c7d12dedf83a8f02fc3ff7e2285c64b925e0f48fa13306091f5",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "85e9894a80cc46ef4abc8ad4f3f5581c7738c49ebe1197aa6808afe5fdafa6ac",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "df0514b8bc33743b394100b397cd682bbab1b3fbf34b727d97d7059f931c3634"
       }
     },
     {
@@ -549,7 +549,7 @@
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
         "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt": "e0c7413486c2babc0f4a7c5536cf68d0035240c3a2c25681224c90ccdb610948",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "ad8f170771710a78f6eea3d2c1d38dbe2cf564562a6ebcef5ca11b115bc2777b"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "df0514b8bc33743b394100b397cd682bbab1b3fbf34b727d97d7059f931c3634"
       }
     },
     {

@@ -113,6 +113,9 @@ class R24AppearanceDeviceTest {
     @Test fun realMouseMagnifiesDrawingNotHitboxAndMotionOffRestoresBaseSize() {
         control();compose.onNodeWithTag("control-layout-art").performClick();done()
         compose.onNodeWithTag("shelf-editor").performScrollTo()
+        mouse(5f,200f,MotionEvent.ACTION_HOVER_EXIT);mouse(5f,200f)
+        compose.onNodeWithTag("desktop-find").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
+        compose.waitUntil(10000) {compose.onNodeWithTag("shelf-editor").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.StateDescription].contains("normal")}
         val hitBefore=screenRect("shelf-editor");val glyph=screenRect("dock-glyph-editor")
         val roi=android.graphics.Rect(glyph).apply {inset(-24,-24)}
         val accent=ProfessionalPalettes.colors(ProfessionalPalette.OFFICE_BLUE).primary
@@ -122,7 +125,11 @@ class R24AppearanceDeviceTest {
         compose.waitUntil(10000) {accentWidth(roi,accent)>before*1.15}
         compose.onNodeWithTag("shelf-editor").assert(SemanticsMatcher("actual hover state") {it.config[androidx.compose.ui.semantics.SemanticsProperties.StateDescription].contains("enlarged")})
         assertEquals(hitBefore,screenRect("shelf-editor"))
-        mouse(5f,200f,MotionEvent.ACTION_HOVER_EXIT)
+        mouse(5f,200f,MotionEvent.ACTION_HOVER_EXIT);mouse(5f,200f)
+        // Patch-specific independent attack: focus alone must magnify with the pointer outside the dock.
+        compose.onNodeWithTag("shelf-editor").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
+        compose.waitUntil(10000) {accentWidth(roi,accent)>before*1.15}
+        compose.onNodeWithTag("desktop-find").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus) {it()}
         control();compose.onNodeWithTag("control-dock-zoom").performScrollTo().performClick();done()
         mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY(),MotionEvent.ACTION_HOVER_ENTER);mouse(hitBefore.exactCenterX(),hitBefore.exactCenterY())
         compose.waitUntil(10000) {accentWidth(roi,accent)<=before*1.08}
@@ -145,4 +152,22 @@ class R24AppearanceDeviceTest {
         }
         compose.onNodeWithTag("art-dock").assertExists()
     }
+    @Test fun densityAndSearchRemainReachableAtActualTwoHundredPercentFont() {
+        val resolver=compose.activity.contentResolver
+        val before=android.provider.Settings.System.getString(resolver,"font_scale")
+        require(before==null || before.toFloatOrNull()?.let {it in .5f..5f}==true)
+        fun shell(command:String)=instrumentation.uiAutomation.executeShellCommand(command).use {fd->android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use {it.readBytes()}}
+        try {
+            shell("settings put system font_scale 2.0")
+            compose.activityRule.scenario.recreate()
+            compose.waitUntil(10000) {kotlin.math.abs(compose.activity.resources.configuration.fontScale-2f)<.01f}
+            open("settings")
+            compose.onNodeWithText("TOUCH").performScrollTo().assertIsDisplayed().performClick()
+            compose.onNodeWithTag("settings-apply-density").performScrollTo().assertIsDisplayed().performClick()
+            compose.onNodeWithText("Window geometry density: TOUCH").assertExists()
+            compose.onNodeWithTag("settings-query").performScrollTo().assertIsDisplayed().performTextInput("appearance")
+            compose.onNodeWithTag("settings-query").assertTextContains("appearance")
+        } finally {shell(if(before==null) "settings delete system font_scale" else "settings put system font_scale $before")}
+    }
+
 }

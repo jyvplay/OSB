@@ -38,29 +38,30 @@ def collect(root):
             'limits':'Android emulator JUnit results only; not physical-device/AX/security/feature acceptance.'}
 
 
-def messages(report):
-    rows=[f"{row['class']}.{row['name']}={row['status']}" for row in report['cases']]
-    if not rows: rows=['No executed device test cases found. No pass inferred.']
-    chunk=[];size=0
-    for row in rows:
-        length=len(row.encode('utf-8'))+2
-        if chunk and size+length>2500:
+def messages(report,mode="all"):
+    if mode in ('all','cases'):
+        rows=[f"{row['class']}.{row['name']}={row['status']}" for row in report['cases']]
+        if not rows: rows=['No executed device test cases found. No pass inferred.']
+        chunk=[];size=0
+        for row in rows:
+            length=len(row.encode('utf-8'))+2
+            if chunk and size+length>2500:
+                text='Android test results: '+ '; '.join(chunk)
+                yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
+                chunk=[];size=0
+            chunk.append(row);size+=length
+        if chunk:
             text='Android test results: '+ '; '.join(chunk)
             yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
-            chunk=[];size=0
-        chunk.append(row);size+=length
-    if chunk:
-        text='Android test results: '+ '; '.join(chunk)
-        yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
 
     for row in report['cases']:
-        if 'failure_detail' in row:
+        if mode in ('all','failures') and 'failure_detail' in row:
             text=f"Failure detail {row['class']}.{row['name']}: "+row['failure_detail']
             yield '::notice::'+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser();parser.add_argument('--root',default='app/build/outputs/androidTest-results/managedDevice');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--root',default='app/build/outputs/androidTest-results/managedDevice');parser.add_argument('--mode',choices=['all','cases','failures'],default='all');args=parser.parse_args()
     report=collect(args.root)
     Path('device-results.json').write_text(json.dumps(report,indent=2)+'\n')
-    for message in messages(report): print(message)
+    for message in messages(report,args.mode): print(message)

@@ -1,6 +1,7 @@
 package dev.fusion.notes
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -20,19 +21,20 @@ fun NotesScreen(model: NotesViewModel) {
     val state by model.state.collectAsStateWithLifecycle()
     val ready=!state.busy && state.pending==null && !state.recoveryBlocked
     val revision=state.revision
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp).semantics { paneTitle="Local Markdown notes" },
-        verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        Text("Local Markdown • ${if(state.dirty) "Unsaved note draft" else "No unsaved changes"}")
-        Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")
-        Text(state.recoveryStatus,Modifier.testTag("notes-recovery-status").semantics { liveRegion=LiveRegionMode.Polite })
-        OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
-        FlowRow(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(8.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+    Column(Modifier.fillMaxSize().padding(12.dp)) {
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).testTag("notes-toolbar"),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick={ model.request(NoteAction.New) },enabled=ready) { Text("New note") }
             Button(onClick=model::save,enabled=ready && state.name.isNotBlank(),modifier=Modifier.testTag("notes-save")) { Text("Save note") }
             OutlinedButton(onClick=model::checkpointNow,enabled=ready,modifier=Modifier.testTag("notes-checkpoint")) { Text("Checkpoint draft") }
             OutlinedButton(onClick={ model.refresh() },enabled=ready) { Text("Refresh inventory") }
             if(revision!=null) OutlinedButton(onClick={ model.request(NoteAction.Delete(state.name,revision)) },enabled=ready) { Text("Move note to trash…") }
         }
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).semantics {paneTitle="Local Markdown notes"},
+            verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Text("Local Markdown • ${if(state.dirty) "Unsaved note draft" else "No unsaved changes"}")
+        Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")
+        Text(state.recoveryStatus,Modifier.testTag("notes-recovery-status").semantics { liveRegion=LiveRegionMode.Polite })
+        OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
         OutlinedTextField(state.text,model::edit,Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).testTag("notes-text"),enabled=ready,label={ Text("Markdown source") })
         if(state.busy) CircularProgressIndicator()
         Text(state.status,Modifier.semantics { liveRegion=LiveRegionMode.Polite })
@@ -59,6 +61,7 @@ fun NotesScreen(model: NotesViewModel) {
         Text("Saved notes (selecting another note prompts before discarding a draft)")
         state.names.forEach { name -> TextButton(onClick={ model.request(NoteAction.Open(name)) },enabled=ready,modifier=Modifier.fillMaxWidth()) { Text("Open note: $name") } }
     }
+        }
     state.pending?.let { action ->
         val deleting=action is NoteAction.Delete
         AlertDialog(onDismissRequest=model::cancel,title={ Text(if(deleting) "Move saved note to trash?" else "Discard this memory draft?") },

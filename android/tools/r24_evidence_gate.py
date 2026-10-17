@@ -10,8 +10,8 @@ UI={P+'R24AppearanceDeviceTest.'+n for n in [
  'bothPalettesAndLayoutsRenderPixelsAndPersistThroughRecreation',
  'settingsAndControlPanelShareOneStoreWithoutLosingDirtyEditorOrGates',
  'realMouseMagnifiesDrawingNotHitboxAndMotionOffRestoresBaseSize',
- 'invalidAppearancePatchAndCorruptPreferenceTypeCannotPartiallyApplyOrResetData']}
-UI|={P+'R24TaskInputDeviceTest.'+n for n in ['oneActualImeVisibleAddInBusinessWritesExactlyOneRevision','oneActualImeVisibleAddInArtWritesExactlyOneRevision']}
+ 'invalidAppearancePatchAndCorruptPreferenceTypeCannotPartiallyApplyOrResetData','densityAndSearchRemainReachableAtActualTwoHundredPercentFont']}
+UI|={P+'R24TaskInputDeviceTest.'+n for n in ['oneActualImeVisibleAddInBusinessWritesExactlyOneRevision','oneActualImeVisibleAddInArtWritesExactlyOneRevision','oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft']}
 UI|={P+'R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell'}
 PDF={P+'R24PdfDeviceTest.'+n for n in ['genuinePdfRendersInDistinctUidWithReadonlyCapabilityAndBoundedRawPixels',
  'malformedOversizeWrongPageAndMemoryCarrierRefuseThenFreshPdfLeaseRecovers','actualPickerIsolatedPreviewNextPageAndRecreationNeverWriteOriginalPdf']}

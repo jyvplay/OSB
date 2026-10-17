@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import dev.fusion.settings.SettingsGraph
 
 /** ST-04/05: only controls wired to the host are interactive; planned presets are not toggles. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(graph: SettingsGraph, probeText: String, density: String,
                    onDensity: (String) -> Unit, onShareReport: () -> Unit) {
@@ -22,7 +23,7 @@ fun SettingsScreen(graph: SettingsGraph, probeText: String, density: String,
         AppearanceControls(graph,"settings")
         HorizontalDivider(Modifier.padding(vertical=8.dp))
         Text("Window geometry density: $density")
-        Row(Modifier.horizontalScroll(rememberScrollState())) {
+        FlowRow(horizontalArrangement=Arrangement.spacedBy(4.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
             listOf("COMPACT", "BALANCED", "TOUCH").forEach { name ->
                 OutlinedButton(onClick = { pending=SettingsPatch.plan(mapOf("density" to density),mapOf("density" to name));patchStatus="" }, enabled = name != density) { Text(name) }
             }

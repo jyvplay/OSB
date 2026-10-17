@@ -140,7 +140,10 @@ jobs:
         run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
       - name: Publish actual device case outcomes
         if: always()
-        run: python3 tools/report_device_results.py
+        run: python3 tools/report_device_results.py --mode cases
+      - name: Publish bounded actual failure details separately (not hidden by notice cap)
+        if: always()
+        run: python3 tools/report_device_results.py --mode failures
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -37,3 +37,10 @@ class DeviceReportChecks(unittest.TestCase):
             ET.ElementTree(tree).write(Path(root,'TEST-result.xml'))
             report=collect(root);value=report['cases'][0]['failure_detail']
             self.assertIn('Example.kt:44',value);self.assertLess(len(value.encode('utf-8')),2700)
+
+    def test_separate_case_and_failure_modes_do_not_drop_failed_statuses(self):
+        # Reporting grammar fixture, not fabricated native execution.
+        report={'cases':[{'class':'C','name':str(i),'status':'FAIL','failure_detail':'bounded failure '+str(i)} for i in range(9)]}
+        cases=list(messages(report,'cases'));details=list(messages(report,'failures'))
+        self.assertIn('C.8=FAIL',''.join(cases));self.assertEqual(9,len(details))
+        self.assertNotIn('Failure detail',''.join(cases));self.assertNotIn('Android test results:',''.join(details))
