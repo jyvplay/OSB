@@ -19,7 +19,7 @@ class ContinuationToolsTests(unittest.TestCase):
 
     def test_target_mutations_do_not_pass(self):
         baseline = {'schema': 1, 'origin': 'android-instrumentation', 'api': 34,
-                    'required_targets': [{'tag': 'test-input-not-runtime-evidence', 'width_dp': 48, 'height_dp': 48}]}
+                    'required_targets': [{'tag': 'test-input-not-runtime-evidence', 'width_dp': 48, 'height_dp': 48, 'visible_width_dp': 48, 'visible_height_dp': 48}]}
         self.assertEqual(1, validate_audit(baseline)['measured_targets'])
         for value in (0, 20, float('nan'), float('inf'), True, '48'):
             altered = copy.deepcopy(baseline)
@@ -201,3 +201,13 @@ class ContinuationToolsTests(unittest.TestCase):
             self.assertFalse((target / 'r24c-wall.png').exists())
             (source / 'r24c-silver.png').unlink(); capture.stage()
             self.assertEqual(list(target.iterdir()), [])
+
+    def test_omitted_clipped_bounds_are_not_visual_acceptance(self):
+        # Actual retained native observations, with fields removed as an explicit parser attack.
+        record = json.loads((land.ROOT / 'docs/verification/r24c-native-previews/fourth-failed-workflow/provenance.json').read_text())
+        report = record['actual_target_observations']['r24c-silver.json']
+        self.assertEqual(validate_audit(report)['measured_targets'], 7)
+        for key in ('visible_width_dp', 'visible_height_dp'):
+            changed = copy.deepcopy(report)
+            changed['required_targets'][0].pop(key)
+            with self.assertRaises(ValueError): validate_audit(changed)

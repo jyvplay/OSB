@@ -1,0 +1,38 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/42f1e421c4c2cb3f453d73137a42fb86a8b52e8a/.github",
+    "start_line": 3,
+    "start_column": null,
+    "end_line": 3,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/42f1e421c4c2cb3f453d73137a42fb86a8b52e8a/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R24TabletopDeviceTest.corruptTabletopIsNotSilentlyReplacedWithDefaults=PASS; dev.fusion.shell.R24TabletopDeviceTest.actualDragPublishesCoordinatesAndSurvivesActivityRecreation=PASS; dev.fusion.shell.R24TabletopDeviceTest.silverAndLightSceneHaveRealTargetsAndNativeCaptures=PASS; dev.fusion.shell.R24TabletopDeviceTest.measuredTargetsAndSavedViewRemainOperableAtActualTwoHundredPercentFont=PASS; dev.fusion.shell.R24TabletopDeviceTest.wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore=PASS; dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease=PASS; dev.fusion.shell.R24LocalMediaDeviceTest.networkUrlIsNotTreatedAsAPlayableLocalDocument=PASS; dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission=PASS; dev.fusion.shell.R24MapAndServiceDeviceTest.providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/42f1e421c4c2cb3f453d73137a42fb86a8b52e8a/.github",
+    "start_line": 39,
+    "start_column": null,
+    "end_line": 39,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+    "raw_details": ""
+  }
+]

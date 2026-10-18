@@ -4,7 +4,9 @@ Work branch: `arena/a8ac5475-osb`. Native application: **`android/`**, not the r
 
 ## Latest collected checkpoint
 
-**8e2567f:** complete main-app workflow **142/0/0 SUCCESS**, continuation **9/0/0 SUCCESS**, retained focused suites **8/27/9 PASS**, privacy34 **19/0/0 SUCCESS**. **Privacy37 failed3/16/0** at UI readiness; it is not covered by older green runs. The actual fifth PNG transport was rejected after4KiB annotation truncation; no fifth image was visually inspected. Test-only readiness/diagnostic and separate per-frame transport repairs are awaiting a new native run. [Exact fifth findings](verification/r24c-fifth-repair.md).
+**42f1e42:** full main-app workflow **142/0/0 SUCCESS**, continuation **9/0/0 SUCCESS** including complete verified PNG transport, privacy **19/0/0 SUCCESS on API34 andAPI37**, R23 **27/0/0** and appearance **9/0/0 SUCCESS**. **The separate focused R21 run failed7/1/0** at its actual system-save launch; the full-suite pass does not erase that result. A targeted CSV status/native-touch repair now awaits native execution. [Sixth review, actual images and counterexample](verification/r24c-sixth-review.md).
+
+A workflow-only follow-up **66c45be** also passed19/19 on both privacy runtimes. API34 exported19 actual readiness observations (one deliberately asleep precondition, one wake, all ready afterward); API37 still reported no exported readiness records. Its exact earlier startup-focus cause remains unknown, not called solved by later green runs.
 
 ## What is actually implemented
 
@@ -26,7 +28,7 @@ The floor polygon occupies **0.8316 of the scene before chrome/occlusion**, not8
 - **1/50 unestablished:2%**, `:format:lok`.
 - **0/50 full original-spec accepted:0%;50/50 unfinished at full scope:100%.**
 - The register still contains231 requirements,36 cross-cutting obligations and30 unpassed formal spikes.
-- Compared with the session baseline, eleven included production modules have implementation changes (22% of the current50-module inventory), plus test/build/evidence work. This is **not** eleven new or completed modules. The maps addition increases the previous48/49 subset census to49/50.
+- Compared with the session baseline, twelve included production modules have implementation changes (24% of the current50-module inventory), plus test/build/evidence work. This is **not** twelve new or completed modules. The maps addition increases the previous48/49 subset census to49/50.
 
 [Auditable per-module census](MODULE-TESTABILITY.md) and [full-scope blockers](MODULE-COMPLETION.md). Neither a large assertion count nor a successful subset promotes full-module acceptance.
 
@@ -34,7 +36,10 @@ The floor polygon occupies **0.8316 of the scene before chrome/occlusion**, not8
 
 ### Executed full local host pipelines
 
-Newest exact committed pipeline: **8e2567fe2b0fa4f902fffc05fd1c965bcacd8193**, exit0/**98.441s**, **172 Python tests,439839 R24C assertions,65097 retained R24 assertions**. [Complete archive](verification/r24c/host-8e2567f/pipeline.json). The6158 new viewport observations are included in439839, not an extra percentage. Later test/transport-only edits must recheck affected gates.
+**42f1e421c4c2cb3f453d73137a42fb86a8b52e8a:** exit0/**100.178s**, **176 Python tests,439839 R24C assertions,65097 retained R24 assertions**. [Exact archive](verification/r24c/host-42f1e42/pipeline.json). Later clipped-field validator hardening has an additional mutation test and was rechecked against all four actual sixth-candidate frame records; it is not another Android execution.
+
+
+Earlier exact committed pipeline: **8e2567fe2b0fa4f902fffc05fd1c965bcacd8193**, exit0/**98.441s**, **172 Python tests,439839 R24C assertions,65097 retained R24 assertions**. [Complete archive](verification/r24c/host-8e2567f/pipeline.json). The6158 new viewport observations are included in439839, not an extra percentage. Later test/transport-only edits must recheck affected gates.
 
 Earlier pipeline retained for comparison:
 
@@ -58,8 +63,9 @@ The later viewport/transport patch also completed the full host command: **172 P
 |0a7b22e |7/2/0 FAILURE |139/3/0 FAILURE; separate build/JVM/lint/contracts passed |19/0/0 SUCCESS |19/0/0 SUCCESS | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
 |12fbf4f |8/1/0 device FAILURE; whole workflow CANCELLED |141/1/0 FAILURE; separate build/JVM/lint/contracts passed |19/0/0 SUCCESS |19/0/0 SUCCESS | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
 |8e2567f |9/0/0 SUCCESS |142/0/0 SUCCESS, both jobs |19/0/0 SUCCESS |3/16/0 FAILURE | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
+|42f1e42 |9/0/0 SUCCESS, including four-frame verification |142/0/0 SUCCESS, both jobs |19/0/0 SUCCESS |19/0/0 SUCCESS | **R21 7/1/0 FAILURE**;R23 27/0/0;appearance9/0/0 SUCCESS |
 
-Numbers are PASS/FAIL/SKIP, not percentages of the specification. Suites overlap; do not sum them into unique product coverage. Every raw source/run/jobs/annotations/artifact receipt is retained as `verification/r24c-first-*`, `r24c-second-*`, `r24c-third-*`, `r24c-fourth-*`, and `r24c-fifth-*`.
+Numbers are PASS/FAIL/SKIP, not percentages of the specification. Suites overlap; do not sum them into unique product coverage. Every raw source/run/jobs/annotations/artifact receipt is retained as `verification/r24c-first-*`, `r24c-second-*`, `r24c-third-*`, `r24c-fourth-*`, `r24c-fifth-*`, `r24c-sixth-*`; workflow-only privacy follow-up as `r24c-seventh-*`.
 
 At0a7b22e **all five tabletop cases passed**. Audio actually played/paused but failed the keyboard-seek observation; atlas saved its point but had no visible pin target at the next step. The full run additionally caught an older real-IME long-text visibility timeout. [Third repair and revised diagnosis](verification/r24c-third-repair.md) describes the explicit dialog-IME close, asserted real keyboard-focus staging and stronger tagged AX+model checks. No timeout extension, ignored assertion or direct production state injection was substituted. Those repairs require their own native results.
 
@@ -77,6 +83,16 @@ Actual `jni/arm64-v8a/libc++_shared.so` and `libservoshell.so` were inspected; b
 
 ## Visual evidence, not fabricated artwork
 
+**Current actually inspected frames:** all four360×800 sixth-candidate previews and22 measured target instances were retrieved with complete PNG hashes. Full native1080×2400 originals are in the same run's artifact; previews explicitly use bilinear downsampling. [Inspection/provenance](verification/r24c-sixth-review.md).
+
+![Actual native silver tabletop —42f1e42](verification/r24c-native-previews/sixth-successful-workflow/r24c-silver.png)
+
+![Actual native offline atlas —42f1e42](verification/r24c-native-previews/sixth-successful-workflow/r24c-atlas.png)
+
+[Light desktop](verification/r24c-native-previews/sixth-successful-workflow/r24c-tabletop.png) · [Focused wall/pile](verification/r24c-native-previews/sixth-successful-workflow/r24c-wall.png) · [Hashes and measured bounds](verification/r24c-native-previews/sixth-successful-workflow/provenance.json).
+
+Historical failed-workflow frames below are retained, not substituted for those current captures:
+
 The first actually inspected new frame is the third-candidate silver native capture,280×622: [actual image](verification/r24c-native-previews/third-failed-workflow/r24c-silver.png). Its provenance and hash are beside it. It comes from a **failed overall workflow** whose desktop cases passed, not a whole-app green result.
 
 Observed separated cards, silver/light surfaces, a slanted floor and overflow dock; generic media/map icons prompted the next distinct native play/globe glyphs. Preview text is small and labels can ellipsize. Only named controls/frames are measured; this is not an all-pages/all-states screenshot sweep, color-vision study, visual fidelity oracle, TalkBack test, or beauty certification. The earlier image exporter lost later chunks/target records; incomplete images were not displayed. The fourth candidate retained exactly50 annotations and still lost the last wall chunks. The next transport bounds both per-step and job-wide volume and retains a capture index so absence is visible rather than guessed. Three additional fourth-candidate frames were actually inspected, including the demonstrably empty map: [provenance and observations](verification/r24c-native-previews/fourth-failed-workflow/provenance.json).
@@ -85,7 +101,7 @@ Phi remains an optional proportion heuristic. The retrieved research does not es
 
 ## What remains open / next highest-information tests
 
-1. Re-establish the actual API37 UI preconditions without changing privacy protections; preserve its failure and investigate any remaining focus error. The main142 and continuation9 cases now pass, including retained IME. Verify/inspect complete per-frame transport; truncated annotation bytes are not recoverable evidence. The engine concurrency collision is corrected and that job passed at8e2567f.
+1. Verify the retained focused CSV/system-save repair on fresh native focused/full suites. Both privacy runtimes now pass the prepared-AVD experiments, but the earlier API37 startup cause/raw before-state remains unresolved. Complete four-frame transport has now been verified and inspected; earlier truncated bytes were never used. No full cold-start/device stability proof is inferred.
 2. Test real selected-document audio and video through the system picker, video pixels, audibility on hardware, audio-focus/noisy races and a deliberately slow/revoked content provider. The current main-thread provider call is not bounded by a Handler deadline.
 3. Landscape/tablet/laptop AVD and physical-device matrices; all-pages/states at large fonts, pointer/keyboard, TalkBack, contrast and clipped targets. No Android Studio Rabbit1 GUI execution is claimed.
 4. Actual supported-ABI browser engine wrapper plus renderer/permission/profile isolation and a held-out web corpus; actual LOK JNI/ABI/16K packaging, office fidelity and license closure. Artifact/source availability alone is not integration.

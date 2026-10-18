@@ -967,7 +967,7 @@
       "path": "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt",
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
-      "sha256": "56f68adf98a8a4233f93375ad58e86493a6b4f835ace288bc828a3896c6c4067"
+      "sha256": "3b653cb4e1581dd192c9d4e9200a2164b952942adc708ba510f9871f3199671d"
     },
     {
       "path": "feature/automation/src/main/java/dev/fusion/automation/Routines.kt",

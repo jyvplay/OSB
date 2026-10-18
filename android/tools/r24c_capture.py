@@ -21,7 +21,8 @@ def validate_audit(report):
     if not 1 <= len(rows) <= 128 or len({r['tag'] for r in rows}) != len(rows):
         raise ValueError('Missing or duplicate declared targets')
     for row in rows:
-        keys = ['width_dp', 'height_dp'] + [k for k in ('visible_width_dp', 'visible_height_dp') if k in row]
+        keys = ['width_dp', 'height_dp', 'visible_width_dp', 'visible_height_dp']
+        if any(key not in row for key in keys): raise ValueError('Missing clipped/unclipped measured bounds')
         for key in keys:
             value = row[key]
             if type(value) not in (float, int) or not 47.99 <= value <= 32768:

@@ -1,0 +1,1 @@
+R24C PASS: 439839 assertions. Production geometry/codec/file races/map data/media policy/input latch; NOT native UI, audio output, hardware integrity or full-spec acceptance.

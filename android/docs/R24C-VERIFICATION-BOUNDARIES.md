@@ -2,7 +2,7 @@
 
 The [precommitted plan](R24C-PLAN.md) defines admissible objects, quantifier order, H+/H−/H∂ and acceptance thresholds. The [primary-source ledger](research/r24c-primary.md) and [privacy/engine portfolio](R24C-PRIVACY-AND-ENGINES.md) distinguish real mechanisms from missing full engines. This file makes the negative-space checks individually actionable.
 
-## Twenty-four false-solution shapes
+## Twenty-nine false-solution shapes
 
 | # | Plausible shortcut / why it does not meet the requirement | Concrete detector / retained boundary |
 |---|---|---|
@@ -31,6 +31,12 @@ The [precommitted plan](R24C-PLAN.md) defines admissible objects, quantifier ord
 | 23 | The offline privacy compartment gains provider accounts/import/export | Manifest/source tests enforce the no-INTERNET boundary; actual socket tests retain permission-denied TCP plus a working Unix-pair positive control. Main app service links stay outside the privacy APK. |
 | 24 | New folders or many assertions are counted as complete modules | `module-testability.json` requires a concrete operational behavior plus runnable behavior test and source hashes. `module-audit.json` separately keeps all original acceptance gates open; LOK remains unestablished, not a fake module pass. |
 
+|25| A parent window reporting zero IME inset means its shrunken size is safe to persist | Real Dialog-owned IME regression preserves normal bounds; actual focus + full visible-frame admission. Zero-sized atlas was captured before this repair. |
+|26| An unclipped80dp rectangle can conceal a40dp visible target, or clipped fields may simply be omitted | Actual clipped/unclipped dimensions are both required; real fourth-candidate metadata mutations reject small and missing visible bounds. Native label-layout/vertical-clipping checks supplement target geometry. |
+|27| Successful screenshot generation or job status means annotation transport is intact | Actual fifth chunks were truncated to4096bytes and rejected. Separate per-frame check-runs respect message/step/job quotas; a dependent verifier requires all four PNG hashes and metadata. |
+|28| UI tests that never obtain focus are repaired by removing protection, auto-rearming or retrying | Observe/stage an awake, unsecured, unlocked disposable emulator before launch, retain the10s focus await, record actual posture on failure, run the case once, and keep failed receipts. Earlier unobserved startup causes stay unknown. |
+|29| A genuine engine AAR with16K PT_LOAD headers is a working, cleared browser | Actual pinned Servo library headers are an intake result only. No dlopen, supported-ABI execution, profile isolation, web corpus or transitive license closure was performed. |
+
 ## Strongest attacks against the new mechanisms
 
 - **Tabletop store:** two JVM writers with the same expected revision; stale held UI command; every corrupt prefix; symlink and oversized input. Real filesystem/lock tests are stronger than a mocked repository. They still do not model hostile kernel/firmware or establish crash-safe directory fsync on every Android filesystem.
@@ -39,6 +45,8 @@ The [precommitted plan](R24C-PLAN.md) defines admissible objects, quantifier ord
 - **Media:** slow/malicious providers, unsupported codecs, loss of surface/focus, late callbacks and reentrant stop. The current native provider/type/data-source calls can block the UI before the asynchronous preparation timeout; this remains a named defect/gap, not a 15-second universal execution bound.
 - **Service URL policy:** userinfo, explicit ports, lookalike hosts, malformed percent encodings, duplicate video IDs, encoded path separators, private tokens and unbounded input. A constructor-only policy must not be bypassed by a generated data-class `copy()`; the actual implementation was changed to an ordinary class and recompiled.
 - **Input rearm:** hostile or delayed OS notifications, settings restore racing a restart, stale retained buttons, and a passive already-attached logger producing no observable change. Host state-machine coverage is finite, not proof of Android callback delivery or hardware authenticity.
+- **Viewport publication:** a Dialog owns the IME while its parent reports no IME; focus/frame notifications race layout. The pure classifier proves only a decision on supplied observations; native normal-bound preservation is separately tested. Malicious OS data and untested callback orders remain outside that evidence.
+- **Privacy lab readiness:** a booted AVD may be asleep/locked or have another foreground window. Only wake/unsecured-keyguard preparation is allowed, before the workspace exists; arbitrary system dialogs are not dismissed. The5s polling budget and10s focus await are not hard bounds on hostile/stalled Android Binder calls. Readiness is not a privacy capability or a retrospective diagnosis.
 - **Evidence tooling:** copied/stale/partial image chunks, wrong candidate, a skipped named method, duplicate cases and a failed parent workflow. Hash checking protects transport integrity, not independent CI attestation or authorship.
 
 ## Global compatibility check
