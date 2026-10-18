@@ -17,7 +17,8 @@
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
@@ -29,7 +30,8 @@
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
-        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "e988aeb8db0211a01e593e15f7cce2449bfb94b15fa7840783e0d80cc620b06d"
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "cdee88a52831d4d4d20584ea1fc382ac8d14e3f6d4cb06321e189ba924bef358",
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "8463e58905ff221e12c9674198dcd2406ed91fbd733ebc500b6094561e170e2e"
       }
     },
     {
@@ -579,7 +581,7 @@
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
-        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "e988aeb8db0211a01e593e15f7cce2449bfb94b15fa7840783e0d80cc620b06d"
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "cdee88a52831d4d4d20584ea1fc382ac8d14e3f6d4cb06321e189ba924bef358"
       }
     },
     {
@@ -1278,7 +1280,7 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617",
         "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "2b2e1649d076d57271f871018e8f852c1c3b1fc3f4991cce3ff9bd1a5bf6cfee",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "75399ce339e3bf1c33b914611d6248f762d9d040939d0c204703a7a10dbdc6dc"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "518d251806e677aa3c29815555ac2ed98d4709824e82bead7fb2daa1d176c4af"
       }
     },
     {
@@ -1302,7 +1304,7 @@
         "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt": "69e94c5ec3d46b018269e353d7e3dc670e74c679c4fb7e7f74d0e96d0cde9446",
         "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt": "9df8f8f0ff5faa98628da222e2ab8f5b1c6e95baa5d17d3e7ece70804a8c290f",
         "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a",
-        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "58103b8155d2b33ea0939d04d2c60b869de95835186de6351c5cd7badefce77c"
+        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "75b7db3edf46bbf0dc86ee2f7accec1b7b3b8ca42316ac4dc17ea694eeb38b5c"
       }
     }
   ]

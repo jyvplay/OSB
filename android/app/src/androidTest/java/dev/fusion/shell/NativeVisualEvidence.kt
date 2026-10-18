@@ -16,6 +16,12 @@ import java.io.File
 
 /** Evidence from actual Android pixels/semantics. No generated images or universal beauty score. */
 object NativeVisualEvidence {
+    /** Fixed scene pins/dialog actions need no scroll ancestor; overflow controls do. Never swallow a failed scroll. */
+    fun revealAndClick(compose: ComposeContentTestRule, tag: String) {
+        val node = compose.onNodeWithTag(tag)
+        if (hasAnyAncestor(hasScrollAction()).matches(node.fetchSemanticsNode())) node.performScrollTo()
+        node.assertIsDisplayed().performClick()
+    }
     fun capture(compose: ComposeContentTestRule, name: String, requiredTargets: List<String>) {
         require(name.matches(Regex("r24c-[a-z-]{1,40}")))
         compose.waitForIdle()
@@ -26,9 +32,9 @@ object NativeVisualEvidence {
             val node = compose.onNodeWithTag(tag)
             node.assertIsDisplayed()
             val bounds = node.getUnclippedBoundsInRoot()
-            assertTrue("$tag width ${bounds.width}", bounds.width.value >= 47.99f)
-            assertTrue("$tag height ${bounds.height}", bounds.height.value >= 47.99f)
-            required.put(JSONObject().put("tag", tag).put("width_dp", bounds.width.value).put("height_dp", bounds.height.value))
+            assertTrue("$tag width ${bounds.right - bounds.left}", (bounds.right - bounds.left).value >= 47.99f)
+            assertTrue("$tag height ${bounds.bottom - bounds.top}", (bounds.bottom - bounds.top).value >= 47.99f)
+            required.put(JSONObject().put("tag", tag).put("width_dp", (bounds.right - bounds.left).value).put("height_dp", (bounds.bottom - bounds.top).value))
         }
         val all = JSONArray()
         compose.onAllNodes(hasClickAction(), useUnmergedTree = true).fetchSemanticsNodes().forEach { node ->

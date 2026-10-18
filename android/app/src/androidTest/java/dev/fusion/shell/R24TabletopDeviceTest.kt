@@ -18,7 +18,7 @@ class R24TabletopDeviceTest {
     @get:Rule val rules: RuleChain = RuleChain.outerRule(DisposableEmulatorRule()).around(compose)
     private fun model(): TabletopSessionModel { lateinit var result: TabletopSessionModel; compose.activityRule.scenario.onActivity { result = ViewModelProvider(it)[TabletopSessionModel::class.java] }; return result }
     private fun ready() { compose.waitUntil(10000) { model().document != null && !model().busy }; compose.waitForIdle() }
-    private fun click(tag: String) { compose.onNodeWithTag(tag).performScrollTo().performClick() }
+    private fun click(tag: String) = NativeVisualEvidence.revealAndClick(compose, tag)
     private fun changed(old: Long) { compose.waitUntil(10000) { model().document!!.revision > old && !model().busy }; compose.waitForIdle() }
     private fun doc() = model().document!!
 
@@ -69,6 +69,26 @@ class R24TabletopDeviceTest {
         NativeVisualEvidence.capture(compose, "r24c-silver", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
         assertTrue(TabletopProjection.TABLE_AREA > .8)
         assertEquals("studio_silver", compose.activity.getSharedPreferences("fusion_settings", Context.MODE_PRIVATE).getString("theme", null))
+    }
+    @Test fun measuredTargetsAndSavedViewRemainOperableAtActualTwoHundredPercentFont() {
+        val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val before = android.provider.Settings.System.getString(compose.activity.contentResolver, "font_scale")
+        require(before == null || before.toFloatOrNull()?.let { it in .5f..5f } == true)
+        fun shell(command: String) = instrumentation.uiAutomation.executeShellCommand(command).use { fd -> android.os.ParcelFileDescriptor.AutoCloseInputStream(fd).use { it.readBytes() } }
+        try {
+            shell("settings put system font_scale 2.0"); compose.activityRule.scenario.recreate(); ready()
+            compose.waitUntil(10000) { kotlin.math.abs(compose.activity.resources.configuration.fontScale - 2f) < .01f }
+            for (tag in listOf("tabletop-pins", "tabletop-piles", "tabletop-views")) {
+                val node = compose.onNodeWithTag(tag); node.performScrollTo().assertIsDisplayed()
+                val bounds = node.getUnclippedBoundsInRoot()
+                assertTrue((bounds.right - bounds.left).value >= 47.99f)
+                assertTrue((bounds.bottom - bounds.top).value >= 47.99f)
+            }
+            click("tabletop-views"); compose.onNodeWithTag("view-name").performScrollTo().performTextInput("Large text workspace")
+            val revision = doc().revision; click("view-save"); changed(revision)
+            assertEquals("Large text workspace", doc().views.single().name)
+            click("views-done")
+        } finally { shell(if (before == null) "settings delete system font_scale" else "settings put system font_scale $before") }
     }
     @Test fun corruptTabletopIsNotSilentlyReplacedWithDefaults() {
         ready(); val directory = compose.activity.filesDir.toPath().resolve("tabletop")

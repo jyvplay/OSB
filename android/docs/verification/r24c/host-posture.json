@@ -1,0 +1,31 @@
+{
+  "scope": "CURRENT PROCESS exposed sysfs only; not authenticated host/laptop hardware, no physical trust verdict",
+  "settings_changed": false,
+  "usb": {
+    "schema": 1,
+    "kind": "READ_ONLY_USB_DEFAULTS_NOT_A_SECURITY_VERDICT",
+    "inventory": "UNKNOWN",
+    "buses": [],
+    "limits": [
+      "Only Linux root-hub default authorization attributes; no existing-device audit.",
+      "Zero buses or unreadable attributes are UNKNOWN, not an all-clear.",
+      "A default of 0 affects NEW devices; it does not revoke already-authorized devices.",
+      "Descriptor/vendor/product identities are forgeable; inline passive loggers can be invisible.",
+      "Cannot verify firmware, physical custody, host keyloggers, pointer/screen/camera observation or DMA isolation.",
+      "No settings changed. USB allowlisting must be configured separately with a tested recovery input/boot path."
+    ]
+  },
+  "iommu_groups": {
+    "count": 0,
+    "observation": "OBSERVED_DIRECTORY_COUNT_ONLY"
+  },
+  "thunderbolt_domains": [],
+  "conclusion": "NO_HARDWARE_KEYLOGGER_FIRMWARE_OR_ANONYMITY_VERDICT",
+  "limits": [
+    "Defaults affect new devices, not passive implants or already admitted devices.",
+    "Class/vendor/descriptor identity is not authentication.",
+    "IOMMU groups/none security alone do not establish all-device DMA protection.",
+    "Do not disable USB without a tested recovery/console path. No privileged policy was applied.",
+    "An Android guest cannot protect a hostile host; APK bytes are not whole-system footprint."
+  ]
+}

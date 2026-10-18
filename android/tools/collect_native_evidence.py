@@ -18,15 +18,15 @@ def parse_cases(annotations):
     return cases
 
 def api(path):return json.loads(subprocess.check_output(['gh','api',path],text=True))
-def collect(run_id,prefix,focused=False,privacy=False,runtime_api=34):
-    if focused and privacy: raise ValueError("Choose only one suite")
+def collect(run_id,prefix,focused=False,privacy=False,runtime_api=34,continuation=False):
+    if sum([focused,privacy,continuation])>1: raise ValueError("Choose only one suite")
     if runtime_api not in (34,37) or (runtime_api==37 and not privacy):raise ValueError("Explicit supported privacy runtime required")
     base='repos/jyvplay/OSB';run=api(f'{base}/actions/runs/{run_id}')
     if run['status']!='completed':raise ValueError('Run not complete; cannot publish final evidence')
     jobs=api(f'{base}/actions/runs/{run_id}/jobs?per_page=100')
     assert len(jobs['jobs'])==jobs['total_count']
     assert all(j['head_sha']==run['head_sha'] for j in jobs['jobs'])
-    job_prefix=f'API{runtime_api} privacy companion' if privacy else (('Focused actual Task UI','Focused actual platform','Focused actual R24') if focused else 'API34 managed-device')
+    job_prefix='Actual API34 tabletop media and offline atlas' if continuation else f'API{runtime_api} privacy companion' if privacy else (('Focused actual Task UI','Focused actual platform','Focused actual R24') if focused else 'API34 managed-device')
     device=[j for j in jobs['jobs'] if j['name'].startswith(job_prefix)]
     if len(device)!=1:raise ValueError('Exactly one actual managed-device job required')
     annotations=[];page=1
@@ -50,15 +50,15 @@ def collect(run_id,prefix,focused=False,privacy=False,runtime_api=34):
     counts={s:sum(c['result']==s for c in cases) for s in ['PASS','FAIL','SKIP']}
     result={'run':run_id,'candidate':run['head_sha'],'url':run['html_url'],'conclusion':run['conclusion'],
             'device_conclusion':device[0]['conclusion'],'counts':counts,'cases':cases,
-            'platform_api':runtime_api,'suite':'privacy' if privacy else ('focused' if focused else 'full'),
-            'scope':f'Actual retained API{runtime_api} named outcomes ('+('privacy companion only' if privacy else ('focused only' if focused else 'full suite'))+'), not physical/full-product/AX/legal acceptance'}
+            'platform_api':runtime_api,'suite':'continuation' if continuation else 'privacy' if privacy else ('focused' if focused else 'full'),
+            'scope':f'Actual retained API{runtime_api} named outcomes ('+('continuation subset only' if continuation else 'privacy companion only' if privacy else ('focused only' if focused else 'full suite'))+'), not physical/full-product/AX/legal acceptance'}
     artifacts=api(f'{base}/actions/runs/{run_id}/artifacts?per_page=100')
     for name,value in [('run',run),('jobs',jobs),('annotations',annotations),('artifacts',artifacts),('other-job-annotations',other_annotations),('result',result)]:
         (ROOT/f'docs/verification/{prefix}-{name}.json').write_text(json.dumps(value,indent=2)+'\n')
     return result
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=int);p.add_argument('prefix');p.add_argument('--focused',action='store_true');p.add_argument('--privacy',action='store_true');p.add_argument('--runtime-api',type=int,choices=[34,37],default=34);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=int);p.add_argument('prefix');p.add_argument('--focused',action='store_true');p.add_argument('--privacy',action='store_true');p.add_argument('--continuation',action='store_true');p.add_argument('--runtime-api',type=int,choices=[34,37],default=34);a=p.parse_args()
     if not re.fullmatch(r'[a-z0-9-]+',a.prefix):raise ValueError('Invalid evidence prefix')
-    r=collect(a.run,a.prefix,a.focused,a.privacy,a.runtime_api);print(json.dumps({k:v for k,v in r.items() if k!='cases'}))
+    r=collect(a.run,a.prefix,a.focused,a.privacy,a.runtime_api,a.continuation);print(json.dumps({k:v for k,v in r.items() if k!='cases'}))
 if __name__=='__main__':main()

@@ -1,0 +1,62 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/bac8225124ab05af651a9639c07a30492ab2ee2e/.github",
+    "start_line": 3,
+    "start_column": null,
+    "end_line": 3,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/bac8225124ab05af651a9639c07a30492ab2ee2e/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: No executed device test cases found. No pass inferred.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/bac8225124ab05af651a9639c07a30492ab2ee2e/.github",
+    "start_line": 971,
+    "start_column": null,
+    "end_line": 971,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/bac8225124ab05af651a9639c07a30492ab2ee2e/.github",
+    "start_line": 937,
+    "start_column": null,
+    "end_line": 937,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\n> Task :app:compileProDebugAndroidTestKotlin FAILED\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:29:45 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:\nval GestureScope.width: Int\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:29:61 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:29:45 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:29:61 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:29:67 Unresolved reference 'value'.\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/\nBuild tail (not a root-cause diagnosis):\nle because of a receiver type mismatch:\nval GestureScope.width: Int\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:31:84 Unresolved reference 'value'.\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:31:91 Unresolved reference 'put'.\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:31:115 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:\nval GestureScope.height: Int\ne: file:///home/runner/work/OSB/OSB/android/app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt:31:122 Unresolved reference 'value'.\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1792287501039.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:compileProDebugAndroidTestKotlin'.\n> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction\n   > Compilation error. See log for more details\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights from a Build Scan (powered by Develocity).\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 1m 31s\n621 actionable tasks: 621 executed",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/bac8225124ab05af651a9639c07a30492ab2ee2e/.github",
+    "start_line": 40,
+    "start_column": null,
+    "end_line": 40,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+    "raw_details": ""
+  }
+]

@@ -78,3 +78,30 @@ class ContinuationToolsTests(unittest.TestCase):
             for path, data in saved.items():
                 if data is not None: path.write_bytes(data)
                 else: path.unlink(missing_ok=True)
+
+    def test_actual_failed_native_receipt_cannot_be_promoted(self):
+        from r24c_evidence_gate import verify, NEW_CASES, expected
+        receipt = json.loads((land.ROOT / 'docs/verification/r24c-first-result.json').read_text())
+        with self.assertRaises(ValueError):
+            verify(receipt, receipt['candidate'], 'continuation')
+        self.assertEqual(9, len(NEW_CASES))
+        self.assertEqual(142, len(expected('full')))
+        self.assertEqual(19, len(expected('privacy')))
+
+    def test_receipt_must_retain_every_named_case_at_the_exact_source(self):
+        from r24c_evidence_gate import verify, NEW_CASES
+        # Deliberately synthetic parser input; never written as execution evidence.
+        candidate = 'a' * 40
+        baseline = {'candidate': candidate, 'conclusion': 'success', 'device_conclusion': 'success',
+                    'suite': 'continuation', 'platform_api': 34, 'counts': {'PASS': 9, 'FAIL': 0, 'SKIP': 0},
+                    'cases': [{'case': name, 'result': 'PASS'} for name in sorted(NEW_CASES)]}
+        self.assertEqual(9, verify(baseline, candidate, 'continuation')['passed_cases'])
+        for kind in ('missing', 'duplicate', 'skip', 'other-source', 'other-api', 'failed-workflow'):
+            changed = copy.deepcopy(baseline)
+            if kind == 'missing': changed['cases'].pop()
+            if kind == 'duplicate': changed['cases'].append(changed['cases'][0])
+            if kind == 'skip': changed['cases'][0]['result'] = 'SKIP'
+            if kind == 'other-source': changed['candidate'] = 'b' * 40
+            if kind == 'other-api': changed['platform_api'] = 37
+            if kind == 'failed-workflow': changed['conclusion'] = 'failure'
+            with self.assertRaises(ValueError): verify(changed, candidate, 'continuation')

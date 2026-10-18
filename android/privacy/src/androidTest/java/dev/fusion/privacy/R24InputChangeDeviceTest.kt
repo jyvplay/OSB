@@ -28,16 +28,19 @@ class R24InputChangeDeviceTest {
             }
             instrumentation.uiAutomation.adoptShellPermissionIdentity(android.Manifest.permission.WRITE_SECURE_SETTINGS)
             try {
-                assertTrue(Settings.Secure.putString(resolver, Settings.Secure.DEFAULT_INPUT_METHOD, ""))
-                val deadline = SystemClock.elapsedRealtime() + 10000
-                var discarded = false
-                while (SystemClock.elapsedRealtime() < deadline && !discarded) {
-                    scenario.onActivity { a -> discarded = a.findViewById<TextView>(R.id.touch_code_output) == null && a.findViewById<Button>(R.id.restart_workspace) != null }
-                    if (!discarded) SystemClock.sleep(50)
+                fun awaitDiscard() {
+                    val deadline = SystemClock.elapsedRealtime() + 10000
+                    var discarded = false
+                    while (SystemClock.elapsedRealtime() < deadline && !discarded) {
+                        scenario.onActivity { a -> discarded = a.findViewById<TextView>(R.id.touch_code_output) == null && a.findViewById<Button>(R.id.restart_workspace) != null }
+                        if (!discarded) SystemClock.sleep(50)
+                    }
+                    assertTrue("Real IME settings notification did not discard", discarded)
                 }
-                assertTrue("Real IME settings notification did not discard", discarded)
-                assertTrue(Settings.Secure.putString(resolver, Settings.Secure.DEFAULT_INPUT_METHOD, original))
-                instrumentation.waitForIdleSync()
+                assertTrue(Settings.Secure.putString(resolver, Settings.Secure.DEFAULT_INPUT_METHOD, ""))
+                awaitDiscard()
+                // Verify restart before restoring the setting; idle alone does not await a provider notification.
+                lateinit var secondWorkspaceButton: Button
                 PrivacyDeviceReady.focus(scenario)
                 scenario.onActivity { a ->
                     assertNull(a.findViewById<TextView>(R.id.touch_code_output)) // Focus must not auto-rearm.
@@ -45,8 +48,16 @@ class R24InputChangeDeviceTest {
                     a.findViewById<Button>(R.id.restart_workspace).performClick()
                     assertEquals(" (0/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
                     old.performClick(); assertEquals(" (0/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
-                    a.findViewById<Button>(R.id.touch_key_2).performClick()
+                    secondWorkspaceButton = a.findViewById(R.id.touch_key_2)
+                    secondWorkspaceButton.performClick()
                     assertTrue(a.findViewById<TextView>(R.id.touch_code_output).text.contains("1/64"))
+                }
+                assertTrue(Settings.Secure.putString(resolver, Settings.Secure.DEFAULT_INPUT_METHOD, original))
+                awaitDiscard() // A second genuine change invalidates the newly armed workspace too.
+                scenario.onActivity { a ->
+                    secondWorkspaceButton.performClick(); old.performClick()
+                    assertNull(a.findViewById<TextView>(R.id.touch_code_output))
+                    assertNotNull(a.findViewById<Button>(R.id.restart_workspace))
                 }
             } finally {
                 Settings.Secure.putString(resolver, Settings.Secure.DEFAULT_INPUT_METHOD, original)

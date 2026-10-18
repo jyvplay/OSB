@@ -14,7 +14,7 @@ import org.junit.rules.RuleChain
 class R24MapAndServiceDeviceTest {
     private val compose = createAndroidComposeRule<MainActivity>()
     @get:Rule val rules: RuleChain = RuleChain.outerRule(DisposableEmulatorRule()).around(compose)
-    private fun click(tag: String) = compose.onNodeWithTag(tag).performScrollTo().performClick()
+    private fun click(tag: String) = NativeVisualEvidence.revealAndClick(compose, tag)
     private fun open(id: String) {
         compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("shelf-$id") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         click("shelf-$id"); compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
