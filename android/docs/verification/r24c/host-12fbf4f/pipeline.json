@@ -1,0 +1,7 @@
+{
+  "candidate": "12fbf4f04228965c181c12f40763afc3392075fc",
+  "command": "python3 tools/r24c_lab.py host --tools ~/.cache/fusion-host-r23",
+  "exit_code": 0,
+  "elapsed_seconds": 93.071,
+  "scope": "Executed local host contracts/tools only; NOT native Android, Studio GUI, perceptual media or whole-product acceptance"
+}

@@ -199,7 +199,7 @@
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "06f9c823719f5349cc78cd6bf7e21a30f55fe6d7fe4580d39ac9f449e389b7b0"
+      "sha256": "c285d0b5bb6b1e792c61745bb5a66b2323b6b4df38f6104df3e0e2c0e2b7763a"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",
@@ -223,7 +223,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "aa8cd61fe246f763874a2a01d508ac7c715ed70348910a5174858516d89bba5a"
+      "sha256": "725e7a8951141a5beb054f015aa7484211504ee241da4b62e4ff7dac20d324d8"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt",
@@ -326,6 +326,12 @@
       "module": ":core:windowing",
       "package": "dev.fusion.windowing",
       "sha256": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481"
+    },
+    {
+      "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/ViewportCommit.kt",
+      "module": ":core:windowing",
+      "package": "dev.fusion.windowing",
+      "sha256": "3e40865d25d707a3d2ed52ecc63d5db280bd95771d160724b4c88f7840edb348"
     },
     {
       "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt",
@@ -787,7 +793,7 @@
       "path": "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt",
       "module": ":feature:maps",
       "package": "dev.fusion.maps",
-      "sha256": "72f22293ab0a492195133208a76c696c12257853123dab673a8daa04aaec070f"
+      "sha256": "0662ccf39e5a62534998e53a0ab31f4cb916fdf252d9e7342c25b8b4a61da746"
     },
     {
       "path": "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt",

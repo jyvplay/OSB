@@ -68,9 +68,11 @@ class R24TabletopDeviceTest {
     }
     @Test fun silverAndLightSceneHaveRealTargetsAndNativeCaptures() {
         ready()
+        NativeVisualEvidence.assertUnclippedLabel(compose, "dock-label-editor")
         NativeVisualEvidence.capture(compose, "r24c-tabletop", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
         compose.activityRule.scenario.onActivity { activity -> SettingsGraph(activity).use { assertTrue(it.setAppearance(mapOf("theme" to "studio_silver", "layout" to "art"))) } }
         compose.waitForIdle(); compose.onNodeWithTag("art-dock").assertIsDisplayed()
+        NativeVisualEvidence.assertUnclippedLabel(compose, "dock-label-editor")
         NativeVisualEvidence.capture(compose, "r24c-silver", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
         assertTrue(TabletopProjection.TABLE_AREA > .8)
         assertEquals("studio_silver", compose.activity.getSharedPreferences("fusion_settings", Context.MODE_PRIVATE).getString("theme", null))
@@ -89,6 +91,7 @@ class R24TabletopDeviceTest {
                 assertTrue((bounds.right - bounds.left).value >= 47.99f)
                 assertTrue((bounds.bottom - bounds.top).value >= 47.99f)
             }
+            NativeVisualEvidence.assertUnclippedLabel(compose, "dock-label-editor")
             click("tabletop-views"); compose.onNodeWithTag("view-name").performScrollTo().performTextInput("Large text workspace")
             val revision = doc().revision; click("view-save"); changed(revision)
             assertEquals("Large text workspace", doc().views.single().name)

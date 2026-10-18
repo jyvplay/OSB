@@ -7,17 +7,37 @@ The existing root `src/`, npm files and Vite configuration are legacy web work;
 they are not the Android product, were not extended in this pass, and are not
 part of the Android build.
 
-**This is an incomplete implementation with limited API34 emulator testing of the owner's
+**This is an incomplete implementation with limited API34 app and API34/API37 privacy emulator testing of the owner's
 v2.0 + v2.1 specification.** No release-complete or performance claim is made.
 See [build instructions](android/docs/BUILD.md),
 [current verification status](android/STATUS.md), and the
 [231-row requirement ledger](android/requirements.csv).
 
 Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md).
-[Current substantial testable subsets:48/49 (97.96%)](android/docs/MODULE-TESTABILITY.md).
-**0/49 specification-accepted modules (0%); not a production-ready beta.**
+[Current substantial testable subsets:49/50 (98%)](android/docs/MODULE-TESTABILITY.md).
+**0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Latest R24 — native professional desktop and safer input/documents
+## Current R24 continuation — native tabletop, local media and offline atlas
+
+Branch **`arena/a8ac5475-osb`**. Default slanted tabletop with draggable pins, directly focused walls,
+piles and saved scene views; silver Art / light Business presets and font-aware overflow dock.
+Actual local Android audio/video player and a real Natural Earth offline atlas are bounded additions;
+YouTube/Spotify/SoundCloud links use disclosed **external handoff**, not embedded streaming.
+Input/IME changes discard the separate privacy workspace until explicit empty rearm.
+
+**49/50 substantial code+runnable-test subsets (98%);0/50 full-spec accepted.**
+The new local host pipeline passes172 Python tests,439839 continuation assertions and65097 retained
+R24 assertions. These are not native/physical acceptance. Native failures, targeted repairs, exact-source
+results and actual screenshots are retained rather than presented as an all-green product.
+A real pinned Servo Android AAR was inspected remotely; it was **not loaded or integrated**.
+
+[Current results, counts and gaps](android/docs/R24C-RESULTS.md)
+· [Laptop / no-Studio instructions](android/docs/BUILD.md)
+· [A–J contract and alternatives](android/docs/R24C-PLAN.md)
+· [Privacy / engine boundaries](android/docs/R24C-PRIVACY-AND-ENGINES.md)
+· [Additional October engine frontier](android/docs/R24C-ADDITIONAL-ENGINE-FRONTIER.md).
+
+## Historical R24 — native professional desktop and safer input/documents
 
 **Office Blue / Studio Graphite**, independent **Business / Art** layouts in both **Settings and Control Panel**.
 Art has a centered own-app dock with real mouse/keyboard-focus magnification, running dots and left window controls;

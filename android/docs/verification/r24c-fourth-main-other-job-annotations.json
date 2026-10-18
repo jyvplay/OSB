@@ -1,0 +1,56 @@
+[
+  {
+    "job": "Traceability, assemble both flavors, JVM tests",
+    "conclusion": "success",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/12fbf4f04228965c181c12f40763afc3392075fc/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4, gradle/actions/wrapper-validation@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/12fbf4f04228965c181c12f40763afc3392075fc/.github",
+        "start_line": 25,
+        "start_column": null,
+        "end_line": 25,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "Main APK byte observations (NOT total footprint): {\"scope\": \"Actual compressed APK bytes ONLY, NOT installed/RSS/host/Tails comparison\", \"apks\": [{\"file\": \"app/build/outputs/apk/play/debug/app-play-debug.apk\", \"bytes\": 29641417, \"sha256\": \"2c05a973e6e57fb77cb67ddb7cdf87e498df0184c22d2a0176cfd581f1a43aaf\"}, {\"file\": \"app/build/outputs/apk/pro/debug/app-pro-debug.apk\", \"bytes\": 29641489, \"sha256\": \"e2b447df847893da591da91698eda8b9630dc3307b32d2aa8c0c871572ce5438\"}]}",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/12fbf4f04228965c181c12f40763afc3392075fc/.github",
+        "start_line": 39,
+        "start_column": null,
+        "end_line": 39,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/12fbf4f04228965c181c12f40763afc3392075fc/.github",
+        "start_line": 38,
+        "start_column": null,
+        "end_line": 38,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "Real stable/preview SDK catalogs (NOT build/runtime acceptance): {\"kind\": \"Real SDK catalog only; NOT compilation/runtime/Rabbit GUI acceptance\", \"manager\": \"/usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager\", \"version\": \"12.0\", \"catalogs\": [{\"channel\": 0, \"platforms\": [\"platforms;android-10\", \"platforms;android-11\", \"platforms;android-12\", \"platforms;android-13\", \"platforms;android-14\", \"platforms;android-15\", \"platforms;android-16\", \"platforms;android-17\", \"platforms;android-18\", \"platforms;android-19\", \"platforms;android-20\", \"platforms;android-21\", \"platforms;android-22\", \"platforms;android-23\", \"platforms;android-24\", \"platforms;android-25\", \"platforms;android-26\", \"platforms;android-27\", \"platforms;android-28\", \"platforms;android-29\", \"platforms;android-30\", \"platforms;android-31\", \"platforms;android-32\", \"platforms;android-33\", \"platforms;android-33-ext4\", \"platforms;android-33-ext5\", \"platforms;android-34\", \"platforms;android-34-ext10\", \"platforms;android-34-ext11\", \"platforms;android-34-ext12\", \"platforms;android-34-ext8\", \"platforms;android-35\", \"platforms;android-35-ext14\", \"platforms;android-35-ext15\", \"platforms;android-36\", \"platforms;android-36-ext18\", \"platforms;android-36-ext19\", \"platforms;android-36.1\", \"platforms;android-37.0\", \"platforms;android-37.1\", \"platforms;android-37.2\", \"platforms;android-37.2-beta1\", \"platforms;android-37.2-beta2\", \"platforms;android-37.2-beta3\", \"platforms;android-7\", \"platforms;android-8\", \"platforms;android-9\", \"platforms;android-CANARY\", \"platforms;android-canary-20260909\", \"platforms;android-canary-20261007\"], \"sdk37_exact\": false, \"sdk37_base_packages\": [\"platforms;android-37.0\"]}, {\"channel\": 3, \"platforms\": [\"platforms;android-10\", \"platforms;android-11\", \"platforms;android-12\", \"platforms;android-13\", \"platforms;android-14\", \"platforms;android-15\", \"platforms;android-16\", \"platforms;android-17\", \"platforms;android-18\", \"platforms;android-19\", \"platforms;android-20\", \"platforms;android-21\", \"platforms;android-22\", \"platforms;android-23\", \"platforms;android-24\", \"platforms;android-25\", \"platforms;android-26\", \"platforms;android-27\", \"platforms;android-28\", \"platforms;android-29\", \"platforms;android-30\", \"platforms;android-31\", \"platforms;android-32\", \"platforms;android-33\", \"platforms;android-33-ext4\", \"platforms;android-33-ext5\", \"platforms;android-34\", \"platforms;android-34-ext10\", \"platforms;android-34-ext11\", \"platforms;android-34-ext12\", \"platforms;android-34-ext8\", \"platforms;android-35\", \"platforms;android-35-ext14\", \"platforms;android-35-ext15\", \"platforms;android-36\", \"platforms;android-36-ext18\", \"platforms;android-36-ext19\", \"platforms;android-36.1\", \"platforms;android-37.0\", \"platforms;android-37.1\", \"platforms;android-37.2\", \"platforms;android-37.2-beta1\", \"platforms;android-37.2-beta2\", \"platforms;android-37.2-beta3\", \"platforms;android-7\", \"platforms;android-8\", \"platforms;android-9\", \"platforms;android-CANARY\", \"platforms;android-canary-20260909\", \"platforms;android-canary-20261007\"], \"sdk37_exact\": false, \"sdk37_base_packages\": [\"platforms;android-37.0\"]}], \"sdk37_in_any_observed_catalog\": true, \"package_policy\": \"Base37 accepts only released android-37 or android-37.0; not higher minors/beta/canary\", \"limits\": \"Two real non-installing list commands;120s/4MiB stdout/256KiB stderr each; no fake SDK or license acceptance.\"}",
+        "raw_details": ""
+      }
+    ]
+  }
+]

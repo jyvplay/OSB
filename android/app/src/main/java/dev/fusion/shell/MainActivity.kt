@@ -41,6 +41,7 @@ import dev.fusion.settings.DesktopLayout
 import dev.fusion.designsystem.FusionTheme
 import dev.fusion.settingsui.AppearanceControls
 import dev.fusion.windowing.InputPresentation
+import dev.fusion.windowing.ViewportCommit
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -57,6 +58,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -81,6 +83,7 @@ import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -471,6 +474,26 @@ class MainActivity : ComponentActivity() {
         val preferences by settingsGraph.snapshots.collectAsState()
         val appearance=AppearancePreferences.read(preferences)
         val imeVisible=WindowInsets.ime.getBottom(LocalDensity.current)>0
+        val windowFocused = LocalWindowInfo.current.isWindowFocused
+        var nativeFrames by remember { mutableStateOf<Pair<ViewportCommit.Pixels, ViewportCommit.Pixels>?>(null) }
+        DisposableEffect(window.decorView) {
+            val view = window.decorView
+            fun observeFrame() {
+                nativeFrames = runCatching {
+                    val metrics = windowManager.currentWindowMetrics
+                    val bounds = metrics.bounds
+                    val bars = metrics.windowInsets.getInsetsIgnoringVisibility(
+                        android.view.WindowInsets.Type.systemBars() or android.view.WindowInsets.Type.displayCutout())
+                    val visible = android.graphics.Rect(); view.getWindowVisibleDisplayFrame(visible)
+                    ViewportCommit.Pixels(bounds.left + bars.left, bounds.top + bars.top, bounds.right - bars.right, bounds.bottom - bars.bottom) to
+                        ViewportCommit.Pixels(visible.left, visible.top, visible.right, visible.bottom)
+                }.getOrNull()
+            }
+            val listener = android.view.ViewTreeObserver.OnGlobalLayoutListener { observeFrame() }
+            view.viewTreeObserver.addOnGlobalLayoutListener(listener); observeFrame()
+            onDispose { view.viewTreeObserver.removeOnGlobalLayoutListener(listener) }
+        }
+        val persistentViewport = ViewportCommit.admit(windowFocused, imeVisible, nativeFrames?.first, nativeFrames?.second)
         var controlVisible by remember {mutableStateOf(false)}
         var paletteVisible by remember { mutableStateOf(false) }
         val focusRequester = remember { FocusRequester() }
@@ -569,16 +592,17 @@ class MainActivity : ComponentActivity() {
                 val sw = maxWidth.value
                 val sh = maxHeight.value
                 val scale = LocalDensity.current.density
-                LaunchedEffect(sw, sh, desktopModel.loading,imeVisible) {
-                    // Keyboard presentation is transient, not a new persistent desktop geometry.
-                    if (!desktopModel.loading && !imeVisible) dispatch(WindowCommand.SetViewport(sw, sh))
+                LaunchedEffect(sw, sh, desktopModel.loading, persistentViewport) {
+                    // A Dialog can own the IME while THIS window reports ime=false. Never persist its reduced viewport.
+                    // The real focus + visible-frame observation must admit the unobscured window first.
+                    if (!desktopModel.loading && persistentViewport) dispatch(WindowCommand.SetViewport(sw, sh))
                 }
 
                 TabletopDesktop(tabletopModel, appearance.scene==dev.fusion.settings.DesktopScene.FLAT, !desktopModel.loading && !desktopModel.blocked, ::openModule)
 
                 desktop.windows.filter { it.workspace == desktop.workspace && !it.minimized }
                     .sortedBy { it.z }.forEach { w -> key(w.id) {
-                        val adjusted = InputPresentation.fit(w.bounds,sw.coerceAtLeast(1f),sh.coerceAtLeast(1f),desktop.density,imeVisible)
+                        val adjusted = InputPresentation.fit(w.bounds,sw.coerceAtLeast(1f),sh.coerceAtLeast(1f),desktop.density,!persistentViewport)
                         val windowFocus = remember { FocusRequester() }
                         var windowHasFocus by remember { mutableStateOf(false) }
                         LaunchedEffect(desktop.activeId) {

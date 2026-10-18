@@ -123,14 +123,32 @@ class ContinuationToolsTests(unittest.TestCase):
             with self.assertRaises(ValueError): verify(report, report['candidate'], suite)
 
     def test_real_native_frame_transport_fits_step_budget_and_round_trips(self):
-        from r24c_capture import transport_chunks, CHUNKS_PER_STEP, MAX_PARTS
+        from r24c_capture import transport_chunks, CHUNKS_PER_STEP, MAX_CURRENT_PARTS, CHUNK_CHARS, NAMES
         import base64
         image = land.ROOT / 'docs/verification/r24c-native-previews/third-failed-workflow/r24c-silver.png'
         data = image.read_bytes()
         self.assertEqual('98d47cea102bf7a388435f0812941eadd8664b8f1395ff349fbd9872fd86e490', hashlib.sha256(data).hexdigest())
         messages = transport_chunks(image.name, data)
-        self.assertLessEqual(len(messages), MAX_PARTS); self.assertGreater(len(messages), CHUNKS_PER_STEP)
+        self.assertLessEqual(len(messages), MAX_CURRENT_PARTS); self.assertGreater(len(messages), 0)
+        self.assertTrue(all(len(message.split(" ", 4)[4]) <= CHUNK_CHARS for message in messages))
+        self.assertLessEqual(len(NAMES) * MAX_CURRENT_PARTS + 19, 50)  # Worst-case continuation diagnostic+image budget.
         pages = [messages[i:i + CHUNKS_PER_STEP] for i in range(0, len(messages), CHUNKS_PER_STEP)]
         self.assertTrue(all(len(page) <= 8 for page in pages))
         decoded = base64.b64decode(''.join(message.split(' ', 4)[4] for page in pages for message in page), validate=True)
         self.assertEqual(data, decoded)  # Real failed-workflow screenshot; NOT a new native pass.
+
+    def test_native_capture_budget_covers_maximum_payload_without_job_overflow(self):
+        from r24c_capture import MAX_CURRENT_PARTS, CHUNK_CHARS, CHUNKS_PER_STEP, NAMES
+        import math
+        encoded = 4 * math.ceil((128 * 1024) / 3)
+        self.assertLessEqual(math.ceil(encoded / CHUNK_CHARS), MAX_CURRENT_PARTS)
+        self.assertLess(CHUNK_CHARS + 200, 64 * 1024)
+        self.assertLessEqual(len(NAMES) * MAX_CURRENT_PARTS, 3 * CHUNKS_PER_STEP)
+        self.assertLessEqual(len(NAMES) * MAX_CURRENT_PARTS + 19, 50)
+
+    def test_engine_reuse_has_no_push_fanout_or_shared_caller_concurrency(self):
+        text = (land.ROOT.parent / '.github/workflows/engine-intake-r24c.yml').read_text()
+        self.assertIn('  workflow_call:', text)
+        self.assertNotIn('  push:', text)
+        self.assertIn('group: r24c-servo-intake-${{ github.workflow }}-${{ github.ref }}', text)
+        # Workflow-configuration check only, not an executed scheduler proof.

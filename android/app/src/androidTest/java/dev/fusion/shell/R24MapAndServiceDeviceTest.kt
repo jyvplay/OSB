@@ -23,20 +23,33 @@ class R24MapAndServiceDeviceTest {
     @Test fun realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission() {
         open("maps"); compose.waitUntil(10000) { model().book != null && !model().busy }
         assertEquals(128, model().land.size)
+        fun mapBounds(): dev.fusion.windowing.Bounds {
+            lateinit var bounds: dev.fusion.windowing.Bounds
+            compose.activityRule.scenario.onActivity { bounds = ViewModelProvider(it)[DesktopSessionModel::class.java].desktop.windows.single { w -> w.module == "maps" }.bounds }
+            return bounds
+        }
+        val beforeDialog = mapBounds()
+        assertTrue("Portrait default map window must not already be collapsed: $beforeDialog", beforeDialog.height >= 400)
         click("map-add-pin")
         compose.onNodeWithTag("map-pin-name").performScrollTo().performTextInput("Raleigh")
         compose.onNodeWithTag("map-latitude").performScrollTo().performTextReplacement("35.7796")
         compose.onNodeWithTag("map-longitude").performScrollTo().performTextReplacement("-78.6382")
+        val saveBounds = compose.onNodeWithTag("map-save-pin").getUnclippedBoundsInRoot()
+        assertTrue((saveBounds.bottom - saveBounds.top).value >= 47.99f)
         click("map-save-pin"); compose.waitUntil(10000) { model().book?.pins?.size == 1 && !model().busy }
         compose.waitUntil(10000) {
             var hidden = false
             compose.activityRule.scenario.onActivity { hidden = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == false }
             hidden
         }
+        compose.onNodeWithTag("map-add-pin").performScrollTo()
+        NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
+        assertEquals("A Dialog-owned IME must not persist a shrunken normal window", beforeDialog, mapBounds())
         assertEquals(GeoPoint(35.7796, -78.6382), model().book!!.pins.single().point)
         click("map-places"); click("map-go-1")
         assertEquals(GeoPoint(35.7796, -78.6382), model().camera.center)
         click("map-measure")
+        compose.onNodeWithTag("map-add-pin").performScrollTo() // Restore the real overflow toolbar's first controls for this finite frame.
         NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
         val canvas = compose.onNodeWithTag("offline-map-canvas").fetchSemanticsNode().boundsInRoot
         assertTrue("Actual map canvas must not collapse under controls/IME: $canvas", canvas.height / compose.density.density >= 96)
@@ -46,8 +59,10 @@ class R24MapAndServiceDeviceTest {
         // Keep a background target far outside the 48dp pin after proving the canvas is actually visible.
         compose.onNodeWithTag("offline-map-canvas").performTouchInput { click(Offset(width * .8f, height * .35f)) }
         assertTrue("Background tap must select a different coordinate: ${model().cursor}", EarthGeometry.meters(model().measureFrom!!, model().cursor) > 100)
+        compose.onNodeWithTag("map-distance").assertIsDisplayed().assertTextContains("km", substring = true)
         val old = model().camera.center; click("map-east"); assertNotEquals(old, model().camera.center)
         val beforeZoom = model().camera.zoom; click("map-zoom-in"); assertEquals(beforeZoom + 1, model().camera.zoom)
+        compose.onNodeWithTag("map-add-pin").performScrollTo() // Restore the real overflow toolbar's first controls for this finite frame.
         NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
         compose.activityRule.scenario.recreate()
         // Session consent intentionally does not survive recreation.

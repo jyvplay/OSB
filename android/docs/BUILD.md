@@ -55,8 +55,8 @@ python3 tools/engine_intake.py /path/to/actual-engine.aar --report testing/build
 ```
 
 The tested bootstrap route is Linux x86_64. Its pinned JRE17.0.9 is **old and not a full JDK**, for disposable host tests only;
-do not set it as Gradle's JDK or use it for production security. Current archived host pipeline:167 Python methods,
-433681 R24C assertions and65097 retained R24 assertions; exact source hashes/output in `verification/r24c/host/`.
+do not set it as Gradle's JDK or use it for production security. Current archived host pipeline:172 Python methods,
+439839 R24C assertions and65097 retained R24 assertions; compiled-input hashes/output in `verification/r24c/host-viewport-patch/`.
 It is not a rerun of every historical host suite and does not build an APK.
 
 ## Actual Android without the IDE GUI
@@ -79,6 +79,7 @@ sdkmanager 'system-images;android-37.0;google_apis;x86_64'
 Windows uses `gradlew.bat`; the lab selects it automatically for native modes. The device commands reset test-owned state and must
 not run on a personal handset. `--disposable` is required for the main app. Managed AVD execution needs hardware virtualization.
 The current CI entry points are `android.yml`, `android-r24c.yml`, retained R21/R23/R24 regressions and the two privacy workflows.
+The continuation workflow separately inspects a pinned real Servo AAR without loading/installing it; this does not unblock the browser.
 APK outputs are `app/build/outputs/apk/pro/debug/`, `app/build/outputs/apk/play/debug/` and `privacy/build/outputs/apk/debug/`.
 For remote binaries, choose the **successful exact-candidate** workflow and its artifact; a retained binary from an older failing
 workflow is not the current verified app.

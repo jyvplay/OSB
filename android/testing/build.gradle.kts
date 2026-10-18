@@ -306,7 +306,8 @@ kotlin.sourceSets.named("r24c") {
     kotlin.srcDir("../core/security/src/main/kotlin")
     kotlin.srcDir("../core/designsystem/src/main/kotlin")
     kotlin.srcDir("../core/settings/src/main/kotlin")
-    kotlin.include("**/Tabletop.kt", "**/TabletopStore.kt", "**/OfflineMap.kt", "**/ServiceLink.kt", "**/InputRearm.kt", "**/DesktopMetrics.kt", "**/Contrast.kt", "**/ProfessionalPalettes.kt", "**/Appearance.kt", "**/R24CChecks.kt")
+    kotlin.srcDir("../core/windowing/src/main/kotlin")
+    kotlin.include("**/ViewportCommit.kt", "**/Tabletop.kt", "**/TabletopStore.kt", "**/OfflineMap.kt", "**/ServiceLink.kt", "**/InputRearm.kt", "**/DesktopMetrics.kt", "**/Contrast.kt", "**/ProfessionalPalettes.kt", "**/Appearance.kt", "**/R24CChecks.kt")
 }
 tasks.register<JavaExec>("r24cContracts") {
     dependsOn(r24c.classesTaskName); classpath = r24c.runtimeClasspath; mainClass.set("dev.fusion.testing.R24CChecks")

@@ -64,45 +64,6 @@ jobs:
       - name: Actual native image transport 3 (at most eight notices)
         if: always()
         run: python3 tools/r24c_capture.py export --group 3
-      - name: Actual native image transport 4 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 4
-      - name: Actual native image transport 5 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 5
-      - name: Actual native image transport 6 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 6
-      - name: Actual native image transport 7 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 7
-      - name: Actual native image transport 8 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 8
-      - name: Actual native image transport 9 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 9
-      - name: Actual native image transport 10 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 10
-      - name: Actual native image transport 11 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 11
-      - name: Actual native image transport 12 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 12
-      - name: Actual native image transport 13 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 13
-      - name: Actual native image transport 14 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 14
-      - name: Actual native image transport 15 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 15
-      - name: Actual native image transport 16 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 16
       - uses: actions/upload-artifact@v4
         if: always()
         with:

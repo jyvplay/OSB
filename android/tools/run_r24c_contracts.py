@@ -15,6 +15,7 @@ GROUPS = {
     'maps': ['feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt'],
     'media': ['feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt'],
     'input': ['core/security/src/main/kotlin/dev/fusion/security/InputRearm.kt'],
+    'viewport': ['core/windowing/src/main/kotlin/dev/fusion/windowing/ViewportCommit.kt'],
 }
 
 

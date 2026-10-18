@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.util.Locale
 import kotlin.math.abs
@@ -35,6 +36,7 @@ private fun coordinate(point: GeoPoint) = String.format(Locale.ROOT, "%.5f°, %.
 fun MapScreen(model: MapViewModel) {
     var addVisible by remember { mutableStateOf(false) }
     var placesVisible by remember { mutableStateOf(false) }
+    var detailsVisible by remember { mutableStateOf(false) }
     val book = model.book
     if (addVisible) {
         var name by remember { mutableStateOf("") }
@@ -59,9 +61,9 @@ fun MapScreen(model: MapViewModel) {
                     model.add(name.trim(), point)
                     focus.clearFocus(); keyboard?.hide(); addVisible = false
                 } catch (_: Exception) { error = "Use a printable 1–64 character name and valid decimal coordinates." }
-            }, enabled = !model.busy && book != null && book.pins.size < 256, modifier = Modifier.testTag("map-save-pin")) { Text("Save pin") }
+            }, enabled = !model.busy && book != null && book.pins.size < 256, modifier = Modifier.heightIn(min = 48.dp).testTag("map-save-pin")) { Text("Save pin") }
         },
-            dismissButton = { TextButton(onClick = { addVisible = false }) { Text("Cancel") } })
+            dismissButton = { TextButton(onClick = { addVisible = false }, modifier = Modifier.heightIn(min = 48.dp)) { Text("Cancel") } })
     }
     if (placesVisible) AlertDialog(onDismissRequest = { placesVisible = false }, title = { Text("Saved map pins") }, text = {
         Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -70,18 +72,35 @@ fun MapScreen(model: MapViewModel) {
                 Text(pin.name, style = MaterialTheme.typography.titleMedium)
                 Text(coordinate(pin.point))
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(onClick = { model.camera = model.camera.copy(center = pin.point); model.cursor = pin.point; placesVisible = false }, modifier = Modifier.testTag("map-go-${pin.id}")) { Text("Go") }
-                    TextButton(onClick = { model.measureFrom = pin.point; model.cursor = pin.point; placesVisible = false }) { Text("Measure from here") }
-                    TextButton(onClick = { model.remove(pin.id) }, enabled = !model.busy, modifier = Modifier.testTag("map-delete-${pin.id}")) { Text("Delete pin") }
+                    OutlinedButton(onClick = { model.camera = model.camera.copy(center = pin.point); model.cursor = pin.point; placesVisible = false }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-go-${pin.id}")) { Text("Go") }
+                    TextButton(onClick = { model.measureFrom = pin.point; model.cursor = pin.point; placesVisible = false }, modifier = Modifier.heightIn(min = 48.dp)) { Text("Measure from here") }
+                    TextButton(onClick = { model.remove(pin.id) }, enabled = !model.busy, modifier = Modifier.heightIn(min = 48.dp).testTag("map-delete-${pin.id}")) { Text("Delete pin") }
                 }
             }
         }
-    }, confirmButton = { TextButton(onClick = { placesVisible = false }) { Text("Done") } })
+    }, confirmButton = { TextButton(onClick = { placesVisible = false }, modifier = Modifier.heightIn(min = 48.dp)) { Text("Done") } })
+    if (detailsVisible) AlertDialog(onDismissRequest = { detailsVisible = false }, title = { Text("Offline atlas — details") }, text = {
+        Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Selected: ${coordinate(model.cursor)} · zoom ${model.camera.zoom}")
+            model.measureFrom?.let { Text("Great-circle distance: " + String.format(Locale.ROOT, "%.3f km", EarthGeometry.meters(it, model.cursor) / 1000) + " · not a road route") }
+            Text(model.status, Modifier.testTag("map-status"))
+            Text("Made with Natural Earth · public-domain 1:110m land outlines. No streets, search, GPS, traffic or navigation. Polar latitudes are clamped for drawing, not changed in saved pins. Pins are stored in plaintext.")
+        }
+    }, confirmButton = { TextButton(onClick = { detailsVisible = false }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-details-done")) { Text("Done") } })
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Offline atlas", style = MaterialTheme.typography.titleMedium)
             OutlinedButton(onClick = { addVisible = true }, enabled = book != null && !model.busy, modifier = Modifier.heightIn(min = 48.dp).testTag("map-add-pin")) { Text("Add pin") }
             TextButton(onClick = { placesVisible = true }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-places")) { Text("Places (${book?.pins?.size ?: 0})") }
+            MapAction("−", "Zoom out", "map-zoom-out", model.camera.zoom > 0) { model.camera = model.camera.copy(zoom = model.camera.zoom - 1) }
+            MapAction("+", "Zoom in", "map-zoom-in", model.camera.zoom < 18) { model.camera = model.camera.copy(zoom = model.camera.zoom + 1) }
+            MapAction("←", "Pan west", "map-west") { model.camera = model.camera.pan(96.0, 0.0) }
+            MapAction("→", "Pan east", "map-east") { model.camera = model.camera.pan(-96.0, 0.0) }
+            MapAction("↑", "Pan north", "map-north") { model.camera = model.camera.pan(0.0, 96.0) }
+            MapAction("↓", "Pan south", "map-south") { model.camera = model.camera.pan(0.0, -96.0) }
+            TextButton(onClick = { model.camera = MapCamera(); model.cursor = model.camera.center }, modifier = Modifier.heightIn(min = 48.dp)) { Text("World") }
+            val from = model.measureFrom
+            TextButton(onClick = { if (from == null) model.measureFrom = model.cursor else model.measureFrom = null }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-measure")) { Text(if (from == null) "Measure from selected point" else "Clear measurement") }
+            TextButton(onClick = { detailsVisible = true }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-details")) { Text("Details & limits") }
         }
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth().clip(androidx.compose.foundation.shape.RoundedCornerShape(8.dp)).background(MaterialTheme.colorScheme.surfaceVariant)) {
             val width = maxWidth.value.toDouble().coerceAtLeast(1.0); val height = maxHeight.value.toDouble().coerceAtLeast(1.0)
@@ -125,25 +144,18 @@ fun MapScreen(model: MapViewModel) {
                     }
                 }
             }
-            Text("Made with Natural Earth · 1:110m land", Modifier.align(Alignment.BottomStart).background(colors.surface).padding(4.dp), style = MaterialTheme.typography.labelSmall)
+            if (book == null || model.land.isEmpty()) Text(model.status, Modifier.align(Alignment.TopStart).background(colors.errorContainer).padding(8.dp), color = colors.onErrorContainer)
+            // Informational overlays consume no layout height and never intercept map gestures.
+            // Tiny resized windows retain the actual canvas; complete coordinates/status remain in Details.
+            Column(Modifier.align(Alignment.BottomStart).background(colors.surface.copy(alpha = .94f)).padding(4.dp)) {
+                if (height >= 180) {
+                    Text("Selected: ${coordinate(model.cursor)} · zoom ${model.camera.zoom}", Modifier.testTag("map-coordinate"), style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    model.measureFrom?.let { from -> Text("Great-circle distance: " + String.format(Locale.ROOT, "%.3f km", EarthGeometry.meters(from, model.cursor) / 1000) + " · not a road route", Modifier.testTag("map-distance"), style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis) }
+                }
+                Text("Made with Natural Earth · 1:110m land", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
         }
-        Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            MapAction("−", "Zoom out", "map-zoom-out", model.camera.zoom > 0) { model.camera = model.camera.copy(zoom = model.camera.zoom - 1) }
-            MapAction("+", "Zoom in", "map-zoom-in", model.camera.zoom < 18) { model.camera = model.camera.copy(zoom = model.camera.zoom + 1) }
-            MapAction("←", "Pan west", "map-west") { model.camera = model.camera.pan(96.0, 0.0) }
-            MapAction("→", "Pan east", "map-east") { model.camera = model.camera.pan(-96.0, 0.0) }
-            MapAction("↑", "Pan north", "map-north") { model.camera = model.camera.pan(0.0, 96.0) }
-            MapAction("↓", "Pan south", "map-south") { model.camera = model.camera.pan(0.0, -96.0) }
-            TextButton(onClick = { model.camera = MapCamera(); model.cursor = model.camera.center }, modifier = Modifier.heightIn(min = 48.dp)) { Text("World") }
-        }
-        Column(Modifier.heightIn(max = 130.dp).verticalScroll(rememberScrollState()).padding(horizontal = 8.dp)) {
-            Text("Selected: ${coordinate(model.cursor)} · zoom ${model.camera.zoom}", Modifier.testTag("map-coordinate"), style = MaterialTheme.typography.bodySmall)
-            val from = model.measureFrom
-            if (from != null) Text("Great-circle distance: " + String.format(Locale.ROOT, "%.3f km", EarthGeometry.meters(from, model.cursor) / 1000) + " · not a road route", Modifier.testTag("map-distance"))
-            TextButton(onClick = { if (from == null) model.measureFrom = model.cursor else model.measureFrom = null }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-measure")) { Text(if (from == null) "Measure from selected point" else "Clear measurement") }
-            Text(model.status, Modifier.testTag("map-status"), style = MaterialTheme.typography.bodySmall)
-            Text("No streets, search, GPS, traffic or navigation. Polar latitudes are clamped for drawing, not changed in saved pins.", style = MaterialTheme.typography.labelSmall)
-        }
+
     }
 }
 

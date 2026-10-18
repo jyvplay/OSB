@@ -1,0 +1,16 @@
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 50, "unfinished": 50, "unfinished_percent": 100.0}
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+{"not_established": 1, "not_established_percent": 2.0, "substantial_testable_subsets": 49, "testable_percent": 98.0, "total": 50}
+50 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+............................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 172 tests in 0.850s
+
+OK
+{"asset_bytes": 98159, "asset_sha256": "f73d104d89293c0f3663234d20d71ad299773fbcdecd1fad3e91c059a119947a", "github_blob": "04811d72fff2701ec67587e30ad8942675b511e3", "license": "Public domain, per Natural Earth Terms of Use; no warranty", "retrieved_date": "2026-10-18", "rings": 128, "scope": "1:110m land outlines only; not streets or navigation; no online tile dependency", "source_bytes": 138160, "source_path": "geojson/ne_110m_land.geojson", "source_sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9", "terms": "https://www.naturalearthdata.com/about/terms-of-use/", "transformation": "all polygon rings, coordinates rounded to five decimal degrees, no invented geometry", "upstream_repository": "https://github.com/nvkelso/natural-earth-vector", "vertices": 5143}
+R24C PASS: 439839 assertions. Production geometry/codec/file races/map data/media policy/input latch; NOT native UI, audio output, hardware integrity or full-spec acceptance.
+R24 PASS: 65097 assertions;12 appearance combinations;16640 dock configurations; 2688 input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.

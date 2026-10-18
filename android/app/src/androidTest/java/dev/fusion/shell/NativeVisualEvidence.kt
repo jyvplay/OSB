@@ -4,6 +4,9 @@ package dev.fusion.shell
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.graphics.Paint
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.*
@@ -22,6 +25,16 @@ object NativeVisualEvidence {
         if (hasAnyAncestor(hasScrollAction()).matches(node.fetchSemanticsNode())) node.performScrollTo()
         node.assertIsDisplayed().performClick()
     }
+    fun assertUnclippedLabel(compose: ComposeContentTestRule, tag: String) {
+        val node = compose.onNodeWithTag(tag, useUnmergedTree = true).assertIsDisplayed()
+        val full = node.getUnclippedBoundsInRoot()
+        val visible = node.fetchSemanticsNode().boundsInRoot
+        assertTrue("$tag must retain its full text-line height", visible.height / compose.density.density + .01f >= (full.bottom - full.top).value)
+        val layouts = mutableListOf<TextLayoutResult>()
+        node.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { assertTrue(it(layouts)) }
+        assertEquals(1, layouts.size); assertEquals(1, layouts.single().lineCount)
+        assertFalse("$tag has vertical text overflow", layouts.single().didOverflowHeight)
+    }
     fun capture(compose: ComposeContentTestRule, name: String, requiredTargets: List<String>) {
         require(name.matches(Regex("r24c-[a-z-]{1,40}")))
         compose.waitForIdle()
@@ -33,11 +46,13 @@ object NativeVisualEvidence {
         check(folder.exists() || folder.mkdirs())
         // A failed-frame PNG is diagnostic evidence, NEVER a passed geometry/test claim.
         val raw = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        val width = minOf(280, raw.width); val height = (raw.height.toLong() * width / raw.width).toInt()
+        val originalWidth = raw.width; val originalHeight = raw.height
+        val width = minOf(360, raw.width); val height = (raw.height.toLong() * width / raw.width).toInt()
         val scaled = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         try {
             assertTrue(raw.width >= 100 && raw.height >= 100)
-            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), null)
+            File(folder, "$name-full.png").outputStream().use { assertTrue(raw.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), Paint(Paint.FILTER_BITMAP_FLAG))
             File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
         } finally { scaled.recycle(); raw.recycle() }
         val required = JSONArray()
@@ -65,6 +80,8 @@ object NativeVisualEvidence {
             .put("api", android.os.Build.VERSION.SDK_INT).put("density", density)
             .put("font_scale", instrumentation.targetContext.resources.configuration.fontScale)
             .put("required_targets", required).put("visible_click_actions", all)
+            .put("native_image_width", originalWidth).put("native_image_height", originalHeight)
+            .put("preview_width", width).put("preview_height", height).put("preview_filter", "bilinear downsample; full original PNG retained in CI artifact")
             .put("scope", "Finite actual frame; not all pages, accessibility certification or subjective beauty")
         File(folder, "$name.json").writeText(report.toString(2))
     }

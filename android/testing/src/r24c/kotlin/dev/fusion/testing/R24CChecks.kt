@@ -5,6 +5,7 @@ import dev.fusion.launcher.*
 import dev.fusion.maps.*
 import dev.fusion.media.*
 import dev.fusion.security.InputRearm
+import dev.fusion.windowing.ViewportCommit
 import dev.fusion.settings.*
 import dev.fusion.designsystem.*
 import java.nio.ByteBuffer
@@ -26,8 +27,38 @@ object R24CChecks {
             catch (_: Exception) { println("CONFLICT_OR_BUSY"); kotlin.system.exitProcess(2) }
             return
         }
-        tabletop(); geometry(); appearance(); linksAndPlayback(); inputChanges(); maps(args.firstOrNull())
+        tabletop(); geometry(); appearance(); linksAndPlayback(); inputChanges(); viewportAdmission(); maps(args.firstOrNull())
         println("R24C PASS: $checks assertions. Production geometry/codec/file races/map data/media policy/input latch; NOT native UI, audio output, hardware integrity or full-spec acceptance.")
+    }
+    private fun viewportAdmission() {
+        // Different window origins, physical-pixel sizes, every clipped edge and independent focus/IME facts.
+        for (width in listOf(240, 411, 1080, 3840)) for (height in listOf(180, 430, 2160, 2400)) {
+            for ((x, y) in listOf(0 to 0, 100 to 60, -300 to 40)) {
+                val full = ViewportCommit.Pixels(x, y, x + width, y + height)
+                for (edge in 0..3) for (cut in listOf(-100, -2, -1, 0, 1, 2, 80, 3000)) {
+                    val visible = when (edge) {
+                        0 -> full.copy(left = full.left + cut)
+                        1 -> full.copy(top = full.top + cut)
+                        2 -> full.copy(right = full.right - cut)
+                        else -> full.copy(bottom = full.bottom - cut)
+                    }
+                    for (focused in listOf(false, true)) for (ime in listOf(false, true))
+                        ok(ViewportCommit.admit(focused, ime, full, visible) == (focused && !ime && cut <= 1))
+                }
+            }
+        }
+        val full = ViewportCommit.Pixels(0, 70, 1080, 2300)
+        ok(ViewportCommit.admit(true, false, full, full))
+        // The fourth native failure shape: parent says no IME, but a dialog owns focus / clips its frame.
+        ok(!ViewportCommit.admit(false, false, full, full.copy(bottom = 1500)))
+        ok(!ViewportCommit.admit(true, false, full, full.copy(bottom = 1500)))
+        ok(!ViewportCommit.admit(true, true, full, full))
+        for (bad in listOf(null, ViewportCommit.Pixels(0, 0, 0, 0),
+            ViewportCommit.Pixels(Int.MIN_VALUE, 0, Int.MAX_VALUE, 100),
+            ViewportCommit.Pixels(0, 0, 100001, 100), ViewportCommit.Pixels(0, 20, 100, 19))) {
+            ok(!ViewportCommit.admit(true, false, bad, full))
+            ok(!ViewportCommit.admit(true, false, full, bad))
+        }
     }
     private fun tabletop() {
         val initial = TabletopDocument.initial(); val snapshot = TabletopCodec.encode(initial)

@@ -29,7 +29,9 @@ def validate_audit(report):
     return {'measured_targets': len(rows), 'scope': 'Declared targets in a finite native frame only; metadata is not runner attestation or global beauty/AX verification.'}
 
 
-MAX_PARTS = 32
+MAX_PARTS = 32  # Retain the legacy receiver bound; older actual frames used smaller chunks.
+MAX_CURRENT_PARTS = 6
+CHUNK_CHARS = 32768  # Below64KiB/annotation;4*6 chunks + diagnostic metadata stays below50/job.
 CHUNKS_PER_STEP = 8
 
 
@@ -39,8 +41,8 @@ def transport_chunks(name, data):
     if len(data) > 128 * 1024 or w > 400 or h > 2000:
         raise ValueError('Capture budget exceeded')
     text = base64.b64encode(data).decode()
-    parts = [text[i:i+3700] for i in range(0, len(text), 3700)]
-    if len(parts) > MAX_PARTS: return []  # Artifact-only, explicitly reported by the metadata step.
+    parts = [text[i:i+CHUNK_CHARS] for i in range(0, len(text), CHUNK_CHARS)]
+    if len(parts) > MAX_CURRENT_PARTS: return []  # Artifact-only, explicitly reported by the metadata step.
     return [f'R24CPNG1 {name} {i+1}/{len(parts)} {hashlib.sha256(data).hexdigest()} {part}' for i, part in enumerate(parts)]
 
 
@@ -69,6 +71,8 @@ def export(group):
         if file.name.removesuffix('.json') + '.png' not in NAMES: continue
         report = json.loads(file.read_text()); validate_audit(report)
         observed = {key: report[key] for key in ('schema', 'origin', 'api', 'density', 'font_scale', 'required_targets')}
+        for key in ('native_image_width', 'native_image_height', 'preview_width', 'preview_height', 'preview_filter'):
+            if key in report: observed[key] = report[key]
         print('::notice::R24CTARGETS1 ' + file.name + ' ' + json.dumps(observed, separators=(',', ':')))
     if not found: print('::notice::No current native image. No visual verification inferred.')
 
@@ -96,7 +100,7 @@ def collect(run_id):
                 m = PATTERN.fullmatch(message)
                 if m:
                     name, i, n, digest, part = m[1], int(m[2]), int(m[3]), m[4], m[5]
-                    if not 1 <= i <= n <= MAX_PARTS or len(part) > 3700:
+                    if not 1 <= i <= n <= MAX_PARTS or len(part) > CHUNK_CHARS:
                         raise ValueError('Invalid capture chunk')
                     target = chunks.setdefault(name, {'n': n, 'sha256': digest, 'parts': {}})
                     if target['n'] != n or target['sha256'] != digest or i in target['parts']:
@@ -114,6 +118,9 @@ def collect(run_id):
         if len(data) > 128 * 1024 or hashlib.sha256(data).hexdigest() != value['sha256']:
             raise ValueError('Native PNG hash/budget mismatch')
         w, h = dimensions(data)
+        audit = audits.get(name.removesuffix('.png') + '.json')
+        if audit and 'preview_width' in audit and (audit['preview_width'], audit['preview_height']) != (w, h):
+            raise ValueError('Native image/measurement preview dimension mismatch')
         path = ROOT / 'testing/build/r24c/captures' / run['head_sha'] / name
         path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
         images[name] = {'path': str(path), 'width': w, 'height': h, 'sha256': value['sha256']}
@@ -127,7 +134,7 @@ def collect(run_id):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('mode', choices=['export', 'collect', 'audit'])
-    p.add_argument('--group', type=int, choices=range(17), default=0)
+    p.add_argument('--group', type=int, choices=range(4), default=0)
     p.add_argument('--run', type=int)
     p.add_argument('--file', type=Path)
     a = p.parse_args()
