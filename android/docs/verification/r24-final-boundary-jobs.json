@@ -1,0 +1,137 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 117522284176,
+      "run_id": 39075701922,
+      "workflow_name": "Android R23 memory and R22 boundary checks",
+      "head_branch": "arena/f77cb2a6-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39075701922",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbXN--kA",
+      "head_sha": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/117522284176",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39075701922/job/117522284176",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-17T22:35:36Z",
+      "started_at": "2026-10-17T22:35:39Z",
+      "completed_at": "2026-10-17T22:44:39Z",
+      "name": "Focused actual platform R23 memory and R22 boundaries (not full-suite acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-17T22:35:39Z",
+          "completed_at": "2026-10-17T22:35:42Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-17T22:35:42Z",
+          "completed_at": "2026-10-17T22:35:43Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-17T22:35:43Z",
+          "completed_at": "2026-10-17T22:35:43Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-17T22:35:43Z",
+          "completed_at": "2026-10-17T22:35:47Z"
+        },
+        {
+          "name": "Install and inspect actual SDK37.0 compilation platform (not runtime37)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-17T22:35:47Z",
+          "completed_at": "2026-10-17T22:35:54Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-17T22:35:54Z",
+          "completed_at": "2026-10-17T22:35:54Z"
+        },
+        {
+          "name": "Execute actual R23 memory plus retained FD, ZIP/XML and system-picker boundaries",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-17T22:35:54Z",
+          "completed_at": "2026-10-17T22:44:35Z"
+        },
+        {
+          "name": "Publish actual outcomes and diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-17T22:44:35Z",
+          "completed_at": "2026-10-17T22:44:35Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-17T22:44:35Z",
+          "completed_at": "2026-10-17T22:44:36Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-17T22:44:36Z",
+          "completed_at": "2026-10-17T22:44:37Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-17T22:44:37Z",
+          "completed_at": "2026-10-17T22:44:37Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-17T22:44:37Z",
+          "completed_at": "2026-10-17T22:44:37Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-17T22:44:37Z",
+          "completed_at": "2026-10-17T22:44:37Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/117522284176",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000456,
+      "runner_name": "GitHub Actions 1000000456",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

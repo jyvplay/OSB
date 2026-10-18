@@ -36,12 +36,14 @@ class CsvTable private constructor(val rows:List<List<String>>) {
     companion object {
         const val MAX_INPUT=65536;const val MAX_FRAME=131072
         const val MAX_ROWS=256;const val MAX_COLUMNS=32;const val MAX_CELL=4096
+        private val emptyUtf8=ByteArray(0) // No mutable elements; shape is encoded separately.
         fun utf8(s:String):ByteArray {
             require(s.length<=MAX_INPUT)
+            if(s.isEmpty()) return emptyUtf8
             return try {val b=Charsets.UTF_8.newEncoder().onMalformedInput(CodingErrorAction.REPORT).encode(CharBuffer.wrap(s));ByteArray(b.remaining()).also {b.get(it)}}
             catch(e:java.nio.charset.CharacterCodingException) {throw IllegalArgumentException("Malformed Unicode",e)}
         }
-        private fun text(b:ByteArray):String=try {Charsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(b)).toString()}
+        private fun text(b:ByteArray):String=if(b.isEmpty()) "" else try {Charsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(b)).toString()}
             catch(e:java.nio.charset.CharacterCodingException) {throw IllegalArgumentException("Malformed UTF8",e)}
         private fun valid(s:String) {require(s.length<=MAX_CELL && s.none {it.isISOControl() && it!='\r' && it!='\n' && it!='\t'})}
         fun of(input:List<List<String>>):CsvTable {

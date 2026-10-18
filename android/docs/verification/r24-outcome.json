@@ -1,0 +1,167 @@
+{
+  "native_tested_candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+  "native": {
+    "desktop": {
+      "run": 39075701917,
+      "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/39075701917",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 9,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "platform_api": 34,
+      "suite": "focused"
+    },
+    "boundary": {
+      "run": 39075701922,
+      "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/39075701922",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 27,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "platform_api": 34,
+      "suite": "focused"
+    },
+    "privacy34": {
+      "run": 39075701923,
+      "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/39075701923",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 18,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "platform_api": 34,
+      "suite": "privacy"
+    },
+    "privacy37": {
+      "run": 39075701918,
+      "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/39075701918",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 18,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "platform_api": 37,
+      "suite": "privacy"
+    },
+    "csv": {
+      "run": 39075701921,
+      "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/39075701921",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 8,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "platform_api": 34,
+      "suite": "focused"
+    }
+  },
+  "main_observed": {
+    "run": 39075701942,
+    "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+    "url": "https://github.com/jyvplay/OSB/actions/runs/39075701942",
+    "status": "completed",
+    "conclusion": "success",
+    "device_conclusion": "success",
+    "counts": {
+      "PASS": 133,
+      "FAIL": 0,
+      "SKIP": 0
+    },
+    "scope": "Earlier pending aggregate subsequently finalizedSUCCESS; normal completed receipt r24-final-main-result.json retained."
+  },
+  "all_gates_accepted": true,
+  "host": {
+    "exit": 0,
+    "seconds": 162.067,
+    "python_tests": 158,
+    "r24_assertions": 65074,
+    "appearance_combinations": 8,
+    "dock_configurations": 16640,
+    "input_presentations": 2688,
+    "r23_assertions": 898161,
+    "r23_touch_words": 160000,
+    "r22_checks": 37,
+    "r21_checks": 376,
+    "interop_checks": 327,
+    "interop_accepted": 271,
+    "interop_refused": 56,
+    "interop_equal_byte_pairs": 15
+  },
+  "module_accounting": {
+    "total": 49,
+    "substantial_testable_subsets": 48,
+    "testable_percent": 97.96,
+    "unestablished": 1,
+    "fully_original_spec_accepted": 0,
+    "fully_accepted_percent": 0,
+    "unfinished": 49,
+    "r24_existing_production_modules_deepened": 11,
+    "deepened_inventory_percent": 22.45
+  },
+  "toolchain": {
+    "compile_sdk": 37,
+    "target_sdk": 37,
+    "min_sdk": 34,
+    "sdk_package": "platforms;android-37.0",
+    "agp": "9.1.1",
+    "gradle": "9.3.1",
+    "kotlin": "2.2.21",
+    "native_jdk": "17 via managed CI",
+    "studio_gui_run": false,
+    "physical_hardware_run": false
+  },
+  "apk_byte_observations_only": [
+    {
+      "file": "app/build/outputs/apk/play/debug/app-play-debug.apk",
+      "bytes": 29102363,
+      "sha256": "bb03635a04e5f1e0b54ef09e495c007ea644e83df73869759d6b5b54f426e829"
+    },
+    {
+      "file": "app/build/outputs/apk/pro/debug/app-pro-debug.apk",
+      "bytes": 29102435,
+      "sha256": "e1c9e75d5192ae366123d69dd356e25c2c337c63c1daca9bac6fc1447f9982fe"
+    },
+    {
+      "file": "privacy/build/outputs/apk/debug/privacy-debug.apk",
+      "bytes": 2537164,
+      "sha256": "6897185283f0f12088a56e8619956a98561d2d2aef4f3e22b460cff9ea3020e0"
+    }
+  ],
+  "scope_limits": [
+    "Focused9/27/8 overlap full133; do not sum as independent methods",
+    "API37 result covers private compartment18 only, not all main features",
+    "No full-module/A-grade release acceptance, hardware/host anonymity or lighter-than-Tails claim"
+  ],
+  "main": {
+    "run": 39075701942,
+    "candidate": "23e8868bf2d23a26f29f0fcc6a7dc592d429069b",
+    "url": "https://github.com/jyvplay/OSB/actions/runs/39075701942",
+    "conclusion": "success",
+    "device_conclusion": "success",
+    "counts": {
+      "PASS": 133,
+      "FAIL": 0,
+      "SKIP": 0
+    },
+    "platform_api": 34,
+    "suite": "full"
+  },
+  "all_gates_acceptance_scope": "ONLY declared bounded R24 workflows, NOT original full product/modules/physical/AX/legal acceptance"
+}

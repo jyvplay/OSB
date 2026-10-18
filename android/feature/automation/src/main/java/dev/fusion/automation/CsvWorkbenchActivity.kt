@@ -62,7 +62,7 @@ class CsvWorkbenchActivity:Activity() {
         column.addView(parse);column.addView(save);column.addView(importXlsx)
         label(LiteralXlsxImport.LOSS)
         label("Import reads a copy (≤2 MiB) in an isolated worker. One visible sheet, ≤256×32; plain inline/shared text or raw numeric/boolean cells. Formulas, rich text, custom/date number formats, nonzero cell styles, merges, hidden rows, extra parts and unsupported XML/ZIP dialects are refused. Successful import replaces this session draft; cancellation keeps it. Typing CSV replaces imported snapshot. No persistent URI grant; cloud providers may use their own network.")
-        label("Preview contains ALL selected cells; quotes, line breaks and bidi formatting are escaped for display only. Export preserves original selected text. Other columns are omitted deliberately. Unsupported XLSX text is refused, never silently rewritten. Worker input briefly uses a private temporary file, unlinked before transfer — NOT secure disk erasure. No source overwrite, backup or physical-durability guarantee. Android/IME/host remain trusted.")
+        label("Preview contains ALL selected cells; quotes, line breaks and bidi formatting are escaped for display only. Export preserves original selected text. Other columns are omitted deliberately. Unsupported XLSX text is refused, never silently rewritten. This worksheet sends owned parser input through read-only anonymous shared memory, with NO named-input-file fallback. Android may still page/copy memory; NOT forensic erasure or host secrecy. No source overwrite, backup or physical-durability guarantee. Android/IME/host remain trusted.")
         for((field,limit) in listOf(source to 65536,columns to 100)) {
             field.filters=arrayOf(InputFilter {_,start,end,dest,a,b->
                 if(dest.length.toLong()-(b-a)+(end-start)>limit) {
@@ -95,7 +95,7 @@ class CsvWorkbenchActivity:Activity() {
         val epoch=generation;busy(true);status.text="Parsing in isolated worker…"
         executor.execute {
             val answer=runCatching {
-                val original=snapshot ?: requireNotNull(FormatLease(this).use {it.evaluateOwnedCsv(bytes)}.table)
+                val original=snapshot ?: requireNotNull(FormatLease(this).use {it.evaluateMemoryCsv(bytes)}.table)
                 val table=original.project(selected)
                 val workbook=table.workbook().bytes;require(workbook.size<=2*1024*1024)
                 val text="${table.rows.size} rows, ${table.columns} selected columns. Literal text only.\n"+table.preview()
@@ -122,7 +122,7 @@ class CsvWorkbenchActivity:Activity() {
             executor.execute {
                 val answer=runCatching {
                     val bytes=TaskTransferIO.readWorksheetBytes(contentResolver,uri)
-                    requireNotNull(FormatLease(this).use {it.evaluateOwnedXlsx(bytes)}.table)
+                    requireNotNull(FormatLease(this).use {it.evaluateMemoryXlsx(bytes)}.table)
                 }
                 runOnUiThread {if(!destroyed) {
                     if(epoch===generation) answer.fold({table->

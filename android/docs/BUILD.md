@@ -1,4 +1,208 @@
-# R22 — native values-only XLSX import and laptop checks
+# R24 current native evaluation
+
+Branch **arena/f77cb2a6-osb**, native-tested23e8868. [Current results/screenshots](R24-RESULTS.md).
+**48/49 substantial runnable subsets97.96%;0/49 full original-spec accepted.**
+
+## Laptop / Android Studio Rabbit1
+
+Open **OSB/android**, not root Vite. Use maintained full **JDK17**, actual SDK **platforms;android-37.0**,
+build tools36.0.0 and35.0.0. Pins Gradle9.3.1/AGP9.1.1/Kotlin2.2.21, min34/compile37/target37,
+documented temporary legacy Kotlin/DSL bridge. No fake SDK/unsupported compile suppression.
+Rabbit GUI itself unexecuted; corresponding builds/real managed Android34/37 tests actually ran remotely.
+
+1. Run **app / proDebug** (or playDebug), accept evaluation with copied data in a disposable AVD.
+2. Top-right **Control panel** or dock/taskbar **Settings**: select **Business / Art**, **Office Blue / Studio Graphite**.
+   They are independent; both entrypoints edit one observable store, no restart or data reset. Dirty drafts preserved in tested traces.
+3. **Art**: centered own-app scrollable dock, pointer/keyboard-focus zoom and neighbors/running dots; magnification toggle reduces motion.
+   **Business**: full-width bottom own-app taskbar; window actions/focus/restore remain real. Not a host/Android OS theme or keyboard preset.
+4. Ctrl+K / Find reaches all app entries. Look for **Isolated PDF preview**; acknowledge scope and choose a copied small PDF.
+   Limits2MiB/1024pages/320px; first-party native rendering only in isolated child, no full PDF editing or full Office claimed.
+   Old full PDF remains unavailable; source bytes are not overwritten.
+5. Tasks/Notes have pinned actions + field-first plaintext forms. Exact native single-tap/real file/draft observations are in results.
+6. Separate **privacy / debug** run target is the no-INTERNET volatile scratchpad/no-IME digit pad, not the main app.
+   Actual guest sleep/wake clears code and stale input; screen/pointer/AX/host/firmware and paging/erasure remain outside trust.
+
+Use copied data, not real secrets on an untrusted laptop/hypervisor. Neither appearance nor a no-INTERNET APK makes everything anonymous/Tails-like.
+
+## Without Studio / SDK-free sandbox
+
+Actual tested Linux x86_64 route:
+
+```sh
+cd android
+python3 tools/bootstrap_host_tools.py install
+python3 tools/r24_lab.py host --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/host_privacy_posture.py --report testing/build/r24/host-posture.json
+# Optional bounded local artifact intake, never executes an engine or claims license/runtime approval:
+python3 tools/engine_intake.py /path/to/actual-engine.aar --report testing/build/r24/intake.json
+```
+
+Latest whole host pipeline exit0/162.067s:158 Python tests,65074 R24 assertions/real separately compiled policies,
+R23/R22/R21/reference regressions. Optional tools contain **old JRE17.0.9, not a JDK**; disposable tests only,
+NOT Gradle JAVA_HOME/secure production runtime. Compiler/wheels hash pinned; registries still trusted.
+No local SDK/adb/javac/Studio, independent agents, physical lab or new SMT theorem claimed.
+
+## Real native JDK/SDK, no IDE GUI
+
+```sh
+# Set JAVA_HOME to maintained FULL JDK17 and ANDROID_HOME to actual SDK; review its licenses yourself.
+sdkmanager 'platforms;android-37.0' 'build-tools;36.0.0' 'build-tools;35.0.0'
+python3 tools/r24_lab.py android
+python3 tools/r24_lab.py device --suite ui --disposable       #9 current UI/input/R18 methods
+python3 tools/r24_lab.py device --suite pdf --disposable      #3 PDF methods
+python3 tools/r24_lab.py device --suite memory --disposable   #24 retained memory/FD/picker methods
+python3 tools/r24_lab.py device --suite full --disposable     #133 main methods; includes all above
+# The real combined27-case boundary workflow joins retained24 + PDF3, not a sum of two untrusted receipts.
+./gradlew :privacy:pixel6Api34DebugAndroidTest
+# Exact released-image API37 privacy experiment (NOT every main feature/API37 GUI/hardware acceptance):
+sdkmanager 'emulator' 'platform-tools' 'system-images;android-37.0;google_apis;x86_64'
+./gradlew :privacy:pixel6Api37DebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionExpectedRuntime=37
+```
+
+Windows uses gradlew.bat and maintained manual tool installation; bootstrap is Linux-only. Local native CLI routes were not executed in this no-SDK sandbox;
+the same actual Gradle source commands ran in managed Linux/KVM CI. Device suites deliberately reset TEST app state; disposable emulator/data consent is enforced.
+JVM policies don't run an APK as a native laptop desktop process.
+
+APK outputs after successful builds:
+- privacy/build/outputs/apk/debug/privacy-debug.apk
+- app/build/outputs/apk/pro/debug/app-pro-debug.apk
+- app/build/outputs/apk/play/debug/app-play-debug.apk
+
+[Main build/run39075701942](https://github.com/jyvplay/OSB/actions/runs/39075701942), artifact fusion-native-debug;
+[privacy API34/run39075701923](https://github.com/jyvplay/OSB/actions/runs/39075701923), artifact offline-privacy-companion.
+Main full workflow actually completedSUCCESS with133/0 after initial parent-finalization lag; completed receipt collected.
+Other scoped9/27/8/18/18 workflows succeeded; exact scope/candidate IDs, earlier failures and hashes in R24-RESULTS/outcome JSON.
+Blob redirects unavailable here, so no locally inspected APK/signature/RSS/Tails comparison. Download via GitHub on your laptop.
+
+```sh
+python3 tools/r24_evidence_gate.py docs/verification/r24-final-desktop-result.json --candidate 23e8868bf2d23a26f29f0fcc6a7dc592d429069b --claim r24_desktop_api34
+python3 tools/r24_evidence_gate.py docs/verification/r24-final-boundary-result.json --candidate 23e8868bf2d23a26f29f0fcc6a7dc592d429069b --claim r24_pdf_boundary_api34
+python3 tools/r24_evidence_gate.py docs/verification/r24-final-api37-result.json --candidate 23e8868bf2d23a26f29f0fcc6a7dc592d429069b --claim r24_screenoff_api37
+```
+
+Metadata gates check names/context/counts, not cryptographic execution authenticity. API37 receipts cannot authorize API34 claims.
+No root USB/IOMMU policy, all-hardware mitigation, global Tor/Tails routing, full Office/browser, release entitlement or PR merge/close is implied.
+
+---
+
+# Historical R23 — no-IME privacy try-out
+
+Branch **`arena/f77cb2a6-osb`**. Open **`OSB/android`**, not the legacy Vite project.
+[Current results and exact failures](R23-RESULTS.md) · [A–J record](R23-ENGINEERING.md).
+**48/49 substantial testable subsets (97.96%);0/49 fully accepted,49 unfinished.**
+
+**Exact native4bc7637:** privacy16/0/0 and memory24/0/0 passed; full main **121/1/0 FAILED**
+an existing task Add workflow with IME visible and actual store empty. Both builds/JVM/contracts/lint passed.
+This is evaluation code, not an all-green release. Do not substitute a successful rerun/different candidate.
+
+## Android Studio Rabbit1 / laptop
+
+Live pins: **AGP9.1.1, Gradle9.3.1, Kotlin2.2.21, maintained JDK17, actual SDK37.0**;
+min34/compile37/target37. Use SDK Manager package **`platforms;android-37.0`**, not unqualified37.
+Temporary documented `android.builtInKotlin=false`/`android.newDsl=false` retain external Kotlin;
+GMD definitions use `localDevices`. No unsupported-API warning suppression or renamed36 SDK.
+Rabbit1's [official compatibility table](https://developer.android.com/studio/releases) covers this AGP, but **Rabbit1 GUI itself was NOT executed here**.
+Actual runtime checks above used managed API34, NOT API37/OEM/physical laptop testing.
+Use a **disposable API34+ AVD and copied data**. Guest privacy is not protection from its host.
+
+1. Open `android/`, sync with real SDK37.0/full JDK17; choose **privacy** application/debug run target.
+   This is the separate **Fusion Offline Scratchpad** APK, not `app`/proDebug.
+2. Open **Touch-only code pad (no keyboard)**. Opening it discards the ordinary scratchpad.
+3. Tap/click digits instead of typing.64-digit ASCII cap; no input connection, clipboard, export,
+   submission or saved draft. Keyboard-only loggers need not receive typed secret keys on this route;
+   screen/pointer/AX/Android/laptop observers can still observe. Digits reshuffle on new pad/clear.
+4. Default masked; **Reveal (5-second timer)**, delete, discard/reshuffle. Accepted changes renew a60s
+   inactivity timer/action check. Focus/background/obscured input/recreation discard through actual lifecycle.
+   Timers use the main looper, **not hard real-time scheduling or forensic erasure**.
+5. **Review local input / exposure** reports limited counts/settings including UNKNOWN, not malware/
+   hardware-keylogger detection or a safe verdict. It changes no setting. Turn off unneeded debugging
+   through system settings AFTER evaluation; Studio/ADB currently needs it.
+
+The ordinary scratchpad still trusts your chosen IME. Secure-window/recents/overlay controls do not
+exclude privileged capture, trusted accessibility tools, host/hypervisor, camera, firmware or hardware.
+No global anonymity, no-swap/erasure, Tails equivalence or lighter-whole-system claim.
+Read [privacy/hardware PRD](R23-PRIVACY-PRD.md) before sensitive use.
+
+## Main shell / explicit memory worksheet
+
+Choose **app/proDebug** (or playDebug), open **Tasks and action plans (Automation)**, enable with copied
+test data, choose **CSV selected-column worksheet**. Existing bounded CSV and **Import values-only XLSX…**
+use explicit owned readonly-memory parser-input APIs, no named parser-input-file fallback. Save creates a
+NEW literal XLSX copy and reads it back. Legacy `evaluateOwned*` APIs still intentionally use regular files.
+Original provider files, created exports, OS paging and heap copies are not disk-free/erased. Main app HAS
+network permission; the companion does not make it offline/anonymous. General XLSX/Office/LOK is not delivered.
+Detailed historical R22 picker steps below still illustrate the bounded worksheet, but old disk/branch/
+SDK/artifact statements describe that older candidate. **The task Add instability above remains unresolved.**
+
+## Without Android Studio — actual host tests
+
+No SDK is needed for the real Kotlin kernels and Office-reference tests. Tested **Linux x86_64**:
+
+```sh
+cd android
+python3 tools/bootstrap_host_tools.py install  # explicit hash-pinned PyPI/npm downloads; no root
+python3 tools/bootstrap_host_tools.py doctor
+python3 tools/r23_lab.py host --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/inspect_usb_posture.py           # read-only Linux observations; UNKNOWN is not safe
+```
+
+Latest whole host pipeline passed149 Python methods,898161 R23 assertions/160000 touch words and bounded
+R22/R21/Office references. Source checks are not Android compilation or hardware verification.
+The optional cache has Kotlin2.2.21 and **OLD JRE17.0.9, NOT a JDK**: disposable host tests only, NOT
+Gradle JAVA_HOME or a secure production runtime. npm scripts disabled; wheel/compiler integrity pinned;
+registries/maintainers still trusted. No downloaded tool enters Git or an APK. Native doctor correctly
+refused this local no-javac/no-SDK environment. Windows/macOS: manual maintained tool installation;
+installer/native CLI is not claimed locally tested there.
+
+## Without the IDE GUI — actual native SDK needed
+
+Install a maintained full JDK17, Android command-line tools and an SDK whose licenses you have reviewed.
+Set JAVA_HOME/ANDROID_HOME to real installations; don't use the host-test JRE cache.
+
+```sh
+# Real SDK package spelling and both build tools used by current doctor/CI:
+sdkmanager 'platforms;android-37.0' 'build-tools;36.0.0' 'build-tools;35.0.0'
+python3 tools/probe_android_sdk.py             # non-installing real stable+preview catalog observation
+python3 tools/record_sdk_platform.py          # actual installed37.0 metadata/jar; not runtime proof
+python3 tools/r23_lab.py android
+python3 tools/r23_lab.py device --suite privacy --disposable  #16 cases
+python3 tools/r23_lab.py device --suite memory --disposable   #24 cases
+python3 tools/r23_lab.py device --suite full --disposable     #latest actual121/1 failure retained
+# Direct build equivalent (Windows uses gradlew.bat):
+./gradlew :app:assembleProDebug :app:assemblePlayDebug :privacy:assembleDebug :privacy:lintDebug :testing:r23Contracts
+```
+
+Use a real AVD/runtime with hardware virtualization; test suites modify test-app state. The local Android
+CLI routes were NOT executed here; corresponding source commands actually ran in remote Linux/KVM CI.
+JVM code does not turn the APK into a laptop-native desktop program.
+
+APK paths after successful build:
+- `privacy/build/outputs/apk/debug/privacy-debug.apk`
+- `app/build/outputs/apk/pro/debug/app-pro-debug.apk`
+- `app/build/outputs/apk/play/debug/app-play-debug.apk`
+
+[Privacy APK run38871422549](https://github.com/jyvplay/OSB/actions/runs/38871422549), artifact `offline-privacy-companion`.
+[Main APK build/run38871422566](https://github.com/jyvplay/OSB/actions/runs/38871422566), artifact `fusion-native-debug`;
+**the build succeeded but this whole workflow FAILED its later task UI case**. Download on your laptop via
+GitHub. This sandbox's blob/log redirects failed; no local APK/signature/RAM inspection is claimed.
+Remote byte sizes/hashes are in [outcome JSON](verification/r23-outcome.json), not total footprint/Tails comparison.
+
+```sh
+# Exact scoped gates, not all-product acceptance:
+python3 tools/r23_evidence_gate.py docs/verification/r23-final-privacy-result.json --candidate 4bc763700b63582107e5dbe979f9a185338f66f7 --claim r23_privacy_api34
+python3 tools/r23_evidence_gate.py docs/verification/r23-final-memory-result.json --candidate 4bc763700b63582107e5dbe979f9a185338f66f7 --claim r23_memory_transport_api34
+```
+
+Current privacy policy requires16 names; `r23_prerequisite_api34` retains old14-case substrate scope.
+Receipt gates check metadata/cases, not independent cryptographic authenticity or whole-product semantics.
+Never overwrite failed receipts. R22 interop defaults to ignored `testing/build/r22/interop.json`;
+`--report NEW_PATH` deliberately records a new artifact instead of replacing historical R22 evidence.
+Manual GitHub Actions dispatch was403 for this integration; normal push-triggered verification worked.
+No credentials requested, alternate token, PR merge/close or release was used.
+
+---
+
+# Historical R22 — native values-only XLSX import and laptop checks
 
 **Evaluated fe8dca210642d42c0553c47ff4bccc16b5e17404: full119/0/0, focused10/0/0,
 and CSV regression8/0/0 passed on managed API34; both debug builds/JVM/contracts/lint passed.**

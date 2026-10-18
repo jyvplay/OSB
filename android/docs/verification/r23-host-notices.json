@@ -1,0 +1,15 @@
+{
+  "scope": "Actual selected top-level host-tool notices read; NOT complete transitive legal review or bundled APK licenses",
+  "observations": {
+    "kotlin_compiler": "Apache2 top-level license and JetBrains/respective-authors NOTICE; further bundled notices not fully reviewed",
+    "jdk4py_runtime": "GPLv2 top-level text and OPENJDK ASSEMBLY EXCEPTION; not a blanket Classpath-exception or distribution-clearance claim"
+  },
+  "files": {
+    "node_modules/kotlin-compiler/license/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "node_modules/kotlin-compiler/license/NOTICE.txt": "0b09a83d3ef7795c7dec65e815866597c066c53898f2852a76599b8f5552941a",
+    "python/jdk4py-17.0.9.2.dist-info/METADATA": "44d5673bb0a38aaa3671289bcbca759eed70ad4dbbeeb34c021a7dba4015b118",
+    "python/jdk4py-17.0.9.2.dist-info/LICENSE": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+    "python/jdk4py/java-runtime/legal/java.base/LICENSE": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+    "python/jdk4py/java-runtime/legal/java.base/ASSEMBLY_EXCEPTION": "a44eb7b5caf5534c6ef536b21edb40b4d6babf91bf97d9d45596868618b2c6fb"
+  }
+}

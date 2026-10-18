@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,7 +21,7 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TaskPanel(context: Context) {
+fun TaskPanel(context: Context,modifier:Modifier=Modifier) {
     val repo=remember(context) { TaskRepository(File(context.noBackupFilesDir,"tasks-v1.bin")) }
     val scope=rememberCoroutineScope()
     var book by remember { mutableStateOf<TaskBook?>(null) }
@@ -115,16 +118,10 @@ fun TaskPanel(context: Context) {
         } else status="Import cancelled or tasks not loaded; no tasks changed."
     }
     LaunchedEffect(repo) { run { repo.load() } }
-    Column(verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        Text("Local tasks",style=MaterialTheme.typography.titleSmall)
-        Text("Plaintext on this device, excluded from Android backup. Up to128 active and archived tasks combined. Archive is reversible and retains data; permanent deletion is not implemented. Date labels only: no reminders, recurrence or calendar sync. Saving a change upgrades old task data to FTS2; older app versions cannot read it. Loading alone does not upgrade.")
-        Button(onClick={run {repo.load()}},enabled=!busy,modifier=Modifier.testTag("tasks-reload")) { Text("Reload tasks") }
-        OutlinedTextField(title,{if(it.length<=256) title=it},Modifier.fillMaxWidth().testTag("tasks-title"),label={Text("Task title")},singleLine=true,enabled=!busy)
-        OutlinedTextField(date,{if(it.length<=10) date=it},Modifier.fillMaxWidth().testTag("tasks-date"),label={Text("Due date yyyy-mm-dd (optional)")},singleLine=true,enabled=!busy)
-        if(editingId!=null) {
-            Text("Editing selected task at revision $editingRevision; ID and completion are preserved.")
-            Button(onClick={editingId=null;title="";date=""},enabled=!busy,modifier=Modifier.testTag("tasks-cancel-edit")) {Text("Cancel edit")}
-        }
+    Column(modifier.fillMaxSize()) {
+        // Save is outside the vertically scrolling/IME-reflowing form. One real tap, no retries.
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).testTag("tasks-toolbar"),
+            horizontalArrangement=Arrangement.spacedBy(8.dp),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically) {
         Button(enabled=!busy && !blocked && book!=null && (editingId!=null || book!!.tasks.size<128),modifier=Modifier.testTag("tasks-add"),onClick={
             val id=editingId;val expected=if(id==null) book!!.revision else editingRevision;val text=title
             try {
@@ -134,6 +131,18 @@ fun TaskPanel(context: Context) {
                 else execute(clearInput=true,keepUndoOnNoOp=true) {repo.commitUndoable(expected) {it.edit(id,text,due)}}
             } catch(_:Exception) {status="Title/date refused. Use a nonblank title and a valid date in years0001..9999, or leave the date empty."}
         }) {Text(if(editingId==null) "Add task" else "Save task changes")}
+        Button(onClick={run {repo.load()}},enabled=!busy,modifier=Modifier.testTag("tasks-reload")) { Text("Reload tasks") }
+        }
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tasks-body"),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Text("Local tasks",style=MaterialTheme.typography.titleSmall)
+        Text("Plaintext local tasks • no reminders or sync",style=MaterialTheme.typography.labelSmall)
+        OutlinedTextField(title,{if(it.length<=256) title=it},Modifier.fillMaxWidth().testTag("tasks-title"),label={Text("Task title")},singleLine=true,enabled=!busy)
+        OutlinedTextField(date,{if(it.length<=10) date=it},Modifier.fillMaxWidth().testTag("tasks-date"),label={Text("Due date yyyy-mm-dd (optional)")},singleLine=true,enabled=!busy)
+        Text("Plaintext on this device, excluded from Android backup. Up to128 active and archived tasks combined. Archive is reversible and retains data; permanent deletion is not implemented. Date labels only: no reminders, recurrence or calendar sync. Saving a change upgrades old task data to FTS2; older app versions cannot read it. Loading alone does not upgrade.")
+        if(editingId!=null) {
+            Text("Editing selected task at revision $editingRevision; ID and completion are preserved.")
+            Button(onClick={editingId=null;title="";date=""},enabled=!busy,modifier=Modifier.testTag("tasks-cancel-edit")) {Text("Cancel edit")}
+        }
         Text(status,Modifier.testTag("tasks-status"))
         undo?.let {change ->
             Text("One-step edit/import undo is session-only; another mutation or reload clears it. Undo adds a new revision, not a rollback.")
@@ -196,6 +205,7 @@ fun TaskPanel(context: Context) {
             preview.added.forEach {task -> Text("${task.id}: ${task.title}; date=${task.due ?: "none"}; done=${task.done}; archived=${task.archived}")}
             Button(enabled=!busy && !blocked && editingId==null,onClick={execute(keepUndoOnNoOp=true) {repo.merge(preview)}},modifier=Modifier.testTag("tasks-confirm-merge")) {Text("Confirm append-only merge")}
             Button(enabled=!busy,onClick={mergePreview=null;status="Preview discarded; no tasks changed."}) {Text("Discard merge preview")}
+        }
         }
     }
 }

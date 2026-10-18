@@ -1,0 +1,18 @@
+............................E......................................................................................................
+======================================================================
+ERROR: test_current_pairings_and_denominator (test_module_testability.TestabilityCensusChecks.test_current_pairings_and_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/test_module_testability.py", line 10, in test_current_pairings_and_denominator
+    census.validate(self.data)
+  File "/home/user/OSB/android/tools/module_testability.py", line 33, in validate
+    require(row.get('sha256',{}).get(path)==hashlib.sha256(file.read_bytes()).hexdigest(),'Census review stale: '+path)
+  File "/home/user/OSB/android/tools/module_testability.py", line 11, in require
+    if not ok: raise ValueError(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Census review stale: privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt
+
+----------------------------------------------------------------------
+Ran 131 tests in 0.509s
+
+FAILED (errors=1)

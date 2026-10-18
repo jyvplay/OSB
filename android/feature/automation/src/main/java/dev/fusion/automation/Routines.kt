@@ -1,6 +1,7 @@
 package dev.fusion.automation
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -17,9 +18,12 @@ fun AutomationScreen(context: android.content.Context, perform: ((LocalAction)->
     var script by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("Nothing executed.") }
     var running by remember { mutableStateOf(false) }
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-        Button(onClick={tasks=!tasks},modifier=Modifier.testTag("tasks-mode")) { Text(if(tasks) "Back to action plans" else "Local tasks") }
-        if(tasks) { TaskPanel(context);return@Column }
+    Column(Modifier.fillMaxSize().padding(12.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+            Button(onClick={tasks=!tasks},modifier=Modifier.testTag("tasks-mode")) { Text(if(tasks) "Back to action plans" else "Local tasks") }
+        }
+        if(tasks) { TaskPanel(context,Modifier.weight(1f));return@Column }
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Button(onClick={context.startActivity(android.content.Intent(context,CsvWorkbenchActivity::class.java))},modifier=Modifier.testTag("csv-workbench")) {Text("CSV selected-column worksheet")}
         Text("Local action plan",style=MaterialTheme.typography.titleSmall)
         Text("One action per line: open editor, open calculator, open notes, open files, open settings, or workspace 1 / 2 / 3. Up to16 actions; existing permission/experiment gates remain in force.")
@@ -36,5 +40,6 @@ fun AutomationScreen(context: android.content.Context, perform: ((LocalAction)->
         if(perform==null) Text("Host action dispatch unavailable; execution disabled.")
         Text(status,Modifier.testTag("routine-status"))
         Text("Not transactional: prior effects remain after refusal. No retries, triggers, timers or external control. Draft is not persisted. Old arbitrary-action drafts remain untouched and are not executed here.")
+        }
     }
 }

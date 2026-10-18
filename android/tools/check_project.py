@@ -12,8 +12,11 @@ subprocess.run([sys.executable, str(root/'tools/requirements.py'), '--check'], c
 subprocess.run([sys.executable, str(root/'tools/module_audit.py'), '--check'], check=True)
 catalog=tomllib.loads((root/'gradle/libs.versions.toml').read_text())
 assert catalog['versions']['minSdk']=='34'
-assert catalog['versions']['targetSdk']=='36'
-assert catalog['versions']['compileSdk']=='36'  # Explicit API37 deferral, docs/BUILD.md.
+assert catalog['versions']['targetSdk']=='37'
+assert catalog['versions']['compileSdk']=='37'  # Compilation declaration is NOT runtime/GUI acceptance.
+assert catalog['versions']['agp']=='9.1.1'
+from gradle_distribution import verify as verify_distribution
+verify_distribution((root/'gradle/wrapper/gradle-wrapper.properties').read_text())
 modules=re.findall(r'"(:[\w:]+)"', (root/'settings.gradle.kts').read_text())
 for module in modules:
     p=root/module[1:].replace(':','/')/'build.gradle.kts'

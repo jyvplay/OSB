@@ -5,6 +5,9 @@ on:
   pull_request:
     paths: ['android/**', '.github/workflows/android.yml']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -34,19 +37,34 @@ jobs:
             exit 1
           fi
           "$SDK_MANAGER" --version
-          if "$SDK_MANAGER" --list > sdk-available.log 2>&1; then
-            python3 -c 'from pathlib import Path; lines=Path("sdk-available.log").read_text().splitlines(); matches=[x.strip() for x in lines if x.split("|")[0].strip()=="platforms;android-37"]; print("::notice::SDK37 catalog observation (not AGP/build/API acceptance): "+("; ".join(matches) if matches else "NOT_LISTED"))'
+          # Observation only. No automatic toolchain change or SDK37 build pass inferred.
+          if python3 tools/probe_android_sdk.py --sdkmanager "$SDK_MANAGER" --report sdk-probe.json; then
+            python3 -c 'from pathlib import Path; import json; r=json.loads(Path("sdk-probe.json").read_text()); print("::notice::Real stable/preview SDK catalogs (NOT build/runtime acceptance): "+json.dumps(r))'
           else
-            echo "::notice::SDK inventory unavailable; no API37 availability conclusion."
+            echo "::notice::SDK catalog probe UNKNOWN; no SDK37 availability conclusion."
           fi
-          if ! "$SDK_MANAGER" 'platforms;android-36' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
+          if ! "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' 'build-tools;35.0.0' > sdk-setup.log 2>&1; then
             cat sdk-setup.log
+            python3 tools/ci_annotations.py sdk-setup.log sdk37-install
             echo "::error::SDK component installation failed before Android compilation. See sdk-setup.log artifact."
             exit 1
           fi
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
           python3 tools/native_lab.py doctor
       - name: Assemble both flavors
         run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assemblePlayDebug
+      - name: Record actual APK byte sizes and hashes
+        run: |
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          files=sorted(Path('app/build/outputs/apk').glob('*/debug/*.apk'))
+          if len(files)!=2: raise SystemExit('Expected exactly two built main debug APKs; no footprint inferred')
+          report={'scope':'Actual compressed APK bytes ONLY, NOT installed/RSS/host/Tails comparison',
+                  'apks':[{'file':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
+          Path('main-apk-footprint.json').write_text(json.dumps(report,indent=2)+'\n')
+          print('::notice::Main APK byte observations (NOT total footprint): '+json.dumps(report))
+          PY
       - name: Run all JVM unit tests (not device evidence)
         run: >
           bash tools/run_gradle_ci.sh unit-tests --continue
@@ -56,7 +74,7 @@ jobs:
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts
       - name: Lint both manifests and Android sources
         run: bash tools/run_gradle_ci.sh lint :app:lintProDebug :app:lintPlayDebug
       - name: Upload debug APKs
@@ -72,7 +90,9 @@ jobs:
           name: sdk-setup-diagnostics
           path: |
             android/sdk-setup.log
-            android/sdk-available.log
+            android/sdk-probe.json
+            android/installed-sdk37.json
+            android/main-apk-footprint.json
             android/assemble.log
             android/unit-tests.log
             android/contracts.log
@@ -100,6 +120,18 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
+      - name: Install and inspect actual SDK37.0 compilation platform (not runtime37)
+        run: |
+          SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [[ ! -x "$SDK_MANAGER" ]]; then SDK_MANAGER="$(command -v sdkmanager)"; fi
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' > sdk37-install.log 2>&1; then
+            cat sdk37-install.log
+          else
+            result=$?;cat sdk37-install.log
+            python3 tools/ci_annotations.py sdk37-install.log sdk37-install
+            exit "$result"
+          fi
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -111,7 +143,10 @@ jobs:
         run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
       - name: Publish actual device case outcomes
         if: always()
-        run: python3 tools/report_device_results.py
+        run: python3 tools/report_device_results.py --mode cases
+      - name: Publish bounded actual failure details separately (not hidden by notice cap)
+        if: always()
+        run: python3 tools/report_device_results.py --mode failures
       - uses: actions/upload-artifact@v4
         if: always()
         with:

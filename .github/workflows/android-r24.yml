@@ -1,0 +1,131 @@
+name: Android R24 appearance, input and PDF boundaries
+on:
+  push:
+    paths: ['android/app/**', 'android/core/designsystem/**', 'android/core/settings/**', 'android/core/windowing/**', 'android/feature/settings/**', 'android/feature/automation/**', 'android/tools/*r24*', 'android/gradle/**', 'android/gradle.properties', '.github/workflows/android-r24.yml']
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  task-ui:
+    name: Focused actual R24 appearance and task inputs (not full-suite acceptance)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install and inspect actual SDK37.0 compilation platform (not runtime37)
+        run: |
+          SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [[ ! -x "$SDK_MANAGER" ]]; then SDK_MANAGER="$(command -v sdkmanager)"; fi
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' > sdk37-install.log 2>&1; then
+            cat sdk37-install.log
+          else
+            result=$?;cat sdk37-install.log
+            python3 tools/ci_annotations.py sdk37-install.log sdk37-install
+            exit "$result"
+          fi
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Execute actual R24 appearance, task input and PDF boundaries
+        run: >
+          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
+          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24AppearanceDeviceTest,dev.fusion.shell.R24TaskInputDeviceTest,dev.fusion.shell.R18TaskUiDeviceTest
+      - name: Publish actual outcomes and diagnostics
+        if: always()
+        run: python3 tools/report_device_results.py
+      - name: Actual business office_blue PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 0
+      - name: Actual business office_blue PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 1
+      - name: Actual business office_blue PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 2
+      - name: Actual business office_blue PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 3
+      - name: Actual business office_blue PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 4
+      - name: Actual business office_blue PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-office_blue.png --group 5
+      - name: Actual business studio_graphite PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 0
+      - name: Actual business studio_graphite PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 1
+      - name: Actual business studio_graphite PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 2
+      - name: Actual business studio_graphite PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 3
+      - name: Actual business studio_graphite PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 4
+      - name: Actual business studio_graphite PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-business-studio_graphite.png --group 5
+      - name: Actual art office_blue PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 0
+      - name: Actual art office_blue PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 1
+      - name: Actual art office_blue PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 2
+      - name: Actual art office_blue PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 3
+      - name: Actual art office_blue PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 4
+      - name: Actual art office_blue PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-office_blue.png --group 5
+      - name: Actual art studio_graphite PNG chunks 1-8
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 0
+      - name: Actual art studio_graphite PNG chunks 9-16
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 1
+      - name: Actual art studio_graphite PNG chunks 17-24
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 2
+      - name: Actual art studio_graphite PNG chunks 25-32
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 3
+      - name: Actual art studio_graphite PNG chunks 33-40
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 4
+      - name: Actual art studio_graphite PNG chunks 41-48
+        if: always()
+        run: python3 tools/export_r24_captures.py --name r24-art-studio_graphite.png --group 5
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r24-native-device-reports
+          path: |
+            android/device.log
+            android/device-results.json
+            android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**

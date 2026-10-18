@@ -1,0 +1,13 @@
+........................................................F...............................................................................................
+======================================================================
+FAIL: test_stale_picker_results_cannot_bypass_module_gates (test_native_source_audit.NativeSourceAuditChecks.test_stale_picker_results_cannot_bypass_module_gates)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/OSB/android/tools/test_native_source_audit.py", line 63, in test_stale_picker_results_cannot_bypass_module_gates
+    self.assertIn('PilotPolicy.mayRun("'+module+'", acknowledgedExperiments)',section)
+AssertionError: 'PilotPolicy.mayRun("pdf", acknowledgedExperiments)' not found in 'registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->\n        if (uri != null && PilotPolicy.mayRun("pdf-preview", acknowledgedExperiments)) pdfUri = uri\n    }\n\n    '
+
+----------------------------------------------------------------------
+Ran 152 tests in 0.634s
+
+FAILED (failures=1)

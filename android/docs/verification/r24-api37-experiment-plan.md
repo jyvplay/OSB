@@ -1,0 +1,7 @@
+# R24 bounded API37 privacy experiment — pre-edit checkpoint
+
+Current ordinary sandbox has no SDK/adb/full JDK. Remote GitHub Linux/KVM native runs are real, but all accepted R23/R24 runtime observations so far are API34, not API37. Actual compile package37.0/target37 and source metadata already verified. API37 runtime is an OPEN interface, not inferred from compilation.
+
+Construction: add separate regular Google-image managed Pixel6/API37 privacy device; exact released system-image candidate `system-images;android-37.0;google_apis;x86_64` (only accept actual catalog entry). Experimental workflow records real catalog/install/SDK failures and invokes the whole existing18-case privacy suite with runner argument fusionExpectedRuntime=37. Actual new screen-off tests assert Build.VERSION.SDK_INT against that fixed argument (34 default for current API34 suite). No preview/codename/stub/renamed image fallback or manually forged framework callbacks.
+
+Fresh success threshold: actual released image boot,18 named native privacy cases/noFAIL/noSKIP/whole workflow success and exact candidate. Receipt must carry platform37 and must NOT authorize an API34 claim. Claim remains scoped privacy, NOT all API37 features, full product, Rabbit GUI, OEM/physical/AX or hardware secrecy. If image/GMD/verifier unavailable or fails within budget, preserve failure and mark experiment unaccepted, don't call it a runtime pass or suppress checks. Existing API34 UI9/PDF27/privacy18/full133 gates remain separate and mandatory for their respective claims.

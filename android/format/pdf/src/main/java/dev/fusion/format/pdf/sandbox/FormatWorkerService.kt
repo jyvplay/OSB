@@ -18,7 +18,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
-/** FF-12 spike: real isolated UID + read-only descriptor boundary, bounded original arithmetic experiment; not an Office/PDF engine. */
+/** FF-12 spike: real isolated UID + read-only descriptor boundary, bounded original arithmetic experiment; not a full Office/PDF editor; bounded platform PDF preview is isolated here. */
 class FormatWorkerService : Service() {
     companion object {
         const val DIGEST = 1
@@ -26,6 +26,7 @@ class FormatWorkerService : Service() {
         const val DECIMAL_SHEET = 3
         const val CSV_TABLE = 4
         const val XLSX_TABLE = 5
+        const val PDF_PREVIEW = 6
         const val MAX_INPUT_BYTES = 16 * 1024 * 1024
         const val LIFETIME_MS = 5000L
         internal const val PRIVATE_NAME = "r11-isolation-[a-zA-Z0-9]+\\.tmp"
@@ -41,18 +42,33 @@ class FormatWorkerService : Service() {
             val operation=message.what
             val data=message.data
             val input=data.getParcelable("input",ParcelFileDescriptor::class.java)
+            val memory=data.getParcelable("memory",SharedMemory::class.java)
+            val memoryBytes=data.getInt("memoryBytes",-1)
             val reply=message.replyTo
             val id=data.getString("id")
             val privateName=data.getString("privateName")
             val socketPort=data.getInt("socketPort",0)
-            if(operation !in setOf(DIGEST,SOCKET_PROBE,DECIMAL_SHEET,CSV_TABLE,XLSX_TABLE) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
-                input?.close();return
+            val pdfPage=data.getInt("pdfPage",-1)
+            if(operation !in setOf(DIGEST,SOCKET_PROBE,DECIMAL_SHEET,CSV_TABLE,XLSX_TABLE,PDF_PREVIEW) || reply==null || id==null || id.length!=36 || !admitted.compareAndSet(false,true)) {
+                input?.close();memory?.close();return
             }
             work.execute {
                 val response=Bundle().apply { putString("id",id);putInt("uid",Process.myUid());putInt("pid",Process.myPid()) }
                 try {
-                    requireNotNull(input) { "Missing input descriptor" }
-                    input.use { fd ->
+                    require((input==null)!=(memory==null)) { "Exactly one input transport required" }
+                    val limit=when(operation) {DECIMAL_SHEET->SheetFrame.MAX_INPUT;CSV_TABLE->CsvTable.MAX_INPUT;XLSX_TABLE->LiteralXlsxImport.MAX_INPUT;PDF_PREVIEW->PdfPreviewLimits.MAX_BYTES;else->MAX_INPUT_BYTES}
+                    val hash=MessageDigest.getInstance("SHA-256");var size=0
+                    val parsedOperation=operation==DECIMAL_SHEET || operation==CSV_TABLE || operation==XLSX_TABLE
+                    var payload:ByteArray?=null
+                    if(memory!=null) memory.use { region ->
+                        require(parsedOperation) { "Memory transport not supported for this operation" }
+                        val bytes=OwnedFormatMemory.read(region,memoryBytes,limit)
+                        hash.update(bytes);size=bytes.size;payload=bytes
+                        response.putString("transport","READ_ONLY_SHARED_MEMORY")
+                        // Not filesystem observations: never invent a device/inode for this transport.
+                        response.putLong("sourceDevice",-1);response.putLong("sourceInode",-1)
+                    } else requireNotNull(input).use { fd ->
+                        require(memoryBytes == -1) { "Unexpected memory length on file transport" }
                         val stat=Os.fstat(fd.fileDescriptor)
                         response.putLong("sourceDevice",stat.st_dev);response.putLong("sourceInode",stat.st_ino)
                         require(OsConstants.S_ISREG(stat.st_mode)) { "Regular file required" }
@@ -60,27 +76,47 @@ class FormatWorkerService : Service() {
                         require(Os.fcntlInt(fd.fileDescriptor,OsConstants.F_GETFL,0) and OsConstants.O_ACCMODE==OsConstants.O_RDONLY) {
                             "Read-only descriptor required"
                         }
-                        val hash=MessageDigest.getInstance("SHA-256");var size=0
-                        val limit=when(operation) {DECIMAL_SHEET->SheetFrame.MAX_INPUT;CSV_TABLE->CsvTable.MAX_INPUT;XLSX_TABLE->LiteralXlsxImport.MAX_INPUT;else->MAX_INPUT_BYTES}
-                        val payload=if(operation==DECIMAL_SHEET || operation==CSV_TABLE || operation==XLSX_TABLE) ByteArrayOutputStream() else null
-                        // A dup shares the offset with its owner. The broker must provide a fresh open, not reuse a cursor.
+                        val captured=if(parsedOperation) ByteArrayOutputStream() else null
+                        // Keep the original regular-file/cursor/consumed-output admission intact.
                         ParcelFileDescriptor.AutoCloseInputStream(ParcelFileDescriptor.dup(fd.fileDescriptor)).use { stream ->
                             val bytes=ByteArray(8192)
                             while(true) {
                                 val n=stream.read(bytes,0,minOf(bytes.size,limit-size+1))
                                 if(n<0) break
                                 require(n>0) { "No progress" };size+=n
-                                require(size<=limit) { "Input byte budget exceeded" };hash.update(bytes,0,n);payload?.write(bytes,0,n)
+                                require(size<=limit) { "Input byte budget exceeded" };hash.update(bytes,0,n);captured?.write(bytes,0,n)
                             }
                         }
-                        response.putString("digest",hash.digest().joinToString("") { "%02x".format(it) })
-                        response.putInt("bytes",size)
-                        // Original bounded parser now runs in this actual isolated worker, never on Binder/main.
-                        // [U] verify on API 34/36/37: Binder result bounds, service death and parser behavior.
-                        if(operation==DECIMAL_SHEET) response.putByteArray("sheetResult",SheetFrame.execute(requireNotNull(payload).toByteArray()))
-                        if(operation==CSV_TABLE) response.putByteArray("tableResult",CsvTable.parse(requireNotNull(payload).toByteArray()).frame())
-                        if(operation==XLSX_TABLE) response.putByteArray("tableResult",LiteralXlsxImport.read(requireNotNull(payload).toByteArray()).frame())
+                        payload=captured?.toByteArray();response.putString("transport","READ_ONLY_FILE")
+                        if(operation==PDF_PREVIEW) {
+                            require(pdfPage in 0 until PdfPreviewLimits.MAX_PAGES)
+                            Os.lseek(fd.fileDescriptor,0,OsConstants.SEEK_SET)
+                            // This is the ONLY native PDF parser path. Framework renderer OWNS its duplicate FD.
+                            val rendererFd=ParcelFileDescriptor.dup(fd.fileDescriptor)
+                            val pdfRenderer=try {android.graphics.pdf.PdfRenderer(rendererFd)} catch(error:Exception) {rendererFd.close();throw error}
+                            pdfRenderer.use {renderer ->
+                                require(renderer.pageCount in 1..PdfPreviewLimits.MAX_PAGES && pdfPage<renderer.pageCount)
+                                renderer.openPage(pdfPage).use {page ->
+                                    val (width,height)=PdfPreviewLimits.dimensions(page.width,page.height)
+                                    val bitmap=android.graphics.Bitmap.createBitmap(width,height,android.graphics.Bitmap.Config.ARGB_8888)
+                                    try {
+                                        bitmap.eraseColor(android.graphics.Color.WHITE)
+                                        val matrix=android.graphics.Matrix().apply {setScale(width.toFloat()/page.width,height.toFloat()/page.height)}
+                                        page.render(bitmap,null,matrix,android.graphics.pdf.PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                                        val pixels=IntArray(width*height);bitmap.getPixels(pixels,0,width,0,0,width,height)
+                                        response.putInt("pdfPages",renderer.pageCount);response.putInt("pdfPage",pdfPage)
+                                        response.putInt("pdfWidth",width);response.putInt("pdfHeight",height);response.putIntArray("pdfPixels",pixels)
+                                    } finally {bitmap.recycle()}
+                                }
+                            }
+                        }
                     }
+                    response.putString("digest",hash.digest().joinToString("") { "%02x".format(it) })
+                    response.putInt("bytes",size)
+                    // Parser runs in the isolated worker only, never Binder/main. Reply remains untrusted data.
+                    if(operation==DECIMAL_SHEET) response.putByteArray("sheetResult",SheetFrame.execute(requireNotNull(payload)))
+                    if(operation==CSV_TABLE) response.putByteArray("tableResult",CsvTable.parse(requireNotNull(payload)).frame())
+                    if(operation==XLSX_TABLE) response.putByteArray("tableResult",LiteralXlsxImport.read(requireNotNull(payload)).frame())
                     if(operation==SOCKET_PROBE) {
                         require(socketPort in 1..65535)
                         // Test-owned IPv4 loopback only; no DNS, external host or arbitrary address accepted.
@@ -114,7 +150,7 @@ class FormatWorkerService : Service() {
                     }
                     response.putBoolean("ok",true)
                 } catch(error: Exception) {
-                    runCatching { input?.close() }
+                    runCatching { input?.close() };runCatching { memory?.close() }
                     response.putBoolean("ok",false)
                     response.putString("error",error.javaClass.simpleName.take(80)+": "+(error.message ?: "refused").take(160))
                 }

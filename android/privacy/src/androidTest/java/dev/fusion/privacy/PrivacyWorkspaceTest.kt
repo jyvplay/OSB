@@ -24,9 +24,11 @@ class PrivacyWorkspaceTest {
         if(initial==null || initial.visibleBounds.isEmpty) androidx.test.uiautomator.UiScrollable(androidx.test.uiautomator.UiSelector().scrollable(true))
             .scrollIntoView(androidx.test.uiautomator.UiSelector().resourceId("dev.fusion.privacy:id/$id"))
         val node=d.wait(Until.findObject(selector),10000);assertNotNull(node);node.click()
+        // A native click can post View.performClick work; do not read the editor before that real action settles.
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();d.waitForIdle()
     }
     @Test fun actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty() {
-        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->
+        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->PrivacyDeviceReady.focus(s);
             val device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
             val input=device.wait(Until.findObject(By.res("dev.fusion.privacy","scratch_text")),10000);assertNotNull(input)
             input.text="private native input"
@@ -38,11 +40,11 @@ class PrivacyWorkspaceTest {
                 fresh.onTextContextMenuItem(android.R.id.undo);assertEquals("",fresh.text.toString())
                 fresh.setText("do not restore on recreate")
             }
-            s.recreate();s.onActivity {assertEquals("",it.findViewById<EditText>(R.id.scratch_text).text.toString())}
+            s.recreate();PrivacyDeviceReady.focus(s);s.onActivity {assertEquals("",it.findViewById<EditText>(R.id.scratch_text).text.toString())}
         }
     }
     @Test fun pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions() {
-        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->
+        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->PrivacyDeviceReady.focus(s);
             s.onActivity {a ->
                 val input=a.findViewById<EditText>(R.id.scratch_text)
                 input.setText("temporary");a.findViewById<EditText>(R.id.link_text).setText("https://example.com/name?secret=x")
@@ -53,13 +55,13 @@ class PrivacyWorkspaceTest {
                 assertTrue(info.imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING!=0)
                 for(id in listOf(android.R.id.copy,android.R.id.cut,android.R.id.paste,android.R.id.pasteAsPlainText,android.R.id.shareText)) assertFalse(input.onTextContextMenuItem(id))
             }
-            s.moveToState(Lifecycle.State.CREATED);s.moveToState(Lifecycle.State.RESUMED)
+            s.moveToState(Lifecycle.State.CREATED);s.moveToState(Lifecycle.State.RESUMED);PrivacyDeviceReady.focus(s)
             s.onActivity {a ->assertEquals("",a.findViewById<EditText>(R.id.scratch_text).text.toString());assertEquals("",a.findViewById<EditText>(R.id.link_text).text.toString())}
         }
     }
     @Test fun externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline() {
         val context=ApplicationProvider.getApplicationContext<android.content.Context>()
-        ActivityScenario.launch<PrivacyActivity>(Intent(context,PrivacyActivity::class.java).putExtra("unsecuredPositiveControl",true).putExtra(Intent.EXTRA_TEXT,"injected payload")).use {s ->s.onActivity {a ->
+        ActivityScenario.launch<PrivacyActivity>(Intent(context,PrivacyActivity::class.java).putExtra("unsecuredPositiveControl",true).putExtra(Intent.EXTRA_TEXT,"injected payload")).use {s ->PrivacyDeviceReady.focus(s);s.onActivity {a ->
             assertTrue(a.window.attributes.flags and WindowManager.LayoutParams.FLAG_SECURE!=0)
             val input=a.findViewById<EditText>(R.id.scratch_text);assertEquals("",input.text.toString())
             // Native counterexample/control: ordinary LengthFilter silently keeps a prefix.
@@ -89,7 +91,7 @@ class PrivacyWorkspaceTest {
         }}
     }
     @Test fun richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped() {
-        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->s.onActivity {a ->
+        ActivityScenario.launch(PrivacyActivity::class.java).use {s ->PrivacyDeviceReady.focus(s);s.onActivity {a ->
             val payload=android.text.SpannableString("plain words")
             payload.setSpan(android.text.style.URLSpan("https://example.com/identity"),0,payload.length,android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             val control=EditText(a);control.setText(payload)
@@ -102,6 +104,35 @@ class PrivacyWorkspaceTest {
             assertFalse(connection.commitContent(content,0,null))
             assertEquals("plain words",input.text.toString())
         }}
+    }
+
+    @Test fun oneRealDiscardTouchWhileImeVisibleRetiresEditorBeforeReadback() {
+        ActivityScenario.launch(PrivacyActivity::class.java).use {scenario ->
+            PrivacyDeviceReady.focus(scenario)
+            lateinit var old:EditText
+            scenario.onActivity {activity ->
+                old=activity.findViewById(R.id.scratch_text);old.requestFocus();old.setText("actual IME discard fixture")
+                old.setSelection(old.length())
+                (activity.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager)
+                    .showSoftInput(old,android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+            }
+            val deadline=android.os.SystemClock.elapsedRealtime()+10000
+            var imeVisible=false
+            do {
+                scenario.onActivity {imeVisible=it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime())==true}
+                if(!imeVisible) android.os.SystemClock.sleep(50)
+            } while(!imeVisible && android.os.SystemClock.elapsedRealtime()<deadline)
+            assertTrue("Actual platform IME was not visible; no keyboard-route result inferred",imeVisible)
+            UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).waitForIdle()
+            touch("discard_text") // Exactly one real UIAutomator tap. No direct performClick or retry loop.
+            scenario.onActivity {activity ->
+                val fresh=activity.findViewById<EditText>(R.id.scratch_text)
+                assertNotSame("Single real tap did not retire old editor",old,fresh)
+                assertFalse(old.isAttachedToWindow);assertEquals("",old.text.toString())
+                fresh.onTextContextMenuItem(android.R.id.undo)
+                assertEquals("",fresh.text.toString())
+            }
+        }
     }
 
 }

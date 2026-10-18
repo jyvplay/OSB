@@ -1,4 +1,25 @@
-# Latest: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
+# R24 current native evaluation
+
+Use branch `arena/f77cb2a6-osb`; open **android/** in Rabbit1 with maintained full JDK17 + SDK **platforms;android-37.0**.
+Pins AGP9.1.1/Gradle9.3.1/Kotlin2.2.21, min34/compile37/target37. Rabbit1 GUI not run here; actual managed OS34 and37 were.
+
+New professional Office Blue/Studio Graphite palettes + Business/Art in both Settings and Control Panel;
+real dock magnification/indicators/own window actions, pinned Task/Notes actions, isolated readonly PDF preview,
+protected guest screen-off discard. Not Windows/macOS emulation or whole-host anonymity.
+
+Exact23e8868 workflows: UI9/0, PDF/boundary27/0, CSV8/0, privacy18/0 on API34 and18/0 on API37 succeeded.
+Main full workflow completed133/0 SUCCESS with build/JVM/contracts/lint jobs successful. Earlier parent
+finalization lag was not inferred green; the actual completed receipt is now collected. Earlier failures retained, no rerun-to-green or larger deadlines.
+
+**48/49 substantial runnable subsets97.96%;0/49 full-spec accepted;49 unfinished.** Eleven existing production modules
+deepened22.45%, not new completed modules. [Results/screenshots](docs/R24-RESULTS.md) · [Try/no-Studio](docs/BUILD.md#r24-current-native-evaluation)
+· [A–J](docs/R24-ENGINEERING.md) · [Privacy](docs/R24-PRIVACY-PRD.md).
+
+Old status below is historical.
+
+---
+
+# Historical: R19 — reversible tasks, confirmed interchange and literal multi-sheet reports
 
 - **47/48 modules (97.92%) have substantial executable subsets; 1/48 (2.08%) remains unestablished: LOK.**
 - **0/48 fully accepted (0%); 48/48 unfinished (100%).** All 30 formal spikes remain unpassed.

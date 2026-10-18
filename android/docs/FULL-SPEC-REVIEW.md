@@ -3,7 +3,7 @@
 **231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**
 This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.
 
-49 included modules; 152 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
+49 included modules; 166 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
 
 ## Cross-cutting contract (v2.1 supersedes conflicting v2.0 clauses)
 
@@ -11,7 +11,7 @@ This is a traceability/ownership/gap audit, not a claim that every line of Kotli
 |---|---|
 | Native H1 desktop, not stock desktop replacement | Partial own Compose host; external display is still a noninteractive session mirror. |
 | v2.1 below-floor Compat, not hardware hard block | No floor hard block; measured Compat/Standard/Studio policy incomplete. |
-| API34 minimum / compile37 / target36→37 | min34/compile36/target36; compile37 deviation remains. |
+| API34 minimum / compile37 / target36→37 | min34/compile37/target37 declared via actual37.0 package/AGP9.1.1/Gradle9.3.1; source inventory is not execution evidence; candidate-specific results in R23-RESULTS.md. |
 | arm64 and 4K/16K native pages | No linked native/transitive APK audit or physical page-size test. |
 | Immutable deterministic WindowEngine / effects / versioned restore | Published list snapshots protected, deterministic kernel tests; full effect/session integration incomplete. |
 | Open idempotency / command replay | Ordered epoch/sequence stream and codec v3 tested across Close/recovery; raw Open keys still deduplicate only live windows. No durable acknowledgement or multi-writer log. |
@@ -55,7 +55,7 @@ Owner candidates below identify where work belongs, not implementation completen
 | SH-01 | Launcher pinned/all-apps/folders/recents/search | partial_unverified | `:app`, `:feature:launcher` | S2 |
 | SH-02 | Shelf pinned/running/badges/previews/edges | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-03 | Top bar menus/status/clock/Beam indicator | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
-| SH-04 | Desktop wallpaper/icons/folders/widgets/context menu/layouts | not_implemented | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
+| SH-04 | Desktop wallpaper/icons/folders/widgets/context menu/layouts | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-05 | Widget host with suspend and crash isolation | not_implemented | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-06 | Hot corners/edge triggers/mouse gestures | not_implemented | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
 | SH-07 | Local-first onboarding/permission explainers/config/license | partial_unverified | `:app`, `:feature:launcher` | No spike named here; integration/security/AX gates still apply |
@@ -284,6 +284,6 @@ Owner candidates below identify where work belongs, not implementation completen
 | MS-05 | SMS/MMS with SMS role | partial_unverified | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 | MS-06 | Permissive Matrix/XMPP clients; no AGPL Signal client | not_implemented | `:feature:messages` | No spike named here; integration/security/AX gates still apply |
 
-Status counts: {"excluded": 3, "not_implemented": 169, "partial_unverified": 58, "superseded": 1}.
+Status counts: {"excluded": 3, "not_implemented": 168, "partial_unverified": 59, "superseded": 1}.
 
 Reproduce: `python3 tools/native_source_audit.py --check`. Fingerprints in `docs/verification/r11-source-inventory.json` identify reviewed inputs, not compiled artifacts. See `R11-ENGINEERING.md` for mechanisms, adversaries, evidence and the next falsifying tests.

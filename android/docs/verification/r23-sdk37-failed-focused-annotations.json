@@ -1,0 +1,50 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b/.github",
+    "start_line": 2,
+    "start_column": null,
+    "end_line": 2,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: No executed device test cases found. No pass inferred.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b/.github",
+    "start_line": 134,
+    "start_column": null,
+    "end_line": 134,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b/.github",
+    "start_line": 95,
+    "start_column": null,
+    "end_line": 95,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\ne: file:///home/runner/work/OSB/OSB/android/app/build.gradle.kts:57:13: Unresolved reference 'devices'.\ne: file:///home/runner/work/OSB/OSB/android/app/build.gradle.kts:58:17: None of the following candidates is applicable:\ne: file:///home/runner/work/OSB/OSB/android/app/build.gradle.kts:59:21: Unresolved reference 'device'.\ne: file:///home/runner/work/OSB/OSB/android/app/build.gradle.kts:60:21: Unresolved reference 'apiLevel'.\ne: file:///home/runner/work/OSB/OSB/android/app/build.gradle.kts:63:21: Unresolved reference 'systemImageSource'.\n* What went wrong:\nBuild tail (not a root-cause diagnosis):\n Unit' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln.\n\n  Line 52:     kotlinOptions { jvmTarget = \"17\" }\n                               ^ 'var jvmTarget: String' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln.\n\n  Line 57:             devices {\n                       ^ Unresolved reference 'devices'.\n\n  Line 58:                 maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>(\"pixel6Api34\").apply {\n                           ^ None of the following candidates is applicable:\n                               fun <U : T, T : Any> PolymorphicDomainObjectContainer<T>.maybeCreate(name: String, type: KClass<U>): U\n                               fun <reified U : Any> PolymorphicDomainObjectContainer<in U>.maybeCreate(name: String): U\n\n  Line 59:                     device = \"Pixel 6\"\n                               ^ Unresolved reference 'device'.\n\n  Line 60:                     apiLevel = 34\n                               ^ Unresolved reference 'apiLevel'.\n\n  Line 63:                     systemImageSource = \"google\"\n                               ^ Unresolved reference 'systemImageSource'.\n\n8 errors\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights from a Build Scan (powered by Develocity).\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 1m",
+    "raw_details": ""
+  }
+]

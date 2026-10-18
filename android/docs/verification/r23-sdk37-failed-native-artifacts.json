@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 12030662728,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAzMDY2MjcyOA==",
+      "name": "sdk-setup-diagnostics",
+      "size_in_bytes": 7848,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12030662728",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12030662728/zip",
+      "expired": false,
+      "digest": "sha256:f02b6593c9652010a280996e8b190d09f7f683eae4c42a130804da8a7d95b8ae",
+      "created_at": "2026-10-16T07:07:05Z",
+      "updated_at": "2026-10-16T07:07:05Z",
+      "expires_at": "2027-01-14T07:06:33Z",
+      "workflow_run": {
+        "id": 38865132612,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/f77cb2a6-osb",
+        "head_sha": "4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b"
+      }
+    },
+    {
+      "id": 12030274042,
+      "node_id": "MDg6QXJ0aWZhY3QxMjAzMDI3NDA0Mg==",
+      "name": "device-reports",
+      "size_in_bytes": 1842,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12030274042",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12030274042/zip",
+      "expired": false,
+      "digest": "sha256:1c5f7ddb7071d7b92d87d770a901262d2381348f876ac5cf7e435b36c6784600",
+      "created_at": "2026-10-16T07:07:45Z",
+      "updated_at": "2026-10-16T07:07:45Z",
+      "expires_at": "2027-01-14T07:06:33Z",
+      "workflow_run": {
+        "id": 38865132612,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/f77cb2a6-osb",
+        "head_sha": "4a7aa4d63f9484d99c958a1ec64cea0730ed5f9b"
+      }
+    }
+  ]
+}

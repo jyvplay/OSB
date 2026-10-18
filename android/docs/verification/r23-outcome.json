@@ -1,0 +1,123 @@
+{
+  "native_candidate": "4bc763700b63582107e5dbe979f9a185338f66f7",
+  "overall_native_regression_gate": "FAILED: legacy R18 task UI open/add timeout; no rerun-to-green or acceptance",
+  "toolchain": {
+    "min_sdk": 34,
+    "compile_sdk": 37,
+    "target_sdk": 37,
+    "sdk_package": "platforms;android-37.0",
+    "agp": "9.1.1",
+    "gradle": "9.3.1",
+    "kotlin": "2.2.21",
+    "jdk": "maintained17 in remote CI",
+    "runtime_executed": "managed API34, NOT API37 or Rabbit GUI"
+  },
+  "native": {
+    "privacy": {
+      "run": 38871422549,
+      "candidate": "4bc763700b63582107e5dbe979f9a185338f66f7",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38871422549",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 16,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "suite": "privacy"
+    },
+    "memory": {
+      "run": 38871422568,
+      "candidate": "4bc763700b63582107e5dbe979f9a185338f66f7",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38871422568",
+      "conclusion": "success",
+      "device_conclusion": "success",
+      "counts": {
+        "PASS": 24,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "suite": "focused"
+    },
+    "main": {
+      "run": 38871422566,
+      "candidate": "4bc763700b63582107e5dbe979f9a185338f66f7",
+      "url": "https://github.com/jyvplay/OSB/actions/runs/38871422566",
+      "conclusion": "failure",
+      "device_conclusion": "failure",
+      "counts": {
+        "PASS": 121,
+        "FAIL": 1,
+        "SKIP": 0
+      },
+      "suite": "full"
+    }
+  },
+  "failed_case": [
+    "dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell"
+  ],
+  "host": {
+    "exit": 0,
+    "elapsed_seconds": 134.057,
+    "python_methods": 149,
+    "r23_assertions": 898161,
+    "r23_four_event_words": 160000,
+    "r22_checks": 37,
+    "r21_assertions": 376,
+    "interop": {
+      "checks": 327,
+      "accepted": 271,
+      "refused": 56,
+      "equal_byte_pairs": 15
+    }
+  },
+  "module_accounting": {
+    "included": 49,
+    "substantial_testable_subsets": 48,
+    "testable_percent": 97.96,
+    "unestablished": 1,
+    "fully_accepted": 0,
+    "fully_accepted_percent": 0,
+    "unfinished": 49,
+    "unfinished_percent": 100,
+    "r23_existing_production_modules_deepened": 4,
+    "deepened_inventory_percent": 8.16
+  },
+  "apk_bytes_remote_observation_only": [
+    {
+      "file": "privacy/build/outputs/apk/debug/privacy-debug.apk",
+      "bytes": 2534628,
+      "sha256": "739e4d21342c9011f0500a92136a44c062f135e40377c5b764ac1ecd32327242"
+    },
+    {
+      "file": "app/build/outputs/apk/play/debug/app-play-debug.apk",
+      "bytes": 28954907,
+      "sha256": "c8fb172cfdce874cf9f09c2ad3185a8757443a8cdbdcc286f0ba1605ccf28c6f"
+    },
+    {
+      "file": "app/build/outputs/apk/pro/debug/app-pro-debug.apk",
+      "bytes": 28954979,
+      "sha256": "dd99825abc6670889e30cf9a14061e689668460683a8c48185808fb80505a1c2"
+    }
+  ],
+  "profile_experiment": {
+    "run": 38869279741,
+    "candidate": "79bb1c3a5c61bb0867143f1865204e04ce9a5642",
+    "whole_result": "success",
+    "generated_first_party_rules": 837,
+    "cold_start_median_ms": 1619.20868,
+    "profile_compiled_start_median_ms": 1616.692515,
+    "samples_per_start_mode": 3,
+    "files_frame_cpu_p50_ms": 45.9769545,
+    "files_frame_cpu_p95_ms": 137.5524395,
+    "physical_or_speedup_acceptance": false,
+    "generated_profile_integrated_into_current_source": false
+  },
+  "limits": [
+    "Metadata receipts are consistency checks, not independent cryptographic execution attestation",
+    "Focused24 overlaps main122; do not add counts",
+    "No full-product/module acceptance; main gate FAILED",
+    "No physical/Rabbit GUI/API37 runtime/malicious overlay or external AX-service test",
+    "No RAM/installed-size/Tails comparison or meaningful speedup claim"
+  ]
+}

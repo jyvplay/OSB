@@ -6,4 +6,25 @@
     <item name="project_link" type="id"/>
     <item name="scratch_status" type="id"/>
     <item name="link_status" type="id"/>
+    <item name="open_touch_code" type="id"/>
+    <item name="open_exposure" type="id"/>
+    <item name="exposure_report" type="id"/>
+    <item name="refresh_exposure" type="id"/>
+    <item name="touch_code_output" type="id"/>
+    <item name="touch_code_status" type="id"/>
+    <item name="touch_delete" type="id"/>
+    <item name="touch_reveal" type="id"/>
+    <item name="touch_clear" type="id"/>
+    <item name="touch_back" type="id"/>
+    <item name="touch_key_0" type="id"/>
+    <item name="touch_key_1" type="id"/>
+    <item name="touch_key_2" type="id"/>
+    <item name="touch_key_3" type="id"/>
+    <item name="touch_key_4" type="id"/>
+    <item name="touch_key_5" type="id"/>
+    <item name="touch_key_6" type="id"/>
+    <item name="touch_key_7" type="id"/>
+    <item name="touch_key_8" type="id"/>
+    <item name="touch_key_9" type="id"/>
+    <item name="restart_workspace" type="id"/>
 </resources>

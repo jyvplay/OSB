@@ -1,8 +1,11 @@
 name: Android offline privacy companion
 on:
   push:
-    paths: ['android/privacy/**', 'android/core/security/**', 'android/tools/*r20*', '.github/workflows/android-privacy.yml']
+    paths: ['android/app/**', 'android/core/designsystem/**', 'android/core/settings/**', 'android/core/windowing/**', 'android/feature/settings/**', 'android/tools/*r24*', 'android/gradle/**', 'android/gradle.properties', 'android/privacy/**', 'android/format/pdf/**', 'android/feature/automation/**', 'android/core/security/**', 'android/tools/*r20*', 'android/tools/*r23*', 'android/testing/src/r23/**', '.github/workflows/android-privacy.yml']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -20,13 +23,25 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
+      - name: Install and inspect actual SDK37.0 compilation platform (not runtime37)
+        run: |
+          SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [[ ! -x "$SDK_MANAGER" ]]; then SDK_MANAGER="$(command -v sdkmanager)"; fi
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' > sdk37-install.log 2>&1; then
+            cat sdk37-install.log
+          else
+            result=$?;cat sdk37-install.log
+            python3 tools/ci_annotations.py sdk37-install.log sdk37-install
+            exit "$result"
+          fi
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Compile, lint and execute actual companion
-        run: bash tools/run_gradle_ci.sh device :privacy:assembleDebug :privacy:lintDebug :privacy:pixel6Api34DebugAndroidTest
+        run: bash tools/run_gradle_ci.sh device :testing:r23Contracts :privacy:assembleDebug :privacy:lintDebug :privacy:pixel6Api34DebugAndroidTest
       - name: Publish named actual outcomes
         if: always()
         run: python3 tools/report_device_results.py --root privacy/build/outputs/androidTest-results/managedDevice

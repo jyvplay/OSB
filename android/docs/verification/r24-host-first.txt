@@ -1,0 +1,1 @@
+R24 PASS: 64872 assertions;8 appearance combinations;16640 dock configurations; 2688 input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.

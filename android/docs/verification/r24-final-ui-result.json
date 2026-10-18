@@ -1,0 +1,53 @@
+{
+  "run": 39073795549,
+  "candidate": "d3a25531cc247266af5799273ab9c8ce1e065d5e",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/39073795549",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 7,
+    "FAIL": 2,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R24AppearanceDeviceTest.realMouseMagnifiesDrawingNotHitboxAndMotionOffRestoresBaseSize",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24AppearanceDeviceTest.bothPalettesAndLayoutsRenderPixelsAndPersistThroughRecreation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24AppearanceDeviceTest.invalidAppearancePatchAndCorruptPreferenceTypeCannotPartiallyApplyOrResetData",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24AppearanceDeviceTest.densityAndSearchRemainReachableAtActualTwoHundredPercentFont",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24AppearanceDeviceTest.settingsAndControlPanelShareOneStoreWithoutLosingDirtyEditorOrGates",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TaskInputDeviceTest.oneActualImeVisibleAddInBusinessWritesExactlyOneRevision",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.shell.R24TaskInputDeviceTest.oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TaskInputDeviceTest.oneActualImeVisibleAddInArtWritesExactlyOneRevision",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell",
+      "result": "PASS"
+    }
+  ],
+  "platform_api": 34,
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

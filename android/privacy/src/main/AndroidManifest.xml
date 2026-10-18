@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Intentionally NO INTERNET or storage/runtime permissions. Different application/UID from Fusion Shell. -->
+    <uses-permission android:name="android.permission.HIDE_OVERLAY_WINDOWS"/>
     <application android:allowBackup="false" android:fullBackupContent="false" android:usesCleartextTraffic="false"
         android:label="Fusion Offline Scratchpad" android:theme="@android:style/Theme.Material.Light.NoActionBar">
         <activity android:name=".PrivacyActivity" android:exported="true" android:excludeFromRecents="true" android:windowSoftInputMode="adjustResize">
             <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
         </activity>
+        <activity android:name=".TouchCodeActivity" android:exported="false" android:excludeFromRecents="true" android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".ExposureActivity" android:exported="false" android:excludeFromRecents="true" android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 </manifest>

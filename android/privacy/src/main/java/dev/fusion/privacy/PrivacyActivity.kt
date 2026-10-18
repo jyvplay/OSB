@@ -1,6 +1,5 @@
 package dev.fusion.privacy
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,25 +20,19 @@ import dev.fusion.security.LinkDisclosure
  * Deliberately no payload persistence, provider/export/clipboard/network or inbound-data route.
  * [U] verify on API 34/36/37: secure-window capture, IME/AX, autofill/content capture and lifecycle behavior.
  */
-class PrivacyActivity: Activity() {
+class PrivacyActivity: GuardedPrivacyActivity() {
     private var editor:EditText?=null
     private var link:EditText?=null
-    override fun onCreate(savedInstanceState:Bundle?) {
-        super.onCreate(null) // Never restore an old view hierarchy or externally supplied draft.
-        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        setRecentsScreenshotEnabled(false)
-    }
-    override fun onResume() {super.onResume();window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);workspace()}
-    override fun onNewIntent(intent:Intent) {super.onNewIntent(intent) /* No extras/data imported, including old spike flags. */}
-    override fun onSaveInstanceState(outState:Bundle) {super.onSaveInstanceState(outState);outState.clear() /* All payload views also disable hierarchy saving. */ }
-    private fun detach() {
+    override fun rebuildWorkspace() { workspace() }
+    override fun discardWorkspace(reason:String) { detach(reason) }
+    override fun onNewIntent(intent:Intent) {super.onNewIntent(intent) /* No extras/data imported. */ }
+    private fun detach(reason:String="Workspace discarded. No saved draft.") {
         editor?.let {(getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(it.windowToken,0)}
         for(field in listOfNotNull(editor,link)) {field.clearFocus();field.setText("")}
         editor=null;link=null
         // Drop whole editors, including their undo managers. Clearing text alone is NOT sufficient.
-        setContentView(TextView(this).apply {text="Workspace discarded. No saved draft."})
+        showDiscarded(reason)
     }
-    override fun onPause() {detach();super.onPause()}
     private fun workspace() {
         detach()
         val pad=(16*resources.displayMetrics.density).toInt()
@@ -52,14 +45,14 @@ class PrivacyActivity: Activity() {
         fun label(value:String)=TextView(this).apply {text=value;textSize=16f;column.addView(this)}
         label("Fusion Offline Scratchpad").textSize=23f
         label("Separate offline app — NOT anonymous. No Internet permission. No saved drafts, imports, exports, accounts, telemetry or clipboard actions.")
-        label("Text is discarded from this workspace whenever it pauses (including Home, switching apps or dialogs), on recreation, or when you press Discard. Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
+        label("Text is discarded on pause, window focus loss, obscured touch, recreation, or Discard (including switching apps or system dialogs). Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
         val scratchStatus=TextView(this).apply {id=R.id.scratch_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
-        val scratch=PrivateText(this).apply {id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768,scratchStatus)}
+        val scratch=PrivateText(this).apply {protect(this);id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768,scratchStatus)}
         editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2));column.addView(scratchStatus)
         column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
         label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
         val linkStatus=TextView(this).apply {id=R.id.link_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
-        val address=PrivateText(this).apply {id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096,linkStatus);maxLines=3}
+        val address=PrivateText(this).apply {protect(this);id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096,linkStatus);maxLines=3}
         link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2));column.addView(linkStatus)
         val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
         column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
@@ -67,11 +60,15 @@ class PrivacyActivity: Activity() {
                 catch(_:IllegalArgumentException) {"Input refused. Use bounded valid HTTP(S), no credentials or controls. No network request made."}
         }})
         column.addView(result)
+        column.addView(Button(this).apply {id=R.id.open_touch_code;text="Touch-only code pad (no keyboard)";setOnClickListener {startActivity(Intent(this@PrivacyActivity,TouchCodeActivity::class.java))}})
+        column.addView(Button(this).apply {id=R.id.open_exposure;text="Review local input / exposure";setOnClickListener {startActivity(Intent(this@PrivacyActivity,ExposureActivity::class.java))}})
         label("Android, the laptop/hypervisor, privileged software, IME and accessibility services remain trusted. No RAM/flash forensic-erasure guarantee. The keyboard no-learning request is advisory. Other apps and Fusion Shell are NOT made offline or anonymous.")
         val scroll=ScrollView(this).apply {isSaveEnabled=false;isSaveFromParentEnabled=false;addView(column)}
         scroll.setOnApplyWindowInsetsListener {v,insets ->
             val safe=insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime());v.setPadding(safe.left,safe.top,safe.right,safe.bottom);insets
         }
+        protect(scroll);protect(column)
+        for(i in 0 until column.childCount) protect(column.getChildAt(i))
         setContentView(scroll);column.isFocusableInTouchMode=true;column.requestFocus()
     }
     private fun plainFilters(field:EditText,limit:Int,status:TextView)=arrayOf(InputFilter {source,start,end,_,_,_ ->

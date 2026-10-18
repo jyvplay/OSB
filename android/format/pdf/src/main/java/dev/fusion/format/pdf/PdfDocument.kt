@@ -2,62 +2,52 @@ package dev.fusion.format.pdf
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.pdf.PdfRenderer
 import android.net.Uri
-import android.os.ParcelFileDescriptor
+import dev.fusion.format.pdf.sandbox.FormatLease
+import dev.fusion.format.pdf.sandbox.PdfPreview
+import dev.fusion.format.pdf.sandbox.PdfPreviewLimits
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.withLock
+import java.io.ByteArrayOutputStream
 import java.io.Closeable
 
-/**
- * Real page rendering via the platform PdfRenderer (android.graphics.pdf).
- * View-only: no annotation, no signing, no text extraction, no form filling.
- * Encrypted PDFs are rejected by the platform and surface as a clear error.
+/** Bounded immutable source snapshot. ALL native PDF parsing/rendering lives in the isolated worker.
+ * Parent accepts only validated raw ARGB, not child-controlled image codecs. Not full PDF editing.
  */
-class PdfDocument private constructor(
-    private val descriptor: ParcelFileDescriptor,
-    private val renderer: PdfRenderer
-) : Closeable {
-
-    val pageCount: Int get() = renderer.pageCount
-
-    /** Renders one page scaled to [targetWidth] px, preserving aspect ratio. */
-    suspend fun renderPage(index: Int, targetWidth: Int): Result<Bitmap> =
-        withContext(Dispatchers.IO) {
-            runCatching {
-                require(index in 0 until renderer.pageCount) { "Page $index is out of range" }
-                renderer.openPage(index).use { page ->
-                    val width = targetWidth.coerceIn(120, 2400)
-                    val height = (width.toFloat() * page.height / page.width).toInt().coerceAtLeast(1)
-                    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                    // PdfRenderer composites onto transparency; fill white first.
-                    bitmap.eraseColor(Color.WHITE)
-                    page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                    bitmap
-                }
-            }
-        }
-
-    override fun close() {
-        runCatching { renderer.close() }
-        runCatching { descriptor.close() }
+class PdfDocument private constructor(private val context:Context,private val source:ByteArray,
+                                     private var first:PdfPreview?):Closeable {
+    private val lock=Any();private var closed=false
+    private val renders=kotlinx.coroutines.sync.Mutex()
+    val pageCount=requireNotNull(first).pages
+    suspend fun renderPage(index:Int,targetWidth:Int):Result<Bitmap> = withContext(Dispatchers.IO) {
+        renders.withLock {runCatching {
+            require(targetWidth==PdfPreviewLimits.MAX_SIDE) {"Bounded preview requests exactly320px maximum; no silent full-resolution claim"}
+            val (bytes,cached)=synchronized(lock) {check(!closed);require(index in 0 until pageCount);source.copyOf() to first?.takeIf {index==0}}
+            val frame=cached ?: FormatLease(context).use {requireNotNull(it.previewOwnedPdf(bytes,index).pdf)}
+            require(frame.pages==pageCount) {"Worker page count changed for the same snapshot"}
+            synchronized(lock) {check(!closed)}
+            Bitmap.createBitmap(frame.pixels(),frame.width,frame.height,Bitmap.Config.ARGB_8888)
+        }}
     }
-
+    override fun close() {synchronized(lock) {closed=true;source.fill(0);first=null}} // Copies/OS buffers are NOT securely erased.
     companion object {
-        suspend fun open(context: Context, uri: Uri): Result<PdfDocument> =
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    val pfd = context.contentResolver.openFileDescriptor(uri, "r")
-                        ?: error("Provider did not return a readable file descriptor")
-                    try {
-                        PdfDocument(pfd, PdfRenderer(pfd))
-                    } catch (e: Exception) {
-                        pfd.close()
-                        // SecurityException here usually means the PDF is password protected.
-                        throw IllegalStateException("Cannot open PDF: ${e.message}", e)
+        suspend fun open(context:Context,uri:Uri):Result<PdfDocument> = withContext(Dispatchers.IO) {
+            runCatching {
+                val out=ByteArrayOutputStream()
+                requireNotNull(context.contentResolver.openInputStream(uri)).use {input->
+                    val chunk=ByteArray(8192)
+                    while(true) {
+                        val n=input.read(chunk,0,minOf(chunk.size,PdfPreviewLimits.MAX_BYTES-out.size()+1))
+                        if(n<0) break
+                        require(n>0 && out.size()+n<=PdfPreviewLimits.MAX_BYTES) {"PDF source byte limit exceeded"}
+                        out.write(chunk,0,n)
                     }
                 }
+                val bytes=out.toByteArray()
+                val evidence=FormatLease(context).use {it.previewOwnedPdf(bytes,0)}
+                PdfDocument(context.applicationContext,bytes,requireNotNull(evidence.pdf))
             }
+        }
     }
 }
