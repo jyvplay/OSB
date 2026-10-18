@@ -28,13 +28,22 @@ class R24MapAndServiceDeviceTest {
         compose.onNodeWithTag("map-latitude").performScrollTo().performTextReplacement("35.7796")
         compose.onNodeWithTag("map-longitude").performScrollTo().performTextReplacement("-78.6382")
         click("map-save-pin"); compose.waitUntil(10000) { model().book?.pins?.size == 1 && !model().busy }
+        compose.waitUntil(10000) {
+            var hidden = false
+            compose.activityRule.scenario.onActivity { hidden = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == false }
+            hidden
+        }
         assertEquals(GeoPoint(35.7796, -78.6382), model().book!!.pins.single().point)
         click("map-places"); click("map-go-1")
         assertEquals(GeoPoint(35.7796, -78.6382), model().camera.center)
         click("map-measure")
+        NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
+        val canvas = compose.onNodeWithTag("offline-map-canvas").fetchSemanticsNode().boundsInRoot
+        assertTrue("Actual map canvas must not collapse under controls/IME: $canvas", canvas.height / compose.density.density >= 96)
+        compose.waitUntil(10000) { compose.onAllNodesWithTag("map-pin-1").fetchSemanticsNodes().size == 1 }
         click("map-pin-1") // Positive control: a tap on the 48dp pin selects that same saved point.
         assertEquals(model().measureFrom, model().cursor)
-        // 45 raw pixels was INSIDE the 48dp pin at this emulator's density, not background.
+        // Keep a background target far outside the 48dp pin after proving the canvas is actually visible.
         compose.onNodeWithTag("offline-map-canvas").performTouchInput { click(Offset(width * .8f, height * .35f)) }
         assertTrue("Background tap must select a different coordinate: ${model().cursor}", EarthGeometry.meters(model().measureFrom!!, model().cursor) > 100)
         val old = model().camera.center; click("map-east"); assertNotEquals(old, model().camera.center)

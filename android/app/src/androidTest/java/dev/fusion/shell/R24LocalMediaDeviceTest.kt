@@ -79,7 +79,14 @@ class R24LocalMediaDeviceTest {
                 val again = await(scenario) { it.phase == PlaybackEpoch.Phase.PAUSED }
                 assertTrue(kotlin.math.abs(again.positionMs!! - paused.positionMs!!) <= 80)
                 // Native SeekBar keyboard interaction, not a direct MediaPlayer call.
-                scenario.onActivity { a -> a.findViewById<android.widget.SeekBar>(dev.fusion.media.R.id.player_seek).requestFocus() }
+                // A real Tab exits touch mode before requesting focus; never ignore a false requestFocus result.
+                InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_TAB)
+                scenario.onActivity { a ->
+                    val bar = a.findViewById<android.widget.SeekBar>(dev.fusion.media.R.id.player_seek)
+                    assertFalse("Tab must enter keyboard navigation", bar.isInTouchMode)
+                    assertTrue("SeekBar must accept actual keyboard focus", bar.requestFocus())
+                    assertTrue(bar.hasFocus())
+                }
                 InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_DPAD_RIGHT)
                 await(scenario) { it.phase == PlaybackEpoch.Phase.PAUSED && (it.positionMs ?: 0) > paused.positionMs!! }
                 pressPlayControl(scenario)

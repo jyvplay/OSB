@@ -24,7 +24,7 @@
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "aa8cd61fe246f763874a2a01d508ac7c715ed70348910a5174858516d89bba5a",
-        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "7f129e674b8189a0bec7ceaef069c9ac0b1ae691dba0011c3e52c3972e71907c",
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "06f9c823719f5349cc78cd6bf7e21a30f55fe6d7fe4580d39ac9f449e389b7b0",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "e6013ce475baeff5c9ed4123061c789ebe7d62c47e63cbf9f1e748189b286b53",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
@@ -615,7 +615,7 @@
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt": "c48816bc9cb2f5c9fdb1c54f770955eeddb9f279e425c46b1935ceedcddd0610",
         "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a",
-        "app/src/androidTest/java/dev/fusion/shell/R24LocalMediaDeviceTest.kt": "5533e0e25c75217e8e1559ecb4509da2c9b616bbddc0908f5283d066b25bee15"
+        "app/src/androidTest/java/dev/fusion/shell/R24LocalMediaDeviceTest.kt": "09544d536b94e76cc1a20eacd9ac5a2909a896e238c14f81efd3995f1fc36e63"
       }
     },
     {
@@ -1301,10 +1301,10 @@
       "limit": "Low-resolution offline atlas, not street maps/navigation/GPS/geocoding/traffic or universal native/AX acceptance.",
       "sha256": {
         "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt": "2cd6abc258604e4390d5799a4a0ef3883bb781cd686e1f9ae0b6535b46a32069",
-        "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt": "69e94c5ec3d46b018269e353d7e3dc670e74c679c4fb7e7f74d0e96d0cde9446",
+        "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt": "72f22293ab0a492195133208a76c696c12257853123dab673a8daa04aaec070f",
         "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt": "9df8f8f0ff5faa98628da222e2ab8f5b1c6e95baa5d17d3e7ece70804a8c290f",
         "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a",
-        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "e1f2b2c516db08e73fe963c5e878cde1a3cd2e7b3932d7f1a98dc5ed4980c5ee"
+        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "c6fc760cc2fc60dfeba4c1bdceeb658fd184f401f31f96f3cc9770bb3dcb0359"
       }
     }
   ]

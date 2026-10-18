@@ -3,10 +3,11 @@ on:
   push:
     paths: ['.github/workflows/engine-intake-r24c.yml']
   workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: r24c-servo-intake-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   intake:

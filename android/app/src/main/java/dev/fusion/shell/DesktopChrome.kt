@@ -62,6 +62,15 @@ internal fun AppGlyph(id:String,modifier:Modifier) {
                 drawLine(ink,Offset(w*.18f,h*.25f),Offset(w*.82f,h*.25f),line.width)
                 for(x in 0..1) for(y in 0..1) drawCircle(ink,w*.075f,Offset(w*(.3f+x*.4f),h*(.5f+y*.27f)))
             }
+            "media" -> {
+                drawCircle(ink,radius=w*.44f,style=line)
+                drawPath(Path().apply {moveTo(w*.38f,h*.25f);lineTo(w*.75f,h*.5f);lineTo(w*.38f,h*.75f);close()},ink)
+            }
+            "maps" -> {
+                drawCircle(ink,radius=w*.44f,style=line)
+                drawOval(ink,Offset(w*.28f,h*.06f),Size(w*.44f,h*.88f),style=line)
+                drawLine(ink,Offset(w*.06f,h*.5f),Offset(w*.94f,h*.5f),line.width)
+            }
             "settings" -> for(i in 0..2) {val y=h*(.2f+i*.3f);drawLine(ink,Offset(0f,y),Offset(w,y),line.width);drawCircle(ink,w*.12f,Offset(w*(if(i==1) .7f else .3f),y))}
             "apps","pilot" -> for(x in 0..1) for(y in 0..1) drawRect(ink,Offset(x*w*.58f,y*h*.58f),Size(w*.36f,h*.36f))
             else -> {drawRoundRect(ink,cornerRadius=androidx.compose.ui.geometry.CornerRadius(2f,2f),style=line)

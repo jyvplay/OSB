@@ -29,38 +29,48 @@ def validate_audit(report):
     return {'measured_targets': len(rows), 'scope': 'Declared targets in a finite native frame only; metadata is not runner attestation or global beauty/AX verification.'}
 
 
+MAX_PARTS = 32
+CHUNKS_PER_STEP = 8
+
+
+def transport_chunks(name, data):
+    if name not in NAMES: raise ValueError('Unexpected capture name')
+    w, h = dimensions(data)
+    if len(data) > 128 * 1024 or w > 400 or h > 2000:
+        raise ValueError('Capture budget exceeded')
+    text = base64.b64encode(data).decode()
+    parts = [text[i:i+3700] for i in range(0, len(text), 3700)]
+    if len(parts) > MAX_PARTS: return []  # Artifact-only, explicitly reported by the metadata step.
+    return [f'R24CPNG1 {name} {i+1}/{len(parts)} {hashlib.sha256(data).hexdigest()} {part}' for i, part in enumerate(parts)]
+
+
 def export(group):
     found = {}
     root = ROOT / 'app/build/outputs/managed_device_android_test_additional_output'
     for file in root.rglob('r24c-*.png'):
-        if file.name not in NAMES:
-            continue
+        if file.name not in NAMES: continue
         data = file.read_bytes()
-        w, h = dimensions(data)
-        if len(data) > 128 * 1024 or w > 400 or h > 2000:
-            raise ValueError('Capture budget exceeded')
         if file.name in found and found[file.name] != data:
             raise ValueError('Ambiguous native capture')
         found[file.name] = data
+    messages = []; index = []
     for name, data in sorted(found.items()):
-        text = base64.b64encode(data).decode()
-        parts = [text[i:i+3700] for i in range(0, len(text), 3700)]
-        if len(parts) > 20:
-            if group == 0:
-                print('::notice::Actual image is artifact-only (annotation budget): ' + name)
-            continue
-        for i, part in enumerate(parts):
-            if i // 8 == group:
-                print(f'::notice::R24CPNG1 {name} {i+1}/{len(parts)} {hashlib.sha256(data).hexdigest()} {part}')
-    if group == 0:
-        for file in root.rglob('r24c-*.json'):
-            report = json.loads(file.read_text()); result = validate_audit(report)
-            # Small actual measurements travel through the same retained CI annotations as the PNGs.
-            observed = {key: report[key] for key in ('schema', 'origin', 'api', 'density', 'font_scale', 'required_targets')}
-            print('::notice::R24CTARGETS1 ' + file.name + ' ' + json.dumps(observed, separators=(',', ':')))
-            print('::notice::R24C native target audit ' + file.name + ': ' + json.dumps(result))
-        if not found:
-            print('::notice::No current native image. No visual verification inferred.')
+        chunks = transport_chunks(name, data)
+        messages.extend(chunks)
+        index.append({'name': name, 'bytes': len(data), 'chunks': len(chunks), 'artifact_only': not bool(chunks)})
+    if group:
+        # GitHub limits annotations per STEP. The earlier per-image grouping lost later images/metadata.
+        # Globally paginate, never emit 8 chunks for EACH image in the same step.
+        first = (group - 1) * CHUNKS_PER_STEP
+        for message in messages[first:first + CHUNKS_PER_STEP]: print('::notice::' + message)
+        return
+    print('::notice::R24CCAPTUREINDEX1 ' + json.dumps(index, separators=(',', ':')))
+    for file in root.rglob('r24c-*.json'):
+        if file.name.removesuffix('.json') + '.png' not in NAMES: continue
+        report = json.loads(file.read_text()); validate_audit(report)
+        observed = {key: report[key] for key in ('schema', 'origin', 'api', 'density', 'font_scale', 'required_targets')}
+        print('::notice::R24CTARGETS1 ' + file.name + ' ' + json.dumps(observed, separators=(',', ':')))
+    if not found: print('::notice::No current native image. No visual verification inferred.')
 
 
 def collect(run_id):
@@ -70,13 +80,14 @@ def collect(run_id):
     if run['status'] != 'completed':
         raise ValueError('Wait for actual completion; do not infer captures')
     jobs = api(f'repos/jyvplay/OSB/actions/runs/{run_id}/jobs?per_page=100')['jobs']
-    chunks = {}; audits = {}
+    chunks = {}; audits = {}; indexes = []
     for job in jobs:
         page = 1
         while True:
             rows = api(job['check_run_url'] + f'/annotations?per_page=100&page={page}')
             for row in rows:
                 message = row.get('message', '')
+                if message.startswith('R24CCAPTUREINDEX1 '): indexes.extend(json.loads(message.split(' ', 1)[1]))
                 if message.startswith('R24CTARGETS1 '):
                     _, name, raw = message.split(' ', 2)
                     if name.removesuffix('.json') + '.png' not in NAMES or name in audits:
@@ -85,7 +96,7 @@ def collect(run_id):
                 m = PATTERN.fullmatch(message)
                 if m:
                     name, i, n, digest, part = m[1], int(m[2]), int(m[3]), m[4], m[5]
-                    if not 1 <= i <= n <= 20 or len(part) > 3700:
+                    if not 1 <= i <= n <= MAX_PARTS or len(part) > 3700:
                         raise ValueError('Invalid capture chunk')
                     target = chunks.setdefault(name, {'n': n, 'sha256': digest, 'parts': {}})
                     if target['n'] != n or target['sha256'] != digest or i in target['parts']:
@@ -106,7 +117,7 @@ def collect(run_id):
         path = ROOT / 'testing/build/r24c/captures' / run['head_sha'] / name
         path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
         images[name] = {'path': str(path), 'width': w, 'height': h, 'sha256': value['sha256']}
-    result = {'run': run_id, 'candidate': run['head_sha'], 'whole_conclusion': run['conclusion'], 'images': images, 'actual_target_observations': audits, 'incomplete_not_displayed': incomplete,
+    result = {'run': run_id, 'candidate': run['head_sha'], 'whole_conclusion': run['conclusion'], 'images': images, 'actual_target_observations': audits, 'capture_index': indexes, 'incomplete_not_displayed': incomplete,
               'scope': 'Actual finite native frames only. A screenshot from a failed workflow is not a workflow pass.'}
     print(json.dumps(result, indent=2))
     if not images:
@@ -116,7 +127,7 @@ def collect(run_id):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('mode', choices=['export', 'collect', 'audit'])
-    p.add_argument('--group', type=int, choices=range(3), default=0)
+    p.add_argument('--group', type=int, choices=range(17), default=0)
     p.add_argument('--run', type=int)
     p.add_argument('--file', type=Path)
     a = p.parse_args()

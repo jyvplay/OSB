@@ -19,6 +19,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
@@ -47,12 +49,18 @@ fun MapScreen(model: MapViewModel) {
                 OutlinedTextField(lon, { if (it.length <= 32) lon = it }, label = { Text("Longitude (−180 to 180)") }, modifier = Modifier.testTag("map-longitude"))
                 if (error.isNotEmpty()) Text(error)
             }
-        }, confirmButton = { TextButton(onClick = {
-            try {
-                val point = GeoPoint(lat.toDouble(), lon.toDouble()); MapPin(1, name.trim(), point)
-                model.add(name.trim(), point); addVisible = false
-            } catch (_: Exception) { error = "Use a printable 1–64 character name and valid decimal coordinates." }
-        }, enabled = !model.busy && book != null && book.pins.size < 256, modifier = Modifier.testTag("map-save-pin")) { Text("Save pin") } },
+        }, confirmButton = {
+            // These locals belong to the actual Dialog window, not the underlying desktop window.
+            val focus = LocalFocusManager.current
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextButton(onClick = {
+                try {
+                    val point = GeoPoint(lat.toDouble(), lon.toDouble()); MapPin(1, name.trim(), point)
+                    model.add(name.trim(), point)
+                    focus.clearFocus(); keyboard?.hide(); addVisible = false
+                } catch (_: Exception) { error = "Use a printable 1–64 character name and valid decimal coordinates." }
+            }, enabled = !model.busy && book != null && book.pins.size < 256, modifier = Modifier.testTag("map-save-pin")) { Text("Save pin") }
+        },
             dismissButton = { TextButton(onClick = { addVisible = false }) { Text("Cancel") } })
     }
     if (placesVisible) AlertDialog(onDismissRequest = { placesVisible = false }, title = { Text("Saved map pins") }, text = {

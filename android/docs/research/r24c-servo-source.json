@@ -1,0 +1,70 @@
+{
+  "retrieved": "2026-10-18",
+  "release_api_observation": {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-android.aar",
+        "digest": "sha256:6b73d23cf63fb3d7c19c908cddafbd475585199583bd16f6aa268b84c6093105",
+        "id": 605216176,
+        "name": "servo-aarch64-android.aar",
+        "size": 39860285
+      },
+      {
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-android.aar.sha256",
+        "digest": "sha256:210987e1ba08cf31017bee95d9539ca90a241191a46ee3db5be995ecdd78ec13",
+        "id": 605216236,
+        "name": "servo-aarch64-android.aar.sha256",
+        "size": 91
+      },
+      {
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-android.apk",
+        "digest": "sha256:7ec0019584898801ee8ebcf78195cf7644a1103ec6e252a32e6fbe3626aa8329",
+        "id": 605215936,
+        "name": "servo-aarch64-android.apk",
+        "size": 115768080
+      },
+      {
+        "browser_download_url": "https://github.com/servo/servo/releases/download/v0.7.0/servo-aarch64-android.apk.sha256",
+        "digest": "sha256:097cbd794e64a3ed6a2d7909a6a69dac89435112495f4c84e8a318eed7967702",
+        "id": 605216078,
+        "name": "servo-aarch64-android.apk.sha256",
+        "size": 91
+      }
+    ],
+    "html_url": "https://github.com/servo/servo/releases/tag/v0.7.0",
+    "id": 401590244,
+    "prerelease": false,
+    "published_at": "2026-10-05T18:32:02Z",
+    "tag_name": "v0.7.0"
+  },
+  "local_binary_download": {
+    "succeeded": false,
+    "reason": "gh release download received EOF at the release-assets.githubusercontent.com redirect; outside this sandbox host allowlist. No binary inspected locally."
+  },
+  "standalone_dispatch": {
+    "succeeded": false,
+    "reason": "GitHub workflow dispatch returned403 Resource not accessible by integration. Read and branch push still work; no token requested."
+  },
+  "local_native_intake": false,
+  "integrated": false,
+  "source_observations": {
+    "license": {
+      "git_blob": "d8b475b6e17e390d702c9be4d3a735c7622b9735",
+      "bytes": 15649,
+      "sha256": "1af2d2b02d9c86030d29ed77117ca7a1b0e4b6ff35bcf8eeb124867d0f5cb59e",
+      "finding": "Actual tag LICENSE text is Mozilla Public License2.0; not transitive license closure."
+    },
+    "android_view": {
+      "git_blob": "fb71931ce2d839027ce9b24373e0a4412f807c99",
+      "bytes": 3044,
+      "sha256": "96fdacc70769372ef96790f23b3bc7bd0852a49d68406d8ac8a780f85794b321",
+      "finding": "Actual ServoView is a SurfaceView plus Choreographer.FrameCallback; constructor requires Servo.Client, ServoNavigator and CoroutineScope; addPlatformWindow/resumePainting/pausePainting/resize/loadUri/stop interfaces inspected."
+    },
+    "android_aar_build": {
+      "git_blob": "9993af6ec53f8dc6a3180604e7a9d33b2fc021d7",
+      "bytes": 5865,
+      "sha256": "ec62ee9dad14eca57c79f1a7fcd999918564d2e3b8afd6980c00a319b053904d",
+      "finding": "Tag build file uses compileSdk37 and actual Rust-built libservoshell.so plus libc++_shared.so via ndk-build; defines architecture-specific variants. File read, not built."
+    }
+  }
+}

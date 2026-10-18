@@ -1,0 +1,53 @@
+{
+  "run": 39088691659,
+  "candidate": "0a7b22e612d25959c32f4f7626594f916e664198",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/39088691659",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 7,
+    "FAIL": 2,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R24TabletopDeviceTest.corruptTabletopIsNotSilentlyReplacedWithDefaults",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TabletopDeviceTest.actualDragPublishesCoordinatesAndSurvivesActivityRecreation",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TabletopDeviceTest.silverAndLightSceneHaveRealTargetsAndNativeCaptures",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TabletopDeviceTest.measuredTargetsAndSavedViewRemainOperableAtActualTwoHundredPercentFont",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TabletopDeviceTest.wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.shell.R24LocalMediaDeviceTest.networkUrlIsNotTreatedAsAPlayableLocalDocument",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission",
+      "result": "FAIL"
+    },
+    {
+      "case": "dev.fusion.shell.R24MapAndServiceDeviceTest.providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback",
+      "result": "PASS"
+    }
+  ],
+  "platform_api": 34,
+  "suite": "continuation",
+  "scope": "Actual retained API34 named outcomes (continuation subset only), not physical/full-product/AX/legal acceptance"
+}

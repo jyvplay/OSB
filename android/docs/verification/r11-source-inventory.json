@@ -199,7 +199,7 @@
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "7f129e674b8189a0bec7ceaef069c9ac0b1ae691dba0011c3e52c3972e71907c"
+      "sha256": "06f9c823719f5349cc78cd6bf7e21a30f55fe6d7fe4580d39ac9f449e389b7b0"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",
@@ -787,7 +787,7 @@
       "path": "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt",
       "module": ":feature:maps",
       "package": "dev.fusion.maps",
-      "sha256": "69e94c5ec3d46b018269e353d7e3dc670e74c679c4fb7e7f74d0e96d0cde9446"
+      "sha256": "72f22293ab0a492195133208a76c696c12257853123dab673a8daa04aaec070f"
     },
     {
       "path": "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt",

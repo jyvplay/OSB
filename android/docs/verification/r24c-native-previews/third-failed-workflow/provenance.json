@@ -1,0 +1,21 @@
+{
+  "run": 39088691659,
+  "candidate": "0a7b22e612d25959c32f4f7626594f916e664198",
+  "whole_conclusion": "failure",
+  "images": {
+    "r24c-silver.png": {
+      "path": "/home/user/OSB/android/testing/build/r24c/captures/0a7b22e612d25959c32f4f7626594f916e664198/r24c-silver.png",
+      "width": 280,
+      "height": 622,
+      "sha256": "98d47cea102bf7a388435f0812941eadd8664b8f1395ff349fbd9872fd86e490"
+    }
+  },
+  "actual_target_observations": {},
+  "incomplete_not_displayed": {
+    "r24c-tabletop.png": {
+      "received": 6,
+      "expected": 12
+    }
+  },
+  "scope": "Actual finite native frames only. A screenshot from a failed workflow is not a workflow pass."
+}

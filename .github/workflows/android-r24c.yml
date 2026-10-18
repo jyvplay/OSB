@@ -9,6 +9,9 @@ concurrency:
 permissions:
   contents: read
 jobs:
+  engine-intake:
+    name: Independent pinned engine artifact observation
+    uses: ./.github/workflows/engine-intake-r24c.yml
   continuation:
     name: Actual API34 tabletop media and offline atlas
     runs-on: ubuntu-24.04
@@ -49,15 +52,57 @@ jobs:
       - name: Actual named case results
         if: always()
         run: python3 tools/report_device_results.py
-      - name: Actual screenshots and geometry observations 1
+      - name: Actual capture index and measured geometry (not all-page acceptance)
         if: always()
         run: python3 tools/r24c_capture.py export --group 0
-      - name: Actual screenshot chunks 2
+      - name: Actual native image transport 1 (at most eight notices)
         if: always()
         run: python3 tools/r24c_capture.py export --group 1
-      - name: Actual screenshot chunks 3
+      - name: Actual native image transport 2 (at most eight notices)
         if: always()
         run: python3 tools/r24c_capture.py export --group 2
+      - name: Actual native image transport 3 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 3
+      - name: Actual native image transport 4 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 4
+      - name: Actual native image transport 5 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 5
+      - name: Actual native image transport 6 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 6
+      - name: Actual native image transport 7 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 7
+      - name: Actual native image transport 8 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 8
+      - name: Actual native image transport 9 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 9
+      - name: Actual native image transport 10 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 10
+      - name: Actual native image transport 11 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 11
+      - name: Actual native image transport 12 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 12
+      - name: Actual native image transport 13 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 13
+      - name: Actual native image transport 14 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 14
+      - name: Actual native image transport 15 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 15
+      - name: Actual native image transport 16 (at most eight notices)
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 16
       - uses: actions/upload-artifact@v4
         if: always()
         with:

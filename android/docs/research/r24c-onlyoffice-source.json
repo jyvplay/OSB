@@ -1,0 +1,8 @@
+{
+  "retrieved": "2026-10-18",
+  "repository": "ONLYOFFICE/DocumentServer",
+  "path": "Readme.md",
+  "blob": "fc18a04513ca801ec09409378331cce111cc5554",
+  "sha256": "40e5f6096ecd164d3a15452e21a4820f06702238aec1cd4fe45b0f0e5369f683",
+  "primary_observation": "Current primary README lists Community AGPLv3, Enterprise/Developer proprietary, and mobile web editors absent from Community. Not an integration or legal opinion."
+}

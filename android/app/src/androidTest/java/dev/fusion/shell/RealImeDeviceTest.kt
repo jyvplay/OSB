@@ -10,6 +10,8 @@ import android.view.MotionEvent
 import android.view.WindowInsets
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.ViewModelProvider
+import dev.fusion.editor.EditorViewModel
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
@@ -34,10 +36,21 @@ class RealImeDeviceTest {
         val queue=java.util.ArrayDeque<AccessibilityNodeInfo>();queue.add(root);var visited=0
         while(queue.isNotEmpty()) {
             val n=queue.removeFirst();check(++visited<=3000)
-            if(n.isVisibleToUser && predicate(n)) return n
+            if(n.refresh() && n.isVisibleToUser && predicate(n)) return n
             for(i in 0 until n.childCount) n.getChild(i)?.let(queue::add)
         }
         return null
+    }
+    private fun editorNode() = find {
+        it.isEditable && it.isEnabled && (it.viewIdResourceName == "editor-content" || it.viewIdResourceName?.endsWith(":id/editor-content") == true)
+    }
+    private fun selectedContent(scenario: ActivityScenario<MainActivity>): String? {
+        var result: String? = null
+        scenario.onActivity {
+            val state = ViewModelProvider(it)[EditorViewModel::class.java].state.value
+            result = state.session.documents.find { doc -> doc.id == state.session.selectedId }?.content
+        }
+        return result
     }
     private fun tap(node: AccessibilityNodeInfo) {
         val rect=Rect();node.getBoundsInScreen(rect);check(!rect.isEmpty)
@@ -65,8 +78,8 @@ class RealImeDeviceTest {
                 tap(requireNotNull(find { it.text?.toString()=="Editor" }))
                 waitFor("New enabled") { find { it.text?.toString()=="New" && it.isEnabled }!=null }
                 tap(requireNotNull(find { it.text?.toString()=="New" && it.isEnabled }))
-                waitFor("real editable node") { find { it.isEditable && it.isEnabled }!=null }
-                tap(requireNotNull(find { it.isEditable && it.isEnabled }))
+                waitFor("real tagged editor node") { editorNode()!=null }
+                tap(requireNotNull(editorNode()))
                 var observation=""
                 waitFor("IME visible default=$selected enabled=$enabled") {
                     var visible=false
@@ -77,12 +90,26 @@ class RealImeDeviceTest {
                     }; visible
                 }
                 val text=(1..60).joinToString("\n") { "Real input line $it" }
-                val editor=requireNotNull(find { it.isEditable && it.isEnabled })
+                val editor=requireNotNull(editorNode())
                 assertTrue(editor.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,Bundle().apply { putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,text) }))
-                waitFor("long text entered") { find { it.isEditable && it.text?.contains("Real input line 60")==true }!=null }
+                try {
+                    waitFor("long text entered in real model AND visible tagged editor") {
+                        selectedContent(scenario) == text && editorNode()?.text?.contains("Real input line 60") == true
+                    }
+                } catch (failure: AssertionError) {
+                    val content = selectedContent(scenario)
+                    val actual = editorNode()
+                    val rect = Rect(); actual?.getBoundsInScreen(rect)
+                    throw AssertionError("Real IME long-text failure: modelChars=${content?.length}; modelTail=${content?.takeLast(80)}; " +
+                        "tag=${actual?.viewIdResourceName}; editable=${actual?.isEditable}; visible=${actual?.isVisibleToUser}; " +
+                        "bounds=$rect; axTail=${actual?.text?.takeLast(80)}; $observation; original=${failure.message}", failure)
+                }
                 waitFor("New visible with real IME; $observation") { find { it.text?.toString()=="New" && it.isEnabled }!=null }
                 tap(requireNotNull(find { it.text?.toString()=="New" && it.isEnabled }))
-                waitFor("second empty document") { find { it.isEditable && it.text?.contains("Real input line 60")!=true }!=null }
+                waitFor("second empty document") {
+                    val fresh = editorNode()
+                    fresh != null && fresh.text?.contains("Real input line 60") != true && selectedContent(scenario) == ""
+                }
                 println("R13 actual IME observation: default=$selected enabled=$enabled $observation")
             }
         } finally {
