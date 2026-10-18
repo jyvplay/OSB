@@ -13,7 +13,8 @@ Use a maintained **full JDK17** and real **SDK `platforms;android-37.0`** with b
 Pins remain AGP9.1.1 / Gradle9.3.1 / Kotlin2.2.21; min34 / compile37 / target37. Rabbit1 GUI itself has **not** been
 run in this sandbox. Remote SDK/Gradle/emulator results are separately recorded, not called a Studio GUI test.
 
-1. Open `android/`, let Gradle sync, select **app / proDebug**, then run on a disposable API34+ AVD using copied data.
+1. Open `android/`, let Gradle sync, select **app / proDebug**, then run on a disposable **API34** AVD using copied data.
+   That is the tested main-app runtime; API37 evidence below concerns the separate privacy companion, not the whole app.
    Some existing features still require explicit per-session evaluation consent. Do not use this as a production OS.
 2. Default **Tabletop**: single-click/tap a pin to select it, drag to rearrange, or double-click/tap to open its gated app.
    The selected-pin toolbar also provides Open, four directions, Unpin, and To table/back/left/right. Background drag pans.
@@ -55,8 +56,8 @@ python3 tools/engine_intake.py /path/to/actual-engine.aar --report testing/build
 ```
 
 The tested bootstrap route is Linux x86_64. Its pinned JRE17.0.9 is **old and not a full JDK**, for disposable host tests only;
-do not set it as Gradle's JDK or use it for production security. Current archived host pipeline:172 Python methods,
-439839 R24C assertions and65097 retained R24 assertions; compiled-input hashes/output in `verification/r24c/host-viewport-patch/`.
+do not set it as Gradle's JDK or use it for production security. Latest fully archived host pipeline at8e2567f:172 Python methods,
+439839 R24C assertions and65097 retained R24 assertions; exact-source/output in `verification/r24c/host-8e2567f/`.
 It is not a rerun of every historical host suite and does not build an APK.
 
 ## Actual Android without the IDE GUI
@@ -94,7 +95,9 @@ python3 tools/r24c_evidence_gate.py docs/verification/RECEIPT_PREFIX-result.json
 ```
 
 The gate requires exact named cases and all-pass/no-skip outcomes plus successful workflow/device conclusions. Capture transport
-refuses incomplete/hash-mismatched chunks and does not fabricate images. Actual captures/target observations cover only named frames;
+refuses incomplete/hash-mismatched chunks and does not fabricate images. Actual CI annotation limits require a separate
+check-run per frame; each carries<4KiB messages and stays below50 annotations. A dependent job verifies all transported PNG hashes.
+The original full PNGs remain in `r24c-native-frames`; preview downsampling is explicitly recorded. Actual captures/target observations cover only named frames;
 all-page/all-state visual, TalkBack, laptop landscape and physical-device acceptance remain open.
 
 ---

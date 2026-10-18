@@ -18,6 +18,7 @@ import org.junit.Test
 import java.io.FileDescriptor
 
 class PrivacyPlatformTest {
+    @get:org.junit.Rule val emulatorUi = PrivacyDeviceReady.emulatorRule()
     @Test fun noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes() {
         val context=ApplicationProvider.getApplicationContext<android.content.Context>()
         assertEquals("dev.fusion.privacy",context.packageName)

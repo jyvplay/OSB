@@ -2,6 +2,10 @@
 
 Work branch: `arena/a8ac5475-osb`. Native application: **`android/`**, not the root web prototype. Evaluation date:2026-10-18. [Try/build instructions](BUILD.md) · [Admissibility and success gates](R24C-PLAN.md) · [Verification boundaries](R24C-VERIFICATION-BOUNDARIES.md).
 
+## Latest collected checkpoint
+
+**8e2567f:** complete main-app workflow **142/0/0 SUCCESS**, continuation **9/0/0 SUCCESS**, retained focused suites **8/27/9 PASS**, privacy34 **19/0/0 SUCCESS**. **Privacy37 failed3/16/0** at UI readiness; it is not covered by older green runs. The actual fifth PNG transport was rejected after4KiB annotation truncation; no fifth image was visually inspected. Test-only readiness/diagnostic and separate per-frame transport repairs are awaiting a new native run. [Exact fifth findings](verification/r24c-fifth-repair.md).
+
 ## What is actually implemented
 
 | Area | Concrete production work | Boundary that is NOT silently replaced |
@@ -30,6 +34,10 @@ The floor polygon occupies **0.8316 of the scene before chrome/occlusion**, not8
 
 ### Executed full local host pipelines
 
+Newest exact committed pipeline: **8e2567fe2b0fa4f902fffc05fd1c965bcacd8193**, exit0/**98.441s**, **172 Python tests,439839 R24C assertions,65097 retained R24 assertions**. [Complete archive](verification/r24c/host-8e2567f/pipeline.json). The6158 new viewport observations are included in439839, not an extra percentage. Later test/transport-only edits must recheck affected gates.
+
+Earlier pipeline retained for comparison:
+
 **12fbf4f04228965c181c12f40763afc3392075fc**, executed host command exit0 in**93.071s**:
 
 -170 Python tool tests PASS (0.740s inside that execution).
@@ -49,14 +57,15 @@ The later viewport/transport patch also completed the full host command: **172 P
 |307f2d9 |5/4/0 FAILURE |137/5/0 FAILURE; separate build/JVM/lint/contracts passed |17/2/0 FAILURE |19/0/0 SUCCESS | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
 |0a7b22e |7/2/0 FAILURE |139/3/0 FAILURE; separate build/JVM/lint/contracts passed |19/0/0 SUCCESS |19/0/0 SUCCESS | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
 |12fbf4f |8/1/0 device FAILURE; whole workflow CANCELLED |141/1/0 FAILURE; separate build/JVM/lint/contracts passed |19/0/0 SUCCESS |19/0/0 SUCCESS | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
+|8e2567f |9/0/0 SUCCESS |142/0/0 SUCCESS, both jobs |19/0/0 SUCCESS |3/16/0 FAILURE | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
 
-Numbers are PASS/FAIL/SKIP, not percentages of the specification. Suites overlap; do not sum them into unique product coverage. Every raw source/run/jobs/annotations/artifact receipt is retained as `verification/r24c-first-*`, `r24c-second-*`, `r24c-third-*`, and `r24c-fourth-*`.
+Numbers are PASS/FAIL/SKIP, not percentages of the specification. Suites overlap; do not sum them into unique product coverage. Every raw source/run/jobs/annotations/artifact receipt is retained as `verification/r24c-first-*`, `r24c-second-*`, `r24c-third-*`, `r24c-fourth-*`, and `r24c-fifth-*`.
 
 At0a7b22e **all five tabletop cases passed**. Audio actually played/paused but failed the keyboard-seek observation; atlas saved its point but had no visible pin target at the next step. The full run additionally caught an older real-IME long-text visibility timeout. [Third repair and revised diagnosis](verification/r24c-third-repair.md) describes the explicit dialog-IME close, asserted real keyboard-focus staging and stronger tagged AX+model checks. No timeout extension, ignored assertion or direct production state injection was substituted. Those repairs require their own native results.
 
 **12fbf4f now has complete collected outcomes.** Audio's complete tested path and the retained real-IME case passed. Both app runs still caught the actual **zero-sized map canvas**. A standalone and a called engine-intake job also shared a concurrency group: the standalone succeeded and the caller's intake was cancelled. Neither partial device successes nor unrelated engine success bypass the whole-workflow gate.
 
-The next patch adds actual focus/visible-native-frame viewport admission, before/after Dialog normal-bound checks, a canvas-preserving single map toolbar, explicit dock text-line budgets/real label-layout checks, original native PNG retention, and job-wide bounded screenshot transport. [Fourth repair details and actual failing image](verification/r24c-fourth-repair.md). Native execution of these repairs is still required; no green result is invented.
+The next patch adds actual focus/visible-native-frame viewport admission, before/after Dialog normal-bound checks, a canvas-preserving single map toolbar, explicit dock text-line budgets/real label-layout checks, original native PNG retention, and job-wide bounded screenshot transport. [Fourth repair details and actual failing image](verification/r24c-fourth-repair.md). Those native app repairs subsequently passed at8e2567f. The separate API37 readiness failure and4KiB image-transport truncation require further work; see the fifth repair record, not an all-green summary.
 
 ### Actual Servo artifact frontier
 
@@ -64,7 +73,7 @@ The next patch adds actual focus/visible-native-frame viewport admission, before
 
 Actual `jni/arm64-v8a/libc++_shared.so` and `libservoshell.so` were inspected; both satisfy the parser's strict16K PT_LOAD header congruence condition. No outer-archive filename matched its LICENSE/NOTICE/SBOM heuristic; that is not proof that no notice exists inside nested content. **Integrated=false, runtime_verified=false, legal_accepted=false.** No native code was loaded. This is not APK zip alignment, supported runtime/ABI closure, web compatibility, source reproducibility or license clearance. The local asset download failed; do not confuse the successful remote intake with local execution.
 
-[Actual intake](verification/r24c/servo-0.7.0-intake.json) · [New engine frontier and concrete next experiment](R24C-ADDITIONAL-ENGINE-FRONTIER.md) · [Primary source metadata](research/r24c-servo-source.json). The additional ONLYOFFICE research retains the current primary licensing/mobile-feature boundary rather than pretending an unrestricted native Office editor was integrated.
+[Actual intake](verification/r24c/servo-0.7.0-intake.json) (and [independent called-job intake at8e2567f](verification/r24c/servo-0.7.0-intake-8e2567f.json)) · [New engine frontier and concrete next experiment](R24C-ADDITIONAL-ENGINE-FRONTIER.md) · [Primary source metadata](research/r24c-servo-source.json). The additional ONLYOFFICE research retains the current primary licensing/mobile-feature boundary rather than pretending an unrestricted native Office editor was integrated.
 
 ## Visual evidence, not fabricated artwork
 
@@ -76,7 +85,7 @@ Phi remains an optional proportion heuristic. The retrieved research does not es
 
 ## What remains open / next highest-information tests
 
-1. Close all native exact-source failures, including the retained real-IME case; collect/inspect every actually transported frame and visible-target record. Fix the intake CI concurrency collision and re-run affected workflow gates.
+1. Re-establish the actual API37 UI preconditions without changing privacy protections; preserve its failure and investigate any remaining focus error. The main142 and continuation9 cases now pass, including retained IME. Verify/inspect complete per-frame transport; truncated annotation bytes are not recoverable evidence. The engine concurrency collision is corrected and that job passed at8e2567f.
 2. Test real selected-document audio and video through the system picker, video pixels, audibility on hardware, audio-focus/noisy races and a deliberately slow/revoked content provider. The current main-thread provider call is not bounded by a Handler deadline.
 3. Landscape/tablet/laptop AVD and physical-device matrices; all-pages/states at large fonts, pointer/keyboard, TalkBack, contrast and clipped targets. No Android Studio Rabbit1 GUI execution is claimed.
 4. Actual supported-ABI browser engine wrapper plus renderer/permission/profile isolation and a held-out web corpus; actual LOK JNI/ABI/16K packaging, office fidelity and license closure. Artifact/source availability alone is not integration.

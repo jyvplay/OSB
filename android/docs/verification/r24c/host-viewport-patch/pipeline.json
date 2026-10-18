@@ -8,5 +8,7 @@
   "r24c_assertions": 439839,
   "r24_assertions": 65097,
   "composite_check_and_host_command_seconds": 99.517,
-  "scope": "Executed structural checks + local host pipeline only; NOT Android/GUI/physical/full-spec acceptance"
+  "scope": "Executed structural checks + local host pipeline only; NOT Android/GUI/physical/full-spec acceptance",
+  "compiled_input_hashes_equal_committed_candidate": "8e2567fe2b0fa4f902fffc05fd1c965bcacd8193",
+  "hash_equality_scope": "Post-commit equality of actual compiled inputs only; no extra execution inferred."
 }

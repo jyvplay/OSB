@@ -33,6 +33,7 @@ import org.junit.Test
  * API34 emulator evidence is not a hostile-host/physical-device/AX review.
  */
 class R23InputDefenseTest {
+    @get:org.junit.Rule val emulatorUi = PrivacyDeviceReady.emulatorRule()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private fun <T : Activity> focused(scenario: ActivityScenario<T>) {
         // A decor focus flag alone is not completion of the Activity's focus/rebuild callback.

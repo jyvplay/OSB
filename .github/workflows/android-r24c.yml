@@ -8,6 +8,8 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: read
+  actions: read
+  checks: read
 jobs:
   engine-intake:
     name: Independent pinned engine artifact observation
@@ -52,18 +54,15 @@ jobs:
       - name: Actual named case results
         if: always()
         run: python3 tools/report_device_results.py
-      - name: Actual capture index and measured geometry (not all-page acceptance)
+      - name: Stage actual native frames without creating missing images
         if: always()
-        run: python3 tools/r24c_capture.py export --group 0
-      - name: Actual native image transport 1 (at most eight notices)
+        run: python3 tools/r24c_capture.py stage
+      - uses: actions/upload-artifact@v4
         if: always()
-        run: python3 tools/r24c_capture.py export --group 1
-      - name: Actual native image transport 2 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 2
-      - name: Actual native image transport 3 (at most eight notices)
-        if: always()
-        run: python3 tools/r24c_capture.py export --group 3
+        with:
+          name: r24c-native-frames
+          path: android/testing/build/r24c/native-frames/
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -75,3 +74,58 @@ jobs:
             android/app/build/outputs/androidTest-results/**
             android/app/build/outputs/managed_device_android_test_additional_output/**
             android/app/build/outputs/apk/**
+  native-frames:
+    name: Actual frame ${{ matrix.image }} (not all-page acceptance)
+    needs: continuation
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [r24c-tabletop.png, r24c-silver.png, r24c-wall.png, r24c-atlas.png]
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: r24c-native-frames
+          path: android/app/build/outputs/managed_device_android_test_additional_output/transport
+      - name: Actual frame metadata (at most two notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 0
+      - name: Actual frame chunks 1 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 1
+      - name: Actual frame chunks 2 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 2
+      - name: Actual frame chunks 3 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 3
+      - name: Actual frame chunks 4 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 4
+      - name: Actual frame chunks 5 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 5
+      - name: Actual frame chunks 6 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 6
+  verify-frame-transport:
+    name: Verify actual transported PNG bytes and frame metadata
+    needs: native-frames
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject missing, truncated, mismatched or incomplete native evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/r24c_capture.py collect --run '${{ github.run_id }}' --ci-frames > transported-frame-receipt.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verified-actual-native-frame-transport
+          path: |
+            android/transported-frame-receipt.json
+            android/testing/build/r24c/captures/**

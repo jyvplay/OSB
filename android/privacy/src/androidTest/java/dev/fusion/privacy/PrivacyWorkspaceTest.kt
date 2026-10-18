@@ -17,6 +17,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class PrivacyWorkspaceTest {
+    @get:org.junit.Rule val emulatorUi = PrivacyDeviceReady.emulatorRule()
     private fun touch(id:String) {
         val d=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         val selector=By.res("dev.fusion.privacy",id)

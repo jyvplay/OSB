@@ -13,6 +13,7 @@ import org.junit.Test
 
 /** Real Settings provider notification on a disposable AVD. NOT a physical USB/keylogger test. */
 class R24InputChangeDeviceTest {
+    @get:org.junit.Rule val emulatorUi = PrivacyDeviceReady.emulatorRule()
     @Test fun actualImeConfigurationChangeDiscardsAndRequiresExplicitEmptyRestart() {
         require(Build.HARDWARE in setOf("ranchu", "goldfish")) { "Never change a personal device's IME configuration" }
         val instrumentation = InstrumentationRegistry.getInstrumentation()

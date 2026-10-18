@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 from r24c_capture import validate_audit
 import natural_earth_asset as land
@@ -131,20 +132,20 @@ class ContinuationToolsTests(unittest.TestCase):
         messages = transport_chunks(image.name, data)
         self.assertLessEqual(len(messages), MAX_CURRENT_PARTS); self.assertGreater(len(messages), 0)
         self.assertTrue(all(len(message.split(" ", 4)[4]) <= CHUNK_CHARS for message in messages))
-        self.assertLessEqual(len(NAMES) * MAX_CURRENT_PARTS + 19, 50)  # Worst-case continuation diagnostic+image budget.
+        self.assertLessEqual(MAX_CURRENT_PARTS + 3, 50)  # One frame per real CI job: metadata + runner warning.
         pages = [messages[i:i + CHUNKS_PER_STEP] for i in range(0, len(messages), CHUNKS_PER_STEP)]
         self.assertTrue(all(len(page) <= 8 for page in pages))
         decoded = base64.b64decode(''.join(message.split(' ', 4)[4] for page in pages for message in page), validate=True)
         self.assertEqual(data, decoded)  # Real failed-workflow screenshot; NOT a new native pass.
 
     def test_native_capture_budget_covers_maximum_payload_without_job_overflow(self):
-        from r24c_capture import MAX_CURRENT_PARTS, CHUNK_CHARS, CHUNKS_PER_STEP, NAMES
+        from r24c_capture import MAX_CURRENT_PARTS, MAX_PREVIEW_BYTES, CHUNK_CHARS, CHUNKS_PER_STEP
         import math
-        encoded = 4 * math.ceil((128 * 1024) / 3)
+        encoded = 4 * math.ceil(MAX_PREVIEW_BYTES / 3)
         self.assertLessEqual(math.ceil(encoded / CHUNK_CHARS), MAX_CURRENT_PARTS)
-        self.assertLess(CHUNK_CHARS + 200, 64 * 1024)
-        self.assertLessEqual(len(NAMES) * MAX_CURRENT_PARTS, 3 * CHUNKS_PER_STEP)
-        self.assertLessEqual(len(NAMES) * MAX_CURRENT_PARTS + 19, 50)
+        self.assertLess(CHUNK_CHARS + 200, 4096)
+        self.assertLessEqual(MAX_CURRENT_PARTS, 6 * CHUNKS_PER_STEP)
+        self.assertLessEqual(MAX_CURRENT_PARTS + 3, 50)
 
     def test_engine_reuse_has_no_push_fanout_or_shared_caller_concurrency(self):
         text = (land.ROOT.parent / '.github/workflows/engine-intake-r24c.yml').read_text()
@@ -152,3 +153,51 @@ class ContinuationToolsTests(unittest.TestCase):
         self.assertNotIn('  push:', text)
         self.assertIn('group: r24c-servo-intake-${{ github.workflow }}-${{ github.ref }}', text)
         # Workflow-configuration check only, not an executed scheduler proof.
+
+    def test_actual_truncated_fifth_png_is_rejected_not_displayed(self):
+        import base64
+        rows = json.loads((land.ROOT / 'docs/verification/r24c-fifth-annotations.json').read_text())
+        chunks = [row['message'].split(' ', 4) for row in rows if row['message'].startswith('R24CPNG1 r24c-wall.png ')]
+        self.assertEqual(len(chunks), 1)
+        self.assertEqual(len(' '.join(chunks[0])), 4096)
+        raw = base64.b64decode(chunks[0][4], validate=True)
+        self.assertNotEqual(hashlib.sha256(raw).hexdigest(), chunks[0][3])
+        # Actual lost transport bytes cannot be recreated, padded, or promoted to an inspected frame.
+
+    def test_privacy_readiness_flags_are_observations_not_coercible_truth(self):
+        from r24c_privacy_readiness import collect
+        with tempfile.TemporaryDirectory() as directory:
+            # Parser-only artificial records, NOT an actual Android receipt.
+            state = dict(api=37, interactive=True, keyguard_locked=False, device_locked=False, credential_secure=False)
+            row = dict(origin='android-instrumentation', case='parser-only', before=dict(state, interactive=False), after=state, actions=['one-real-wake'])
+            p = Path(directory) / 'r24c-privacy-preflight.jsonl'; p.write_text(json.dumps(row) + '\n')
+            r = collect(directory, 37)
+            self.assertEqual(r['summary'], dict(records=1, not_ready_before=1, not_ready_after=0, wake_requests=1, keyguard_dismiss_requests=0))
+            with self.assertRaises(ValueError): collect(directory, 34)
+            row['after']['interactive'] = 'false'; p.write_text(json.dumps(row) + '\n')
+            with self.assertRaises(ValueError): collect(directory, 37)
+        with tempfile.TemporaryDirectory() as directory:
+            self.assertEqual(collect(directory, 37)['summary']['records'], 0)
+
+    def test_fifth_actual_privacy_failure_cannot_inherit_earlier_green(self):
+        from r24c_evidence_gate import verify
+        receipt = json.loads((land.ROOT / 'docs/verification/r24c-fifth-privacy37-result.json').read_text())
+        self.assertEqual(receipt['counts'], {'PASS': 3, 'FAIL': 16, 'SKIP': 0})
+        with self.assertRaises(ValueError): verify(receipt, receipt['candidate'], 'privacy')
+
+    def test_staging_actual_frame_clears_stale_named_outputs(self):
+        import r24c_capture as capture
+        from unittest.mock import patch
+        data = (land.ROOT / 'docs/verification/r24c-native-previews/third-failed-workflow/r24c-silver.png').read_bytes()
+        with tempfile.TemporaryDirectory() as directory, patch.object(capture, 'ROOT', Path(directory)):
+            root = Path(directory)
+            source = root / 'app/build/outputs/managed_device_android_test_additional_output/device'
+            target = root / 'testing/build/r24c/native-frames'
+            source.mkdir(parents=True); target.mkdir(parents=True)
+            (source / 'r24c-silver.png').write_bytes(data)  # Existing real frame; not new Android execution.
+            (target / 'r24c-wall.png').write_bytes(b'stale marker, not a real frame')
+            capture.stage()
+            self.assertEqual((target / 'r24c-silver.png').read_bytes(), data)
+            self.assertFalse((target / 'r24c-wall.png').exists())
+            (source / 'r24c-silver.png').unlink(); capture.stage()
+            self.assertEqual(list(target.iterdir()), [])

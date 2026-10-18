@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12122723080,
+      "node_id": "MDg6QXJ0aWZhY3QxMjEyMjcyMzA4MA==",
+      "name": "api37-privacy-experiment",
+      "size_in_bytes": 1401164,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12122723080",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12122723080/zip",
+      "expired": false,
+      "digest": "sha256:de9f52a21e239805ddfeed942bfc8a333895cd51f4caf2a2ed4c724393f23f09",
+      "created_at": "2026-10-18T03:01:35Z",
+      "updated_at": "2026-10-18T03:01:35Z",
+      "expires_at": "2027-01-16T02:54:39Z",
+      "workflow_run": {
+        "id": 39091743999,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "8e2567fe2b0fa4f902fffc05fd1c965bcacd8193"
+      }
+    }
+  ]
+}

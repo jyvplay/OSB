@@ -1280,13 +1280,13 @@
         "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29",
         "privacy/src/main/AndroidManifest.xml": "b2dfd44e13901da005915f670d6234cd9c9c97287ec2257f6d65cea1990754f3",
         "privacy/src/main/res/values/ids.xml": "616fd6709a88a16f10f02c231df7f8546e645f2cbe52506fbab58bc01d571f78",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "f9ef2914a7c080dc8e82a6bd179685d30d174e7ba95e16735a041f380950a766",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "b6c740d00edccc9dd447b17c4f9ff8d7ebd7faa6f0c661b2359e2a4771de1fc8",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "1826bc8fdbec427ed06d98c86a40ee955b09a1b6e7c3d92df1d619a1e1346d8a",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "13fcdaeb9c7fa5fe4a218b9a2cac8aec61c8b4288fee94452b7c0c145b759cb1",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "b4838144c6595cb2960542fa1b0471b86f4f553b03d67bb03a0ae135efa70c1e",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "760f0820994402c0f60b76c9511b95320f2688798add87a5856c7c721715cade",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "2b2e1649d076d57271f871018e8f852c1c3b1fc3f4991cce3ff9bd1a5bf6cfee",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "518d251806e677aa3c29815555ac2ed98d4709824e82bead7fb2daa1d176c4af"
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "562723aec87594b2ee65865719e682308c86f7c5d47627be4be152c788d3c13d",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "732f89ff3b40b9b5f38e9e2c53f7dda1df079e4ec0d1b27f5e86ab13b972dd79",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "c2d446cf7b2471c9830269364f22df10503fc1bf4088ad44984a7ab8824c990c"
       }
     },
     {
