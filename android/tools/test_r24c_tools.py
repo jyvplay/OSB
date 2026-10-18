@@ -211,3 +211,22 @@ class ContinuationToolsTests(unittest.TestCase):
             changed = copy.deepcopy(report)
             changed['required_targets'][0].pop(key)
             with self.assertRaises(ValueError): validate_audit(changed)
+
+    def test_native_frame_capture_orders_semantics_before_committed_surface_copy(self):
+        # Source ordering contract, not a substitute for Android execution / actual image inspection.
+        source = (land.ROOT / 'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt').read_text()
+        body = source[source.index('    fun capture('):]
+        self.assertLess(body.index('node.assertIsDisplayed()'), body.index('val raw = committedWindow(activity)'))
+        self.assertLess(body.index('auditFile.delete()'), body.index('val geometry'))
+        self.assertIn('registerFrameCommitCallback', source)
+        self.assertIn('PixelCopy.request(activity.window', source)
+        self.assertNotIn('uiAutomation.takeScreenshot()', body)
+        self.assertIn('application surface, not whole-display capture', source)
+
+    def test_eighth_actual_failures_are_not_erased_by_the_focused_green(self):
+        from r24c_evidence_gate import verify
+        for prefix, suite, counts in [('r24c-eighth-main', 'full', {'PASS': 141, 'FAIL': 1, 'SKIP': 0}),
+                                      ('r24c-eighth-privacy', 'privacy', {'PASS': 18, 'FAIL': 1, 'SKIP': 0})]:
+            receipt = json.loads((land.ROOT / ('docs/verification/' + prefix + '-result.json')).read_text())
+            self.assertEqual(receipt['counts'], counts)
+            with self.assertRaises(ValueError): verify(receipt, receipt['candidate'], suite)

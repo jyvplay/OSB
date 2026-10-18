@@ -64,16 +64,16 @@ class R24TabletopDeviceTest {
         assertEquals(snapshot.scene, doc().scene)
         compose.activityRule.scenario.recreate(); ready()
         assertEquals(snapshot, doc().views.single()); assertEquals(snapshot.scene, doc().scene)
-        NativeVisualEvidence.capture(compose, "r24c-wall", listOf("desk-pile-${pile.id}", "tabletop-pins", "tabletop-piles", "tabletop-views"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-wall", listOf("desk-pile-${pile.id}", "tabletop-pins", "tabletop-piles", "tabletop-views"))
     }
     @Test fun silverAndLightSceneHaveRealTargetsAndNativeCaptures() {
         ready()
         NativeVisualEvidence.assertUnclippedLabel(compose, "dock-label-editor")
-        NativeVisualEvidence.capture(compose, "r24c-tabletop", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-tabletop", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
         compose.activityRule.scenario.onActivity { activity -> SettingsGraph(activity).use { assertTrue(it.setAppearance(mapOf("theme" to "studio_silver", "layout" to "art"))) } }
         compose.waitForIdle(); compose.onNodeWithTag("art-dock").assertIsDisplayed()
         NativeVisualEvidence.assertUnclippedLabel(compose, "dock-label-editor")
-        NativeVisualEvidence.capture(compose, "r24c-silver", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-silver", listOf("desk-pin-1", "desk-pin-2", "tabletop-pins", "tabletop-piles", "tabletop-views", "desktop-find", "control-panel"))
         assertTrue(TabletopProjection.TABLE_AREA > .8)
         assertEquals("studio_silver", compose.activity.getSharedPreferences("fusion_settings", Context.MODE_PRIVATE).getString("theme", null))
     }

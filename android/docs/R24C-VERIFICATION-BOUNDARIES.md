@@ -2,7 +2,7 @@
 
 The [precommitted plan](R24C-PLAN.md) defines admissible objects, quantifier order, H+/H−/H∂ and acceptance thresholds. The [primary-source ledger](research/r24c-primary.md) and [privacy/engine portfolio](R24C-PRIVACY-AND-ENGINES.md) distinguish real mechanisms from missing full engines. This file makes the negative-space checks individually actionable.
 
-## Twenty-nine false-solution shapes
+## Thirty false-solution shapes
 
 | # | Plausible shortcut / why it does not meet the requirement | Concrete detector / retained boundary |
 |---|---|---|
@@ -36,6 +36,8 @@ The [precommitted plan](R24C-PLAN.md) defines admissible objects, quantifier ord
 |27| Successful screenshot generation or job status means annotation transport is intact | Actual fifth chunks were truncated to4096bytes and rejected. Separate per-frame check-runs respect message/step/job quotas; a dependent verifier requires all four PNG hashes and metadata. |
 |28| UI tests that never obtain focus are repaired by removing protection, auto-rearming or retrying | Observe/stage an awake, unsecured, unlocked disposable emulator before launch, retain the10s focus await, record actual posture on failure, run the case once, and keep failed receipts. Earlier unobserved startup causes stay unknown. |
 |29| A genuine engine AAR with16K PT_LOAD headers is a working, cleared browser | Actual pinned Servo library headers are an intake result only. No dlopen, supported-ABI execution, profile isolation, web corpus or transitive license closure was performed. |
+
+|30| A valid screenshot hash plus later ready semantics proves the picture is ready | The eighth light PNG actually showed Loading arrangement. Assert geometry first, wait a real renderer frame commit, copy the native application Window with PixelCopy and inspect the result; never infer whole-display privacy protection from that different capture API. |
 
 ## Strongest attacks against the new mechanisms
 

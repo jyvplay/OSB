@@ -187,24 +187,52 @@ class R23InputDefenseTest {
     @Test fun actualRevealDeadlineRehidesAndNextInputMasksImmediately() {
         ActivityScenario.launch(TouchCodeActivity::class.java).use { s ->
             focused(s)
-            s.onActivity { a ->
-                a.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                a.findViewById<Button>(R.id.touch_key_6).performClick()
-                a.findViewById<Button>(R.id.touch_reveal).performClick()
-                assertEquals("6 (1/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
+            lateinit var trace: PrivacySignalTrace
+            lateinit var retired: TextView
+            s.onActivity { trace = PrivacySignalTrace(it) }
+            fun current(a: TouchCodeActivity, phase: String): TextView {
+                return a.findViewById<TextView>(R.id.touch_code_output) ?: run {
+                    val visible = mutableListOf<String>()
+                    fun visit(view: View) {
+                        if (visible.size >= 12) return
+                        if (view is TextView) visible.add(view.text.toString().take(260))
+                        if (view is ViewGroup) for (i in 0 until view.childCount) visit(view.getChildAt(i))
+                    }
+                    visit(a.window.decorView)
+                    throw AssertionError("Required pad missing at $phase; focus=${a.hasWindowFocus()}; interactive=${a.getSystemService(android.os.PowerManager::class.java).isInteractive}; " +
+                        "restart=${a.findViewById<View>(R.id.restart_workspace) != null}; visible=$visible; realSignals=${trace.snapshot()}")
+                }
             }
-            SystemClock.sleep(6_000); instrumentation.waitForIdleSync()
-            s.onActivity { a ->
-                assertEquals("• (1/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
-                a.findViewById<Button>(R.id.touch_reveal).performClick()
-                a.findViewById<Button>(R.id.touch_key_5).performClick()
-                assertEquals("•• (2/64)", a.findViewById<TextView>(R.id.touch_code_output).text.toString())
-                a.findViewById<Button>(R.id.touch_reveal).performClick()
-                a.findViewById<Button>(R.id.touch_clear).performClick()
-            }
-            // Attack the stale reveal Runnable: it must not publish into the replacement pad.
-            SystemClock.sleep(6_000); instrumentation.waitForIdleSync()
-            s.onActivity { assertEquals(" (0/64)", it.findViewById<TextView>(R.id.touch_code_output).text.toString()) }
+            try {
+                s.onActivity { a ->
+                    a.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                    a.findViewById<Button>(R.id.touch_key_6).performClick()
+                    a.findViewById<Button>(R.id.touch_reveal).performClick()
+                    assertEquals("6 (1/64)", current(a, "first-reveal").text.toString())
+                    trace.mark("first-reveal")
+                }
+                SystemClock.sleep(6_000); instrumentation.waitForIdleSync()
+                s.onActivity { a ->
+                    assertEquals("• (1/64)", current(a, "real-reveal-deadline").text.toString())
+                    a.findViewById<Button>(R.id.touch_reveal).performClick()
+                    a.findViewById<Button>(R.id.touch_key_5).performClick()
+                    assertEquals("•• (2/64)", current(a, "next-input-masks").text.toString())
+                    a.findViewById<Button>(R.id.touch_reveal).performClick()
+                    retired = current(a, "before-clear")
+                    trace.mark("before-clear")
+                    a.findViewById<Button>(R.id.touch_clear).performClick()
+                    val fresh = current(a, "immediately-after-clear")
+                    assertNotSame(retired, fresh); assertEquals("", retired.text.toString())
+                    assertEquals(" (0/64)", fresh.text.toString())
+                    trace.mark("fresh-pad-confirmed")
+                }
+                // Original exact6s wait/assertion retained; real signals only diagnose failure, never excuse it.
+                SystemClock.sleep(6_000); instrumentation.waitForIdleSync()
+                s.onActivity {
+                    assertEquals(" (0/64)", current(it, "after-stale-reveal-wait").text.toString())
+                    assertEquals("Old reveal must not even republish into its retired view", "", retired.text.toString())
+                }
+            } finally { s.onActivity { trace.close() } }
         }
     }
 

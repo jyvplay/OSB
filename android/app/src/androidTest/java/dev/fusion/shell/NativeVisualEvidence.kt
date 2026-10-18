@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 package dev.fusion.shell
 
+import android.app.Activity
+import android.os.Handler
+import android.os.Looper
+import android.view.PixelCopy
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -35,7 +41,37 @@ object NativeVisualEvidence {
         assertEquals(1, layouts.size); assertEquals(1, layouts.single().lineCount)
         assertFalse("$tag has vertical text overflow", layouts.single().didOverflowHeight)
     }
-    fun capture(compose: ComposeContentTestRule, name: String, requiredTargets: List<String>) {
+    private fun committedWindow(activity: Activity): Bitmap {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val committed = CountDownLatch(1)
+        instrumentation.runOnMainSync {
+            val root = activity.window.decorView
+            assertTrue("Real accelerated window frame required", root.isHardwareAccelerated && root.isAttachedToWindow)
+            root.viewTreeObserver.registerFrameCommitCallback { committed.countDown() }
+            root.invalidate()
+        }
+        assertTrue("No actual renderer frame commit", committed.await(10, TimeUnit.SECONDS))
+        val copied = CountDownLatch(1)
+        lateinit var image: Bitmap
+        var result = PixelCopy.ERROR_UNKNOWN
+        instrumentation.runOnMainSync {
+            val root = activity.window.decorView
+            assertTrue(root.width >= 100 && root.height >= 100)
+            image = Bitmap.createBitmap(root.width, root.height, Bitmap.Config.ARGB_8888)
+            // Copy the latest queued APP WINDOW buffer, not a possibly stale whole-display compositor frame.
+            // This is NOT the capture API/security claim used by the separate privacy screenshot tests.
+            PixelCopy.request(activity.window, image, { status -> result = status; copied.countDown() }, Handler(Looper.getMainLooper()))
+        }
+        if (!copied.await(10, TimeUnit.SECONDS)) {
+            // Do not recycle a bitmap while the platform may still be copying into it.
+            throw AssertionError("Actual committed-window PixelCopy did not finish; no image acceptance")
+        }
+        if (result != PixelCopy.SUCCESS) {
+            image.recycle(); throw AssertionError("Actual committed-window PixelCopy failed: $result")
+        }
+        return image
+    }
+    fun capture(compose: ComposeContentTestRule, activity: Activity, name: String, requiredTargets: List<String>) {
         require(name.matches(Regex("r24c-[a-z-]{1,40}")))
         compose.waitForIdle()
         val instrumentation = InstrumentationRegistry.getInstrumentation()
@@ -44,19 +80,10 @@ object NativeVisualEvidence {
         val folder = args.getString("additionalTestOutputDir")?.let(::File)
             ?: File(instrumentation.targetContext.getExternalFilesDir(null), "r24c-native-captures")
         check(folder.exists() || folder.mkdirs())
-        // A failed-frame PNG is diagnostic evidence, NEVER a passed geometry/test claim.
-        val raw = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        val originalWidth = raw.width; val originalHeight = raw.height
-        val width = minOf(360, raw.width); val height = (raw.height.toLong() * width / raw.width).toInt()
-        val scaled = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        try {
-            assertTrue(raw.width >= 100 && raw.height >= 100)
-            File(folder, "$name-full.png").outputStream().use { assertTrue(raw.compress(Bitmap.CompressFormat.PNG, 100, it)) }
-            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), Paint(Paint.FILTER_BITMAP_FLAG))
-            File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
-        } finally { scaled.recycle(); raw.recycle() }
+        val auditFile = File(folder, "$name.json")
+        check(!auditFile.exists() || auditFile.delete()) // A later failed capture cannot borrow an older passing audit.
         val required = JSONArray()
-        for (tag in requiredTargets) {
+        val geometry = runCatching { for (tag in requiredTargets) {
             val node = compose.onNodeWithTag(tag)
             node.assertIsDisplayed()
             val bounds = node.getUnclippedBoundsInRoot()
@@ -68,6 +95,19 @@ object NativeVisualEvidence {
             required.put(JSONObject().put("tag", tag).put("width_dp", (bounds.right - bounds.left).value).put("height_dp", (bounds.bottom - bounds.top).value)
                 .put("visible_width_dp", visible.width / density).put("visible_height_dp", visible.height / density))
         }
+        }
+        // A failed-frame PNG is diagnostic evidence, NEVER a passed geometry/test claim.
+        val raw = committedWindow(activity)
+        val originalWidth = raw.width; val originalHeight = raw.height
+        val width = minOf(360, raw.width); val height = (raw.height.toLong() * width / raw.width).toInt()
+        val scaled = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        try {
+            assertTrue(raw.width >= 100 && raw.height >= 100)
+            File(folder, "$name-full.png").outputStream().use { assertTrue(raw.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), Paint(Paint.FILTER_BITMAP_FLAG))
+            File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+        } finally { scaled.recycle(); raw.recycle() }
+        geometry.getOrThrow()
         val all = JSONArray()
         compose.onAllNodes(hasClickAction(), useUnmergedTree = true).fetchSemanticsNodes().forEach { node ->
             val rect = node.boundsInRoot
@@ -81,8 +121,9 @@ object NativeVisualEvidence {
             .put("font_scale", instrumentation.targetContext.resources.configuration.fontScale)
             .put("required_targets", required).put("visible_click_actions", all)
             .put("native_image_width", originalWidth).put("native_image_height", originalHeight)
+            .put("capture_api", "PixelCopy(Window) after renderer frame commit; application surface, not whole-display capture")
             .put("preview_width", width).put("preview_height", height).put("preview_filter", "bilinear downsample; full original PNG retained in CI artifact")
             .put("scope", "Finite actual frame; not all pages, accessibility certification or subjective beauty")
-        File(folder, "$name.json").writeText(report.toString(2))
+        auditFile.writeText(report.toString(2))
     }
 }

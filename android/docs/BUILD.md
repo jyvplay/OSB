@@ -56,8 +56,8 @@ python3 tools/engine_intake.py /path/to/actual-engine.aar --report testing/build
 ```
 
 The tested bootstrap route is Linux x86_64. Its pinned JRE17.0.9 is **old and not a full JDK**, for disposable host tests only;
-do not set it as Gradle's JDK or use it for production security. Latest fully archived host pipeline at8e2567f:172 Python methods,
-439839 R24C assertions and65097 retained R24 assertions; exact-source/output in `verification/r24c/host-8e2567f/`.
+do not set it as Gradle's JDK or use it for production security. Latest fully archived host pipeline at7a2b4a8:177 Python methods,
+439839 R24C assertions and65097 retained R24 assertions; exact-source/output in `verification/r24c/host-7a2b4a8/`.
 It is not a rerun of every historical host suite and does not build an APK.
 
 ## Actual Android without the IDE GUI

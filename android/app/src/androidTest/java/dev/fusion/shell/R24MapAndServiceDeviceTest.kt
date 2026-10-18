@@ -43,14 +43,14 @@ class R24MapAndServiceDeviceTest {
             hidden
         }
         compose.onNodeWithTag("map-add-pin").performScrollTo()
-        NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
         assertEquals("A Dialog-owned IME must not persist a shrunken normal window", beforeDialog, mapBounds())
         assertEquals(GeoPoint(35.7796, -78.6382), model().book!!.pins.single().point)
         click("map-places"); click("map-go-1")
         assertEquals(GeoPoint(35.7796, -78.6382), model().camera.center)
         click("map-measure")
         compose.onNodeWithTag("map-add-pin").performScrollTo() // Restore the real overflow toolbar's first controls for this finite frame.
-        NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
         val canvas = compose.onNodeWithTag("offline-map-canvas").fetchSemanticsNode().boundsInRoot
         assertTrue("Actual map canvas must not collapse under controls/IME: $canvas", canvas.height / compose.density.density >= 96)
         compose.waitUntil(10000) { compose.onAllNodesWithTag("map-pin-1").fetchSemanticsNodes().size == 1 }
@@ -63,7 +63,7 @@ class R24MapAndServiceDeviceTest {
         val old = model().camera.center; click("map-east"); assertNotEquals(old, model().camera.center)
         val beforeZoom = model().camera.zoom; click("map-zoom-in"); assertEquals(beforeZoom + 1, model().camera.zoom)
         compose.onNodeWithTag("map-add-pin").performScrollTo() // Restore the real overflow toolbar's first controls for this finite frame.
-        NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))
         compose.activityRule.scenario.recreate()
         // Session consent intentionally does not survive recreation.
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()

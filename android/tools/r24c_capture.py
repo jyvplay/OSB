@@ -102,7 +102,7 @@ def export(group, image=None):
         if file.name.removesuffix('.json') + '.png' not in wanted: continue
         report = json.loads(file.read_text()); validate_audit(report)
         observed = {key: report[key] for key in ('schema', 'origin', 'api', 'density', 'font_scale', 'required_targets')}
-        for key in ('native_image_width', 'native_image_height', 'preview_width', 'preview_height', 'preview_filter'):
+        for key in ('native_image_width', 'native_image_height', 'preview_width', 'preview_height', 'preview_filter', 'capture_api'):
             if key in report: observed[key] = report[key]
         message = 'R24CTARGETS1 ' + file.name + ' ' + json.dumps(observed, separators=(',', ':'))
         if len(message.encode()) > 3900: raise ValueError('Target metadata exceeds actual annotation transport budget')

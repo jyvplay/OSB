@@ -25,3 +25,10 @@ These are new web searches and selected primary-page retrievals, not a claim tha
 - Table projection and persistence are original implementations; mathematical round trips and real file operations are independently executable without an SDK. Native renderer/input evidence remains a different gate.
 - Privacy change notifications reduce the lifetime of data after an **observed** environment change. No prevalence study or controlled physical attack lab was available; there is no honest claim that the "most common hardware attacks" have all been closed.
 - Full browser/Office and universal host anonymity remain open interfaces for this repository, not purportedly solved research results.
+
+
+## 2026-10-18 follow-up: submitted window frames versus displayed screenshots
+
+- Android's primary `ViewTreeObserver.registerFrameCommitCallback` documentation says the callback means the rendering content was rendered/submitted to the swap chain, **not necessarily already visible on the display**, and explicitly recommends combining it with PixelCopy for reliable current UI capture; hardware rendering is required. [1](https://developer.android.com/reference/kotlin/android/view/ViewTreeObserver)
+- PixelCopy is the native Surface/Window-to-Bitmap copy API, with an explicit completion status. This is a different observation boundary from a whole-display `UiAutomation.takeScreenshot`, and is not substituted into the privacy screenshot-security proof. [3](https://developer.android.com/reference/android/view/PixelCopy) [5](https://developer.android.com/reference/android/view/PixelCopy.OnPixelCopyFinishedListener)
+- Consequence: the eighth candidate's genuinely captured but early Loading arrangement frame was not called ready merely because later semantics passed. Next capture measures first, waits a native renderer commit, performs one PixelCopy(Window), and records the observation API. No generated/reference pixels or fallback stale image.

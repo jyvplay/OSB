@@ -1,0 +1,98 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 10,
+    "start_column": null,
+    "end_line": 10,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 25,
+    "start_column": null,
+    "end_line": 25,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Privacy APK footprint (compressed APK only, not RAM/installed size/Tails comparison): [{\"file\": \"privacy/build/outputs/apk/debug/privacy-debug.apk\", \"bytes\": 2543676, \"sha256\": \"b149baef2e03733255f4eef4319b7659d1c87f991bbcb71a3c00127ccf675cae\"}]",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R24CPRIVACYREADY1 {\"source_candidate\":\"7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1\",\"runtime_api\":34,\"summary\":{\"records\":19,\"not_ready_before\":1,\"not_ready_after\":0,\"wake_requests\":1,\"keyguard_dismiss_requests\":0},\"scope\":\"Actual disposable-emulator preconditions only. No workspace rearm, test retry, privacy acceptance or retrospective root-cause proof.\",\"report_sha256\":\"6f4d57ef0e2ac9a928d8e6aac61635920b963f34be48cacb585db4e3723e4ed4\",\"evidence\":\"OBSERVED\"}",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 22,
+    "start_column": null,
+    "end_line": 22,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately:  \njava.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.CharSequence android.widget.TextView.getText()' on a null object reference\nat dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately$lambda$0$2(R23InputDefenseTest.kt:207)\nat dev.fusion.privacy.R23InputDefenseTest.$r8$lambda$rgMo35klxW3r2KP9hUU8YofyRNI(Unknown Source:0)\nat dev.fusion.privacy.R23InputDefenseTest$$ExternalSyntheticLambda9.perform(D8$$SyntheticClass:0)\nat androidx.test.core.app.ActivityScenario.lambda$onActivity$2$androidx-test-core-app-ActivityScenario(ActivityScenario.java:794)\nat androidx.test.core.app.ActivityScenario$$ExternalSyntheticLambda2.run(D8$$SyntheticClass:0)\nat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)\nat java.util.concurrent.FutureTask.run(FutureTask.java:264)\nat android.app.Instrumentation$SyncRunnable.run(Instrumentation.java:2420)\nat android.os.Handler.handleCallback(Handler.java:958)\nat android.os.Handler.dispatchMessage(Handler.java:99)\nat android.os.Looper.loopOnce(Looper.java:205)\nat android.os.Looper.loop(Looper.java:294)\nat android.app.ActivityThread.main(ActivityThread.java:8177)\nat java.lang.reflect.Method.invoke(Native Method)\nat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)\nat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.privacy.PrivacyPlatformTest.realFocusableDialogInvalidatesMarkerBeforeFreshCommittedSecureCapture=PASS; dev.fusion.privacy.PrivacyPlatformTest.secureWindowExcludesActualScreenshotMarkerWithVisiblePositiveControl=PASS; dev.fusion.privacy.PrivacyPlatformTest.noInternetPermissionDeniesInetSocketsButUnixPairTransfersRealBytes=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.actualTypingDiscardCannotRestoreOldEditorUndoAndRecreationStartsEmpty=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.externalExtrasCannotDisableProtectionOrInjectDraftAndProjectionIsOffline=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.richImeContentIsRefusedAndIncomingExecutableUrlSpansAreStripped=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.oneRealDiscardTouchWhileImeVisibleRetiresEditorBeforeReadback=PASS; dev.fusion.privacy.PrivacyWorkspaceTest.pauseDropsBothFieldsAndDisablesSavedHierarchyAndClipboardActions=PASS; dev.fusion.privacy.R23InputDefenseTest.actualMonotonicIdleDeadlineDiscardsWithoutFurtherInteraction=PASS; dev.fusion.privacy.R23InputDefenseTest.detachedKeyCannotMutateNewPadAndNewPadEnforcesAtomicCapacity=PASS; dev.fusion.privacy.R23InputDefenseTest.fullAndPartialObscurationDiscardRealEditorsAndDoNotResumeOnCleanUp=PASS; dev.fusion.privacy.R23InputDefenseTest.realExposureSnapshotAndMergedManifestKeepScopeAndNewScreensPrivate=PASS; dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately=FAIL; dev.fusion.privacy.R23InputDefenseTest.realTouchEntryHasNoInputConnectionAndHardwareKeysCannotMutateCode=PASS; dev.fusion.privacy.R23InputDefenseTest.realFocusableDialogDiscardsPadBeforePauseAndFocusReturnStartsEmpty=PASS; dev.fusion.privacy.R23MemoryBoundaryTest.existingWritableMapSurvivesRestrictionButUnmappedReadOnlyParcelRefusesNewWrites=PASS; dev.fusion.privacy.R24InputChangeDeviceTest.actualImeConfigurationChangeDiscardsAndRequiresExplicitEmptyRestart=PASS; dev.fusion.privacy.R24ScreenOffDeviceTest.ordinaryUidCannotSpoofProtectedScreenOffBroadcast=PASS; dev.fusion.privacy.R24ScreenOffDeviceTest.realScreenOffDiscardsRevealedPadAndOldButtonCannotEnterOnWake=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 353,
+    "start_column": null,
+    "end_line": 353,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 311,
+    "start_column": null,
+    "end_line": 311,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\nExecute dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately: FAILED\njava.lang.NullPointerException: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.CharSequence android.widget.TextView.getText()' on a null object reference\nat dev.fusion.privacy.R23InputDefenseTest.actualRevealDeadlineRehidesAndNextInputMasksImmediately$lambda$0$2(R23InputDefenseTest.kt:207)\nat dev.fusion.privacy.R23InputDefenseTest.$r8$lambda$rgMo35klxW3r2KP9hUU8YofyRNI(Unknown Source:0)\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\ntation$SyncRunnable.run(Instrumentation.java:2420)\nat android.os.Handler.handleCallback(Handler.java:958)\nat android.os.Handler.dispatchMessage(Handler.java:99)\nat android.os.Looper.loopOnce(Looper.java:205)\nat android.os.Looper.loop(Looper.java:294)\nat android.app.ActivityThread.main(ActivityThread.java:8177)\nat java.lang.reflect.Method.invoke(Native Method)\nat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)\nat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)\n\n> Task :privacy:pixel6Api34DebugAndroidTest FAILED\n\n> Task :privacy:mergeDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1792295176396.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':privacy:pixel6Api34DebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/privacy/build/reports/androidTests/managedDevice/debug/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights from a Build Scan (powered by Develocity).\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 7m\n117 actionable tasks: 117 executed",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1/.github",
+    "start_line": 40,
+    "start_column": null,
+    "end_line": 40,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+    "raw_details": ""
+  }
+]
