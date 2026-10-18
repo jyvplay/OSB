@@ -1,0 +1,282 @@
+{
+  "run": 39096175448,
+  "candidate": "3f7bcc409957b33e640d4b3218192e7679478192",
+  "whole_conclusion": "success",
+  "images": {
+    "r24c-wall.png": {
+      "path": "r24c-wall.png",
+      "width": 360,
+      "height": 800,
+      "sha256": "04ffbd257f419b3f59344b1c054f2ae9ed0ba8b5ac8f066a21d846ac3fc75277"
+    },
+    "r24c-atlas.png": {
+      "path": "r24c-atlas.png",
+      "width": 360,
+      "height": 800,
+      "sha256": "87dc737347df81807216f168d647b1f6f254031fbef6071a43a106e2f00864bd"
+    },
+    "r24c-tabletop.png": {
+      "path": "r24c-tabletop.png",
+      "width": 360,
+      "height": 800,
+      "sha256": "bc9ed84f978d69fd11b2e333da8f1036a6e1ebc3ab0c12e5b80f920375fc309b"
+    },
+    "r24c-silver.png": {
+      "path": "r24c-silver.png",
+      "width": 360,
+      "height": 800,
+      "sha256": "326b3389ccf8259604de9db705935962a64b3a097f8bd1a14064ab644695e4b2"
+    }
+  },
+  "actual_target_observations": {
+    "r24c-wall.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "desk-pile-10",
+          "width_dp": 80,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "tabletop-pins",
+          "width_dp": 71.2381,
+          "height_dp": 48,
+          "visible_width_dp": 71.2381,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-piles",
+          "width_dp": 57.904755,
+          "height_dp": 48,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-views",
+          "width_dp": 83.42857,
+          "height_dp": 48,
+          "visible_width_dp": 83.42857,
+          "visible_height_dp": 48
+        }
+      ],
+      "native_image_width": 1080,
+      "native_image_height": 2400,
+      "preview_width": 360,
+      "preview_height": 800,
+      "preview_filter": "bilinear downsample; full original PNG retained in CI artifact",
+      "capture_api": "PixelCopy(Window) after renderer frame commit; application surface, not whole-display capture"
+    },
+    "r24c-atlas.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "map-add-pin",
+          "width_dp": 95.61905,
+          "height_dp": 48,
+          "visible_width_dp": 95.61905,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "map-places",
+          "width_dp": 87.61905,
+          "height_dp": 48,
+          "visible_width_dp": 87.61905,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "map-zoom-out",
+          "width_dp": 48,
+          "height_dp": 48,
+          "visible_width_dp": 48,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "map-zoom-in",
+          "width_dp": 48,
+          "height_dp": 48,
+          "visible_width_dp": 48,
+          "visible_height_dp": 48
+        }
+      ],
+      "native_image_width": 1080,
+      "native_image_height": 2400,
+      "preview_width": 360,
+      "preview_height": 800,
+      "preview_filter": "bilinear downsample; full original PNG retained in CI artifact",
+      "capture_api": "PixelCopy(Window) after renderer frame commit; application surface, not whole-display capture"
+    },
+    "r24c-tabletop.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "desk-pin-1",
+          "width_dp": 80.00001,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "desk-pin-2",
+          "width_dp": 80,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "tabletop-pins",
+          "width_dp": 71.238106,
+          "height_dp": 48,
+          "visible_width_dp": 71.2381,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-piles",
+          "width_dp": 57.904755,
+          "height_dp": 48,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-views",
+          "width_dp": 83.42856,
+          "height_dp": 48,
+          "visible_width_dp": 83.42857,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "desktop-find",
+          "width_dp": 57.904762,
+          "height_dp": 47.999996,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "control-panel",
+          "width_dp": 107.42856,
+          "height_dp": 47.999996,
+          "visible_width_dp": 107.42857,
+          "visible_height_dp": 48
+        }
+      ],
+      "native_image_width": 1080,
+      "native_image_height": 2400,
+      "preview_width": 360,
+      "preview_height": 800,
+      "preview_filter": "bilinear downsample; full original PNG retained in CI artifact",
+      "capture_api": "PixelCopy(Window) after renderer frame commit; application surface, not whole-display capture"
+    },
+    "r24c-silver.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "desk-pin-1",
+          "width_dp": 80.00001,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "desk-pin-2",
+          "width_dp": 80,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "tabletop-pins",
+          "width_dp": 71.238106,
+          "height_dp": 48,
+          "visible_width_dp": 71.2381,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-piles",
+          "width_dp": 57.904755,
+          "height_dp": 48,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-views",
+          "width_dp": 83.42856,
+          "height_dp": 48,
+          "visible_width_dp": 83.42857,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "desktop-find",
+          "width_dp": 57.904762,
+          "height_dp": 47.999996,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "control-panel",
+          "width_dp": 107.42856,
+          "height_dp": 47.999996,
+          "visible_width_dp": 107.42857,
+          "visible_height_dp": 48
+        }
+      ],
+      "native_image_width": 1080,
+      "native_image_height": 2400,
+      "preview_width": 360,
+      "preview_height": 800,
+      "preview_filter": "bilinear downsample; full original PNG retained in CI artifact",
+      "capture_api": "PixelCopy(Window) after renderer frame commit; application surface, not whole-display capture"
+    }
+  },
+  "capture_index": [
+    {
+      "name": "r24c-wall.png",
+      "bytes": 23042,
+      "chunks": 9,
+      "artifact_only": false
+    },
+    {
+      "name": "r24c-atlas.png",
+      "bytes": 47371,
+      "chunks": 18,
+      "artifact_only": false
+    },
+    {
+      "name": "r24c-tabletop.png",
+      "bytes": 47972,
+      "chunks": 18,
+      "artifact_only": false
+    },
+    {
+      "name": "r24c-silver.png",
+      "bytes": 46957,
+      "chunks": 17,
+      "artifact_only": false
+    }
+  ],
+  "incomplete_not_displayed": {},
+  "scope": "Actual finite native frames only. A screenshot from a failed workflow is not a workflow pass.",
+  "transport_complete": true,
+  "manual_visual_review": {
+    "performed": true,
+    "state_alignment": "All four actually opened: ready light tabletop, silver Art, focused wall/pile and atlas with outlines/measurement. No Loading arrangement in the tabletop frame.",
+    "capture_boundary": "Actual application-window pixels via committed PixelCopy, not whole-display/system-bar/security capture.",
+    "limits": "Finite portrait frames and declared controls only; long labels ellipsize and overflow items scroll; not all-page/HCI/AX acceptance."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "artifact": "servo-aarch64-android.aar",
+  "bytes": 39860285,
+  "sha256": "6b73d23cf63fb3d7c19c908cddafbd475585199583bd16f6aa268b84c6093105",
+  "integrated": false,
+  "runtime_verified": false,
+  "legal_accepted": false,
+  "native_libraries": [
+    {
+      "member": "jni/arm64-v8a/libc++_shared.so",
+      "header": {
+        "elf_class": 64,
+        "machine": 183,
+        "abi": "arm64-v8a",
+        "loads": [
+          {
+            "offset": 0,
+            "virtual": 0,
+            "file_bytes": 1329912,
+            "memory_bytes": 1329912,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          },
+          {
+            "offset": 1329912,
+            "virtual": 1346296,
+            "file_bytes": 41104,
+            "memory_bytes": 42248,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          },
+          {
+            "offset": 1371016,
+            "virtual": 1403784,
+            "file_bytes": 568,
+            "memory_bytes": 32192,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          }
+        ],
+        "strict_16k_header_condition": true,
+        "scope": "Header condition only; not APK zip alignment, symbol/API closure, execution or Android compatibility-mode behavior"
+      }
+    },
+    {
+      "member": "jni/arm64-v8a/libservoshell.so",
+      "header": {
+        "elf_class": 64,
+        "machine": 183,
+        "abi": "arm64-v8a",
+        "loads": [
+          {
+            "offset": 0,
+            "virtual": 0,
+            "file_bytes": 36160368,
+            "memory_bytes": 36160368,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          },
+          {
+            "offset": 36160512,
+            "virtual": 36176896,
+            "file_bytes": 49686816,
+            "memory_bytes": 49686816,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          },
+          {
+            "offset": 85847328,
+            "virtual": 85880096,
+            "file_bytes": 2545672,
+            "memory_bytes": 2548448,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          },
+          {
+            "offset": 88393000,
+            "virtual": 88442152,
+            "file_bytes": 814072,
+            "memory_bytes": 2997928,
+            "alignment": 16384,
+            "strict_16k_condition": true
+          }
+        ],
+        "strict_16k_header_condition": true,
+        "scope": "Header condition only; not APK zip alignment, symbol/API closure, execution or Android compatibility-mode behavior"
+      }
+    }
+  ],
+  "notice_candidates": [],
+  "gap": "AAR/APK header/notice inventory only; no engine ABI bridge/compositor/fidelity/permissions/provenance or expert license clearance inferred",
+  "archive_members": [
+    "R.txt",
+    "AndroidManifest.xml",
+    "classes.jar",
+    "META-INF/com/android/build/gradle/aar-metadata.properties",
+    "jni/",
+    "jni/arm64-v8a/",
+    "jni/arm64-v8a/libc++_shared.so",
+    "jni/arm64-v8a/libservoshell.so"
+  ],
+  "source_candidate": "3f7bcc409957b33e640d4b3218192e7679478192",
+  "upstream_tag": "v0.7.0",
+  "release_asset_id": 605216176,
+  "upstream_declared_digest_verified": true,
+  "scope": "Actual pinned AAR byte/header inventory ONLY. No dlopen, browser navigation, sandbox, web compatibility, APK alignment, 16K runtime, source reproducibility or license closure."
+}

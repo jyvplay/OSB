@@ -904,7 +904,7 @@
         "tools/run_r18_contracts.py": "bebdab5afa500460babb0d6b6d149ef3d4bdb16a02828206843a1856494897a9",
         "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
         "app/src/androidTest/java/dev/fusion/shell/R18TaskDeviceTest.kt": "bdc34d1e78266bd1de7ad7f8938195dca348b5ffa0f30c24e29a66194dd7dade",
-        "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "1f58db4c29bcb8198f7dec6fa4fab1c8205fe98fbe0ba3585fb0becff7691e4a",
+        "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "de9692b291fbfd111e7fe59fc6331589ad94fafd0157c208c00d59e2667fa798",
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
         "app/src/androidTest/java/dev/fusion/shell/R21CsvUiDeviceTest.kt": "9eb2b7186c7cccdb0f4494f4f727bebd0b7ac9362ece79bd5a20aa3bb986683d",

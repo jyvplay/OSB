@@ -1,5 +1,6 @@
 package dev.fusion.shell
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.*
@@ -24,23 +25,37 @@ class R18TaskUiDeviceTest {
         // Retain the real UI scroll, but enter text through Android's actual accessibility action on its UI thread.
         compose.onNodeWithTag(tag).performScrollTo()
         val instrumentation=InstrumentationRegistry.getInstrumentation()
+        var observation="No native root"
         fun find():AccessibilityNodeInfo? {
             val root=instrumentation.uiAutomation.rootInActiveWindow ?: return null
             val queue=java.util.ArrayDeque<AccessibilityNodeInfo>();queue.add(root);var count=0
+            val editables=mutableListOf<String>()
             while(queue.isNotEmpty()) {
                 val node=queue.removeFirst();check(++count<=4000)
+                if(node.isEditable && editables.size<12) editables.add("${node.viewIdResourceName}:${node.isVisibleToUser}:${node.isEnabled}")
                 if((node.viewIdResourceName==tag || node.viewIdResourceName?.endsWith(":id/$tag")==true) && node.refresh() && node.isVisibleToUser && node.isEditable && node.isEnabled) return node
                 for(i in 0 until node.childCount) node.getChild(i)?.let(queue::add)
             }
+            observation="root=${root.packageName}/${root.className}; nodes=$count; editable=$editables"
             return null
         }
-        val node=requireNotNull(find()) {"Actual native editable target absent: $tag"}
+        // Accessibility publication is asynchronous on its first connection. Wait for an actual node, not a guessed sleep or repeated action.
+        val deadline=SystemClock.uptimeMillis()+10000
+        fun await(value:String?=null):AccessibilityNodeInfo {
+            do {
+                val node=find()
+                if(node!=null && (value==null || node.text?.toString().orEmpty()==value)) return node
+                SystemClock.sleep(50)
+            } while(SystemClock.uptimeMillis()<deadline)
+            throw AssertionError("Actual native editable $tag not published/updated: $observation")
+        }
+        val node=await()
         assertEquals("Unexpected pre-edit content of $tag",expectedBefore,node.text?.toString().orEmpty())
         assertTrue("Actual native text action refused for $tag",node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,Bundle().apply {
             putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,value)
         }))
         instrumentation.waitForIdleSync();compose.waitForIdle()
-        assertEquals("Actual native text action not observed for $tag",value,requireNotNull(find()).text?.toString().orEmpty())
+        assertEquals("Actual native text action not observed for $tag",value,await(value).text?.toString().orEmpty())
     }
     private fun saved(revision:Int) {
         compose.waitUntil(10000) {compose.onAllNodesWithText("Loaded/saved revision $revision. No reminder scheduled.").fetchSemanticsNodes().isNotEmpty()}

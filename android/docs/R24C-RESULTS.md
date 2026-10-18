@@ -4,9 +4,9 @@ Work branch: `arena/a8ac5475-osb`. Native application: **`android/`**, not the r
 
 ## Latest collected checkpoint
 
-**7a2b4a8:** continuation9/9, R21/8, R23/27, appearance/9 and Tasks diagnostic/7 passed. **Full main failed141/1/0** in an older R18 Compose text-entry thread error; **privacy34 failed18/1/0** when its replacement pad was absent after Clear; actual privacy37 passed19/19. These failures are retained, not replaced by older green results. [Eighth exact findings](verification/r24c-eighth-review.md).
+**3f7bcc4:** full main **142/0/0 SUCCESS**, continuation **9/0/0 SUCCESS** including committed-window image verification, R21/8, R23/27, appearance/9 and privacy **19/19 on API34 andAPI37** passed. **The separately focused Tasks diagnostic failed6/1/0** because its first native editable node was not yet available to the new text driver. A bounded native-publication precondition is pending verification; the full-suite pass does not erase that failure. [Ninth exact review](verification/r24c-ninth-review.md).
 
-All four image payloads passed transport. Actual inspection nonetheless caught an **early Loading arrangement frame** for the light tabletop; it is not called a ready-state image. Measurement-first native frame-commit/PixelCopy capture, actual Android text-entry staging and a non-relaxing privacy signal diagnostic are awaiting native execution. No all-green or full-product conclusion is asserted.
+All four current application-window images were individually inspected and show the intended ready states. Actual API34 privacy event tracing found no intervening external event in its passing sample; it does **not** explain the earlier post-Clear disappearance. API37 before-state/event files remain unexported. General stability and full original-spec acceptance remain open.
 
 ## What is actually implemented
 
@@ -35,6 +35,9 @@ The floor polygon occupies **0.8316 of the scene before chrome/occlusion**, not8
 ## Exact execution ledger
 
 ### Executed full local host pipelines
+
+**3f7bcc409957b33e640d4b3218192e7679478192:** exit0/**91.906s**, **179 Python tests,439839 R24C assertions,65097 retained R24 assertions**. [Exact archive](verification/r24c/host-3f7bcc4/pipeline.json).
+
 
 **7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1:** exit0/**95.639s**, **177 Python tests,439839 R24C assertions,65097 retained R24 assertions**. [Exact archive](verification/r24c/host-7a2b4a8/pipeline.json). Latest test-driver/frame/diagnostic edits require fresh affected native gates; no source rehash is treated as a rerun.
 
@@ -68,8 +71,9 @@ The later viewport/transport patch also completed the full host command: **172 P
 |8e2567f |9/0/0 SUCCESS |142/0/0 SUCCESS, both jobs |19/0/0 SUCCESS |3/16/0 FAILURE | R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS |
 |42f1e42 |9/0/0 SUCCESS, including four-frame verification |142/0/0 SUCCESS, both jobs |19/0/0 SUCCESS |19/0/0 SUCCESS | **R21 7/1/0 FAILURE**;R23 27/0/0;appearance9/0/0 SUCCESS |
 |7a2b4a8 |9/0/0 SUCCESS; early light-frame state mismatch found manually |**141/1/0 FAILURE**, R18 test-thread exception; other job passed |**18/1/0 FAILURE**, post-Clear missing pad |19/0/0 SUCCESS |R21 8/0/0;R23 27/0/0;appearance9/0/0;Tasks7/0/0 SUCCESS |
+|3f7bcc4 |9/0/0 SUCCESS; four committed-window frames inspected |142/0/0 SUCCESS, both jobs |19/0/0 SUCCESS |19/0/0 SUCCESS |R21 8/0/0;R23 27/0/0;appearance9/0/0 SUCCESS; **Tasks6/1/0 FAILURE** |
 
-Numbers are PASS/FAIL/SKIP, not percentages of the specification. Suites overlap; do not sum them into unique product coverage. Every raw source/run/jobs/annotations/artifact receipt is retained as `verification/r24c-first-*`, `r24c-second-*`, `r24c-third-*`, `r24c-fourth-*`, `r24c-fifth-*`, `r24c-sixth-*`, `r24c-eighth-*`; workflow-only privacy follow-up as `r24c-seventh-*`.
+Numbers are PASS/FAIL/SKIP, not percentages of the specification. Suites overlap; do not sum them into unique product coverage. Every raw source/run/jobs/annotations/artifact receipt is retained as `verification/r24c-first-*`, `r24c-second-*`, `r24c-third-*`, `r24c-fourth-*`, `r24c-fifth-*`, `r24c-sixth-*`, `r24c-eighth-*`, `r24c-ninth-*`; workflow-only privacy follow-up as `r24c-seventh-*`.
 
 At0a7b22e **all five tabletop cases passed**. Audio actually played/paused but failed the keyboard-seek observation; atlas saved its point but had no visible pin target at the next step. The full run additionally caught an older real-IME long-text visibility timeout. [Third repair and revised diagnosis](verification/r24c-third-repair.md) describes the explicit dialog-IME close, asserted real keyboard-focus staging and stronger tagged AX+model checks. No timeout extension, ignored assertion or direct production state injection was substituted. Those repairs require their own native results.
 
@@ -87,13 +91,13 @@ Actual `jni/arm64-v8a/libc++_shared.so` and `libservoshell.so` were inspected; b
 
 ## Visual evidence, not fabricated artwork
 
-**Earlier correctly state-aligned inspected frames:** all four360×800 sixth-candidate previews and22 measured target instances were retrieved with complete PNG hashes. Full native1080×2400 originals are in the same run's artifact; previews explicitly use bilinear downsampling. [Inspection/provenance](verification/r24c-sixth-review.md).
+**Current inspected3f7bcc4 frames:** four360×800 previews, complete hashes and22 clipped/unclipped target-instance observations. They are native **application-window** PixelCopy results after renderer commit, not whole-display/system-bar screenshots or a privacy-capture proof. Full native1080×2400 app-window originals remain in the artifact. [Inspection and exact scope](verification/r24c-ninth-review.md).
 
-![Actual native silver tabletop —42f1e42](verification/r24c-native-previews/sixth-successful-workflow/r24c-silver.png)
+![Actual native silver app-window —3f7bcc4](verification/r24c-native-previews/ninth-committed-window/r24c-silver.png)
 
-![Actual native offline atlas —42f1e42](verification/r24c-native-previews/sixth-successful-workflow/r24c-atlas.png)
+![Actual native offline atlas app-window —3f7bcc4](verification/r24c-native-previews/ninth-committed-window/r24c-atlas.png)
 
-[Light desktop](verification/r24c-native-previews/sixth-successful-workflow/r24c-tabletop.png) · [Focused wall/pile](verification/r24c-native-previews/sixth-successful-workflow/r24c-wall.png) · [Hashes and measured bounds](verification/r24c-native-previews/sixth-successful-workflow/provenance.json).
+[Light tabletop](verification/r24c-native-previews/ninth-committed-window/r24c-tabletop.png) · [Focused wall/pile](verification/r24c-native-previews/ninth-committed-window/r24c-wall.png) · [Hashes and measured bounds](verification/r24c-native-previews/ninth-committed-window/provenance.json).
 
 The eighth-candidate files were also actually inspected: silver, wall and atlas show their intended states, but the light tabletop shows Loading arrangement. Transport success did not establish frame-state alignment. They remain archived with that manual qualification; the earlier ready image is not relabeled as the eighth source.
 
@@ -107,7 +111,7 @@ Phi remains an optional proportion heuristic. The retrieved research does not es
 
 ## What remains open / next highest-information tests
 
-1. Verify the R18 actual text-input driver and phase-correct application-window capture; diagnose the privacy34 post-Clear missing pad with real event observations, keeping its assertion intact. CSV now passed the focused cohort, but the full workflow remains failed at another retained case. Earlier API37 startup cause/raw before-state remains unresolved. Complete transport alone is not ready-state image evidence. No full cold-start/device stability proof is inferred.
+1. Verify the R18 native-publication precondition in both focused/full contexts. Phase-correct app-window capture now passed and was inspected. The privacy34 post-Clear failure did not recur in its stronger traced sample and remains unexplained; no guard/assertion was relaxed. Earlier API37 startup cause/raw before-state remains unresolved. Complete transport alone is not ready-state image evidence. No full cold-start/device stability proof is inferred.
 2. Test real selected-document audio and video through the system picker, video pixels, audibility on hardware, audio-focus/noisy races and a deliberately slow/revoked content provider. The current main-thread provider call is not bounded by a Handler deadline.
 3. Landscape/tablet/laptop AVD and physical-device matrices; all-pages/states at large fonts, pointer/keyboard, TalkBack, contrast and clipped targets. No Android Studio Rabbit1 GUI execution is claimed.
 4. Actual supported-ABI browser engine wrapper plus renderer/permission/profile isolation and a held-out web corpus; actual LOK JNI/ABI/16K packaging, office fidelity and license closure. Artifact/source availability alone is not integration.

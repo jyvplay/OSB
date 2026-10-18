@@ -1,0 +1,7 @@
+{
+  "candidate": "3f7bcc409957b33e640d4b3218192e7679478192",
+  "exit_code": 0,
+  "elapsed_seconds": 91.906,
+  "command": "python3 tools/r24c_lab.py host --tools ~/.cache/fusion-host-r23",
+  "scope": "Executed host pipeline only, NOT Android/Studio/physical/full-product acceptance"
+}

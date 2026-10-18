@@ -1,0 +1,62 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3f7bcc409957b33e640d4b3218192e7679478192/.github",
+    "start_line": 3,
+    "start_column": null,
+    "end_line": 3,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3f7bcc409957b33e640d4b3218192e7679478192/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell:  \njava.lang.AssertionError: Actual Task UI phase=open/add; decor=1080x2400; visible=Rect(0, 128 - 1080, 2337); ime=false; imeInsets=Insets{left=0, top=0, right=0, bottom=0}; status=Loaded/saved revision 0. No reminder scheduled.; before=not captured; disk=revision=0; tasks=[]; original=IllegalArgumentException: Actual native editable target absent: tasks-title\nat dev.fusion.shell.TaskUiEvidence.failure(TaskUiEvidence.kt:18)\nat dev.fusion.shell.TaskUiEvidence.failure$default(TaskUiEvidence.kt:12)\nat dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell(R18TaskUiDeviceTest.kt:97)\n... 54 trimmed\nCaused by: java.lang.IllegalArgumentException: Actual native editable target absent: tasks-title\nat dev.fusion.shell.R18TaskUiDeviceTest.nativeText(R18TaskUiDeviceTest.kt:37)\nat dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell(R18TaskUiDeviceTest.kt:52)\n... 55 more\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3f7bcc409957b33e640d4b3218192e7679478192/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R17TaskUiDeviceTest.addCompleteAndReopenPersistedTaskThroughActualShell=PASS; dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell=FAIL; dev.fusion.shell.R19TaskUiDeviceTest.editUndoUsesRealTouchAndRecreationDoesNotInventAnUndoToken=PASS; dev.fusion.shell.R19TaskUiDeviceTest.actualSystemCreateDocumentPickerCanBeCancelledWithoutTaskMutation=PASS; dev.fusion.shell.R19TaskUiDeviceTest.actualPickerImportConfirmExportAndUndoPreserveSource=PASS; dev.fusion.shell.R20CountsUiDeviceTest.actualCountsPreviewAndSystemSaveDoNotMutatePrivateTasks=PASS; dev.fusion.shell.ShellSmokeTest.savedWikiBacklinksReadRealNoteFiles=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3f7bcc409957b33e640d4b3218192e7679478192/.github",
+    "start_line": 1220,
+    "start_column": null,
+    "end_line": 1220,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/3f7bcc409957b33e640d4b3218192e7679478192/.github",
+    "start_line": 1180,
+    "start_column": null,
+    "end_line": 1180,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\nExecute dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell: FAILED\njava.lang.IllegalArgumentException: java.lang.AssertionError: Actual Task UI phase=open/add; decor=1080x2400; visible=Rect(0, 128 - 1080, 2337); ime=false; imeInsets=Insets{left=0, top=0, right=0, bottom=0}; status=Loaded/saved revision 0. No reminder scheduled.; before=not captured; disk=revision=0; tasks=[]; original=IllegalArgumentException: Actual native editable target absent: tasks-title\nat dev.fusion.shell.TaskUiEvidence.failure(TaskUiEvidence.kt:18)\nat dev.fusion.shell.TaskUiEvidence.failure$default(TaskUiEvidence.kt:12)\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\nBuild tail (not a root-cause diagnosis):\ndence.failure$default(TaskUiEvidence.kt:12)\nat dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell(R18TaskUiDeviceTest.kt:97)\n... 54 trimmed\nCaused by: java.lang.IllegalArgumentException: Actual native editable target absent: tasks-title\nat dev.fusion.shell.R18TaskUiDeviceTest.nativeText(R18TaskUiDeviceTest.kt:37)\nat dev.fusion.shell.R18TaskUiDeviceTest.editCancelArchiveRecreateRestoreAndQueryThroughRealShell(R18TaskUiDeviceTest.kt:52)\n... 55 more\n\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792296652118.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights from a Build Scan (powered by Develocity).\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 7m 30s\n771 actionable tasks: 771 executed",
+    "raw_details": ""
+  }
+]
