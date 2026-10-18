@@ -35,13 +35,18 @@ import org.junit.Test
 class R23InputDefenseTest {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private fun <T : Activity> focused(scenario: ActivityScenario<T>) {
-        val deadline = SystemClock.elapsedRealtime() + 10_000
-        do {
-            var ready = false; scenario.onActivity { ready = it.hasWindowFocus() }
-            if (ready) return
-            SystemClock.sleep(25)
-        } while (SystemClock.elapsedRealtime() < deadline)
-        fail("Real Activity did not acquire focus")
+        // A decor focus flag alone is not completion of the Activity's focus/rebuild callback.
+        // Reuse the real callback + idle barrier; never auto-rearm or retry the behavior under test.
+        PrivacyDeviceReady.focus(scenario)
+        scenario.onActivity { a ->
+            val required = when (a) {
+                is TouchCodeActivity -> R.id.touch_code_output
+                is ExposureActivity -> R.id.exposure_report
+                else -> R.id.scratch_text
+            }
+            assertNotNull("Workspace absent after actual focus. Visible text: " +
+                allViews(a.window.decorView).filterIsInstance<TextView>().joinToString(" | ") { it.text.toString() }, a.findViewById<View>(required))
+        }
     }
     private fun click(id: String) {
         val device = UiDevice.getInstance(instrumentation)

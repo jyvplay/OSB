@@ -10,8 +10,8 @@ import subprocess
 from png_capture import dimensions
 
 ROOT = Path(__file__).resolve().parents[1]
-NAMES = {'r24c-tabletop.png', 'r24c-silver.png'}
-PATTERN = re.compile(r'R24CPNG1 (r24c-(?:tabletop|silver)\.png) (\d+)/(\d+) ([0-9a-f]{64}) ([A-Za-z0-9+/=]+)')
+NAMES = {'r24c-tabletop.png', 'r24c-silver.png', 'r24c-wall.png', 'r24c-atlas.png'}
+PATTERN = re.compile(r'R24CPNG1 (r24c-(?:tabletop|silver|wall|atlas)\.png) (\d+)/(\d+) ([0-9a-f]{64}) ([A-Za-z0-9+/=]+)')
 
 
 def validate_audit(report):
@@ -21,7 +21,8 @@ def validate_audit(report):
     if not 1 <= len(rows) <= 128 or len({r['tag'] for r in rows}) != len(rows):
         raise ValueError('Missing or duplicate declared targets')
     for row in rows:
-        for key in ('width_dp', 'height_dp'):
+        keys = ['width_dp', 'height_dp'] + [k for k in ('visible_width_dp', 'visible_height_dp') if k in row]
+        for key in keys:
             value = row[key]
             if type(value) not in (float, int) or not 47.99 <= value <= 32768:
                 raise ValueError('Invalid/small measured target: ' + row['tag'])
@@ -53,7 +54,10 @@ def export(group):
                 print(f'::notice::R24CPNG1 {name} {i+1}/{len(parts)} {hashlib.sha256(data).hexdigest()} {part}')
     if group == 0:
         for file in root.rglob('r24c-*.json'):
-            result = validate_audit(json.loads(file.read_text()))
+            report = json.loads(file.read_text()); result = validate_audit(report)
+            # Small actual measurements travel through the same retained CI annotations as the PNGs.
+            observed = {key: report[key] for key in ('schema', 'origin', 'api', 'density', 'font_scale', 'required_targets')}
+            print('::notice::R24CTARGETS1 ' + file.name + ' ' + json.dumps(observed, separators=(',', ':')))
             print('::notice::R24C native target audit ' + file.name + ': ' + json.dumps(result))
         if not found:
             print('::notice::No current native image. No visual verification inferred.')
@@ -66,13 +70,19 @@ def collect(run_id):
     if run['status'] != 'completed':
         raise ValueError('Wait for actual completion; do not infer captures')
     jobs = api(f'repos/jyvplay/OSB/actions/runs/{run_id}/jobs?per_page=100')['jobs']
-    chunks = {}
+    chunks = {}; audits = {}
     for job in jobs:
         page = 1
         while True:
             rows = api(job['check_run_url'] + f'/annotations?per_page=100&page={page}')
             for row in rows:
-                m = PATTERN.fullmatch(row.get('message', ''))
+                message = row.get('message', '')
+                if message.startswith('R24CTARGETS1 '):
+                    _, name, raw = message.split(' ', 2)
+                    if name.removesuffix('.json') + '.png' not in NAMES or name in audits:
+                        raise ValueError('Unexpected/duplicate target observation')
+                    report = json.loads(raw); validate_audit(report); audits[name] = report
+                m = PATTERN.fullmatch(message)
                 if m:
                     name, i, n, digest, part = m[1], int(m[2]), int(m[3]), m[4], m[5]
                     if not 1 <= i <= n <= 20 or len(part) > 3700:
@@ -96,7 +106,7 @@ def collect(run_id):
         path = ROOT / 'testing/build/r24c/captures' / run['head_sha'] / name
         path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
         images[name] = {'path': str(path), 'width': w, 'height': h, 'sha256': value['sha256']}
-    result = {'run': run_id, 'candidate': run['head_sha'], 'whole_conclusion': run['conclusion'], 'images': images, 'incomplete_not_displayed': incomplete,
+    result = {'run': run_id, 'candidate': run['head_sha'], 'whole_conclusion': run['conclusion'], 'images': images, 'actual_target_observations': audits, 'incomplete_not_displayed': incomplete,
               'scope': 'Actual finite native frames only. A screenshot from a failed workflow is not a workflow pass.'}
     print(json.dumps(result, indent=2))
     if not images:

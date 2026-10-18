@@ -105,3 +105,19 @@ class ContinuationToolsTests(unittest.TestCase):
             if kind == 'other-api': changed['platform_api'] = 37
             if kind == 'failed-workflow': changed['conclusion'] = 'failure'
             with self.assertRaises(ValueError): verify(changed, candidate, 'continuation')
+
+    def test_partly_clipped_native_control_cannot_borrow_unclipped_hitbox(self):
+        row = {'tag': 'metadata-mutation-only', 'width_dp': 80, 'height_dp': 80,
+               'visible_width_dp': 48, 'visible_height_dp': 48}
+        report = {'schema': 1, 'origin': 'android-instrumentation', 'api': 34, 'required_targets': [row]}
+        self.assertEqual(1, validate_audit(report)['measured_targets'])
+        for dimension in ('visible_width_dp', 'visible_height_dp'):
+            changed = copy.deepcopy(report); changed['required_targets'][0][dimension] = 40
+            with self.assertRaises(ValueError): validate_audit(changed)
+
+    def test_real_executed_failures_do_not_become_subset_acceptance(self):
+        from r24c_evidence_gate import verify
+        for prefix, suite, failed in [('r24c-second', 'continuation', 4), ('r24c-second-privacy', 'privacy', 2), ('r24c-second-main', 'full', 5)]:
+            report = json.loads((land.ROOT / ('docs/verification/' + prefix + '-result.json')).read_text())
+            self.assertEqual(failed, report['counts']['FAIL'])
+            with self.assertRaises(ValueError): verify(report, report['candidate'], suite)

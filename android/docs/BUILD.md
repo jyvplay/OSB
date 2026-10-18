@@ -1,4 +1,104 @@
-# R24 current native evaluation
+# R24 continuation — tabletop, map and local media
+
+Current work branch **`arena/a8ac5475-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R24C-RESULTS.md) · [Scope/acceptance contract](R24C-PLAN.md) · [Privacy / engine routes](R24C-PRIVACY-AND-ENGINES.md).
+
+**49/50 substantial runnable subsets (98%); 1/50 unestablished (2%): LOK. 0/50 full-spec accepted; all 50 remain unfinished at full scope.**
+This census is not a claim that 49 current native features passed. The recorded specification still has 231 requirements,
+36 cross-cutting obligations and 30 formal spikes; none of those spikes is promoted by this continuation.
+
+## Laptop / Android Studio Rabbit1
+
+Use a maintained **full JDK17** and real **SDK `platforms;android-37.0`** with build tools36.0.0/35.0.0.
+Pins remain AGP9.1.1 / Gradle9.3.1 / Kotlin2.2.21; min34 / compile37 / target37. Rabbit1 GUI itself has **not** been
+run in this sandbox. Remote SDK/Gradle/emulator results are separately recorded, not called a Studio GUI test.
+
+1. Open `android/`, let Gradle sync, select **app / proDebug**, then run on a disposable API34+ AVD using copied data.
+   Some existing features still require explicit per-session evaluation consent. Do not use this as a production OS.
+2. Default **Tabletop**: single-click/tap a pin to select it, drag to rearrange, or double-click/tap to open its gated app.
+   The selected-pin toolbar also provides Open, four directions, Unpin, and To table/back/left/right. Background drag pans.
+   Close/minimize existing windows to reveal the underlying tabletop; old saved windows are not erased.
+3. Tap a wall or use its top-row surface chip to focus it. Focused walls have full-size move/pile/pin controls like the table.
+   The tiny overview marks are decorative, not invisible miniature targets. The floor is83.16% of the **scene excluding chrome**.
+4. **Pin app** adds another first-party launch target. **Piles** selects >=2 same-plane pins; select a pile to move or unpile it.
+   **Views** saves a uniquely named snapshot of all pins/piles/surface cameras/focus; loading asks before replacing the current
+   arrangement. It does not save documents/windows/permissions/media. Caps512 pins /128 piles /16 views, not infinite storage.
+5. **Control panel** or **Settings** offers **Art · Silver** and **Business · Light** presets. Palette, layout and **Tabletop / Flat**
+   remain independently selectable; Office Blue/Studio Graphite and existing own-window actions remain. Dock overflow scrolls;
+   app glyphs do not all get squeezed into narrow slots. Larger fonts use larger slots. This themes Fusion, not the host OS.
+6. Find/open **Offline atlas** and enable the bounded workflow: pan/zoom genuine low-resolution Natural Earth land outlines,
+   select coordinates, save a pin, revisit it, or measure spherical distance. No location permission, road map, geocoding or navigation.
+7. Find/open **Media**: **Player** opens a system document picker for audio/video and uses Android's local player; **Images & subtitles**
+   preserves the existing views. No autoplay/background playback; press Play explicitly and Reopen after backgrounding.
+   The selected provider/codec is trusted and can itself use a network. Slow-provider blocking remains an explicit limitation.
+8. **Online services** accepts supported public YouTube/Spotify/SoundCloud links, validates offline and shows a canonical-URL/privacy/terms
+   confirmation. It hands off to an external app/browser; it is **not** embedded or universally free streaming.
+9. The separate **privacy / debug** target remains a no-INTERNET volatile scratchpad/touch-only digit pad. Observed input/IME/accessibility/
+   display changes discard and latch until an explicit empty restart. This is not Tails, hardware attestation, keylogger detection,
+   protection against the laptop host/firmware/cameras, or a promise of forensic erasure.
+
+Keep the existing isolated readonly PDF preview, literal worksheet/CSV tools, Tasks/Notes and editor workflows; the new desktop does
+not unblock full browser/Office engines. Use the original bounded-tool instructions in the historical sections below for those routes.
+
+## Without Android Studio or a local SDK
+
+This runs **real production Kotlin kernels**, Python tools and file/process races, not Android or fake platform classes:
+
+```sh
+cd android
+python3 tools/bootstrap_host_tools.py install
+python3 tools/r24c_lab.py doctor --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/r24c_lab.py host --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/host_privacy_posture.py --report testing/build/r24c/host-posture.json
+# Optional inspection of an actual local artifact; no code execution or automatic engine/legal approval:
+python3 tools/engine_intake.py /path/to/actual-engine.aar --report testing/build/r24c/intake.json
+```
+
+The tested bootstrap route is Linux x86_64. Its pinned JRE17.0.9 is **old and not a full JDK**, for disposable host tests only;
+do not set it as Gradle's JDK or use it for production security. Current archived host pipeline:167 Python methods,
+433681 R24C assertions and65097 retained R24 assertions; exact source hashes/output in `verification/r24c/host/`.
+It is not a rerun of every historical host suite and does not build an APK.
+
+## Actual Android without the IDE GUI
+
+Install a maintained full JDK and the Android command-line tools, set `JAVA_HOME` / `ANDROID_HOME`, and review SDK licenses yourself.
+No unsupported-compile suppression or locally forged platform is used.
+
+```sh
+cd android
+sdkmanager 'platforms;android-37.0' 'build-tools;36.0.0' 'build-tools;35.0.0' 'platform-tools' 'emulator'
+python3 tools/r24c_lab.py android
+python3 tools/r24c_lab.py device --suite continuation --disposable
+python3 tools/r24c_lab.py device --suite full --disposable
+python3 tools/r24c_lab.py device --suite privacy --disposable
+# Actual released API37.0 privacy runtime, not merely compileSdk37:
+sdkmanager 'system-images;android-37.0;google_apis;x86_64'
+./gradlew :privacy:pixel6Api37DebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionExpectedRuntime=37
+```
+
+Windows uses `gradlew.bat`; the lab selects it automatically for native modes. The device commands reset test-owned state and must
+not run on a personal handset. `--disposable` is required for the main app. Managed AVD execution needs hardware virtualization.
+The current CI entry points are `android.yml`, `android-r24c.yml`, retained R21/R23/R24 regressions and the two privacy workflows.
+APK outputs are `app/build/outputs/apk/pro/debug/`, `app/build/outputs/apk/play/debug/` and `privacy/build/outputs/apk/debug/`.
+For remote binaries, choose the **successful exact-candidate** workflow and its artifact; a retained binary from an older failing
+workflow is not the current verified app.
+
+## Collect/recheck native evidence
+
+```sh
+# Substitute an actual completed GitHub run number from `gh run list`, not a guessed ID.
+python3 tools/collect_native_evidence.py RUN_ID RECEIPT_PREFIX --continuation
+python3 tools/r24c_capture.py collect --run RUN_ID
+python3 tools/r24c_evidence_gate.py docs/verification/RECEIPT_PREFIX-result.json --candidate FULL_COMMIT_SHA --suite continuation
+```
+
+The gate requires exact named cases and all-pass/no-skip outcomes plus successful workflow/device conclusions. Capture transport
+refuses incomplete/hash-mismatched chunks and does not fabricate images. Actual captures/target observations cover only named frames;
+all-page/all-state visual, TalkBack, laptop landscape and physical-device acceptance remain open.
+
+---
+
+# Historical R24 build/evaluation instructions (not the current branch/results)
 
 Branch **arena/f77cb2a6-osb**, native-tested23e8868. [Current results/screenshots](R24-RESULTS.md).
 **48/49 substantial runnable subsets97.96%;0/49 full original-spec accepted.**

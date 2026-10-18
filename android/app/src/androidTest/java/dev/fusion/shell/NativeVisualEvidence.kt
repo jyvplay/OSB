@@ -27,6 +27,19 @@ object NativeVisualEvidence {
         compose.waitForIdle()
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val density = instrumentation.targetContext.resources.displayMetrics.density
+        val args = InstrumentationRegistry.getArguments()
+        val folder = args.getString("additionalTestOutputDir")?.let(::File)
+            ?: File(instrumentation.targetContext.getExternalFilesDir(null), "r24c-native-captures")
+        check(folder.exists() || folder.mkdirs())
+        // A failed-frame PNG is diagnostic evidence, NEVER a passed geometry/test claim.
+        val raw = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+        val width = minOf(280, raw.width); val height = (raw.height.toLong() * width / raw.width).toInt()
+        val scaled = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        try {
+            assertTrue(raw.width >= 100 && raw.height >= 100)
+            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), null)
+            File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+        } finally { scaled.recycle(); raw.recycle() }
         val required = JSONArray()
         for (tag in requiredTargets) {
             val node = compose.onNodeWithTag(tag)
@@ -34,7 +47,11 @@ object NativeVisualEvidence {
             val bounds = node.getUnclippedBoundsInRoot()
             assertTrue("$tag width ${bounds.right - bounds.left}", (bounds.right - bounds.left).value >= 47.99f)
             assertTrue("$tag height ${bounds.bottom - bounds.top}", (bounds.bottom - bounds.top).value >= 47.99f)
-            required.put(JSONObject().put("tag", tag).put("width_dp", (bounds.right - bounds.left).value).put("height_dp", (bounds.bottom - bounds.top).value))
+            val visible = node.fetchSemanticsNode().boundsInRoot
+            assertTrue("$tag clipped visible width", visible.width / density >= 47.99f)
+            assertTrue("$tag clipped visible height", visible.height / density >= 47.99f)
+            required.put(JSONObject().put("tag", tag).put("width_dp", (bounds.right - bounds.left).value).put("height_dp", (bounds.bottom - bounds.top).value)
+                .put("visible_width_dp", visible.width / density).put("visible_height_dp", visible.height / density))
         }
         val all = JSONArray()
         compose.onAllNodes(hasClickAction(), useUnmergedTree = true).fetchSemanticsNodes().forEach { node ->
@@ -44,23 +61,11 @@ object NativeVisualEvidence {
                 .put("visible_bounds_px", JSONArray(listOf(rect.left, rect.top, rect.right, rect.bottom)))
                 .put("note", "Clipped semantics bounds; a partial scroll item is not its full hitbox"))
         }
-        val args = InstrumentationRegistry.getArguments()
-        val folder = args.getString("additionalTestOutputDir")?.let(::File)
-            ?: File(instrumentation.targetContext.getExternalFilesDir(null), "r24c-native-captures")
-        check(folder.exists() || folder.mkdirs())
         val report = JSONObject().put("schema", 1).put("origin", "android-instrumentation")
             .put("api", android.os.Build.VERSION.SDK_INT).put("density", density)
             .put("font_scale", instrumentation.targetContext.resources.configuration.fontScale)
             .put("required_targets", required).put("visible_click_actions", all)
             .put("scope", "Finite actual frame; not all pages, accessibility certification or subjective beauty")
         File(folder, "$name.json").writeText(report.toString(2))
-        val raw = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
-        val width = minOf(280, raw.width); val height = (raw.height.toLong() * width / raw.width).toInt()
-        val scaled = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        try {
-            assertTrue(raw.width >= 100 && raw.height >= 100)
-            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), null)
-            File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
-        } finally { scaled.recycle(); raw.recycle() }
     }
 }

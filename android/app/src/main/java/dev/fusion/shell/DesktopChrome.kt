@@ -74,19 +74,20 @@ internal fun AppGlyph(id:String,modifier:Modifier) {
 fun DesktopTopBar(appearance:Appearance,activeTitle:String,workspace:Int,onFind:()->Unit,onSafety:()->Unit,onControl:()->Unit) {
     var clock by remember {mutableStateOf(LocalTime.now())}
     LaunchedEffect(Unit) {while(true) {clock=LocalTime.now();delay(15000)}}
-    Row(Modifier.fillMaxWidth().height(56.dp).background(MaterialTheme.colorScheme.surface).padding(horizontal=8.dp),
+    Row(Modifier.fillMaxWidth().heightIn(min=56.dp).background(MaterialTheme.colorScheme.surface).padding(horizontal=8.dp),
         verticalAlignment=Alignment.CenterVertically) {
         Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()),verticalAlignment=Alignment.CenterVertically,
             horizontalArrangement=Arrangement.spacedBy(8.dp)) {
             Text("F",fontWeight=FontWeight.Black,color=MaterialTheme.colorScheme.primary,fontSize=24.sp)
-            Text(if(appearance.layout==DesktopLayout.ART) activeTitle else "FUSION / BUSINESS",fontWeight=FontWeight.SemiBold,maxLines=1)
-            TextButton(onClick=onFind,modifier=Modifier.testTag("desktop-find")) {Text("Find")}
-            TextButton(onClick=onSafety) {Text("Pilot safety")}
+            // Primary Find remains before the overflow title, with a real >=48dp layout box.
+            TextButton(onClick=onFind,modifier=Modifier.heightIn(min=48.dp).testTag("desktop-find")) {Text("Find")}
+            Text(if(appearance.layout==DesktopLayout.ART) activeTitle else "Fusion Shell",fontWeight=FontWeight.SemiBold,maxLines=1)
+            TextButton(onClick=onSafety,modifier=Modifier.heightIn(min=48.dp)) {Text("Pilot safety")}
             Text("Workspace ${workspace+1}",color=MaterialTheme.colorScheme.onSurfaceVariant)
             Text(clock.format(DateTimeFormatter.ofPattern("HH:mm")),color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Row(Modifier.widthIn(max=148.dp).horizontalScroll(rememberScrollState())) {
-            TextButton(onClick=onControl,modifier=Modifier.testTag("control-panel")) {Text("Control panel")}
+            TextButton(onClick=onControl,modifier=Modifier.heightIn(min=48.dp).testTag("control-panel")) {Text("Control panel")}
         }
     }
 }

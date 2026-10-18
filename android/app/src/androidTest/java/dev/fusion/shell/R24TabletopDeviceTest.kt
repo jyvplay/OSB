@@ -35,7 +35,10 @@ class R24TabletopDeviceTest {
     }
     @Test fun wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore() {
         ready(); var rev = doc().revision
-        click("desk-pin-1"); click("desk-to-back"); changed(rev)
+        click("desk-pin-1")
+        // combinedClickable legitimately waits for the double-tap window before its single-tap action.
+        compose.waitUntil(3000) { compose.onAllNodesWithTag("desk-to-back").fetchSemanticsNodes().size == 1 }
+        click("desk-to-back"); changed(rev)
         rev = doc().revision; click("surface-back"); changed(rev)
         assertEquals(DeskPlane.BACK, doc().scene.focused)
         rev = doc().revision
@@ -52,7 +55,9 @@ class R24TabletopDeviceTest {
         click("tabletop-views"); compose.onNodeWithTag("view-name").performTextInput("Wall workspace")
         rev = doc().revision; click("view-save"); changed(rev)
         val snapshot = doc().views.single(); click("views-done")
-        click("desk-pile-${pile.id}"); rev = doc().revision; click("desk-unpile"); changed(rev)
+        click("desk-pile-${pile.id}")
+        compose.waitUntil(3000) { compose.onAllNodesWithTag("desk-unpile").fetchSemanticsNodes().size == 1 }
+        rev = doc().revision; click("desk-unpile"); changed(rev)
         assertTrue(doc().scene.piles.isEmpty())
         click("tabletop-views"); click("view-load-${snapshot.id}")
         rev = doc().revision; click("view-confirm-load"); changed(rev)
@@ -78,7 +83,7 @@ class R24TabletopDeviceTest {
         try {
             shell("settings put system font_scale 2.0"); compose.activityRule.scenario.recreate(); ready()
             compose.waitUntil(10000) { kotlin.math.abs(compose.activity.resources.configuration.fontScale - 2f) < .01f }
-            for (tag in listOf("tabletop-pins", "tabletop-piles", "tabletop-views")) {
+            for (tag in listOf("desktop-find", "control-panel", "tabletop-pins", "tabletop-piles", "tabletop-views")) {
                 val node = compose.onNodeWithTag(tag); node.performScrollTo().assertIsDisplayed()
                 val bounds = node.getUnclippedBoundsInRoot()
                 assertTrue((bounds.right - bounds.left).value >= 47.99f)

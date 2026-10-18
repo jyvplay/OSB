@@ -199,7 +199,7 @@
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "bcb38ba32d1985a8d7ea1ec404d8c9709a3cbaee7d5f81bdd31036d6cbd15c90"
+      "sha256": "7f129e674b8189a0bec7ceaef069c9ac0b1ae691dba0011c3e52c3972e71907c"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",

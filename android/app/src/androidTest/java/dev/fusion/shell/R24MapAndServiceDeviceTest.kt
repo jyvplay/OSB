@@ -32,8 +32,11 @@ class R24MapAndServiceDeviceTest {
         click("map-places"); click("map-go-1")
         assertEquals(GeoPoint(35.7796, -78.6382), model().camera.center)
         click("map-measure")
-        compose.onNodeWithTag("offline-map-canvas").performTouchInput { click(center + Offset(45f, 15f)) }
-        assertTrue(EarthGeometry.meters(model().measureFrom!!, model().cursor) > 100)
+        click("map-pin-1") // Positive control: a tap on the 48dp pin selects that same saved point.
+        assertEquals(model().measureFrom, model().cursor)
+        // 45 raw pixels was INSIDE the 48dp pin at this emulator's density, not background.
+        compose.onNodeWithTag("offline-map-canvas").performTouchInput { click(Offset(width * .8f, height * .35f)) }
+        assertTrue("Background tap must select a different coordinate: ${model().cursor}", EarthGeometry.meters(model().measureFrom!!, model().cursor) > 100)
         val old = model().camera.center; click("map-east"); assertNotEquals(old, model().camera.center)
         val beforeZoom = model().camera.zoom; click("map-zoom-in"); assertEquals(beforeZoom + 1, model().camera.zoom)
         NativeVisualEvidence.capture(compose, "r24c-atlas", listOf("map-add-pin", "map-places", "map-zoom-out", "map-zoom-in"))

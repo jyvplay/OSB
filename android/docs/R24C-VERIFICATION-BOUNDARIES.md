@@ -1,0 +1,48 @@
+# R24 continuation verification boundaries and false-solution detectors
+
+The [precommitted plan](R24C-PLAN.md) defines admissible objects, quantifier order, H+/H−/H∂ and acceptance thresholds. The [primary-source ledger](research/r24c-primary.md) and [privacy/engine portfolio](R24C-PRIVACY-AND-ENGINES.md) distinguish real mechanisms from missing full engines. This file makes the negative-space checks individually actionable.
+
+## Twenty-four false-solution shapes
+
+| # | Plausible shortcut / why it does not meet the requirement | Concrete detector / retained boundary |
+|---|---|---|
+| 1 | A generated desktop illustration looks 3D but has no native hit geometry | Actual `R24TabletopDeviceTest` drags a native pin, reads the production store and recreates the activity. No generated artwork is used as native evidence. |
+| 2 | Drag changes only transient coordinates and snaps back on restart | Compare stored coordinates and bytes, then recreate. Production staging commits one final revision; cancellation does not publish. |
+| 3 | Save stores a name without the complete scene | Save wall/pile/camera state, change it, load after explicit confirmation and compare the full immutable scene and reloaded bytes. |
+| 4 | Pile/unpile drops members, changes IDs or leaves dangling references | Reducer invariant checks + native two-pin pile/unpile/load. Host malformed-member/cross-plane/ID cases must fail, not truncate. |
+| 5 | Walls contain tiny decorative dots called interactive icons | Overview marks are explicitly decorative; wall selection focuses real >=48dp items. Native wall-focus/drag is separate from an overview tap. No blanket statement that every overview dot is independently clickable. |
+| 6 | A large scroll range is branded infinite storage | Exercise exact pin/pile/view capacities and one-over limits; require explicit failure and unchanged revision. Document finite 512/128/16 and byte/coordinate caps. |
+| 7 | Every app fits only because glyphs and hitboxes were squeezed | Production dock geometry tests 16,640 configurations; actual native target measurements and 200% font interactions supplement it. Overflow scrolls instead of shrinking hit targets below 48dp. |
+| 8 | A phi constant proves universal beauty | Primary human-study findings do not imply such a theorem. Inspect actual images and behavior; retain human taste/large-display/HCI research as unresolved, not numerically certified. |
+| 9 | Passing palette contrast math certifies every rendered page and accessibility workflow | Native audits name their exact measured tags; screenshots name their candidate and frame. TalkBack, contrast against actual backgrounds, all pages/states and physical screen conditions remain separate. |
+| 10 | Theme change destroys a dirty document and still passes a screenshot test | Retain existing R24 dirty-Task/Notes appearance/input tests in the full named regression set; new appearance does not reset window/document stores. |
+| 11 | Opening an external browser is described as integrated streaming | UI says external handoff, shows the canonical public-content URL and privacy/terms warning before launch. No provider player/SDK execution is inferred. |
+| 12 | Media readiness or a synthetic timer is evidence of playback | Android test sends actual Play/Pause/Seek input, samples real `MediaPlayer.currentPosition` and checks paused stability. A READY callback and elapsed wall clock alone are insufficient. |
+| 13 | Playback quietly autostarts, resumes on stale completion or continues after background | Check initial position/phase, play/pause/seek, Home, closed generation and actual player release. Retain lifecycle/focus guards. Physical sound output and video pixels are different gates. |
+| 14 | A graticule or invented polygon is called a map | Verify real upstream blob and derived SHA-256; parse all 128 rings/5,143 vertices; test known projection/distance points and native saved coordinates. Street routing remains absent. |
+| 15 | Free geographic data grants unlimited public tile-server use | Explicit OSMF server-policy research. Ship a legitimately distributable offline asset instead of bulk fetching tiles; this deliberately supplies less than a street-map/navigation service. |
+| 16 | Missing device information means the laptop is safe | Readonly probe emits UNKNOWN when sysfs data is unavailable; no trust boolean is promoted. Sandbox USB/IOMMU observations cannot attest the user's laptop. |
+| 17 | USB filtering is universal passive-keylogger detection | Two causal worlds with identical app-visible transcripts defeat that inference; see the explicit indistinguishability argument. No privileged host settings are changed here. |
+| 18 | Focus regain silently rearms after an observed input topology change | Exhaustive bounded latch event words; actual IME setting mutation/discard; old button, focus and explicit restart checks; restoring the setting causes a second awaited discard. |
+| 19 | A failed compiler leaves yesterday's green marker | Tool test starts with a stale success file and a deliberately missing real compiler executable; the stale result must be removed before failure. |
+| 20 | Green focused tests imply a green whole product | `r24c_evidence_gate.py` binds complete named subsets to an exact candidate, suite, runtime, workflow conclusion and counts. Focused/full suites overlap and are never summed as unique coverage. Full original-spec acceptance stays 0/50. |
+| 21 | Rehashing changed sources is called new execution | Census hashes only bind the reviewed source/test pairing. Repairs trigger actual compiler/device reruns; retained failed receipts cannot pass the evidence gate. |
+| 22 | Corruption silently resets a user's arrangement to attractive defaults | Truncate/tamper/unknown-version host cases; native actual corrupt file reload must show unavailable and preserve those exact bytes. No automatic delete/reset. |
+| 23 | The offline privacy compartment gains provider accounts/import/export | Manifest/source tests enforce the no-INTERNET boundary; actual socket tests retain permission-denied TCP plus a working Unix-pair positive control. Main app service links stay outside the privacy APK. |
+| 24 | New folders or many assertions are counted as complete modules | `module-testability.json` requires a concrete operational behavior plus runnable behavior test and source hashes. `module-audit.json` separately keeps all original acceptance gates open; LOK remains unestablished, not a fake module pass. |
+
+## Strongest attacks against the new mechanisms
+
+- **Tabletop store:** two JVM writers with the same expected revision; stale held UI command; every corrupt prefix; symlink and oversized input. Real filesystem/lock tests are stronger than a mocked repository. They still do not model hostile kernel/firmware or establish crash-safe directory fsync on every Android filesystem.
+- **Geometry/appearance:** tiny/narrow/high-font/IME-constrained windows, out-of-range/NaN points and wall edges. Host numerical evidence includes area/round-trip and bounded layouts; native input and actual frames are needed for renderer correctness. Icon titles deliberately ellipsize; no universal legibility promise.
+- **Maps:** poles, dateline wrapping, invalid/nonfinite coordinates, overlarge/malformed assets and bookmarks. Spherical distance and 1:110m outline precision limit the intended use. This is not safe navigation.
+- **Media:** slow/malicious providers, unsupported codecs, loss of surface/focus, late callbacks and reentrant stop. The current native provider/type/data-source calls can block the UI before the asynchronous preparation timeout; this remains a named defect/gap, not a 15-second universal execution bound.
+- **Service URL policy:** userinfo, explicit ports, lookalike hosts, malformed percent encodings, duplicate video IDs, encoded path separators, private tokens and unbounded input. A constructor-only policy must not be bypassed by a generated data-class `copy()`; the actual implementation was changed to an ordinary class and recompiled.
+- **Input rearm:** hostile or delayed OS notifications, settings restore racing a restart, stale retained buttons, and a passive already-attached logger producing no observable change. Host state-machine coverage is finite, not proof of Android callback delivery or hardware authenticity.
+- **Evidence tooling:** copied/stale/partial image chunks, wrong candidate, a skipped named method, duplicate cases and a failed parent workflow. Hash checking protects transport integrity, not independent CI attestation or authorship.
+
+## Global compatibility check
+
+New desktop persistence lives in a distinct `filesDir/tabletop` directory; map bookmarks have their own store. Neither clears Tasks, Notes, document recovery or window persistence. Existing flat desktop and Blue/Graphite palettes remain selectable; old settings are accepted. New launch targets remain subject to session consent and `PilotPolicy`, so pinning an unavailable full browser/Office app does not unlock it. No background media service, broad storage/media/location permission or network dependency is introduced into the privacy APK. Main-app network permission is **not** removed, so offline maps do not make the full shell offline.
+
+Verification tools actually used are Python/unittest, real Kotlin/JRE processes and filesystem races, Git/GitHub CLI and remote GitHub Actions JDK/SDK/Gradle/KVM-managed Android. No new local emulator, Android Studio GUI, independent research/coding agents, theorem prover, physical hardware lab or deployed remote Office/browser service was used. The root Vite prototype is not treated as the Android product.
