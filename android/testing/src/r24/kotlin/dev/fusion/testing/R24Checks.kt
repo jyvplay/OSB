@@ -89,6 +89,6 @@ object R24Checks {
         ok(CsvTable.parse(",\n".toByteArray()).rows==listOf(listOf("","")))
         val dense=CsvTable.of(List(256) {List(32) {""}});val denseFrame=dense.frame()
         ok(denseFrame.size==32780);ok(CsvTable.readFrame(denseFrame).rows==dense.rows)
-        println("R24 PASS: $checks assertions;8 appearance combinations;16640 dock configurations; $cases input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.")
+        println("R24 PASS: $checks assertions;${ProfessionalPalette.entries.size * DesktopLayout.entries.size * 2} appearance combinations;16640 dock configurations; $cases input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.")
     }
 }

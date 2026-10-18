@@ -1,19 +1,19 @@
-# Native module completion audit — R22 — 2026-10-16; exact fe8dca2 full119/0, focused10/0; not full-spec acceptance
+# Native module completion audit — R24 continuation / 2026-10-18
 
-**Included Gradle modules: 49. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 49 (100.00%).**
+**Included Gradle modules: 50. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 50 (100.00%).**
 
 This is not a time/effort estimate. A module is complete only after its entire assigned scope, integration, mandatory safety/accessibility/device tests and license/build gates have reviewed acceptance. A source file, successful compilation or many assertions is insufficient.
 
 ## Common gates (build evidence is narrower than acceptance)
 
-- android build lint and both flavors: passed
+- android build lint and both flavors: unpassed
 - whole assigned scope implemented: unpassed
 - mandatory spike and device acceptance: unpassed
 - security privacy accessibility review: unpassed
 - api37 16k and reference performance: unpassed
 - license sbom closure: unpassed
 
-R21 exact application candidate b96f060808d6a7b73df9047f31209d4d589bcae7: full run38849172796 passed109/0/0, focused R21 run38849172743 passed8/0/0, Task/Notes run38849172798 passed7/0/0; both debug flavors, JVM/contracts and lint passed. Substantial testability48/49 (97.96%), fully accepted0/49. Earlier R21 failed UI/full receipts retained in R21-ENGINEERING.md; later docs/tooling commits do not inherit exact-candidate native passes. Full browser/Office/LOK, global anonymity, physical/AX/API37/16KiB and legal gates remain open. R22 fe8dca210642d42c0553c47ff4bccc16b5e17404 focused38854643183 passed10/0/0; its full regression38854643235 passed119/0/0 with both debug builds/JVM/contracts/lint; no physical/AX/full-product acceptance follows. Earlier R22 failures are retained in R22-ENGINEERING.md.
+Historical R24 builds remain recorded. R24 continuation changes require new exact-candidate native build/lint/device receipts; none inherited.
 
 ## All included modules
 
@@ -68,12 +68,13 @@ R21 exact application candidate b96f060808d6a7b73df9047f31209d4d589bcae7: full r
 | `:baselineprofile` | Intentionally empty baseline profile; no generated rules | empty profile | 0/1 (0%) | Generate from measured user journeys on devices, verify packaging/effect |
 | `:testing` | 183179 host Kotlin assertions/13 separately compiled libraries;68 Python checks;733 cross-language checks;39/39 actual API34 cases at2c2b5bc. Source-bound23/48 (47.92%) testable-subset census is separate from full acceptance0/48. | runner executed | 0/1 (0%) | Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records |
 | `:privacy` | Separate no-INTERNET volatile native workspace and link projection; f42193d native 6/6 with atomic input refusal, persistent feedback and IME/deletion attacks; historical 62b5c2f failure retained | partial android execution | 0/1 (0%) | Full anonymity/OS replacement not claimed; actual workspace lifecycle/AX/IME and physical security gates remain |
+| `:feature:maps` | Offline Mercator/inverse and spherical-distance kernel, bounded bookmark codec and real pinned Natural Earth land asset; host contracts executed. Native UI/store is authored and awaiting current-candidate Android verification. | partial kernel contracts | 0/1 (0%) | Not street/navigation/GPS/geocoder/traffic mapping; native rendering/provider/storage/AX/OEM acceptance remains separate. |
 
-The 10 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12B-ENGINEERING.md for current exact runtime results, including the retained failing IME test. No row is a full feature pass.
+The 11 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12B-ENGINEERING.md for current exact runtime results, including the retained failing IME test. No row is a full feature pass.
 
 ## Specification architecture reconciliation
 
-The architecture-name inventory below has **47 named main-build slots**, not 49 interchangeable completed features. Of these, **41 match included names**, **2 have partial alternative owners**, and **4 have no separate included module**. 8 current included modules are additional/alternative owners. Name matching is not capability fulfillment. Calculator is required by PR-09 even though its dedicated module is additional to the named architecture list.
+The architecture-name inventory below has **47 named main-build slots**, not 50 interchangeable completed features. Of these, **41 match included names**, **2 have partial alternative owners**, and **4 have no separate included module**. 9 current included modules are additional/alternative owners. Name matching is not capability fulfillment. Calculator is required by PR-09 even though its dedicated module is additional to the named architecture list.
 
 | Requested name | Existing candidate(s) | Mapping (not completion) |
 |---|---|---|
@@ -125,8 +126,8 @@ The architecture-name inventory below has **47 named main-build slots**, not 49 
 | `:baselineprofile` | `:baselineprofile` | exact name |
 | `:testing` | `:testing` | exact name |
 
-Additional/alternative current names: `:core:documents`, `:core:files`, `:feature:accessibility`, `:feature:automation`, `:feature:calc`, `:feature:continuity`, `:format:ooxml`, `:privacy`.
+Additional/alternative current names: `:core:documents`, `:core:files`, `:feature:accessibility`, `:feature:automation`, `:feature:calc`, `:feature:continuity`, `:feature:maps`, `:format:ooxml`, `:privacy`.
 
-**Separate obligations, not falsely added to the 48-module denominator:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.
+**Separate obligations, not falsely counted as completed Gradle modules:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.
 
 Sources: `settings.gradle.kts`, per-module source review, `docs/feature-register.json`, `docs/verification/r12b-full-jvm.txt`, `docs/verification/r12b-subsets.txt` and `docs/R12B-ENGINEERING.md`. Reproduce with `python3 tools/module_audit.py --check`. Review data lives in `docs/module-audit.json`; this report is generated.

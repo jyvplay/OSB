@@ -1,0 +1,16 @@
+{
+  "retrieved_date": "2026-10-18",
+  "upstream_repository": "https://github.com/nvkelso/natural-earth-vector",
+  "source_path": "geojson/ne_110m_land.geojson",
+  "github_blob": "04811d72fff2701ec67587e30ad8942675b511e3",
+  "source_bytes": 138160,
+  "source_sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+  "asset_bytes": 98159,
+  "asset_sha256": "f73d104d89293c0f3663234d20d71ad299773fbcdecd1fad3e91c059a119947a",
+  "rings": 128,
+  "vertices": 5143,
+  "transformation": "all polygon rings, coordinates rounded to five decimal degrees, no invented geometry",
+  "license": "Public domain, per Natural Earth Terms of Use; no warranty",
+  "terms": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "scope": "1:110m land outlines only; not streets or navigation; no online tile dependency"
+}

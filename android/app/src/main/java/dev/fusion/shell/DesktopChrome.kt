@@ -34,6 +34,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.fusion.designsystem.DockMagnification
+import dev.fusion.designsystem.DesktopMetrics
+import androidx.compose.ui.platform.LocalDensity
 import dev.fusion.settings.Appearance
 import dev.fusion.settings.DesktopLayout
 import kotlinx.coroutines.delay
@@ -44,7 +46,7 @@ data class ShelfApp(val id:String,val label:String,val running:Boolean,val activ
 
 /** Original tiny vector glyphs, not copyrighted OS assets or a multi-MB icon dependency. */
 @Composable
-private fun AppGlyph(id:String,modifier:Modifier) {
+internal fun AppGlyph(id:String,modifier:Modifier) {
     val ink=MaterialTheme.colorScheme.onPrimary
     val accent=MaterialTheme.colorScheme.primary
     Canvas(modifier.clip(RoundedCornerShape(9.dp)).background(accent).padding(6.dp)) {
@@ -108,15 +110,16 @@ fun DesktopShelf(apps:List<ShelfApp>,appearance:Appearance,imeVisible:Boolean,en
     require(apps.size<=DockMagnification.MAX_ITEMS)
     var hot by remember {mutableStateOf<Int?>(null)}
     val art=appearance.layout==DesktopLayout.ART
-    Box(Modifier.fillMaxWidth().height(if(imeVisible) 68.dp else 100.dp).background(if(art) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.surface),
+    BoxWithConstraints(Modifier.fillMaxWidth().background(if(art) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.surface),
         contentAlignment=Alignment.BottomCenter) {
+        val metrics=DesktopMetrics.dock(maxWidth.value.toDouble().coerceAtLeast(48.0),LocalDensity.current.fontScale.toDouble().coerceIn(.5,5.0),imeVisible,apps.size)
         Surface(shape=RoundedCornerShape(if(art) 22.dp else 0.dp),tonalElevation=0.dp,
             color=if(art) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
             modifier=Modifier.padding(horizontal=if(art) 12.dp else 0.dp,vertical=if(art) 6.dp else 0.dp)
-                .widthIn(max=if(art) 1080.dp else 10000.dp).then(if(!art) Modifier.fillMaxWidth() else Modifier)
+                .widthIn(max=if(art) metrics.viewport.dp else 10000.dp).then(if(!art) Modifier.fillMaxWidth() else Modifier)
                 .testTag(if(art) "art-dock" else "business-taskbar")) {
             Row(Modifier.horizontalScroll(rememberScrollState()).testTag("shelf-scroll").padding(horizontal=8.dp,vertical=if(imeVisible) 2.dp else 8.dp),
-                horizontalArrangement=Arrangement.spacedBy(2.dp),verticalAlignment=Alignment.Bottom) {
+                horizontalArrangement=Arrangement.spacedBy(metrics.gap.dp),verticalAlignment=Alignment.Bottom) {
                 apps.forEachIndexed {index,app ->
                     val interactions=remember(app.id) {MutableInteractionSource()}
                     val hovered by interactions.collectIsHoveredAsState()
@@ -124,15 +127,15 @@ fun DesktopShelf(apps:List<ShelfApp>,appearance:Appearance,imeVisible:Boolean,en
                     LaunchedEffect(hovered,focused) {if(hovered || focused) hot=index else if(hot==index) hot=null}
                     val target=DockMagnification.scale(index,hot,appearance.layout,appearance.dockZoom && !imeVisible)
                     val scale by animateFloatAsState(target,animationSpec=tween(if(appearance.dockZoom) 120 else 0),label="dock-${app.id}")
-                    Column(Modifier.width(DockMagnification.SLOT_DP.dp).height(if(imeVisible) 60.dp else 76.dp)
+                    Column(Modifier.width(metrics.slot.dp).height(metrics.height.dp)
                         .testTag("shelf-${app.id}").hoverable(interactions,enabled)
                         .clickable(enabled=enabled,role=Role.Button,interactionSource=interactions,indication=androidx.compose.foundation.LocalIndication.current) {onOpen(app.id)}
                         .semantics(mergeDescendants=true) {
                             stateDescription=(if(app.active) "Active" else if(app.running) "Running" else "Closed")+"; magnification "+(if(target>1f) "enlarged" else "normal")
                         },horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.Bottom) {
-                        AppGlyph(app.id,Modifier.size(if(imeVisible) 24.dp else DockMagnification.GLYPH_DP.dp).testTag("dock-glyph-${app.id}").graphicsLayer {scaleX=scale;scaleY=scale})
+                        AppGlyph(app.id,Modifier.size(metrics.glyph.dp).testTag("dock-glyph-${app.id}").graphicsLayer {scaleX=scale;scaleY=scale})
                         Spacer(Modifier.height(if(imeVisible) 1.dp else 5.dp))
-                        Text(app.label,maxLines=1,overflow=TextOverflow.Ellipsis,fontSize=if(imeVisible) 9.sp else 11.sp,
+                        Text(app.label,maxLines=1,overflow=TextOverflow.Ellipsis,fontSize=11.sp,
                             color=MaterialTheme.colorScheme.onSurface,fontWeight=if(app.active) FontWeight.Bold else FontWeight.Normal)
                         Box(Modifier.padding(top=3.dp).size(width=if(app.active) 18.dp else 5.dp,height=3.dp)
                             .clip(RoundedCornerShape(2.dp)).background(if(app.running) MaterialTheme.colorScheme.primary else Color.Transparent))

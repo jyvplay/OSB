@@ -1,0 +1,71 @@
+name: Android R24 continuation desktop media atlas
+on:
+  push:
+    paths: ['android/**', '.github/workflows/android-r24c.yml']
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  continuation:
+    name: Actual API34 tabletop media and offline atlas
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install real SDK compilation platform
+        run: |
+          SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' > sdk37-install.log 2>&1; then
+            cat sdk37-install.log
+          else
+            result=$?; cat sdk37-install.log
+            python3 tools/ci_annotations.py sdk37-install.log sdk37-install
+            exit "$result"
+          fi
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
+      - name: Enable actual KVM device execution
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Compiled production continuation contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:r24cContracts
+      - name: Real native continuation workflows
+        run: >
+          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
+          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24TabletopDeviceTest,dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest
+      - name: Actual named case results
+        if: always()
+        run: python3 tools/report_device_results.py
+      - name: Actual screenshots and geometry observations 1
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 0
+      - name: Actual screenshot chunks 2
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 1
+      - name: Actual screenshot chunks 3
+        if: always()
+        run: python3 tools/r24c_capture.py export --group 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r24c-native-evidence
+          path: |
+            android/contracts.log
+            android/device.log
+            android/device-results.json
+            android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**
+            android/app/build/outputs/apk/**

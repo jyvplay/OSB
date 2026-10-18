@@ -168,6 +168,7 @@ class MainActivity : ComponentActivity() {
     private val backupEngine by lazy { BackupEngine(this) }
     private val trashRepository by lazy { TrashRepository(this) }
 
+    private val tabletopModel by lazy { ViewModelProvider(this)[TabletopSessionModel::class.java] }
     private val desktopModel by lazy { ViewModelProvider(this)[DesktopSessionModel::class.java] }
     private val desktop get() = desktopModel.desktop
     private var acknowledgedExperiments by mutableStateOf(emptySet<String>())
@@ -175,6 +176,7 @@ class MainActivity : ComponentActivity() {
     private var resetLayoutPrompt by mutableStateOf(false)
     private var treeUri by mutableStateOf<Uri?>(null)
     private var message by mutableStateOf("Local first. No app telemetry configured; main shell, providers and host are not anonymous.")
+    private val mapModel by lazy { ViewModelProvider(this)[dev.fusion.maps.MapViewModel::class.java] }
     private val calculatorModel by lazy { ViewModelProvider(this)[CalculatorViewModel::class.java] }
     private val editorModel by lazy { ViewModelProvider(this)[EditorViewModel::class.java] }
     private var closingEditorWindow by mutableStateOf<Long?>(null)
@@ -409,6 +411,7 @@ class MainActivity : ComponentActivity() {
     private fun titleFor(module: String) = PilotPolicy.module(module).title
 
     private fun openModule(module: String) {
+        if (module !in MODULES) { message = "Unknown app pin; no capability opened."; return }
         if (desktopModel.loading || desktopModel.blocked) { message = desktopModel.status; return }
         val existing = desktop.windows.firstOrNull { it.module == module && it.workspace == desktop.workspace }
         if (existing != null) {
@@ -571,7 +574,7 @@ class MainActivity : ComponentActivity() {
                     if (!desktopModel.loading && !imeVisible) dispatch(WindowCommand.SetViewport(sw, sh))
                 }
 
-                DesktopWallpaper(appearance.layout==DesktopLayout.ART)
+                TabletopDesktop(tabletopModel, appearance.scene==dev.fusion.settings.DesktopScene.FLAT, !desktopModel.loading && !desktopModel.blocked, ::openModule)
 
                 desktop.windows.filter { it.workspace == desktop.workspace && !it.minimized }
                     .sortedBy { it.z }.forEach { w -> key(w.id) {
@@ -784,6 +787,7 @@ class MainActivity : ComponentActivity() {
             "terminal" -> TerminalScreen(localShell)
             "vault" -> VaultScreen()
             "notes" -> NotesScreen(notesModel)
+            "maps" -> dev.fusion.maps.MapScreen(mapModel)
             "media" -> dev.fusion.media.MediaScreen(this) { uri, mime ->
                 runCatching {
                     startActivity(

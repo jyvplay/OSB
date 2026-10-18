@@ -3,7 +3,7 @@
   "date": "2026-10-15",
   "denominator": "included Gradle modules, not features/flavors/services/effort",
   "common_acceptance_gates": {
-    "android_build_lint_and_both_flavors": true,
+    "android_build_lint_and_both_flavors": false,
     "whole_assigned_scope_implemented": false,
     "mandatory_spike_and_device_acceptance": false,
     "security_privacy_accessibility_review": false,
@@ -353,6 +353,13 @@
       "present_scope": "Separate no-INTERNET volatile native workspace and link projection; f42193d native 6/6 with atomic input refusal, persistent feedback and IME/deletion attacks; historical 62b5c2f failure retained",
       "remaining_gap": "Full anonymity/OS replacement not claimed; actual workspace lifecycle/AX/IME and physical security gates remain",
       "evidence_level": "partial_android_execution"
+    },
+    {
+      "module": ":feature:maps",
+      "status": "incomplete",
+      "present_scope": "Offline Mercator/inverse and spherical-distance kernel, bounded bookmark codec and real pinned Natural Earth land asset; host contracts executed. Native UI/store is authored and awaiting current-candidate Android verification.",
+      "remaining_gap": "Not street/navigation/GPS/geocoder/traffic mapping; native rendering/provider/storage/AX/OEM acceptance remains separate.",
+      "evidence_level": "partial_kernel_contracts"
     }
   ],
   "architecture_mapping": [
@@ -678,6 +685,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R22 \u2014 2026-10-16; exact fe8dca2 full119/0, focused10/0; not full-spec acceptance",
-  "build_evidence": "R21 exact application candidate b96f060808d6a7b73df9047f31209d4d589bcae7: full run38849172796 passed109/0/0, focused R21 run38849172743 passed8/0/0, Task/Notes run38849172798 passed7/0/0; both debug flavors, JVM/contracts and lint passed. Substantial testability48/49 (97.96%), fully accepted0/49. Earlier R21 failed UI/full receipts retained in R21-ENGINEERING.md; later docs/tooling commits do not inherit exact-candidate native passes. Full browser/Office/LOK, global anonymity, physical/AX/API37/16KiB and legal gates remain open. R22 fe8dca210642d42c0553c47ff4bccc16b5e17404 focused38854643183 passed10/0/0; its full regression38854643235 passed119/0/0 with both debug builds/JVM/contracts/lint; no physical/AX/full-product acceptance follows. Earlier R22 failures are retained in R22-ENGINEERING.md."
+  "revision": "R24 continuation / 2026-10-18",
+  "build_evidence": "Historical R24 builds remain recorded. R24 continuation changes require new exact-candidate native build/lint/device receipts; none inherited."
 }

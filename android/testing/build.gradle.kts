@@ -295,3 +295,20 @@ kotlin.sourceSets.named("r24") {
 tasks.register<JavaExec>("r24Contracts") {
     dependsOn(r24.classesTaskName);classpath=r24.runtimeClasspath;mainClass.set("dev.fusion.testing.R24Checks")
 }
+
+// R24 continuation: actual production kernels; no Android substitutes.
+val r24c by sourceSets.creating
+kotlin.sourceSets.named("r24c") {
+    kotlin.srcDir("src/r24c/kotlin")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.srcDir("../feature/maps/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../core/designsystem/src/main/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.include("**/Tabletop.kt", "**/TabletopStore.kt", "**/OfflineMap.kt", "**/ServiceLink.kt", "**/InputRearm.kt", "**/DesktopMetrics.kt", "**/Contrast.kt", "**/ProfessionalPalettes.kt", "**/Appearance.kt", "**/R24CChecks.kt")
+}
+tasks.register<JavaExec>("r24cContracts") {
+    dependsOn(r24c.classesTaskName); classpath = r24c.runtimeClasspath; mainClass.set("dev.fusion.testing.R24CChecks")
+    args(rootProject.file("feature/maps/src/main/assets/natural-earth-land-v1.txt").absolutePath)
+}

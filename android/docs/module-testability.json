@@ -6,24 +6,30 @@
       "module": ":app",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 native Business/Art chrome, actual own-app dock/running state/Control Panel and independent professional palettes. Exact23e8868 UI39075701917 passed9/0 with real mouse/key focus raster,2x settings, dirty draft/recreation and native one-tap Task/Notes I/O. Full main workflow actually completed133/0 SUCCESS; not all-original-spec/module/AX/physical acceptance.",
+      "behavior": "R24 continuation native tabletop hosting, adaptive dock, saved-view controls and silver preset. New Android behavioral tests are runnable but current-candidate native execution must be checked in R24C results; earlier R24 passes are historical.",
       "production": [
         "app/src/main/java/dev/fusion/shell/MainActivity.kt",
-        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt"
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
+        "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt",
+        "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "34d0bc54cfb25012d23ca8b85e7e04a71173314a437ca364d9702ef85dd6f56b",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "aa8cd61fe246f763874a2a01d508ac7c715ed70348910a5174858516d89bba5a",
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "bcb38ba32d1985a8d7ea1ec404d8c9709a3cbaee7d5f81bdd31036d6cbd15c90",
+        "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "e6013ce475baeff5c9ed4123061c789ebe7d62c47e63cbf9f1e748189b286b53",
+        "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
-        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "bac30c2c6d6fc29ae5933534a1e82a5947da772c2924df3eff73ab53c40307af",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
-        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9"
+        "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "e988aeb8db0211a01e593e15f7cce2449bfb94b15fa7840783e0d80cc620b06d"
       }
     },
     {
@@ -62,9 +68,9 @@
       "limit": "Full WM-01\u201316 semantics, Compose host/input/display integration, Room, physical a11y/perf",
       "sha256": {
         "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt": "80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574",
-        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "c4046daabb522ce2474e576a08c87d90a302cdf734b2f5d0724deee5e394a63e",
+        "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9"
       }
     },
@@ -136,7 +142,7 @@
         "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
         "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "c4046daabb522ce2474e576a08c87d90a302cdf734b2f5d0724deee5e394a63e",
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
         "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "3028155b7e55f7e0504ca6fad17338226c72fe78c9c9a39b8ba9967951b499f7"
       }
     },
@@ -162,7 +168,7 @@
       "module": ":core:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 typed independent palette/layout/zoom schema and one observable SharedPreferences graph used by native Settings/Control Panel. Actual invalid type/patch refusal, legacy fallback, consistent controls/draft preservation and normal Activity recreation in UI9 passed. Not DataStore, multiwriter/power-loss durability, full import/history or global OS settings.",
+      "behavior": "Shared appearance store now includes silver and independent tabletop/flat selection; independent palettes/layouts preserved, explicit Art/Business presets. Host schema checks executed; new native state/recreation tests require actual receipts.",
       "production": [
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
         "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt",
@@ -172,38 +178,42 @@
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt"
       ],
       "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
       "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
       "sha256": {
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc",
-        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt": "08531e4edb15125edefbd833d97728e556a999adbc11cbaa48ee50538b13c522",
+        "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt": "22ca565e16c459cccdb1f78c8cad8f431db0024b7843f5e893eaec9c6ab01937",
+        "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt": "3c58b03d30cc9e9538932c191c83601e28f17606b66f9dd08282e09fb019c3a5",
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
-        "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt": "83c978c7fd188e5bb97f1988181557574e0ba0bcb5775eb870e5a2ad359bc740",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "c4046daabb522ce2474e576a08c87d90a302cdf734b2f5d0724deee5e394a63e",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a"
       }
     },
     {
       "module": ":core:security",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing scope plus R23 production TouchAdmission/VolatileDigits/LocalExposure: whole-gesture obscuration state, ASCII64 volatile buffer/monotonic expiry and observation-only exposure classification. Actual host898161 assertions/160000 four-event words; current4bc7637 companion16/0 exercises real framework consumers. Not physical keylogger detection, hard-real-time erasure or all-accessibility exclusion.",
+      "behavior": "Existing crypto/input/link kernels plus explicit input-change epoch rearm. Exhaustive finite event words reject stale restarts; no host/hardware attestation or anonymity inference.",
       "production": [
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt",
         "core/security/src/main/kotlin/dev/fusion/security/LinkDisclosure.kt",
         "core/security/src/main/kotlin/dev/fusion/security/TouchAdmission.kt",
         "core/security/src/main/kotlin/dev/fusion/security/VolatileDigits.kt",
-        "core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt"
+        "core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt",
+        "core/security/src/main/kotlin/dev/fusion/security/InputRearm.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt",
-        "testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt"
+        "testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest :testing:r23Contracts",
+      "command": "python3 tools/run_r24c_contracts.py (host); native targets require Android",
       "limit": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
       "sha256": {
         "core/security/src/main/java/dev/fusion/security/IndexKeys.kt": "3ac11bb42295d9552e997fe3d17fd25ece8872144e580c5400e9e3fba16bddf7",
@@ -211,9 +221,11 @@
         "core/security/src/main/kotlin/dev/fusion/security/TouchAdmission.kt": "2236804e3aee3f25914b8e3371177a6165210c4c30561689c45acc2ae35629c9",
         "core/security/src/main/kotlin/dev/fusion/security/VolatileDigits.kt": "0ad2cda9409a7cbdd39171dc6708087b2c55fc21b4db0deca6048c4901520dca",
         "core/security/src/main/kotlin/dev/fusion/security/LocalExposure.kt": "366aea8225ddeca8d77c57107ed9e7fa446a149cfad70105d46238a1498a4c51",
+        "core/security/src/main/kotlin/dev/fusion/security/InputRearm.kt": "d8ebadb0b56cea7ce6e2eacafad1f1e366945a08f2b6f0ef9c32a59ff1ab9c3c",
         "app/src/androidTest/java/dev/fusion/shell/EncryptedIndexDeviceTest.kt": "f121f286303e5c4f1553b1efe204cc7a5133146e962333afaa3d803aeeaf45b0",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
-        "testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt": "8b05261ac075cfa6002b7a6c3b015bc773523352b11282e689f40083ac723266"
+        "testing/src/r23/kotlin/dev/fusion/testing/R23Checks.kt": "8b05261ac075cfa6002b7a6c3b015bc773523352b11282e689f40083ac723266",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a"
       }
     },
     {
@@ -292,10 +304,11 @@
       "module": ":core:designsystem",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 Office Blue/Studio Graphite role palettes and bounded32dp glyph/64dp hit-slot magnification. Real host65074 assertions across appearance/dock/presentation/codec consumers; native pixel/hover/focus/motion-off/2x traces passed in UI9. Opaque token4.5 contrast is not rendered AX/HDR/high-contrast certification.",
+      "behavior": "Preserved light/graphite palettes, new silver semantic roles, independent >=48dp adaptive dock targets and capped preferred width. Host geometry/contrast tests executed; actual visual/AX coverage is finite and candidate-specific.",
       "production": [
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt",
-        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt"
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
@@ -303,19 +316,22 @@
         "tools/run_r14_contracts.py",
         "tools/run_r14_interop.py",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r24c_contracts.py (host); native targets require Android",
       "limit": "Not alpha/HDR/rendered text contrast, density completeness, physical display or full accessibility acceptance.",
       "sha256": {
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "2e639fa1c99d6e8f3f30d1e6ed9f47745243f4bb51068a2d23a31f0ff6be0dd3",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt": "f74d60e1b204f2244e0a97a82e376e4d24b935bac8f1b170b648119f3b3a9c13",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
-        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "f1de07705e7b5c7d12dedf83a8f02fc3ff7e2285c64b925e0f48fa13306091f5",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "c4046daabb522ce2474e576a08c87d90a302cdf734b2f5d0724deee5e394a63e",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a"
       }
     },
     {
@@ -342,20 +358,26 @@
       "module": ":feature:launcher",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Immutable pin/reorder/unpin, missing-target preservation, deterministic catalog reconciliation and locale-stable search",
+      "behavior": "Immutable four-surface tabletop, pins/piles, projective inverse, saved snapshots, strict binary codec and revision-checked real file store. Compiled host consumer includes actual concurrent writer processes; not full launcher/third-party task authority.",
       "production": [
-        "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt"
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt",
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/Tabletop.kt",
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/TabletopStore.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "command": "python3 tools/run_r24c_contracts.py (host); native targets require Android",
       "limit": "Caller-supplied catalog only, not package discovery/Home/widgets/folders/recents or durable pins; not yet integrated with host shelf/UI or device AX acceptance",
       "sha256": {
         "feature/launcher/src/main/kotlin/dev/fusion/launcher/PinnedCatalog.kt": "9e077032c1d5ba7dc8e8cab642dc15afb712b2f71fe4d1f2e4bc92cca425286d",
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/Tabletop.kt": "618030bf0b0fe546c18c3f7112f8658a931b4464bfabbfee5c590b57466c8b14",
+        "feature/launcher/src/main/kotlin/dev/fusion/launcher/TabletopStore.kt": "12b27bafa602512594b2a678f00a2eaa21c0f9f593b4b0a9162663bd6f464d94",
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a"
       }
     },
     {
@@ -423,9 +445,9 @@
       "sha256": {
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt": "dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt": "42826bddd2a727e48ef9066e6a87b963d5baf434881263504da4aa152d4836f3",
         "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt": "ead3541b5e0e31da1d49ef735db6a43e88f445e821fb9f77f766c954b4f1d3a1",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
-        "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt": "42826bddd2a727e48ef9066e6a87b963d5baf434881263504da4aa152d4836f3",
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
         "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
@@ -534,7 +556,7 @@
       "module": ":feature:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real R24 shared Office Blue/Studio Graphite + Business/Art/magnification controls and wrapping density controls. UI9 passed actual state/peer entrypoint/recreation and2x density/search reachability. Full DataStore/OEM/keyboard preset/import/history/AX remains unaccepted.",
+      "behavior": "Shared appearance controls retain prior palettes/layouts; silver and tabletop/flat controls plus explicit paired presets added without mutating document/permission state. Native checks are runnable; original broader settings scope remains incomplete.",
       "production": [
         "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt",
         "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt"
@@ -544,42 +566,54 @@
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
         "tools/run_r14_interop.py",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt"
       ],
       "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
       "limit": "No durable transaction, authenticated import, permission grant or arbitrary-setting enablement. Host applies only density; native UI evidence pending.",
       "sha256": {
         "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt": "938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09",
+        "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt": "16f6f149f98bfc80fc5b2c1a016563fbdc5dabd1a6606b4ebbe85e760b8b77c6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
-        "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt": "e0c7413486c2babc0f4a7c5536cf68d0035240c3a2c25681224c90ccdb610948",
-        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520"
+        "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "e988aeb8db0211a01e593e15f7cce2449bfb94b15fa7840783e0d80cc620b06d"
       }
     },
     {
       "module": ":feature:media",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte stream reader; literal-cue inspector text input passed at67fbd39. System picker adapter compiled, grant/lifecycle execution pending",
+      "behavior": "Native selected-content foreground player, original subtitle/image routes preserved, strict commercial-service URL projection and explicit external-player handoff. Host policy tests executed; actual decoder/pixels require native receipts. Handoff is NOT streaming integration.",
       "production": [
         "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt",
-        "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt"
+        "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt",
+        "feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt",
+        "feature/media/src/main/java/dev/fusion/media/LocalPlaybackActivity.kt",
+        "feature/media/src/main/java/dev/fusion/media/MediaHub.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24LocalMediaDeviceTest.kt"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "command": "python3 tools/run_r24c_contracts.py (host); native targets require Android",
       "limit": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
       "sha256": {
         "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt": "ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b",
         "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt": "b0c4aae27639e97f9d0e2db6a13f68f859321d33f266d78c56955e9f06d9e00d",
+        "feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt": "34790206f32d101ab9e3967127def55fe2ffb6904f9eac9b0d0433b233605bc8",
+        "feature/media/src/main/java/dev/fusion/media/LocalPlaybackActivity.kt": "d9afc7ad864ae1e84c8732731988dfe9a6497fb7762c7b0741b3bdc84d03d333",
+        "feature/media/src/main/java/dev/fusion/media/MediaHub.kt": "eeed538fea794ced85c1690c76b44171ef946f36f8cc37ed8dab2707c8dbaeff",
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
-        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt": "c48816bc9cb2f5c9fdb1c54f770955eeddb9f279e425c46b1935ceedcddd0610"
+        "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt": "c48816bc9cb2f5c9fdb1c54f770955eeddb9f279e425c46b1935ceedcddd0610",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a",
+        "app/src/androidTest/java/dev/fusion/shell/R24LocalMediaDeviceTest.kt": "9420a5526cf0fb22e1624b0ba1f4edb8e4583781940a3399c1e1e486164db3c1"
       }
     },
     {
@@ -845,6 +879,10 @@
         "feature/automation/src/main/java/dev/fusion/automation/TaskPanel.kt": "20c8d94095d770d9803d377a629ae7c55ae1e5c101d3222b10bb8bf0bcc726b7",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskQuery.kt": "c693c6af47f279638e53a537fb733263577098090737be114e25397f9fbae6e5",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskCounts.kt": "a0cb99d077c6179b91c5ee9aebc8c79773fd7db7f109f5cd693cacedd157a36b",
+        "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "56f68adf98a8a4233f93375ad58e86493a6b4f835ace288bc828a3896c6c4067",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt": "fa4c541f09a6479c34817c42612ffa80ad0e25189846192ed741783927c0f754",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/WorksheetInput.kt": "62c902cd31a85f486b8e9754608abd4cca787306231ba8376f48dfb57057c36a",
+        "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt": "4bb340ef050df44feab671df316c199fb490da0b60f78f442454b31200976b3e",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
         "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
@@ -861,14 +899,10 @@
         "app/src/androidTest/java/dev/fusion/shell/R18TaskUiDeviceTest.kt": "7d0572c50b3b073988d5948b10f572daa2091a2633c526e84624b859ad602156",
         "app/src/androidTest/java/dev/fusion/shell/TaskUiEvidence.kt": "ec19c89a629cc2279738f225b37fc9e4f43717f9776db7e10b15752c21f0b130",
         "testing/src/r20/kotlin/dev/fusion/testing/R20Checks.kt": "5e61b225b818baddf9169a71977f2f9e7e2a8254349296e5ef5b9abad0da53b5",
-        "feature/automation/src/main/java/dev/fusion/automation/CsvWorkbenchActivity.kt": "56f68adf98a8a4233f93375ad58e86493a6b4f835ace288bc828a3896c6c4067",
         "app/src/androidTest/java/dev/fusion/shell/R21CsvUiDeviceTest.kt": "a00e008ea468e0fac937e7a97a03c69ea21c2bb53f64589f26675b9a923b914f",
-        "feature/automation/src/main/kotlin/dev/fusion/automation/ExactReadback.kt": "fa4c541f09a6479c34817c42612ffa80ad0e25189846192ed741783927c0f754",
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
-        "feature/automation/src/main/kotlin/dev/fusion/automation/WorksheetInput.kt": "62c902cd31a85f486b8e9754608abd4cca787306231ba8376f48dfb57057c36a",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
-        "feature/automation/src/main/java/dev/fusion/automation/TaskTransferIO.kt": "4bb340ef050df44feab671df316c199fb490da0b60f78f442454b31200976b3e",
         "app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt": "a5cd30ef8d0713bce7a5a760c9c465e324558a13bc8e781e0e97fa1f3992726b",
         "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9"
@@ -912,8 +946,8 @@
       "limit": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
       "sha256": {
         "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75",
-        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt": "1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260",
         "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt": "8874302c439ff4de753618f6b9264b18c82dd03ed945b6f9b3e5ec2ad570139a",
+        "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt": "1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9"
       }
@@ -966,6 +1000,9 @@
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DecimalSheet.kt": "913f95cb4dd522c283d1a2c336654d2b5e06fd26dd2880db9f0bc3e75af0d2fc",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetFrame.kt": "d2845e2365719ae640159d08d47c58346a9c89e26de9d2755cd3224536fb4fdd",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OwnedSheetRequest.kt": "cf1d127e2d4d6fed8e90d3e2c4c33638106ac692cabd1642ab17de68001e76d1",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt": "898541782316410c0d149ddaf277ed41492859f752598b83245fc9bc2deebfc1",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt": "fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt": "e30dc377274335c9028551879702ed69b10ff0fb43d0928d224b1d37819a03b2",
         "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt": "984e49dacb739fbdb5024e028fd7a2e03518f47ad023cc058715191eb3ca757e",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
@@ -985,13 +1022,10 @@
         "tools/run_r18_contracts.py": "bebdab5afa500460babb0d6b6d149ef3d4bdb16a02828206843a1856494897a9",
         "tools/run_r18_interop.py": "88c4ee29dc686b26bad148d7962e68151adfe180da70a7bf0381aaad7416acf5",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt": "898541782316410c0d149ddaf277ed41492859f752598b83245fc9bc2deebfc1",
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt": "fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt": "e30dc377274335c9028551879702ed69b10ff0fb43d0928d224b1d37819a03b2",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "c4046daabb522ce2474e576a08c87d90a302cdf734b2f5d0724deee5e394a63e"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b"
       }
     },
     {
@@ -1021,17 +1055,17 @@
       "sha256": {
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "0df998468d7c64228e2406c1ae1d56273dade36ee2e7a1b1e1d786d32854d9e1",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt": "affec3616b00e62c3a7513fde851bb179b8165537c08c48a0f265da98dfb20d0",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d",
+        "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt": "739b9403a3bf4bf4932b75ade480fd294c168372b010604e2e3f4b86d93bb246",
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt": "cbc9272cd1ef96e57297dec5b3e122c36528f047a4adf2f5ebd44c570737bf7a",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "app/src/androidTest/java/dev/fusion/shell/R18OwnedSheetDeviceTest.kt": "3302d5bae6403c888104a8ebee3396db08bb53ea59fde2535860aa3a40ca34e8",
         "app/src/androidTest/java/dev/fusion/shell/R21BoundaryDeviceTest.kt": "c5acfce7dbc10cd1160615b49bc1494ac370f54405a3e539e764f8674c3d9939",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt": "5e3f72f42a0daedc9ff84caddb6e5ce718ec62801e750d98a349c435f0117b9d",
         "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659",
-        "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt": "739b9403a3bf4bf4932b75ade480fd294c168372b010604e2e3f4b86d93bb246",
         "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "3028155b7e55f7e0504ca6fad17338226c72fe78c9c9a39b8ba9967951b499f7",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "c4046daabb522ce2474e576a08c87d90a302cdf734b2f5d0724deee5e394a63e"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b"
       }
     },
     {
@@ -1209,7 +1243,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R23 no-INTERNET/no-IME volatile pad controls plus R24 nonexported protected power-state receiver. Actual full18-case workflows passed on API34/run39075701923 AND released API37/run39075701918 at23e8868, with runtime assertion, real sleep/wake/stale key/spoof refusal. No host/firmware/hardware attestation/global anonymity/erasure/Tails equivalence.",
+      "behavior": "Existing offline/no-IME compartment now discards on observed input/IME/accessibility/additional-display changes, latches until an explicit empty restart and rejects stale buttons. Native real-IME-setting test authored; current-candidate device results separate. No passive-keylogger detection or hardware/host guarantee.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
@@ -1225,14 +1259,15 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt"
       ],
       "command": ":privacy:pixel6Api34DebugAndroidTest",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
-        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "e9bf2bfddab06cb641ed194300e91479c528aa7ef965faf3a04b4e0315e6cbb3",
-        "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt": "fc9b906e7647498373f820123d411ef8ce2188b9eaa808bcb30ce4023502e967",
-        "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt": "9cb5534e35bcece84f311113243e8daa569c5d61fde6467976f571999c07ed2b",
+        "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "98166e0befc4cdbdf284b9e414abbd02c36d978e7b4d2a62d8c8a9d84dff825e",
+        "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt": "f1bb93b4c830f67c20bf902c8b3e0d3340d2fdeadc8b3eb1a1aca757492c837f",
+        "privacy/src/main/java/dev/fusion/privacy/TouchCodeActivity.kt": "4a0470058f1848dfc68e9b7ce92e5e58022a9ea0565eabf7cd61d1b4bb4bad81",
         "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt": "a4ed34dbe008d9598987b6f316bffef8d0d849130aa930ab57752784fed8a60e",
         "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt": "a16d32e2d0857ec5837c067f66e123d61f88d0fd43bac95dfa5c776ecc3cec29",
         "privacy/src/main/AndroidManifest.xml": "b2dfd44e13901da005915f670d6234cd9c9c97287ec2257f6d65cea1990754f3",
@@ -1242,7 +1277,32 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "bda15be3d5e2c7ed2a2fa4bea90f18b5c60216b2a80cccda74ccdd26695052b6",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "bc82672ceadf70c10b2bf13c26eaee865364e02cc3345b3a8c9fa91659129617",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "2b2e1649d076d57271f871018e8f852c1c3b1fc3f4991cce3ff9bd1a5bf6cfee"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "2b2e1649d076d57271f871018e8f852c1c3b1fc3f4991cce3ff9bd1a5bf6cfee",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "75399ce339e3bf1c33b914611d6248f762d9d040939d0c204703a7a10dbdc6dc"
+      }
+    },
+    {
+      "module": ":feature:maps",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Real geographic projection, inverse/pan, bounded bookmarks and spherical distances; actual public-domain coastline asset (128 rings/5143 vertices), compiled host contracts. Native canvas/store/UI is authored, not inferred verified from math.",
+      "production": [
+        "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt",
+        "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt",
+        "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt"
+      ],
+      "checks": [
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt"
+      ],
+      "command": "python3 tools/run_r24c_contracts.py; :app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Low-resolution offline atlas, not street maps/navigation/GPS/geocoding/traffic or universal native/AX acceptance.",
+      "sha256": {
+        "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt": "2cd6abc258604e4390d5799a4a0ef3883bb781cd686e1f9ae0b6535b46a32069",
+        "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt": "69e94c5ec3d46b018269e353d7e3dc670e74c679c4fb7e7f74d0e96d0cde9446",
+        "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt": "9df8f8f0ff5faa98628da222e2ab8f5b1c6e95baa5d17d3e7ece70804a8c290f",
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a",
+        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "58103b8155d2b33ea0939d04d2c60b869de95835186de6351c5cd7badefce77c"
       }
     }
   ]

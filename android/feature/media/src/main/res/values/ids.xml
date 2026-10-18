@@ -1,0 +1,9 @@
+<resources>
+    <item name="player_status" type="id" />
+    <item name="player_surface" type="id" />
+    <item name="player_time" type="id" />
+    <item name="player_seek" type="id" />
+    <item name="player_play" type="id" />
+    <item name="player_reopen" type="id" />
+    <item name="player_close" type="id" />
+</resources>

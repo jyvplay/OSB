@@ -44,6 +44,7 @@ include(
     ":feature:calc",
     ":feature:settings",
     ":feature:media",
+    ":feature:maps",
     ":feature:beam",
     ":feature:alerts",
     ":feature:capture",
