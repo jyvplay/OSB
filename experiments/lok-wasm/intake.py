@@ -9,8 +9,8 @@ import tarfile
 
 EXPECTED_BYTES = 70940538
 EXPECTED_SHA = '591c9b099587bb6bea8d92e2cf73f93395f655e1656800cc8689ab740d229c1d'
-ALLOWED = {'lokjs.js', 'lokjs.wasm', 'soffice.data', 'soffice.data.js.metadata'}
-LIMITS = {'lokjs.js': 24*1024*1024, 'lokjs.wasm': 256*1024*1024, 'soffice.data': 256*1024*1024, 'soffice.data.js.metadata': 4*1024*1024}
+ALLOWED = {'lokjs.js', 'lokjs.wasm', 'soffice.data', 'soffice.data.js.metadata', 'README.md', 'LOKJS_COMMIT', 'LIBREOFFICE_REF'}
+LIMITS = {'lokjs.js': 24*1024*1024, 'lokjs.wasm': 256*1024*1024, 'soffice.data': 256*1024*1024, 'soffice.data.js.metadata': 4*1024*1024, 'README.md':64*1024, 'LOKJS_COMMIT':128, 'LIBREOFFICE_REF':128}
 
 
 def inspect(archive, destination):
@@ -43,6 +43,8 @@ def inspect(archive, destination):
             if copied!=member.size:raise ValueError('Truncated member')
             seen[name]={'bytes':copied,'sha256':h.hexdigest()}
     if set(seen)!=ALLOWED:raise ValueError('Missing required engine files')
+    if (destination/'LOKJS_COMMIT').read_text().strip() != '3e08b515bca93f82eaaf5be01ee633a960fbe4da': raise ValueError('Wrong actual wrapper commit metadata')
+    if (destination/'LIBREOFFICE_REF').read_text().strip() != 'libreoffice-26.2.6.3': raise ValueError('Wrong actual office tag metadata')
     with (destination/'lokjs.wasm').open('rb') as f:
         if f.read(8)!=b'\x00asm\x01\x00\x00\x00':raise ValueError('Not a WASM v1 module')
     return {'archive_bytes':EXPECTED_BYTES,'archive_sha256':EXPECTED_SHA,'members':seen,

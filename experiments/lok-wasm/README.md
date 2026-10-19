@@ -10,7 +10,7 @@ The wrapper C is MPL2.0; build scripts are MIT; LibreOffice and its dependencies
 
 ## Concrete experiment / success predicate
 
-1. Hash/size-check the exact archive before bounded extraction; no links, traversal or unexpected members.
+1. Hash/size-check the exact archive before bounded extraction; no links, traversal or unexpected members. The exact upstream packaging workflow also includes README.md/LOKJS_COMMIT/LIBREOFFICE_REF; those bounded nonexecuting files are validated, not guessed away.
 2. Start a local-only-content HTTP harness with COOP/COEP for the engine's real pthread/shared-memory requirements. Assets use relative/same-origin URLs. Require actual browser `crossOriginIsolated`/SharedArrayBuffer.
 3. Use actual `Module.lokReady`/LOK C exports on the owning engine thread. Load an original fixed FODT canary, obtain actual document size, render one256×320 tile, save new ODT and PDF files and destroy the document.
 4. Independently parse the actual ODT/XML and PDF with pinned pypdf, require the canary text, and require nonblank actual tile contrast. Only then publish `verified.json`. `tile.png` is an encoding of returned native-engine pixels, not reference artwork.
@@ -40,3 +40,6 @@ python3 verify.py /tmp/owned-lok/results
 ```
 
 This is not executed evidence merely because the script exists. Actual outcomes belong in the R25 results ledger.
+
+
+Intake repair record: runs39187294825 and39187685049 did not execute the engine. The latter exposed the actual bounded refusal of `lokjs/LOKJS_COMMIT`. The exact tagged upstream packaging workflow, blob33ff59035877d391a3313aa8b7309cf118f945d0, was then read: it adds three metadata files. Intake now admits only those exact extra names and checks wrapper commit3e08b515bca93f82eaaf5be01ee633a960fbe4da and LibreOffice26.2.6.3. The archive size/hash pin, link/path/expansion limits and no-integration flags are unchanged. This is not a runtime pass.
