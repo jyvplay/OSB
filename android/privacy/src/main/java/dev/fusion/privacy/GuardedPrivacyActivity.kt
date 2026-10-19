@@ -13,6 +13,34 @@ import dev.fusion.security.TouchAdmission
 /** Platform mitigation, not protection from a privileged OS/host or trusted accessibility tool. */
 abstract class GuardedPrivacyActivity : Activity() {
     private val touches = TouchAdmission()
+    private val inputRearm = dev.fusion.security.InputRearm()
+    private var inputManager: android.hardware.input.InputManager? = null
+    private var displayManager: android.hardware.display.DisplayManager? = null
+    private var postureReason = "Input environment changed. Restart explicitly with an empty workspace. This is not keylogger detection."
+    private var observerRegistered = false
+    private val inputListener = object : android.hardware.input.InputManager.InputDeviceListener {
+        override fun onInputDeviceAdded(deviceId: Int) = environmentChanged("An input device was added")
+        override fun onInputDeviceRemoved(deviceId: Int) = environmentChanged("An input device was removed")
+        override fun onInputDeviceChanged(deviceId: Int) = environmentChanged("Input-device properties changed")
+    }
+    private val displayListener = object : android.hardware.display.DisplayManager.DisplayListener {
+        override fun onDisplayAdded(displayId: Int) = environmentChanged("A display was added")
+        override fun onDisplayRemoved(displayId: Int) = environmentChanged("A display was removed")
+        override fun onDisplayChanged(displayId: Int) {
+            if (displayId != android.view.Display.DEFAULT_DISPLAY) environmentChanged("An additional display changed")
+        }
+    }
+    private val configurationObserver = object : android.database.ContentObserver(android.os.Handler(android.os.Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) = environmentChanged("Keyboard or accessibility configuration changed")
+    }
+    private fun environmentChanged(reason: String) {
+        inputRearm.changed(); touches.reset()
+        postureReason = "$reason. Workspace discarded; review the change before starting empty. No hardware/keylogger attestation or forensic-erasure guarantee."
+        discardWorkspace(postureReason)
+    }
+    private fun restoreOrHold() {
+        if (inputRearm.armed) rebuildWorkspace() else showDiscarded(postureReason)
+    }
     private var resumed = false
     private var screenOn=false
     private var receiverRegistered=false
@@ -23,12 +51,13 @@ abstract class GuardedPrivacyActivity : Activity() {
             touches.reset();screenOn=interactive()
             if(intent.action==android.content.Intent.ACTION_SCREEN_OFF) screenOn=false
             if(!screenOn) discardWorkspace("Workspace discarded on screen off. No forensic-erasure guarantee.")
-            else if(resumed && screenOn && hasWindowFocus()) rebuildWorkspace()
+            else if(resumed && screenOn && hasWindowFocus()) restoreOrHold()
         }
     }
     protected abstract fun rebuildWorkspace()
     protected abstract fun discardWorkspace(reason: String)
-    protected fun acceptsInteraction(): Boolean = resumed && screenOn && hasWindowFocus()
+    private fun windowReady(): Boolean = resumed && screenOn && hasWindowFocus()
+    protected fun acceptsInteraction(): Boolean = windowReady() && inputRearm.armed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
@@ -40,14 +69,31 @@ abstract class GuardedPrivacyActivity : Activity() {
             addAction(android.content.Intent.ACTION_SCREEN_OFF);addAction(android.content.Intent.ACTION_SCREEN_ON)
         },android.content.Context.RECEIVER_NOT_EXPORTED)
         receiverRegistered=true
+        val handler = android.os.Handler(android.os.Looper.getMainLooper())
+        inputManager = getSystemService(android.hardware.input.InputManager::class.java)
+        displayManager = getSystemService(android.hardware.display.DisplayManager::class.java)
+        try {
+            requireNotNull(inputManager).registerInputDeviceListener(inputListener, handler)
+            requireNotNull(displayManager).registerDisplayListener(displayListener, handler)
+            for (setting in listOf(android.provider.Settings.Secure.DEFAULT_INPUT_METHOD,
+                android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, android.provider.Settings.Secure.ACCESSIBILITY_ENABLED)) {
+                contentResolver.registerContentObserver(android.provider.Settings.Secure.getUriFor(setting), false, configurationObserver)
+                observerRegistered = true
+            }
+        } catch (_: RuntimeException) {
+            environmentChanged("Some input-change observations are unavailable")
+        }
     }
 
     override fun onResume() {
         super.onResume();resumed=true;screenOn=interactive();touches.reset()
-        if(screenOn) rebuildWorkspace() else discardWorkspace("Display is not interactive; workspace discarded.")
+        if(screenOn) restoreOrHold() else discardWorkspace("Display is not interactive; workspace discarded.")
     }
     override fun onDestroy() {
         if(receiverRegistered) {unregisterReceiver(displayState);receiverRegistered=false}
+        inputManager?.unregisterInputDeviceListener(inputListener)
+        displayManager?.unregisterDisplayListener(displayListener)
+        if (observerRegistered) contentResolver.unregisterContentObserver(configurationObserver)
         super.onDestroy()
     }
     override fun onPause() {
@@ -58,12 +104,13 @@ abstract class GuardedPrivacyActivity : Activity() {
         super.onWindowFocusChanged(hasFocus)
         touches.reset()
         if (!hasFocus) discardWorkspace("Workspace discarded on focus loss.")
-        else if (resumed && screenOn) rebuildWorkspace()
+        else if (resumed && screenOn) restoreOrHold()
     }
     override fun onSaveInstanceState(outState: Bundle) { super.onSaveInstanceState(outState); outState.clear() }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (!acceptsInteraction()) { touches.reset(); return true }
+        // While latched, the only live UI is the explicit empty-restart screen.
+        if (!windowReady()) { touches.reset(); return true }
         val phase = when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> TouchAdmission.Phase.DOWN
             MotionEvent.ACTION_MOVE, MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_POINTER_UP -> TouchAdmission.Phase.CONTINUE
@@ -83,11 +130,12 @@ abstract class GuardedPrivacyActivity : Activity() {
     }
 
     protected fun showDiscarded(reason: String) {
+        val observedEpoch = inputRearm.epoch
         val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; protect(this) }
         column.addView(TextView(this).apply { text = reason; textSize = 18f; protect(this) })
         column.addView(Button(this).apply {
             id = R.id.restart_workspace; text = "Start an empty workspace"; protect(this)
-            setOnClickListener { if (acceptsInteraction()) rebuildWorkspace() }
+            setOnClickListener { if (windowReady() && inputRearm.restart(observedEpoch)) rebuildWorkspace() }
         })
         setContentView(column)
     }

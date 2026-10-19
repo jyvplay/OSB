@@ -11,6 +11,7 @@ import org.junit.Test
 
 /** Actual Android sleep/wake and protected-broadcast permission, NOT a manually invoked lifecycle. */
 class R24ScreenOffDeviceTest {
+    @get:org.junit.Rule val emulatorUi = PrivacyDeviceReady.emulatorRule()
     private fun assertActualRuntime() {
         val expected=InstrumentationRegistry.getArguments().getString("fusionExpectedRuntime","34").toInt()
         require(expected in setOf(34,37));assertEquals("Actual OS runtime, not compileSdk constant",expected,android.os.Build.VERSION.SDK_INT)
@@ -18,6 +19,13 @@ class R24ScreenOffDeviceTest {
     @Test fun realScreenOffDiscardsRevealedPadAndOldButtonCannotEnterOnWake() {
         assertActualRuntime()
         val instrumentation=InstrumentationRegistry.getInstrumentation();val device=UiDevice.getInstance(instrumentation)
+        // Separate real negative precondition: asleep BEFORE the workspace exists, then one bounded lab wake.
+        // This does not rearm a protected workspace or skip the original revealed-pad sleep/wake assertions below.
+        try {
+            device.sleep(); assertFalse(device.isScreenOn)
+            PrivacyDeviceReady.prepareEmulator("deliberate-asleep-before-workspace-positive-control")
+            assertTrue(device.isScreenOn)
+        } finally { if (!device.isScreenOn) device.wakeUp() }
         ActivityScenario.launch(TouchCodeActivity::class.java).use {scenario->
             PrivacyDeviceReady.focus(scenario)
             lateinit var old:Button

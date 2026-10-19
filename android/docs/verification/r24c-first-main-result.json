@@ -1,0 +1,16 @@
+{
+  "run": 39087194831,
+  "candidate": "bac8225124ab05af651a9639c07a30492ab2ee2e",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/39087194831",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [],
+  "platform_api": 34,
+  "suite": "full",
+  "scope": "Actual retained API34 named outcomes (full suite), not physical/full-product/AX/legal acceptance"
+}

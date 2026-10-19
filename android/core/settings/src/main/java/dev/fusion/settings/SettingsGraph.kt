@@ -65,8 +65,9 @@ class SettingsGraph(context: Context, defs: List<SettingDef> = DEFAULTS) : java.
         val DEFAULTS: List<SettingDef> = listOf(
             SettingDef("density", "Density profile", listOf("compact", "touch", "display size"), "balanced"),
             SettingDef("shortcuts", "Shortcut preset", listOf("hybrid", "windows", "mac", "keyboard"), "hybrid"),
-            SettingDef("theme", "Professional palette", listOf("office blue", "studio graphite", "light", "dark"), "office_blue"),
+            SettingDef("theme", "Professional palette", listOf("office blue", "studio graphite", "studio silver", "light", "dark"), "office_blue"),
             SettingDef("layout", "Desktop layout", listOf("business", "art", "taskbar", "dock"), "business"),
+            SettingDef("desktop_scene", "Desktop surface", listOf("tabletop", "flat", "walls", "pins", "saved views"), "tabletop"),
             SettingDef("dock_zoom", "Dock magnification", listOf("pointer", "hover", "reduce motion"), "true")
         )
     }

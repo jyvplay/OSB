@@ -61,7 +61,7 @@ def render(audit):
     matched = {r['slot'] for r in audit['architecture_mapping'] if r['kind']=='exact_name'}
     extras = sorted({r['module'] for r in audit['modules']} - matched)
     lines += ['', 'Additional/alternative current names: '+', '.join('`'+s+'`' for s in extras)+'.', '',
-        '**Separate obligations, not falsely added to the 48-module denominator:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.', '',
+        '**Separate obligations, not falsely counted as completed Gradle modules:** own Meet is a required Lens/service-process capability (LN-20); placement in a dedicated `:feature:meet` module remains an architectural decision, and the service is unimplemented. The GPL receiver must be a separate APK and is absent. Play/pro are flavors of one `:app`, not two completed modules. Required process isolation is also not satisfied merely by creating a similarly named folder.', '',
         'Sources: `settings.gradle.kts`, per-module source review, `docs/feature-register.json`, `docs/verification/r12b-full-jvm.txt`, `docs/verification/r12b-subsets.txt` and `docs/R12B-ENGINEERING.md`. Reproduce with `python3 tools/module_audit.py --check`. Review data lives in `docs/module-audit.json`; this report is generated.', '']
     return '\n'.join(lines)
 

@@ -295,3 +295,32 @@ kotlin.sourceSets.named("r24") {
 tasks.register<JavaExec>("r24Contracts") {
     dependsOn(r24.classesTaskName);classpath=r24.runtimeClasspath;mainClass.set("dev.fusion.testing.R24Checks")
 }
+
+// R24 continuation: actual production kernels; no Android substitutes.
+val r24c by sourceSets.creating
+kotlin.sourceSets.named("r24c") {
+    kotlin.srcDir("src/r24c/kotlin")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.srcDir("../feature/maps/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../core/designsystem/src/main/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.srcDir("../core/windowing/src/main/kotlin")
+    kotlin.include("**/ViewportCommit.kt", "**/Tabletop.kt", "**/TabletopStore.kt", "**/OfflineMap.kt", "**/ServiceLink.kt", "**/InputRearm.kt", "**/DesktopMetrics.kt", "**/Contrast.kt", "**/ProfessionalPalettes.kt", "**/Appearance.kt", "**/R24CChecks.kt")
+}
+tasks.register<JavaExec>("r24cContracts") {
+    dependsOn(r24c.classesTaskName); classpath = r24c.runtimeClasspath; mainClass.set("dev.fusion.testing.R24CChecks")
+    args(rootProject.file("feature/maps/src/main/assets/natural-earth-land-v1.txt").absolutePath)
+}
+
+// R25 actual bounded PNG transform, separate from native isolated-worker/picker gates.
+val r25png by sourceSets.creating
+kotlin.sourceSets.named("r25png") {
+    kotlin.srcDir("src/r25/kotlin")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.include("**/PngMetadata.kt", "**/PngChecks.kt")
+}
+tasks.register<JavaExec>("r25PngContracts") {
+    dependsOn(r25png.classesTaskName);classpath=r25png.runtimeClasspath;mainClass.set("dev.fusion.testing.PngChecks")
+}

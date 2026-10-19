@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-18",
+  "source_candidate": "307f2d9746bc6bc32057f6da07aaa68c1fdb98d3",
+  "command": "python3 android/tools/r24c_lab.py host --tools \"$HOME/.cache/fusion-host-r23\"",
+  "observed_exit_code": 0,
+  "observed_tool_elapsed_seconds": 105.918,
+  "python_tests": 167,
+  "r24c_production_assertions": 433681,
+  "retained_r24_assertions": 65097,
+  "record_type": "Archived real command output and source-hash receipts; timing/exit code transcribed from sandbox tool result.",
+  "not_claimed": [
+    "all historical host suites",
+    "Android UI execution",
+    "native video/audio fidelity",
+    "physical hardware",
+    "complete original specification"
+  ],
+  "files": {
+    "continuation.json": "bf2a5b25e7517590569a4243dc679c97553b5ce999684c8d204d41d9fcbc975c",
+    "continuation.txt": "5fc62dd50fa65e83b3532197ca89acc6fc3a6c21add1cd8c0192f8e96965a31b",
+    "pipeline.txt": "63fecd822bf4a29c95493e3dd5f327c8d3a605fa99bcc1fbdeb504652facef8c",
+    "r24-retained.txt": "5923a3844c2254b5de513404b8ff26426c7afd5059deab82b92311b8f2dac5a5",
+    "toolchain.json": "ef3f97ef5db5d5e4ff6fde40022db20f26e5e4af94607236ed5b6f854053e4bb"
+  }
+}

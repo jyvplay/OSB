@@ -1,0 +1,132 @@
+name: Android R24 continuation desktop media atlas
+on:
+  push:
+    paths: ['android/**', '.github/workflows/android-r24c.yml']
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  actions: read
+  checks: read
+jobs:
+  engine-intake:
+    name: Independent pinned engine artifact observation
+    uses: ./.github/workflows/engine-intake-r24c.yml
+  continuation:
+    name: Actual API34 tabletop media and offline atlas
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install real compilation and emulator components
+        run: |
+          SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' 'platform-tools' 'emulator' 'system-images;android-34;google_apis;x86_64' > sdk37-install.log 2>&1; then
+            cat sdk37-install.log
+          else
+            result=$?; cat sdk37-install.log
+            python3 tools/ci_annotations.py sdk37-install.log sdk37-install
+            exit "$result"
+          fi
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
+          "$ANDROID_HOME/emulator/emulator" -version
+      - name: Enable actual KVM device execution
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Compiled production continuation contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:r24cContracts
+      - name: Real native continuation workflows
+        run: >
+          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
+          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24TabletopDeviceTest,dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest
+      - name: Actual named case results
+        if: always()
+        run: python3 tools/report_device_results.py
+      - name: Stage actual native frames without creating missing images
+        if: always()
+        run: python3 tools/r24c_capture.py stage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r24c-native-frames
+          path: android/testing/build/r24c/native-frames/
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r24c-native-evidence
+          path: |
+            android/contracts.log
+            android/device.log
+            android/device-results.json
+            android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**
+            android/app/build/outputs/apk/**
+  native-frames:
+    name: Actual frame ${{ matrix.image }} (not all-page acceptance)
+    needs: continuation
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [r24c-tabletop.png, r24c-silver.png, r24c-wall.png, r24c-atlas.png]
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: r24c-native-frames
+          path: android/app/build/outputs/managed_device_android_test_additional_output/transport
+      - name: Actual frame metadata (at most two notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 0
+      - name: Actual frame chunks 1 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 1
+      - name: Actual frame chunks 2 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 2
+      - name: Actual frame chunks 3 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 3
+      - name: Actual frame chunks 4 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 4
+      - name: Actual frame chunks 5 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 5
+      - name: Actual frame chunks 6 (at most eight notices)
+        run: python3 tools/r24c_capture.py export --image '${{ matrix.image }}' --group 6
+  verify-frame-transport:
+    name: Verify actual transported PNG bytes and frame metadata
+    needs: native-frames
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject missing, truncated, mismatched or incomplete native evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/r24c_capture.py collect --run '${{ github.run_id }}' --ci-frames > transported-frame-receipt.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verified-actual-native-frame-transport
+          path: |
+            android/transported-frame-receipt.json
+            android/testing/build/r24c/captures/**

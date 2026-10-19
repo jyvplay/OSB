@@ -1,0 +1,122 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 3,
+    "start_column": null,
+    "end_line": 3,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "No current native image. No visual verification inferred.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 40,
+    "start_column": null,
+    "end_line": 40,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission:  \njava.lang.AssertionError\nat org.junit.Assert.fail(Assert.java:87)\nat org.junit.Assert.assertTrue(Assert.java:42)\nat org.junit.Assert.assertTrue(Assert.java:53)\nat dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission(R24MapAndServiceDeviceTest.kt:36)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 36,
+    "start_column": null,
+    "end_line": 36,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease:  \njava.lang.IllegalArgumentException: Required value was null.\nat dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease(R24LocalMediaDeviceTest.kt:55)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 24,
+    "start_column": null,
+    "end_line": 24,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R24TabletopDeviceTest.wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore:  \njava.lang.AssertionError: Failed: assertExists.\nReason: Expected exactly '1' node but could not find any node that satisfies: (TestTag = 'desk-to-back')\n\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrThrow(SemanticsNodeInteraction.kt:178)\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrThrow$default(SemanticsNodeInteraction.kt:150)\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:84)\nat androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode$default(SemanticsNodeInteraction.kt:83)\nat dev.fusion.shell.NativeVisualEvidence.revealAndClick(NativeVisualEvidence.kt:22)\nat dev.fusion.shell.R24TabletopDeviceTest.click(R24TabletopDeviceTest.kt:21)\nat dev.fusion.shell.R24TabletopDeviceTest.wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore(R24TabletopDeviceTest.kt:38)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 17,
+    "start_column": null,
+    "end_line": 17,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Failure detail dev.fusion.shell.R24TabletopDeviceTest.silverAndLightSceneHaveRealTargetsAndNativeCaptures:  \njava.lang.AssertionError: desktop-find height 40.000004.dp\nat org.junit.Assert.fail(Assert.java:89)\nat org.junit.Assert.assertTrue(Assert.java:42)\nat dev.fusion.shell.NativeVisualEvidence.capture(NativeVisualEvidence.kt:36)\nat dev.fusion.shell.R24TabletopDeviceTest.silverAndLightSceneHaveRealTargetsAndNativeCaptures(R24TabletopDeviceTest.kt:66)\n",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R24TabletopDeviceTest.corruptTabletopIsNotSilentlyReplacedWithDefaults=PASS; dev.fusion.shell.R24TabletopDeviceTest.actualDragPublishesCoordinatesAndSurvivesActivityRecreation=PASS; dev.fusion.shell.R24TabletopDeviceTest.silverAndLightSceneHaveRealTargetsAndNativeCaptures=FAIL; dev.fusion.shell.R24TabletopDeviceTest.measuredTargetsAndSavedViewRemainOperableAtActualTwoHundredPercentFont=PASS; dev.fusion.shell.R24TabletopDeviceTest.wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore=FAIL; dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease=FAIL; dev.fusion.shell.R24LocalMediaDeviceTest.networkUrlIsNotTreatedAsAPlayableLocalDocument=PASS; dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission=FAIL; dev.fusion.shell.R24MapAndServiceDeviceTest.providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 1264,
+    "start_column": null,
+    "end_line": 1264,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 1216,
+    "start_column": null,
+    "end_line": 1216,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "device failed. Full output is in device.log.\nExecute dev.fusion.shell.R24TabletopDeviceTest.silverAndLightSceneHaveRealTargetsAndNativeCaptures: FAILED\njava.lang.AssertionError: java.lang.AssertionError: desktop-find height 40.000004.dp\nat org.junit.Assert.fail(Assert.java:89)\nat org.junit.Assert.assertTrue(Assert.java:42)\nExecute dev.fusion.shell.R24TabletopDeviceTest.wallFocusMovePileUnpileAndNamedSnapshotLoadUseRealStore: FAILED\njava.lang.AssertionError: java.lang.AssertionError: Failed: assertExists.\nReason: Expected exactly '1' node but could not find any node that satisfies: (TestTag = 'desk-to-back')\n\nExecute dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease: FAILED\njava.lang.IllegalArgumentException: java.lang.IllegalArgumentException: Required value was null.\nat dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease(R24LocalMediaDeviceTest.kt:55)\n\nExecute dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission: FAILED\njava.lang.AssertionError\nat org.junit.Assert.fail(Assert.java: java.lang.AssertionError\nat org.junit.Assert.fail(Assert.java:87)\n> \nBuild tail (not a root-cause diagnosis):\nrtTrue(Assert.java:53)\nat dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission(R24MapAndServiceDeviceTest.kt:36)\n\njava.lang.AssertionError\nat org.junit.Assert.fail(Assert.java:87)\nat org.junit.Assert.assertTrue(Assert.java:42)\nat org.junit.Assert.assertTrue(Assert.java:53)\nat dev.fusion.shell.R24MapAndServiceDeviceTest.realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission(R24MapAndServiceDeviceTest.kt:36)\n\n> Task :app:pixel6Api34ProDebugAndroidTest FAILED\n\n> Task :app:mergeProDebugAndroidTestTestResultProtos\nTest execution completed. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/allDevices/index.html\ngradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1792288114201.json\n\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nExecution failed for task ':app:pixel6Api34ProDebugAndroidTest'.\n> There were failing tests. See the report at: file:///home/runner/work/OSB/OSB/android/app/build/reports/androidTests/managedDevice/debug/flavors/pro/pixel6Api34/index.html\n\n* Try:\n> Run with --stacktrace option to get the stack trace.\n> Run with --info or --debug option to get more log output.\n> Run with --scan to get full insights from a Build Scan (powered by Develocity).\n> Get more help at https://help.gradle.org.\n\nBUILD FAILED in 6m 28s\n771 actionable tasks: 771 executed",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/307f2d9746bc6bc32057f6da07aaa68c1fdb98d3/.github",
+    "start_line": 39,
+    "start_column": null,
+    "end_line": 39,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+    "raw_details": ""
+  }
+]

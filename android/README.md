@@ -1,4 +1,32 @@
-# R24 current native evaluation
+# R24 continuation — current native evaluation
+
+Use **`arena/a8ac5475-osb`** and open **`android/`** in Android Studio Rabbit1 with a maintained full JDK17
+and SDK `platforms;android-37.0`. Pins remain AGP9.1.1/Gradle9.3.1/Kotlin2.2.21; min34/compile37/target37.
+Rabbit1 GUI was not run here; real remote Gradle/SDK/KVM Android results are separately recorded.
+
+- Default slanted tabletop: rearrange pins, focus/pin/pile/move on walls, save/load named scene views.
+  Finite512 pins/128 piles/16 views, not infinite storage or full 3D physics.
+- Silver Art/light Business presets, retained Blue/Graphite, independently selectable Flat/Tabletop,
+  larger-font overflow dock and>=48dp primary controls. This does not theme the laptop OS.
+- Actual local MediaPlayer activity, retained images/SRT, strict disclosed external service-link handoff;
+  native playback is not YouTube/Spotify/SoundCloud streaming integration.
+- Genuine public-domain Natural Earth offline atlas with persisted pins and spherical measurement;
+  not street maps/GPS/navigation. Privacy input/IME changes discard and require explicit empty rearm.
+
+**49/50 substantial runnable subsets98%;1/50 unestablished2%(:format:lok);0/50 full-spec accepted;
+50/50 unfinished at full scope.** New local host pipeline:179 Python tests,439839 R24C and65097 R24
+assertions passed. Native failures/repairs and exact-source outcomes are in the current report, not inferred
+from host counts. Actual Servo AAR header inspection is not engine integration or legal clearance.
+
+[Current results and real frames](docs/R24C-RESULTS.md) · [Try/no-Studio scripts](docs/BUILD.md)
+· [Formal scope/alternatives](docs/R24C-PLAN.md) · [Verification limits](docs/R24C-VERIFICATION-BOUNDARIES.md)
+· [Privacy/engines](docs/R24C-PRIVACY-AND-ENGINES.md).
+
+Everything below is historical and retains its old source/count denominator.
+
+---
+
+# Historical R24 native evaluation
 
 Use branch `arena/f77cb2a6-osb`; open **android/** in Rabbit1 with maintained full JDK17 + SDK **platforms;android-37.0**.
 Pins AGP9.1.1/Gradle9.3.1/Kotlin2.2.21, min34/compile37/target37. Rabbit1 GUI not run here; actual managed OS34 and37 were.

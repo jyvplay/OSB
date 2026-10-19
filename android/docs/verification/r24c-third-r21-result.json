@@ -1,0 +1,49 @@
+{
+  "run": 39088691652,
+  "candidate": "0a7b22e612d25959c32f4f7626594f916e664198",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/39088691652",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 8,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.exactByteCapAndDenseEmptyTableCrossRealBinder",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.csvGrammarRunsInDistinctUidAndOwnedInputIsUnlinked",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.malformedCsvRefusesAndCleansUpThenFreshChildSucceeds",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.consentCannotSurviveSameUrlOrUnsupportedNavigationOrReplay",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21BoundaryDeviceTest.literalWorksheetBeyondTaskBudgetWritesAndReopensRealProvider",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21CsvUiDeviceTest.inFlightEditorMutationDiscardsStaleWorkerResult",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21CsvUiDeviceTest.actualSelectionEditInvalidatesPreviewAndSystemSaveReadsBack",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R21CsvUiDeviceTest.recreationLosesDraftAndCannotExportOldPreview",
+      "result": "PASS"
+    }
+  ],
+  "platform_api": 34,
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

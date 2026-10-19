@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12121680574,
+      "node_id": "MDg6QXJ0aWZhY3QxMjEyMTY4MDU3NA==",
+      "name": "r24c-native-evidence",
+      "size_in_bytes": 7375,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12121680574",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12121680574/zip",
+      "expired": false,
+      "digest": "sha256:c9c008f7cf75cf5f12b90de8ad275cebbea345979f75f9c1ecda9f1bad40973d",
+      "created_at": "2026-10-18T01:40:49Z",
+      "updated_at": "2026-10-18T01:40:49Z",
+      "expires_at": "2027-01-16T01:37:59Z",
+      "workflow_run": {
+        "id": 39087194833,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "bac8225124ab05af651a9639c07a30492ab2ee2e"
+      }
+    }
+  ]
+}

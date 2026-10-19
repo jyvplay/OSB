@@ -1,0 +1,49 @@
+{
+  "candidate": "befb112284155d834ef7243ef6e1565826637d3a",
+  "input_sha256": "970274fa5f8f5f653bc6e2a57f3d3731d5c228edbae7102fb3dad799e8ba5c4d",
+  "api": 34,
+  "samples": [
+    {
+      "color": "red",
+      "position_ms": 288,
+      "mean_rgb": [
+        255,
+        0,
+        0
+      ]
+    },
+    {
+      "color": "green",
+      "position_ms": 2082,
+      "mean_rgb": [
+        2,
+        128,
+        2
+      ]
+    },
+    {
+      "color": "blue",
+      "position_ms": 4045,
+      "mean_rgb": [
+        1,
+        0,
+        255
+      ]
+    }
+  ],
+  "scope": "Actual native MediaPlayer Surface pixels plus real progress/independent PNG decode. Controlled silent AVC fixture only; NOT audible quality, generic codecs, hardware decoder, YouTube/Spotify/SoundCloud or Studio GUI acceptance.",
+  "files": {
+    "r25-decoded-red.png": {
+      "bytes": 205,
+      "sha256": "b976c7eda73f6774f80e832ee68aa3cc77e861aecfbf425ac745b7c3085eb77d"
+    },
+    "r25-decoded-green.png": {
+      "bytes": 206,
+      "sha256": "4f91d69ebb44387a44157340930459402623440cfeffaaab510b43656989608b"
+    },
+    "r25-decoded-blue.png": {
+      "bytes": 205,
+      "sha256": "f96b87d732453c5d63dcbbd13435b858e91eda19e81ee147cab64c928cc8eabf"
+    }
+  }
+}

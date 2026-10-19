@@ -1,0 +1,185 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 117576368274,
+      "run_id": 39093956414,
+      "workflow_name": "Android R24 actual API37 privacy experiment",
+      "head_branch": "arena/a8ac5475-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39093956414",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbYBkAkg",
+      "head_sha": "66c45bebf9c64495e2527e46353cfb838741d1e8",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/117576368274",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39093956414/job/117576368274",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-18T03:31:58Z",
+      "started_at": "2026-10-18T03:32:01Z",
+      "completed_at": "2026-10-18T03:40:01Z",
+      "name": "API37 privacy companion experimental (not whole-product acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-18T03:32:01Z",
+          "completed_at": "2026-10-18T03:32:03Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-18T03:32:03Z",
+          "completed_at": "2026-10-18T03:32:04Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-18T03:32:04Z",
+          "completed_at": "2026-10-18T03:32:04Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-18T03:32:04Z",
+          "completed_at": "2026-10-18T03:32:08Z"
+        },
+        {
+          "name": "Install and inspect actual SDK37.0 compilation platform (not runtime37)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-18T03:32:08Z",
+          "completed_at": "2026-10-18T03:32:14Z"
+        },
+        {
+          "name": "Inspect and install exact released API37.0 Google image, no preview substitute",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-18T03:32:14Z",
+          "completed_at": "2026-10-18T03:32:55Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-18T03:32:55Z",
+          "completed_at": "2026-10-18T03:32:55Z"
+        },
+        {
+          "name": "Compile, lint and execute actual companion",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-18T03:32:55Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Publish named actual outcomes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Actual failure details page 1 (at most eight notices)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Actual failure details page 2 (at most eight notices)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Actual failure details page 3 (at most eight notices)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Actual emulator preconditions (not privacy acceptance)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Record APK footprint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:57Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-18T03:39:57Z",
+          "completed_at": "2026-10-18T03:39:58Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-18T03:39:58Z",
+          "completed_at": "2026-10-18T03:39:59Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-18T03:39:59Z",
+          "completed_at": "2026-10-18T03:39:59Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-10-18T03:39:59Z",
+          "completed_at": "2026-10-18T03:39:59Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-10-18T03:39:59Z",
+          "completed_at": "2026-10-18T03:39:59Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/117576368274",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000529,
+      "runner_name": "GitHub Actions 1000000529",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

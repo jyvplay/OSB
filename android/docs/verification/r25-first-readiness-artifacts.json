@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12158092460,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE1ODA5MjQ2MA==",
+      "name": "r25-ui-preconditions",
+      "size_in_bytes": 588479,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12158092460",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12158092460/zip",
+      "expired": false,
+      "digest": "sha256:028878d5b270700e9a4f032d9f56b4550cbc73ec8663477ed9d60e187e58451f",
+      "created_at": "2026-10-19T01:36:32Z",
+      "updated_at": "2026-10-19T01:36:32Z",
+      "expires_at": "2027-01-17T01:23:24Z",
+      "workflow_run": {
+        "id": 39185124848,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "0d3c5a2c5ed027ec4747a0d1705fbe275b941633"
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+name: R24 actual pinned Servo artifact intake
+on:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: r24c-servo-intake-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  intake:
+    name: Real Servo 0.7.0 AAR inspection (not integration)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve and verify exact published artifact, never execute its code
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/fusion-servo-intake"
+          gh release download v0.7.0 --repo servo/servo --pattern servo-aarch64-android.aar --dir "$RUNNER_TEMP/fusion-servo-intake"
+          echo "6b73d23cf63fb3d7c19c908cddafbd475585199583bd16f6aa268b84c6093105  $RUNNER_TEMP/fusion-servo-intake/servo-aarch64-android.aar" | sha256sum --check
+          python3 android/tools/engine_intake.py "$RUNNER_TEMP/fusion-servo-intake/servo-aarch64-android.aar" --report servo-intake.json
+      - name: Publish actual bounded observations, not execution or legal approval
+        run: |
+          python3 - <<'PY'
+          import json, os, zipfile
+          from pathlib import Path
+          report = json.loads(Path('servo-intake.json').read_text())
+          assert report['bytes'] == 39860285
+          assert report['sha256'] == '6b73d23cf63fb3d7c19c908cddafbd475585199583bd16f6aa268b84c6093105'
+          assert report['native_libraries'], 'An engine AAR must contain a real native library, not merely a wrapper'
+          assert not any(report[key] for key in ('integrated', 'runtime_verified', 'legal_accepted'))
+          path = Path(os.environ['RUNNER_TEMP']) / 'fusion-servo-intake/servo-aarch64-android.aar'
+          with zipfile.ZipFile(path) as archive:
+              report['archive_members'] = archive.namelist()
+          report['source_candidate'] = os.environ['GITHUB_SHA']
+          report['upstream_tag'] = 'v0.7.0'
+          report['release_asset_id'] = 605216176
+          report['upstream_declared_digest_verified'] = True
+          report['scope'] = 'Actual pinned AAR byte/header inventory ONLY. No dlopen, browser navigation, sandbox, web compatibility, APK alignment, 16K runtime, source reproducibility or license closure.'
+          Path('servo-intake.json').write_text(json.dumps(report, indent=2) + '\n')
+          compact = json.dumps(report, separators=(',', ':'))
+          assert len(compact) < 30000, 'Retained observation budget exceeded'
+          print('::notice::R24CSERVO1 ' + compact)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pinned-servo-intake-not-integration
+          path: servo-intake.json

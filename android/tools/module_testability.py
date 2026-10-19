@@ -39,7 +39,7 @@ def counts(data):
 
 def render(data):
     c=counts(data)
-    lines=['# R23 — substantial executable testability, NOT full feature completion','',
+    lines=['# R25 — substantial executable testability, NOT full feature completion','',
       f"**{c['substantial_testable_subsets']}/{c['total']} modules ({c['testable_percent']:.2f}%) meet this bounded testability standard; {c['not_established']}/{c['total']} ({c['not_established_percent']:.2f}%) are not established by it.**",'',
       f"**Fully specification-accepted modules remain 0/{c['total']} (0%).** Do not substitute the testability figure for delivery or acceptance.", '',data['standard'],'',
       'This is an assistant-authored review with executable path/source-hash checks, not an independent expert audit. A positive row can cover a narrow kernel in an otherwise missing feature. A negative row can contain considerable untested Android code. Existing Gradle unit targets below were invoked in prior native CI, but per-case current outcomes must be read from the exact run; a runnable target is not an inferred new pass. Android targets require the disposable-emulator opt-in described in BUILD.md.', '',

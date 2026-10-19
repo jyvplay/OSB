@@ -80,10 +80,15 @@ class CsvWorkbenchActivity:Activity() {
         scroll.setOnApplyWindowInsetsListener {v,i->val b=i.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime());v.setPadding(b.left,b.top,b.right,b.bottom);i}
         setContentView(scroll);column.isFocusableInTouchMode=true;column.requestFocus()
     }
-    private fun invalidatePreview() {generation=Any();payload=null;preview.text="";save.isEnabled=false}
+    private fun invalidatePreview() {
+        generation=Any();payload=null;preview.text="";save.isEnabled=false
+        status.text="Preview invalidated. Preview the current selected columns before saving."
+    }
     private fun busy(value:Boolean) {busy=value;importXlsx.isEnabled=!value;source.isEnabled=!value;columns.isEnabled=!value;parse.isEnabled=!value;save.isEnabled=!value && payload!=null}
     private fun prepare() {
         if(busy) return
+        // A completed preview must not leave an old editor's IME moving the Save control underneath a tap.
+        currentFocus?.clearFocus(); window.insetsController?.hide(WindowInsets.Type.ime())
         invalidatePreview()
         val snapshot=imported
         val bytes:ByteArray;val selected:List<Int>

@@ -1,0 +1,177 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 117578782832,
+      "run_id": 39094764472,
+      "workflow_name": "Android offline privacy companion",
+      "head_branch": "arena/a8ac5475-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39094764472",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbYD3YcA",
+      "head_sha": "7a2b4a8e19e883c6c3edb01ac740dfe37622d9b1",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/117578782832",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39094764472/job/117578782832",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-18T03:45:53Z",
+      "started_at": "2026-10-18T03:45:56Z",
+      "completed_at": "2026-10-18T03:53:18Z",
+      "name": "API34 privacy companion (not anonymity acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-18T03:45:57Z",
+          "completed_at": "2026-10-18T03:46:00Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-18T03:46:00Z",
+          "completed_at": "2026-10-18T03:46:01Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-18T03:46:01Z",
+          "completed_at": "2026-10-18T03:46:01Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-18T03:46:01Z",
+          "completed_at": "2026-10-18T03:46:06Z"
+        },
+        {
+          "name": "Install and inspect actual SDK37.0 compilation platform (not runtime37)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-18T03:46:06Z",
+          "completed_at": "2026-10-18T03:46:12Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-18T03:46:12Z",
+          "completed_at": "2026-10-18T03:46:12Z"
+        },
+        {
+          "name": "Compile, lint and execute actual companion",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-10-18T03:46:12Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Publish named actual outcomes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Actual failure details page 1 (at most eight notices)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Actual failure details page 2 (at most eight notices)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Actual failure details page 3 (at most eight notices)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Actual emulator preconditions (not privacy acceptance)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Record APK footprint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:13Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-18T03:53:13Z",
+          "completed_at": "2026-10-18T03:53:15Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-18T03:53:15Z",
+          "completed_at": "2026-10-18T03:53:15Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-18T03:53:15Z",
+          "completed_at": "2026-10-18T03:53:15Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-18T03:53:15Z",
+          "completed_at": "2026-10-18T03:53:16Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-18T03:53:16Z",
+          "completed_at": "2026-10-18T03:53:16Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/117578782832",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000539,
+      "runner_name": "GitHub Actions 1000000539",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

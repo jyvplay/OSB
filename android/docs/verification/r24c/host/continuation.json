@@ -1,0 +1,112 @@
+{
+  "scope": "Real host compiler/files/processes and bounded policies only. NOT Android/native UI/hardware/full-spec acceptance.",
+  "exit_code": 0,
+  "elapsed_seconds": 56.991,
+  "output": "R24C PASS: 433681 assertions. Production geometry/codec/file races/map data/media policy/input latch; NOT native UI, audio output, hardware integrity or full-spec acceptance.\n",
+  "commands": [
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "appearance",
+      "/home/user/OSB/android/core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "design",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar",
+      "/home/user/OSB/android/core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt",
+      "/home/user/OSB/android/core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt",
+      "/home/user/OSB/android/core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/design.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "tabletop",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar:/home/user/OSB/android/testing/build/r24c/design.jar",
+      "/home/user/OSB/android/feature/launcher/src/main/kotlin/dev/fusion/launcher/Tabletop.kt",
+      "/home/user/OSB/android/feature/launcher/src/main/kotlin/dev/fusion/launcher/TabletopStore.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/tabletop.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "maps",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar:/home/user/OSB/android/testing/build/r24c/design.jar:/home/user/OSB/android/testing/build/r24c/tabletop.jar",
+      "/home/user/OSB/android/feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/maps.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "media",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar:/home/user/OSB/android/testing/build/r24c/design.jar:/home/user/OSB/android/testing/build/r24c/tabletop.jar:/home/user/OSB/android/testing/build/r24c/maps.jar",
+      "/home/user/OSB/android/feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/media.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "input",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar:/home/user/OSB/android/testing/build/r24c/design.jar:/home/user/OSB/android/testing/build/r24c/tabletop.jar:/home/user/OSB/android/testing/build/r24c/maps.jar:/home/user/OSB/android/testing/build/r24c/media.jar",
+      "/home/user/OSB/android/core/security/src/main/kotlin/dev/fusion/security/InputRearm.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/input.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r24c/appearance.jar:/home/user/OSB/android/testing/build/r24c/design.jar:/home/user/OSB/android/testing/build/r24c/tabletop.jar:/home/user/OSB/android/testing/build/r24c/maps.jar:/home/user/OSB/android/testing/build/r24c/media.jar:/home/user/OSB/android/testing/build/r24c/input.jar",
+      "/home/user/OSB/android/testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt",
+      "-include-runtime",
+      "-d",
+      "/home/user/OSB/android/testing/build/r24c/checks.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/python/jdk4py/java-runtime/bin/java",
+      "-cp",
+      "/home/user/OSB/android/testing/build/r24c/checks.jar:/home/user/OSB/android/testing/build/r24c/appearance.jar:/home/user/OSB/android/testing/build/r24c/design.jar:/home/user/OSB/android/testing/build/r24c/tabletop.jar:/home/user/OSB/android/testing/build/r24c/maps.jar:/home/user/OSB/android/testing/build/r24c/media.jar:/home/user/OSB/android/testing/build/r24c/input.jar",
+      "dev.fusion.testing.R24CChecks",
+      "/home/user/OSB/android/feature/maps/src/main/assets/natural-earth-land-v1.txt"
+    ]
+  ],
+  "sha256": {
+    "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt": "3c58b03d30cc9e9538932c191c83601e28f17606b66f9dd08282e09fb019c3a5",
+    "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc",
+    "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "2e639fa1c99d6e8f3f30d1e6ed9f47745243f4bb51068a2d23a31f0ff6be0dd3",
+    "core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt": "f74d60e1b204f2244e0a97a82e376e4d24b935bac8f1b170b648119f3b3a9c13",
+    "feature/launcher/src/main/kotlin/dev/fusion/launcher/Tabletop.kt": "618030bf0b0fe546c18c3f7112f8658a931b4464bfabbfee5c590b57466c8b14",
+    "feature/launcher/src/main/kotlin/dev/fusion/launcher/TabletopStore.kt": "12b27bafa602512594b2a678f00a2eaa21c0f9f593b4b0a9162663bd6f464d94",
+    "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt": "2cd6abc258604e4390d5799a4a0ef3883bb781cd686e1f9ae0b6535b46a32069",
+    "feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt": "34790206f32d101ab9e3967127def55fe2ffb6904f9eac9b0d0433b233605bc8",
+    "core/security/src/main/kotlin/dev/fusion/security/InputRearm.kt": "d8ebadb0b56cea7ce6e2eacafad1f1e366945a08f2b6f0ef9c32a59ff1ab9c3c",
+    "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4c69541811af0d7dca553854e36f8e3e14d0caa66f0053822b266ba3efb2dc1a",
+    "feature/maps/src/main/assets/natural-earth-land-v1.txt": "f73d104d89293c0f3663234d20d71ad299773fbcdecd1fad3e91c059a119947a"
+  }
+}

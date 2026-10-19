@@ -44,7 +44,7 @@ suspend fun queryImages(context: Context, limit: Int = 100): List<MediaEntry> = 
 }
 
 @Composable
-fun MediaScreen(context: Context, onView: (Uri, String) -> Unit) {
+fun MediaLibraryScreen(context: Context, onView: (Uri, String) -> Unit) {
     var items by remember { mutableStateOf(emptyList<MediaEntry>()) }
     var msg by remember { mutableStateOf("Needs READ_MEDIA_IMAGES on Android 14+. No picker = no list.") }
     val scope = rememberCoroutineScope()

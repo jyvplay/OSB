@@ -31,6 +31,7 @@
           The automatic SAF HTTP server is disabled. A per-transport LAN allowlist,
           receiver trust UI and network security review remain release blockers.
         -->
+        <activity android:name=".PngCopyActivity" android:exported="false" />
         <!--
           No launchMode="singleTask": ActivityScenario (used by the instrumented
           smoke test) is unreliable with singleTask. Home-role relaunch still

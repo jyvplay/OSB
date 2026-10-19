@@ -38,7 +38,7 @@ fun AppearanceControls(graph:SettingsGraph,prefix:String) {
                     Column {
                         Text(palette.title)
                         Row(horizontalArrangement=Arrangement.spacedBy(3.dp)) {
-                            (if(palette.dark) listOf(0xff151b24,0xff202936,0xff80cbb8) else listOf(0xfff3f6fb,0xffffffff,0xff174ea6)).forEach {color ->
+                            (when(palette) {ProfessionalPalette.STUDIO_GRAPHITE -> listOf(0xff151b24,0xff202936,0xff80cbb8); ProfessionalPalette.STUDIO_SILVER -> listOf(0xffe9edf1,0xfffafcfe,0xff354f6b); else -> listOf(0xfff3f6fb,0xffffffff,0xff174ea6)}).forEach {color ->
                                 Box(Modifier.size(16.dp).background(Color(color)).border(1.dp,MaterialTheme.colorScheme.outline))
                             }
                         }
@@ -61,6 +61,17 @@ fun AppearanceControls(graph:SettingsGraph,prefix:String) {
             Switch(checked=current.dockZoom,onCheckedChange={change(AppearancePreferences.ZOOM,it.toString())},
                 modifier=Modifier.testTag("$prefix-dock-zoom"))
             Text("Art dock magnification (turn off to reduce motion)",Modifier.weight(1f))
+        }
+        Text("Desktop surface")
+        FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            DesktopScene.entries.forEach {scene ->
+                OutlinedButton(onClick={change(AppearancePreferences.SCENE,scene.id)},modifier=Modifier.heightIn(min=48.dp)
+                    .testTag("$prefix-scene-${scene.id}").semantics {selected=current.scene==scene}) {Text(scene.title)}
+            }
+        }
+        FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            TextButton(onClick={graph.setAppearance(mapOf("layout" to "art","theme" to "studio_silver"))},modifier=Modifier.heightIn(min=48.dp).testTag("$prefix-preset-art")) {Text("Art · Silver preset")}
+            TextButton(onClick={graph.setAppearance(mapOf("layout" to "business","theme" to "office_blue"))},modifier=Modifier.heightIn(min=48.dp).testTag("$prefix-preset-business")) {Text("Business · Light preset")}
         }
         Text("Only Fusion changes. Not Windows/macOS, not a keyboard preset, privacy mode or permission change.",style=MaterialTheme.typography.bodySmall)
         if(feedback.isNotEmpty()) Text(feedback,modifier=Modifier.testTag("$prefix-appearance-status"),style=MaterialTheme.typography.bodySmall)

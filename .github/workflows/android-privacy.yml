@@ -41,10 +41,43 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Compile, lint and execute actual companion
-        run: bash tools/run_gradle_ci.sh device :testing:r23Contracts :privacy:assembleDebug :privacy:lintDebug :privacy:pixel6Api34DebugAndroidTest
+        run: bash tools/run_gradle_ci.sh device :testing:r23Contracts :privacy:assembleDebug :privacy:lintDebug :privacy:pixel6Api34DebugAndroidTest -Pandroid.experimental.enableAdditionalTestOutput=true
       - name: Publish named actual outcomes
         if: always()
-        run: python3 tools/report_device_results.py --root privacy/build/outputs/androidTest-results/managedDevice
+        run: python3 tools/report_device_results.py --root privacy/build/outputs/androidTest-results/managedDevice --mode cases
+      - name: Actual failure details page 1 (at most eight notices)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'tools')
+          from report_device_results import messages
+          report = json.load(open('device-results.json'))
+          for line in list(messages(report, 'failures'))[0:8]: print(line)
+          PY
+      - name: Actual failure details page 2 (at most eight notices)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'tools')
+          from report_device_results import messages
+          report = json.load(open('device-results.json'))
+          for line in list(messages(report, 'failures'))[8:16]: print(line)
+          PY
+      - name: Actual failure details page 3 (at most eight notices)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'tools')
+          from report_device_results import messages
+          report = json.load(open('device-results.json'))
+          for line in list(messages(report, 'failures'))[16:24]: print(line)
+          PY
+      - name: Actual emulator preconditions (not privacy acceptance)
+        if: always()
+        run: python3 tools/r24c_privacy_readiness.py --api 34
       - name: Record APK footprint
         if: always()
         run: |
@@ -68,4 +101,6 @@ jobs:
             android/privacy/build/outputs/androidTest-results/**
             android/device.log
             android/privacy-apk.json
+            android/privacy-readiness.json
+            android/privacy/build/outputs/managed_device_android_test_additional_output/**
             android/device-results.json

@@ -31,7 +31,11 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.experimental.enableAdditionalTestOutput=true
           -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R17TaskUiDeviceTest,dev.fusion.shell.R18TaskUiDeviceTest,dev.fusion.shell.R19TaskUiDeviceTest,dev.fusion.shell.R20CountsUiDeviceTest,dev.fusion.shell.ShellSmokeTest#savedWikiBacklinksReadRealNoteFiles
+      - name: Actual UI preconditions
+        if: always()
+        run: python3 tools/r25_ui_lab.py --require-observed
       - name: Publish actual outcomes and diagnostics
         if: always()
         run: python3 tools/report_device_results.py
@@ -42,4 +46,6 @@ jobs:
           path: |
             android/device.log
             android/device-results.json
+            android/r25-ui-readiness.json
+            android/app/build/outputs/managed_device_android_test_additional_output/**
             android/app/build/outputs/androidTest-results/**

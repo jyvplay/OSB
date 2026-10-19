@@ -1,0 +1,250 @@
+{
+  "run": 39090097807,
+  "candidate": "12fbf4f04228965c181c12f40763afc3392075fc",
+  "whole_conclusion": "cancelled",
+  "images": {
+    "r24c-tabletop.png": {
+      "path": "r24c-tabletop.png",
+      "width": 280,
+      "height": 622,
+      "sha256": "23b4e285c4dbf5c7c9fb3a3414efc322ac566102670df9c7ffec9f46b3d6df1f"
+    },
+    "r24c-silver.png": {
+      "path": "r24c-silver.png",
+      "width": 280,
+      "height": 622,
+      "sha256": "7218138778e66fcb12b3f68bd4718d9e175854bba4d2b1c118c1cee172729a7a"
+    },
+    "r24c-atlas.png": {
+      "path": "r24c-atlas.png",
+      "width": 280,
+      "height": 622,
+      "sha256": "961aa4e2cccef3dde347ac90f74c68316f41b64dda9a8b503e46108e6c2c05e7"
+    }
+  },
+  "actual_target_observations": {
+    "r24c-atlas.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "map-add-pin",
+          "width_dp": 95.61904,
+          "height_dp": 48,
+          "visible_width_dp": 95.61905,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "map-places",
+          "width_dp": 87.61905,
+          "height_dp": 48,
+          "visible_width_dp": 87.61905,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "map-zoom-out",
+          "width_dp": 48,
+          "height_dp": 48,
+          "visible_width_dp": 48,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "map-zoom-in",
+          "width_dp": 48,
+          "height_dp": 48,
+          "visible_width_dp": 48,
+          "visible_height_dp": 48
+        }
+      ]
+    },
+    "r24c-silver.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "desk-pin-1",
+          "width_dp": 80.00001,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "desk-pin-2",
+          "width_dp": 80,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "tabletop-pins",
+          "width_dp": 71.238106,
+          "height_dp": 48,
+          "visible_width_dp": 71.2381,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-piles",
+          "width_dp": 57.904755,
+          "height_dp": 48,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-views",
+          "width_dp": 83.42856,
+          "height_dp": 48,
+          "visible_width_dp": 83.42857,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "desktop-find",
+          "width_dp": 57.904762,
+          "height_dp": 47.999996,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "control-panel",
+          "width_dp": 107.42856,
+          "height_dp": 47.999996,
+          "visible_width_dp": 107.42857,
+          "visible_height_dp": 48
+        }
+      ]
+    },
+    "r24c-wall.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "desk-pile-10",
+          "width_dp": 80,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "tabletop-pins",
+          "width_dp": 71.2381,
+          "height_dp": 48,
+          "visible_width_dp": 71.2381,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-piles",
+          "width_dp": 57.904755,
+          "height_dp": 48,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-views",
+          "width_dp": 83.42857,
+          "height_dp": 48,
+          "visible_width_dp": 83.42857,
+          "visible_height_dp": 48
+        }
+      ]
+    },
+    "r24c-tabletop.json": {
+      "schema": 1,
+      "origin": "android-instrumentation",
+      "api": 34,
+      "density": 2.625,
+      "font_scale": 1,
+      "required_targets": [
+        {
+          "tag": "desk-pin-1",
+          "width_dp": 80.00001,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "desk-pin-2",
+          "width_dp": 80,
+          "height_dp": 80,
+          "visible_width_dp": 80,
+          "visible_height_dp": 80
+        },
+        {
+          "tag": "tabletop-pins",
+          "width_dp": 71.238106,
+          "height_dp": 48,
+          "visible_width_dp": 71.2381,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-piles",
+          "width_dp": 57.904755,
+          "height_dp": 48,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "tabletop-views",
+          "width_dp": 83.42856,
+          "height_dp": 48,
+          "visible_width_dp": 83.42857,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "desktop-find",
+          "width_dp": 57.904762,
+          "height_dp": 47.999996,
+          "visible_width_dp": 57.904762,
+          "visible_height_dp": 48
+        },
+        {
+          "tag": "control-panel",
+          "width_dp": 107.42856,
+          "height_dp": 47.999996,
+          "visible_width_dp": 107.42857,
+          "visible_height_dp": 48
+        }
+      ]
+    }
+  },
+  "capture_index": [
+    {
+      "name": "r24c-atlas.png",
+      "bytes": 36714,
+      "chunks": 14,
+      "artifact_only": false
+    },
+    {
+      "name": "r24c-silver.png",
+      "bytes": 32743,
+      "chunks": 12,
+      "artifact_only": false
+    },
+    {
+      "name": "r24c-tabletop.png",
+      "bytes": 31732,
+      "chunks": 12,
+      "artifact_only": false
+    },
+    {
+      "name": "r24c-wall.png",
+      "bytes": 20163,
+      "chunks": 8,
+      "artifact_only": false
+    }
+  ],
+  "incomplete_not_displayed": {
+    "r24c-wall.png": {
+      "received": 2,
+      "expected": 8
+    }
+  },
+  "scope": "Actual finite native frames only. A screenshot from a failed workflow is not a workflow pass."
+}

@@ -1,4 +1,24 @@
-# R24 current native evaluation
+# Current R24 continuation status — full specification remains incomplete
+
+Branch `arena/a8ac5475-osb`,2026-10-18. **49/50 substantial code+runnable-test subsets98%;1/50 unestablished2%
+(:format:lok).0/50 full original-spec accepted;50/50 unfinished at full scope.**
+231 requirements/36 cross-cutting obligations/30 unpassed formal spikes remain the original register.
+
+Implemented bounded tabletop/walls/piles/snapshots, silver/light presets and adaptive dock, native local
+media and offline atlas, strict disclosed service-link handoff, stronger input-change rearm and native
+visual/evidence tooling. Twelve production modules changed, not twelve completed modules.
+
+Latest source-hash-bound host pipeline:179 Python tests;439839 continuation and65097 retained R24 assertions PASS.
+This is not Android or full-product acceptance. Native failures and each repair remain source-scoped;
+consult **[current exact results](docs/R24C-RESULTS.md)** rather than historic green receipts below.
+An actual pinned Servo AAR was inspected on CI; no browser engine was loaded/integrated or licensed by inference.
+
+[Run from laptop / without Studio](docs/BUILD.md) · [A–J scope](docs/R24C-PLAN.md)
+· [Remaining verification boundaries](docs/R24C-VERIFICATION-BOUNDARIES.md).
+
+---
+
+# Historical R24 native evaluation
 
 Use branch `arena/f77cb2a6-osb`; open **android/** in Rabbit1 with maintained full JDK17 + SDK **platforms;android-37.0**.
 Pins AGP9.1.1/Gradle9.3.1/Kotlin2.2.21, min34/compile37/target37. Rabbit1 GUI not run here; actual managed OS34 and37 were.

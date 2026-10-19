@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
+        <activity android:name="dev.fusion.shell.probes.WebCapabilityProbeActivity" android:exported="false" android:process=":web_capability_probe" />
+        <provider android:name="dev.fusion.shell.probes.MediaFixtureProvider" android:authorities="${applicationId}.media-fixture" android:exported="false" android:grantUriPermissions="false" />
         <!-- Test-owned profiles. Same UID is deliberate: partition test, NOT security isolation. Never in release. -->
         <service android:name="dev.fusion.shell.probes.BrowserProfileAProbe" android:exported="false" android:process=":browser_probe_a" />
         <service android:name="dev.fusion.shell.probes.BrowserProfileBProbe" android:exported="false" android:process=":browser_probe_b" />

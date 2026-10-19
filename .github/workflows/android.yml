@@ -74,7 +74,7 @@ jobs:
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts :testing:r24cContracts
       - name: Lint both manifests and Android sources
         run: bash tools/run_gradle_ci.sh lint :app:lintProDebug :app:lintPlayDebug
       - name: Upload debug APKs
@@ -140,7 +140,10 @@ jobs:
       - name: Reproduce prior-source child-focus failure on real Android
         run: python3 tools/check_focus_regression.py
       - name: Run pro managed-device tests
-        run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest
+        run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest -Pandroid.experimental.enableAdditionalTestOutput=true
+      - name: Actual UI preconditions (not current test acceptance)
+        if: always()
+        run: python3 tools/r25_ui_lab.py --require-observed
       - name: Publish actual device case outcomes
         if: always()
         run: python3 tools/report_device_results.py --mode cases
@@ -158,4 +161,6 @@ jobs:
             android/focus-before.log
             android/focus-before-result.json
             android/focus-before-results/**
+            android/r25-ui-readiness.json
+            android/app/build/outputs/managed_device_android_test_additional_output/**
             android/app/build/outputs/androidTest-results/**

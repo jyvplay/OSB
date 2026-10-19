@@ -1,0 +1,13 @@
+{
+  "artifact": "gradle-wrapper.jar",
+  "bytes": 43705,
+  "sha256": "81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f",
+  "integrated": false,
+  "runtime_verified": false,
+  "legal_accepted": false,
+  "native_libraries": [],
+  "notice_candidates": [
+    "META-INF/LICENSE"
+  ],
+  "gap": "AAR/APK header/notice inventory only; no engine ABI bridge/compositor/fidelity/permissions/provenance or expert license clearance inferred"
+}

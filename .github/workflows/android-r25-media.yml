@@ -1,0 +1,58 @@
+name: Android R25 actual local video decoding
+on:
+  push:
+    paths: ['android/app/**', 'android/feature/media/**', 'android/tools/*r25*', '.github/workflows/android-r25-media.yml']
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  local-video:
+    name: Focused actual platform R25 local video (not service streaming)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Actual SDK and pinned independent image reader
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-37.0' 'build-tools;36.0.0'
+          python3 tools/bootstrap_r25_reference.py install
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Actual audio regression and changing decoded video Surface
+        run: >
+          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
+          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.experimental.enableAdditionalTestOutput=true
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R25LocalVideoDeviceTest
+      - name: Actual named outcomes
+        if: always()
+        run: python3 tools/report_device_results.py
+      - name: Actual native Surface pixels, independently decoded and measured
+        run: PYTHONPATH="$HOME/.cache/fusion-r25-reference/python" python3 tools/r25_video_evidence.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r25-actual-local-media
+          path: |
+            android/device.log
+            android/device-results.json
+            android/r25-video-result.json
+            android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**

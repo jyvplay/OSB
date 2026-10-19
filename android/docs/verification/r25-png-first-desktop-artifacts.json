@@ -1,0 +1,85 @@
+{
+  "total_count": 4,
+  "artifacts": [
+    {
+      "id": 12160031033,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE2MDAzMTAzMw==",
+      "name": "r24c-native-evidence",
+      "size_in_bytes": 13421681,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12160031033",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12160031033/zip",
+      "expired": false,
+      "digest": "sha256:7ae5a9e0899bf4888d09b85baa51052660f5e858d6795a57898f5cd87fa601f4",
+      "created_at": "2026-10-19T02:30:54Z",
+      "updated_at": "2026-10-19T02:30:54Z",
+      "expires_at": "2027-01-17T02:22:41Z",
+      "workflow_run": {
+        "id": 39189669368,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "9eab703eba6a0ce3eee72f365a7329af63ef021d"
+      }
+    },
+    {
+      "id": 12159787166,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE1OTc4NzE2Ng==",
+      "name": "r24c-native-frames",
+      "size_in_bytes": 967961,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159787166",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159787166/zip",
+      "expired": false,
+      "digest": "sha256:97071e91582e28af93f9cbd33d7424d7f0c3171ec55c5c0e39ef08e17df8291d",
+      "created_at": "2026-10-19T02:30:52Z",
+      "updated_at": "2026-10-19T02:30:52Z",
+      "expires_at": "2027-01-17T02:22:41Z",
+      "workflow_run": {
+        "id": 39189669368,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "9eab703eba6a0ce3eee72f365a7329af63ef021d"
+      }
+    },
+    {
+      "id": 12159775429,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE1OTc3NTQyOQ==",
+      "name": "pinned-servo-intake-not-integration",
+      "size_in_bytes": 1152,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159775429",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159775429/zip",
+      "expired": false,
+      "digest": "sha256:c33be6153f4a67691f9ed41f9543c903c0278bb6fba24c0869df1a4277cfbf3a",
+      "created_at": "2026-10-19T02:22:50Z",
+      "updated_at": "2026-10-19T02:22:50Z",
+      "expires_at": "2027-01-17T02:22:41Z",
+      "workflow_run": {
+        "id": 39189669368,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "9eab703eba6a0ce3eee72f365a7329af63ef021d"
+      }
+    },
+    {
+      "id": 12159523132,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE1OTUyMzEzMg==",
+      "name": "verified-actual-native-frame-transport",
+      "size_in_bytes": 162497,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159523132",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159523132/zip",
+      "expired": false,
+      "digest": "sha256:1738601e537881cc4cc0b66802bfb94128a78f0ba6397069426319fcfbe13f6f",
+      "created_at": "2026-10-19T02:31:23Z",
+      "updated_at": "2026-10-19T02:31:23Z",
+      "expires_at": "2027-01-17T02:22:41Z",
+      "workflow_run": {
+        "id": 39189669368,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "9eab703eba6a0ce3eee72f365a7329af63ef021d"
+      }
+    }
+  ]
+}

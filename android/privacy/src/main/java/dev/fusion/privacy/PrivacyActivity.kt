@@ -45,23 +45,24 @@ class PrivacyActivity: GuardedPrivacyActivity() {
         fun label(value:String)=TextView(this).apply {text=value;textSize=16f;column.addView(this)}
         label("Fusion Offline Scratchpad").textSize=23f
         label("Separate offline app — NOT anonymous. No Internet permission. No saved drafts, imports, exports, accounts, telemetry or clipboard actions.")
-        label("Text is discarded on pause, window focus loss, obscured touch, recreation, or Discard (including switching apps or system dialogs). Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
+        label("Text is discarded on pause, window focus loss, obscured touch, recreation, or Discard (including switching apps or system dialogs). Observed input/IME/accessibility/display changes also discard and require an explicit empty restart. This does not detect passive keyloggers. Maximum 32,768 UTF-16 units; oversized input changes are refused, not partly inserted. Do not use this for work you need to keep.")
         val scratchStatus=TextView(this).apply {id=R.id.scratch_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
         val scratch=PrivateText(this).apply {protect(this);id=R.id.scratch_text;hint="Temporary scratch text";minLines=4;maxLines=8;filters=plainFilters(this,32768,scratchStatus)}
         editor=scratch;column.addView(scratch,LinearLayout.LayoutParams(-1,-2));column.addView(scratchStatus)
-        column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {workspace()}})
+        column.addView(Button(this).apply {id=R.id.discard_text;text="Discard all text";setOnClickListener {if(acceptsInteraction()) workspace()}})
         label("Offline link projection: remove query and fragment only. Host/path may still identify people; this does NOT anonymize a link and never opens it.")
         val linkStatus=TextView(this).apply {id=R.id.link_status;accessibilityLiveRegion=View.ACCESSIBILITY_LIVE_REGION_POLITE}
         val address=PrivateText(this).apply {protect(this);id=R.id.link_text;hint="HTTP(S) URL (≤4096 units and UTF-8 bytes)";filters=plainFilters(this,4096,linkStatus);maxLines=3}
         link=address;column.addView(address,LinearLayout.LayoutParams(-1,-2));column.addView(linkStatus)
         val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
         column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
+            if(!acceptsInteraction()) return@setOnClickListener
             result.text=try {val p=LinkDisclosure.project(address.text.toString());p.text+"\nRemoved query: ${p.removedQuery}; removed fragment: ${p.removedFragment}. Host/path retained, not anonymous."}
                 catch(_:IllegalArgumentException) {"Input refused. Use bounded valid HTTP(S), no credentials or controls. No network request made."}
         }})
         column.addView(result)
-        column.addView(Button(this).apply {id=R.id.open_touch_code;text="Touch-only code pad (no keyboard)";setOnClickListener {startActivity(Intent(this@PrivacyActivity,TouchCodeActivity::class.java))}})
-        column.addView(Button(this).apply {id=R.id.open_exposure;text="Review local input / exposure";setOnClickListener {startActivity(Intent(this@PrivacyActivity,ExposureActivity::class.java))}})
+        column.addView(Button(this).apply {id=R.id.open_touch_code;text="Touch-only code pad (no keyboard)";setOnClickListener {if(acceptsInteraction()) startActivity(Intent(this@PrivacyActivity,TouchCodeActivity::class.java))}})
+        column.addView(Button(this).apply {id=R.id.open_exposure;text="Review local input / exposure";setOnClickListener {if(acceptsInteraction()) startActivity(Intent(this@PrivacyActivity,ExposureActivity::class.java))}})
         label("Android, the laptop/hypervisor, privileged software, IME and accessibility services remain trusted. No RAM/flash forensic-erasure guarantee. The keyboard no-learning request is advisory. Other apps and Fusion Shell are NOT made offline or anonymous.")
         val scroll=ScrollView(this).apply {isSaveEnabled=false;isSaveFromParentEnabled=false;addView(column)}
         scroll.setOnApplyWindowInsetsListener {v,insets ->

@@ -1,0 +1,14 @@
+R24 PASS: 65097 assertions;12 appearance combinations;16640 dock configurations; 2688 input presentations. Opaque tokens/bounded model only, not native/AX/hardware acceptance.
+
+3c58b03d30cc9e9538932c191c83601e28f17606b66f9dd08282e09fb019c3a5  core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt
+1dc7ef8a018656ae125a75aa7d6016a58387c7c6e15616d33e22e062b82cf132  core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt
+6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc  core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt
+2e639fa1c99d6e8f3f30d1e6ed9f47745243f4bb51068a2d23a31f0ff6be0dd3  core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt
+80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574  core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt
+befbf7132bd65ae982f954588b98ca83efbba0451985b6140be5f7e38fe2e295  core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCommandStream.kt
+3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481  core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt
+739b9403a3bf4bf4932b75ade480fd294c168372b010604e2e3f4b86d93bb246  format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt
+2697f3230eb6b73b5b9e982711dcc3f69758282b9d745502baff6d8161f0041f  format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt
+898541782316410c0d149ddaf277ed41492859f752598b83245fc9bc2deebfc1  format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt
+8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b  testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt
+9acc63df946bf2638f9fa4a68181c7c1205c4b7dc60a06f1aff49b7f7b82a581  testing/build/r24/checks.jar

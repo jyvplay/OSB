@@ -1,0 +1,9 @@
+{
+  "name": "osb-lok-wasm-experiment",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Pinned actual LibreOfficeKit WebAssembly experiment, not an Android Office integration",
+  "dependencies": { "playwright-core": "1.64.1" }
+}

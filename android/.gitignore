@@ -25,3 +25,11 @@ focus-before.log
 focus-before-result.json
 focus-before-results/
 sdk-available.log
+
+r25-ui-readiness.json
+r25-device-results.json
+
+r25-video-result.json
+png-frame-receipt.json
+
+r25-web-capability.json

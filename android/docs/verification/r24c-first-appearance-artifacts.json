@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12121556216,
+      "node_id": "MDg6QXJ0aWZhY3QxMjEyMTU1NjIxNg==",
+      "name": "r24-native-device-reports",
+      "size_in_bytes": 6964,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12121556216",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12121556216/zip",
+      "expired": false,
+      "digest": "sha256:377b9cf71cfb18a0847a391b32f6c90b156009b9af205634765d32287b5a0bdf",
+      "created_at": "2026-10-18T01:40:31Z",
+      "updated_at": "2026-10-18T01:40:31Z",
+      "expires_at": "2027-01-16T01:37:59Z",
+      "workflow_run": {
+        "id": 39087194809,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "bac8225124ab05af651a9639c07a30492ab2ee2e"
+      }
+    }
+  ]
+}

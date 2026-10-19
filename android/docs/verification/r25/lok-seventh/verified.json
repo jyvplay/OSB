@@ -1,0 +1,59 @@
+{
+  "source_candidate": "baf72abf86ba99063c7b1266bc06413c856b2f63",
+  "archive_sha256": "591c9b099587bb6bea8d92e2cf73f93395f655e1656800cc8689ab740d229c1d",
+  "actual_browser": "155.0.8059.39",
+  "actual_linear_memory_bytes": 1073741824,
+  "document_twips": [
+    12808,
+    16408
+  ],
+  "pdf_pages": 1,
+  "pixel_samples": {
+    "whole_page": {
+      "opaque": 75707,
+      "dark": 1,
+      "light": 75310
+    },
+    "detail_96dpi": {
+      "opaque": 71337,
+      "dark": 823,
+      "light": 69830
+    }
+  },
+  "detail_region_twips": [
+    0,
+    0,
+    3840,
+    4800
+  ],
+  "outputs": {
+    "output.odt": {
+      "bytes": 9365,
+      "sha256": "738ba6e506c9954b61f65f912f39a4acdd793e3aa33db62e8e5af550225ad163"
+    },
+    "output.pdf": {
+      "bytes": 16440,
+      "sha256": "f3bd00de3d5ddab66b58436dfad94a366f39cb552b77ff9462eefe221937e9a5"
+    },
+    "tile.raw": {
+      "bytes": 327680,
+      "sha256": "1237d3d1e55f393ec2412e08dbef7e1a3cbaa63879863f2070c987793e3063e1"
+    },
+    "tile.png": {
+      "bytes": 3172,
+      "sha256": "d48a3c1301f77acf7faef7d4c6e8ff689cf2d39adcd30a960cfb991662cd5ac1"
+    },
+    "detail.raw": {
+      "bytes": 327680,
+      "sha256": "d801521a0ebad6107d9f7d27c2e8e45497add34fddf931ffa6bf06390f2faea4"
+    },
+    "detail.png": {
+      "bytes": 5134,
+      "sha256": "4c5be621015157e59dc2a7fb8727e058bbba5ec794c690a6e4c83c9202099c62"
+    }
+  },
+  "accepted_scope": "One real controlled Writer fixture: load, tile, saveAs ODT/PDF; independent ODT/XML + pypdf readback. NOT Android embedding, generic Office fidelity, malicious-document safety, upstream reproducibility or license closure.",
+  "integrated_android": false,
+  "full_office_accepted": false,
+  "legal_accepted": false
+}

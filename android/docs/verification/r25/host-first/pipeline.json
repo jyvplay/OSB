@@ -1,0 +1,7 @@
+{
+  "candidate": "0d3c5a2c5ed027ec4747a0d1705fbe275b941633",
+  "exit_code": 0,
+  "elapsed_seconds": 88.944,
+  "command": "python3 tools/r24c_lab.py host --tools ~/.cache/fusion-host-r23",
+  "scope": "Actual host compiler/tools/files only; not Android/Studio/physical/full-spec acceptance"
+}

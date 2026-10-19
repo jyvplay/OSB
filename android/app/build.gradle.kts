@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":feature:calc"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:media"))
+    implementation(project(":feature:maps"))
     implementation(project(":feature:beam"))
     implementation(project(":feature:alerts"))
     implementation(project(":feature:capture"))
