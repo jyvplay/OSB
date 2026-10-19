@@ -93,7 +93,7 @@ try {
     return {odtBase64:encode(Module.FS.readFile('/tmp/r25-result.odt')),pdfBase64:encode(Module.FS.readFile('/tmp/r25-result.pdf'))};
   });
   Object.assign(r,saved);
-  for(const [field,file] of [['odtBase64','output.odt'],['pdfBase64','output.pdf'],['tileBase64','tile.raw']]){
+  for(const [field,file] of [['odtBase64','output.odt'],['pdfBase64','output.pdf'],['tileBase64','tile.raw'],['detailBase64','detail.raw']]){
     if(typeof r[field]!=='string' || r[field].length>3*1024*1024 || !/^[A-Za-z0-9+/]*={0,2}$/.test(r[field]))throw new Error('Output framing refused');
     const data=Buffer.from(r[field],'base64');if(data.length>2*1024*1024)throw new Error('Output cap exceeded');
     await fs.writeFile(path.join(output,file),data);delete r[field];

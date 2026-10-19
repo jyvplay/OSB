@@ -46,3 +46,6 @@ Intake repair record: runs39187294825 and39187685049 did not execute the engine.
 
 
 Runtime repair record:8b396c4/b1ee733 reached actual Chromium155.0.8059.39, cross-origin isolation, SharedArrayBuffer and native LOK state2. Loading the462-byte FODT failed with native "Unsupported URL ... type detection failed". Official zetajs convertpdf source was then read: it stages/reads FS files on the **browser main runtime**, while document calls run on the owning LOK worker. The experiment now uses that thread split without changing the FODT fixture or claiming its earlier failure passed. Independent output verification remains mandatory.
+
+
+Rendering-resolution repair:642bec8 actually loaded the original FODT and produced ODT/PDF that passed independent text readback, but its256×320 whole-page tile had only1 sample below the declared dark threshold (opaque75707/light75310). No complete pass was published. The next experiment preserves that overview AND adds an explicitly declared96dpi top-left tile (15twips/pixel), after the actual saveAs layout operations; the detail must meet the original nonblank-text contrast threshold. Both raw tiles are retained and encoded as diagnostic PNGs even if the visual gate fails. No pixel values or fixture text are synthesized to satisfy the checker.

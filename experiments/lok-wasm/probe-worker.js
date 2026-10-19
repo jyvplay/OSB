@@ -14,7 +14,7 @@
   }
   Module.lokReady = () => setTimeout(async () => {
     let doc=0, pixels=0;
-    const stages={mainLoopReady:false,sourceWritten:false,documentLoaded:false};
+    const stages={mainLoopReady:false,workerOwnFsWritten:false,documentLoaded:false};
     try {
       const state=Module._lokjs_state(); stages.nativeState=state; if(state!==2) throw new Error('Actual LOK main loop is not running: '+state);
       stages.mainLoopReady=true;
@@ -39,9 +39,14 @@
       const odtOk=Module.ccall('lokjs_save_as','number',['number','string','string','string'],[doc,'file:///tmp/r25-result.odt','odt','']);
       const pdfOk=Module.ccall('lokjs_save_as','number',['number','string','string','string'],[doc,'file:///tmp/r25-result.pdf','pdf','']);
       if(!odtOk || !pdfOk) throw new Error('Actual saveAs reported failure');
+      // Preserve the original whole-page tile AND inspect text at a declared96dpi tile scale.
+      const detailWidth=Math.min(width,256*15), detailHeight=Math.min(height,320*15);
+      Module.HEAPU8.fill(0,pixels,pixels+length);
+      Module._lokjs_paint_tile(doc,pixels,tileWidth,tileHeight,0,0,detailWidth,detailHeight);
+      const detail=Module.HEAPU8.slice(pixels,pixels+length);
       await report({origin:'real-lok-wasm-worker',state,documentWidthTwips:width,documentHeightTwips:height,
         tileWidth,tileHeight,tileMode:Module._lokjs_get_tile_mode(doc),heapBytes:Module.HEAPU8.byteLength,
-        tileBase64:encoded(tile),outputsSaved:true});
+        tileBase64:encoded(tile),detailBase64:encoded(detail),detailRegionTwips:[0,0,detailWidth,detailHeight],outputsSaved:true});
     } catch(error) { await report({origin:'real-lok-wasm-worker',stages,error:String(error),stack:String(error?.stack||'').slice(0,4000)}); }
     finally {
       if(pixels) Module._free(pixels);
