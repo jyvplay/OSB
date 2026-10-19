@@ -14,15 +14,24 @@
   }
   Module.lokReady = () => setTimeout(async () => {
     let doc=0, pixels=0;
+    const stages={mainLoopReady:false,sourceWritten:false,documentLoaded:false};
     try {
-      const state=Module._lokjs_state(); if(state!==2) throw new Error('Actual LOK main loop is not running: '+state);
+      const state=Module._lokjs_state(); stages.nativeState=state; if(state!==2) throw new Error('Actual LOK main loop is not running: '+state);
+      stages.mainLoopReady=true;
       const input='<?xml version="1.0" encoding="UTF-8"?>'+
         '<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" '+
         'office:mimetype="application/vnd.oasis.opendocument.text" office:version="1.3">'+
         '<office:body><office:text><text:p>'+marker+'</text:p><text:p>Controlled local fixture only; no user file or remote service.</text:p></office:text></office:body></office:document>';
       Module.FS.writeFile('/tmp/r25-canary.fodt', new TextEncoder().encode(input));
+      stages.sourceWritten=true;stages.sourceBytes=Module.FS.stat('/tmp/r25-canary.fodt').size;
       doc=Module.ccall('lokjs_document_load','number',['string','string'],['file:///tmp/r25-canary.fodt','']);
-      if(!doc) throw new Error('Actual LibreOffice document load returned no document');
+      if(!doc) {
+        const pointer=Module._lokjs_get_error();
+        const detail=pointer?Module.UTF8ToString(pointer):'no native error string';
+        if(pointer)Module._lokjs_free(pointer);
+        throw new Error('Actual LibreOffice document load returned no document: '+detail);
+      }
+      stages.documentLoaded=true;
       Module.ccall('lokjs_initialize_for_rendering',null,['number','string'],[doc,'{}']);
       const width=Module._lokjs_document_width(doc), height=Module._lokjs_document_height(doc);
       if(!(width>0 && height>0 && width<=1000000 && height<=1000000)) throw new Error('Document size outside trusted-fixture regime');
@@ -37,7 +46,7 @@
       await report({origin:'real-lok-wasm-worker',state,documentWidthTwips:width,documentHeightTwips:height,
         tileWidth,tileHeight,tileMode:Module._lokjs_get_tile_mode(doc),heapBytes:Module.HEAPU8.byteLength,
         tileBase64:encoded(tile),odtBase64:encoded(Module.FS.readFile('/tmp/r25-result.odt')),pdfBase64:encoded(Module.FS.readFile('/tmp/r25-result.pdf'))});
-    } catch(error) { await report({origin:'real-lok-wasm-worker',error:String(error),stack:String(error?.stack||'').slice(0,4000)}); }
+    } catch(error) { await report({origin:'real-lok-wasm-worker',stages,error:String(error),stack:String(error?.stack||'').slice(0,4000)}); }
     finally {
       if(pixels) Module._free(pixels);
       if(doc) Module._lokjs_document_destroy(doc);

@@ -56,7 +56,7 @@ jobs:
           p = Path(os.environ['RUNNER_TEMP']) / 'r25-lok/results/runtime.json'
           if p.exists():
               r = json.loads(p.read_text())
-              data = {k:r.get(k) for k in ('sourceCandidate','engineExecuted','error','browserVersion','browserCapabilities','scope')}
+              data = {k:r.get(k) for k in ('sourceCandidate','engineExecuted','error','browserVersion','browserCapabilities','engineStages','scope')}
               data['error'] = str(data.get('error') or '')[:1200]
               data['console_tail'] = [str(v)[:220] for v in r.get('console', [])[-6:]]
               text = json.dumps(data, separators=(',', ':'))

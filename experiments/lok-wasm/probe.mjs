@@ -79,7 +79,7 @@ try {
   final.browserCapabilities=await page.evaluate(()=>({crossOriginIsolated,sharedArrayBuffer:typeof SharedArrayBuffer==='function',wasm:typeof WebAssembly==='object'}));
   if(!final.browserCapabilities.crossOriginIsolated || !final.browserCapabilities.sharedArrayBuffer)throw new Error('Actual browser shared-memory precondition unavailable');
   const r=await result;
-  if(r.error)throw new Error('Engine failed: '+r.error+' '+(r.stack||''));
+  if(r.error){final.engineStages=r.stages||null;throw new Error('Engine failed: '+r.error+' '+(r.stack||''));}
   if(r.origin!=='real-lok-wasm-worker' || r.state!==2 || !Number.isInteger(r.documentWidthTwips) || !Number.isInteger(r.documentHeightTwips) || r.documentWidthTwips<=0 || r.documentHeightTwips<=0)throw new Error('Invalid actual engine observation');
   for(const [field,file] of [['odtBase64','output.odt'],['pdfBase64','output.pdf'],['tileBase64','tile.raw']]){
     if(typeof r[field]!=='string' || r[field].length>3*1024*1024 || !/^[A-Za-z0-9+/]*={0,2}$/.test(r[field]))throw new Error('Output framing refused');
