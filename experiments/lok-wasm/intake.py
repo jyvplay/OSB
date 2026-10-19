@@ -15,11 +15,11 @@ LIMITS = {'lokjs.js': 24*1024*1024, 'lokjs.wasm': 256*1024*1024, 'soffice.data':
 
 def inspect(archive, destination):
     archive=Path(archive);destination=Path(destination)
-    if archive.stat().st_size != EXPECTED_BYTES: raise ValueError('Not the declared pinned archive size')
+    if archive.stat().st_size != EXPECTED_BYTES: raise ValueError(f'Pinned archive size mismatch: observed{archive.stat().st_size}, expected{EXPECTED_BYTES}')
     digest=hashlib.sha256()
     with archive.open('rb') as f:
         for chunk in iter(lambda:f.read(1024*1024),b''):digest.update(chunk)
-    if digest.hexdigest()!=EXPECTED_SHA: raise ValueError('Pinned archive digest mismatch')
+    if digest.hexdigest()!=EXPECTED_SHA: raise ValueError('Pinned archive digest mismatch: '+digest.hexdigest())
     destination.mkdir(parents=True,exist_ok=False)
     seen={};total=0;entries=0
     with tarfile.open(archive,'r:gz') as t:
@@ -29,7 +29,7 @@ def inspect(archive, destination):
             if entries>32 or path.is_absolute() or '..' in path.parts or '\\' in member.name:raise ValueError('Unsafe/archive entry budget')
             if member.isdir():continue
             name=path.name
-            if not member.isfile() or name not in ALLOWED or name in seen or not 1<=member.size<=LIMITS[name]:raise ValueError('Unexpected/duplicate/link/oversized archive member')
+            if not member.isfile() or name not in ALLOWED or name in seen or not 1<=member.size<=LIMITS[name]:raise ValueError('Unexpected/duplicate/link/oversized archive member: '+member.name[:300]+' size='+str(member.size)+' type='+str(member.type))
             total+=member.size
             if total>512*1024*1024:raise ValueError('Expanded archive budget exceeded')
             h=hashlib.sha256();copied=0
@@ -52,5 +52,8 @@ def inspect(archive, destination):
 
 if __name__=='__main__':
     try:report=inspect(sys.argv[1],sys.argv[2])
-    except Exception as error:raise SystemExit('WASM intake refused: '+str(error))
+    except Exception as error:
+        message='WASM intake refused: '+str(error)
+        print('::error::'+message[:2000].replace('%','%25').replace('\n','%0A'))
+        raise SystemExit(message)
     Path(sys.argv[3]).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

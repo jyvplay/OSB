@@ -33,7 +33,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$RUNNER_TEMP/r25-lok"
-          gh release download lokjs-writer-libreoffice-26.2.6.3-run37271490985 --repo RichardPo/libreoffice-wasm-build --pattern lokjs-writer-libreoffice-26.2.6.3.tar.gz --dir "$RUNNER_TEMP/r25-lok"
+          if ! gh release download lokjs-writer-libreoffice-26.2.6.3-run37271490985 --repo RichardPo/libreoffice-wasm-build --pattern lokjs-writer-libreoffice-26.2.6.3.tar.gz --dir "$RUNNER_TEMP/r25-lok"; then
+            echo "::error::Pinned actual archive download failed; no engine execution inferred."
+            exit 1
+          fi
           python3 intake.py "$RUNNER_TEMP/r25-lok/lokjs-writer-libreoffice-26.2.6.3.tar.gz" "$RUNNER_TEMP/r25-lok/engine" "$RUNNER_TEMP/r25-lok/intake.json"
       - name: Execute only the controlled local canary in real sandboxed Chromium
         run: |
