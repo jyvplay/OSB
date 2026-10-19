@@ -1,0 +1,71 @@
+name: R25 actual LOK WebAssembly experiment
+on:
+  push:
+    paths: ['experiments/lok-wasm/**', '.github/workflows/engine-wasm-r25.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  actual-writer:
+    name: Actual pinned Writer engine, not Android integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: experiments/lok-wasm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned original experiment tools without lifecycle scripts
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          printf 'pypdf==6.21.1 --hash=sha256:553e2d42f5bb3bb2a785a7d3de8ef90bb7df74b5413eff5a7b4388007ea9254b\n' > "$RUNNER_TEMP/r25-pdf.lock"
+          python3 -m pip install --only-binary=:all: --require-hashes --target "$RUNNER_TEMP/r25-pdf-tools" -r "$RUNNER_TEMP/r25-pdf.lock"
+      - name: Retrieve exact candidate; declared hash is not source authenticity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/r25-lok"
+          gh release download lokjs-writer-libreoffice-26.2.6.3-run37271490985 --repo RichardPo/libreoffice-wasm-build --pattern lokjs-writer-libreoffice-26.2.6.3.tar.gz --dir "$RUNNER_TEMP/r25-lok"
+          python3 intake.py "$RUNNER_TEMP/r25-lok/lokjs-writer-libreoffice-26.2.6.3.tar.gz" "$RUNNER_TEMP/r25-lok/engine" "$RUNNER_TEMP/r25-lok/intake.json"
+      - name: Execute only the controlled local canary in real sandboxed Chromium
+        run: |
+          export CHROME_PATH="$(command -v google-chrome || command -v chromium || true)"
+          test -n "$CHROME_PATH"
+          "$CHROME_PATH" --version
+          unset GH_TOKEN GITHUB_TOKEN
+          timeout --kill-after=10s 210s node probe.mjs "$RUNNER_TEMP/r25-lok/engine" "$RUNNER_TEMP/r25-lok/results"
+      - name: Independent actual output readback
+        run: PYTHONPATH="$RUNNER_TEMP/r25-pdf-tools" python3 verify.py "$RUNNER_TEMP/r25-lok/results"
+      - name: Bounded actual diagnostic (not a pass on failure)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ['RUNNER_TEMP']) / 'r25-lok/results/runtime.json'
+          if p.exists():
+              r = json.loads(p.read_text())
+              data = {k:r.get(k) for k in ('sourceCandidate','engineExecuted','error','browserVersion','browserCapabilities','scope')}
+              data['error'] = str(data.get('error') or '')[:1200]
+              data['console_tail'] = [str(v)[:220] for v in r.get('console', [])[-6:]]
+              text = json.dumps(data, separators=(',', ':'))
+              assert len(text.encode()) < 3700, 'Diagnostic budget exceeded; full report retained as artifact'
+              print('::notice::R25LOKDIAGNOSTIC1 ' + text.replace('%','%25').replace('\n','%0A'))
+          else:
+              print('::notice::No actual engine runtime report. Do not infer execution or integration.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-lok-wasm-controlled-experiment
+          path: |
+            ${{ runner.temp }}/r25-lok/intake.json
+            ${{ runner.temp }}/r25-lok/results/**
