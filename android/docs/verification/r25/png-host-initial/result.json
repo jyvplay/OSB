@@ -1,0 +1,54 @@
+{
+  "elapsed_seconds": 23.154,
+  "exit_code": 0,
+  "commands": [
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "r25_png_production",
+      "/home/user/OSB/android/format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt",
+      "-d",
+      "/home/user/OSB/android/testing/build/r25/png-production.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc",
+      "-jvm-target",
+      "17",
+      "-module-name",
+      "r25_png_consumer",
+      "-classpath",
+      "/home/user/OSB/android/testing/build/r25/png-production.jar",
+      "/home/user/OSB/android/testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt",
+      "-include-runtime",
+      "-d",
+      "/home/user/OSB/android/testing/build/r25/png-checks.jar"
+    ],
+    [
+      "/home/user/.cache/fusion-host-r23/python/jdk4py/java-runtime/bin/java",
+      "-cp",
+      "/home/user/OSB/android/testing/build/r25/png-checks.jar:/home/user/OSB/android/testing/build/r25/png-production.jar",
+      "dev.fusion.testing.PngChecks"
+    ],
+    [
+      "/usr/bin/python3",
+      "/home/user/OSB/android/tools/check_r25_png_reference.py",
+      "--report",
+      "/home/user/OSB/android/testing/build/r25/png-reference.json"
+    ]
+  ],
+  "output": "R25 PNG PASS: 7150 production-kernel assertions. Real files/pixel-data preservation/bounds only; NOT native UI, arbitrary image sanitization or anonymity.\n",
+  "reference": {
+    "decoder": "Pillow 13.0.0",
+    "executed_file_cases": 53,
+    "corpus_digest": "a3602e9f69444e4c51cd2cfc8f6e87a325292695f97983014bb24aa6386989e1",
+    "scope": "Real production JVM transform + independent PNG decoding/CRC/file readback. Encoded pixel samples only; not visual orientation/printing/anonymity or Android execution."
+  },
+  "sha256": {
+    "format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt": "603a0206f41404e7d00b7b488e1a8b6d2a4c03aed167934e6c588cf647bf8cbd",
+    "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt": "4ff9f6fd9464dcc21faac9ef65796975ef8b7e92bb4ebef3c3faf6b8f6b1cca1",
+    "tools/check_r25_png_reference.py": "d4efb3d6b0a28a5497ece91938c604eb2120895e28cdac73b548ff117036dd7b"
+  },
+  "scope": "Actual separate host compiler/consumer/files/reference decoding only; NOT Android isolation/UI, arbitrary image fidelity, malware removal or anonymity."
+}

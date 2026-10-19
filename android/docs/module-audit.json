@@ -287,8 +287,8 @@
     {
       "module": ":format:image",
       "status": "incomplete",
-      "present_scope": "Owned ARGB crop, quarter-turn rotation and reflection with real pixel permutations; Android Bitmap adapters added, selected native cases passed at67fbd39",
-      "remaining_gap": "No codec/decoder security, full format/fidelity/HEIC pipeline, UI editor or safe-export acceptance; Android premultiplication/color conversions not bit fidelity",
+      "present_scope": "Existing ARGB transformations and R25 PNG metadata-copy kernel with real host/reference checks; native isolated UID/memory/picker route awaiting fresh execution",
+      "remaining_gap": "Arbitrary image/codec/profile/animation fidelity, orientation/printing, malware/Byzantine worker safety, provider guarantees, native new route and full original image acceptance",
       "evidence_level": "partial_android_execution"
     },
     {
@@ -685,6 +685,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R24 continuation / 2026-10-18",
+  "revision": "R25 bounded metadata continuation; no full acceptance",
   "build_evidence": "Historical R24 builds remain recorded. R24 continuation changes require new exact-candidate native build/lint/device receipts; none inherited."
 }

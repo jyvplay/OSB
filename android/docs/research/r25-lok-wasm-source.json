@@ -1,0 +1,50 @@
+{
+  "retrieved": "2026-10-18",
+  "candidate_release": {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/RichardPo/libreoffice-wasm-build/releases/download/lokjs-writer-libreoffice-26.2.6.3-run37271490985/lokjs-writer-libreoffice-26.2.6.3.tar.gz",
+        "digest": "sha256:591c9b099587bb6bea8d92e2cf73f93395f655e1656800cc8689ab740d229c1d",
+        "id": 612017701,
+        "name": "lokjs-writer-libreoffice-26.2.6.3.tar.gz",
+        "size": 70940538
+      }
+    ],
+    "published_at": "2026-10-05T08:49:37Z",
+    "tag_name": "lokjs-writer-libreoffice-26.2.6.3-run37271490985"
+  },
+  "source_read": {
+    "lok-readme-source": {
+      "blob": "c21a25a7e572c9295aa90e36b394c48bb522893c",
+      "bytes": 5406,
+      "sha256": "6dba60e90c1eb46be13e3495b298d6f625dacf577a0b07e1e3c553d19e01bd9a"
+    },
+    "lok-c-source": {
+      "blob": "8d4eeb86fe3c9b96aa1bdb56f13879dcbac4a9a8",
+      "bytes": 8626,
+      "sha256": "9803b0d5ba5c860dd35453069a754ab7727b68781733c62ab25ee8a3c917e5b7"
+    },
+    "lok-link-source": {
+      "blob": "fd60cdd92b091314d06c6377fc9287d6bdecaecc",
+      "bytes": 3209,
+      "sha256": "d106b7768980e53d58171c80b1477141b22cd6618e59be4649a2efb2d11d5b95"
+    },
+    "lok-tag-c": {
+      "blob": "8d4eeb86fe3c9b96aa1bdb56f13879dcbac4a9a8",
+      "bytes": 8626,
+      "sha256": "9803b0d5ba5c860dd35453069a754ab7727b68781733c62ab25ee8a3c917e5b7",
+      "ref": "lokjs-writer-libreoffice-26.2.6.3-run37271490985"
+    },
+    "lok-tag-link": {
+      "blob": "fd60cdd92b091314d06c6377fc9287d6bdecaecc",
+      "bytes": 3209,
+      "sha256": "d106b7768980e53d58171c80b1477141b22cd6618e59be4649a2efb2d11d5b95",
+      "ref": "lokjs-writer-libreoffice-26.2.6.3-run37271490985"
+    }
+  },
+  "executed": false,
+  "integrated": false,
+  "legal_accepted": false,
+  "scope": "Actual primary repository source/release metadata only, NOT a working engine or upstream-authenticated binary claim",
+  "frontier": "Publisher README distinguishes a26.8 unipoll/runLoop shutdown/deadlock from recommended26.2; source declares1GB WASM linear memory and PROXY_TO_PTHREAD. These hypotheses require actual execution; top-level JS MIT does not license the entire LibreOffice payload."
+}

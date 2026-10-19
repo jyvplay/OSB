@@ -1,0 +1,1 @@
+R25 PNG PASS: 7150 production-kernel assertions. Real files/pixel-data preservation/bounds only; NOT native UI, arbitrary image sanitization or anonymity.

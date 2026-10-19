@@ -1,0 +1,6 @@
+{
+  "decoder": "Pillow 13.0.0",
+  "executed_file_cases": 53,
+  "corpus_digest": "a3602e9f69444e4c51cd2cfc8f6e87a325292695f97983014bb24aa6386989e1",
+  "scope": "Real production JVM transform + independent PNG decoding/CRC/file readback. Encoded pixel samples only; not visual orientation/printing/anonymity or Android execution."
+}

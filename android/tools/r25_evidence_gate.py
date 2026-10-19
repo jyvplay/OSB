@@ -16,16 +16,19 @@ READINESS = {READINESS_CASE,
         'oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft')}}
 
 
+PNG_CASES = {'dev.fusion.shell.R25PngCopyDeviceTest.' + name for name in ('isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels', 'actualPngPickerNewCopyReadbackKeepsSourceAndRemovesMetadata', 'recreationCannotExportOldPreparedCopyAndPickerCancelDoesNotRead')}
+
 def expected(suite):
     if suite == 'readiness': return READINESS
-    if suite == 'full': return retained('full') | {READINESS_CASE}
+    if suite == 'full': return retained('full') | {READINESS_CASE} | PNG_CASES
+    if suite == 'png': return PNG_CASES
     return retained(suite)
 
 
 def verify(receipt, candidate, suite):
     if not re.fullmatch('[0-9a-f]{40}', candidate) or receipt.get('candidate') != candidate: raise ValueError('Wrong exact candidate')
     if receipt.get('conclusion') != 'success' or receipt.get('device_conclusion') != 'success': raise ValueError('Workflow/device did not succeed')
-    if receipt.get('suite') != ('focused' if suite == 'readiness' else suite): raise ValueError('Wrong actual suite')
+    if receipt.get('suite') != ('focused' if suite in ('readiness','png') else suite): raise ValueError('Wrong actual suite')
     if receipt.get('platform_api') not in ((34, 37) if suite == 'privacy' else (34,)): raise ValueError('Wrong actual runtime')
     rows = receipt.get('cases', []); names = [r['case'] for r in rows]
     if len(set(names)) != len(names) or set(names) != expected(suite): raise ValueError('Missing/duplicate/undeclared named method')
@@ -37,7 +40,7 @@ def verify(receipt, candidate, suite):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__); p.add_argument('receipt', type=Path)
-    p.add_argument('--candidate', required=True); p.add_argument('--suite', choices=('full','readiness','continuation','privacy'), required=True)
+    p.add_argument('--candidate', required=True); p.add_argument('--suite', choices=('full','readiness','png','continuation','privacy'), required=True)
     a = p.parse_args(); print(json.dumps(verify(json.loads(a.receipt.read_text()), a.candidate, a.suite), indent=2))
 
 

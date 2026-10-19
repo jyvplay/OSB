@@ -1,0 +1,120 @@
+name: Android R25 actual PNG metadata copy
+on:
+  push:
+    paths: ['android/app/**', 'android/format/image/**', 'android/core/model/**', 'android/testing/src/r25/**', 'android/tools/*r25*', '.github/workflows/android-r25-png.yml']
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  actions: read
+  checks: read
+jobs:
+  png:
+    name: Focused actual platform R25 PNG copy (not image anonymity)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Actual compilation platform
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-37.0' 'build-tools;36.0.0'
+          python3 tools/record_sdk_platform.py --report installed-sdk37.json
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Real production PNG contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:r25PngContracts
+      - name: Real isolated UID, native decoder and system-picker copy/readback
+        run: >
+          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
+          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.experimental.enableAdditionalTestOutput=true
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R25PngCopyDeviceTest
+      - name: Actual named outcomes
+        if: always()
+        run: python3 tools/report_device_results.py
+      - name: Actual UI preconditions
+        if: always()
+        run: python3 tools/r25_ui_lab.py --require-observed
+      - name: Stage actual new-page frames only
+        if: always()
+        run: python3 tools/r24c_capture.py stage --frames png-copy
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r25-png-frames
+          path: android/testing/build/r24c/native-frames/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r25-png-copy-native
+          path: |
+            android/contracts.log
+            android/device.log
+            android/device-results.json
+            android/r25-ui-readiness.json
+            android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**
+  frame:
+    name: Actual frame r25-png-copy.png (not all-page acceptance)
+    needs: png
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: r25-png-frames
+          path: android/app/build/outputs/managed_device_android_test_additional_output/transport
+      - name: Actual native frame metadata
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 0
+      - name: Actual PNG page frame chunks 1
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 1
+      - name: Actual PNG page frame chunks 2
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 2
+      - name: Actual PNG page frame chunks 3
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 3
+      - name: Actual PNG page frame chunks 4
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 4
+      - name: Actual PNG page frame chunks 5
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 5
+      - name: Actual PNG page frame chunks 6
+        run: python3 tools/r24c_capture.py export --frames png-copy --image r25-png-copy.png --group 6
+  verify-frame:
+    name: Verify actual new-page frame transport
+    needs: frame
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject incomplete/mismatched native page evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/r24c_capture.py collect --frames png-copy --run '${{ github.run_id }}' --ci-frames > png-frame-receipt.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verified-png-page-frame
+          path: |
+            android/png-frame-receipt.json
+            android/testing/build/r24c/captures/**

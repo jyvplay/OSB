@@ -313,3 +313,14 @@ tasks.register<JavaExec>("r24cContracts") {
     dependsOn(r24c.classesTaskName); classpath = r24c.runtimeClasspath; mainClass.set("dev.fusion.testing.R24CChecks")
     args(rootProject.file("feature/maps/src/main/assets/natural-earth-land-v1.txt").absolutePath)
 }
+
+// R25 actual bounded PNG transform, separate from native isolated-worker/picker gates.
+val r25png by sourceSets.creating
+kotlin.sourceSets.named("r25png") {
+    kotlin.srcDir("src/r25/kotlin")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.include("**/PngMetadata.kt", "**/PngChecks.kt")
+}
+tasks.register<JavaExec>("r25PngContracts") {
+    dependsOn(r25png.classesTaskName);classpath=r25png.runtimeClasspath;mainClass.set("dev.fusion.testing.PngChecks")
+}

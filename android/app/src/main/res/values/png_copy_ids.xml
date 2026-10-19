@@ -1,0 +1,7 @@
+<resources>
+    <item name="png_copy_choose" type="id" />
+    <item name="png_copy_save" type="id" />
+    <item name="png_copy_discard" type="id" />
+    <item name="png_copy_status" type="id" />
+    <item name="png_copy_summary" type="id" />
+</resources>

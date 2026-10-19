@@ -71,6 +71,37 @@ object NativeVisualEvidence {
         }
         return image
     }
+    fun captureViews(activity: Activity, name: String, requiredIds: List<Int>) {
+        require(name.matches(Regex("r25-[a-z-]{1,40}")))
+        val instrumentation=InstrumentationRegistry.getInstrumentation();instrumentation.waitForIdleSync()
+        val folder=InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let(::File)
+            ?: File(instrumentation.targetContext.getExternalFilesDir(null),"r25-native-captures")
+        check(folder.exists() || folder.mkdirs());val audit=File(folder,"$name.json");check(!audit.exists() || audit.delete())
+        val density=activity.resources.displayMetrics.density;val required=JSONArray()
+        instrumentation.runOnMainSync {
+            for(id in requiredIds) {
+                val view=requireNotNull(activity.findViewById<android.view.View>(id));val visible=Rect()
+                assertTrue(view.isShown && view.isAttachedToWindow && view.getGlobalVisibleRect(visible))
+                val w=view.width/density;val h=view.height/density;val vw=visible.width()/density;val vh=visible.height()/density
+                assertTrue(w>=47.99f && h>=47.99f && vw>=47.99f && vh>=47.99f)
+                required.put(JSONObject().put("tag",activity.resources.getResourceEntryName(id)).put("width_dp",w).put("height_dp",h).put("visible_width_dp",vw).put("visible_height_dp",vh))
+            }
+        }
+        val raw=committedWindow(activity);val rawWidth=raw.width;val rawHeight=raw.height
+        val width=minOf(360,raw.width);val height=(raw.height.toLong()*width/raw.width).toInt()
+        val preview=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888)
+        try {
+            File(folder,"$name-full.png").outputStream().use {assertTrue(raw.compress(Bitmap.CompressFormat.PNG,100,it))}
+            Canvas(preview).drawBitmap(raw,null,Rect(0,0,width,height),Paint(Paint.FILTER_BITMAP_FLAG))
+            File(folder,"$name.png").outputStream().use {assertTrue(preview.compress(Bitmap.CompressFormat.PNG,100,it))}
+        } finally {preview.recycle();raw.recycle()}
+        audit.writeText(JSONObject().put("schema",1).put("origin","android-instrumentation").put("api",android.os.Build.VERSION.SDK_INT)
+            .put("density",density).put("font_scale",activity.resources.configuration.fontScale).put("required_targets",required)
+            .put("native_image_width",rawWidth).put("native_image_height",rawHeight).put("preview_width",width).put("preview_height",height)
+            .put("capture_api","PixelCopy(Window) after real native target measurements and renderer commit; not whole-display capture")
+            .put("preview_filter","bilinear downsample; original app-window PNG retained")
+            .put("scope","One actual native page/frame, not all pages/states or beauty/AX acceptance").toString(2))
+    }
     fun capture(compose: ComposeContentTestRule, activity: Activity, name: String, requiredTargets: List<String>) {
         require(name.matches(Regex("r24c-[a-z-]{1,40}")))
         compose.waitForIdle()

@@ -223,7 +223,13 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "725e7a8951141a5beb054f015aa7484211504ee241da4b62e4ff7dac20d324d8"
+      "sha256": "e6589d36e7efcd0857e289184c2cd055a84ab6b23b5e0266772b80059041df74"
+    },
+    {
+      "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
+      "module": ":app",
+      "package": "dev.fusion.shell",
+      "sha256": "09ca729150c08587a2450eaaab686837dd32567090377bd80593c849f4b8a11f"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt",
@@ -385,7 +391,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "1dc7ef8a018656ae125a75aa7d6016a58387c7c6e15616d33e22e062b82cf132"
+      "sha256": "14cd76a53441faa90fe68b67a489dda5c7490c9d8ebecc76b94abaed46f4ebde"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -1156,10 +1162,28 @@
       "sha256": "f9de8fe09ef057479df66e831ccec81bdefcc6eeee57aca93d2cda79edd60f04"
     },
     {
+      "path": "format/image/src/main/java/dev/fusion/format/image/sandbox/PngLease.kt",
+      "module": ":format:image",
+      "package": "dev.fusion.format.image.sandbox",
+      "sha256": "266cd827057cef146ffc1e1ae58852e30c0a24d20618f476a36d2569d5a6a621"
+    },
+    {
+      "path": "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt",
+      "module": ":format:image",
+      "package": "dev.fusion.format.image.sandbox",
+      "sha256": "afbe862f6762b116910fec9e1908322a9de61e319f0c818cafcf8654a885f411"
+    },
+    {
       "path": "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt",
       "module": ":format:image",
       "package": "dev.fusion.format.image",
       "sha256": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058"
+    },
+    {
+      "path": "format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt",
+      "module": ":format:image",
+      "package": "dev.fusion.format.image",
+      "sha256": "603a0206f41404e7d00b7b488e1a8b6d2a4c03aed167934e6c588cf647bf8cbd"
     },
     {
       "path": "format/psd/src/main/java/dev/fusion/psd/PsdBitmaps.kt",

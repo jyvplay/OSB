@@ -41,7 +41,8 @@ class R25ToolTests(unittest.TestCase):
             self.assertEqual(collect(tmp)['summary']['observations'], 0)
 
     def test_exact_named_native_contract_and_bad_receipt_mutations(self):
-        self.assertEqual(len(expected('full')), 143)
+        self.assertEqual(len(expected('full')), 146)
+        self.assertEqual(len(expected('png')), 3)
         self.assertEqual(len(expected('readiness')), 6)
         candidate='a'*40  # Parser-only value; never sent to GitHub or recorded as a native run.
         report=dict(candidate=candidate, suite='focused', platform_api=34, conclusion='success', device_conclusion='success',
@@ -61,3 +62,17 @@ class R25ToolTests(unittest.TestCase):
         r=json.loads((ROOT/'docs/verification/r24c-tenth-main-result.json').read_text())
         self.assertEqual(r['counts'],dict(PASS=137,FAIL=5,SKIP=0))
         with self.assertRaises(ValueError): verify(r,r['candidate'],'full')
+
+    def test_png_frame_group_does_not_relabel_the_legacy_desktop_group(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['png-copy'], {'r25-png-copy.png'})
+        self.assertEqual(len(capture.NAMES), 4)
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['png-copy']))
+        with self.assertRaises(ValueError): capture.export(0, 'r25-png-copy.png')
+
+    def test_png_source_owner_is_existing_image_module_not_denominator_inflation(self):
+        import module_audit
+        included = module_audit.included_modules()
+        self.assertIn(':format:image', included)
+        self.assertNotIn(':format:png', included)
+        self.assertTrue((ROOT/'format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt').is_file())

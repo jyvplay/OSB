@@ -33,3 +33,16 @@ Consequences: preserve the honest external-handoff labeling; do not counterfeit 
 ## Research limits
 
 No novelty or exhaustive-frontier claim; no HCI preference study, physical threat lab, independent licensing opinion, Tor deployment, native browser load or Office runtime has occurred in this R25 research step. Current guidance and component availability are hypotheses/inputs for concrete tests, not completed product modules.
+
+
+## Bounded metadata copy frontier
+
+**Primary search excerpts:** Tails' metadata guide warns that complex formats cannot have all metadata reliably removed; its Dangerzone comparison distinguishes metadata cleaning from hostile-document sanitization and says neither removes identifying visual content/fingerprints. This supports a clearly bounded new-copy tool, not an "anonymous file" badge. [1](https://tails.net/doc/sensitive_documents/metadata/index.en.html) [5](https://tails.net/doc/persistent_storage/additional_software/dangerzone/index.en.html)
+
+**Primary specification excerpts:** PNG Third Edition defines critical/ancillary chunk bits, CRC/order and consecutive IDAT; modern colour priority includes cICP/iCCP/sRGB/cHRM+gAMA. A parser cannot blindly drop every ancillary chunk and promise unchanged rendering. A narrow RGB/RGBA8 contract, full zlib/framing verification, explicit profile refusal and preserved-image-data comparison is proposed before implementation. [5](https://www.w3.org/TR/png-3/) [6](https://w3.org/TR/PNG)
+
+## Media threading and provider interface
+
+**Primary API excerpts:** MediaPlayer is explicitly not thread-safe: creation and all access belong on one thread, with a Looper for callbacks. Moving only some calls to a worker is not automatically a safe fix. `prepareAsync` does not turn all earlier resolver/data-source calls into asynchronous work. The current main-thread provider boundary remains named, not called15s bounded. [1](https://developer.android.com/reference/kotlin/android/media/MediaPlayer) [2](https://developer.android.com/media/platform/mediaplayer/basics) [9](https://developer.android.com/guide/components/processes-and-threads)
+
+Candidate mechanisms remain distinct: (a) single-owner player looper with an explicit blocked-worker resource envelope; (b) separately revocable process/session; (c) a reviewed maintained media library with actual data-source/decoder tests. No such migration or video decoder output was executed by this research step.

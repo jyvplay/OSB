@@ -811,6 +811,11 @@ class MainActivity : ComponentActivity() {
             "terminal" -> TerminalScreen(localShell)
             "vault" -> VaultScreen()
             "notes" -> NotesScreen(notesModel)
+            "png-copy" -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+                Text("PNG metadata copy", style = MaterialTheme.typography.titleLarge)
+                Text(PilotPolicy.module("png-copy").boundary)
+                Button(onClick = { startActivity(Intent(this@MainActivity, PngCopyActivity::class.java)) }, modifier = Modifier.heightIn(min = 48.dp).testTag("open-png-copy")) { Text("Open PNG metadata copy") }
+            }
             "maps" -> dev.fusion.maps.MapScreen(mapModel)
             "media" -> dev.fusion.media.MediaScreen(this) { uri, mime ->
                 runCatching {
