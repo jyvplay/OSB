@@ -18,12 +18,8 @@
     try {
       const state=Module._lokjs_state(); stages.nativeState=state; if(state!==2) throw new Error('Actual LOK main loop is not running: '+state);
       stages.mainLoopReady=true;
-      const input='<?xml version="1.0" encoding="UTF-8"?>'+
-        '<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" '+
-        'office:mimetype="application/vnd.oasis.opendocument.text" office:version="1.3">'+
-        '<office:body><office:text><text:p>'+marker+'</text:p><text:p>Controlled local fixture only; no user file or remote service.</text:p></office:text></office:body></office:document>';
-      Module.FS.writeFile('/tmp/r25-canary.fodt', new TextEncoder().encode(input));
-      stages.sourceWritten=true;stages.sourceBytes=Module.FS.stat('/tmp/r25-canary.fodt').size;
+      // Filesystem I/O belongs to the browser main runtime; C syscalls are proxied there.
+      // The original FODT fixture is staged by Module.onRuntimeInitialized before this LOK thread starts.
       doc=Module.ccall('lokjs_document_load','number',['string','string'],['file:///tmp/r25-canary.fodt','']);
       if(!doc) {
         const pointer=Module._lokjs_get_error();
@@ -45,7 +41,7 @@
       if(!odtOk || !pdfOk) throw new Error('Actual saveAs reported failure');
       await report({origin:'real-lok-wasm-worker',state,documentWidthTwips:width,documentHeightTwips:height,
         tileWidth,tileHeight,tileMode:Module._lokjs_get_tile_mode(doc),heapBytes:Module.HEAPU8.byteLength,
-        tileBase64:encoded(tile),odtBase64:encoded(Module.FS.readFile('/tmp/r25-result.odt')),pdfBase64:encoded(Module.FS.readFile('/tmp/r25-result.pdf'))});
+        tileBase64:encoded(tile),outputsSaved:true});
     } catch(error) { await report({origin:'real-lok-wasm-worker',stages,error:String(error),stack:String(error?.stack||'').slice(0,4000)}); }
     finally {
       if(pixels) Module._free(pixels);

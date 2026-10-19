@@ -43,3 +43,6 @@ This is not executed evidence merely because the script exists. Actual outcomes 
 
 
 Intake repair record: runs39187294825 and39187685049 did not execute the engine. The latter exposed the actual bounded refusal of `lokjs/LOKJS_COMMIT`. The exact tagged upstream packaging workflow, blob33ff59035877d391a3313aa8b7309cf118f945d0, was then read: it adds three metadata files. Intake now admits only those exact extra names and checks wrapper commit3e08b515bca93f82eaaf5be01ee633a960fbe4da and LibreOffice26.2.6.3. The archive size/hash pin, link/path/expansion limits and no-integration flags are unchanged. This is not a runtime pass.
+
+
+Runtime repair record:8b396c4/b1ee733 reached actual Chromium155.0.8059.39, cross-origin isolation, SharedArrayBuffer and native LOK state2. Loading the462-byte FODT failed with native "Unsupported URL ... type detection failed". Official zetajs convertpdf source was then read: it stages/reads FS files on the **browser main runtime**, while document calls run on the owning LOK worker. The experiment now uses that thread split without changing the FODT fixture or claiming its earlier failure passed. Independent output verification remains mandatory.

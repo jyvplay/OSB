@@ -20,6 +20,11 @@ for(const name of ['lokjs.js','lokjs.wasm','soffice.data','soffice.data.js.metad
   files.set('/'+name,data);
 }
 const workerTemplate=await fs.readFile(path.join(here,'probe-worker.js'),'utf8');
+const fixture='<?xml version="1.0" encoding="UTF-8"?>'+
+  '<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" '+
+  'office:mimetype="application/vnd.oasis.opendocument.text" office:version="1.3">'+
+  '<office:body><office:text><text:p>OSB R25 actual LibreOfficeKit canary</text:p><text:p>Controlled local fixture only; no user file or remote service.</text:p></office:text></office:body></office:document>';
+
 const logs=[], blocked=[];
 let resolveResult, rejectResult;
 const result=new Promise((resolve,reject)=>{resolveResult=resolve;rejectResult=reject;});
@@ -44,6 +49,7 @@ const server=http.createServer(async(req,res)=>{
       res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});
       res.end(`<!doctype html><meta charset="utf-8"><title>Actual LOK WASM experiment</title><body><p>Controlled real-engine experiment, not an Android UI.</p><script>
         var Module={uno_scripts:[location.origin+'/probe-worker.js'],locateFile:(name)=>location.origin+'/'+name,
+          onRuntimeInitialized:()=>{Module.FS.writeFile('/tmp/r25-canary.fodt',new TextEncoder().encode(${JSON.stringify(fixture)}));window.r25SourceBytes=Module.FS.stat('/tmp/r25-canary.fodt').size;},
           print:(text)=>console.log('engine:'+text),printErr:(text)=>console.error('engine:'+text),
           onAbort:(reason)=>fetch('/r25-result',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({origin:'engine-abort',error:String(reason)})})};
         </script><script src="/lokjs.js"></script></body>`);return;
@@ -79,8 +85,14 @@ try {
   final.browserCapabilities=await page.evaluate(()=>({crossOriginIsolated,sharedArrayBuffer:typeof SharedArrayBuffer==='function',wasm:typeof WebAssembly==='object'}));
   if(!final.browserCapabilities.crossOriginIsolated || !final.browserCapabilities.sharedArrayBuffer)throw new Error('Actual browser shared-memory precondition unavailable');
   const r=await result;
+  final.mainFsSourceBytes=await page.evaluate(()=>window.r25SourceBytes||0);
   if(r.error){final.engineStages=r.stages||null;throw new Error('Engine failed: '+r.error+' '+(r.stack||''));}
   if(r.origin!=='real-lok-wasm-worker' || r.state!==2 || !Number.isInteger(r.documentWidthTwips) || !Number.isInteger(r.documentHeightTwips) || r.documentWidthTwips<=0 || r.documentHeightTwips<=0)throw new Error('Invalid actual engine observation');
+  const saved=await page.evaluate(()=>{
+    const encode=(data)=>{if(data.length>2*1024*1024)throw new Error('Main FS output cap');let s='';for(let i=0;i<data.length;i+=16384)s+=String.fromCharCode(...data.subarray(i,i+16384));return btoa(s);};
+    return {odtBase64:encode(Module.FS.readFile('/tmp/r25-result.odt')),pdfBase64:encode(Module.FS.readFile('/tmp/r25-result.pdf'))};
+  });
+  Object.assign(r,saved);
   for(const [field,file] of [['odtBase64','output.odt'],['pdfBase64','output.pdf'],['tileBase64','tile.raw']]){
     if(typeof r[field]!=='string' || r[field].length>3*1024*1024 || !/^[A-Za-z0-9+/]*={0,2}$/.test(r[field]))throw new Error('Output framing refused');
     const data=Buffer.from(r[field],'base64');if(data.length>2*1024*1024)throw new Error('Output cap exceeded');
