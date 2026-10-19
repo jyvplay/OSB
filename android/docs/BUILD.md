@@ -56,8 +56,8 @@ python3 tools/engine_intake.py /path/to/actual-engine.aar --report testing/build
 ```
 
 The tested bootstrap route is Linux x86_64. Its pinned JRE17.0.9 is **old and not a full JDK**, for disposable host tests only;
-do not set it as Gradle's JDK or use it for production security. Latest fully archived host pipeline at7a2b4a8:177 Python methods,
-439839 R24C assertions and65097 retained R24 assertions; exact-source/output in `verification/r24c/host-7a2b4a8/`.
+do not set it as Gradle's JDK or use it for production security. Latest fully archived host pipeline at0260d59:179 Python methods,
+439839 R24C assertions and65097 retained R24 assertions; exact-source/output in `verification/r24c/host-0260d59/`.
 It is not a rerun of every historical host suite and does not build an APK.
 
 ## Actual Android without the IDE GUI
@@ -97,7 +97,9 @@ python3 tools/r24c_evidence_gate.py docs/verification/RECEIPT_PREFIX-result.json
 The gate requires exact named cases and all-pass/no-skip outcomes plus successful workflow/device conclusions. Capture transport
 refuses incomplete/hash-mismatched chunks and does not fabricate images. Actual CI annotation limits require a separate
 check-run per frame; each carries<4KiB messages and stays below50 annotations. A dependent job verifies all transported PNG hashes.
-The original full PNGs remain in `r24c-native-frames`; preview downsampling is explicitly recorded. Actual captures/target observations cover only named frames;
+The original full PNGs remain in `r24c-native-frames`; preview downsampling is explicitly recorded.
+Current visual evidence copies the committed **application Window** with PixelCopy after checking required semantics;
+it is not whole-display/system-bar capture or the separate privacy screenshot-security proof. Actual captures/target observations cover only named frames;
 all-page/all-state visual, TalkBack, laptop landscape and physical-device acceptance remain open.
 
 ---

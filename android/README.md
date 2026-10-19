@@ -14,7 +14,7 @@ Rabbit1 GUI was not run here; real remote Gradle/SDK/KVM Android results are sep
   not street maps/GPS/navigation. Privacy input/IME changes discard and require explicit empty rearm.
 
 **49/50 substantial runnable subsets98%;1/50 unestablished2%(:format:lok);0/50 full-spec accepted;
-50/50 unfinished at full scope.** New local host pipeline:177 Python tests,439839 R24C and65097 R24
+50/50 unfinished at full scope.** New local host pipeline:179 Python tests,439839 R24C and65097 R24
 assertions passed. Native failures/repairs and exact-source outcomes are in the current report, not inferred
 from host counts. Actual Servo AAR header inspection is not engine integration or legal clearance.
 

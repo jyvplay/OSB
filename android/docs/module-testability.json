@@ -18,7 +18,8 @@
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt"
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
@@ -31,7 +32,8 @@
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
-        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "5f1d933c4e3d21b3671eaeac2f3c43ce392818e930cbae37997b3430c3bee0c2"
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "5f1d933c4e3d21b3671eaeac2f3c43ce392818e930cbae37997b3430c3bee0c2",
+        "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73"
       }
     },
     {

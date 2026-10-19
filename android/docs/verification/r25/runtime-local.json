@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-18",
+  "branch": "arena/a8ac5475-osb",
+  "recovered_head": "0260d590c93bc2697bb71458a6726e0438a950a6",
+  "local_tools": {
+    "python3": "/usr/bin/python3",
+    "node": "/usr/local/bin/node",
+    "npm": "/usr/local/bin/npm",
+    "git": "/usr/bin/git",
+    "gh": "/usr/bin/gh",
+    "java": null,
+    "javac": null,
+    "adb": null,
+    "sdkmanager": null,
+    "ffmpeg": null,
+    "z3": null
+  },
+  "python": "3.11.2 (main, Apr  8 2026, 01:58:00) [GCC 12.2.0]",
+  "node": "v22.22.3",
+  "host_cache": {
+    "tool_scope": "Host-only JRE, Kotlin compiler mirror and optional Office reference readers; NOT bundled in any APK",
+    "compiler_integrity": "sha512-nY7ifXZsAfCTJFagHmDQuJRJSr1W/WBUrJnLTfq78/g8u+LMM97pAqspg3ANDFLBH8+de1XdRtofpaLEr3kZiQ==",
+    "versions": [
+      "openjdk version \"17.0.9\" 2023-10-17\nOpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)\nOpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode)\n",
+      "info: kotlinc-jvm 2.2.21 (JRE 17.0.9+9)\n"
+    ],
+    "python_packages": {
+      "jdk4py==17.0.9.2": "d9e5235e110182b9291ea09da413309b19dcf12d104d9aa3624abe210e593d7c",
+      "openpyxl==3.1.5": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2",
+      "et-xmlfile==2.0.0": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa",
+      "XlsxWriter==3.2.5": "4f4824234e1eaf9d95df9a8fe974585ff91d0f5e3d3f12ace5b71e443c1c6abd"
+    },
+    "files": {
+      "node_modules/kotlin-compiler/lib/kotlin-compiler.jar": "0885d5546e3a18d8509ae99aaf735decc7b88e0c33fc0287b5f74bc085a7cff5",
+      "python/jdk4py/java-runtime/bin/java": "4b8e30e3fb95e82d24b08437beea7335c125ffb3d8596e7e39d7283fa36f354d"
+    },
+    "limits": "Old JRE for disposable tests only. PyPI/npm transport and maintainers trusted. No independent upstream provenance proof."
+  },
+  "independent_agents": 0,
+  "physical_lab": false,
+  "studio_gui_executed": false,
+  "local_android_runtime": false,
+  "current_scope": "Current tool inventory and actually completed bootstrap only. Earlier native receipts are historical exact-source CI results, not a new R25 Android execution."
+}

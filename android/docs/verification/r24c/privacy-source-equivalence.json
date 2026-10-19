@@ -1,0 +1,19 @@
+{
+  "from_candidate": "3f7bcc409957b33e640d4b3218192e7679478192",
+  "to_candidate": "0260d590c93bc2697bb71458a6726e0438a950a6",
+  "examined_paths": [
+    "android/privacy",
+    "android/core/security",
+    "android/gradle",
+    "android/gradle.properties",
+    "android/build.gradle.kts",
+    "android/settings.gradle.kts",
+    "android/testing/src/r23",
+    "android/testing/build.gradle.kts",
+    "android/tools/run_gradle_ci.sh",
+    "android/tools/r24c_privacy_readiness.py",
+    ".github/workflows/android-r24-api37.yml"
+  ],
+  "changed_paths": [],
+  "scope": "Source equality only, not an API37 rerun or runtime/whole-repo identity proof. API37 receipt stays attributed to3f7bcc4."
+}

@@ -25,6 +25,7 @@ try:
     with open('focus-before.log','w') as log:
         result=subprocess.run(['./gradlew',':app:pixel6Api34ProDebugAndroidTest',
             '-Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true',
+            '-Pandroid.testInstrumentationRunnerArguments.fusionUiPhase=prior-source-counterexample',
             '-Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.ShellSmokeTest#activatingWindowKeepsChildFocus'],stdout=log,stderr=subprocess.STDOUT)
     cases=[]
     for path in result_root.rglob('TEST-*.xml'):

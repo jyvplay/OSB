@@ -1,6 +1,6 @@
 # Current R24 continuation status — full specification remains incomplete
 
-Branch `arena/a8ac5475-osb`,2026-10-18. **49/50 substantial tested subsets98%;1/50 unestablished2%
+Branch `arena/a8ac5475-osb`,2026-10-18. **49/50 substantial code+runnable-test subsets98%;1/50 unestablished2%
 (:format:lok).0/50 full original-spec accepted;50/50 unfinished at full scope.**
 231 requirements/36 cross-cutting obligations/30 unpassed formal spikes remain the original register.
 
@@ -8,7 +8,7 @@ Implemented bounded tabletop/walls/piles/snapshots, silver/light presets and ada
 media and offline atlas, strict disclosed service-link handoff, stronger input-change rearm and native
 visual/evidence tooling. Twelve production modules changed, not twelve completed modules.
 
-Latest source-hash-bound host pipeline:177 Python tests;439839 continuation and65097 retained R24 assertions PASS.
+Latest source-hash-bound host pipeline:179 Python tests;439839 continuation and65097 retained R24 assertions PASS.
 This is not Android or full-product acceptance. Native failures and each repair remain source-scoped;
 consult **[current exact results](docs/R24C-RESULTS.md)** rather than historic green receipts below.
 An actual pinned Servo AAR was inspected on CI; no browser engine was loaded/integrated or licensed by inference.

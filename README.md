@@ -26,7 +26,7 @@ YouTube/Spotify/SoundCloud links use disclosed **external handoff**, not embedde
 Input/IME changes discard the separate privacy workspace until explicit empty rearm.
 
 **49/50 substantial code+runnable-test subsets (98%);0/50 full-spec accepted.**
-The new local host pipeline passes177 Python tests,439839 continuation assertions and65097 retained
+The new local host pipeline passes179 Python tests,439839 continuation assertions and65097 retained
 R24 assertions. These are not native/physical acceptance. Native failures, targeted repairs, exact-source
 results and actual screenshots are retained rather than presented as an all-green product.
 A real pinned Servo Android AAR was inspected remotely; it was **not loaded or integrated**.

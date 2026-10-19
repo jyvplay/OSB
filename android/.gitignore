@@ -25,3 +25,6 @@ focus-before.log
 focus-before-result.json
 focus-before-results/
 sdk-available.log
+
+r25-ui-readiness.json
+r25-device-results.json
