@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12160985248,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE2MDk4NTI0OA==",
+      "name": "r23-memory-boundary-device-reports",
+      "size_in_bytes": 750141,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12160985248",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12160985248/zip",
+      "expired": false,
+      "digest": "sha256:72828d549c94e1e15b4749cc4734b6f0070102ca12f2ed989d8c3e71035a0293",
+      "created_at": "2026-10-19T02:57:51Z",
+      "updated_at": "2026-10-19T02:57:51Z",
+      "expires_at": "2027-01-17T02:49:54Z",
+      "workflow_run": {
+        "id": 39191792354,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "befb112284155d834ef7243ef6e1565826637d3a"
+      }
+    }
+  ]
+}

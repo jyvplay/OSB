@@ -301,9 +301,9 @@
     {
       "module": ":format:lok",
       "status": "incomplete",
-      "present_scope": "LibreOffice route/gate source; not a shipping Office engine",
-      "remaining_gap": "Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance",
-      "evidence_level": "android_compiled"
+      "present_scope": "Original bounded main-FS/worker Writer WASM adapter, exercised against actual pinned LibreOffice26.2.6.3 with native tiles and ODT/PDF independent readback in desktop Chrome155",
+      "remaining_gap": "No Android engine payload/hosting or complete Office integration. Generic document fidelity, Calc/Impress/editing, permissions/hostile-document/profile isolation,1GiB runtime footprint and transitive licensing remain unaccepted.",
+      "evidence_level": "runner_executed"
     },
     {
       "module": ":cast:dlna",

@@ -40,11 +40,33 @@
       "bytes": 3209,
       "sha256": "d106b7768980e53d58171c80b1477141b22cd6618e59be4649a2efb2d11d5b95",
       "ref": "lokjs-writer-libreoffice-26.2.6.3-run37271490985"
+    },
+    "zeta-convert-main": {
+      "blob": "86e9a3154b4d7c23c5ef86bddfad2098d5beeab4",
+      "bytes": 3182,
+      "sha256": "c210a5b6e68baad82d2dfc4d67e8a32033c79acfb2c8f7163a0508c922d2e487"
+    },
+    "zeta-convert-worker": {
+      "blob": "fb6b3c00cb9a66c7e3de4a4f57b4c4e139cdb21e",
+      "bytes": 2235,
+      "sha256": "83d23c6d1847c0a3ca9cc2862dd7b255d2428bda0656cf98d4c478e3afd4d390"
+    },
+    "lok-build-workflow": {
+      "blob": "33ff59035877d391a3313aa8b7309cf118f945d0",
+      "bytes": 11951,
+      "sha256": "99b764a6214c8cd31ef62f0c7c26e3891af05f3d0c089755a2cd803009e922a9"
+    },
+    "lok-enums": {
+      "blob": "516622722bb9fae000b65489dace1d712e036eb6",
+      "bytes": 42480,
+      "sha256": "e9051ce6f4cbe3650afe679d8a757894db798a78afe2c45133b506c35cc78d83"
     }
   },
-  "executed": false,
+  "executed": true,
   "integrated": false,
   "legal_accepted": false,
-  "scope": "Actual primary repository source/release metadata only, NOT a working engine or upstream-authenticated binary claim",
-  "frontier": "Publisher README distinguishes a26.8 unipoll/runLoop shutdown/deadlock from recommended26.2; source declares1GB WASM linear memory and PROXY_TO_PTHREAD. These hypotheses require actual execution; top-level JS MIT does not license the entire LibreOffice payload."
+  "scope": "Actual source/release metadata plus one executed controlled desktop-browser Writer/WASM adapter experiment. NOT Android integration, generic Office fidelity/security or license clearance.",
+  "frontier": "Publisher README distinguishes a26.8 unipoll/runLoop shutdown/deadlock from recommended26.2; source declares1GB WASM linear memory and PROXY_TO_PTHREAD. These hypotheses require actual execution; top-level JS MIT does not license the entire LibreOffice payload.",
+  "standalone_executed_candidate": "baf72abf86ba99063c7b1266bc06413c856b2f63",
+  "production_adapter_executed_candidate": "befb112284155d834ef7243ef6e1565826637d3a"
 }

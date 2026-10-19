@@ -67,10 +67,17 @@ class R25PngCopyDeviceTest {
     }
     private fun pick(name:String) {
         button("png_copy_choose").click();picker()
-        val file=device.wait(Until.findObject(By.text(name)),10000)
+        // Image grid tiles can expose their real filename as accessibility description, not visible TextView text.
+        val end=SystemClock.elapsedRealtime()+10000
+        var file:androidx.test.uiautomator.UiObject2?=null
+        while(file==null && SystemClock.elapsedRealtime()<end) {
+            file=device.findObject(By.text(name)) ?: device.findObject(By.desc(Pattern.compile("(?s).*"+Pattern.quote(name)+".*")))
+            if(file==null)SystemClock.sleep(50)
+        }
         if(file==null) {
-            val nodes=device.findObjects(By.text(Pattern.compile(".+"))).take(20).map {it.text.take(80)}
-            throw AssertionError("Image seed not visible in actual DocumentsUI: $name; foreground=${device.currentPackageName}; visible=$nodes")
+            val texts=device.findObjects(By.text(Pattern.compile(".+"))).take(15).map {it.text.take(100)}
+            val descriptions=device.findObjects(By.desc(Pattern.compile(".+"))).take(20).map {it.contentDescription.take(130)}
+            throw AssertionError("Image seed not identified in actual DocumentsUI: $name; foreground=${device.currentPackageName}; text=$texts; descriptions=$descriptions")
         }
         file.click();app()
     }
@@ -97,7 +104,7 @@ class R25PngCopyDeviceTest {
                 pick(name);val ready=await(scenario,"READY")
                 assertTrue(ready.outputBytes<ready.inputBytes);assertTrue(ready.inetDenied==true)
                 lateinit var activity:PngCopyActivity;scenario.onActivity {activity=it}
-                NativeVisualEvidence.captureViews(activity,"r25-png-copy",listOf(R.id.png_copy_choose,R.id.png_copy_save,R.id.png_copy_discard))
+                NativeVisualEvidence.captureViews(activity,"r25-png-copy",listOf(R.id.png_copy_choose,R.id.png_copy_save,R.id.png_copy_discard,R.id.png_copy_close))
                 button("png_copy_save").click();picker()
                 val filename=requireNotNull(device.wait(Until.findObject(By.clazz("android.widget.EditText")),10000))
                 filename.text="r25-clean-${UUID.randomUUID()}.png"
@@ -108,7 +115,7 @@ class R25PngCopyDeviceTest {
                 assertTrue(PngMetadata.verifyDerivative(source,copy));assertTrue(PngMetadata.clean(copy).report.removedChunkTypes.isEmpty())
                 assertArrayEquals(source,context.contentResolver.openInputStream(original)!!.use{it.readBytes()})
                 scenario.onActivity {a->
-                    for(id in listOf(R.id.png_copy_choose,R.id.png_copy_save,R.id.png_copy_discard)) {
+                    for(id in listOf(R.id.png_copy_choose,R.id.png_copy_save,R.id.png_copy_discard,R.id.png_copy_close)) {
                         val v=a.findViewById<Button>(id);assertTrue(v.height/a.resources.displayMetrics.density>=47.99f)
                     }
                 }

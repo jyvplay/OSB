@@ -41,7 +41,8 @@ class R25ToolTests(unittest.TestCase):
             self.assertEqual(collect(tmp)['summary']['observations'], 0)
 
     def test_exact_named_native_contract_and_bad_receipt_mutations(self):
-        self.assertEqual(len(expected('full')), 147)
+        self.assertEqual(len(expected('full')), 148)
+        self.assertEqual(len(expected('web')), 1)
         self.assertEqual(len(expected('media')), 3)
         self.assertEqual(len(expected('png')), 3)
         self.assertEqual(len(expected('readiness')), 6)
@@ -85,3 +86,14 @@ class R25ToolTests(unittest.TestCase):
         self.assertEqual(file.stat().st_size,receipt['bytes'])
         self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),receipt['sha256'])
         self.assertFalse(receipt['native_decoded'])  # Generation receipt is deliberately NOT a decoder pass.
+
+    def test_lok_testability_is_bound_to_actual_executed_production_adapter(self):
+        import hashlib
+        record=json.loads((ROOT/'docs/verification/r25/lok-production-first/verified.json').read_text())
+        production=ROOT/'format/lok/src/main/assets/osb-lok/OfficeSession.js'
+        consumer=ROOT/'testing/src/r25js/LokWasmChecks.js'
+        self.assertEqual(hashlib.sha256(production.read_bytes()).hexdigest(),record['production_adapter_sha256'])
+        self.assertEqual(hashlib.sha256(consumer.read_bytes()).hexdigest(),record['consumer_script_sha256'])
+        self.assertEqual(record['actual_protocol_checks'],10)
+        self.assertTrue(record['source_alias_attack'])
+        self.assertFalse(record['integrated_android']);self.assertFalse(record['full_office_accepted']);self.assertFalse(record['legal_accepted'])

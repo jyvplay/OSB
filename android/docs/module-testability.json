@@ -36,8 +36,8 @@
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
         "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "bb4c95fb1e5649cf793c9745d4d10141819c6d41768e00e77bff0fe018a4eadb",
         "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73",
-        "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "09ca729150c08587a2450eaaab686837dd32567090377bd80593c849f4b8a11f",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "b39ea56fb03f90d771ca41eea4a1155aecaa651004682435255083522911419d"
+        "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "c1ae60ded0967dc08fd62ccaf644a25402158bd1154e47ff630419999d53202f",
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614"
       }
     },
     {
@@ -1113,7 +1113,7 @@
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt": "afbe862f6762b116910fec9e1908322a9de61e319f0c818cafcf8654a885f411",
         "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt": "4ff9f6fd9464dcc21faac9ef65796975ef8b7e92bb4ebef3c3faf6b8f6b1cca1",
         "tools/check_r25_png_reference.py": "d4efb3d6b0a28a5497ece91938c604eb2120895e28cdac73b548ff117036dd7b",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "b39ea56fb03f90d771ca41eea4a1155aecaa651004682435255083522911419d"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614"
       }
     },
     {
@@ -1136,14 +1136,21 @@
     },
     {
       "module": ":format:lok",
-      "substantial_testable_subset": false,
-      "kind": "not_established",
-      "behavior": "LibreOffice route/gate source; not a shipping Office engine",
-      "production": [],
-      "checks": [],
-      "command": "",
-      "limit": "No qualifying behavioral test/source pairing established in this census. Existing source may be testable with additional harness/platform work; this is NOT a declaration that all code is absent. Licensing/isolation/build dependencies, real rendering/editing/fidelity/lifecycle acceptance",
-      "sha256": {}
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Bounded production Writer/WASM adapter: main-runtime file ownership and worker load/tile/saveAs/destroy, replay/path/shape/alias checks. Actual pinned LibreOffice26.2.6.3 executed in desktop Chrome155 with ODT/PDF independent readback and real rendered tiles. NOT an Android Office runtime.",
+      "production": [
+        "format/lok/src/main/assets/osb-lok/OfficeSession.js"
+      ],
+      "checks": [
+        "testing/src/r25js/LokWasmChecks.js"
+      ],
+      "command": "R25 actual LOK WebAssembly experiment; node ../experiments/lok-wasm/probe.mjs ACTUAL_ENGINE_DIR OUTPUT; python3 ../experiments/lok-wasm/verify.py OUTPUT",
+      "limit": "Host/browser Writer subset only. No bundled Android engine, generic Calc/Impress/edit/fidelity, hostile-document/Byzantine-host isolation,1GiB footprint reduction, source reproducibility or transitive license acceptance.",
+      "sha256": {
+        "format/lok/src/main/assets/osb-lok/OfficeSession.js": "a8a5850191233b57d497704bbc4f5fac5993d002822ab6f46d46e76b430751d3",
+        "testing/src/r25js/LokWasmChecks.js": "7f7ceb207ccbace1f0dd6e74de4e64ec7740171566d7f2a890295ff006d443f3"
+      }
     },
     {
       "module": ":cast:dlna",

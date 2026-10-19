@@ -1,0 +1,86 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 2,
+    "start_column": null,
+    "end_line": 2,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 19,
+    "start_column": null,
+    "end_line": 19,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKDIAGNOSTIC1 {\"sourceCandidate\":\"befb112284155d834ef7243ef6e1565826637d3a\",\"engineExecuted\":true,\"error\":\"\",\"browserVersion\":\"155.0.8059.39\",\"browserCapabilities\":{\"crossOriginIsolated\":true,\"sharedArrayBuffer\":true,\"wasm\":true},\"engineStages\":null,\"mainFsSourceBytes\":462,\"scope\":\"Actual controlled Writer fixture load/tile/saveAs in desktop Chromium WASM ONLY. Independent output verification still required. NOT Android, general Office fidelity, hostile-document safety, upstream reproducibility or license closure.\",\"console_tail\":[\"log: Thread name: \\\"configmgrWriter\\\"\",\"error: engine:warning: unsupported syscall: __syscall_mprotect\\n\"]}",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 9,
+    "start_column": null,
+    "end_line": 9,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKPNG1 detail.png 2/2 4c5be621015157e59dc2a7fb8727e058bbba5ec794c690a6e4c83c9202099c62 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mAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJgBoAUmAEgBWYASIEZAFJg/wMzjPFf+sw/bQAAAABJRU5ErkJggg==",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 8,
+    "start_column": null,
+    "end_line": 8,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKPNG1 detail.png 1/2 4c5be621015157e59dc2a7fb8727e058bbba5ec794c690a6e4c83c9202099c62 iVBORw0KGgoAAAANSUhEUgAAAQAAAAFACAYAAABTKqIKAAAT1UlEQVR4nO3dBZAcRR+GcSDuBEICIbi7Fe7u7u7uUHjhVri7u7tL4e4Ohbu7W5jvni76am7Zvb27bL5c6v/8qraSldsb63d6err7xhhDkiRJkiRJkiRJkiRJkiRJkiRJkiQFNmaTLl26dOvatWvPbt269fbhw0fneoyUgj/WWGN17d69e99evXoN7NOnz+B+/fpN0L9//wmbHsN8+PDReR4NLfhNJ/yxmgp+n969ew/iywcOHDj5oEGDphk8ePAMQ4YMmcmHDx+d69GQgr/55ps/6sOHj9Hv0bAA4Fq/3qMhv0xS59F0vd8lB8Dw4cOL1h6SOpcRDoAePXr0NwCk0dMIFX5u7/Xt23eIASCNnkYoAHr27Dl2k0kNAGn01OHC31Tgu3P2HzRo0LQGgDR66nAA0NFnwIABEw0ZMmRmA0AaPXU4AKj+09Fn6NChcxgA0uipQ4WfPv69e/cet8lUw4YNm9sAkEZPHQoA7v336dNnPLr5TjTRRPPlHkWjemUktY8BIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEiBGQBSYAaAFJgBIAVmAEj/uv3224sll1yymGSSSRr6vY8//nix2GKLNfx7O+Lkk08u1l577WKrrbZKzw2ATuCff/4pzjnnnGLRRRctVlxxxWL11VdPB8wmm2xSvPnmmy0++8cffxQHHnhgsfDCCxfLLbdcMc888xSzzz578dBDD6X377vvvmKNNdZgxxYzzDBD+twcc8yRDj52/Icfflh1Gf7+++9in332KZr2Z9G0b9PP8d1TTjllsfjii6eDuOyQQw4pZplllmLppZcuFlpooWKdddYpPvjgg+b3jzzyyLQM5cc000zT4C3XeKecckrNgvruu+8Wu+66a9GtW7e0bffee+/iyy+/rPrZvfbaq1hggQXa9L0j4u233y6ayl+xyCKLpONmpZVWSsfRmWeemY6rshtuuKFYaqml0v85hmAAdAIbb7xxMe2007YoQDj99NOL/v37F0899VTza7vsskuxwgorFH/99Vfza8cdd1xxySWXND9//vnnU4Fjh2effvppOgDnmmuuVpdl5ZVXTgU7+/3334u11lqrGDhwYPHNN980v07I/Pjjj+n/HGgcfLPOOmvz+wTACSecUNxzzz3Nj8cee6ytm6Rdyus5otpSUAcMGFDsvPPOrX7m3HPPLXbccccW3zvppJM2YhGbsZ9ZlmOOOaZFYWdfsw/XXXfdFp/nhLL99tu3eM0AGMXuuuuuVFjvvvvuqu9zhi0XyCmmmKI46qijWnzm/fffL5588snm59UCAByQY445ZvHzzz/XXJ7KAMAdd9yRvo9CnFHTKCOA+Mwnn3ySnhMADz/8cM3f0ygfffRRMeGEEzbs+xoVANW+l33XSPPOO28x33zzVX2PGhv74/rrr29+jbN/5XIbAKPYZpttVvTq1StVwas59dRT04585ZVX0nOq5VNPPXUq9LXUCoBNN900HbyVVcOyagFw0003pe8r10Qq5QDg7IP2BgCBwgG9wQYbpHXcf//9W7x/6aWXpvdXXXXVVAOiyvvWW28VyyyzTNG9e/e03GeccUZaDmornBXz9y644ILpMijjPS5r+F2zzTZbi0LSiAB49tlnU2ErBxPfO/7446faFPtvsskmKw4//PBi+PDhqWbF603lKl3KEfo8B6FLlZ4a1/zzz1/cf//96XUu5djeRxxxRM3lGG+88dLPgcsVnk8++eRpW1122WXpNQNgFJt77rlT9b+WfPa96qqr0vMbb7yx6NKlSzroOUhouKos0NUCgMLLgUtbQ2sqA+Crr75KhY02idbssccexcwzz9z8nADgwGUZKaRc5uQQq+bmm28unnvuufT/l156KS1/DrkHH3yw6NmzZyrwGW0OuOCCC4pxxx23xXfR1pADAIceemiLAKDg5UsoGsXKVfNG1QAIo8oAGDZsWHPQP/HEE2kfXnTRRek5BZt1Puuss4rXX3+92GGHHYqPP/44rfcLL7yQPnP55ZenQvzLL780HxdXXnllzWXg2JpuuumanxN61gA6GRqTOAvV8sADD6QdzTVl9swzzxRrrrlmOoB4jzMDBTXLAcD3cjbhXz5LI+DLL7/c6vIQAP369Us/N+ecc6aw2WabbVq9bKAtYIIJJkiXM9mff/6ZHiCgqMnQuPjee+/V2yRpXVh+Cgk46/Moe/HFF9O/HQmAsmuuuSYVsmxkBkDl97JOSyyxRPp/DoCffvopPf/tt9+KY489Np2xs3zWJ8xZbv5P7awWgpvQyQyATohqbWut47fddlva0VdfffV/3vv666+LfffdN13XU73PqtUAaMw78cQTi65du7Z61ijXADjTcBAvv/zyNT9PFZYwosGvnsGDB6ezbzWc/amSc0lEbYHlz3ceCEla36vpSABQeAjDLbbYIt3269GjR/N7/88A2H333dPlACoDALTZjDPOOGlZeVCdZ1tQI8ptR1dccUXNZSDAp59++ubnBkAnxP1YzkDlVv2yk046Ke1oqoXgzFCJ20D5QEKtNgDQUs9tw1oqLwHytX2176LwU4g4u7cFB+N22233n9dZJw70XB3ONYAcADPOOGOqElfT3gCgVsFtPG6fgTBoVABwLc82QVsCgHXK+6JaAHBslO+slNHWwudZt2qodbFdCI7MAOiESHM2HWf6arj2LhdYCnulww47LDWcZa0FAJcDM800U83lqQwADiSuJSeeeOJUI8io3m+44YY1axNHH330f16jkJcLZvbaa6+l5X3nnXfS88oAoKpMdbaaagHAdW/5Tkk5ALi1Sl+HrJEBwC22HNBtCQD6ceS2jGoBQAMfv6tWAzFtLLVu69KYyPfRtpIZAJ0UB85UU031n5Z9GqjoB0CrcsbBXW5M++GHH1K1kAM7qxUAPOdyofI2Ylm1uwD5lhKtxuAsx8G72267pcao8oOGK3BtWw6M3Dr/2Wef/ed3cilDC3iuztJyXw6A/Pz8889vbvDkkoaCQeMoBTj3Sci/m4ZHPvPrr7+mqnQOAFr8aQ+hzwW1Ljo0NSoAyiFcLwAIPX7vI488kp5XCwBqfVyyHXTQQc01i/I25f2mMpgaXMsNwdyKpdbEJVWZAdCJUUA4cFdZZZVUbeP/XA+XW77BAUvqUwBXW2211GOPKng+AOhPQG+wMUo9Aempx8/wOO+882ouA+0JQ4cOTaFD9ZPGxmy99dZLVectt9wyFZ4xKnr55QdnZOy5556ppkH7wbLLLpuWNzfcVbPffvul30v4sIx9+/ZN6/Htt9+m96+99tpUe+GApzCvv/76qTAQHlxa0NiVO7kQGKwHDZN0hqFNYeyxx0694+hJSTjwnNuDFEzC",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 7,
+    "start_column": null,
+    "end_line": 7,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKPNG1 tile.png 2/2 d48a3c1301f77acf7faef7d4c6e8ff689cf2d39adcd30a960cfb991662cd5ac1 LKjDAwGAyafXAIyMjPx2zpw5y2bMmDF7LAAzZ84cGBoaWt6583cCAJNPrwGotb6BgYGRzhyfORaA+kPdWHcKAEw+vQagjvT7+/vnbrepOg3oWCEAMPn0GoDO4f+vNjr875o+ffqszlHAYgGAyafXAHT2/vOmTJky9f8EoPT19c3pBmBLY9wXALaJXuZsze3O3r//J1+krgmoBxmGMbnG6Ojo+l4e11NJ6jBhaGhoh4ULF66pCwd22GGHf1m5cuW/r1q16j932WWXP61evfq/16xZ82fDMCbG2HXXXQ/beeed/2unnXb6jx133PHfli9f/o+LFy/+fV3fMzg4uLSO7uuan54PJ2pRsBYM5s2bt9OiRYv+vkJQL1oxWLFixb8ahjFxxrp163bvzM1/rov56mKf2nnXFX/17V5d9NPz5O+qhYK6PqAuE64LBzoh+Lv6mrATg9/UxQR1zYBhGBNjrF279n86k35tZ4+/c0382uvXkfxmz/k7/gKwvnUGyTav6wAAAABJRU5ErkJggg==",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 6,
+    "start_column": null,
+    "end_line": 6,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKPNG1 tile.png 1/2 d48a3c1301f77acf7faef7d4c6e8ff689cf2d39adcd30a960cfb991662cd5ac1 iVBORw0KGgoAAAANSUhEUgAAAQAAAAFACAYAAABTKqIKAAAMK0lEQVR4nO3c949dZX7HcVzHY2Y84zq212aNg8H2Zle7ykpWihRFQYoiRaus8ifwO4LfYEQTvffee68CRC8SvfdeRUdCICyaAHP2fo9yR9gZ7LvIxDP7eb2kR7ZvPdee533Oee6B7bYD2JIpHdOmTZsxffr0WTNmzJhtGMbEGR3zO3Ozb+rUqdO36sSvF5w5c+ZAf3//3O23337R4ODgkjlz5vyqM5YZhjExxtKlS/84MDCwuDNHF86aNWuoE4X+zj576s+e+PXkzsTfvlOWBfUGc+fOXblgwYJdFi1a9JuRkZHfGoYxccaaNWv+vHDhwrXz589fNTw8vKJ21LXTriP2v2ri77bbbg8YhjG5xujo6PpeHtdTAOpcf0vj5x5ZAFtfL3N2iwHonO9P6wZgw4YNzeYGMHFsab7W2GIA+vr65ggATD69BuAn1wTqjoGBgREBgMmn1wD09/fPG/fbgVmzZg3X6qEAwOTTawAGBweX1nUDmy4gzKy9/4IFC1YLAEw+vQagvs6vrwc3CkBd6DM0NLR8ZGTkdwIAk0+vAaidfO3sa6e/0eF/lWHp0qX/IAAw+fQagLpoqC7sGzsNqGv86zriuoJo2bJl6wQAJp9eA7BkyZI/DA8P/7qvr29w7Lv/un64LvNdvnz5P3W/K9zWHwjYumpu11F+52h/x/rvBQQAgggABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAIzj22+/bV599dVf5Hk/97XhlzBhAvDQQw81t956a3Pfffe1v55yyinNLbfc0nzyySfN7rvv3px99tnNI4880nz//ffNnnvu2dx9993NRRdd1N523HHHNddff31z1VVXNe+///64r//666+Pe3s977XXXms+//zz9nV/+OGH9vZvvvmm3YbxXHHFFc1jjz3WXHLJJc0LL7zQPPDAA82TTz7ZfPzxx+M+fv/992/fv573xRdfbHZ74P/ThAlATZLu5KvfX3755c2+++7brF+/vp2YFYAnnniivb9uP/bYY8f2pOeee27z4osvNs8880zz7LPPtrfdcMMNzZFHHtlceeWVzYMPPtg+5957723jcvzxx4/df8cdd7QBKIcddlj765dfftmcdtppzUEHHdQcc8wxzRlnnNEG56ijjmpuvvnmZr/99msfV5N47733biNywAEHtAGoaNRzKmi1XRWp2ta6/+WXX25f+6STTmpfoz5vbfdll13WPPfcc815553Xvtfo6Ghz+OGHt2Gpbartveeee9q/l3rdt99++5f8pyDIhAlA7clrj19HALfffntz3XXXNRdeeGE7yesIoCZvRaD+LyYVhJp8hxxySHPqqac2F1xwQfPwww83jz76aDvhygknnNBO4PpzvV49t+4/8cQT2+d177/mmmuap556qt0z77HHHu2evPbuNdlrVCTOPPPM5oMPPmgne8WiolKPufTSS9vf33bbbc2BBx7YfPrpp80RRxzRTvY6MqhJXJ+rJm4dmeyzzz7thK/XPfTQQ5vvvvuufdzpp5/evPXWW+2RTG1bvWc95pxzzhkL0UcffdS8++67Y5GCrWHCBIAtqwi++eab23oz+BsiAJt4/vnnt/UmbFYd/nfXEbalif73RG8mTAAef/zx9vy6Dse75+Q/Nt6iWR1C1/nx0UcfvdHttVBYh9Nl0/s29eP76/Rj08n1cxbruguLW1t3obH7ubcWC5K5JkwA6ry5uwhY58VXX311uyB28MEHtz/se+21V/Pee++1j6vz45qstepf58g1as2gFg7vuuuudlGtFuJK3Vfn+fX4ur+7QFcLbrUuUPeXmvi1UFivXd8IdBcNa7Gu1g1q4tXiXG1LPbde68MPPxx3W+vbgTrXr3P+7rpGqUXAev8656/3rvWD2pPWAmB3cbLCVesZ3QXHWkeoxc1a+6jPXu/70ksvtdvdXWSsv7fuZ6zPXo9744032vWTes1ahKzH1fvedNNN7RpD3dbdhs6/b/tZuu9Zajtq/aL7HrX2cO2117afs96rPkd3gbW2vR5XayxMLhMmAHUEcOONN7ar+DWx6we1VtRrUa32qBWAV155ZewHsSZJ/WDWolndVgt1tRj39NNPNxdffHG7cFZqAtViXT2+bq/JUUcZ9QNez6v7v/766+arr74ae61asKuJVhOkFutqe+688852kbBur8XJeq96Tk3gTbe1QlDvUROlgnT//fe321JHBfVVYL1nLVzWZK2AVFy6i5MVnVqg7C441mNrj1+TvBYa67NXwLrbWpO0/PjvpLtQWM+v7e0uRp511lntYmNN3vpc559/frsNFbZ6bPc9S21HfVvRfW53OyoS77zzTvseNelrgbW25+STT26jU3Fi8pgwAfhb89lnn7V707qeoCYGTEQCAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABBMACCYAEAwAYBgAgDBBACCCQAEEwAIJgAQTAAgmABAMAGAYAIAwQQAggkABBMACCYAEEwAIJgAQDABgGACAMEEAIIJAAQTAAgmABDspwIwvROARZ0ArO4GYNq0aTM2bNjQbG4AE8eW5muN/w3AHzsBWNkJwPBPHgEIAEwuf0UANj4CmNIxe/bs+R2rli1btk4AYPLpNQBLliz5w/Dw8K/7+voGt+uqw4E6",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/befb112284155d834ef7243ef6e1565826637d3a/.github",
+    "start_line": 5,
+    "start_column": null,
+    "end_line": 5,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKWASM1 {\"source_candidate\":\"befb112284155d834ef7243ef6e1565826637d3a\",\"archive_sha256\":\"591c9b099587bb6bea8d92e2cf73f93395f655e1656800cc8689ab740d229c1d\",\"production_adapter_sha256\":\"a8a5850191233b57d497704bbc4f5fac5993d002822ab6f46d46e76b430751d3\",\"consumer_script_sha256\":\"7f7ceb207ccbace1f0dd6e74de4e64ec7740171566d7f2a890295ff006d443f3\",\"actual_protocol_checks\":10,\"source_alias_attack\":true,\"actual_browser\":\"155.0.8059.39\",\"actual_linear_memory_bytes\":1073741824,\"document_twips\":[12808,16408],\"pdf_pages\":1,\"pixel_samples\":{\"whole_page\":{\"opaque\":75707,\"dark\":1,\"light\":75310},\"detail_96dpi\":{\"opaque\":71337,\"dark\":823,\"light\":69830}},\"detail_region_twips\":[0,0,3840,4800],\"outputs\":{\"output.odt\":{\"bytes\":9366,\"sha256\":\"2130e81ea25791ac9a25f1d2112178a64b83cca878a64a308d3c896bd8d28d8f\"},\"output.pdf\":{\"bytes\":16440,\"sha256\":\"d321ffc100fa900983c3c7b6f7a3499ae4e1fb8804183ad9a7959eb5d7671452\"},\"tile.raw\":{\"bytes\":327680,\"sha256\":\"1237d3d1e55f393ec2412e08dbef7e1a3cbaa63879863f2070c987793e3063e1\"},\"tile.png\":{\"bytes\":3172,\"sha256\":\"d48a3c1301f77acf7faef7d4c6e8ff689cf2d39adcd30a960cfb991662cd5ac1\"},\"detail.raw\":{\"bytes\":327680,\"sha256\":\"d801521a0ebad6107d9f7d27c2e8e45497add34fddf931ffa6bf06390f2faea4\"},\"detail.png\":{\"bytes\":5134,\"sha256\":\"4c5be621015157e59dc2a7fb8727e058bbba5ec794c690a6e4c83c9202099c62\"}},\"accepted_scope\":\"One real controlled Writer fixture: load, tile, saveAs ODT/PDF; independent ODT/XML + pypdf readback. NOT Android embedding, generic Office fidelity, malicious-document safety, upstream reproducibility or license closure.\",\"integrated_android\":false,\"full_office_accepted\":false,\"legal_accepted\":false}",
+    "raw_details": ""
+  }
+]

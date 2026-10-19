@@ -84,7 +84,7 @@ class PngCopyActivity : Activity() {
             catch(_:Exception){pendingSave?.bytes?.fill(0);pendingSave=null;setBusy(false);status.text="Save picker unavailable; no write attempted."}
         }
         discard=button("Discard this session",R.id.png_copy_discard) {if(!busy)clear("Session copy discarded; no forensic-erasure guarantee.")}
-        button("Close",View.generateViewId()){finish()}
+        button("Close",R.id.png_copy_close){finish()}
         layout.addView(actions)
         layout.setOnApplyWindowInsetsListener {v,i->val b=i.getInsets(WindowInsets.Type.systemBars());v.setPadding(b.left,b.top,b.right,b.bottom);i}
         setContentView(layout);setBusy(false)

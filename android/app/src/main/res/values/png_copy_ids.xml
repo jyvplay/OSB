@@ -1,7 +1,9 @@
 <resources>
+    <item name="r25_web_capability_result" type="id" />
     <item name="png_copy_choose" type="id" />
     <item name="png_copy_save" type="id" />
     <item name="png_copy_discard" type="id" />
+    <item name="png_copy_close" type="id" />
     <item name="png_copy_status" type="id" />
     <item name="png_copy_summary" type="id" />
 </resources>

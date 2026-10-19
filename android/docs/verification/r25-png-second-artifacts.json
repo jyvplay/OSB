@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 12160338374,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE2MDMzODM3NA==",
+      "name": "r25-png-copy-native",
+      "size_in_bytes": 319095,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12160338374",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12160338374/zip",
+      "expired": false,
+      "digest": "sha256:f9f619714f34b5a84867762e67fd952f10c71193b302f556eda3bb6a8cea3ae1",
+      "created_at": "2026-10-19T02:55:58Z",
+      "updated_at": "2026-10-19T02:55:58Z",
+      "expires_at": "2027-01-17T02:49:54Z",
+      "workflow_run": {
+        "id": 39191792443,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "befb112284155d834ef7243ef6e1565826637d3a"
+      }
+    },
+    {
+      "id": 12159933467,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE1OTkzMzQ2Nw==",
+      "name": "verified-png-page-frame",
+      "size_in_bytes": 160,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159933467",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12159933467/zip",
+      "expired": false,
+      "digest": "sha256:4de63a47aabeafd7e1eb32296a75a7da1014028f2b4b788eaa6934f4573a638f",
+      "created_at": "2026-10-19T02:56:20Z",
+      "updated_at": "2026-10-19T02:56:20Z",
+      "expires_at": "2027-01-17T02:49:54Z",
+      "workflow_run": {
+        "id": 39191792443,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/a8ac5475-osb",
+        "head_sha": "befb112284155d834ef7243ef6e1565826637d3a"
+      }
+    }
+  ]
+}
