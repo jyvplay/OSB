@@ -49,3 +49,10 @@ Runtime repair record:8b396c4/b1ee733 reached actual Chromium155.0.8059.39, cros
 
 
 Rendering-resolution repair:642bec8 actually loaded the original FODT and produced ODT/PDF that passed independent text readback, but its256×320 whole-page tile had only1 sample below the declared dark threshold (opaque75707/light75310). No complete pass was published. The next experiment preserves that overview AND adds an explicitly declared96dpi top-left tile (15twips/pixel), after the actual saveAs layout operations; the detail must meet the original nonblank-text contrast threshold. Both raw tiles are retained and encoded as diagnostic PNGs even if the visual gate fails. No pixel values or fixture text are synthesized to satisfy the checker.
+
+
+## Production-adapter verification phase
+
+After the controlled standalone engine succeeded at baf72ab, the experiment is being switched to the original, general bounded adapter in `android/format/lok/src/main/assets/osb-lok/OfficeSession.js`, with a separately served consumer in `android/testing/src/r25js/LokWasmChecks.js`. The main-runtime adapter owns input/output namespaces, byte caps and retire/replay state; the worker adapter owns real load/render/saveAs/destroy calls. Ten protocol attacks and source-buffer mutation must run on the actual engine/virtual filesystem, followed by independent ODT/PDF/tile readback. Their exact source hashes are bound to the receipt. The fixed fixture is no longer the production API.
+
+This phase does NOT enable an Android Office UI, bundle the70MB engine or claim general format/macro/profile/security/footprint/license acceptance. The native `LokBridge.availability()` remains explicit about that boundary. No module census credit is added until this production adapter's positive real-engine execution is collected.

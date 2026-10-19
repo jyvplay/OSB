@@ -1,7 +1,7 @@
 name: R25 actual LOK WebAssembly experiment
 on:
   push:
-    paths: ['experiments/lok-wasm/**', '.github/workflows/engine-wasm-r25.yml']
+    paths: ['experiments/lok-wasm/**', 'android/format/lok/src/main/assets/**', 'android/testing/src/r25js/**', '.github/workflows/engine-wasm-r25.yml']
   workflow_dispatch:
 permissions:
   contents: read

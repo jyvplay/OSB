@@ -37,7 +37,7 @@
         "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "bb4c95fb1e5649cf793c9745d4d10141819c6d41768e00e77bff0fe018a4eadb",
         "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73",
         "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "09ca729150c08587a2450eaaab686837dd32567090377bd80593c849f4b8a11f",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "c054c1f18e30d2fc508e529c2f9f7328d7f3712bc321682e3cbc14ce837681c7"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "b39ea56fb03f90d771ca41eea4a1155aecaa651004682435255083522911419d"
       }
     },
     {
@@ -1109,11 +1109,11 @@
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt": "603a0206f41404e7d00b7b488e1a8b6d2a4c03aed167934e6c588cf647bf8cbd",
-        "format/image/src/main/java/dev/fusion/format/image/sandbox/PngLease.kt": "266cd827057cef146ffc1e1ae58852e30c0a24d20618f476a36d2569d5a6a621",
+        "format/image/src/main/java/dev/fusion/format/image/sandbox/PngLease.kt": "c0a3dbe388ef0afa1adc13558f597dc02f65fccb7ab0cf73f7d4f0b5e0c20768",
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt": "afbe862f6762b116910fec9e1908322a9de61e319f0c818cafcf8654a885f411",
         "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt": "4ff9f6fd9464dcc21faac9ef65796975ef8b7e92bb4ebef3c3faf6b8f6b1cca1",
         "tools/check_r25_png_reference.py": "d4efb3d6b0a28a5497ece91938c604eb2120895e28cdac73b548ff117036dd7b",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "c054c1f18e30d2fc508e529c2f9f7328d7f3712bc321682e3cbc14ce837681c7"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "b39ea56fb03f90d771ca41eea4a1155aecaa651004682435255083522911419d"
       }
     },
     {

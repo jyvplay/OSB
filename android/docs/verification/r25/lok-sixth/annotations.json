@@ -1,0 +1,50 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/642bec8918a5e88aedfa9a40b4623e4e6a4143f6/.github",
+    "start_line": 2,
+    "start_column": null,
+    "end_line": 2,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/642bec8918a5e88aedfa9a40b4623e4e6a4143f6/.github",
+    "start_line": 19,
+    "start_column": null,
+    "end_line": 19,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25LOKDIAGNOSTIC1 {\"sourceCandidate\":\"642bec8918a5e88aedfa9a40b4623e4e6a4143f6\",\"engineExecuted\":true,\"error\":\"\",\"browserVersion\":\"155.0.8059.39\",\"browserCapabilities\":{\"crossOriginIsolated\":true,\"sharedArrayBuffer\":true,\"wasm\":true},\"engineStages\":null,\"mainFsSourceBytes\":462,\"scope\":\"Actual controlled Writer fixture load/tile/saveAs in desktop Chromium WASM ONLY. Independent output verification still required. NOT Android, general Office fidelity, hostile-document safety, upstream reproducibility or license closure.\",\"console_tail\":[\"log: Thread name: \\\"configmgrWriter\\\"\",\"error: engine:warning: unsupported syscall: __syscall_mprotect\\n\"]}",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/642bec8918a5e88aedfa9a40b4623e4e6a4143f6/.github",
+    "start_line": 6,
+    "start_column": null,
+    "end_line": 6,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Process completed with exit code 1.",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/642bec8918a5e88aedfa9a40b4623e4e6a4143f6/.github",
+    "start_line": 5,
+    "start_column": null,
+    "end_line": 5,
+    "end_column": null,
+    "annotation_level": "failure",
+    "title": "",
+    "message": "Actual independent engine readback FAILED: ValueError: Actual tile contrast insufficient: opaque=75707 dark=1 light=75310",
+    "raw_details": ""
+  }
+]

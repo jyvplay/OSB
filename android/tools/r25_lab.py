@@ -13,7 +13,7 @@ READINESS='dev.fusion.shell.R25UiReadinessDeviceTest,dev.fusion.shell.R24TaskInp
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('mode',choices=('doctor','host','android','device'))
     p.add_argument('--tools',type=Path);p.add_argument('--reference-tools',type=Path,default=Path.home()/'.cache/fusion-r25-reference')
-    p.add_argument('--suite',choices=('readiness','png','full','privacy'),default='readiness');p.add_argument('--disposable',action='store_true')
+    p.add_argument('--suite',choices=('readiness','png','media','full','privacy'),default='readiness');p.add_argument('--disposable',action='store_true')
     a=p.parse_args();env=environment(a.tools.expanduser().resolve()) if a.tools else os.environ.copy()
     def run(command):subprocess.run(command,cwd=ROOT,env=env,check=True)
     if a.mode=='doctor':run([sys.executable,'tools/r24c_lab.py','doctor']+(['--tools',str(a.tools)] if a.tools else []));return
@@ -28,7 +28,9 @@ def main():
     if not a.disposable:raise SystemExit('Only expendable AVDs: pass --disposable explicitly')
     args=['-Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true','-Pandroid.experimental.enableAdditionalTestOutput=true']
     if a.suite=='privacy':run([gradle,':privacy:pixel6Api34DebugAndroidTest',*args]);return
-    if a.suite in ('readiness','png'):args+=['-Pandroid.testInstrumentationRunnerArguments.class='+ (READINESS if a.suite=='readiness' else 'dev.fusion.shell.R25PngCopyDeviceTest')]
+    if a.suite in ('readiness','png','media'):
+        classes={'readiness':READINESS,'png':'dev.fusion.shell.R25PngCopyDeviceTest','media':'dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R25LocalVideoDeviceTest'}
+        args+=['-Pandroid.testInstrumentationRunnerArguments.class='+classes[a.suite]]
     else:args+=['-Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest']
     run([gradle,':app:pixel6Api34ProDebugAndroidTest',*args])
 

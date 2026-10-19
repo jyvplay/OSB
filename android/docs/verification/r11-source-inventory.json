@@ -1165,7 +1165,7 @@
       "path": "format/image/src/main/java/dev/fusion/format/image/sandbox/PngLease.kt",
       "module": ":format:image",
       "package": "dev.fusion.format.image.sandbox",
-      "sha256": "266cd827057cef146ffc1e1ae58852e30c0a24d20618f476a36d2569d5a6a621"
+      "sha256": "c0a3dbe388ef0afa1adc13558f597dc02f65fccb7ab0cf73f7d4f0b5e0c20768"
     },
     {
       "path": "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt",
@@ -1213,7 +1213,7 @@
       "path": "format/lok/src/main/java/dev/fusion/lok/LokBridge.kt",
       "module": ":format:lok",
       "package": "dev.fusion.lok",
-      "sha256": "272c35c3ad2b795312aa460ac1975430e6bc50f2a40eb899a0737caeab1b5167"
+      "sha256": "287a963c09c641bdbf855b698725f8f0af7c76234f2e6afe96f5bfdb100649a8"
     },
     {
       "path": "cast/dlna/src/main/java/dev/fusion/cast/dlna/DlnaClient.kt",

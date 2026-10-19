@@ -19,7 +19,10 @@ for(const name of ['lokjs.js','lokjs.wasm','soffice.data','soffice.data.js.metad
   if(crypto.createHash('sha256').update(data).digest('hex')!==intake.members[name]?.sha256) throw new Error('Artifact changed after intake: '+name);
   files.set('/'+name,data);
 }
-const workerTemplate=await fs.readFile(path.join(here,'probe-worker.js'),'utf8');
+const repo=path.resolve(here,'../..');
+const adapter=await fs.readFile(path.join(repo,'android/format/lok/src/main/assets/osb-lok/OfficeSession.js'),'utf8');
+const workerTemplate=await fs.readFile(path.join(repo,'android/testing/src/r25js/LokWasmChecks.js'),'utf8');
+const jobId=crypto.randomBytes(16).toString('hex');
 const fixture='<?xml version="1.0" encoding="UTF-8"?>'+
   '<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" '+
   'office:mimetype="application/vnd.oasis.opendocument.text" office:version="1.3">'+
@@ -47,17 +50,18 @@ const server=http.createServer(async(req,res)=>{
     if(req.method!=='GET') {res.writeHead(405);res.end();return;}
     if(url.pathname==='/') {
       res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});
-      res.end(`<!doctype html><meta charset="utf-8"><title>Actual LOK WASM experiment</title><body><p>Controlled real-engine experiment, not an Android UI.</p><script>
+      res.end(`<!doctype html><meta charset="utf-8"><title>Actual LOK WASM experiment</title><body><p>Controlled real-engine experiment, not an Android UI.</p><script src="/OfficeSession.js"></script><script>
         var Module={uno_scripts:[location.origin+'/probe-worker.js'],locateFile:(name)=>location.origin+'/'+name,
-          onRuntimeInitialized:()=>{Module.FS.writeFile('/tmp/r25-canary.fodt',new TextEncoder().encode(${JSON.stringify(fixture)}));window.r25SourceBytes=Module.FS.stat('/tmp/r25-canary.fodt').size;},
+          onRuntimeInitialized:()=>{window.r25Files=new OsbLok.MainFiles(Module.FS);const source=new TextEncoder().encode(${JSON.stringify(fixture)});window.r25Job=r25Files.begin(source,${JSON.stringify(jobId)});window.r25SourceBytes=Module.FS.stat(r25Job.input).size;source.fill(0);window.r25AliasAttack=true;},
           print:(text)=>console.log('engine:'+text),printErr:(text)=>console.error('engine:'+text),
           onAbort:(reason)=>fetch('/r25-result',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({origin:'engine-abort',error:String(reason)})})};
         </script><script src="/lokjs.js"></script></body>`);return;
     }
     if(url.pathname==='/probe-worker.js') {
       res.writeHead(200,{'Content-Type':'application/javascript'});
-      res.end(workerTemplate.replace('__R25_REPORT_URL__',JSON.stringify(origin+'/r25-result')));return;
+      res.end(workerTemplate.replace('__R25_REPORT_URL__',JSON.stringify(origin+'/r25-result')).replace('__R25_ADAPTER_URL__',JSON.stringify(origin+'/OfficeSession.js')).replace('__R25_JOB_ID__',JSON.stringify(jobId)));return;
     }
+    if(url.pathname==='/OfficeSession.js'){res.writeHead(200,{'Content-Type':'application/javascript'});res.end(adapter);return;}
     const data=files.get(url.pathname);
     if(!data) {res.writeHead(404);res.end();return;}
     res.writeHead(200,{'Content-Type':url.pathname.endsWith('.wasm')?'application/wasm':url.pathname.endsWith('.js')?'application/javascript':url.pathname.endsWith('.metadata')?'application/json':'application/octet-stream','Content-Length':data.length});res.end(data);
@@ -88,11 +92,26 @@ try {
   final.mainFsSourceBytes=await page.evaluate(()=>window.r25SourceBytes||0);
   if(r.error){final.engineStages=r.stages||null;throw new Error('Engine failed: '+r.error+' '+(r.stack||''));}
   if(r.origin!=='real-lok-wasm-worker' || r.state!==2 || !Number.isInteger(r.documentWidthTwips) || !Number.isInteger(r.documentHeightTwips) || r.documentWidthTwips<=0 || r.documentHeightTwips<=0)throw new Error('Invalid actual engine observation');
-  const saved=await page.evaluate(()=>{
+  const saved=await page.evaluate((raw)=>{
+    let checks=0;
+    function refuse(action){let rejected=false;try{action();}catch{rejected=true;}if(!rejected)throw new Error('Main office protocol attack accepted');checks++;}
+    const decode=(s)=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+    const current={...raw,tile:decode(raw.tileBase64),detail:decode(raw.detailBase64)};
+    const wrongId=(current.id[0]==='0'?'1':'0')+current.id.substring(1);
+    refuse(()=>r25Files.begin(new Uint8Array([1]),wrongId));
+    refuse(()=>r25Files.accept({...current,id:wrongId}));
+    refuse(()=>r25Files.accept({...current,tile:new Uint8Array(1)}));
+    const accepted=r25Files.accept(current);
+    refuse(()=>r25Files.accept(current));
+    refuse(()=>r25Files.begin(new Uint8Array([1]),current.id));
+    refuse(()=>new OsbLok.MainFiles(Module.FS).begin(new Uint8Array(2*1024*1024+1),wrongId));
+    if(r25Files.activeId!==null || !window.r25AliasAttack)throw new Error('Office ownership lifecycle not observed');
     const encode=(data)=>{if(data.length>2*1024*1024)throw new Error('Main FS output cap');let s='';for(let i=0;i<data.length;i+=16384)s+=String.fromCharCode(...data.subarray(i,i+16384));return btoa(s);};
-    return {odtBase64:encode(Module.FS.readFile('/tmp/r25-result.odt')),pdfBase64:encode(Module.FS.readFile('/tmp/r25-result.pdf'))};
-  });
+    return {odtBase64:encode(accepted.odt),pdfBase64:encode(accepted.pdf),mainProtocolChecks:checks,sourceAliasAttackExecuted:true};
+  },r);
   Object.assign(r,saved);
+  final.productionAdapterSha256=crypto.createHash('sha256').update(adapter).digest('hex');
+  final.consumerScriptSha256=crypto.createHash('sha256').update(workerTemplate).digest('hex');
   for(const [field,file] of [['odtBase64','output.odt'],['pdfBase64','output.pdf'],['tileBase64','tile.raw'],['detailBase64','detail.raw']]){
     if(typeof r[field]!=='string' || r[field].length>3*1024*1024 || !/^[A-Za-z0-9+/]*={0,2}$/.test(r[field]))throw new Error('Output framing refused');
     const data=Buffer.from(r[field],'base64');if(data.length>2*1024*1024)throw new Error('Output cap exceeded');

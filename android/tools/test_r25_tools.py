@@ -41,7 +41,8 @@ class R25ToolTests(unittest.TestCase):
             self.assertEqual(collect(tmp)['summary']['observations'], 0)
 
     def test_exact_named_native_contract_and_bad_receipt_mutations(self):
-        self.assertEqual(len(expected('full')), 146)
+        self.assertEqual(len(expected('full')), 147)
+        self.assertEqual(len(expected('media')), 3)
         self.assertEqual(len(expected('png')), 3)
         self.assertEqual(len(expected('readiness')), 6)
         candidate='a'*40  # Parser-only value; never sent to GitHub or recorded as a native run.
@@ -76,3 +77,11 @@ class R25ToolTests(unittest.TestCase):
         self.assertIn(':format:image', included)
         self.assertNotIn(':format:png', included)
         self.assertTrue((ROOT/'format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt').is_file())
+
+    def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
+        import hashlib
+        receipt=json.loads((ROOT/'docs/research/r25-video-fixture.json').read_text())
+        file=ROOT.parent/receipt['file']
+        self.assertEqual(file.stat().st_size,receipt['bytes'])
+        self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),receipt['sha256'])
+        self.assertFalse(receipt['native_decoded'])  # Generation receipt is deliberately NOT a decoder pass.

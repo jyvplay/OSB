@@ -57,9 +57,9 @@ class R25PngCopyDeviceTest {
     private fun picker()=assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
     private fun app()=assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
     private fun seed(name:String,bytes:ByteArray):Uri {
-        val uri=requireNotNull(context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI,ContentValues().apply {
+        val uri=requireNotNull(context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME,name);put(MediaStore.MediaColumns.MIME_TYPE,"image/png")
-            put(MediaStore.MediaColumns.RELATIVE_PATH,Environment.DIRECTORY_DOWNLOADS);put(MediaStore.MediaColumns.IS_PENDING,1)
+            put(MediaStore.MediaColumns.RELATIVE_PATH,Environment.DIRECTORY_PICTURES);put(MediaStore.MediaColumns.IS_PENDING,1)
         }))
         context.contentResolver.openOutputStream(uri,"wt")!!.use{it.write(bytes)}
         context.contentResolver.update(uri,ContentValues().apply{put(MediaStore.MediaColumns.IS_PENDING,0)},null,null)
@@ -68,7 +68,11 @@ class R25PngCopyDeviceTest {
     private fun pick(name:String) {
         button("png_copy_choose").click();picker()
         val file=device.wait(Until.findObject(By.text(name)),10000)
-        assertNotNull("Seed not visible in actual DocumentsUI: $name",file);file.click();app()
+        if(file==null) {
+            val nodes=device.findObjects(By.text(Pattern.compile(".+"))).take(20).map {it.text.take(80)}
+            throw AssertionError("Image seed not visible in actual DocumentsUI: $name; foreground=${device.currentPackageName}; visible=$nodes")
+        }
+        file.click();app()
     }
     @Test fun isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels() {
         val input=fixture();val corrupt=input.copyOf();corrupt[corrupt.lastIndex]=(corrupt.last().toInt() xor 1).toByte()
@@ -87,7 +91,7 @@ class R25PngCopyDeviceTest {
         assertFalse(service.exported);assertTrue(service.flags and android.content.pm.ServiceInfo.FLAG_ISOLATED_PROCESS!=0)
     }
     @Test fun actualPngPickerNewCopyReadbackKeepsSourceAndRemovesMetadata() {
-        val source=fixture();val name="r25-source-${UUID.randomUUID()}.png";val original=seed(name,source)
+        val source=fixture();val name="r25-src-${UUID.randomUUID().toString().take(8)}.png";val original=seed(name,source)
         try {
             ActivityScenario.launch(PngCopyActivity::class.java).use {scenario->
                 pick(name);val ready=await(scenario,"READY")
@@ -112,7 +116,7 @@ class R25PngCopyDeviceTest {
         } finally {context.contentResolver.delete(original,null,null)}
     }
     @Test fun recreationCannotExportOldPreparedCopyAndPickerCancelDoesNotRead() {
-        val source=fixture();val name="r25-recreate-${UUID.randomUUID()}.png";val original=seed(name,source)
+        val source=fixture();val name="r25-rec-${UUID.randomUUID().toString().take(8)}.png";val original=seed(name,source)
         try {
             ActivityScenario.launch(PngCopyActivity::class.java).use {scenario->
                 button("png_copy_choose").click();picker();device.pressBack();app()

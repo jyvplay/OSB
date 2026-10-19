@@ -68,7 +68,7 @@ class PngLease(private val context:Context) {
         }
         try {
             val intent=Intent(context,PngWorkerService::class.java)
-            bound=context.bindIsolatedService(intent,Context.BIND_AUTO_CREATE,"png-"+token,context.mainExecutor,connection)
+            bound=context.bindIsolatedService(intent,Context.BIND_AUTO_CREATE,"png"+token.replace("-",""),context.mainExecutor,connection)
             check(bound && done.await(8,TimeUnit.SECONDS)) {"PNG worker deadline/bind unavailable"}
             check(failure.get()==null) {failure.get().orEmpty()}
             val received=requireNotNull(answer.get()) {"No owned worker response"};val bundle=received.bundle
