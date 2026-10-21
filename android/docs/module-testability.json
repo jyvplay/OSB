@@ -6,13 +6,14 @@
       "module": ":app",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 continuation native tabletop hosting, adaptive dock, saved-view controls and silver preset. New Android behavioral tests are runnable but current-candidate native execution must be checked in R24C results; earlier R24 passes are historical. R27 aligns BeautyDock test tags to the DesktopShelf scheme (still unwired); no behavior change.",
+      "behavior": "R24 continuation native tabletop hosting, adaptive dock, saved-view controls and silver preset. New Android behavioral tests are runnable but current-candidate native execution must be checked in R24C results; earlier R24 passes are historical. R27 aligns BeautyDock test tags to the DesktopShelf scheme (still unwired); no behavior change. R29 executes UsbAllowlist store logic (vid:pid grammar, capped add/remove/contains) on host JVM against an in-memory fake of the two Android APIs it touches; the SharedPreferences wiring itself is authored-only.",
       "production": [
         "app/src/main/java/dev/fusion/shell/MainActivity.kt",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt",
-        "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt"
+        "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
+        "app/src/main/java/dev/fusion/shell/UsbAllowlist.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt",
@@ -24,9 +25,12 @@
         "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt",
         "testing/src/r27/kotlin/dev/fusion/testing/R27Checks.kt",
         "tools/test_r27_tools.py",
-        "tools/check_r27_reference.py"
+        "tools/check_r27_reference.py",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "e6589d36e7efcd0857e289184c2cd055a84ab6b23b5e0266772b80059041df74",
@@ -43,7 +47,11 @@
         "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614",
         "testing/src/r27/kotlin/dev/fusion/testing/R27Checks.kt": "e98a2e7e5069882d4c7d602befce965caa8523024689585268149f19fa96a408",
         "tools/test_r27_tools.py": "fbcb5f7c258a7c5737c86fa7a2626e4af87a4fe6356077dc8ba35f6de1b47fe6",
-        "tools/check_r27_reference.py": "25f3e458b007b6fc24b0f6490e35cf4b8cf6052d414d0b0e2f3adc2216392358"
+        "tools/check_r27_reference.py": "25f3e458b007b6fc24b0f6490e35cf4b8cf6052d414d0b0e2f3adc2216392358",
+        "app/src/main/java/dev/fusion/shell/UsbAllowlist.kt": "8ec6bf398bbbdebd077ec2030425a323f94730514c0cf94a78a5f239fb718876",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -194,38 +202,50 @@
       "module": ":core:commands",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Immutable bounded locale-stable command search",
+      "behavior": "Immutable bounded locale-stable command search R29 deepens with AliasTable: bounded alias table with cycle-safe argv[0] expansion executed on host JVM.",
       "production": [
-        "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt"
+        "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
+        "core/commands/src/main/kotlin/dev/fusion/commands/AliasTable.kt"
       ],
       "checks": [
-        "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt"
+        "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":testing:searchAndGateContracts",
+      "command": ":testing:searchAndGateContracts; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Complete command routing, conflict/remap/keyboard/a11y contracts and integration",
       "sha256": {
         "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt": "f984f73585bf67e9b1dc8a36335e5410c87eaadeabaac5abb25a3d483aab3938",
-        "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt": "b7aecce4afc12eec430cfd6a0d441a55a18ea72fc96af57adb805b6903a85347"
+        "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt": "b7aecce4afc12eec430cfd6a0d441a55a18ea72fc96af57adb805b6903a85347",
+        "core/commands/src/main/kotlin/dev/fusion/commands/AliasTable.kt": "2fa116c59256cab057a2d9711e7e22e949dc17848892f094f1ba03eeb7eda7b9",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
       "module": ":core:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Shared appearance store now includes silver and independent tabletop/flat selection; independent palettes/layouts preserved, explicit Art/Business presets. Host schema checks executed; new native state/recreation tests require actual receipts.",
+      "behavior": "Shared appearance store now includes silver and independent tabletop/flat selection; independent palettes/layouts preserved, explicit Art/Business presets. Host schema checks executed; new native state/recreation tests require actual receipts. R29 deepens with LocaleMatch: BCP-47-subset locale negotiation (exact, same-language, list default) executed on host JVM.",
       "production": [
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt",
         "core/settings/src/main/java/dev/fusion/settings/SettingsGraph.kt",
-        "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt"
+        "core/settings/src/main/kotlin/dev/fusion/settings/Appearance.kt",
+        "core/settings/src/main/kotlin/dev/fusion/settings/LocaleMatch.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
-        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt"
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "DataStore/migrations, durable atomic application/undo, actual host-controlled settings and device/AX acceptance missing; snapshot decode does not apply anything",
       "sha256": {
         "core/settings/src/main/kotlin/dev/fusion/settings/SettingsSnapshot.kt": "4335182d91fb751d35c78e34220a321287cb8f27546a135bde84b495b6301afc",
@@ -235,7 +255,11 @@
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
-        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4ef9adce49a3ee52004dd2182c18652fbfa3827c733a151aebd1b200d8d46391"
+        "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4ef9adce49a3ee52004dd2182c18652fbfa3827c733a151aebd1b200d8d46391",
+        "core/settings/src/main/kotlin/dev/fusion/settings/LocaleMatch.kt": "076dd7c09938d1d00976f68f46cf58a30d3c58939f2e1daecbd50751b4faa470",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -362,18 +386,26 @@
       "module": ":core:storage",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real AtomicFile checkpoint commit/readback/failure",
+      "behavior": "Real AtomicFile checkpoint commit/readback/failure R29 deepens with QuotaLedger: per-scope byte quotas with allocate/release accounting and snapshot frames executed on host JVM.",
       "production": [
-        "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt"
+        "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt",
+        "core/storage/src/main/kotlin/dev/fusion/storage/QuotaLedger.kt"
       ],
       "checks": [
-        "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Specified Room/migrations, process-death/disk-failure/power-loss acceptance and complete recovery lifecycle",
       "sha256": {
         "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt": "7b8f454f8ad2b8e8b4c8b3354122ec24431649c86bbcf5afbd940e384622cd36",
-        "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt": "5d121553b5d8662f07661c0d3f311c434f54c740fbbf475f51d788df255bae3c"
+        "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt": "5d121553b5d8662f07661c0d3f311c434f54c740fbbf475f51d788df255bae3c",
+        "core/storage/src/main/kotlin/dev/fusion/storage/QuotaLedger.kt": "98ef6a8c1d7e6cdfb9aa2204c33b0e216159fc048bff5219415732a70baeeb41",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -510,24 +542,32 @@
       "module": ":feature:files",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded directory metadata query with literal filtering, overflow-free natural order and directory/size policies; connected to read-only Files.",
+      "behavior": "Bounded directory metadata query with literal filtering, overflow-free natural order and directory/size policies; connected to read-only Files. R29 deepens with FileSort: total file-list ordering (key, case-folded name, raw name) executed on host JVM.",
       "production": [
-        "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt"
+        "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt",
+        "feature/files/src/main/kotlin/dev/fusion/filesui/FileSort.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
-        "tools/run_r14_interop.py"
+        "tools/run_r14_interop.py",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not bounded provider enumeration, identity/snapshot verification, journaled mutations or S6. New UI/native checks require exact CI evidence.",
       "sha256": {
         "feature/files/src/main/kotlin/dev/fusion/filesui/DirectoryQuery.kt": "622d473aa0ac39f1f75d4430f6c392a2d8544e681988e9278d01e182cb7a000b",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
-        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+        "feature/files/src/main/kotlin/dev/fusion/filesui/FileSort.kt": "8b8ce16973f966c85fad656ce187ba3c425f6bffae76916e63d556346df2070a",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -794,42 +834,58 @@
       "module": ":feature:beam",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real quality decisions and bounded local HTTP subset, not receiver/casting acceptance",
+      "behavior": "Real quality decisions and bounded local HTTP subset, not receiver/casting acceptance R29 deepens with ShareManifest: validated share offer (bare names, mime/sha/total caps, canonical digest, frame codec) executed on host JVM against a real fixture.",
       "production": [
-        "feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt"
+        "feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt",
+        "feature/beam/src/main/kotlin/dev/fusion/beam/ShareManifest.kt"
       ],
       "checks": [
-        "feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt"
+        "feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":feature:beam:testDebugUnitTest",
+      "command": ":feature:beam:testDebugUnitTest; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "S17\u201321 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting",
       "sha256": {
         "feature/beam/src/main/java/dev/fusion/beam/QualityGovernor.kt": "89eee07b9a1c21651e1f85e939a14809618d6569b05b0afcd9abc093d1d5468e",
-        "feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt": "1305688195b7587010dcf8c730acfaa4b1a8c61a16480f2e5a582abddcf51875"
+        "feature/beam/src/test/java/dev/fusion/beam/QualityGovernorTest.kt": "1305688195b7587010dcf8c730acfaa4b1a8c61a16480f2e5a582abddcf51875",
+        "feature/beam/src/main/kotlin/dev/fusion/beam/ShareManifest.kt": "9aa099c729e51520661f63a794defcab0c1e4c5d81f331db3fa280e7c54cf1c1",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
       "module": ":feature:alerts",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal.",
+      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal. R29 deepens with AlertThrottle: per-key token-bucket throttle with backwards-clock clamp and refuse-when-full table executed on host JVM.",
       "production": [
-        "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt"
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt",
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertThrottle.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
-        "tools/run_r14_interop.py"
+        "tools/run_r14_interop.py",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No notification ingestion or persistence integration. System listener remains disabled. Caller classification and single-owner use required.",
       "sha256": {
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt": "ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
-        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertThrottle.kt": "33f034e4a03cfad20bf2a8dabd60b8360f750d18e1192f256f2b615965c25c58",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -862,20 +918,28 @@
       "module": ":feature:backup",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded noncompressed FBC1 content serialization and whole-frame checksum/structural verification before returning entries",
+      "behavior": "Bounded noncompressed FBC1 content serialization and whole-frame checksum/structural verification before returning entries R29 deepens with RetentionPlan: grandfather-father-son selection over caller-supplied day/week/month buckets executed on host JVM.",
       "production": [
-        "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt"
+        "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt",
+        "feature/backup/src/main/kotlin/dev/fusion/backup/RetentionPlan.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "command": ":testing:subsetContracts; python3 tools/run_subset_contracts.py; native :app:pixel6Api34ProDebugAndroidTest (disposable opt-in); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not encryption/authentication, not legacy ZIP/FSB1 compatibility, not filesystem restore or migration; no UI enablement, S7 remains blocked",
       "sha256": {
         "feature/backup/src/main/kotlin/dev/fusion/backup/BackupContent.kt": "d52ce855dfe6bdbc1fe72cf3d4ddd904b2fc95ee65745a906b2469c0c9c1520e",
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e"
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
+        "feature/backup/src/main/kotlin/dev/fusion/backup/RetentionPlan.kt": "3bca8619be5ef31ccad14d4988ff0edd4d41ab1e52ef2bcb5c46dc8c3eb42b03",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -906,24 +970,32 @@
       "module": ":feature:accessibility",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded geometric directional target selection, enabled/visible filtering and deterministic ties.",
+      "behavior": "Bounded geometric directional target selection, enabled/visible filtering and deterministic ties. R29 deepens with ContrastRatio: WCAG 2.x relative-luminance/ratio math with AA/AAA thresholds executed on host JVM.",
       "production": [
-        "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt"
+        "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt",
+        "feature/accessibility/src/main/kotlin/dev/fusion/a11y/ContrastRatio.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt",
         "tools/run_r14_contracts.py",
-        "tools/run_r14_interop.py"
+        "tools/run_r14_interop.py",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Pure target policy; not connected to Android focus requests or a global input service. Not TalkBack/Switch/Voice acceptance.",
       "sha256": {
         "feature/accessibility/src/main/kotlin/dev/fusion/a11y/SpatialFocus.kt": "5f6cac892e00cf719d0b989c52a0761eaf4ca49cf319aece115005964c7980a2",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
-        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639"
+        "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
+        "feature/accessibility/src/main/kotlin/dev/fusion/a11y/ContrastRatio.kt": "40fbdc3abbacc0151f08b6e4acdbb3d130732f14280e1f88bb95346cc1b96181",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -1156,7 +1228,7 @@
       "module": ":format:ooxml",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing bounded literal/CSV/strict XML/ZIP/new-copy subset plus R24 exact-empty UTF8 encoder/decoder fast path. New strict JDK differential, empty input-vs-record/cell and dense32780byte frame attacks pass. Exact23e8868 original dense CSV8 and boundary27 passed unchanged5s watchdog/8s reply limits after prior deadline failures retained. Not full Office or universal timing/fidelity guarantee.",
+      "behavior": "Existing bounded literal/CSV/strict XML/ZIP/new-copy subset plus R24 exact-empty UTF8 encoder/decoder fast path. New strict JDK differential, empty input-vs-record/cell and dense32780byte frame attacks pass. Exact23e8868 original dense CSV8 and boundary27 passed unchanged5s watchdog/8s reply limits after prior deadline failures retained. Not full Office or universal timing/fidelity guarantee. R29 deepens with CsvDialect: delimiter sniffing plus quote-aware translation into the CsvTable comma grammar, executed end-to-end on host JVM against real fixtures.",
       "production": [
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
@@ -1165,7 +1237,8 @@
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OwnedSheetRequest.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvTable.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt"
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvDialect.kt"
       ],
       "checks": [
         "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt",
@@ -1190,9 +1263,12 @@
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
+      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "sha256": {
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
@@ -1225,7 +1301,11 @@
         "testing/src/r21/kotlin/dev/fusion/testing/R21Checks.kt": "8d90c00e1a02ac363b321d3ec39643d922ba52624f4cec3ee674c5ab6ab3f8fd",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CsvDialect.kt": "c573b46a0f298d44f0a54a2ec9b0f564b364b72e47b5b6e264bf4f408fc75c60",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {
@@ -1342,18 +1422,26 @@
       "module": ":cast:dlna",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "UPnP description/control URL/SOAP parsing only, not receiver transport acceptance",
+      "behavior": "UPnP description/control URL/SOAP parsing only, not receiver transport acceptance R29 deepens with DidlLite: DIDL-Lite item parser (identity, class, title, first res, strict duration) reusing the shared XML unescaper, executed on host JVM against real fixtures.",
       "production": [
-        "cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt"
+        "cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt",
+        "cast/dlna/src/main/kotlin/dev/fusion/cast/dlna/DidlLite.kt"
       ],
       "checks": [
-        "cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt"
+        "cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt",
+        "tools/test_r29_tools.py",
+        "tools/check_r29_reference.py"
       ],
-      "command": ":cast:dlna:testDebugUnitTest",
+      "command": ":cast:dlna:testDebugUnitTest; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Real receiver interoperability, transport trust/lifecycle/security and S20 evidence",
       "sha256": {
-        "cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt": "ecaeba866a60db19a3b70634e0555c211e1112ccca2b617139e5ff38d915e945",
-        "cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt": "26e80485a21f6ed25db56ab751d22447702c668ef7bec3895db723116bced7e1"
+        "cast/dlna/src/main/java/dev/fusion/cast/dlna/UpnpParsing.kt": "c665893a430e33ed9c7685978a7fe6b46977c4546b2d5ae02a69465c280de22d",
+        "cast/dlna/src/test/java/dev/fusion/cast/dlna/UpnpParsingTest.kt": "26e80485a21f6ed25db56ab751d22447702c668ef7bec3895db723116bced7e1",
+        "cast/dlna/src/main/kotlin/dev/fusion/cast/dlna/DidlLite.kt": "dc12556d0b00c2336ec22cc7942f6c0b73b4761f383830203dad3e5adc89b1b2",
+        "testing/src/r29/kotlin/dev/fusion/testing/R29Checks.kt": "9653ceda9956f6d55300367bd08e07440f64b1bbc929928a68fcd38857a595f7",
+        "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
+        "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102"
       }
     },
     {

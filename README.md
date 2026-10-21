@@ -17,7 +17,28 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R28 — executed kernels + USB/consent privacy set (host evidence only)
+## Current R29 — executed kernels + USB-allowlist privacy set (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
+(20%): share-manifest offers, storage quota ledger, alert token-bucket throttle,
+file-list total ordering, shell alias table, WCAG contrast math, locale
+negotiation, backup retention plans, DIDL-Lite items, CSV dialect sniffing with a
+real-parser pipeline. One authored Android store (private USB allowlist; logic
+executed on JVM against an in-memory fake, wiring unaudited) plus a
+detection-only receiver wiring edit await CI/Studio compile plus emulator runs —
+no behavior claim is made. A static touch-target audit covers 223 Button sites
+(175 pre-existing findings queued; +0 delta; static only, not rendered proof);
+a new manifest-scope gate pins the component/permission set. Fresh research:
+Orbot 17.9.7 audit fixes, Android 17 Advanced Protection, passkey transfer APIs,
+USB-C Authentication posture.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+128 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
+manifest-scope gates, 227/227 tool tests. [Results](android/docs/R29-RESULTS.md) ·
+[Contract](android/docs/R29-PLAN.md) · [Privacy PRD](android/docs/R29-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R28 — executed kernels + USB/consent privacy set (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
 (20%): trash purge ledger, window snap zones, frecency ranking, slippy-map tile

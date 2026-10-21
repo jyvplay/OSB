@@ -1,0 +1,5 @@
+<DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/">
+<container id="0" parentID="-1" restricted="1"><dc:title>Root</dc:title><upnp:class>object.container</upnp:class></container>
+<item id="64$2$1" parentID="64$2" restricted="1"><dc:title>Night Owl &amp; Friends</dc:title><upnp:class>object.item.audioItem.musicTrack</upnp:class><res protocolInfo="http-get:*:audio/mpeg:*" size="8421376" duration="0:04:12">http://192.168.1.2:8200/media/1.mp3</res></item>
+<item id="64$2$2" parentID="64$2" restricted="0"><dc:title>Silence</dc:title><upnp:class>object.item.audioItem</upnp:class><res protocolInfo="http-get:*:audio/flac:*">http://192.168.1.2:8200/media/2.flac</res></item>
+</DIDL-Lite>

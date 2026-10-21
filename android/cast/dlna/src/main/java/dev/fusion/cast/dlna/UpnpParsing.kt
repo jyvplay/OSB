@@ -59,4 +59,9 @@ object UpnpParsing {
     fun xmlEscape(value: String): String =
         value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             .replace("\"", "&quot;").replace("'", "&apos;")
+
+    /** Single-pass inverse of [xmlEscape]; &amp; resolves last. Unknown entities pass through untouched. */
+    fun unescapeXml(value: String): String =
+        value.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"")
+            .replace("&apos;", "'").replace("&amp;", "&")
 }

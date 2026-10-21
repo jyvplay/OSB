@@ -18,6 +18,7 @@ FILES = [
     'feature/media/src/main/java/dev/fusion/media/MediaHub.kt',  # R27: stream-player button
     'app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt',  # R28: USB watch receiver (app-only; keeps :privacy scope exact)
     'app/src/main/java/dev/fusion/shell/ConsentDialog.kt',  # R28: consent dialog
+    'app/src/main/java/dev/fusion/shell/UsbAllowlist.kt',  # R29: USB allowlist store
     'feature/media/src/main/java/dev/fusion/media/StreamPlayerActivity.kt',
     'feature/maps/src/main/java/dev/fusion/maps/VectorAtlasBridge.kt',
     'feature/browser/src/main/java/dev/fusion/browser/OrbotHandoff.kt',

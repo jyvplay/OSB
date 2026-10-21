@@ -39,15 +39,22 @@ class UsbWatchReceiver : BroadcastReceiver() {
         if (ifaces.isEmpty() || ifaces.size > 32) return
         val policyDevice = UsbPolicy.Device(device.vendorId, device.productId, ifaces,
             (device.productName ?: device.deviceName ?: "usb").take(128).filterNot { it.isISOControl() })
-        // Stateless evaluation: no attach history is kept, so the combo rule's
-        // already-allowed condition evaluates vacuously and any keyboard+mouse
-        // boot combo is flagged for review. Conservative by design.
-        val verdict = UsbPolicy.evaluate(DEFAULT_RULES, policyDevice, emptyList())
+        // R29: previously consented vid:pid pairs (private allowlist) feed the
+        // combo rule's already-allowed condition, so a known device's
+        // keyboard+mouse shape no longer re-flags. Unknown devices still
+        // evaluate against an empty list: flagged for review, conservative by
+        // design. Either way the event is recorded and still notifies.
+        val known = runCatching {
+            UsbAllowlist.open(context).contains(policyDevice.vid, policyDevice.pid)
+        }.getOrDefault(false)
+        val verdict = UsbPolicy.evaluate(
+            DEFAULT_RULES, policyDevice, if (known) listOf(policyDevice) else emptyList())
         val attached = action == UsbManager.ACTION_USB_DEVICE_ATTACHED
-        val summary = "USB ${if (attached) "attached" else "detached"}: %04x:%04x %s -> %s (review; NOT blocked)".format(
+        val summary = "USB ${if (attached) "attached" else "detached"}: %04x:%04x %s -> %s (%s; NOT blocked)".format(
             policyDevice.vid, policyDevice.pid,
             ifaces.sortedBy { it.toString() }.joinToString(","),
-            verdict.target.name)
+            verdict.target.name,
+            if (known) "allowlisted, still recorded" else "review")
         appendRecord(context, summary)
         if (context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             notify(context, summary, attached)

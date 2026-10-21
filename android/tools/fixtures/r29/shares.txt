@@ -1,0 +1,6 @@
+# name|bytes|mime|sha256 — parsed by R29 checks (field separator is |)
+report.pdf|184320|application/pdf|9f2c4e8d1a0b3c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5
+photo été.jpg|2457600|image/jpeg|aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+notes.txt|512|text/plain|bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+archive.tar.gz|1073741824|application/gzip|cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+empty.bin|0|application/octet-stream|dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
