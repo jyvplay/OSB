@@ -44,10 +44,21 @@ sequentially, verified by grep, and the parse gate re-passed 5/5. Lesson
 recorded: never issue two edits to the same file in one parallel block.
 Repair candidate follows; no failed receipt is inherited.
 
-## CI watch (pending at commit time)
+## CI ledger (exact candidates, nothing inherited)
 
-Native compile/device receipts for this turn's exact candidate must be
-recorded here once workflows complete; nothing inherited from prior turns.
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 7ad4d86 | 10 workflows | 10 FAIL (1–3 min) | Real R27 regression: `prefill` compile break from the parallel-edit race (StreamPlayerActivity). Superseded, not inherited. |
+| 6a2cd1d (repair 1) | WebView 39550306616, video 39550306565, privacy 39550306656, R21 39550306569, R24-boundaries 39550306570, UI-preconditions 39550306606, R23/R22 39550306555 | 7 SUCCESS | Privacy-companion green resolves the R26 open flake question (8b2289d failure was transient; zero privacy sources touched). |
+| 6a2cd1d | atlas 39550306642 (1m10s) | FAIL | Pre-existing infra: exit 127, "No executed device test cases found" — same character as base-main failure recorded in R26 triage (1m43s). |
+| 6a2cd1d | PNG 39550306577 (8m17s) | FAIL | Pre-existing device: 2 R25PngCopyDeviceTest cases "did not reach READY (phase=EMPTY)". R27 touches zero PNG code; fails on base main (7m19s). |
+| 6a2cd1d | native 39550306568 | FAIL | Traceability step (my stale inventory — fixed in repair 2) + the same 2 pre-existing PNG device cases. |
+| 97c1c1d (repair 2) | native 39552739806: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt for all R27 code**: 10 kernels + 3 authored edits assemble on both flavors; JVM tests pass. |
+| 97c1c1d | native 39552739806 device job | FAIL | Only the same 2 pre-existing PNG device cases; every other device case passes. |
+
+Net: no R27 regression. Two failures I introduced (prefill break, stale
+inventory) were both repaired in-turn with exact-candidate receipts; the
+remaining failures (atlas infra, PNG device) reproduce on base main.
 
 ## Lab receipt
 
