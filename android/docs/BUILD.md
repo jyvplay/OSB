@@ -1,3 +1,52 @@
+# R26 — executed policy/format kernels + authored media/map/Tor/dock surfaces
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R26-RESULTS.md) · [Scope/acceptance contract](R26-PLAN.md) ·
+[Privacy / Tails-mod PRD](R26-PRIVACY-PRD.md) · [Deepening census](R26-MODULE-DEEPENING.md).
+
+**50/50 testable subsets (100%); 6/50 modules deepened with new executed kernels (12%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence only: 157 kotlinc/JVM assertions, independent beauty recomputation,
+layout-bounds gate, Android parse gate (0 syntax errors), 196/196 tool tests.
+The 4 new Android surfaces are authored, NOT executed — CI/Studio must compile and run
+them before any playback/map/Tor/dock claim.
+
+## Laptop / Android Studio Rabbit1 (R26)
+
+Use a maintained **full JDK17** and real **SDK `platforms;android-37.0`** with build
+tools 36.0.0/35.0.0. Pins AGP9.1.1 / Gradle9.3.1 / Kotlin2.2.21; min34 / compile37 /
+target37. Rabbit1 GUI was not run in this sandbox; push this branch for CI receipts.
+
+1. Open `android/`, sync (new: 4 Apache-2.0 Media3 1.11.0 artifacts in the media
+   module), select **app / proDebug** on a disposable **API34** AVD with copied data.
+2. Existing Tabletop/Flat desktop, silver Art / light Business presets, local
+   MediaPlayer, offline atlas, PNG-copy and privacy scratchpad are unchanged; follow
+   the historical sections below for those bounded workflows.
+3. New surfaces pending your verification: **Stream player** (direct URLs/local only,
+   no service extraction), **Vector maps** probe (bundled-engine optional), **Tor
+   routing** panel (Orbot handoff, no in-app routing), **BeautyDock** (unwired; swap
+   the DesktopShelf call-site only after CI compiles it).
+4. Export real Compose layout bounds and validate them with
+   `python3 tools/check_r26_layout_bounds.py bounds.json` (48dp/inside-viewport gate).
+
+## Without Android Studio or a local SDK (R26)
+
+Real kotlinc/JVM execution of the new kernels plus structural gates — no Android:
+
+```sh
+cd android
+python3 tools/bootstrap_host_tools.py install   # Linux x86_64; disposable JRE17 + kotlinc into ~/.cache
+python3 tools/r26_lab.py host --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/check_project.py
+```
+
+This runs the 157-assertion R26 contracts, the independent beauty reference, the
+layout-bounds and Android-parse gates, and the 9 R26 Python tests. It does not build
+an APK or touch a device. Native compile/device execution delegates to the recorded
+Gradle suites (`r26_lab.py android|device`, needs real JDK17 + SDK).
+
+---
+
 # R24 continuation — tabletop, map and local media
 
 Current work branch **`arena/a8ac5475-osb`**. Open **`OSB/android`**, not the root Vite prototype.

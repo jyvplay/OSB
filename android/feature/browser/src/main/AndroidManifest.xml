@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Visibility for the explicit Orbot presence check only; no data is sent to Orbot by Fusion. -->
+    <queries>
+        <package android:name="org.torproject.android" />
+    </queries>
+</manifest>

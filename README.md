@@ -14,8 +14,24 @@ See [build instructions](android/docs/BUILD.md),
 [231-row requirement ledger](android/requirements.csv).
 
 Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md).
-[Current substantial testable subsets:49/50 (98%)](android/docs/MODULE-TESTABILITY.md).
+[Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
+
+## Current R26 — executed kernels + authored surfaces (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 6/50 modules
+(12%): finite beauty budgets (27/27 AA pairs recomputed), amnesiac session policy,
+tri-state Tor posture, USBGuard-subset policy evaluation, shuffled-pad channel
+avoidance, bounded playlists, GPX import, safe-navigation policy, sandbox-job
+contracts, TSV worksheets. Four Android surfaces (Media3 direct-URL player, optional
+vector-map probe, Orbot handoff, phi-gap dock) are authored with 0 syntax errors and
+await CI/Studio compile plus emulator runs — no playback/map/Tor/dock claim is made.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+157 kotlinc/JVM assertions, independent recomputation, layout + parse gates,
+196/196 tool tests. [Results](android/docs/R26-RESULTS.md) ·
+[Contract](android/docs/R26-PLAN.md) · [Privacy PRD](android/docs/R26-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
 
 ## Current R24 continuation — native tabletop, local media and offline atlas
 

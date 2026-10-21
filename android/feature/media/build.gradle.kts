@@ -21,4 +21,8 @@ dependencies {
     implementation(libs.androidx.compose.foundation.foundation)
     implementation(libs.androidx.compose.material3.material3)
     implementation(libs.kotlinx.kotlinx.coroutines.android)
+    implementation(libs.androidx.media3.media3.exoplayer)
+    implementation(libs.androidx.media3.media3.exoplayer.hls)
+    implementation(libs.androidx.media3.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.media3.ui)
 }
