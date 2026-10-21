@@ -46,10 +46,25 @@ still honestly 0.0 — no device exports). CI device frames exist as artifacts
 but blob download is blocked in this sandbox (EOF), so no CI frame was
 visually inspected either. All three limits are stated, not hidden.
 
-## CI watch (pending at commit time)
+## CI ledger (exact candidates, nothing inherited)
 
-Native compile/device receipts for this turn's exact candidate must be
-recorded here once workflows complete; nothing inherited from prior turns.
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 6e777fe | atlas 39558824039 (1m31s) | FAIL | Pre-existing infra (exit 127, no device cases) — same as base. |
+| 6e777fe | UI preconditions 39558824076 | FAIL | Known-flaky `editorActions...TwoHundredPercentFont` Compose cross-thread crash (R20-documented shape); zero R28 code on that path. Flipped SUCCESS on re-run (f848e91) with no related change. |
+| 6e777fe | PNG 39558824169 (8m21s) | FAIL | Pre-existing: same 2 R25PngCopyDeviceTest cases as base. |
+| 6e777fe | privacy 39558824050 | FAIL | Emulator input-device flake ("Input-device properties changed", workspace discarded); manifest assertions passed. Reaction: moved the receiver OUT of :core:security's manifest anyway (scope hygiene). |
+| f848e91 | privacy 39560303477 + API37 39560303482 | FAIL | REAL R28 REGRESSION (mine): `:privacy:lintDebug [NotificationPermission]` — UsbWatchReceiver.notify() in :core:security without merged POST_NOTIFICATIONS. |
+| a20ebc6 (repair) | privacy 395615950xx + API37 | SUCCESS | Receiver moved to :app; :privacy scope exact; lint green. |
+| a20ebc6 | native 39561595054: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all R28 code (10 kernels + receiver + dialog) assembles both flavors; JVM tests pass. |
+| a20ebc6 | native device job | FAIL | Only the same 2 pre-existing PNG device cases; everything else passes. |
+| a20ebc6 | WebView, video, R21, R23/R22, preconditions, R24-boundaries | 6 SUCCESS | — |
+
+Net: 9/11 workflows green on the repair candidate; the 2 failures (atlas
+infra, PNG device) reproduce on base main. Both R28 regressions I introduced
+(security-manifest scope creep, privacy lint) were repaired in-turn with
+exact-candidate receipts. Note: 6e777fe's `native` run was cancelled by
+concurrency supersession when the scope-fix pushed — no receipt claimed from it.
 
 ## Lab receipt
 
