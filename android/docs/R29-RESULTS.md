@@ -69,7 +69,14 @@ below are the live R29 receipts.
 
 | Candidate | Workflow / run | Outcome | Cause |
 |---|---|---|---|
-| (pending push) | — | — | — |
+| 432616a | privacy 39648281212, preconditions 39648281447, video 39648281450, WebView 39648281429, R21 39648281515, R23/R22 39648281332 | 6 SUCCESS | — |
+| 432616a | native 39648281386: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all R29 code (10 kernels + allowlist + receiver wiring + unescapeXml) assembles both flavors; JVM tests pass (incl. UpnpParsingTest). |
+| 432616a | native 39648281386 device job | FAIL (infra) | `pixel6Api34Setup`: API 34 system-image install failed (corrupt zip). Zero cases ran; no code signal. Retriggered via the ledger commit below. |
+| 432616a | R24 boundaries 39648281588 | FAIL (infra) | Same system-image corruption; zero cases ran. R29 files on this workflow's paths (receiver wiring, additive LocaleMatch) have no device coverage either way; accepted as infra-blocked, not re-driven. |
+| 432616a | PNG 39648281747 | FAIL | Pre-existing: the same 2 R25PngCopyDeviceTest cases as base/R28. |
+| 432616a | atlas 39648281629 (1m31s) | FAIL | Pre-existing infra (exit 127), same as base/R28. |
+| a2ca07e | (empty retrigger commit) | NO RUNS | Path-filtered workflows ignore empty commits; `gh run rerun` and `workflow_dispatch` both refused (token lacks actions:write). Retrigger happens through this ledger commit instead (native matches `android/**`). |
+| (this commit) | native | PENDING | Device-receipt retry; ledger finalized on completion. |
 
 ## Lab receipt
 
