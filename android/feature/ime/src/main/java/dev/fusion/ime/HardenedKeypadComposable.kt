@@ -31,22 +31,29 @@ fun HardenedKeypadScreen(engine: HardenedPinBuffer = remember { HardenedPinBuffe
 
     Column(
         Modifier.fillMaxSize().padding(12.dp).verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text("Hardened Input & BadUSB Guard", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
         Text(
-            "Re-permutes all 10 keypad positions after every keystroke so coordinate loggers and smudge patterns leak zero symbol information. Quarantines <8 ms HID injection bursts, window overlays, and mid-entry USB descriptor swaps.",
+            "Permutes digits every keystroke and quarantines <8 ms HID injection bursts or overlays.",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 2
         )
-        Box(
-            Modifier.fillMaxWidth().border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(10.dp)).padding(12.dp)
+        Row(
+            Modifier.fillMaxWidth().border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(10.dp)).padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
         ) {
             Text(
-                text = if (length == 0) "Buffer empty (0 symbols)" else " Masked symbols: " + "•".repeat(length),
-                modifier = Modifier.testTag("ime-masked-length"),
+                text = if (length == 0) "Buffer empty (0 symbols)" else "Masked symbols: " + "•".repeat(length),
+                modifier = Modifier.weight(1f).testTag("ime-masked-length"),
                 fontWeight = FontWeight.SemiBold
             )
+            Button(
+                onClick = { engine.zeroize(); sync("Volatile buffer zeroized") },
+                modifier = Modifier.heightIn(min = 48.dp).testTag("ime-zeroize")
+            ) { Text("Wipe") }
         }
         for (row in 0 until 4) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -65,7 +72,7 @@ fun HardenedKeypadScreen(engine: HardenedPinBuffer = remember { HardenedPinBuffe
                             },
                             modifier = Modifier
                                 .weight(1f)
-                                .heightIn(min = 52.dp)
+                                .heightIn(min = 48.dp)
                                 .testTag("ime-slot-$idx")
                                 .semantics { contentDescription = "Scrambled keypad digit $symbol" }
                         ) {
@@ -74,13 +81,10 @@ fun HardenedKeypadScreen(engine: HardenedPinBuffer = remember { HardenedPinBuffe
                     } else if (idx == 10) {
                         OutlinedButton(
                             onClick = { engine.backspace(); sync("Deleted last symbol; keypad re-permuted") },
-                            modifier = Modifier.weight(1f).heightIn(min = 52.dp).testTag("ime-backspace")
+                            modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("ime-backspace")
                         ) { Text("⌫") }
                     } else {
-                        Button(
-                            onClick = { engine.zeroize(); sync("Volatile buffer zeroized") },
-                            modifier = Modifier.weight(1f).heightIn(min = 52.dp).testTag("ime-zeroize")
-                        ) { Text("Wipe") }
+                        Spacer(Modifier.weight(1f))
                     }
                 }
             }

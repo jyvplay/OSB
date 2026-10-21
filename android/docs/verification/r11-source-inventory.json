@@ -248,7 +248,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "9adf8c135531fe8a6278b3e9f86740857d4f9d79c9c21b92ee40b6b8216a7e2a"
+      "sha256": "783f732a7dda287e24bb7b4127fb0c034191fb6e9497a00986a6505ce989ff1d"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -692,7 +692,7 @@
       "path": "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt",
       "module": ":feature:quickpanel",
       "package": "dev.fusion.quickpanel",
-      "sha256": "626978185c852d058afe30095cb68fd9190220725356f581b055cdcd40998de1"
+      "sha256": "fa88556f021a17f883c3ebd825bf71ff0592cd67ddaafc46434b63bfb274e262"
     },
     {
       "path": "feature/quickpanel/src/main/kotlin/dev/fusion/quickpanel/QuickPanelModel.kt",
@@ -716,7 +716,7 @@
       "path": "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt",
       "module": ":feature:ime",
       "package": "dev.fusion.ime",
-      "sha256": "bbc483fee6aab5e9fa04eed4e37a674da02f63c5a087f9f76c948eb69567d800"
+      "sha256": "de4facb8d4f1e80cc8678b396ab7dec301867997e594f46efe1ab22723d7716e"
     },
     {
       "path": "feature/ime/src/main/kotlin/dev/fusion/ime/HardenedInputEngine.kt",

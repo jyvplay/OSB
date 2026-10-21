@@ -19,10 +19,16 @@ import dev.fusion.settings.DesktopScene
 fun QuickPanelSheet(
     snapshot: QuickPanelSnapshot,
     onAppearanceChange: (Appearance) -> Unit,
-    onAmnesicWipe: () -> Unit
+    onAmnesicWipe: () -> Unit,
+    scrollable: Boolean = true
 ) {
+    val containerModifier = if (scrollable) {
+        Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(vertical = 4.dp)
+    } else {
+        Modifier.fillMaxWidth().padding(vertical = 4.dp)
+    }
     Column(
-        Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(vertical = 4.dp),
+        containerModifier,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text("Studio Mode & Palette", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)

@@ -88,7 +88,7 @@
     }
   },
   "tabletop_floor_scene_share": 0.8316,
-  "verified_png_frames_count": 28,
+  "verified_png_frames_count": 32,
   "frames": [
     {
       "file": "docs/verification/r24-native-previews/art-studio-graphite.png",
@@ -123,6 +123,78 @@
         "#174ea6",
         "#152336",
         "#44566c"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-frames/r24c-atlas.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1312,
+      "light_pixel_fraction": 0.9425,
+      "silver_neutral_fraction": 0.6517,
+      "max_foreground_background_wcag": 16.61,
+      "dominant_hex": [
+        "#e8eef7",
+        "#ffffff",
+        "#f3f6fb",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-frames/r24c-silver.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1285,
+      "light_pixel_fraction": 0.9451,
+      "silver_neutral_fraction": 0.9258,
+      "max_foreground_background_wcag": 9.03,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#f9fbfd",
+        "#fafcfe",
+        "#2f4965",
+        "#f9fbfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-frames/r24c-tabletop.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1478,
+      "light_pixel_fraction": 0.9424,
+      "silver_neutral_fraction": 0.62,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#fefeff",
+        "#feffff",
+        "#174ea6"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-frames/r24c-wall.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 831,
+      "light_pixel_fraction": 0.9679,
+      "silver_neutral_fraction": 0.8052,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#f0f4fa",
+        "#ebf0f8",
+        "#edf2f9"
       ],
       "capture_kind": "ui_screen_capture"
     },

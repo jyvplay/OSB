@@ -549,7 +549,8 @@ class MainActivity : ComponentActivity() {
                             amnesicWipeGeneration = amnesicVault.panicWipe()
                             acknowledgedExperiments = emptySet()
                             message = "Amnesic session zeroized (epoch $amnesicWipeGeneration); experimental consents revoked."
-                        }
+                        },
+                        scrollable = false
                     )
                     Text("Workspaces")
                     Row(Modifier.horizontalScroll(rememberScrollState())) {repeat(WindowEngine.WORKSPACES) {ws->

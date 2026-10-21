@@ -26,7 +26,7 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "9adf8c135531fe8a6278b3e9f86740857d4f9d79c9c21b92ee40b6b8216a7e2a",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "783f732a7dda287e24bb7b4127fb0c034191fb6e9497a00986a6505ce989ff1d",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "a22a3e9d3f0c4445dade8e4509560ac638b0373ce99b995ea55ae7ad305a09c7",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "f2e83c1b2696ff45cdf0c37a6ad6e51a4c8571f87ee1d2041006290be669235a",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
@@ -1417,7 +1417,7 @@
       "limit": "Application workspace presets & session memory zeroization; does not claim OS radio privilege.",
       "sha256": {
         "feature/quickpanel/src/main/kotlin/dev/fusion/quickpanel/QuickPanelModel.kt": "032499f25d808d81af6353b327cfc4b09bd1cfd715c7b3cc23821d1e8c6aa286",
-        "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt": "626978185c852d058afe30095cb68fd9190220725356f581b055cdcd40998de1",
+        "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt": "fa88556f021a17f883c3ebd825bf71ff0592cd67ddaafc46434b63bfb274e262",
         "feature/quickpanel/src/test/kotlin/dev/fusion/quickpanel/QuickPanelModelTest.kt": "f8fe30e08d331e9c6ca75c2934ea02b900e58b57f3cad24f08e2b0490b009ff6",
         "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "7692224648c06a3deff370bfdc90dcb9c4071d706b4c042fdee569afda686d46"
       }
@@ -1461,7 +1461,7 @@
       "limit": "In-app hardened input surface; cannot stop a compromised kernel or passive inline hardware logger on a physical keyboard.",
       "sha256": {
         "feature/ime/src/main/kotlin/dev/fusion/ime/HardenedInputEngine.kt": "42a433a3e6879b9f34b033a10e3002a20980ca7e7afa18a817b0ab52936b133d",
-        "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt": "bbc483fee6aab5e9fa04eed4e37a674da02f63c5a087f9f76c948eb69567d800",
+        "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt": "de4facb8d4f1e80cc8678b396ab7dec301867997e594f46efe1ab22723d7716e",
         "feature/ime/src/test/kotlin/dev/fusion/ime/HardenedImeKernelTest.kt": "450e8f963e295904f5ed033221a8bff0028f1b50638eb9a57f73e776d131902b",
         "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "7692224648c06a3deff370bfdc90dcb9c4071d706b4c042fdee569afda686d46"
       }
