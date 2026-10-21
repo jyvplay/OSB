@@ -76,7 +76,16 @@ below are the live R29 receipts.
 | 432616a | PNG 39648281747 | FAIL | Pre-existing: the same 2 R25PngCopyDeviceTest cases as base/R28. |
 | 432616a | atlas 39648281629 (1m31s) | FAIL | Pre-existing infra (exit 127), same as base/R28. |
 | a2ca07e | (empty retrigger commit) | NO RUNS | Path-filtered workflows ignore empty commits; `gh run rerun` and `workflow_dispatch` both refused (token lacks actions:write). Retrigger happens through this ledger commit instead (native matches `android/**`). |
-| (this commit) | native | PENDING | Device-receipt retry; ledger finalized on completion. |
+| 7c4b346 (this tree) | native 39651647529: compile/assemble/JVM | SUCCESS | Second compile receipt on the ledger tree. |
+| 7c4b346 | native 39651647529 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases; the full suite otherwise passes. |
+| 7c4b346 | atlas 39651647592 (1m34s) | FAIL | Pre-existing infra again (same shape). |
+
+Net: all R29 code compiles both flavors with green JVM tests on two
+candidates; device evidence shows only pre-existing failures (2 PNG cases,
+atlas infra) plus one transient SDK-download outage that a retry cleared.
+Zero R29 regressions: no failure names an R29 file, and the two R29-edited
+production files (UsbWatchReceiver wiring, UpnpParsing addition) ride the
+green compile/JVM jobs.
 
 ## Lab receipt
 
