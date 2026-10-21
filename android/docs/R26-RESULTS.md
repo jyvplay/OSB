@@ -32,6 +32,17 @@ Per-module pairings and retained limits: [MODULE-TESTABILITY](MODULE-TESTABILITY
 These are host/structural results. They are not Android compilation, device execution,
 service integration, anonymity, hardware, or acceptance evidence.
 
+## First native receipt (compile-level only)
+
+At **8b2289d**, [Android native / 39545667085](https://github.com/jyvplay/OSB/actions/runs/39545667085)
+job "Traceability, assemble both flavors, JVM tests" completed **success**: both app
+flavors assembled (all four authored surfaces compiled, Media3 1.11.0 dependency
+closure resolved, manifest merges accepted) and JVM tests passed. This is a compile +
+JVM signal only — no device, playback, map, Tor, or dock behavior is established by
+it. The "API34 managed-device checks" job and the 10 sibling workflows were still
+running when recorded; their named outcomes must be read from the exact runs, never
+assumed from this receipt.
+
 ## Authored for Studio/CI, NOT executed here
 
 | Surface | Scope | Pending gates |
