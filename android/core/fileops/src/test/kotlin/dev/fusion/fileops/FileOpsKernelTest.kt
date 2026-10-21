@@ -8,7 +8,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.nio.file.Files
 
-class FileMoveJournalTest {
+class FileOpsKernelTest {
     @Test
     fun crashRecoveryRollsBackPreparedAndRollsForwardVerifiedMove() {
         val dir = Files.createTempDirectory("r26-fileops-test-")

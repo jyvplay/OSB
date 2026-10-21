@@ -6,7 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.nio.charset.StandardCharsets
 
-class PhotoMetadataCleanerTest {
+class PhotosStudioKernelTest {
     @Test
     fun stripsExifApp1WithoutRecompressingEntropyScanStream() {
         val app1 = "Exif\u0000\u0000GPSSecret".toByteArray(StandardCharsets.US_ASCII)

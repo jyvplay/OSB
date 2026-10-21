@@ -1354,7 +1354,7 @@
       "limit": "Local filesystem paths; SAF cloud provider fault matrix S6 remains separate.",
       "sha256": {
         "core/fileops/src/main/kotlin/dev/fusion/fileops/FileMoveJournal.kt": "d637ad168f83556fac8f84756b8ef48b691c4e1eedc27d557db1c4be7542aa3d",
-        "core/fileops/src/test/kotlin/dev/fusion/fileops/FileOpsKernelTest.kt": "9c1ca675917de77bbcae114e341ecda660e659fc47d01ea5b89cd9ba82100aea",
+        "core/fileops/src/test/kotlin/dev/fusion/fileops/FileOpsKernelTest.kt": "9727558acfaf07caefad68cdf57f24b2112191a071c07f39dc566318be47dbea",
         "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
       }
     },
@@ -1374,7 +1374,7 @@
       "limit": "Core OOXML documents/sheets/slides without VBA macros, charts, pivot tables or full print layout.",
       "sha256": {
         "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt": "2a347c4cf624eec674b58beae4d0b9f2ac85301af3e3d7e755455b18699f2fd1",
-        "format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomWorkbookEngineTest.kt": "46a3d76287165ae11eef47af14a6afd788ae281bc069f1ad583190fbc461555d",
+        "format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomWorkbookEngineTest.kt": "cbe5105a42547ccba019a3e9ad6aab8784cf526c0d026133592b37c633e828a2",
         "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
       }
     },
@@ -1440,7 +1440,7 @@
       "sha256": {
         "feature/photos/src/main/kotlin/dev/fusion/photos/PhotoMetadataCleaner.kt": "d93c765d0306d4818ed4efc8f685ea3b2c75f81267b28d85c7068fed8389f3bd",
         "feature/photos/src/main/java/dev/fusion/photos/PhotosWorkbenchScreen.kt": "12d8f5893e7eb08f149b5db20295ddc4e6c1c88ecece3813c05357015457299e",
-        "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt": "4e0acadd65beba4a0f827d4a0e8f9d2f7dfbd2311a4b08d9e2ba0de04a171e26",
+        "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt": "5b30063f0b4b744a97e69008a5842c6145373dda85d5ec75d69e9796cb5aab1a",
         "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
       }
     },
