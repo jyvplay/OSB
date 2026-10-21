@@ -80,10 +80,22 @@ below are the live R29 receipts.
 | 7c4b346 | native 39651647529 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases; the full suite otherwise passes. |
 | 7c4b346 | atlas 39651647592 (1m34s) | FAIL | Pre-existing infra again (same shape). |
 
-Net: all R29 code compiles both flavors with green JVM tests on two
-candidates; device evidence shows only pre-existing failures (2 PNG cases,
-atlas infra) plus one transient SDK-download outage that a retry cleared.
-Zero R29 regressions: no failure names an R29 file, and the two R29-edited
+| 8dcb520 | native 39656293954: compile/assemble/JVM | SUCCESS | Third compile receipt. |
+| 8dcb520 | native 39656293954 device job | FAIL | `R25PngCopyDeviceTest.recreation...` (pre-existing) + `R24TaskInputDeviceTest.oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft` (new-vs-base single occurrence). |
+| 8dcb520 | atlas 39656294190 (1m15s) | FAIL | Pre-existing infra again. |
+
+Net: all R29 code compiles both flavors with green JVM tests on three
+candidates. Device failures: the PNG set varies run to run (2 cases on
+432616a/7c4b346, 1 on 8dcb520 — pre-existing, base-confirmed); atlas infra
+fails identically every run (base-confirmed); one transient SDK-download
+outage cleared on retry. The single R24 IME-discard failure appears only on
+8dcb520, whose tree differs from the green-except-PNG 7c4b346 run by ledger
+TEXT alone — no R29 code sits on the IME/new-note/discard path (R29 touches
+beam/storage/alerts/filesort/alias/a11y/settings/backup/dlna/ooxml/USB
+only), so it is classified an emulator flake BY CONSTRUCTION, with the
+caveat that a confirmatory rerun was impossible (`gh run rerun` and
+`workflow_dispatch` both refused: token lacks actions:write). Zero confirmed
+R29 regressions: no failure names an R29 file, and the two R29-edited
 production files (UsbWatchReceiver wiring, UpnpParsing addition) ride the
 green compile/JVM jobs.
 
