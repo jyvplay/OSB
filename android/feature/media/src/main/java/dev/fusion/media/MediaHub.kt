@@ -40,6 +40,12 @@ fun MediaScreen(context: Context, onView: (Uri, String) -> Unit) {
                 Text("Your media, locally", style = MaterialTheme.typography.headlineSmall)
                 Text("Open selected audio or video in Fusion's native foreground player. Play/pause, seek and aspect-fit video use Android's actual decoder. Nothing autoplays. Leaving the player releases playback; reopen explicitly to continue.")
                 Button(onClick = { pick.launch(arrayOf("audio/*", "video/*")) }, modifier = Modifier.heightIn(min = 48.dp).testTag("media-open-local")) { Text("Choose audio or video…") }
+                // R27 AUTHORED, NOT EXECUTED: opens the direct-URL stream player (ExoPlayer, user-supplied
+                // URLs only). Service page URLs are refused there; service links keep external handoff.
+                OutlinedButton(onClick = {
+                    runCatching { context.startActivity(Intent(context, StreamPlayerActivity::class.java)) }
+                        .onFailure { status = "Stream player unavailable: ${it.javaClass.simpleName}" }
+                }, modifier = Modifier.heightIn(min = 48.dp).testTag("media-open-stream")) { Text("Open direct-URL stream player…") }
                 if (status.isNotEmpty()) Text(status, Modifier.testTag("media-status"))
                 Text("Codec support depends on Android and the selected file. A document provider can itself use a network. This app does not extract YouTube/Spotify/SoundCloud streams or bypass DRM. No background service, microphone or broad media-library permission is needed for this picker route.", style = MaterialTheme.typography.bodySmall)
             }

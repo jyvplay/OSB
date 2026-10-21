@@ -56,10 +56,13 @@ class StreamPlayerActivity : ComponentActivity() {
 }
 
 @Composable
-private fun StreamPlayerScreen() {
+private fun StreamPlayerScreen(prefill: String) {
     val context = LocalContext.current
-    var urlText by remember { mutableStateOf("") }
-    var status by remember { mutableStateOf("Pick a local file or paste a direct media URL. Nothing plays until you press Play.") }
+    var urlText by remember { mutableStateOf(prefill) }
+    var status by remember {
+        mutableStateOf(if (prefill.isEmpty()) "Pick a local file or paste a direct media URL. Nothing plays until you press Play."
+        else "URL received. Press Load URL, then Play.")
+    }
     var currentLabel by remember { mutableStateOf("No media loaded") }
     val player = remember {
         ExoPlayer.Builder(context).build().apply { playWhenReady = false }

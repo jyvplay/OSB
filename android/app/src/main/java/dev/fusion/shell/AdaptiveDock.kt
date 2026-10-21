@@ -69,7 +69,7 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
                     val focused by interactions.collectIsFocusedAsState()
                     LaunchedEffect(hovered, focused) { if (hovered || focused) hot = index else if (hot == index) hot = null }
                     val target = DockMagnification.scale(index, hot, appearance.layout, appearance.dockZoom && !imeVisible)
-                    val scale by animateFloatAsState(target, animationSpec = tween(if (appearance.dockZoom) 120 else 0), label = "beauty-${app.id}")
+                    val scale by animateFloatAsState(target, animationSpec = tween(if (appearance.dockZoom) 120 else 0), label = "dock-${app.id}")
                     Column(Modifier.width(plan.slotDp.dp).height(metrics.height.dp)
                         .testTag("beauty-${app.id}").hoverable(interactions, enabled)
                         .clickable(enabled = enabled, role = Role.Button, interactionSource = interactions,
@@ -78,9 +78,9 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
                             stateDescription = (if (app.active) "Active" else if (app.running) "Running" else "Closed") +
                                 "; magnification " + (if (target > 1f) "enlarged" else "normal")
                         }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
-                        AppGlyph(app.id, Modifier.size(metrics.glyph.dp).graphicsLayer { scaleX = scale; scaleY = scale })
+                        AppGlyph(app.id, Modifier.size(metrics.glyph.dp).testTag("dock-glyph-${app.id}").graphicsLayer { scaleX = scale; scaleY = scale })
                         Spacer(Modifier.height(if (imeVisible) 1.dp else 5.dp))
-                        Text(app.label, maxLines = 1, overflow = TextOverflow.Ellipsis, fontSize = 12.sp, lineHeight = 16.sp,
+                        Text(app.label, modifier = Modifier.testTag("dock-label-${app.id}"), maxLines = 1, overflow = TextOverflow.Ellipsis, fontSize = 12.sp, lineHeight = 16.sp,
                             color = MaterialTheme.colorScheme.onSurface, fontWeight = if (app.active) FontWeight.Bold else FontWeight.Normal)
                         Box(Modifier.padding(top = 3.dp).size(width = if (app.active) 18.dp else 5.dp, height = 3.dp)
                             .clip(RoundedCornerShape(2.dp)).background(if (app.running) MaterialTheme.colorScheme.primary else Color.Transparent))

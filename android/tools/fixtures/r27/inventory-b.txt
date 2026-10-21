@@ -1,0 +1,4 @@
+Bus 002 Device 003: ID 046d:c52b Logitech Unifying Receiver
+Bus 002 Device 005: ID 046d:c31c Logitech Keyboard { 03:01:01 03:00:00 }
+Bus 002 Device 006: ID 1a2b:3c4d Unknown Gizmo
+Bus 001 Device 002: ID 8087:0024 Intel Hub

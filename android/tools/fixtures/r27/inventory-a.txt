@@ -1,0 +1,3 @@
+Bus 002 Device 003: ID 046d:c52b Logitech Unifying Receiver
+Bus 002 Device 004: ID 0781:5567 SanDisk Ultra { 08:06:50 }
+Bus 001 Device 002: ID 8087:0024 Intel Hub

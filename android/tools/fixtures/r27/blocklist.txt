@@ -1,0 +1,6 @@
+# R27 fixture blocklist: hosts lines plus suffix rules plus one exception.
+0.0.0.0 tracker.example.net
+127.0.0.1 ads.example.net
+||beacon.example.org^
+||metrics.example.org^
+@@||safe.metrics.example.org^

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Open Talks</title>
+  <entry>
+    <title>Episode One</title>
+    <link rel="enclosure" href="https://media.example.org/audio/talk1.mp3" type="audio/mpeg" length="9100100" />
+  </entry>
+  <entry>
+    <title>Episode Two</title>
+    <link rel="alternate" href="https://media.example.org/talks/2" />
+    <link rel="enclosure" href="https://media.example.org/audio/talk2.ogg" type="audio/ogg" length="8123456" />
+  </entry>
+</feed>

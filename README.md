@@ -17,9 +17,26 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R26 — executed kernels + authored surfaces (host evidence only)
+## Current R27 — executed kernels + authored hub/dock wiring (host evidence only)
 
-Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 6/50 modules
+Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 8/50 modules
+(16%): tabletop arrange (snap/tidy/first-free), podcast RSS/Atom enclosures,
+explicit HLS variant choice, 48-city offline gazetteer, hosts+ABP-subset content
+blocker, CommonMark+GFM-table markdown, fail-closed firewall proposal, USB
+inventory diff, 15-style M3 type scale, Vixie cron next-fire. Three Android edits
+(BeautyDock tag alignment still unwired, player launch contract, MediaHub
+stream-player button) are authored with 0 syntax errors and await CI/Studio
+compile plus emulator runs — no behavior claim is made.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+106 kotlinc/JVM assertions, independent recomputation, page-matrix + parse gates,
+207/207 tool tests. [Results](android/docs/R27-RESULTS.md) ·
+[Contract](android/docs/R27-PLAN.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R26 — executed kernels + authored surfaces (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Ten host-executed kernels deepened 6/50 modules
 (12%): finite beauty budgets (27/27 AA pairs recomputed), amnesiac session policy,
 tri-state Tor posture, USBGuard-subset policy evaluation, shuffled-pad channel
 avoidance, bounded playlists, GPX import, safe-navigation policy, sandbox-job
@@ -28,10 +45,9 @@ vector-map probe, Orbot handoff, phi-gap dock) are authored with 0 syntax errors
 await CI/Studio compile plus emulator runs — no playback/map/Tor/dock claim is made.
 
 **50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
-157 kotlinc/JVM assertions, independent recomputation, layout + parse gates,
-196/196 tool tests. [Results](android/docs/R26-RESULTS.md) ·
-[Contract](android/docs/R26-PLAN.md) · [Privacy PRD](android/docs/R26-PRIVACY-PRD.md) ·
-[Try without Studio](android/docs/BUILD.md).
+157 kotlinc/JVM assertions, independent recomputation, layout + parse gates.
+[Results](android/docs/R26-RESULTS.md) ·
+[Contract](android/docs/R26-PLAN.md) · [Privacy PRD](android/docs/R26-PRIVACY-PRD.md).
 
 ## Current R24 continuation — native tabletop, local media and offline atlas
 
