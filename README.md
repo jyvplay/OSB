@@ -17,7 +17,25 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R27 — executed kernels + authored hub/dock wiring (host evidence only)
+## Current R28 — executed kernels + USB/consent privacy set (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
+(20%): trash purge ledger, window snap zones, frecency ranking, slippy-map tile
+math, podcast chapters, single-use consent receipts, RFC 6265 cookie jar, RRULE
+recurrence, note front-matter, terminal scrollback. Two authored Android files
+(detection-only USB watch receiver, consent dialog) await CI/Studio compile plus
+emulator runs — no behavior claim is made. A static touch-target audit covers 223
+Button sites (175 pre-existing findings queued for review; static only, not
+rendered proof). Fresh research: Servo 0.6-LTS, Tor VPN/Arti 2.7 beta, Tails 7.15,
+Android USB Protection + Intrusion Logging, Privacy Sandbox retired.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+112 kotlinc/JVM assertions, independent recomputation, touch-target + parse gates,
+217/217 tool tests. [Results](android/docs/R28-RESULTS.md) ·
+[Contract](android/docs/R28-PLAN.md) · [Privacy PRD](android/docs/R28-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R27 — executed kernels + authored hub/dock wiring (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 8/50 modules
 (16%): tabletop arrange (snap/tidy/first-free), podcast RSS/Atom enclosures,

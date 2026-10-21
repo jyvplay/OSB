@@ -202,6 +202,12 @@
       "sha256": "13e72f392f243d25ad06ac234358da0ff325269cd808c66a15658b7e5f5bda48"
     },
     {
+      "path": "app/src/main/java/dev/fusion/shell/ConsentDialog.kt",
+      "module": ":app",
+      "package": "dev.fusion.shell",
+      "sha256": "7220157527020000263680bee9fd34b7e70c4bb711326247dd9a2a973c7b3d17"
+    },
+    {
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
@@ -346,6 +352,12 @@
       "sha256": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481"
     },
     {
+      "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/SnapZones.kt",
+      "module": ":core:windowing",
+      "package": "dev.fusion.windowing",
+      "sha256": "208dae6e42dec1e221036981c67a26bcf76e30ad29dbb04372478368658fe397"
+    },
+    {
       "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/ViewportCommit.kt",
       "module": ":core:windowing",
       "package": "dev.fusion.windowing",
@@ -380,6 +392,12 @@
       "module": ":core:files",
       "package": "dev.fusion.files",
       "sha256": "df62538077dfb964af85e401d9422d51c8bd1ddb9e737d9a59d1dff2791f5a83"
+    },
+    {
+      "path": "core/files/src/main/kotlin/dev/fusion/files/TrashLedger.kt",
+      "module": ":core:files",
+      "package": "dev.fusion.files",
+      "sha256": "66d97bc84a540c4124c57af7515c8ee579cb22846eec5244a446359b769ced4e"
     },
     {
       "path": "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt",
@@ -442,6 +460,12 @@
       "sha256": "3dc5bb0d72e76da2d4b8f851fd36237e5d0094a4a78ebb0baf71442dce3ab044"
     },
     {
+      "path": "core/security/src/main/java/dev/fusion/security/UsbWatchReceiver.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "7118703c62fd8990b0cca5438101ed8b4a23ecf8502e2632438064ed8a915e9c"
+    },
+    {
       "path": "core/security/src/main/java/dev/fusion/security/VaultCrypto.kt",
       "module": ":core:security",
       "package": "dev.fusion.security",
@@ -452,6 +476,12 @@
       "module": ":core:security",
       "package": "dev.fusion.security",
       "sha256": "910e1ee271b39228bafa54c1225f3b2898ad5d98510e889129d8514e14bed4fd"
+    },
+    {
+      "path": "core/security/src/main/kotlin/dev/fusion/security/ConsentLedger.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "e6fb0b8fac5b43d63e22e91c14fae98dee3e23ae5147e1ebc21271821cdbdbd9"
     },
     {
       "path": "core/security/src/main/kotlin/dev/fusion/security/FirewallPolicy.kt",
@@ -658,6 +688,12 @@
       "sha256": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219"
     },
     {
+      "path": "feature/find/src/main/kotlin/dev/fusion/find/FrecencyLedger.kt",
+      "module": ":feature:find",
+      "package": "dev.fusion.find",
+      "sha256": "d4232d97ca253d108a19da2161cc533c74ab3dd1b391ea3cf0fcc24e3b2cf238"
+    },
+    {
       "path": "feature/files/src/main/java/dev/fusion/filesui/FilesScreen.kt",
       "module": ":feature:files",
       "package": "dev.fusion.filesui",
@@ -706,6 +742,12 @@
       "sha256": "0a4bf52069e53bb816458e8452f0ff5d083b8752f10d2c08f25fd5a0eb663a51"
     },
     {
+      "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/CookieJar.kt",
+      "module": ":feature:browser",
+      "package": "dev.fusion.browser.model",
+      "sha256": "4ee2efecfabc7f92dc6dd4879cbf46ef895626832868747820c5926a0b2b54b0"
+    },
+    {
       "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt",
       "module": ":feature:browser",
       "package": "dev.fusion.browser.model",
@@ -728,6 +770,12 @@
       "module": ":feature:terminal",
       "package": "dev.fusion.terminal",
       "sha256": "026485a1194021328f690498b8d05f6cabe5b8788896e6ad845af8673bf036f6"
+    },
+    {
+      "path": "feature/terminal/src/main/kotlin/dev/fusion/terminal/Scrollback.kt",
+      "module": ":feature:terminal",
+      "package": "dev.fusion.terminal",
+      "sha256": "07d3da5140a72ddbc04ddce6fdbbc0c3ed5b94057371bff4173254413e61f814"
     },
     {
       "path": "feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt",
@@ -770,6 +818,12 @@
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
       "sha256": "41d9dd9b77d3c3bc3ec12d5b809d98b6335faec226e05aa753070501914b3589"
+    },
+    {
+      "path": "feature/notes/src/main/kotlin/dev/fusion/notes/FrontMatter.kt",
+      "module": ":feature:notes",
+      "package": "dev.fusion.notes",
+      "sha256": "9c1c2ce32785e96514b7ee6cff8a21be1bf3886c0b08eda2e7703b40366da3fd"
     },
     {
       "path": "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt",
@@ -874,6 +928,12 @@
       "sha256": "b0c4aae27639e97f9d0e2db6a13f68f859321d33f266d78c56955e9f06d9e00d"
     },
     {
+      "path": "feature/media/src/main/kotlin/dev/fusion/media/ChapterMarks.kt",
+      "module": ":feature:media",
+      "package": "dev.fusion.media",
+      "sha256": "f56782ebdcadce9580dfe847906d821913b00460c3cd74d024c97b6d16525a13"
+    },
+    {
       "path": "feature/media/src/main/kotlin/dev/fusion/media/PlaylistParser.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
@@ -938,6 +998,12 @@
       "module": ":feature:maps",
       "package": "dev.fusion.maps",
       "sha256": "2cd6abc258604e4390d5799a4a0ef3883bb781cd686e1f9ae0b6535b46a32069"
+    },
+    {
+      "path": "feature/maps/src/main/kotlin/dev/fusion/maps/TileMath.kt",
+      "module": ":feature:maps",
+      "package": "dev.fusion.maps",
+      "sha256": "63755419faa2e8a9df8e8506a570f284803266a177642706a6473dd5fd55a40c"
     },
     {
       "path": "feature/beam/src/main/java/dev/fusion/beam/CastSendPanel.kt",
@@ -1142,6 +1208,12 @@
       "module": ":feature:automation",
       "package": "dev.fusion.automation",
       "sha256": "fa4c541f09a6479c34817c42612ffa80ad0e25189846192ed741783927c0f754"
+    },
+    {
+      "path": "feature/automation/src/main/kotlin/dev/fusion/automation/Recurrence.kt",
+      "module": ":feature:automation",
+      "package": "dev.fusion.automation",
+      "sha256": "5ae06d84a4000934596c86d62f05e76f771294a98a2fb3c4b7650916ad823300"
     },
     {
       "path": "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",

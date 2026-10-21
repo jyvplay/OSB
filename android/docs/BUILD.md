@@ -1,19 +1,19 @@
-# R27 — executed format/policy kernels + authored hub/dock wiring
+# R28 — executed kernels + USB/consent privacy set + static visual audit
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
-[Exact results and limits](R27-RESULTS.md) · [Scope/acceptance contract](R27-PLAN.md) ·
-[Deepening census](R27-MODULE-DEEPENING.md) · Prior: [R26 results](R26-RESULTS.md) ·
-[R26 privacy PRD](R26-PRIVACY-PRD.md).
+[Exact results and limits](R28-RESULTS.md) · [Scope/acceptance contract](R28-PLAN.md) ·
+[Deepening census](R28-MODULE-DEEPENING.md) · [Alternatives](R28-ALTERNATIVES.md) ·
+[Privacy PRD](R28-PRIVACY-PRD.md) · Prior: [R27 results](R27-RESULTS.md).
 
-**50/50 testable subsets (100%); 8/50 modules deepened with new executed kernels (16%).
+**50/50 testable subsets (100%); 10/50 modules deepened with new executed kernels (20%).
 0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
-Host evidence only: 106 kotlinc/JVM assertions, independent Python recomputation,
-page/view audit matrix, Android parse gate (0 syntax errors), 207/207 tool tests.
-The 3 Android edits (BeautyDock tag alignment, player launch contract, MediaHub
-stream-player button) are authored, NOT executed — CI/Studio must compile and run
-them before any behavior claim.
+Host evidence only: 112 kotlinc/JVM assertions, independent Python recomputation,
+static touch-target audit (223 sites, 175 pre-existing findings queued),
+Android parse gate (0 syntax errors), 217/217 tool tests.
+The 2 authored Android files (USB watch receiver, consent dialog) are authored,
+NOT executed — CI/Studio must compile and run them before any behavior claim.
 
-## Laptop / Android Studio Rabbit1 (R27)
+## Laptop / Android Studio Rabbit1 (R28)
 
 Use a maintained **full JDK17** and real **SDK `platforms;android-37.0`** with build
 tools 36.0.0/35.0.0. Pins AGP9.1.1 / Gradle9.3.1 / Kotlin2.2.21; min34 / compile37 /
@@ -24,31 +24,34 @@ target37. Rabbit1 GUI was not run in this sandbox; push this branch for CI recei
 2. Existing Tabletop/Flat desktop, silver Art / light Business presets, local
    MediaPlayer, offline atlas, PNG-copy and privacy scratchpad are unchanged; follow
    the historical sections below for those bounded workflows.
-3. New edits pending your verification: **MediaHub stream-player button**
-   (`media-open-stream`, opens the direct-URL player; no service extraction),
-   **StreamPlayerActivity launch contract** (prefill-only extra, nothing autoplays),
-   **BeautyDock tag alignment** (DesktopShelf scheme; still UNWIRED — swap the
-   call-site only after CI compiles it and a dedicated device run passes).
-4. Export real Compose layout bounds per page and validate them with
-   `python3 tools/check_r27_pagematrix.py status.json` (24-page matrix;
-   48dp/inside-viewport gate; honest coverage is 0.0 until exports exist).
+3. New files pending your verification: **UsbWatchReceiver** (USB attach/detach
+   detection + advisory verdict + notification-if-permitted; detection ONLY,
+   never blocking) and **ConsentDialog** (scope+TTL authorize-once UI).
+   Prior authored surfaces (stream player, vector maps, Orbot handoff,
+   BeautyDock still UNWIRED) are unchanged.
+4. No emulator exists in the sandbox: run `python3 tools/check_r28_touch_targets.py`
+   for the static touch-target audit (223 sites; 175 pre-existing findings are
+   a review queue, not rendered proof). Export real Compose layout bounds per
+   page and validate with `python3 tools/check_r27_pagematrix.py status.json`
+   (24-page matrix; honest coverage is 0.0 until exports exist).
 
-## Without Android Studio or a local SDK (R27)
+## Without Android Studio or a local SDK (R28)
 
 Real kotlinc/JVM execution of the new kernels plus structural gates — no Android:
 
 ```sh
 cd android
 python3 tools/bootstrap_host_tools.py install   # Linux x86_64; disposable JRE17 + kotlinc into ~/.cache
-python3 tools/r27_lab.py host --tools "$HOME/.cache/fusion-host-r23"
+python3 tools/r28_lab.py host --tools "$HOME/.cache/fusion-host-r23"
 python3 tools/check_project.py
 ```
 
-This runs the 106-assertion R27 contracts, the independent reference
-recomputation, the page-matrix and layout-bounds self-tests, the Android-parse
-gate, and the 11 R27 Python tests. It does not build an APK or touch a device.
-Native compile/device execution delegates to the recorded Gradle suites
-(`r27_lab.py device --device-id ...` labels manual runs only; needs real JDK17 + SDK).
+This runs the 112-assertion R28 contracts, the independent reference
+recomputation, the touch-target static audit, the page-matrix and
+layout-bounds self-tests, the Android-parse gate, and the 10 R28 Python
+tests. It does not build an APK or touch a device. Native compile/device
+execution delegates to the recorded Gradle suites (`r28_lab.py device
+--device-id ...` labels manual runs only; needs real JDK17 + SDK).
 
 ---
 
