@@ -1,0 +1,145 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 119058200558,
+      "run_id": 39550451443,
+      "workflow_name": "Android R25 actual UI preconditions",
+      "head_branch": "arena/c31cbd33-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39550451443",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbuGv37g",
+      "head_sha": "19389b525ba7bc12714e1cdc5c244444e9e768c0",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/119058200558",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39550451443/job/119058200558",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-21T05:35:52Z",
+      "started_at": "2026-10-21T05:35:55Z",
+      "completed_at": "2026-10-21T05:43:30Z",
+      "name": "Focused actual platform R25 UI readiness (not full acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T05:35:56Z",
+          "completed_at": "2026-10-21T05:35:59Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T05:35:59Z",
+          "completed_at": "2026-10-21T05:36:01Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T05:36:01Z",
+          "completed_at": "2026-10-21T05:36:01Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-21T05:36:01Z",
+          "completed_at": "2026-10-21T05:36:11Z"
+        },
+        {
+          "name": "Install actual pinned compilation platform",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-21T05:36:11Z",
+          "completed_at": "2026-10-21T05:36:18Z"
+        },
+        {
+          "name": "Enable actual KVM execution",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-21T05:36:18Z",
+          "completed_at": "2026-10-21T05:36:18Z"
+        },
+        {
+          "name": "Real asleep-precondition counterexample and retained input scenarios",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-21T05:36:18Z",
+          "completed_at": "2026-10-21T05:43:25Z"
+        },
+        {
+          "name": "Actual named outcomes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-21T05:43:25Z",
+          "completed_at": "2026-10-21T05:43:25Z"
+        },
+        {
+          "name": "Actual prepared UI observations, not a behavior pass",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-21T05:43:25Z",
+          "completed_at": "2026-10-21T05:43:25Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-21T05:43:25Z",
+          "completed_at": "2026-10-21T05:43:27Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-21T05:43:27Z",
+          "completed_at": "2026-10-21T05:43:27Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-21T05:43:27Z",
+          "completed_at": "2026-10-21T05:43:27Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-21T05:43:27Z",
+          "completed_at": "2026-10-21T05:43:28Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-21T05:43:28Z",
+          "completed_at": "2026-10-21T05:43:28Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/119058200558",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000933,
+      "runner_name": "GitHub Actions 1000000933",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

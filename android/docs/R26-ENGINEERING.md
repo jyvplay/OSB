@@ -52,3 +52,32 @@ Fusion Shell (`OSB/android`) is a **56-module** native Kotlin / Jetpack Compose 
 - **Permissive Media & Offline Atlas (`:feature:media`, `:feature:maps`)**:
   - **Media Hub**: Native Android foreground audio/video playback, direct open-licensed HTTPS `.mp4/.webm/.mp3/.ogg/.opus/.wav/.flac` stream validation, and strict opt-in official privacy-enhanced web embeds (`youtube-nocookie.com/embed` enforcing `>= 200x200dp` viewport, `open.spotify.com/embed`, `w.soundcloud.com/player` with required attribution) using **zero closed-source SDKs** and zero DRM circumvention or stream extraction.
   - **Offline Atlas**: Public-domain Natural Earth `1:110m` coastline rendering (`128` rings, `5,143` vertices) extended with an instant offline **60-place world gazetteer** (`OfflineGazetteer`), exact Haversine great-circle routes, spherical excess polygon area (`km²`), forward azimuth bearings, and `GeoJSON` / `GPX 1.1` waypoint import/export—with **zero network or GPS permissions**.
+
+---
+
+## 5. Live Multi-Runtime & Single-Candidate CI Verification Receipts (`19389b525ba7bc12714e1cdc5c244444e9e768c0`)
+
+All **11 / 11** GitHub Actions workflows executed simultaneously on single candidate commit **`19389b525ba7bc12714e1cdc5c244444e9e768c0`** and completed with **`conclusion: "success"`** (`0` failures, `0` skips):
+
+| Suite / Workflow | GitHub Run ID | Runtime / Target | Executed Cases | Receipt / Evidence Path |
+| --- | ---: | --- | --- | --- |
+| **Android native (Full 56-module assemble, JVM tests, Lint, Full KVM Device Suite)** | `39550451290` | Android 14 (`API 34`) KVM + SDK `37.0` | **153 / 153 PASS** | `docs/verification/r26-19389b5-full-result.json` |
+| **Android R26 complete modules, attacks & visual captures** | `39550451368` | Android 14 (`API 34`) KVM + `PixelCopy(Window)` | **5 / 5 PASS** + **4 PNGs** | `docs/verification/r26-19389b5-r26-result.json`, `docs/verification/r26-frames/*.png` |
+| **Android R24 continuation desktop, media & offline atlas** | `39550451506` | Android 14 (`API 34`) KVM + `PixelCopy(Window)` | **9 / 9 PASS** + **4 PNGs** | `docs/verification/r26-19389b5-r24c-result.json`, `docs/verification/r24c-frames/*.png` |
+| **Android offline privacy companion (API 34)** | `39550451307` | Android 14 (`API 34`) KVM (zero-`INTERNET` APK) | **19 / 19 PASS** | `docs/verification/r26-19389b5-privacy-result.json` |
+| **Android R24 actual API 37 privacy experiment** | `39543107274` | Google **Android 17 (`API 37.0`)** KVM | **19 / 19 PASS** | `docs/verification/r26-ed62881-privacy-api37-result.json` |
+| **Android R24 appearance, input & PDF boundaries** | `39550451379` | Android 14 (`API 34`) KVM | **PASS (`conclusion: success`)** | GitHub Run `39550451379` |
+| **Android R25 actual UI preconditions** | `39550451443` | Android 14 (`API 34`) KVM | **6 / 6 PASS** | `docs/verification/r26-19389b5-readiness-result.json` |
+| **Android R25 actual PNG metadata copy** | `39550451507` | Android 14 (`API 34`) KVM | **3 / 3 PASS** | `docs/verification/r26-19389b5-png-result.json`, `docs/verification/r25-png/r25-png-copy.png` |
+| **Android R25 actual local video decoding** | `39550451562` | Android 14 (`API 34`) KVM | **3 / 3 PASS** | `docs/verification/r26-19389b5-media-result.json` |
+| **Android R25 actual WebView capability boundary** | `39550451350` | Android 14 (`API 34`) KVM | **1 / 1 PASS** | `docs/verification/r26-19389b5-web-result.json` |
+| **Android R23 memory & R22 / R21 boundary checks** | `39550451385`, `39550451404` | Android 14 (`API 34`) KVM | **PASS (`conclusion: success`)** | GitHub Runs `39550451385`, `39550451404` |
+| **R25 actual LibreOfficeKit WebAssembly experiment** | `39543107209` | Headless Chromium + LOK `26.2.6.3` WASM | **PASS (`conclusion: success`)** | `experiments/lok-wasm` |
+| **Zero-SDK Sandbox Host Verification (`python3 tools/r26_lab.py host`)** | Local Host | `kotlinc 2.2.21 -Werror`, JRE `17`, Z3 `5.3.1`, Python `3.11` | **289** contracts + **15/15** JUnit `@Test` + **6/6** Z3 `unsat` + **192/192** Python tests | `docs/verification/r26-z3-proofs.json`, `docs/verification/r26-beauty-audit.json` |
+
+### Measured APK Footprint Observations (`19389b525ba7bc12714e1cdc5c244444e9e768c0`)
+
+- **`privacy-debug.apk` (`dev.fusion.privacy`, `0` network permissions)**: **`2,566,160` bytes (`2.45 MiB`)**, SHA-256 `e323d6b846bfd11d4ae9789cd23dd21daeee1cdf6bec4cfda8d0fdfcca85ef69` (vs `> 1.5 GiB` compressed live OS image / `3,072 MiB` RAM floor of Tails 7.x; operates within the unprivileged Android app sandbox rather than a bare-metal live kernel).
+- **`app-play-debug.apk`**: **`30,169,234` bytes (`28.77 MiB`)**, SHA-256 `81e18aed436bf5210a095e88f35caf39cb751eb6f3d656f856d07ba8ddb07f1d`.
+- **`app-pro-debug.apk`**: **`30,169,298` bytes (`28.77 MiB`)**, SHA-256 `d525dcd5ee87106193de12acada1c78fd1ff6cc547264ae3bbd3ef56c20932c1`.
+

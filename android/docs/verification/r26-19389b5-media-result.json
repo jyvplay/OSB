@@ -1,0 +1,29 @@
+{
+  "run": 39550451562,
+  "candidate": "19389b525ba7bc12714e1cdc5c244444e9e768c0",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/39550451562",
+  "conclusion": "success",
+  "device_conclusion": "success",
+  "counts": {
+    "PASS": 3,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R24LocalMediaDeviceTest.actualAudioReadyIsNotAutoplayThenPlayPauseSeekAndBackgroundRelease",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24LocalMediaDeviceTest.networkUrlIsNotTreatedAsAPlayableLocalDocument",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R25LocalVideoDeviceTest.actualMp4DecoderProducesOrderedChangingSurfacePixelsAndReleasesOnHome",
+      "result": "PASS"
+    }
+  ],
+  "platform_api": 34,
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}
