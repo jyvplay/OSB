@@ -21,4 +21,5 @@ dependencies {
     implementation(libs.androidx.compose.foundation.foundation)
     implementation(libs.androidx.compose.material3.material3)
     implementation(libs.kotlinx.kotlinx.coroutines.android)
+    testImplementation(libs.junit.junit)
 }

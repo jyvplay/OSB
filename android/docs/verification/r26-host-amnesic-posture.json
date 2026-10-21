@@ -1,0 +1,24 @@
+{
+  "mode": "READ_ONLY_HOST_POSTURE_OBSERVATION",
+  "amnesic_swap_free": true,
+  "active_swap_devices": [],
+  "tmpfs_ephemeral_mounts": [
+    "/dev/shm",
+    "/etc/ssl/certs",
+    "/run",
+    "/run/credentials/systemd-sysctl.service",
+    "/run/credentials/systemd-sysusers.service",
+    "/run/credentials/systemd-tmpfiles-setup-dev.service",
+    "/run/credentials/systemd-tmpfiles-setup.service",
+    "/run/lock"
+  ],
+  "iommu_dma_units_detected": 0,
+  "usbguard_policy_present": false,
+  "usb_devices": [],
+  "composite_badusb_suspects": [],
+  "kernel_hardening": {
+    "yama_ptrace_scope": null,
+    "kptr_restrict": 0
+  },
+  "honest_boundary": "Passive inline hardware keyloggers, pre-boot firmware implants, and cloned VID:PID HID descriptors cannot be proved absent from software alone."
+}

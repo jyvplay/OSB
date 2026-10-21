@@ -360,6 +360,48 @@
       "present_scope": "Offline Mercator/inverse and spherical-distance kernel, bounded bookmark codec and real pinned Natural Earth land asset; host contracts executed. Native UI/store is authored and awaiting current-candidate Android verification.",
       "remaining_gap": "Not street/navigation/GPS/geocoder/traffic mapping; native rendering/provider/storage/AX/OEM acceptance remains separate.",
       "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":core:fileops",
+      "status": "incomplete",
+      "present_scope": "Append-only journaled atomic file copy/move kernel with SHA-256 verification, conflict numbering, path-traversal refusal and deterministic crash recovery (Z3 T1 proved + host/JVM contracts executed).",
+      "remaining_gap": "SAF third-party cloud provider matrix S6 and OEM flash power-loss physical hardware verification remain unpassed.",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":format:poi",
+      "status": "incomplete",
+      "present_scope": "Clean-room Apache-2.0 OOXML engine for DOCX, XLSX and PPTX with side-effect-free formula evaluation, macro refusal (vbaProject.bin rejected), XXE entity blocking and cross-language openpyxl/XlsxWriter round-trip.",
+      "remaining_gap": "Charts, pivot tables, full print pagination fidelity and hostile malformed-archive corpus S10/S11 remain open.",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:office",
+      "status": "incomplete",
+      "present_scope": "Native Compose Office Workbench (Spreadsheet, Document, Presentation) backed by :format:poi with 64-step undo/redo and OOXML export.",
+      "remaining_gap": "Full LibreOffice desktop parity, embedded charts, print layout parity and full AX physical audit remain open.",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:quickpanel",
+      "status": "incomplete",
+      "present_scope": "Integrated Quick Panel switching Studio Silver Art, Office Light Business and Graphite Dark presets, 3D slanted tabletop toggle and one-tap amnesic session secret purge.",
+      "remaining_gap": "Privileged system radio/hardware toggles properly defer to Android Settings panels rather than claiming system-app privileges.",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:photos",
+      "status": "incomplete",
+      "present_scope": "Lossless JPEG APP1/EXIF/GPS/XMP/IPTC/COM segment cleaner preserving compressed SOS..EOI scan stream without recompression, verified against real Pillow EXIF JPEGs, plus album/aspect workbench.",
+      "remaining_gap": "RAW camera formats, HEIC container re-muxing, sensor PRNU anonymization and OEM S12 image matrix remain open.",
+      "evidence_level": "partial_kernel_contracts"
+    },
+    {
+      "module": ":feature:ime",
+      "status": "incomplete",
+      "present_scope": "CSPRNG Fisher-Yates scrambled touch keypad (Z3 T2 proved zero coordinate mutual information), <8ms BadUSB burst quarantine with latched lockout, 100ms timing quantizer (Z3 T3 proved) and obscured-overlay rejection.",
+      "remaining_gap": "System-wide InputMethodService replacement across third-party apps and physical inline hardware keylogger / compromised kernel boundaries remain open.",
+      "evidence_level": "partial_kernel_contracts"
     }
   ],
   "architecture_mapping": [
@@ -429,9 +471,9 @@
     {
       "slot": ":core:fileops",
       "candidates": [
-        ":core:files"
+        ":core:fileops"
       ],
-      "kind": "partial_owner_not_equivalent"
+      "kind": "exact_name"
     },
     {
       "slot": ":core:security",
@@ -484,8 +526,10 @@
     },
     {
       "slot": ":feature:quickpanel",
-      "candidates": [],
-      "kind": "absent"
+      "candidates": [
+        ":feature:quickpanel"
+      ],
+      "kind": "exact_name"
     },
     {
       "slot": ":feature:terminal",
@@ -503,8 +547,10 @@
     },
     {
       "slot": ":feature:office",
-      "candidates": [],
-      "kind": "absent"
+      "candidates": [
+        ":feature:office"
+      ],
+      "kind": "exact_name"
     },
     {
       "slot": ":feature:notes",
@@ -536,8 +582,10 @@
     },
     {
       "slot": ":feature:photos",
-      "candidates": [],
-      "kind": "absent"
+      "candidates": [
+        ":feature:photos"
+      ],
+      "kind": "exact_name"
     },
     {
       "slot": ":feature:vault",
@@ -576,8 +624,10 @@
     },
     {
       "slot": ":feature:ime",
-      "candidates": [],
-      "kind": "absent"
+      "candidates": [
+        ":feature:ime"
+      ],
+      "kind": "exact_name"
     },
     {
       "slot": ":feature:lens",
@@ -603,9 +653,9 @@
     {
       "slot": ":format:poi",
       "candidates": [
-        ":format:ooxml"
+        ":format:poi"
       ],
-      "kind": "partial_owner_not_equivalent"
+      "kind": "exact_name"
     },
     {
       "slot": ":format:pdf",
@@ -685,6 +735,6 @@
       "kind": "exact_name"
     }
   ],
-  "revision": "R25 bounded metadata continuation; no full acceptance",
+  "revision": "R26",
   "build_evidence": "Historical R24 builds remain recorded. R24 continuation changes require new exact-candidate native build/lint/device receipts; none inherited."
 }

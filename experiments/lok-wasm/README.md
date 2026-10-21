@@ -56,3 +56,8 @@ Rendering-resolution repair:642bec8 actually loaded the original FODT and produc
 After the controlled standalone engine succeeded at baf72ab, the experiment is being switched to the original, general bounded adapter in `android/format/lok/src/main/assets/osb-lok/OfficeSession.js`, with a separately served consumer in `android/testing/src/r25js/LokWasmChecks.js`. The main-runtime adapter owns input/output namespaces, byte caps and retire/replay state; the worker adapter owns real load/render/saveAs/destroy calls. Ten protocol attacks and source-buffer mutation must run on the actual engine/virtual filesystem, followed by independent ODT/PDF/tile readback. Their exact source hashes are bound to the receipt. The fixed fixture is no longer the production API.
 
 This phase does NOT enable an Android Office UI, bundle the70MB engine or claim general format/macro/profile/security/footprint/license acceptance. The native `LokBridge.availability()` remains explicit about that boundary. No module census credit is added until this production adapter's positive real-engine execution is collected.
+
+## R26 dual-engine portfolio note
+
+In R26, this standalone LOK/WASM headless Chromium verification remains preserved alongside the new pure-JVM Apache-2.0 clean-room OOXML engine (`:format:poi` + `:feature:office`) so core `.docx` / `.xlsx` / `.pptx` editing and formula evaluation execute natively on every Android device with zero 70 MB binary bundle and zero `SharedArrayBuffer` WebView dependency, while full LibreOffice print-layout experiments stay explicitly isolated here.
+

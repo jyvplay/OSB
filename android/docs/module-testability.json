@@ -26,9 +26,9 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "e6589d36e7efcd0857e289184c2cd055a84ab6b23b5e0266772b80059041df74",
-        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "c285d0b5bb6b1e792c61745bb5a66b2323b6b4df38f6104df3e0e2c0e2b7763a",
-        "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "e6013ce475baeff5c9ed4123061c789ebe7d62c47e63cbf9f1e748189b286b53",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "e4ffcc1007749c60cd9b5c1fcdeb8b4b364fb2f7f904a21a8347368ff128ebfa",
+        "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "a22a3e9d3f0c4445dade8e4509560ac638b0373ce99b995ea55ae7ad305a09c7",
+        "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "f2e83c1b2696ff45cdf0c37a6ad6e51a4c8571f87ee1d2041006290be669235a",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
         "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "a0c7664d5ce5249a7fb93db136be7fb56cb83fb52c987e0cb89baed1d58ed40b",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "473f09a94aed902ba6add2b8bc94847a187b8e5e09f72ce67b8edf936296c942",
@@ -337,8 +337,8 @@
       "limit": "Not alpha/HDR/rendered text contrast, density completeness, physical display or full accessibility acceptance.",
       "sha256": {
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt": "6982d5578cc72d1ae9156caef1f0776be23a0a3554cc5fb0eeed9036ec29ddbc",
-        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "2e639fa1c99d6e8f3f30d1e6ed9f47745243f4bb51068a2d23a31f0ff6be0dd3",
-        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt": "f74d60e1b204f2244e0a97a82e376e4d24b935bac8f1b170b648119f3b3a9c13",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt": "c4e6ebfedccafe55385c78b9cc313481b9f80e3813b9b9bf0c1e1e2a141671b6",
+        "core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt": "e71e04d211b7a35e2ac30d7c86de01105c8f195c1b65de141e8034a04d95e3c2",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt": "f2433e02354e16332f0fd416b56c0d88f2eea1eace2287a57f599d949fd96fe6",
         "testing/src/r14/kotlin/dev/fusion/testing/R14Oracle.kt": "ecf192bd8895ee88eb00d9ffb86686d556f02678ac868a756f815a8a74bb2d69",
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
@@ -622,7 +622,7 @@
         "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt": "b0c4aae27639e97f9d0e2db6a13f68f859321d33f266d78c56955e9f06d9e00d",
         "feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt": "34790206f32d101ab9e3967127def55fe2ffb6904f9eac9b0d0433b233605bc8",
         "feature/media/src/main/java/dev/fusion/media/LocalPlaybackActivity.kt": "d9afc7ad864ae1e84c8732731988dfe9a6497fb7762c7b0741b3bdc84d03d333",
-        "feature/media/src/main/java/dev/fusion/media/MediaHub.kt": "eeed538fea794ced85c1690c76b44171ef946f36f8cc37ed8dab2707c8dbaeff",
+        "feature/media/src/main/java/dev/fusion/media/MediaHub.kt": "0940210ef3b4c259aedcade9532bc677c1d2c64331c29f352b4767f599ec6eb3",
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt": "c48816bc9cb2f5c9fdb1c54f770955eeddb9f279e425c46b1935ceedcddd0610",
@@ -1332,10 +1332,138 @@
       "limit": "Low-resolution offline atlas, not street maps/navigation/GPS/geocoding/traffic or universal native/AX acceptance.",
       "sha256": {
         "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt": "2cd6abc258604e4390d5799a4a0ef3883bb781cd686e1f9ae0b6535b46a32069",
-        "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt": "0662ccf39e5a62534998e53a0ab31f4cb916fdf252d9e7342c25b8b4a61da746",
+        "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt": "fa9dc7b8a81084a825963d436457cffd1108c5894c37963d3669571b32509418",
         "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt": "9df8f8f0ff5faa98628da222e2ab8f5b1c6e95baa5d17d3e7ece70804a8c290f",
         "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4ef9adce49a3ee52004dd2182c18652fbfa3827c733a151aebd1b200d8d46391",
         "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "070a40e38dab5da2f93f0e9fd54bd1584a521644738069faba9b14c402b1cf58"
+      }
+    },
+    {
+      "module": ":core:fileops",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Journaled atomic file move/copy, SHA-256 verification, deterministic rollback before verify and roll-forward after verify (Z3 T1 proved + JVM & host checks).",
+      "production": [
+        "core/fileops/src/main/kotlin/dev/fusion/fileops/FileMoveJournal.kt"
+      ],
+      "checks": [
+        "core/fileops/src/test/kotlin/dev/fusion/fileops/FileOpsKernelTest.kt",
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt"
+      ],
+      "command": "python3 tools/run_r26_contracts.py; ./gradlew :core:fileops:test",
+      "limit": "Local filesystem paths; SAF cloud provider fault matrix S6 remains separate.",
+      "sha256": {
+        "core/fileops/src/main/kotlin/dev/fusion/fileops/FileMoveJournal.kt": "d637ad168f83556fac8f84756b8ef48b691c4e1eedc27d557db1c4be7542aa3d",
+        "core/fileops/src/test/kotlin/dev/fusion/fileops/FileOpsKernelTest.kt": "9c1ca675917de77bbcae114e341ecda660e659fc47d01ea5b89cd9ba82100aea",
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
+      }
+    },
+    {
+      "module": ":format:poi",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Clean-room Apache-2.0 DOCX/XLSX/PPTX read/write, deterministic formula engine (SUM/AVERAGE/MIN/MAX/IF/ROUND), cycle detection, macro & XXE refusal, verified against openpyxl/XlsxWriter.",
+      "production": [
+        "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt"
+      ],
+      "checks": [
+        "format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomWorkbookEngineTest.kt",
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt"
+      ],
+      "command": "python3 tools/run_r26_contracts.py; ./gradlew :format:poi:test",
+      "limit": "Core OOXML documents/sheets/slides without VBA macros, charts, pivot tables or full print layout.",
+      "sha256": {
+        "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt": "2a347c4cf624eec674b58beae4d0b9f2ac85301af3e3d7e755455b18699f2fd1",
+        "format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomWorkbookEngineTest.kt": "46a3d76287165ae11eef47af14a6afd788ae281bc069f1ad583190fbc461555d",
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
+      }
+    },
+    {
+      "module": ":feature:office",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Native Compose Office Workbench with spreadsheet formula grid, document draft, slide deck, 64-step undo/redo and OOXML export.",
+      "production": [
+        "feature/office/src/main/kotlin/dev/fusion/office/OfficeDocumentModel.kt",
+        "feature/office/src/main/java/dev/fusion/office/OfficeWorkbenchScreen.kt"
+      ],
+      "checks": [
+        "feature/office/src/test/kotlin/dev/fusion/office/OfficeSessionTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt"
+      ],
+      "command": "python3 tools/run_r26_contracts.py; ./gradlew :feature:office:testDebugUnitTest :app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Bounded native office workbench, not full desktop suite parity.",
+      "sha256": {
+        "feature/office/src/main/kotlin/dev/fusion/office/OfficeDocumentModel.kt": "40a21a2c0777ef2f7d575437c32d7d3455af965fef40f79bb1ca847f1ef4bfe0",
+        "feature/office/src/main/java/dev/fusion/office/OfficeWorkbenchScreen.kt": "929a0748ab190c423f2faa05e173e262a39233c024856192778a8ad75b0e47cd",
+        "feature/office/src/test/kotlin/dev/fusion/office/OfficeSessionTest.kt": "e1350aa8b89963bd6623faf2411f08d632982cdd8980726b7b0b9292bb9c6ee0",
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "9dd2297756fd8386ad22079395bbaa8a6b0006656627d60ea9428b8a8cf540d0"
+      }
+    },
+    {
+      "module": ":feature:quickpanel",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Studio Silver Art, Business Light and Graphite Dark preset switching, 3D slanted tabletop toggle and one-tap amnesic session wipe.",
+      "production": [
+        "feature/quickpanel/src/main/kotlin/dev/fusion/quickpanel/QuickPanelModel.kt",
+        "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt"
+      ],
+      "checks": [
+        "feature/quickpanel/src/test/kotlin/dev/fusion/quickpanel/QuickPanelModelTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt"
+      ],
+      "command": "python3 tools/run_r26_contracts.py; ./gradlew :feature:quickpanel:testDebugUnitTest :app:pixel6Api34ProDebugAndroidTest",
+      "limit": "Application workspace presets & session memory zeroization; does not claim OS radio privilege.",
+      "sha256": {
+        "feature/quickpanel/src/main/kotlin/dev/fusion/quickpanel/QuickPanelModel.kt": "032499f25d808d81af6353b327cfc4b09bd1cfd715c7b3cc23821d1e8c6aa286",
+        "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt": "626978185c852d058afe30095cb68fd9190220725356f581b055cdcd40998de1",
+        "feature/quickpanel/src/test/kotlin/dev/fusion/quickpanel/QuickPanelModelTest.kt": "f8fe30e08d331e9c6ca75c2934ea02b900e58b57f3cad24f08e2b0490b009ff6",
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "9dd2297756fd8386ad22079395bbaa8a6b0006656627d60ea9428b8a8cf540d0"
+      }
+    },
+    {
+      "module": ":feature:photos",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "Lossless JPEG EXIF/GPS/XMP/IPTC/COM segment cleaner verified with real Pillow EXIF images plus album & aspect-ratio workbench.",
+      "production": [
+        "feature/photos/src/main/kotlin/dev/fusion/photos/PhotoMetadataCleaner.kt",
+        "feature/photos/src/main/java/dev/fusion/photos/PhotosWorkbenchScreen.kt"
+      ],
+      "checks": [
+        "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt",
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt"
+      ],
+      "command": "python3 tools/run_r26_contracts.py; ./gradlew :feature:photos:testDebugUnitTest",
+      "limit": "JPEG metadata markers stripped without recompression; visual pixels/PRNU fingerprints remain.",
+      "sha256": {
+        "feature/photos/src/main/kotlin/dev/fusion/photos/PhotoMetadataCleaner.kt": "d93c765d0306d4818ed4efc8f685ea3b2c75f81267b28d85c7068fed8389f3bd",
+        "feature/photos/src/main/java/dev/fusion/photos/PhotosWorkbenchScreen.kt": "12d8f5893e7eb08f149b5db20295ddc4e6c1c88ecece3813c05357015457299e",
+        "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt": "4e0acadd65beba4a0f827d4a0e8f9d2f7dfbd2311a4b08d9e2ba0de04a171e26",
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
+      }
+    },
+    {
+      "module": ":feature:ime",
+      "substantial_testable_subset": true,
+      "kind": "behavioral_subset",
+      "behavior": "CSPRNG Fisher-Yates scrambled keypad, latched <8ms BadUSB burst quarantine, 100ms timing quantizer and obscured-window rejection.",
+      "production": [
+        "feature/ime/src/main/kotlin/dev/fusion/ime/HardenedInputEngine.kt",
+        "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt"
+      ],
+      "checks": [
+        "feature/ime/src/test/kotlin/dev/fusion/ime/HardenedImeKernelTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt"
+      ],
+      "command": "python3 tools/run_r26_contracts.py; ./gradlew :feature:ime:testDebugUnitTest :app:pixel6Api34ProDebugAndroidTest",
+      "limit": "In-app hardened input surface; cannot stop a compromised kernel or passive inline hardware logger on a physical keyboard.",
+      "sha256": {
+        "feature/ime/src/main/kotlin/dev/fusion/ime/HardenedInputEngine.kt": "42a433a3e6879b9f34b033a10e3002a20980ca7e7afa18a817b0ab52936b133d",
+        "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt": "bbc483fee6aab5e9fa04eed4e37a674da02f63c5a087f9f76c948eb69567d800",
+        "feature/ime/src/test/kotlin/dev/fusion/ime/HardenedImeKernelTest.kt": "450e8f963e295904f5ed033221a8bff0028f1b50638eb9a57f73e776d131902b",
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "9dd2297756fd8386ad22079395bbaa8a6b0006656627d60ea9428b8a8cf540d0"
       }
     }
   ]

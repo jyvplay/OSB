@@ -4,6 +4,7 @@
     ":app",
     ":privacy",
     ":core:documents",
+    ":core:fileops",
     ":core:windowing",
     ":core:files",
     ":core:capabilities",
@@ -21,6 +22,10 @@
     ":feature:find",
     ":feature:files",
     ":feature:browser",
+    ":feature:office",
+    ":feature:quickpanel",
+    ":feature:photos",
+    ":feature:ime",
     ":feature:terminal",
     ":feature:vault",
     ":feature:notes",
@@ -41,6 +46,7 @@
     ":format:native",
     ":format:archive",
     ":format:ooxml",
+    ":format:poi",
     ":format:pdf",
     ":format:image",
     ":format:psd",
@@ -61,6 +67,7 @@
       ":core:capabilities",
       ":core:commands",
       ":core:designsystem",
+      ":core:fileops",
       ":core:files",
       ":core:hw",
       ":core:index",
@@ -82,12 +89,16 @@
       ":feature:editor",
       ":feature:files",
       ":feature:find",
+      ":feature:ime",
       ":feature:launcher",
       ":feature:lens",
       ":feature:maps",
       ":feature:media",
       ":feature:messages",
       ":feature:notes",
+      ":feature:office",
+      ":feature:photos",
+      ":feature:quickpanel",
       ":feature:settings",
       ":feature:terminal",
       ":feature:together",
@@ -98,12 +109,14 @@
       ":format:native",
       ":format:ooxml",
       ":format:pdf",
+      ":format:poi",
       ":format:psd"
     ],
     ":privacy": [
       ":core:security"
     ],
     ":core:documents": [],
+    ":core:fileops": [],
     ":core:windowing": [],
     ":core:files": [
       ":core:documents"
@@ -135,6 +148,17 @@
       ":core:files"
     ],
     ":feature:browser": [],
+    ":feature:office": [
+      ":format:poi"
+    ],
+    ":feature:quickpanel": [
+      ":core:security",
+      ":core:settings"
+    ],
+    ":feature:photos": [],
+    ":feature:ime": [
+      ":core:security"
+    ],
     ":feature:terminal": [],
     ":feature:vault": [
       ":core:security"
@@ -180,6 +204,7 @@
     ":format:ooxml": [
       ":format:archive"
     ],
+    ":format:poi": [],
     ":format:pdf": [
       ":format:ooxml"
     ],
@@ -199,7 +224,7 @@
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "c285d0b5bb6b1e792c61745bb5a66b2323b6b4df38f6104df3e0e2c0e2b7763a"
+      "sha256": "a22a3e9d3f0c4445dade8e4509560ac638b0373ce99b995ea55ae7ad305a09c7"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopSessionModel.kt",
@@ -223,7 +248,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "e6589d36e7efcd0857e289184c2cd055a84ab6b23b5e0266772b80059041df74"
+      "sha256": "e4ffcc1007749c60cd9b5c1fcdeb8b4b364fb2f7f904a21a8347368ff128ebfa"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -235,7 +260,7 @@
       "path": "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "e6013ce475baeff5c9ed4123061c789ebe7d62c47e63cbf9f1e748189b286b53"
+      "sha256": "f2e83c1b2696ff45cdf0c37a6ad6e51a4c8571f87ee1d2041006290be669235a"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt",
@@ -316,6 +341,12 @@
       "sha256": "18085b09c0d5ff2a2b7a7b137b590b3c0ac849208970e1fb371fe7875dba591e"
     },
     {
+      "path": "core/fileops/src/main/kotlin/dev/fusion/fileops/FileMoveJournal.kt",
+      "module": ":core:fileops",
+      "package": "dev.fusion.fileops",
+      "sha256": "d637ad168f83556fac8f84756b8ef48b691c4e1eedc27d557db1c4be7542aa3d"
+    },
+    {
       "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopCodec.kt",
       "module": ":core:windowing",
       "package": "dev.fusion.windowing",
@@ -391,7 +422,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "14cd76a53441faa90fe68b67a489dda5c7490c9d8ebecc76b94abaed46f4ebde"
+      "sha256": "77f1ab139a3ac6dae900654aba32c7d2ebd2eb49665ccf3f6f3ff45dd6d69a5f"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
@@ -434,6 +465,12 @@
       "module": ":core:security",
       "package": "dev.fusion.security",
       "sha256": "8c4a53326accaad319686ae6597d81ea0904bcd66666208826399513a2b65dcb"
+    },
+    {
+      "path": "core/security/src/main/kotlin/dev/fusion/security/AmnesicSessionVault.kt",
+      "module": ":core:security",
+      "package": "dev.fusion.security",
+      "sha256": "1d4ebe9642bac15446a762f00146012df4b651cb56d54430fafdd929ec0e7e96"
     },
     {
       "path": "core/security/src/main/kotlin/dev/fusion/security/InputRearm.kt",
@@ -520,6 +557,12 @@
       "sha256": "3378f84eebcbc626bef274383ffa4e8729f84e8485287b8ce4ccee826abde152"
     },
     {
+      "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/BeautyStandard.kt",
+      "module": ":core:designsystem",
+      "package": "dev.fusion.designsystem",
+      "sha256": "a1c736a9a83a8d778f9a21dc1bb4ba4d94a9042f30dc57cab9a7f53f94dd0402"
+    },
+    {
       "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/Contrast.kt",
       "module": ":core:designsystem",
       "package": "dev.fusion.designsystem",
@@ -529,13 +572,13 @@
       "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/DesktopMetrics.kt",
       "module": ":core:designsystem",
       "package": "dev.fusion.designsystem",
-      "sha256": "f74d60e1b204f2244e0a97a82e376e4d24b935bac8f1b170b648119f3b3a9c13"
+      "sha256": "e71e04d211b7a35e2ac30d7c86de01105c8f195c1b65de141e8034a04d95e3c2"
     },
     {
       "path": "core/designsystem/src/main/kotlin/dev/fusion/designsystem/ProfessionalPalettes.kt",
       "module": ":core:designsystem",
       "package": "dev.fusion.designsystem",
-      "sha256": "2e639fa1c99d6e8f3f30d1e6ed9f47745243f4bb51068a2d23a31f0ff6be0dd3"
+      "sha256": "c4e6ebfedccafe55385c78b9cc313481b9f80e3813b9b9bf0c1e1e2a141671b6"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt",
@@ -607,7 +650,7 @@
       "path": "feature/browser/src/main/java/dev/fusion/browser/BrowserScreen.kt",
       "module": ":feature:browser",
       "package": "dev.fusion.browser",
-      "sha256": "29b18d7590efb582a308fbd2f55a565b59912aa3394bf930054eef343f81f57a"
+      "sha256": "7738d0365984e42efe41dd7f22c14916f375ef75ae9f859f3e1f766c9a721edc"
     },
     {
       "path": "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt",
@@ -632,6 +675,54 @@
       "module": ":feature:browser",
       "package": "dev.fusion.browser.model",
       "sha256": "dff8e8339856ce2728a13929060059fc172263ba7bccb51316b026b89a1c2ce7"
+    },
+    {
+      "path": "feature/office/src/main/java/dev/fusion/office/OfficeWorkbenchScreen.kt",
+      "module": ":feature:office",
+      "package": "dev.fusion.office",
+      "sha256": "929a0748ab190c423f2faa05e173e262a39233c024856192778a8ad75b0e47cd"
+    },
+    {
+      "path": "feature/office/src/main/kotlin/dev/fusion/office/OfficeDocumentModel.kt",
+      "module": ":feature:office",
+      "package": "dev.fusion.office",
+      "sha256": "40a21a2c0777ef2f7d575437c32d7d3455af965fef40f79bb1ca847f1ef4bfe0"
+    },
+    {
+      "path": "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt",
+      "module": ":feature:quickpanel",
+      "package": "dev.fusion.quickpanel",
+      "sha256": "626978185c852d058afe30095cb68fd9190220725356f581b055cdcd40998de1"
+    },
+    {
+      "path": "feature/quickpanel/src/main/kotlin/dev/fusion/quickpanel/QuickPanelModel.kt",
+      "module": ":feature:quickpanel",
+      "package": "dev.fusion.quickpanel",
+      "sha256": "032499f25d808d81af6353b327cfc4b09bd1cfd715c7b3cc23821d1e8c6aa286"
+    },
+    {
+      "path": "feature/photos/src/main/java/dev/fusion/photos/PhotosWorkbenchScreen.kt",
+      "module": ":feature:photos",
+      "package": "dev.fusion.photos",
+      "sha256": "12d8f5893e7eb08f149b5db20295ddc4e6c1c88ecece3813c05357015457299e"
+    },
+    {
+      "path": "feature/photos/src/main/kotlin/dev/fusion/photos/PhotoMetadataCleaner.kt",
+      "module": ":feature:photos",
+      "package": "dev.fusion.photos",
+      "sha256": "d93c765d0306d4818ed4efc8f685ea3b2c75f81267b28d85c7068fed8389f3bd"
+    },
+    {
+      "path": "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt",
+      "module": ":feature:ime",
+      "package": "dev.fusion.ime",
+      "sha256": "bbc483fee6aab5e9fa04eed4e37a674da02f63c5a087f9f76c948eb69567d800"
+    },
+    {
+      "path": "feature/ime/src/main/kotlin/dev/fusion/ime/HardenedInputEngine.kt",
+      "module": ":feature:ime",
+      "package": "dev.fusion.ime",
+      "sha256": "42a433a3e6879b9f34b033a10e3002a20980ca7e7afa18a817b0ab52936b133d"
     },
     {
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/LocalShell.kt",
@@ -760,6 +851,12 @@
       "sha256": "938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09"
     },
     {
+      "path": "feature/media/src/main/java/dev/fusion/media/EmbeddedStreamPlayer.kt",
+      "module": ":feature:media",
+      "package": "dev.fusion.media",
+      "sha256": "1bc51874de2855e804d30c5450f0772519bbb33502b8142e4897fe2d387758eb"
+    },
+    {
       "path": "feature/media/src/main/java/dev/fusion/media/LocalPlaybackActivity.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
@@ -769,7 +866,7 @@
       "path": "feature/media/src/main/java/dev/fusion/media/MediaHub.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
-      "sha256": "eeed538fea794ced85c1690c76b44171ef946f36f8cc37ed8dab2707c8dbaeff"
+      "sha256": "0940210ef3b4c259aedcade9532bc677c1d2c64331c29f352b4767f599ec6eb3"
     },
     {
       "path": "feature/media/src/main/java/dev/fusion/media/MediaLibrary.kt",
@@ -782,6 +879,12 @@
       "module": ":feature:media",
       "package": "dev.fusion.media",
       "sha256": "b0c4aae27639e97f9d0e2db6a13f68f859321d33f266d78c56955e9f06d9e00d"
+    },
+    {
+      "path": "feature/media/src/main/kotlin/dev/fusion/media/EmbeddedStreamContract.kt",
+      "module": ":feature:media",
+      "package": "dev.fusion.media",
+      "sha256": "73b4a12233a1bce2cc5bba9fe1ba9fa9301825f00487750d13e1c52018150cc5"
     },
     {
       "path": "feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt",
@@ -799,13 +902,19 @@
       "path": "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt",
       "module": ":feature:maps",
       "package": "dev.fusion.maps",
-      "sha256": "0662ccf39e5a62534998e53a0ab31f4cb916fdf252d9e7342c25b8b4a61da746"
+      "sha256": "fa9dc7b8a81084a825963d436457cffd1108c5894c37963d3669571b32509418"
     },
     {
       "path": "feature/maps/src/main/java/dev/fusion/maps/MapViewModel.kt",
       "module": ":feature:maps",
       "package": "dev.fusion.maps",
       "sha256": "9df8f8f0ff5faa98628da222e2ab8f5b1c6e95baa5d17d3e7ece70804a8c290f"
+    },
+    {
+      "path": "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineGazetteer.kt",
+      "module": ":feature:maps",
+      "package": "dev.fusion.maps",
+      "sha256": "858a2326cf7a292376486fc76a8afcf59f7e891134763c5acc11567ba0ae6fda"
     },
     {
       "path": "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt",
@@ -1118,6 +1227,12 @@
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "d2845e2365719ae640159d08d47c58346a9c89e26de9d2755cd3224536fb4fdd"
+    },
+    {
+      "path": "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt",
+      "module": ":format:poi",
+      "package": "dev.fusion.poi",
+      "sha256": "2a347c4cf624eec674b58beae4d0b9f2ac85301af3e3d7e755455b18699f2fd1"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/PdfDocument.kt",

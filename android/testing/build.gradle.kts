@@ -324,3 +324,46 @@ kotlin.sourceSets.named("r25png") {
 tasks.register<JavaExec>("r25PngContracts") {
     dependsOn(r25png.classesTaskName);classpath=r25png.runtimeClasspath;mainClass.set("dev.fusion.testing.PngChecks")
 }
+
+// R26 full production contracts across the 6 new modules + amnesic security + visual standard + embeds + offline atlas.
+val r26 by sourceSets.creating
+kotlin.sourceSets.named("r26") {
+    kotlin.srcDir("src/r26/kotlin")
+    kotlin.srcDir("../core/fileops/src/main/kotlin")
+    kotlin.srcDir("../format/poi/src/main/kotlin")
+    kotlin.srcDir("../feature/office/src/main/kotlin")
+    kotlin.srcDir("../feature/quickpanel/src/main/kotlin")
+    kotlin.srcDir("../feature/photos/src/main/kotlin")
+    kotlin.srcDir("../feature/ime/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../core/designsystem/src/main/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.srcDir("../core/model/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../feature/maps/src/main/kotlin")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.include(
+        "**/FileMoveJournal.kt",
+        "**/CleanRoomPoiEngine.kt",
+        "**/OfficeDocumentModel.kt",
+        "**/QuickPanelModel.kt",
+        "**/PhotoMetadataCleaner.kt",
+        "**/HardenedInputEngine.kt",
+        "**/AmnesicSessionVault.kt",
+        "**/BeautyStandard.kt",
+        "**/ProfessionalPalettes.kt",
+        "**/DesktopMetrics.kt",
+        "**/Contrast.kt",
+        "**/Appearance.kt",
+        "**/PilotPolicy.kt",
+        "**/ServiceLink.kt",
+        "**/EmbeddedStreamContract.kt",
+        "**/OfflineMap.kt",
+        "**/OfflineGazetteer.kt",
+        "**/Tabletop.kt",
+        "**/R26Checks.kt"
+    )
+}
+tasks.register<JavaExec>("r26Contracts") {
+    dependsOn(r26.classesTaskName); classpath = r26.runtimeClasspath; mainClass.set("dev.fusion.testing.R26Checks")
+}

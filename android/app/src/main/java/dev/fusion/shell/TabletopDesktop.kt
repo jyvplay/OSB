@@ -133,6 +133,11 @@ fun TabletopDesktop(model: TabletopSessionModel, flat: Boolean, enabled: Boolean
             TextButton(onClick = { pinsDialog = true }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("tabletop-pins")) { Text("Pin app") }
             TextButton(onClick = { arrangeDialog = true }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("tabletop-piles")) { Text("Piles") }
             TextButton(onClick = { viewsDialog = true }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("tabletop-views")) { Text("Views (${doc.views.size})") }
+            doc.views.forEach { view ->
+                OutlinedButton(onClick = { pendingView = view.id }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("quick-view-${view.id}")) {
+                    Text("Load: ${view.name}")
+                }
+            }
             if (!flat) {
                 FilterChip(selected = scene.focused == null, onClick = { change(DeskAction.Focus(null)); selected = null }, enabled = ready,
                     modifier = Modifier.heightIn(min = 48.dp).testTag("surface-overview"), label = { Text("Overview") })
@@ -202,8 +207,8 @@ fun TabletopDesktop(model: TabletopSessionModel, flat: Boolean, enabled: Boolean
                         key(item.id) {
                             Column(Modifier.offset((x - cardWidth / 2).dp, (y - cardHeight / 2).dp).size(cardWidth.dp, cardHeight.dp)
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(if (selected == item.id) colors.primaryContainer else colors.surface.copy(alpha = .9f))
-                                .border(if (selected == item.id) 2.dp else 1.dp, if (selected == item.id) colors.primary else colors.outline.copy(alpha = .35f), RoundedCornerShape(12.dp))
+                                .background(if (selected == item.id) colors.primaryContainer else colors.surface.copy(alpha = .95f))
+                                .border(if (selected == item.id) 2.dp else 1.25.dp, if (selected == item.id) colors.primary else colors.outline, RoundedCornerShape(12.dp))
                                 .testTag(if (item.target == null) "desk-pile-${item.id}" else "desk-pin-${item.id}")
                                 .combinedClickable(enabled = ready, role = Role.Button, onClick = { selected = item.id }, onDoubleClick = {
                                     if (item.target != null) onOpen(item.target) else selected = item.id
@@ -219,8 +224,14 @@ fun TabletopDesktop(model: TabletopSessionModel, flat: Boolean, enabled: Boolean
                                     if (ready) detectDragGestures(onDragStart = { selected = item.id; dragId = item.id; drag = Offset.Zero },
                                         onDragCancel = { dragId = null; drag = Offset.Zero }, onDragEnd = {
                                             val delta = drag; dragId = null; drag = Offset.Zero
-                                            val point = TabletopProjection.toWorld((projected.x + delta.x / density).coerceIn(0.0, width), (projected.y + delta.y / density).coerceIn(0.0, height), active, camera, width, height, focused)
-                                            move(item, active, point)
+                                            val dropX = (projected.x + delta.x / density).coerceIn(0.0, width)
+                                            val dropY = (projected.y + delta.y / density).coerceIn(0.0, height)
+                                            val dropPlane = if (focused) active else TabletopProjection.planeAt((dropX / width).coerceIn(0.0, 1.0), (dropY / height).coerceIn(0.0, 1.0))
+                                            val targetCam = scene.cameras[dropPlane.ordinal]
+                                            val point = runCatching {
+                                                TabletopProjection.toWorld(dropX, dropY, dropPlane, if (dropPlane == active) camera else targetCam, width, height, focused)
+                                            }.getOrDefault(targetCam.center)
+                                            move(item, dropPlane, point)
                                         }) { change, amount -> change.consume(); drag += amount }
                                 }.padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                                 if (item.target == null) Box(Modifier.size(32.dp).background(colors.primary, RoundedCornerShape(8.dp)), contentAlignment = Alignment.Center) {

@@ -10,9 +10,9 @@ import re
 ROOT=Path(__file__).resolve().parents[1]
 FAMILIES={
  'SH':['app','feature/launcher'], 'WM':['app','core/windowing'], 'SR':['feature/find','core/commands','core/index'],
- 'FM':['core/files','feature/files','core/documents'], 'NC':['feature/alerts','feature/quickpanel','app'], 'ST':['core/settings','feature/settings','core/capabilities'],
+ 'FM':['core/files','core/fileops','feature/files','core/documents'], 'NC':['feature/alerts','feature/quickpanel','app'], 'ST':['core/settings','feature/settings','core/capabilities'],
  'AP':['feature/launcher','app'], 'TD':['feature/terminal'], 'PR':['feature/editor','feature/notes','feature/calc','feature/browser','feature/office','feature/ime'],
- 'FF':['format/native','format/lok','format/ooxml','format/pdf','format/image','format/psd','format/archive','core/documents'],
+ 'FF':['format/native','format/lok','format/ooxml','format/poi','format/pdf','format/image','format/psd','format/archive','core/documents'],
  'MD':['feature/media','feature/photos','feature/capture','feature/lens'], 'SC':['core/security','feature/vault'],
  'BK':['feature/backup'], 'CT':['feature/continuity','feature/together'], 'CA':['feature/beam','cast/airplay','cast/castv2','cast/dlna','feature/together'],
  'AX':['feature/accessibility','core/designsystem','app'], 'AU':['feature/automation'], 'RG':['core/perf','core/hw','benchmark','baselineprofile'],

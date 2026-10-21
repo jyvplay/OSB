@@ -1,0 +1,583 @@
+{
+  "standard": "Oct-2026 WCAG 2.2 AA/SC1.4.11 + APCA-W3 Lc + Golden Ratio phi (subordinate composition metric)",
+  "subjective_human_vision_inspection": "UNPERFORMED_IN_TEXT_ONLY_MODEL_RUNTIME",
+  "palettes": {
+    "STUDIO_SILVER": {
+      "min_text_wcag": 6.54,
+      "min_component_border_wcag": 4.07,
+      "body_apca_lc": 101.45,
+      "muted_on_raised_apca_lc": 71.82
+    },
+    "OFFICE_BLUE": {
+      "min_text_wcag": 7.19,
+      "min_component_border_wcag": 4.36,
+      "body_apca_lc": 103.49,
+      "muted_on_raised_apca_lc": 78.45
+    },
+    "STUDIO_GRAPHITE": {
+      "min_text_wcag": 7.71,
+      "min_component_border_wcag": 4.22,
+      "body_apca_lc": 96.83,
+      "muted_on_raised_apca_lc": 71.68
+    }
+  },
+  "dock_samples": {
+    "360dp@1.0x": {
+      "slot": 64,
+      "glyph": 32,
+      "height": 80,
+      "gap": 8,
+      "viewport": 296.0,
+      "slot_to_glyph_ratio": 2.0
+    },
+    "360dp@2.0x": {
+      "slot": 88,
+      "glyph": 32,
+      "height": 96,
+      "gap": 8,
+      "viewport": 296.0,
+      "slot_to_glyph_ratio": 2.75
+    },
+    "800dp@1.0x": {
+      "slot": 64,
+      "glyph": 32,
+      "height": 80,
+      "gap": 8,
+      "viewport": 512.0,
+      "slot_to_glyph_ratio": 2.0
+    },
+    "800dp@2.0x": {
+      "slot": 88,
+      "glyph": 32,
+      "height": 96,
+      "gap": 8,
+      "viewport": 680.0,
+      "slot_to_glyph_ratio": 2.75
+    },
+    "1280dp@1.0x": {
+      "slot": 72,
+      "glyph": 36,
+      "height": 80,
+      "gap": 10,
+      "viewport": 580.0,
+      "slot_to_glyph_ratio": 2.0
+    },
+    "1280dp@2.0x": {
+      "slot": 88,
+      "glyph": 32,
+      "height": 96,
+      "gap": 10,
+      "viewport": 692.0,
+      "slot_to_glyph_ratio": 2.75
+    },
+    "2560dp@1.0x": {
+      "slot": 72,
+      "glyph": 36,
+      "height": 80,
+      "gap": 10,
+      "viewport": 580.0,
+      "slot_to_glyph_ratio": 2.0
+    },
+    "2560dp@2.0x": {
+      "slot": 88,
+      "glyph": 32,
+      "height": 96,
+      "gap": 10,
+      "viewport": 692.0,
+      "slot_to_glyph_ratio": 2.75
+    }
+  },
+  "tabletop_floor_scene_share": 0.8316,
+  "verified_png_frames_count": 28,
+  "frames": [
+    {
+      "file": "docs/verification/r24-native-previews/art-studio-graphite.png",
+      "width": 280,
+      "height": 622,
+      "unique_colors": 910,
+      "light_pixel_fraction": 0.0286,
+      "silver_neutral_fraction": 0.005,
+      "max_foreground_background_wcag": 9.19,
+      "dominant_hex": [
+        "#2d394a",
+        "#151b24",
+        "#202936",
+        "#242e3c",
+        "#2a3545",
+        "#212a37"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24-native-previews/business-office-blue.png",
+      "width": 280,
+      "height": 622,
+      "unique_colors": 706,
+      "light_pixel_fraction": 0.9677,
+      "silver_neutral_fraction": 0.8131,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#174ea6",
+        "#152336",
+        "#44566c"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/eighth-successful-workflow/r24c-atlas.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1373,
+      "light_pixel_fraction": 0.9407,
+      "silver_neutral_fraction": 0.6553,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#e8eef7",
+        "#ffffff",
+        "#f3f6fb",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/eighth-successful-workflow/r24c-silver.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1324,
+      "light_pixel_fraction": 0.9519,
+      "silver_neutral_fraction": 0.9327,
+      "max_foreground_background_wcag": 8.23,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#fafcfe",
+        "#f8fafd",
+        "#f9fbfd",
+        "#f8fbfd"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/eighth-successful-workflow/r24c-tabletop.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 671,
+      "light_pixel_fraction": 0.9782,
+      "silver_neutral_fraction": 0.8279,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#174ea6",
+        "#152336",
+        "#44566c"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/eighth-successful-workflow/r24c-wall.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 901,
+      "light_pixel_fraction": 0.9674,
+      "silver_neutral_fraction": 0.8045,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#f0f4fa",
+        "#ebf0f8",
+        "#edf2f9"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/fourth-failed-workflow/r24c-atlas.png",
+      "width": 280,
+      "height": 622,
+      "unique_colors": 1358,
+      "light_pixel_fraction": 0.9381,
+      "silver_neutral_fraction": 0.4686,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#ffffff",
+        "#f3f6fb",
+        "#e8eef7",
+        "#fefeff",
+        "#f7f9fc",
+        "#174ea6"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/fourth-failed-workflow/r24c-silver.png",
+      "width": 280,
+      "height": 622,
+      "unique_colors": 1071,
+      "light_pixel_fraction": 0.9525,
+      "silver_neutral_fraction": 0.9322,
+      "max_foreground_background_wcag": 8.23,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#fafcfe",
+        "#f8fafd",
+        "#f9fbfd",
+        "#f8fbfd"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/fourth-failed-workflow/r24c-tabletop.png",
+      "width": 280,
+      "height": 622,
+      "unique_colors": 1319,
+      "light_pixel_fraction": 0.9515,
+      "silver_neutral_fraction": 0.6219,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#fefeff",
+        "#174ea6",
+        "#fbfcfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/ninth-committed-window/r24c-atlas.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1288,
+      "light_pixel_fraction": 0.9426,
+      "silver_neutral_fraction": 0.653,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#e8eef7",
+        "#ffffff",
+        "#f3f6fb",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/ninth-committed-window/r24c-silver.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1264,
+      "light_pixel_fraction": 0.9539,
+      "silver_neutral_fraction": 0.9347,
+      "max_foreground_background_wcag": 8.23,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#fafcfe",
+        "#f8fafd",
+        "#f9fbfd",
+        "#f8fbfd"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/ninth-committed-window/r24c-tabletop.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1477,
+      "light_pixel_fraction": 0.9523,
+      "silver_neutral_fraction": 0.6296,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/ninth-committed-window/r24c-wall.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 837,
+      "light_pixel_fraction": 0.9693,
+      "silver_neutral_fraction": 0.8064,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#f0f4fa",
+        "#ebf0f8",
+        "#edf2f9"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/sixth-successful-workflow/r24c-atlas.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1347,
+      "light_pixel_fraction": 0.9406,
+      "silver_neutral_fraction": 0.6509,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#e8eef7",
+        "#ffffff",
+        "#f3f6fb",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/sixth-successful-workflow/r24c-silver.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1329,
+      "light_pixel_fraction": 0.9518,
+      "silver_neutral_fraction": 0.9326,
+      "max_foreground_background_wcag": 8.23,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#fafcfe",
+        "#f8fafd",
+        "#f9fbfd",
+        "#f8fbfd"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/sixth-successful-workflow/r24c-tabletop.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1544,
+      "light_pixel_fraction": 0.9513,
+      "silver_neutral_fraction": 0.6276,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/sixth-successful-workflow/r24c-wall.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 912,
+      "light_pixel_fraction": 0.9673,
+      "silver_neutral_fraction": 0.8044,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#f0f4fa",
+        "#ebf0f8",
+        "#edf2f9"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/tenth-committed-window/r24c-atlas.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1288,
+      "light_pixel_fraction": 0.9426,
+      "silver_neutral_fraction": 0.653,
+      "max_foreground_background_wcag": 15.84,
+      "dominant_hex": [
+        "#e8eef7",
+        "#ffffff",
+        "#f3f6fb",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/tenth-committed-window/r24c-silver.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1264,
+      "light_pixel_fraction": 0.9539,
+      "silver_neutral_fraction": 0.9347,
+      "max_foreground_background_wcag": 8.23,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#fafcfe",
+        "#f8fafd",
+        "#f9fbfd",
+        "#f8fbfd"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/tenth-committed-window/r24c-tabletop.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1477,
+      "light_pixel_fraction": 0.9523,
+      "silver_neutral_fraction": 0.6296,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#fefeff",
+        "#174ea6",
+        "#fcfdfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/tenth-committed-window/r24c-wall.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 837,
+      "light_pixel_fraction": 0.9693,
+      "silver_neutral_fraction": 0.8064,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#f0f4fa",
+        "#ebf0f8",
+        "#edf2f9"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r24c-native-previews/third-failed-workflow/r24c-silver.png",
+      "width": 280,
+      "height": 622,
+      "unique_colors": 1035,
+      "light_pixel_fraction": 0.9535,
+      "silver_neutral_fraction": 0.9328,
+      "max_foreground_background_wcag": 8.23,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#fafcfe",
+        "#f8fafd",
+        "#f9fbfd",
+        "#f8fbfd"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r25/lok-production-first/detail.png",
+      "width": 256,
+      "height": 320,
+      "unique_colors": 250,
+      "light_pixel_fraction": 0.856,
+      "silver_neutral_fraction": 0.0036,
+      "max_foreground_background_wcag": 21.0,
+      "dominant_hex": [
+        "#ffffff",
+        "#000000",
+        "#636363",
+        "#141414",
+        "#020202",
+        "#0b0b0b"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r25/lok-production-first/tile.png",
+      "width": 256,
+      "height": 320,
+      "unique_colors": 169,
+      "light_pixel_fraction": 0.9211,
+      "silver_neutral_fraction": 0.0013,
+      "max_foreground_background_wcag": 21.0,
+      "dominant_hex": [
+        "#ffffff",
+        "#000000",
+        "#636363",
+        "#171717",
+        "#111111",
+        "#080808"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r25/video-first/r25-decoded-blue.png",
+      "width": 64,
+      "height": 48,
+      "unique_colors": 1,
+      "light_pixel_fraction": 0.0,
+      "silver_neutral_fraction": 0.0,
+      "max_foreground_background_wcag": 1.0,
+      "dominant_hex": [
+        "#0100ff"
+      ],
+      "capture_kind": "codec_patch_probe"
+    },
+    {
+      "file": "docs/verification/r25/video-first/r25-decoded-green.png",
+      "width": 64,
+      "height": 48,
+      "unique_colors": 1,
+      "light_pixel_fraction": 0.0,
+      "silver_neutral_fraction": 0.0,
+      "max_foreground_background_wcag": 1.0,
+      "dominant_hex": [
+        "#028002"
+      ],
+      "capture_kind": "codec_patch_probe"
+    },
+    {
+      "file": "docs/verification/r25/video-first/r25-decoded-red.png",
+      "width": 64,
+      "height": 48,
+      "unique_colors": 1,
+      "light_pixel_fraction": 0.0,
+      "silver_neutral_fraction": 0.0,
+      "max_foreground_background_wcag": 1.0,
+      "dominant_hex": [
+        "#ff0000"
+      ],
+      "capture_kind": "codec_patch_probe"
+    },
+    {
+      "file": "docs/verification/r25-png/r25-png-copy.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 389,
+      "light_pixel_fraction": 0.0566,
+      "silver_neutral_fraction": 0.0007,
+      "max_foreground_background_wcag": 19.5,
+      "dominant_hex": [
+        "#0c1011",
+        "#5a595b",
+        "#191e20",
+        "#b7b8b8",
+        "#0b0f10",
+        "#0a0d0e"
+      ],
+      "capture_kind": "ui_screen_capture"
+    }
+  ]
+}

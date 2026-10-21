@@ -1,0 +1,50 @@
+{
+  "suite": "R26 Formal SMT Verification",
+  "prover": "z3-solver 5.3.1",
+  "theorem_count": 6,
+  "all_unsat_proved": true,
+  "theorems": [
+    {
+      "theorem": "T1_file_move_journal_exact_once_recovery",
+      "prover": "z3-solver 5.3.1",
+      "negated_query_result": "unsat",
+      "proved": true,
+      "scope": "Single-filesystem non-compromised disk model; excludes silent physical media bit-rot after fsync."
+    },
+    {
+      "theorem": "T2_scrambled_keypad_zero_coordinate_mutual_information",
+      "prover": "z3-solver 5.3.1",
+      "negated_query_result": "unsat",
+      "proved": true,
+      "scope": "Coordinate-only attacker model with ideal CSPRNG; excludes simultaneous framebuffer+touch capture."
+    },
+    {
+      "theorem": "T3_timing_quantizer_lattice_alignment",
+      "prover": "z3-solver 5.3.1",
+      "negated_query_result": "unsat",
+      "proved": true,
+      "scope": "Logical schedule timestamps; OS thread scheduler jitter remains bounded only to kernel timer slack."
+    },
+    {
+      "theorem": "T4_tabletop_8316_floor_dominance_and_exact_bijection",
+      "prover": "z3-solver 5.3.1",
+      "negated_query_result": "unsat",
+      "proved": true,
+      "scope": "Exact rational projective algebra on [0,1]^2; IEEE-754 float rounding bounded to ~1e-15."
+    },
+    {
+      "theorem": "T5_amnesic_vault_ram_ceiling_and_epoch_revocation",
+      "prover": "z3-solver 5.3.1",
+      "negated_query_result": "unsat",
+      "proved": true,
+      "scope": "User-space JVM byte-buffer model; JVM GC copies prior to putSecret are outside Java array zeroization."
+    },
+    {
+      "theorem": "T6_tor_socks5h_no_local_dns_or_clearnet_http_leak",
+      "prover": "z3-solver 5.3.1",
+      "negated_query_result": "unsat",
+      "proved": true,
+      "scope": "Application URL/proxy admission policy; system-wide WebView/MediaPlayer enforcement requires OS netfilter/VPN."
+    }
+  ]
+}

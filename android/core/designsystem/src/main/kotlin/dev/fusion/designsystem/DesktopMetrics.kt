@@ -11,11 +11,15 @@ object DesktopMetrics {
     data class Dock(val slot: Int, val glyph: Int, val height: Int, val gap: Int, val viewport: Double)
     fun dock(width: Double, fontScale: Double, keyboard: Boolean, items: Int): Dock {
         require(width.isFinite() && width >= 48 && fontScale.isFinite() && fontScale in .5..5.0 && items in 0..64)
-        val slot = if (fontScale > 1.5) 88 else if (fontScale > 1.15) 72 else 64
-        val height = maxOf(if (keyboard) 64 else if (fontScale > 1.5) 96 else 80, kotlin.math.ceil((if (keyboard) 24 else 32) + 5 + 16 * fontScale + 8).toInt())
-        // At most eight preferred visible slots. More targets scroll, rather than fill all available space.
-        val viewport = min((width - 24).coerceAtLeast(48.0), 16.0 + items.coerceIn(1, 8) * (slot + GAP) - GAP)
-        return Dock(slot, if (keyboard) 24 else 32, height, GAP.toInt(), viewport)
+        val glyph = if (keyboard) 24 else if (width >= 960.0 && fontScale <= 1.15) 36 else 32
+        val baseSlot = if (fontScale > 1.5) 88 else if (fontScale > 1.15 || width >= 960.0) 72 else 64
+        val slot = maxOf(baseSlot, kotlin.math.ceil(glyph * PHI).toInt())
+        val gap = if (width >= 960.0 && !keyboard) 10 else GAP.toInt()
+        val height = maxOf(if (keyboard) 64 else if (fontScale > 1.5) 96 else 80, kotlin.math.ceil(glyph + 5 + 16 * fontScale + 8).toInt())
+        // Fit comfortable whole slots inside breathing margins rather than squeezing or stretching across all width.
+        val maxVisible = (((width - 24.0 + gap) / (slot + gap)).toInt()).coerceIn(1, 7)
+        val viewport = min((width - 24.0).coerceAtLeast(48.0), (16.0 + items.coerceIn(1, maxVisible) * (slot + gap) - gap).coerceAtLeast(48.0))
+        return Dock(slot, glyph, height, gap, viewport)
     }
     data class Bounds(val left: Double, val top: Double, val right: Double, val bottom: Double) {
         init { require(listOf(left, top, right, bottom).all { it.isFinite() } && right >= left && bottom >= top) }

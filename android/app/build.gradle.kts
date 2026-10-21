@@ -69,6 +69,7 @@ android {
 
 dependencies {
     // core
+    implementation(project(":core:fileops"))
     implementation(project(":core:windowing"))
     implementation(project(":core:files"))
     implementation(project(":core:capabilities"))
@@ -87,6 +88,11 @@ dependencies {
     implementation(project(":feature:find"))
     implementation(project(":feature:files"))
     implementation(project(":feature:browser"))
+    implementation(project(":feature:office"))
+    implementation(project(":feature:quickpanel"))
+    implementation(project(":feature:photos"))
+    implementation(project(":feature:ime"))
+    implementation(project(":format:poi"))
     implementation(project(":feature:terminal"))
     implementation(project(":feature:vault"))
     implementation(project(":feature:notes"))

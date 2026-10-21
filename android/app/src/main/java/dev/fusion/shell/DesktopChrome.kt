@@ -71,6 +71,23 @@ internal fun AppGlyph(id:String,modifier:Modifier) {
                 drawOval(ink,Offset(w*.28f,h*.06f),Size(w*.44f,h*.88f),style=line)
                 drawLine(ink,Offset(w*.06f,h*.5f),Offset(w*.94f,h*.5f),line.width)
             }
+            "office" -> {
+                drawRoundRect(ink,cornerRadius=androidx.compose.ui.geometry.CornerRadius(3f,3f),style=line)
+                drawLine(ink,Offset(w*.36f,0f),Offset(w*.36f,h),line.width)
+                drawLine(ink,Offset(0f,h*.38f),Offset(w,h*.38f),line.width)
+                drawLine(ink,Offset(0f,h*.68f),Offset(w,h*.68f),line.width)
+            }
+            "photos" -> {
+                drawRoundRect(ink,cornerRadius=androidx.compose.ui.geometry.CornerRadius(3f,3f),style=line)
+                drawCircle(ink,w*.12f,Offset(w*.32f,h*.34f))
+                drawPath(Path().apply {moveTo(w*.12f,h*.84f);lineTo(w*.45f,h*.5f);lineTo(w*.66f,h*.7f);lineTo(w*.88f,h*.44f);lineTo(w*.88f,h*.84f);close()},ink)
+            }
+            "quickpanel" -> {
+                for(x in 0..1) for(y in 0..1) drawRoundRect(ink,Offset(x*w*.54f,y*h*.54f),Size(w*.42f,h*.42f),androidx.compose.ui.geometry.CornerRadius(2f,2f),style=line)
+            }
+            "ime" -> {
+                for(x in 0..2) for(y in 0..2) drawCircle(ink,w*.09f,Offset(w*(.2f+x*.3f),h*(.2f+y*.3f)))
+            }
             "settings" -> for(i in 0..2) {val y=h*(.2f+i*.3f);drawLine(ink,Offset(0f,y),Offset(w,y),line.width);drawCircle(ink,w*.12f,Offset(w*(if(i==1) .7f else .3f),y))}
             "apps","pilot" -> for(x in 0..1) for(y in 0..1) drawRect(ink,Offset(x*w*.58f,y*h*.58f),Size(w*.36f,h*.36f))
             else -> {drawRoundRect(ink,cornerRadius=androidx.compose.ui.geometry.CornerRadius(2f,2f),style=line)

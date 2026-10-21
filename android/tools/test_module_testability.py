@@ -9,8 +9,8 @@ class TestabilityCensusChecks(unittest.TestCase):
     def test_current_pairings_and_denominator(self):
         census.validate(self.data)
         c=census.counts(self.data)
-        self.assertEqual(50,c['total'])
-        self.assertEqual(48,len([r for r in self.data['rows'] if r['module'] not in (':privacy',':feature:maps')]))
+        self.assertEqual(56,c['total'])
+        self.assertEqual(54,len([r for r in self.data['rows'] if r['module'] not in (':privacy',':feature:maps')]))
         self.assertEqual(c['total'],c['substantial_testable_subsets']+c['not_established'])
     def test_generated_report(self):self.assertEqual(census.render(self.data),(census.ROOT/'docs/MODULE-TESTABILITY.md').read_text())
     def test_label_without_behavioral_check_rejected(self):

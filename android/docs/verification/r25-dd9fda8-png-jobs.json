@@ -1,0 +1,369 @@
+{
+  "total_count": 3,
+  "jobs": [
+    {
+      "id": 119025746869,
+      "run_id": 39540136355,
+      "workflow_name": "Android R25 actual PNG metadata copy",
+      "head_branch": "arena/c31cbd33-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39540136355",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbtnzDtQ",
+      "head_sha": "dd9fda8b6f6d03eb0f7185075dd20fcfaf999c64",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/119025746869",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39540136355/job/119025746869",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-21T03:43:29Z",
+      "started_at": "2026-10-21T03:43:32Z",
+      "completed_at": "2026-10-21T03:49:50Z",
+      "name": "Focused actual platform R25 PNG copy (not image anonymity)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T03:43:32Z",
+          "completed_at": "2026-10-21T03:43:35Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T03:43:35Z",
+          "completed_at": "2026-10-21T03:43:36Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T03:43:36Z",
+          "completed_at": "2026-10-21T03:43:36Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-21T03:43:36Z",
+          "completed_at": "2026-10-21T03:43:44Z"
+        },
+        {
+          "name": "Actual compilation platform",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-21T03:43:44Z",
+          "completed_at": "2026-10-21T03:43:47Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-21T03:43:47Z",
+          "completed_at": "2026-10-21T03:43:47Z"
+        },
+        {
+          "name": "Real production PNG contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-21T03:43:47Z",
+          "completed_at": "2026-10-21T03:44:12Z"
+        },
+        {
+          "name": "Real isolated UID, native decoder and system-picker copy/readback",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-21T03:44:12Z",
+          "completed_at": "2026-10-21T03:49:45Z"
+        },
+        {
+          "name": "Actual named outcomes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-21T03:49:45Z",
+          "completed_at": "2026-10-21T03:49:45Z"
+        },
+        {
+          "name": "Actual UI preconditions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-21T03:49:45Z",
+          "completed_at": "2026-10-21T03:49:45Z"
+        },
+        {
+          "name": "Stage actual new-page frames only",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-21T03:49:45Z",
+          "completed_at": "2026-10-21T03:49:45Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-21T03:49:45Z",
+          "completed_at": "2026-10-21T03:49:46Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-21T03:49:46Z",
+          "completed_at": "2026-10-21T03:49:47Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-10-21T03:49:47Z",
+          "completed_at": "2026-10-21T03:49:47Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-10-21T03:49:47Z",
+          "completed_at": "2026-10-21T03:49:47Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-21T03:49:47Z",
+          "completed_at": "2026-10-21T03:49:48Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-21T03:49:48Z",
+          "completed_at": "2026-10-21T03:49:48Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/119025746869",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000686,
+      "runner_name": "GitHub Actions 1000000686",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 119027561820,
+      "run_id": 39540136355,
+      "workflow_name": "Android R25 actual PNG metadata copy",
+      "head_branch": "arena/c31cbd33-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39540136355",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbtph1XA",
+      "head_sha": "dd9fda8b6f6d03eb0f7185075dd20fcfaf999c64",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/119027561820",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39540136355/job/119027561820",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-21T03:49:50Z",
+      "started_at": "2026-10-21T03:49:53Z",
+      "completed_at": "2026-10-21T03:50:04Z",
+      "name": "Actual frame r25-png-copy.png (not all-page acceptance)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T03:49:54Z",
+          "completed_at": "2026-10-21T03:49:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T03:49:55Z",
+          "completed_at": "2026-10-21T03:49:57Z"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T03:49:57Z",
+          "completed_at": "2026-10-21T03:49:58Z"
+        },
+        {
+          "name": "Actual native frame metadata",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-21T03:49:58Z",
+          "completed_at": "2026-10-21T03:49:58Z"
+        },
+        {
+          "name": "Actual PNG page frame chunks 1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-21T03:49:58Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Actual PNG page frame chunks 2",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Actual PNG page frame chunks 3",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Actual PNG page frame chunks 4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Actual PNG page frame chunks 5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Actual PNG page frame chunks 6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-21T03:49:59Z",
+          "completed_at": "2026-10-21T03:49:59Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/119027561820",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000695,
+      "runner_name": "GitHub Actions 1000000695",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 119027627105,
+      "run_id": 39540136355,
+      "workflow_name": "Android R25 actual PNG metadata copy",
+      "head_branch": "arena/c31cbd33-osb",
+      "run_url": "https://api.github.com/repos/jyvplay/OSB/actions/runs/39540136355",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVIYQ_s8AAAAbtpl0YQ",
+      "head_sha": "dd9fda8b6f6d03eb0f7185075dd20fcfaf999c64",
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/jobs/119027627105",
+      "html_url": "https://github.com/jyvplay/OSB/actions/runs/39540136355/job/119027627105",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-21T03:50:04Z",
+      "started_at": "2026-10-21T03:50:07Z",
+      "completed_at": "2026-10-21T03:50:16Z",
+      "name": "Verify actual new-page frame transport",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T03:50:08Z",
+          "completed_at": "2026-10-21T03:50:08Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T03:50:08Z",
+          "completed_at": "2026-10-21T03:50:10Z"
+        },
+        {
+          "name": "Reject incomplete/mismatched native page evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T03:50:10Z",
+          "completed_at": "2026-10-21T03:50:13Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-21T03:50:13Z",
+          "completed_at": "2026-10-21T03:50:14Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-21T03:50:14Z",
+          "completed_at": "2026-10-21T03:50:14Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-21T03:50:14Z",
+          "completed_at": "2026-10-21T03:50:14Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/jyvplay/OSB/check-runs/119027627105",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000000696,
+      "runner_name": "GitHub Actions 1000000696",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

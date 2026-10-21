@@ -12,9 +12,9 @@ data class ProfessionalColors(val background:Int,val surface:Int,val raised:Int,
 }
 object ProfessionalPalettes {
     fun colors(palette:ProfessionalPalette):ProfessionalColors = when(palette) {
-        ProfessionalPalette.STUDIO_SILVER->ProfessionalColors(0xe9edf1,0xfafcfe,0xdce2e8,0x687581,0x354f6b,0xffffff,0x19232d,0x465563,0xd0dce9,0x203c56)
-        ProfessionalPalette.OFFICE_BLUE->ProfessionalColors(0xf3f6fb,0xffffff,0xe8eef7,0x68798d,0x174ea6,0xffffff,0x152336,0x44566c,0xd9e7ff,0x123b72)
-        ProfessionalPalette.STUDIO_GRAPHITE->ProfessionalColors(0x151b24,0x202936,0x2d394a,0x7c8da3,0x80cbb8,0x0f2c28,0xecf1f8,0xb6c3d5,0x354e66,0xf0f5fa)
+        ProfessionalPalette.STUDIO_SILVER->ProfessionalColors(0xe9edf1,0xfafcfe,0xdce2e8,0x5f6d7a,0x2f4965,0xffffff,0x16202a,0x3f4e5d,0xd0dce9,0x1b354d)
+        ProfessionalPalette.OFFICE_BLUE->ProfessionalColors(0xf3f6fb,0xffffff,0xe8eef7,0x5e7085,0x174ea6,0xffffff,0x121f30,0x3d4f65,0xd9e7ff,0x103668)
+        ProfessionalPalette.STUDIO_GRAPHITE->ProfessionalColors(0x151b24,0x202936,0x2d394a,0x8b9db4,0x80cbb8,0x0f2c28,0xf0f4fa,0xc6d3e4,0x354e66,0xf0f5fa)
     }
 }
 /** Drawing changes, never hit geometry:64dp slot/32dp glyph leaves room for1.25× magnification. */

@@ -11,7 +11,8 @@ from png_capture import dimensions
 
 ROOT = Path(__file__).resolve().parents[1]
 NAMES = {'r24c-tabletop.png', 'r24c-silver.png', 'r24c-wall.png', 'r24c-atlas.png'}
-FRAME_GROUPS = {'r24': NAMES, 'png-copy': {'r25-png-copy.png'}}
+R26_NAMES = {'r26-art-silver.png', 'r26-business-light.png', 'r26-office-workbench.png', 'r26-hardened-ime.png'}
+FRAME_GROUPS = {'r24': NAMES, 'png-copy': {'r25-png-copy.png'}, 'r26-suite': R26_NAMES}
 
 
 def validate_audit(report):

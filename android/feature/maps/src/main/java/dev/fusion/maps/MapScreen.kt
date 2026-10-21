@@ -37,7 +37,59 @@ fun MapScreen(model: MapViewModel) {
     var addVisible by remember { mutableStateOf(false) }
     var placesVisible by remember { mutableStateOf(false) }
     var detailsVisible by remember { mutableStateOf(false) }
+    var gazetteerVisible by remember { mutableStateOf(false) }
+    var geoJsonVisible by remember { mutableStateOf(false) }
     val book = model.book
+    if (gazetteerVisible) {
+        var query by remember { mutableStateOf("") }
+        val hits = remember(query) { OfflineGazetteer.search(query, limit = 8) }
+        AlertDialog(
+            onDismissRequest = { gazetteerVisible = false },
+            title = { Text("Offline world gazetteer (${OfflineGazetteer.PLACES.size} places)") },
+            text = {
+                Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        query,
+                        { if (it.length <= 64) query = it },
+                        label = { Text("City, peak or country") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth().testTag("map-gazetteer-query")
+                    )
+                    hits.forEachIndexed { idx, hit ->
+                        OutlinedButton(
+                            onClick = {
+                                model.camera = MapCamera(center = hit.point, zoom = 5)
+                                model.cursor = hit.point
+                                gazetteerVisible = false
+                            },
+                            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("map-gazetteer-hit-$idx")
+                        ) {
+                            Text("${hit.name} · ${hit.region}")
+                        }
+                    }
+                }
+            },
+            confirmButton = { TextButton(onClick = { gazetteerVisible = false }, modifier = Modifier.heightIn(min = 48.dp)) { Text("Close") } }
+        )
+    }
+    if (geoJsonVisible) {
+        val pts = book?.pins?.map { it.point }.orEmpty()
+        val routeKm = OfflineGazetteer.routeMeters(pts) / 1000.0
+        val polyKm2 = if (pts.size >= 3) OfflineGazetteer.sphericalPolygonSquareKm(pts) else 0.0
+        val geoJson = remember(book) { GeoJsonGpxCodec.exportGeoJson(book?.pins.orEmpty(), pts) }
+        AlertDialog(
+            onDismissRequest = { geoJsonVisible = false },
+            title = { Text("Geodesic route, area & GeoJSON/GPX") },
+            text = {
+                Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(String.format(Locale.ROOT, "Saved pin chain (%d pts): %.2f km geodesic", pts.size, routeKm), Modifier.testTag("map-route-summary"))
+                    if (pts.size >= 3) Text(String.format(Locale.ROOT, "Enclosed spherical area: %.1f km²", polyKm2))
+                    Text(geoJson.take(360), style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("map-geojson-preview"))
+                }
+            },
+            confirmButton = { TextButton(onClick = { geoJsonVisible = false }, modifier = Modifier.heightIn(min = 48.dp)) { Text("Done") } }
+        )
+    }
     if (addVisible) {
         var name by remember { mutableStateOf("") }
         var lat by remember { mutableStateOf(String.format(Locale.ROOT, "%.6f", model.cursor.latitude)) }
@@ -100,6 +152,8 @@ fun MapScreen(model: MapViewModel) {
             TextButton(onClick = { model.camera = MapCamera(); model.cursor = model.camera.center }, modifier = Modifier.heightIn(min = 48.dp)) { Text("World") }
             val from = model.measureFrom
             TextButton(onClick = { if (from == null) model.measureFrom = model.cursor else model.measureFrom = null }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-measure")) { Text(if (from == null) "Measure from selected point" else "Clear measurement") }
+            TextButton(onClick = { gazetteerVisible = true }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-gazetteer-open")) { Text("Search") }
+            TextButton(onClick = { geoJsonVisible = true }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-route-open")) { Text("Route & GeoJSON") }
             TextButton(onClick = { detailsVisible = true }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-details")) { Text("Details & limits") }
         }
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth().clip(androidx.compose.foundation.shape.RoundedCornerShape(8.dp)).background(MaterialTheme.colorScheme.surfaceVariant)) {

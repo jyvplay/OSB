@@ -1,6 +1,6 @@
-# Native module completion audit — R25 bounded metadata continuation; no full acceptance
+# Native module completion audit — R26
 
-**Included Gradle modules: 50. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 50 (100.00%).**
+**Included Gradle modules: 56. Specification-complete: 0 (0.00%). Still requiring completion/acceptance: 56 (100.00%).**
 
 This is not a time/effort estimate. A module is complete only after its entire assigned scope, integration, mandatory safety/accessibility/device tests and license/build gates have reviewed acceptance. A source file, successful compilation or many assertions is insufficient.
 
@@ -69,12 +69,18 @@ Historical R24 builds remain recorded. R24 continuation changes require new exac
 | `:testing` | 183179 host Kotlin assertions/13 separately compiled libraries;68 Python checks;733 cross-language checks;39/39 actual API34 cases at2c2b5bc. Source-bound23/48 (47.92%) testable-subset census is separate from full acceptance0/48. | runner executed | 0/1 (0%) | Complete device/provider/security/AX suites, adversarial engines, physical/reference/OEM/16K matrix and reviewed acceptance records |
 | `:privacy` | Separate no-INTERNET volatile native workspace and link projection; f42193d native 6/6 with atomic input refusal, persistent feedback and IME/deletion attacks; historical 62b5c2f failure retained | partial android execution | 0/1 (0%) | Full anonymity/OS replacement not claimed; actual workspace lifecycle/AX/IME and physical security gates remain |
 | `:feature:maps` | Offline Mercator/inverse and spherical-distance kernel, bounded bookmark codec and real pinned Natural Earth land asset; host contracts executed. Native UI/store is authored and awaiting current-candidate Android verification. | partial kernel contracts | 0/1 (0%) | Not street/navigation/GPS/geocoder/traffic mapping; native rendering/provider/storage/AX/OEM acceptance remains separate. |
+| `:core:fileops` | Append-only journaled atomic file copy/move kernel with SHA-256 verification, conflict numbering, path-traversal refusal and deterministic crash recovery (Z3 T1 proved + host/JVM contracts executed). | partial kernel contracts | 0/1 (0%) | SAF third-party cloud provider matrix S6 and OEM flash power-loss physical hardware verification remain unpassed. |
+| `:format:poi` | Clean-room Apache-2.0 OOXML engine for DOCX, XLSX and PPTX with side-effect-free formula evaluation, macro refusal (vbaProject.bin rejected), XXE entity blocking and cross-language openpyxl/XlsxWriter round-trip. | partial kernel contracts | 0/1 (0%) | Charts, pivot tables, full print pagination fidelity and hostile malformed-archive corpus S10/S11 remain open. |
+| `:feature:office` | Native Compose Office Workbench (Spreadsheet, Document, Presentation) backed by :format:poi with 64-step undo/redo and OOXML export. | partial kernel contracts | 0/1 (0%) | Full LibreOffice desktop parity, embedded charts, print layout parity and full AX physical audit remain open. |
+| `:feature:quickpanel` | Integrated Quick Panel switching Studio Silver Art, Office Light Business and Graphite Dark presets, 3D slanted tabletop toggle and one-tap amnesic session secret purge. | partial kernel contracts | 0/1 (0%) | Privileged system radio/hardware toggles properly defer to Android Settings panels rather than claiming system-app privileges. |
+| `:feature:photos` | Lossless JPEG APP1/EXIF/GPS/XMP/IPTC/COM segment cleaner preserving compressed SOS..EOI scan stream without recompression, verified against real Pillow EXIF JPEGs, plus album/aspect workbench. | partial kernel contracts | 0/1 (0%) | RAW camera formats, HEIC container re-muxing, sensor PRNU anonymization and OEM S12 image matrix remain open. |
+| `:feature:ime` | CSPRNG Fisher-Yates scrambled touch keypad (Z3 T2 proved zero coordinate mutual information), <8ms BadUSB burst quarantine with latched lockout, 100ms timing quantizer (Z3 T3 proved) and obscured-overlay rejection. | partial kernel contracts | 0/1 (0%) | System-wide InputMethodService replacement across third-party apps and physical inline hardware keylogger / compromised kernel boundaries remain open. |
 
-The 11 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12B-ENGINEERING.md for current exact runtime results, including the retained failing IME test. No row is a full feature pass.
+The 17 `partial kernel contracts` rows have executed tests of selected production logic, not whole-module acceptance. 0 `compiled only` rows were compiled as sources but not exercised by these runners. `:testing` is the executed harness, not another completed product feature. `android compiled` means source compilation, not working assigned behavior; `partial android execution` means named subset cases executed, including any recorded failures. `jvm unit target passed` records an invoked native-CI JVM unit target, not receiver/engine/device acceptance. See R12B-ENGINEERING.md for current exact runtime results, including the retained failing IME test. No row is a full feature pass.
 
 ## Specification architecture reconciliation
 
-The architecture-name inventory below has **47 named main-build slots**, not 50 interchangeable completed features. Of these, **41 match included names**, **2 have partial alternative owners**, and **4 have no separate included module**. 9 current included modules are additional/alternative owners. Name matching is not capability fulfillment. Calculator is required by PR-09 even though its dedicated module is additional to the named architecture list.
+The architecture-name inventory below has **47 named main-build slots**, not 56 interchangeable completed features. Of these, **47 match included names**, **0 have partial alternative owners**, and **0 have no separate included module**. 9 current included modules are additional/alternative owners. Name matching is not capability fulfillment. Calculator is required by PR-09 even though its dedicated module is additional to the named architecture list.
 
 | Requested name | Existing candidate(s) | Mapping (not completion) |
 |---|---|---|
@@ -87,7 +93,7 @@ The architecture-name inventory below has **47 named main-build slots**, not 50 
 | `:core:capabilities` | `:core:capabilities` | exact name |
 | `:core:storage` | `:core:storage` | exact name |
 | `:core:index` | `:core:index` | exact name |
-| `:core:fileops` | `:core:files` | partial owner not equivalent |
+| `:core:fileops` | `:core:fileops` | exact name |
 | `:core:security` | `:core:security` | exact name |
 | `:core:perf` | `:core:perf` | exact name |
 | `:core:hw` | `:core:hw` | exact name |
@@ -95,25 +101,25 @@ The architecture-name inventory below has **47 named main-build slots**, not 50 
 | `:feature:find` | `:feature:find` | exact name |
 | `:feature:files` | `:feature:files` | exact name |
 | `:feature:alerts` | `:feature:alerts` | exact name |
-| `:feature:quickpanel` | — | absent |
+| `:feature:quickpanel` | `:feature:quickpanel` | exact name |
 | `:feature:terminal` | `:feature:terminal` | exact name |
 | `:feature:editor` | `:feature:editor` | exact name |
-| `:feature:office` | — | absent |
+| `:feature:office` | `:feature:office` | exact name |
 | `:feature:notes` | `:feature:notes` | exact name |
 | `:feature:browser` | `:feature:browser` | exact name |
 | `:feature:capture` | `:feature:capture` | exact name |
 | `:feature:media` | `:feature:media` | exact name |
-| `:feature:photos` | — | absent |
+| `:feature:photos` | `:feature:photos` | exact name |
 | `:feature:vault` | `:feature:vault` | exact name |
 | `:feature:backup` | `:feature:backup` | exact name |
 | `:feature:beam` | `:feature:beam` | exact name |
 | `:feature:together` | `:feature:together` | exact name |
 | `:feature:settings` | `:feature:settings` | exact name |
-| `:feature:ime` | — | absent |
+| `:feature:ime` | `:feature:ime` | exact name |
 | `:feature:lens` | `:feature:lens` | exact name |
 | `:feature:messages` | `:feature:messages` | exact name |
 | `:format:lok` | `:format:lok` | exact name |
-| `:format:poi` | `:format:ooxml` | partial owner not equivalent |
+| `:format:poi` | `:format:poi` | exact name |
 | `:format:pdf` | `:format:pdf` | exact name |
 | `:format:image` | `:format:image` | exact name |
 | `:format:psd` | `:format:psd` | exact name |

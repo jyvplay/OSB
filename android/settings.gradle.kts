@@ -20,6 +20,7 @@ include(
     ":privacy", // Separate no-INTERNET offline companion APK; not a Tails replacement.
     // core
     ":core:documents",
+    ":core:fileops",
     ":core:windowing",
     ":core:files",
     ":core:capabilities",
@@ -38,6 +39,10 @@ include(
     ":feature:find",
     ":feature:files",
     ":feature:browser",
+    ":feature:office",
+    ":feature:quickpanel",
+    ":feature:photos",
+    ":feature:ime",
     ":feature:terminal",
     ":feature:vault",
     ":feature:notes",
@@ -59,6 +64,7 @@ include(
     ":format:native",
     ":format:archive",
     ":format:ooxml",
+    ":format:poi",
     ":format:pdf",
     ":format:image",
     ":format:psd",

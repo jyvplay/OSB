@@ -28,10 +28,10 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
-      - name: Install real compilation and emulator components
+      - name: Install real compilation platform
         run: |
           SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' 'platform-tools' 'emulator' 'system-images;android-34;google_apis;x86_64' > sdk37-install.log 2>&1; then
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' > sdk37-install.log 2>&1; then
             cat sdk37-install.log
           else
             result=$?; cat sdk37-install.log
@@ -39,8 +39,6 @@ jobs:
             exit "$result"
           fi
           python3 tools/record_sdk_platform.py --report installed-sdk37.json
-          export LD_LIBRARY_PATH="$ANDROID_HOME/emulator/lib64:$ANDROID_HOME/emulator/lib64/qt/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-          "$ANDROID_HOME/emulator/emulator" -version
       - name: Enable actual KVM device execution
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -52,6 +50,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.experimental.enableAdditionalTestOutput=true
           -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24TabletopDeviceTest,dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest
       - name: Actual named case results
         if: always()

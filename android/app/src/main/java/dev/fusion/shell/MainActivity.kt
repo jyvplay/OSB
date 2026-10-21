@@ -182,6 +182,8 @@ class MainActivity : ComponentActivity() {
     private val mapModel by lazy { ViewModelProvider(this)[dev.fusion.maps.MapViewModel::class.java] }
     private val calculatorModel by lazy { ViewModelProvider(this)[CalculatorViewModel::class.java] }
     private val editorModel by lazy { ViewModelProvider(this)[EditorViewModel::class.java] }
+    private val amnesicVault by lazy { dev.fusion.security.AmnesicSessionVault() }
+    private var amnesicWipeGeneration by mutableStateOf(0L)
     private var closingEditorWindow by mutableStateOf<Long?>(null)
     private var closingNotesWindow by mutableStateOf<Long?>(null)
     private var pendingBackupPassword: CharArray? = null
@@ -535,6 +537,20 @@ class MainActivity : ComponentActivity() {
             title={Text("Control panel")}, text={
                 Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                     AppearanceControls(settingsGraph,"control")
+                    dev.fusion.quickpanel.QuickPanelSheet(
+                        snapshot = dev.fusion.quickpanel.QuickPanelSnapshot(
+                            appearance = appearance,
+                            activeConsentCount = acknowledgedExperiments.size,
+                            openWindowCount = desktop.windows.size,
+                            amnesicWipeGeneration = amnesicWipeGeneration
+                        ),
+                        onAppearanceChange = { settingsGraph.setAppearance(it) },
+                        onAmnesicWipe = {
+                            amnesicWipeGeneration = amnesicVault.panicWipe()
+                            acknowledgedExperiments = emptySet()
+                            message = "Amnesic session zeroized (epoch $amnesicWipeGeneration); experimental consents revoked."
+                        }
+                    )
                     Text("Workspaces")
                     Row(Modifier.horizontalScroll(rememberScrollState())) {repeat(WindowEngine.WORKSPACES) {ws->
                         OutlinedButton(onClick={dispatch(WindowCommand.SwitchWorkspace(ws))},modifier=Modifier.testTag("control-workspace-$ws")) {Text("${ws+1}")}
@@ -695,8 +711,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 if(appearance.layout==DesktopLayout.BUSINESS) {
-                                    TitleAction("_") { dispatch(WindowCommand.Minimize(w.id)) }
-                                    TitleAction("X") { dispatch(WindowCommand.Close(w.id)) }
+                                    TitleAction("_",description="Minimize") { dispatch(WindowCommand.Minimize(w.id)) }
+                                    TitleAction("X",description="Close window") { dispatch(WindowCommand.Close(w.id)) }
                                 }
                             }
                             Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -804,10 +820,29 @@ class MainActivity : ComponentActivity() {
             "editor" -> EditorScreen(editorModel) { request -> saveCopy.launch(request) }
 
             "docs" -> DocsContent()
+            "office" -> dev.fusion.office.OfficeWorkbenchScreen()
+            "photos" -> dev.fusion.photos.PhotosWorkbenchScreen()
+            "quickpanel" -> Column(Modifier.fillMaxSize().padding(12.dp)) {
+                dev.fusion.quickpanel.QuickPanelSheet(
+                    snapshot = dev.fusion.quickpanel.QuickPanelSnapshot(
+                        appearance = appearance,
+                        activeConsentCount = acknowledgedExperiments.size,
+                        openWindowCount = desktop.windows.size,
+                        amnesicWipeGeneration = amnesicWipeGeneration
+                    ),
+                    onAppearanceChange = { settingsGraph.setAppearance(it) },
+                    onAmnesicWipe = {
+                        amnesicWipeGeneration = amnesicVault.panicWipe()
+                        acknowledgedExperiments = emptySet()
+                        message = "Amnesic session zeroized (epoch $amnesicWipeGeneration); experimental consents revoked."
+                    }
+                )
+            }
+            "ime" -> dev.fusion.ime.HardenedKeypadScreen()
             "pdf", "pdf-preview" -> PdfScreen(this, pdfUri) { openPdf.launch(arrayOf("application/pdf")) }
             "image" -> ImageContent()
             "psd" -> dev.fusion.psd.PsdScreen(this, psdUri) { openPsd.launch(arrayOf("image/vnd.adobe.photoshop", "application/x-photoshop", "*/*")) }
-            "browser" -> BrowserScreen()
+            "browser", "browser-workbench" -> BrowserScreen()
             "terminal" -> TerminalScreen(localShell)
             "vault" -> VaultScreen()
             "notes" -> NotesScreen(notesModel)

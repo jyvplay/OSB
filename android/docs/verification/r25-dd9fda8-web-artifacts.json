@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12319741399,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMxOTc0MTM5OQ==",
+      "name": "r25-actual-webview-capability",
+      "size_in_bytes": 62015,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12319741399",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12319741399/zip",
+      "expired": false,
+      "digest": "sha256:91d55a429c41141a0bdbcf5d565209259df0420c6c7913efb71e9fa41d946ec7",
+      "created_at": "2026-10-21T03:48:22Z",
+      "updated_at": "2026-10-21T03:48:22Z",
+      "expires_at": "2027-01-19T03:43:28Z",
+      "workflow_run": {
+        "id": 39540136382,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/c31cbd33-osb",
+        "head_sha": "dd9fda8b6f6d03eb0f7185075dd20fcfaf999c64"
+      }
+    }
+  ]
+}
