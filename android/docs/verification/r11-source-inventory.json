@@ -199,7 +199,7 @@
       "path": "app/src/main/java/dev/fusion/shell/AdaptiveDock.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "ea4737f062e5288e85afeaf49e3961c43ba14a11ec857ae9472e3c02c6abe878"
+      "sha256": "13e72f392f243d25ad06ac234358da0ff325269cd808c66a15658b7e5f5bda48"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/DesktopChrome.kt",
@@ -865,7 +865,7 @@
       "path": "feature/media/src/main/java/dev/fusion/media/StreamPlayerActivity.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
-      "sha256": "aeab217387c9b2997305726cbc6d89bedfb091362b98de52da35f34c14b58d18"
+      "sha256": "2b774281a14cb8154fb79e06b19719e2699fa362773e135fa94dd8ba3154a36d"
     },
     {
       "path": "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt",
