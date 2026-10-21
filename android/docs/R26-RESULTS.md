@@ -39,9 +39,30 @@ job "Traceability, assemble both flavors, JVM tests" completed **success**: both
 flavors assembled (all four authored surfaces compiled, Media3 1.11.0 dependency
 closure resolved, manifest merges accepted) and JVM tests passed. This is a compile +
 JVM signal only — no device, playback, map, Tor, or dock behavior is established by
-it. The "API34 managed-device checks" job and the 10 sibling workflows were still
-running when recorded; their named outcomes must be read from the exact runs, never
-assumed from this receipt.
+it.
+
+## Native comparison vs base (no R26 regression)
+
+Sibling workflows at 8b2289d vs the same workflows on base `main` (39195171xxx,
+without R26 changes). Log blobs were unreachable from this sandbox, so the comparison
+is workflow-level conclusion + duration signature, not log diagnosis:
+
+| Workflow | Base main | R26 8b2289d | Reading |
+|---|---|---|---|
+| R25 WebView capability boundary | success | success | unchanged green |
+| R25 local video decoding | success | success | unchanged green |
+| R21 boundary checks | success | success | unchanged green |
+| R23 memory + R22 boundary | success | success | unchanged green |
+| R25 PNG metadata copy | **failure** (7m19s) | **failure** (7m46s) | pre-existing (matches recorded R25 picker failures) |
+| R25 UI preconditions | **failure** (7m34s) | **failure** (6m32s) | pre-existing on base |
+| R24 continuation desktop/media/atlas | **failure** (1m43s) | **failure** (1m50s) | pre-existing fast failure on base |
+| Android native (full) | **failure** (23m31s) | build/JVM **success**, device checks running | partial so far; full verdict pending |
+| R24 appearance/input/PDF, API37 privacy | success | running | verdict pending |
+
+No workflow that was green on base turned red with R26. The three failures reproduce
+without R26 changes; per the contract they are retained as open investigations, not
+re-diagnosed or claimed here. A docs-only follow-up (ad80750) re-queued CI; its
+receipts will supersede these when collected.
 
 ## Authored for Studio/CI, NOT executed here
 
