@@ -1,0 +1,38 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 8,
+    "start_column": null,
+    "end_line": 8,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 29,
+    "start_column": null,
+    "end_line": 29,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25WEBVIEW1 {\"canary\":\"R25 native JS 42\",\"secure\":true,\"isolated\":false,\"sharedArrayBuffer\":false,\"wasm\":true,\"ua\":\"Mozilla/5.0 (Linux; Android 14; sdk_gphone64_x86_64 Build/UE1A.230829.050; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/113.0.5672.136 Mobile Safari/537.36\",\"api\":34,\"pid\":4265,\"uid\":10192,\"webview_package\":\"com.google.android.webview\",\"webview_version\":\"113.0.5672.136\",\"scope\":\"Actual controlled intercepted HTTPS-origin WebView response, not remote TLS/network, native Office loading, profile security or a complete browser\",\"origin\":\"android-instrumentation\",\"threaded_wasm_prerequisites_observed\":false,\"office_loaded\":false,\"complete_browser_accepted\":false,\"source_candidate\":\"650421f30b27f380cdad2c4690461fb672d24733\"}",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R25WebCapabilityDeviceTest.actualControlledWebViewReportsThreadedWasmPrerequisitesWithoutClaimingOffice=PASS",
+    "raw_details": ""
+  }
+]

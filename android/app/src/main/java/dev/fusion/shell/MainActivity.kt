@@ -182,8 +182,8 @@ class MainActivity : ComponentActivity() {
     private val mapModel by lazy { ViewModelProvider(this)[dev.fusion.maps.MapViewModel::class.java] }
     private val calculatorModel by lazy { ViewModelProvider(this)[CalculatorViewModel::class.java] }
     private val editorModel by lazy { ViewModelProvider(this)[EditorViewModel::class.java] }
-    private val amnesicVault by lazy { dev.fusion.security.AmnesicSessionVault() }
-    private var amnesicWipeGeneration by mutableStateOf(0L)
+    private val amnesicVault = dev.fusion.security.AmnesicSessionVault()
+    private var amnesicWipeGeneration by mutableStateOf(amnesicVault.currentEpoch)
     private var closingEditorWindow by mutableStateOf<Long?>(null)
     private var closingNotesWindow by mutableStateOf<Long?>(null)
     private var pendingBackupPassword: CharArray? = null

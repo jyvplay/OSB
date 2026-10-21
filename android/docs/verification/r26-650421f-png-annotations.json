@@ -1,0 +1,50 @@
+[
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 3,
+    "start_column": null,
+    "end_line": 3,
+    "end_column": null,
+    "annotation_level": "warning",
+    "title": "",
+    "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "R25UIREADY1 {\"source_candidate\":\"650421f30b27f380cdad2c4690461fb672d24733\",\"api\":34,\"summary\":{\"observations\":3,\"other_phase_observations\":0,\"not_ready_before\":0,\"not_ready_after\":0,\"wake_requests\":0,\"keyguard_dismiss_requests\":0},\"scope\":\"Actual disposable UI preparation only. No case retry, production state injection, app/privacy acceptance or earlier-cause proof.\",\"report_sha256\":\"d5fd65dfd9853992c0165c337a2d18a07791547511dac8aba62cb2506e7372a0\",\"evidence\":\"OBSERVED\"}",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 16,
+    "start_column": null,
+    "end_line": 16,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Android test results: dev.fusion.shell.R25PngCopyDeviceTest.isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels=PASS; dev.fusion.shell.R25PngCopyDeviceTest.recreationCannotExportOldPreparedCopyAndPickerCancelDoesNotRead=PASS; dev.fusion.shell.R25PngCopyDeviceTest.actualPngPickerNewCopyReadbackKeepsSourceAndRemovesMetadata=PASS",
+    "raw_details": ""
+  },
+  {
+    "path": ".github",
+    "blob_href": "https://github.com/jyvplay/OSB/blob/650421f30b27f380cdad2c4690461fb672d24733/.github",
+    "start_line": 32,
+    "start_column": null,
+    "end_line": 32,
+    "end_column": null,
+    "annotation_level": "notice",
+    "title": "",
+    "message": "Installed SDK37.0 compilation platform (NOT runtime37): {\"scope\": \"Actual installed SDK37.0 compilation package ONLY; not runtime37/Rabbit GUI/build/upstream authenticity\", \"platform\": \"/usr/local/lib/android/sdk/platforms/android-37.0\", \"source_properties\": \"Pkg.Desc=Android SDK Platform 17\\nPkg.UserSrc=false\\nPlatform.Version=17\\nPlatform.CodeName=\\nPkg.Revision=2\\nAndroidVersion.ApiLevel=37.0\\nAndroidVersion.CodeName=\\nAndroidVersion.ExtensionLevel=22\\nAndroidVersion.IsBaseSdk=true\\nAndroidVersion.PreviewSdkInt=0\\nAndroidVersion.BetaVersion=\\nLayoutlib.Api=15\\nLayoutlib.Revision=1\\nPlatform.MinToolsRev=22\\n\", \"jar_bytes\": 43044472, \"jar_sha256\": \"bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177\"}",
+    "raw_details": ""
+  }
+]

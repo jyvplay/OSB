@@ -248,7 +248,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "783f732a7dda287e24bb7b4127fb0c034191fb6e9497a00986a6505ce989ff1d"
+      "sha256": "655f5dd1fd3fc788d9dbcbff5137d49aa11213587a4d2c37a09b91d2b492b315"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",

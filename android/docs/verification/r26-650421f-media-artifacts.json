@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12322957855,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMyMjk1Nzg1NQ==",
+      "name": "r25-actual-local-media",
+      "size_in_bytes": 414100,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12322957855",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12322957855/zip",
+      "expired": false,
+      "digest": "sha256:d3a216d0d67fd1297642fee6949949803fb8c8a356c8495ed56cf946a6af513b",
+      "created_at": "2026-10-21T05:22:20Z",
+      "updated_at": "2026-10-21T05:22:20Z",
+      "expires_at": "2027-01-19T05:15:24Z",
+      "workflow_run": {
+        "id": 39548518057,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/c31cbd33-osb",
+        "head_sha": "650421f30b27f380cdad2c4690461fb672d24733"
+      }
+    }
+  ]
+}
