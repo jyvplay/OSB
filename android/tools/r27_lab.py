@@ -72,8 +72,13 @@ def main():
         lines.append(f'- python {t}: {"PASS " + m.group(1) + "/" + m.group(1) if m and m.group(2) == "OK" else "FAIL"}')
         if not m or m.group(2) != 'OK':
             ok = False
-    env['KOTLINC'] = env.get('KOTLINC', 'kotlinc')
-    tool_versions = f"kotlinc {env.get('KOTLINC_VERSION', '?')}, JRE {env.get('JAVA_VERSION', '?')}"
+    tool_versions = 'unknown toolchain'
+    manifest = a.tools.expanduser().resolve() / 'host-tools.json'
+    if manifest.is_file():
+        versions = json.loads(manifest.read_text()).get('versions', [])
+        flat = ' / '.join(v.splitlines()[0].replace('info: ', '') for v in versions if v.strip())
+        if flat:
+            tool_versions = flat
     receipt = [f'R27 host lab {"PASS" if ok else "FAIL"} ({tool_versions}).',
                f'Harness: {" ".join(sys.argv)}',
                *lines,

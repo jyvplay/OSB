@@ -41,6 +41,11 @@ import dev.fusion.settings.DesktopLayout
  * filling every available slot. The overflow indicator is a real scrollable-row label, not a
  * shrunken icon. Wiring is a one-line call-site swap at MainActivity's DesktopShelf call;
  * pending Studio/CI compile plus disposable-emulator verification.
+ *
+ * R27: test tags aligned to the DesktopShelf scheme (art-dock / business-taskbar /
+ * shelf-scroll / shelf-{id} / dock-glyph-{id} / dock-label-{id}) so the existing ~10
+ * androidTest files keep passing whenever the swap happens. Still UNWIRED: no call site
+ * references BeautyDock yet, so nothing in the app changes. AUTHORED, NOT EXECUTED.
  */
 @Composable
 fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean, enabled: Boolean, onOpen: (String) -> Unit) {
@@ -59,8 +64,8 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
             color = if (art) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
             modifier = Modifier.padding(horizontal = if (art) 12.dp else 0.dp, vertical = if (art) 6.dp else 0.dp)
                 .widthIn(max = if (art) plan.viewportDp.dp else 10000.dp).then(if (!art) Modifier.fillMaxWidth() else Modifier)
-                .testTag("beauty-dock")) {
-            Row(Modifier.horizontalScroll(rememberScrollState()).testTag("beauty-scroll")
+                .testTag(if (art) "art-dock" else "business-taskbar")) {
+            Row(Modifier.horizontalScroll(rememberScrollState()).testTag("shelf-scroll")
                 .padding(horizontal = 8.dp, vertical = if (imeVisible) 2.dp else 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(plan.gapDp.dp), verticalAlignment = Alignment.Bottom) {
                 apps.forEachIndexed { index, app ->
@@ -71,7 +76,7 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
                     val target = DockMagnification.scale(index, hot, appearance.layout, appearance.dockZoom && !imeVisible)
                     val scale by animateFloatAsState(target, animationSpec = tween(if (appearance.dockZoom) 120 else 0), label = "dock-${app.id}")
                     Column(Modifier.width(plan.slotDp.dp).height(metrics.height.dp)
-                        .testTag("beauty-${app.id}").hoverable(interactions, enabled)
+                        .testTag("shelf-${app.id}").hoverable(interactions, enabled)
                         .clickable(enabled = enabled, role = Role.Button, interactionSource = interactions,
                             indication = androidx.compose.foundation.LocalIndication.current) { onOpen(app.id) }
                         .semantics(mergeDescendants = true) {
@@ -88,7 +93,7 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
                 }
                 if (plan.overflow > 0) {
                     Text("+${plan.overflow} more — scroll", color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 12.sp, modifier = Modifier.align(Alignment.CenterVertically).testTag("beauty-overflow")
+                        fontSize = 12.sp, modifier = Modifier.align(Alignment.CenterVertically).testTag("shelf-overflow")
                             .semantics { contentDescription = "${plan.overflow} more apps; scroll the dock" })
                 }
             }

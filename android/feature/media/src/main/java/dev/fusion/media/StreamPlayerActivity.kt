@@ -47,11 +47,37 @@ import androidx.media3.ui.PlayerView
  * (progressive, HLS, DASH) played by the Apache-2.0 AndroidX Media3 ExoPlayer. This does
  * NOT extract streams from YouTube/Spotify/SoundCloud pages, bypass login/Premium/region/
  * DRM, or contact any service on its own. Service links keep validated external handoff.
+ *
+ * R27: added a launch contract ([launch]) so a future media-hub button can open the player
+ * with a DIRECT media URL prefilled. The extra is validated with the same bounded rules as
+ * the text field, nothing autoplays, and service page URLs are still refused (they are not
+ * direct media). AUTHORED, NOT EXECUTED.
  */
 class StreamPlayerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MaterialTheme { Surface(Modifier.fillMaxSize()) { StreamPlayerScreen() } } }
+        val prefill = intent.getStringExtra(EXTRA_DIRECT_URL)?.takeIf { isDirectUrl(it) }.orEmpty()
+        setContent { MaterialTheme { Surface(Modifier.fillMaxSize()) { StreamPlayerScreen(prefill) } } }
+    }
+
+    companion object {
+        const val EXTRA_DIRECT_URL = "dev.fusion.media.DIRECT_URL"
+        private val SUFFIXES = listOf(".mp3", ".mp4", ".m4a", ".ogg", ".wav", ".m3u8", ".mpd")
+
+        fun isDirectUrl(text: String): Boolean {
+            if (!text.startsWith("https://") || text.length > 2048) return false
+            if (!text.all { it.code in 0x21..0x7e }) return false
+            val lower = text.lowercase().substringBefore('?')
+            return SUFFIXES.any { lower.endsWith(it) }
+        }
+
+        /** Open the player with [url] prefilled. Returns false (and opens nothing) unless it is a direct media URL. */
+        fun launch(context: android.content.Context, url: String): Boolean {
+            if (!isDirectUrl(url)) return false
+            context.startActivity(android.content.Intent(context, StreamPlayerActivity::class.java)
+                .putExtra(EXTRA_DIRECT_URL, url))
+            return true
+        }
     }
 }
 

@@ -32,6 +32,18 @@ Host JVM + independent Python recomputation only. NOT Android, device,
 service, anonymity, or acceptance evidence. Census: subset 50/50 (100%),
 R27-deepened 8/50 (16%), full 0/50.
 
+## CI repair (same turn, before merge)
+
+Candidate 7ad4d86 failed 10/12 workflows at "Assemble both flavors" with a
+real regression: `StreamPlayerActivity.kt:54:90 No value passed for parameter
+'prefill'` (check-run annotation). Root cause: two same-file edits issued in
+one parallel tool block raced — last writer won and dropped the companion
+hunk. The same race dropped hunks in AdaptiveDock.kt (4 of 6 tag-alignment
+edits) and r27_lab.py (toolchain-version hunk). All hunks were re-applied
+sequentially, verified by grep, and the parse gate re-passed 5/5. Lesson
+recorded: never issue two edits to the same file in one parallel block.
+Repair candidate follows; no failed receipt is inherited.
+
 ## CI watch (pending at commit time)
 
 Native compile/device receipts for this turn's exact candidate must be
