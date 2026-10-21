@@ -104,7 +104,10 @@ class ShellSmokeTest {
         }
         compose.onNodeWithTag("editor-content").performTextInput("Draft survives recreation")
         compose.onNodeWithText("Close tab").performScrollTo().assertIsDisplayed().performClick()
-        compose.waitUntil(10_000) { compose.onAllNodes(hasText("Discard unsaved changes?")).fetchSemanticsNodes().isNotEmpty() && runCatching { compose.onNodeWithText("Discard unsaved changes?").assertIsDisplayed() }.isSuccess }
+        compose.waitUntil(10_000) {
+            compose.onAllNodes(hasText("Discard unsaved changes?")).fetchSemanticsNodes()
+                .any { it.boundsInRoot.width > 0f && it.boundsInRoot.height > 0f }
+        }
         compose.onNodeWithText("Discard unsaved changes?").assertIsDisplayed()
         compose.onNodeWithText("Keep editing").performClick()
         compose.activityRule.scenario.recreate()
@@ -230,11 +233,14 @@ class ShellSmokeTest {
                 try {
                     // A touch return is not proof a new platform dialog has completed presentation.
                     // Observe the actual displayed dialog/decision control, under the existing 10s UI budget.
-                    compose.waitUntil(10000) {runCatching {
-                        compose.onNodeWithText("Discard this memory draft?").assertIsDisplayed()
-                        compose.onNodeWithText("Keep editing").assertIsDisplayed().assertIsEnabled()
-                    }.isSuccess}
-                    compose.onNodeWithText("Keep editing").performClick()
+                    compose.waitUntil(10000) {
+                        compose.onAllNodes(hasText("Discard this memory draft?")).fetchSemanticsNodes()
+                            .any { it.boundsInRoot.width > 0f && it.boundsInRoot.height > 0f } &&
+                            compose.onAllNodes(hasText("Keep editing") and isEnabled()).fetchSemanticsNodes()
+                                .any { it.boundsInRoot.width > 0f && it.boundsInRoot.height > 0f }
+                    }
+                    compose.onNodeWithText("Discard this memory draft?").assertIsDisplayed()
+                    compose.onNodeWithText("Keep editing").assertIsDisplayed().assertIsEnabled().performClick()
                 } catch(failure:Throwable) {
                     var observed="unavailable"
                     compose.activityRule.scenario.onActivity {a ->
@@ -267,7 +273,12 @@ class ShellSmokeTest {
             compose.onNodeWithText("Open note: $name").performScrollTo().performClick()
             compose.waitUntil(10000) { compose.onAllNodes(hasText("Move note to trash…") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText("Move note to trash…").performScrollTo().assertIsDisplayed().performClick()
-            try { compose.waitUntil(10000) { compose.onNodeWithText("Move saved note to trash?").isDisplayed() } }
+            try {
+                compose.waitUntil(10000) {
+                    compose.onAllNodes(hasText("Move saved note to trash?")).fetchSemanticsNodes()
+                        .any { it.boundsInRoot.width > 0f && it.boundsInRoot.height > 0f }
+                }
+            }
             catch(error: Exception) {
                 throw AssertionError("Trash confirmation missing. Action semantics: "+runCatching {
                     compose.onNodeWithText("Move note to trash…").printToString(maxDepth=1)
@@ -333,7 +344,10 @@ class ShellSmokeTest {
             }
             visible
         }
-        compose.waitUntil(10000) { runCatching { compose.onNodeWithText("New").assertIsDisplayed() }.isSuccess }
+        compose.waitUntil(10000) {
+            compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes()
+                .any { it.boundsInRoot.width > 0f && it.boundsInRoot.height > 0f }
+        }
         compose.onNodeWithText("New").assertIsDisplayed().performClick()
         compose.waitUntil(10000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
         compose.onNodeWithText("New").assertIsDisplayed()

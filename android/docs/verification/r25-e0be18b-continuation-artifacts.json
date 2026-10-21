@@ -1,0 +1,65 @@
+{
+  "total_count": 3,
+  "artifacts": [
+    {
+      "id": 12161896409,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE2MTg5NjQwOQ==",
+      "name": "pinned-servo-intake-not-integration",
+      "size_in_bytes": 1154,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12161896409",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12161896409/zip",
+      "expired": false,
+      "digest": "sha256:8ad6c3bc90885fbb58237d5023b142819b6c06961af0a179665d27dd819c3bf6",
+      "created_at": "2026-10-19T03:32:45Z",
+      "updated_at": "2026-10-19T03:32:45Z",
+      "expires_at": "2027-01-17T03:32:33Z",
+      "workflow_run": {
+        "id": 39195171436,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "main",
+        "head_sha": "e0be18baade41e4fc34c9c0c3338fc3360fbd3bf"
+      }
+    },
+    {
+      "id": 12161242729,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE2MTI0MjcyOQ==",
+      "name": "verified-actual-native-frame-transport",
+      "size_in_bytes": 176,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12161242729",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12161242729/zip",
+      "expired": false,
+      "digest": "sha256:86dcd9748a6314b05f81f03f544ddc0b6446658bdf0a61a2932fbf7365a296b7",
+      "created_at": "2026-10-19T03:34:13Z",
+      "updated_at": "2026-10-19T03:34:13Z",
+      "expires_at": "2027-01-17T03:32:33Z",
+      "workflow_run": {
+        "id": 39195171436,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "main",
+        "head_sha": "e0be18baade41e4fc34c9c0c3338fc3360fbd3bf"
+      }
+    },
+    {
+      "id": 12161192855,
+      "node_id": "MDg6QXJ0aWZhY3QxMjE2MTE5Mjg1NQ==",
+      "name": "r24c-native-evidence",
+      "size_in_bytes": 372,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12161192855",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12161192855/zip",
+      "expired": false,
+      "digest": "sha256:6058093883e954da70de120efd98593bddcf7f32a01f843989027d215ba18594",
+      "created_at": "2026-10-19T03:33:31Z",
+      "updated_at": "2026-10-19T03:33:31Z",
+      "expires_at": "2027-01-17T03:32:33Z",
+      "workflow_run": {
+        "id": 39195171436,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "main",
+        "head_sha": "e0be18baade41e4fc34c9c0c3338fc3360fbd3bf"
+      }
+    }
+  ]
+}

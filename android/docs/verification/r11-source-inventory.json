@@ -229,7 +229,7 @@
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "c1ae60ded0967dc08fd62ccaf644a25402158bd1154e47ff630419999d53202f"
+      "sha256": "a0c7664d5ce5249a7fb93db136be7fb56cb83fb52c987e0cb89baed1d58ed40b"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt",

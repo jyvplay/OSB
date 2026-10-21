@@ -1,0 +1,41 @@
+{
+  "run": 39195171421,
+  "candidate": "e0be18baade41e4fc34c9c0c3338fc3360fbd3bf",
+  "url": "https://github.com/jyvplay/OSB/actions/runs/39195171421",
+  "conclusion": "failure",
+  "device_conclusion": "failure",
+  "counts": {
+    "PASS": 5,
+    "FAIL": 1,
+    "SKIP": 0
+  },
+  "cases": [
+    {
+      "case": "dev.fusion.shell.R25UiReadinessDeviceTest.actualAsleepAvdIsPreparedBeforeNativeFindTouch",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TaskInputDeviceTest.oneActualImeVisibleAddInBusinessWritesExactlyOneRevision",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TaskInputDeviceTest.oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.R24TaskInputDeviceTest.oneActualImeVisibleAddInArtWritesExactlyOneRevision",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.RealImeDeviceTest.realImeAndLongEditorTextAtTwoHundredPercentWithoutComposeInputInjection",
+      "result": "PASS"
+    },
+    {
+      "case": "dev.fusion.shell.ShellSmokeTest.editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont",
+      "result": "FAIL"
+    }
+  ],
+  "platform_api": 34,
+  "suite": "focused",
+  "scope": "Actual retained API34 named outcomes (focused only), not physical/full-product/AX/legal acceptance"
+}

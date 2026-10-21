@@ -73,7 +73,12 @@ class PngCopyActivity : Activity() {
         choose=button("Choose PNG…",R.id.png_copy_choose) {
             if(busy)return@button
             clear("Selecting a new source; previous prepared copy discarded.")
-            try {startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("image/png"),PICK)}
+            val pickerIntent=Intent(Intent.ACTION_OPEN_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("image/png")
+                .putExtra(android.provider.DocumentsContract.EXTRA_INITIAL_URI,
+                    android.provider.DocumentsContract.buildRootUri("com.android.providers.downloads.documents","downloads"))
+            try {startActivityForResult(pickerIntent,PICK)}
             catch(_:Exception){phase="REFUSED";status.text="Document picker unavailable; no input read."}
         }
         save=button("Save new cleaned copy…",R.id.png_copy_save) {

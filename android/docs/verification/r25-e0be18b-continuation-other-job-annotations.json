@@ -1,0 +1,182 @@
+[
+  {
+    "job": "Independent pinned engine artifact observation / Real Servo 0.7.0 AAR inspection (not integration)",
+    "conclusion": "success",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 25,
+        "start_column": null,
+        "end_line": 25,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "",
+        "message": "R24CSERVO1 {\"artifact\":\"servo-aarch64-android.aar\",\"bytes\":39860285,\"sha256\":\"6b73d23cf63fb3d7c19c908cddafbd475585199583bd16f6aa268b84c6093105\",\"integrated\":false,\"runtime_verified\":false,\"legal_accepted\":false,\"native_libraries\":[{\"member\":\"jni/arm64-v8a/libc++_shared.so\",\"header\":{\"elf_class\":64,\"machine\":183,\"abi\":\"arm64-v8a\",\"loads\":[{\"offset\":0,\"virtual\":0,\"file_bytes\":1329912,\"memory_bytes\":1329912,\"alignment\":16384,\"strict_16k_condition\":true},{\"offset\":1329912,\"virtual\":1346296,\"file_bytes\":41104,\"memory_bytes\":42248,\"alignment\":16384,\"strict_16k_condition\":true},{\"offset\":1371016,\"virtual\":1403784,\"file_bytes\":568,\"memory_bytes\":32192,\"alignment\":16384,\"strict_16k_condition\":true}],\"strict_16k_header_condition\":true,\"scope\":\"Header condition only; not APK zip alignment, symbol/API closure, execution or Android compatibility-mode behavior\"}},{\"member\":\"jni/arm64-v8a/libservoshell.so\",\"header\":{\"elf_class\":64,\"machine\":183,\"abi\":\"arm64-v8a\",\"loads\":[{\"offset\":0,\"virtual\":0,\"file_bytes\":36160368,\"memory_bytes\":36160368,\"alignment\":16384,\"strict_16k_condition\":true},{\"offset\":36160512,\"virtual\":36176896,\"file_bytes\":49686816,\"memory_bytes\":49686816,\"alignment\":16384,\"strict_16k_condition\":true},{\"offset\":85847328,\"virtual\":85880096,\"file_bytes\":2545672,\"memory_bytes\":2548448,\"alignment\":16384,\"strict_16k_condition\":true},{\"offset\":88393000,\"virtual\":88442152,\"file_bytes\":814072,\"memory_bytes\":2997928,\"alignment\":16384,\"strict_16k_condition\":true}],\"strict_16k_header_condition\":true,\"scope\":\"Header condition only; not APK zip alignment, symbol/API closure, execution or Android compatibility-mode behavior\"}}],\"notice_candidates\":[],\"gap\":\"AAR/APK header/notice inventory only; no engine ABI bridge/compositor/fidelity/permissions/provenance or expert license clearance inferred\",\"archive_members\":[\"R.txt\",\"AndroidManifest.xml\",\"classes.jar\",\"META-INF/com/android/build/gradle/aar-metadata.properties\",\"jni/\",\"jni/arm64-v8a/\",\"jni/arm64-v8a/libc++_shared.so\",\"jni/arm64-v8a/libservoshell.so\"],\"source_candidate\":\"e0be18baade41e4fc34c9c0c3338fc3360fbd3bf\",\"upstream_tag\":\"v0.7.0\",\"release_asset_id\":605216176,\"upstream_declared_digest_verified\":true,\"scope\":\"Actual pinned AAR byte/header inventory ONLY. No dlopen, browser navigation, sandbox, web compatibility, APK alignment, 16K runtime, source reproducibility or license closure.\"}",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "job": "Actual frame r24c-atlas.png (not all-page acceptance)",
+    "conclusion": "failure",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 12,
+        "start_column": null,
+        "end_line": 12,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Unable to download artifact(s): Artifact not found for name: r24c-native-frames\n        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.\n        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "job": "Actual frame r24c-wall.png (not all-page acceptance)",
+    "conclusion": "failure",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 12,
+        "start_column": null,
+        "end_line": 12,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Unable to download artifact(s): Artifact not found for name: r24c-native-frames\n        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.\n        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "job": "Actual frame r24c-silver.png (not all-page acceptance)",
+    "conclusion": "failure",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 12,
+        "start_column": null,
+        "end_line": 12,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Unable to download artifact(s): Artifact not found for name: r24c-native-frames\n        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.\n        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "job": "Actual frame r24c-tabletop.png (not all-page acceptance)",
+    "conclusion": "failure",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 12,
+        "start_column": null,
+        "end_line": 12,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Unable to download artifact(s): Artifact not found for name: r24c-native-frames\n        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.\n        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md",
+        "raw_details": ""
+      }
+    ]
+  },
+  {
+    "job": "Verify actual transported PNG bytes and frame metadata",
+    "conclusion": "failure",
+    "annotations": [
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 2,
+        "start_column": null,
+        "end_line": 2,
+        "end_column": null,
+        "annotation_level": "warning",
+        "title": "",
+        "message": "Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "raw_details": ""
+      },
+      {
+        "path": ".github",
+        "blob_href": "https://github.com/jyvplay/OSB/blob/e0be18baade41e4fc34c9c0c3338fc3360fbd3bf/.github",
+        "start_line": 17,
+        "start_column": null,
+        "end_line": 17,
+        "end_column": null,
+        "annotation_level": "failure",
+        "title": "",
+        "message": "Process completed with exit code 1.",
+        "raw_details": ""
+      }
+    ]
+  }
+]

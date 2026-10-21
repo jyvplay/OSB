@@ -39,6 +39,7 @@ jobs:
             exit "$result"
           fi
           python3 tools/record_sdk_platform.py --report installed-sdk37.json
+          export LD_LIBRARY_PATH="$ANDROID_HOME/emulator/lib64:$ANDROID_HOME/emulator/lib64/qt/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
           "$ANDROID_HOME/emulator/emulator" -version
       - name: Enable actual KVM device execution
         run: |

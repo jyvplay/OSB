@@ -30,14 +30,14 @@
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "c285d0b5bb6b1e792c61745bb5a66b2323b6b4df38f6104df3e0e2c0e2b7763a",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "e6013ce475baeff5c9ed4123061c789ebe7d62c47e63cbf9f1e748189b286b53",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
+        "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "a0c7664d5ce5249a7fb93db136be7fb56cb83fb52c987e0cb89baed1d58ed40b",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "473f09a94aed902ba6add2b8bc94847a187b8e5e09f72ce67b8edf936296c942",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
         "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "bb4c95fb1e5649cf793c9745d4d10141819c6d41768e00e77bff0fe018a4eadb",
         "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73",
-        "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "c1ae60ded0967dc08fd62ccaf644a25402158bd1154e47ff630419999d53202f",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "e99df6f2834ac627d3328a3417d0163cbbfa3fb25b659af965e945d6fe72a62f"
       }
     },
     {
@@ -80,10 +80,10 @@
       "sha256": {
         "core/windowing/src/main/kotlin/dev/fusion/windowing/WindowEngine.kt": "80005951d19f993c842fb96b0d45f245da3c71b8fad3ae3c542612e5666e6574",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/InputPresentation.kt": "3e47a9334eb3db893ede6a3342eb1b02d1ec65160e2b2f78bd4b83521c19e481",
+        "core/windowing/src/main/kotlin/dev/fusion/windowing/ViewportCommit.kt": "3e40865d25d707a3d2ed52ecc63d5db280bd95771d160724b4c88f7840edb348",
         "core/windowing/src/contract/kotlin/dev/fusion/windowing/WindowRestoreChecks.kt": "44de909c44a296902b2a21cbcf2298260984064d37dbf4c1408ad8d81eeb6074",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
-        "core/windowing/src/main/kotlin/dev/fusion/windowing/ViewportCommit.kt": "3e40865d25d707a3d2ed52ecc63d5db280bd95771d160724b4c88f7840edb348",
         "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt": "4ef9adce49a3ee52004dd2182c18652fbfa3827c733a151aebd1b200d8d46391",
         "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "070a40e38dab5da2f93f0e9fd54bd1584a521644738069faba9b14c402b1cf58"
       }
@@ -365,7 +365,7 @@
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "473f09a94aed902ba6add2b8bc94847a187b8e5e09f72ce67b8edf936296c942"
       }
     },
     {
@@ -409,7 +409,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "2bedc34a804b6337ebb8290e5b7181dccb82f421b65342e253923417a414c219",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "473f09a94aed902ba6add2b8bc94847a187b8e5e09f72ce67b8edf936296c942"
       }
     },
     {
@@ -1106,14 +1106,14 @@
       "sha256": {
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
         "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt": "f9de8fe09ef057479df66e831ccec81bdefcc6eeee57aca93d2cda79edd60f04",
-        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
-        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt": "603a0206f41404e7d00b7b488e1a8b6d2a4c03aed167934e6c588cf647bf8cbd",
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngLease.kt": "c0a3dbe388ef0afa1adc13558f597dc02f65fccb7ab0cf73f7d4f0b5e0c20768",
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt": "afbe862f6762b116910fec9e1908322a9de61e319f0c818cafcf8654a885f411",
+        "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt": "37ba86e5cc816f8a5aee950d19f3efc6a7cb4ba0ec357f304b61e7d10082af9b",
+        "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt": "d6404462406ed2a69937c2400428ec146b515a56e7c0c6207b71a0341377e73e",
         "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt": "4ff9f6fd9464dcc21faac9ef65796975ef8b7e92bb4ebef3c3faf6b8f6b1cca1",
         "tools/check_r25_png_reference.py": "d4efb3d6b0a28a5497ece91938c604eb2120895e28cdac73b548ff117036dd7b",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "e99df6f2834ac627d3328a3417d0163cbbfa3fb25b659af965e945d6fe72a62f"
       }
     },
     {

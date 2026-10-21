@@ -55,11 +55,18 @@ class R25PngCopyDeviceTest {
     }
     private fun button(name:String) = requireNotNull(device.wait(Until.findObject(By.res(context.packageName,name)),10000))
     private fun picker()=assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-    private fun app()=assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    private fun app() {
+        assertTrue("DocumentsUI did not close (current=${device.currentPackageName})",device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+        assertTrue("Picker escaped to external package ${device.currentPackageName}",device.wait(Until.hasObject(By.pkg(context.packageName)),10000))
+    }
+    private fun ensureListView() {
+        val listBtn=device.findObject(By.desc("List view")) ?: device.findObject(By.res(Pattern.compile(".*:id/sub_menu_list")))
+        if(listBtn!=null) {listBtn.click();device.waitForIdle()}
+    }
     private fun seed(name:String,bytes:ByteArray):Uri {
-        val uri=requireNotNull(context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues().apply {
+        val uri=requireNotNull(context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI,ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME,name);put(MediaStore.MediaColumns.MIME_TYPE,"image/png")
-            put(MediaStore.MediaColumns.RELATIVE_PATH,Environment.DIRECTORY_PICTURES);put(MediaStore.MediaColumns.IS_PENDING,1)
+            put(MediaStore.MediaColumns.RELATIVE_PATH,Environment.DIRECTORY_DOWNLOADS);put(MediaStore.MediaColumns.IS_PENDING,1)
         }))
         context.contentResolver.openOutputStream(uri,"wt")!!.use{it.write(bytes)}
         context.contentResolver.update(uri,ContentValues().apply{put(MediaStore.MediaColumns.IS_PENDING,0)},null,null)
@@ -67,17 +74,34 @@ class R25PngCopyDeviceTest {
     }
     private fun pick(name:String) {
         button("png_copy_choose").click();picker()
-        // Image grid tiles can expose their real filename as accessibility description, not visible TextView text.
-        val end=SystemClock.elapsedRealtime()+10000
-        var file:androidx.test.uiautomator.UiObject2?=null
-        while(file==null && SystemClock.elapsedRealtime()<end) {
-            file=device.findObject(By.text(name)) ?: device.findObject(By.desc(Pattern.compile("(?s).*"+Pattern.quote(name)+".*")))
-            if(file==null)SystemClock.sleep(50)
+        ensureListView()
+        var file=device.wait(Until.findObject(By.text(name)),4000)
+        if(file==null) {
+            val roots=device.findObject(By.desc("Show roots"))
+            if(roots!=null) {
+                roots.click()
+                device.wait(Until.findObject(By.text("Downloads")),4000)?.click()
+                device.waitForIdle()
+                ensureListView()
+                file=device.wait(Until.findObject(By.text(name)),5000)
+            }
+        }
+        if(file==null) {
+            val search=device.findObject(By.desc("Search")) ?: device.findObject(By.res(Pattern.compile(".*:id/option_menu_search")))
+            if(search!=null) {
+                search.click()
+                device.wait(Until.findObject(By.clazz("android.widget.EditText")),4000)?.let {box->
+                    box.text=name
+                    device.pressEnter()
+                    ensureListView()
+                    file=device.wait(Until.findObject(By.text(name)),5000)
+                }
+            }
         }
         if(file==null) {
             val texts=device.findObjects(By.text(Pattern.compile(".+"))).take(15).map {it.text.take(100)}
             val descriptions=device.findObjects(By.desc(Pattern.compile(".+"))).take(20).map {it.contentDescription.take(130)}
-            throw AssertionError("Image seed not identified in actual DocumentsUI: $name; foreground=${device.currentPackageName}; text=$texts; descriptions=$descriptions")
+            throw AssertionError("Image seed leaf TextView not identified in actual DocumentsUI: $name; foreground=${device.currentPackageName}; text=$texts; descriptions=$descriptions")
         }
         file.click();app()
     }
