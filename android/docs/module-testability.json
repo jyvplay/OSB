@@ -26,7 +26,7 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "655f5dd1fd3fc788d9dbcbff5137d49aa11213587a4d2c37a09b91d2b492b315",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "37eb79dc1935b0ed443e1715c9e0c78f68f6adebf84049a1378505ffae241c9b",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "a22a3e9d3f0c4445dade8e4509560ac638b0373ce99b995ea55ae7ad305a09c7",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "f2e83c1b2696ff45cdf0c37a6ad6e51a4c8571f87ee1d2041006290be669235a",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
