@@ -70,6 +70,24 @@ PRODUCTION_SOURCES = [
     "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt",
 ]
 
+JUNIT_TEST_SOURCES = [
+    ("core/fileops/src/test/kotlin/dev/fusion/fileops/FileMoveJournalTest.kt", "dev.fusion.fileops.FileMoveJournalTest"),
+    ("core/fileops/src/test/kotlin/dev/fusion/fileops/FileOpsKernelTest.kt", "dev.fusion.fileops.FileOpsKernelTest"),
+    ("format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomPoiEngineTest.kt", "dev.fusion.poi.CleanRoomPoiEngineTest"),
+    ("format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomWorkbookEngineTest.kt", "dev.fusion.poi.CleanRoomWorkbookEngineTest"),
+    ("feature/office/src/test/kotlin/dev/fusion/office/OfficeDocumentModelTest.kt", "dev.fusion.office.OfficeDocumentModelTest"),
+    ("feature/office/src/test/kotlin/dev/fusion/office/OfficeSessionTest.kt", "dev.fusion.office.OfficeSessionControllerTest"),
+    ("feature/quickpanel/src/test/kotlin/dev/fusion/quickpanel/QuickPanelModelTest.kt", "dev.fusion.quickpanel.QuickPanelModelTest"),
+    ("feature/photos/src/test/kotlin/dev/fusion/photos/PhotoMetadataCleanerTest.kt", "dev.fusion.photos.PhotoMetadataCleanerTest"),
+    ("feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt", "dev.fusion.photos.PhotosStudioKernelTest"),
+    ("feature/ime/src/test/kotlin/dev/fusion/ime/HardenedInputEngineTest.kt", "dev.fusion.ime.HardenedInputEngineTest"),
+    ("feature/ime/src/test/kotlin/dev/fusion/ime/HardenedImeKernelTest.kt", "dev.fusion.ime.HardenedImeKernelTest"),
+    ("core/security/src/test/kotlin/dev/fusion/security/AmnesicSessionVaultTest.kt", "dev.fusion.security.AmnesicSessionVaultTest"),
+    ("core/designsystem/src/test/kotlin/dev/fusion/designsystem/BeautyStandardTest.kt", "dev.fusion.designsystem.BeautyStandardTest"),
+    ("feature/media/src/test/kotlin/dev/fusion/media/EmbeddedStreamContractTest.kt", "dev.fusion.media.EmbeddedStreamContractTest"),
+    ("feature/maps/src/test/kotlin/dev/fusion/maps/OfflineGazetteerTest.kt", "dev.fusion.maps.OfflineGazetteerTest"),
+]
+
 
 from bootstrap_host_tools import environment
 
@@ -161,6 +179,51 @@ def main() -> None:
         assert b"ClassifiedAuthor" not in cleaned_pdf_bytes and b"LeakProducerEngine" not in cleaned_pdf_bytes
         parsed_pdf = PdfReader(io.BytesIO(cleaned_pdf_bytes), strict=True)
         assert len(parsed_pdf.pages) == 1
+
+        # 4. Also compile & execute all 15 pure-JVM module JUnit @Test classes directly on host JRE:
+        shim = tmp / "JUnitHostRunner.kt"
+        shim.write_text(
+            'package org.junit\n'
+            '@Retention(AnnotationRetention.RUNTIME) annotation class Test\n'
+            'object Assert {\n'
+            '  @JvmStatic fun assertTrue(c: Boolean) { if (!c) throw AssertionError() }\n'
+            '  @JvmStatic fun assertTrue(msg: String, c: Boolean) { if (!c) throw AssertionError(msg) }\n'
+            '  @JvmStatic fun assertFalse(c: Boolean) { if (c) throw AssertionError() }\n'
+            '  @JvmStatic fun assertFalse(msg: String, c: Boolean) { if (c) throw AssertionError(msg) }\n'
+            '  @JvmStatic fun assertEquals(a: Any?, b: Any?) { if (a != b) throw AssertionError("Expected $a got $b") }\n'
+            '  @JvmStatic fun assertNotEquals(a: Any?, b: Any?) { if (a == b) throw AssertionError("Expected != $a") }\n'
+            '  @JvmStatic fun assertArrayEquals(a: ByteArray, b: ByteArray) { if (!a.contentEquals(b)) throw AssertionError("ByteArray mismatch") }\n'
+            '  @JvmStatic fun assertArrayEquals(a: CharArray, b: CharArray) { if (!a.contentEquals(b)) throw AssertionError("CharArray mismatch") }\n'
+            '  @JvmStatic fun <T : Throwable> assertThrows(cls: Class<T>, block: () -> Unit): T {\n'
+            '    try { block() } catch (t: Throwable) { if (cls.isInstance(t)) @Suppress("UNCHECKED_CAST") return t as T else throw t }\n'
+            '    throw AssertionError("Expected ${cls.name}")\n'
+            '  }\n'
+            '}\n'
+            'object HostSuiteRunner {\n'
+            '  @JvmStatic fun main(args: Array<String>) {\n'
+            '    var passed = 0\n'
+            '    for (name in args) {\n'
+            '      val cls = Class.forName(name); val inst = cls.getDeclaredConstructor().newInstance()\n'
+            '      for (m in cls.declaredMethods) if (m.isAnnotationPresent(Test::class.java)) { m.invoke(inst); passed++ }\n'
+            '    }\n'
+            '    println("R26 HOST JUNIT SUITES PASS: $passed @Test methods executed.")\n'
+            '  }\n'
+            '}\n'
+        )
+        junit_jar = tmp / "r26-junit-suites.jar"
+        subprocess.run(
+            [kotlinc_bin, "-Werror", *[str(s) for s in sources], *[str(ROOT / p) for p, _ in JUNIT_TEST_SOURCES], str(shim), "-include-runtime", "-d", str(junit_jar)],
+            check=True,
+            env=env,
+        )
+        junit_proc = subprocess.run(
+            [java_bin, "-cp", str(junit_jar), "org.junit.HostSuiteRunner", *[c for _, c in JUNIT_TEST_SOURCES]],
+            check=True,
+            text=True,
+            capture_output=True,
+            env=env,
+        )
+        sys.stdout.write(junit_proc.stdout)
 
     receipt = {
         "kotlin_compiler": subprocess.check_output([kotlinc_bin, "-version"], stderr=subprocess.STDOUT, text=True, env=env).strip(),

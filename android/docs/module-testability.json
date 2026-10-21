@@ -1440,7 +1440,7 @@
       "sha256": {
         "feature/photos/src/main/kotlin/dev/fusion/photos/PhotoMetadataCleaner.kt": "d93c765d0306d4818ed4efc8f685ea3b2c75f81267b28d85c7068fed8389f3bd",
         "feature/photos/src/main/java/dev/fusion/photos/PhotosWorkbenchScreen.kt": "12d8f5893e7eb08f149b5db20295ddc4e6c1c88ecece3813c05357015457299e",
-        "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt": "5b30063f0b4b744a97e69008a5842c6145373dda85d5ec75d69e9796cb5aab1a",
+        "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt": "6e374f7b3cd0061e1f4721dfbc922ac2a99246d73efd51578aaee45d39bd360c",
         "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "b5d785d9008d0c8cebbf22fe7b5ab5c6ce89fda55dd81e01b1ef9bb0ad2f3876"
       }
     },
