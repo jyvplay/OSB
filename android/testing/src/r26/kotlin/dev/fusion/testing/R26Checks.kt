@@ -179,6 +179,19 @@ object R26Checks {
         val xlsx = office.state.exportXlsxBytes()
         val reimported = OfficeSessionController().apply { importOoxmlBytes("sheet.xlsx", xlsx) }
         ok(reimported.state.evaluatedCells()["C1"] == CellValue.Number(35.714))
+
+        // Verify exact multi-sheet round-trip & cycle/div0 formulas from CleanRoomPoiEngineTest
+        val multi = CleanWorkbook(
+            listOf(
+                WorkbookSheet("Inputs", mapOf("A1" to SheetCell("A1", CellValue.Number(12.5)), "A2" to SheetCell("A2", CellValue.Number(7.5)), "A3" to SheetCell("A3", CellValue.Number(30.0)))),
+                WorkbookSheet("Summary", mapOf("B1" to SheetCell("B1", CellValue.Blank, "SUM(Inputs!A1:A3)"), "B2" to SheetCell("B2", CellValue.Blank, "IF(B1>=50, ROUND(B1/3, 2), 0)"), "C1" to SheetCell("C1", CellValue.Blank, "C2+1"), "C2" to SheetCell("C2", CellValue.Blank, "C1+1"), "D1" to SheetCell("D1", CellValue.Blank, "10/0")))
+            )
+        )
+        val multiEval = CleanRoomPoiEngine.evaluateWorkbook(CleanRoomPoiEngine.readXlsx(CleanRoomPoiEngine.writeXlsx(multi))).getValue("Summary")
+        ok(multiEval["B1"] == CellValue.Number(50.0), "Multi-sheet B1 failed: ${multiEval["B1"]}")
+        ok(multiEval["B2"] == CellValue.Number(16.67), "Multi-sheet B2 failed: ${multiEval["B2"]}")
+        ok(multiEval["C1"] == CellValue.Error("#CYCLE!"), "Multi-sheet C1 failed: ${multiEval["C1"]}")
+        ok(multiEval["D1"] == CellValue.Error("#DIV/0!"), "Multi-sheet D1 failed: ${multiEval["D1"]}")
     }
 
     private fun checkPhotosJpegCleaner() {

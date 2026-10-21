@@ -103,7 +103,7 @@ object NativeVisualEvidence {
             .put("scope","One actual native page/frame, not all pages/states or beauty/AX acceptance").toString(2))
     }
     fun capture(compose: ComposeContentTestRule, activity: Activity, name: String, requiredTargets: List<String>) {
-        require(name.matches(Regex("r24c-[a-z-]{1,40}")))
+        require(name.matches(Regex("r2(?:4c|6)-[a-z-]{1,40}")))
         compose.waitForIdle()
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val density = instrumentation.targetContext.resources.displayMetrics.density

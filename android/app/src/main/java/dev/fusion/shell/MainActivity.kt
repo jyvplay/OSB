@@ -544,7 +544,7 @@ class MainActivity : ComponentActivity() {
                             openWindowCount = desktop.windows.size,
                             amnesicWipeGeneration = amnesicWipeGeneration
                         ),
-                        onAppearanceChange = { settingsGraph.setAppearance(it) },
+                        onAppearanceChange = { settingsGraph.setAppearance(AppearancePreferences.encode(it)) },
                         onAmnesicWipe = {
                             amnesicWipeGeneration = amnesicVault.panicWipe()
                             acknowledgedExperiments = emptySet()
@@ -822,21 +822,25 @@ class MainActivity : ComponentActivity() {
             "docs" -> DocsContent()
             "office" -> dev.fusion.office.OfficeWorkbenchScreen()
             "photos" -> dev.fusion.photos.PhotosWorkbenchScreen()
-            "quickpanel" -> Column(Modifier.fillMaxSize().padding(12.dp)) {
-                dev.fusion.quickpanel.QuickPanelSheet(
-                    snapshot = dev.fusion.quickpanel.QuickPanelSnapshot(
-                        appearance = appearance,
-                        activeConsentCount = acknowledgedExperiments.size,
-                        openWindowCount = desktop.windows.size,
-                        amnesicWipeGeneration = amnesicWipeGeneration
-                    ),
-                    onAppearanceChange = { settingsGraph.setAppearance(it) },
-                    onAmnesicWipe = {
-                        amnesicWipeGeneration = amnesicVault.panicWipe()
-                        acknowledgedExperiments = emptySet()
-                        message = "Amnesic session zeroized (epoch $amnesicWipeGeneration); experimental consents revoked."
-                    }
-                )
+            "quickpanel" -> {
+                val qpValues by settingsGraph.snapshots.collectAsState()
+                val qpAppearance = AppearancePreferences.read(qpValues)
+                Column(Modifier.fillMaxSize().padding(12.dp)) {
+                    dev.fusion.quickpanel.QuickPanelSheet(
+                        snapshot = dev.fusion.quickpanel.QuickPanelSnapshot(
+                            appearance = qpAppearance,
+                            activeConsentCount = acknowledgedExperiments.size,
+                            openWindowCount = desktop.windows.size,
+                            amnesicWipeGeneration = amnesicWipeGeneration
+                        ),
+                        onAppearanceChange = { settingsGraph.setAppearance(AppearancePreferences.encode(it)) },
+                        onAmnesicWipe = {
+                            amnesicWipeGeneration = amnesicVault.panicWipe()
+                            acknowledgedExperiments = emptySet()
+                            message = "Amnesic session zeroized (epoch $amnesicWipeGeneration); experimental consents revoked."
+                        }
+                    )
+                }
             }
             "ime" -> dev.fusion.ime.HardenedKeypadScreen()
             "pdf", "pdf-preview" -> PdfScreen(this, pdfUri) { openPdf.launch(arrayOf("application/pdf")) }

@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12320766085,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMyMDc2NjA4NQ==",
+      "name": "offline-privacy-companion",
+      "size_in_bytes": 1579121,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12320766085",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12320766085/zip",
+      "expired": false,
+      "digest": "sha256:1628340d3bd12cafea9927dc10f756e51a21b924aab176b6eecfb90d1ce5d6eb",
+      "created_at": "2026-10-21T04:23:55Z",
+      "updated_at": "2026-10-21T04:23:55Z",
+      "expires_at": "2027-01-19T04:16:13Z",
+      "workflow_run": {
+        "id": 39543107169,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/c31cbd33-osb",
+        "head_sha": "ed628818167e54edc5c36db9e2a7b92299695b12"
+      }
+    }
+  ]
+}

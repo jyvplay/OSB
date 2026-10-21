@@ -26,7 +26,7 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "e4ffcc1007749c60cd9b5c1fcdeb8b4b364fb2f7f904a21a8347368ff128ebfa",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "9adf8c135531fe8a6278b3e9f86740857d4f9d79c9c21b92ee40b6b8216a7e2a",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "a22a3e9d3f0c4445dade8e4509560ac638b0373ce99b995ea55ae7ad305a09c7",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "f2e83c1b2696ff45cdf0c37a6ad6e51a4c8571f87ee1d2041006290be669235a",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
@@ -35,7 +35,7 @@
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
-        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "bb4c95fb1e5649cf793c9745d4d10141819c6d41768e00e77bff0fe018a4eadb",
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "77e6d9a84ee12be3f6f23220688812ce123e55f2fd5e5369be09195ed615f3d6",
         "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73",
         "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "e99df6f2834ac627d3328a3417d0163cbbfa3fb25b659af965e945d6fe72a62f"
       }
@@ -1355,7 +1355,7 @@
       "sha256": {
         "core/fileops/src/main/kotlin/dev/fusion/fileops/FileMoveJournal.kt": "d637ad168f83556fac8f84756b8ef48b691c4e1eedc27d557db1c4be7542aa3d",
         "core/fileops/src/test/kotlin/dev/fusion/fileops/FileOpsKernelTest.kt": "9727558acfaf07caefad68cdf57f24b2112191a071c07f39dc566318be47dbea",
-        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "b5d785d9008d0c8cebbf22fe7b5ab5c6ce89fda55dd81e01b1ef9bb0ad2f3876"
       }
     },
     {
@@ -1373,9 +1373,9 @@
       "command": "python3 tools/run_r26_contracts.py; ./gradlew :format:poi:test",
       "limit": "Core OOXML documents/sheets/slides without VBA macros, charts, pivot tables or full print layout.",
       "sha256": {
-        "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt": "2a347c4cf624eec674b58beae4d0b9f2ac85301af3e3d7e755455b18699f2fd1",
+        "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt": "d555f14c0042e89ef08481fd71c13199357afb2f42a5274182193cdc4e44fd2e",
         "format/poi/src/test/kotlin/dev/fusion/poi/CleanRoomWorkbookEngineTest.kt": "cbe5105a42547ccba019a3e9ad6aab8784cf526c0d026133592b37c633e828a2",
-        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "b5d785d9008d0c8cebbf22fe7b5ab5c6ce89fda55dd81e01b1ef9bb0ad2f3876"
       }
     },
     {
@@ -1397,7 +1397,7 @@
         "feature/office/src/main/kotlin/dev/fusion/office/OfficeDocumentModel.kt": "40a21a2c0777ef2f7d575437c32d7d3455af965fef40f79bb1ca847f1ef4bfe0",
         "feature/office/src/main/java/dev/fusion/office/OfficeWorkbenchScreen.kt": "929a0748ab190c423f2faa05e173e262a39233c024856192778a8ad75b0e47cd",
         "feature/office/src/test/kotlin/dev/fusion/office/OfficeSessionTest.kt": "e1350aa8b89963bd6623faf2411f08d632982cdd8980726b7b0b9292bb9c6ee0",
-        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "9dd2297756fd8386ad22079395bbaa8a6b0006656627d60ea9428b8a8cf540d0"
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "7692224648c06a3deff370bfdc90dcb9c4071d706b4c042fdee569afda686d46"
       }
     },
     {
@@ -1419,7 +1419,7 @@
         "feature/quickpanel/src/main/kotlin/dev/fusion/quickpanel/QuickPanelModel.kt": "032499f25d808d81af6353b327cfc4b09bd1cfd715c7b3cc23821d1e8c6aa286",
         "feature/quickpanel/src/main/java/dev/fusion/quickpanel/QuickPanelSheet.kt": "626978185c852d058afe30095cb68fd9190220725356f581b055cdcd40998de1",
         "feature/quickpanel/src/test/kotlin/dev/fusion/quickpanel/QuickPanelModelTest.kt": "f8fe30e08d331e9c6ca75c2934ea02b900e58b57f3cad24f08e2b0490b009ff6",
-        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "9dd2297756fd8386ad22079395bbaa8a6b0006656627d60ea9428b8a8cf540d0"
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "7692224648c06a3deff370bfdc90dcb9c4071d706b4c042fdee569afda686d46"
       }
     },
     {
@@ -1441,7 +1441,7 @@
         "feature/photos/src/main/kotlin/dev/fusion/photos/PhotoMetadataCleaner.kt": "d93c765d0306d4818ed4efc8f685ea3b2c75f81267b28d85c7068fed8389f3bd",
         "feature/photos/src/main/java/dev/fusion/photos/PhotosWorkbenchScreen.kt": "12d8f5893e7eb08f149b5db20295ddc4e6c1c88ecece3813c05357015457299e",
         "feature/photos/src/test/kotlin/dev/fusion/photos/PhotosStudioKernelTest.kt": "5b30063f0b4b744a97e69008a5842c6145373dda85d5ec75d69e9796cb5aab1a",
-        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "9ba991f97e069e34fa21617d19166c6aea610d2e245f3b35adf953ea2c82b1f1"
+        "testing/src/r26/kotlin/dev/fusion/testing/R26Checks.kt": "b5d785d9008d0c8cebbf22fe7b5ab5c6ce89fda55dd81e01b1ef9bb0ad2f3876"
       }
     },
     {
@@ -1463,7 +1463,7 @@
         "feature/ime/src/main/kotlin/dev/fusion/ime/HardenedInputEngine.kt": "42a433a3e6879b9f34b033a10e3002a20980ca7e7afa18a817b0ab52936b133d",
         "feature/ime/src/main/java/dev/fusion/ime/HardenedKeypadComposable.kt": "bbc483fee6aab5e9fa04eed4e37a674da02f63c5a087f9f76c948eb69567d800",
         "feature/ime/src/test/kotlin/dev/fusion/ime/HardenedImeKernelTest.kt": "450e8f963e295904f5ed033221a8bff0028f1b50638eb9a57f73e776d131902b",
-        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "9dd2297756fd8386ad22079395bbaa8a6b0006656627d60ea9428b8a8cf540d0"
+        "app/src/androidTest/java/dev/fusion/shell/R26IntegrationAndAttackDeviceTest.kt": "7692224648c06a3deff370bfdc90dcb9c4071d706b4c042fdee569afda686d46"
       }
     }
   ]

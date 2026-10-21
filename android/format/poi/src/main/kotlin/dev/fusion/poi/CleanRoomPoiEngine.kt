@@ -588,6 +588,7 @@ private class FormulaParser(
 
     fun parse(): CellValue {
         val result = parseComparison()
+        if (result is CellValue.Error) return result
         skipWs()
         return if (pos == input.length) result else CellValue.Error("#SYNTAX!")
     }
@@ -731,7 +732,7 @@ private class FormulaParser(
             pos += numMatch.value.length
             return numMatch.value.toDoubleOrNull()?.takeIf { it.isFinite() }?.let { CellValue.Number(it) } ?: CellValue.Error("#NUM!")
         }
-        val tokenMatch = Regex("^([A-Za-z0-9_\\$]+!)??([A-Za-z_\\$][A-Za-z0-9_\\$]*)").find(input.substring(pos))
+        val tokenMatch = Regex("^([A-Za-z0-9_\\$]+!)?([A-Za-z_\\$][A-Za-z0-9_\\$]*)").find(input.substring(pos))
             ?: return CellValue.Error("#SYNTAX!")
         pos += tokenMatch.value.length
         val explicitSheet = tokenMatch.groupValues[1].takeIf { it.isNotEmpty() }?.removeSuffix("!")

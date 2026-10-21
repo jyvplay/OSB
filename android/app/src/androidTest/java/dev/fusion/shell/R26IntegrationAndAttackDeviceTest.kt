@@ -3,13 +3,13 @@ package dev.fusion.shell
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.view.WindowInsets
 import android.widget.Button
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.ViewModelProvider
@@ -19,9 +19,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
-import dev.fusion.launcher.DeskAction
 import dev.fusion.launcher.DeskPlane
-import dev.fusion.launcher.DeskPoint
 import dev.fusion.launcher.TabletopStore
 import org.junit.Assert.*
 import org.junit.Rule
@@ -53,8 +51,17 @@ class R26IntegrationAndAttackDeviceTest {
         compose.onNodeWithTag("shelf-$id").performScrollTo().performClick()
     }
 
-    private fun tabletopModel(): TabletopSessionModel =
-        ViewModelProvider(compose.activity)[TabletopSessionModel::class.java]
+    private fun tabletopModel(): TabletopSessionModel {
+        lateinit var result: TabletopSessionModel
+        compose.activityRule.scenario.onActivity { result = ViewModelProvider(it)[TabletopSessionModel::class.java] }
+        return result
+    }
+
+    private fun mapModel(): dev.fusion.maps.MapViewModel {
+        lateinit var result: dev.fusion.maps.MapViewModel
+        compose.activityRule.scenario.onActivity { result = ViewModelProvider(it)[dev.fusion.maps.MapViewModel::class.java] }
+        return result
+    }
 
     private fun awaitTabletopReady() {
         compose.waitUntil(10_000) { tabletopModel().document != null && !tabletopModel().busy }
@@ -150,7 +157,7 @@ class R26IntegrationAndAttackDeviceTest {
                     if (!ready) SystemClock.sleep(50)
                 }
                 assertTrue("Expected READY state after choosing exact target PNG", ready)
-                // Now cancel a second picker launch: must clear prepared copy immediately so stale bytes cannot be saved!
+                // Cancel a second picker launch: must clear prepared copy immediately so stale bytes cannot be saved.
                 requireNotNull(device.wait(Until.findObject(By.res(context.packageName, "png_copy_choose")), 10_000)).click()
                 assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))), 10_000))
                 device.pressBack()
@@ -180,9 +187,10 @@ class R26IntegrationAndAttackDeviceTest {
         compose.onNodeWithTag("views-done").performClick()
         compose.onNodeWithTag("quick-view-$viewId").performScrollTo().assertIsDisplayed()
 
-        // Drag pin #1 directly upward across the 3D horizon (`HORIZON = 0.12`) onto the Back Wall without switching focus!
-        val pin1 = compose.onNodeWithTag("desk-pin-1")
-        pin1.performTouchInput { swipe(center, androidx.compose.ui.geometry.Offset(centerX, -centerY - 500f), 250) }
+        // Drag pin #1 diagonally across the 3D horizon (`nx ≈ 0.50, ny = 0.0 < HORIZON = 0.12`) onto the Back Wall
+        compose.onNodeWithTag("desk-pin-1").assertIsDisplayed().performTouchInput {
+            swipe(center, Offset(centerX + 180f, -900f), 300)
+        }
         compose.waitUntil(10_000) {
             val moved = tabletopModel().document?.scene?.pins?.first { it.id == 1L }
             !tabletopModel().busy && moved != null && moved.plane == DeskPlane.BACK
@@ -202,14 +210,14 @@ class R26IntegrationAndAttackDeviceTest {
         compose.onNodeWithTag("qp-preset-art-silver").performScrollTo().performClick()
         compose.onNodeWithTag("control-done").performClick()
         compose.waitForIdle()
-        NativeVisualEvidence.captureCompose(compose, "r26-art-silver", listOf("desktop-find", "control-panel", "desk-pin-1", "shelf-files"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r26-art-silver", listOf("desktop-find", "control-panel", "desk-pin-1"))
 
         // Switch via integrated QuickPanel -> Business Office Light & capture real native frame
         compose.onNodeWithTag("control-panel").performScrollTo().performClick()
         compose.onNodeWithTag("qp-preset-business-light").performScrollTo().performClick()
         compose.onNodeWithTag("control-done").performClick()
         compose.waitForIdle()
-        NativeVisualEvidence.captureCompose(compose, "r26-business-light", listOf("desktop-find", "control-panel", "desk-pin-1", "shelf-files"))
+        NativeVisualEvidence.capture(compose, compose.activity, "r26-business-light", listOf("desktop-find", "control-panel", "desk-pin-1"))
     }
 
     /** R26 Clean-Room Office Workbench + Offline World Gazetteer + Sandboxed Browser Guard. */
@@ -224,7 +232,12 @@ class R26IntegrationAndAttackDeviceTest {
         compose.waitUntil(10_000) {
             compose.onAllNodes(hasTestTag("office-val-B3") and hasText("500")).fetchSemanticsNodes().isNotEmpty()
         }
-        NativeVisualEvidence.captureCompose(compose, "r26-office-workbench", listOf("desktop-find", "office-cell-apply", "office-undo"))
+        NativeVisualEvidence.capture(
+            compose,
+            compose.activity,
+            "r26-office-workbench",
+            listOf("desktop-find", "control-panel", "office-tab-writer", "office-cell-apply")
+        )
         compose.onNodeWithContentDescription("Close window").performClick()
 
         // Offline Atlas 60-city instant gazetteer search ("Raleigh") without network/GPS permissions
@@ -236,8 +249,7 @@ class R26IntegrationAndAttackDeviceTest {
         compose.onNodeWithTag("map-gazetteer-open").performScrollTo().performClick()
         compose.onNodeWithTag("map-gazetteer-query").performTextInput("Raleigh")
         compose.onNodeWithTag("map-gazetteer-hit-0").performClick()
-        val mapVm = ViewModelProvider(compose.activity)[dev.fusion.maps.MapViewModel::class.java]
-        assertTrue(abs(mapVm.cursor.latitude - 35.7796) < 0.01)
+        assertTrue(abs(mapModel().cursor.latitude - 35.7796) < 0.01)
         compose.onNodeWithContentDescription("Close window").performClick()
 
         // Sandboxed HTTPS Browser Workbench refuses `javascript:` scheme and stays on offline `about:blank`
@@ -260,7 +272,12 @@ class R26IntegrationAndAttackDeviceTest {
         }
         compose.onNodeWithTag("ime-slot-0").performScrollTo().performClick()
         compose.onNodeWithTag("ime-masked-length").assertTextContains("•", substring = true)
-        NativeVisualEvidence.captureCompose(compose, "r26-hardened-ime", listOf("desktop-find", "ime-slot-0", "ime-zeroize"))
+        NativeVisualEvidence.capture(
+            compose,
+            compose.activity,
+            "r26-hardened-ime",
+            listOf("desktop-find", "control-panel", "ime-slot-0", "ime-zeroize")
+        )
 
         // Trigger QuickPanel Amnesic Wipe & confirm wipe epoch increments cleanly
         compose.onNodeWithTag("control-panel").performScrollTo().performClick()

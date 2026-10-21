@@ -248,7 +248,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "e4ffcc1007749c60cd9b5c1fcdeb8b4b364fb2f7f904a21a8347368ff128ebfa"
+      "sha256": "9adf8c135531fe8a6278b3e9f86740857d4f9d79c9c21b92ee40b6b8216a7e2a"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -1232,7 +1232,7 @@
       "path": "format/poi/src/main/kotlin/dev/fusion/poi/CleanRoomPoiEngine.kt",
       "module": ":format:poi",
       "package": "dev.fusion.poi",
-      "sha256": "2a347c4cf624eec674b58beae4d0b9f2ac85301af3e3d7e755455b18699f2fd1"
+      "sha256": "d555f14c0042e89ef08481fd71c13199357afb2f42a5274182193cdc4e44fd2e"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/PdfDocument.kt",
