@@ -1,0 +1,65 @@
+{
+  "total_count": 3,
+  "artifacts": [
+    {
+      "id": 12322130863,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMyMjEzMDg2Mw==",
+      "name": "r25-png-copy-native",
+      "size_in_bytes": 649937,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12322130863",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12322130863/zip",
+      "expired": false,
+      "digest": "sha256:765e7a167bca9f334da799a4e16fff42a08f4723c353d487901358764fa03d88",
+      "created_at": "2026-10-21T04:58:14Z",
+      "updated_at": "2026-10-21T04:58:14Z",
+      "expires_at": "2027-01-19T04:52:01Z",
+      "workflow_run": {
+        "id": 39546365951,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/c31cbd33-osb",
+        "head_sha": "a1ea988cd1e5cbd7ae2572a6201c526b98f53a53"
+      }
+    },
+    {
+      "id": 12322130855,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMyMjEzMDg1NQ==",
+      "name": "r25-png-frames",
+      "size_in_bytes": 366491,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12322130855",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12322130855/zip",
+      "expired": false,
+      "digest": "sha256:c3902baa1df4d1f568af9d80307590f87340e0a97caeaa86fbba5562d0057889",
+      "created_at": "2026-10-21T04:58:12Z",
+      "updated_at": "2026-10-21T04:58:12Z",
+      "expires_at": "2027-01-19T04:52:01Z",
+      "workflow_run": {
+        "id": 39546365951,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/c31cbd33-osb",
+        "head_sha": "a1ea988cd1e5cbd7ae2572a6201c526b98f53a53"
+      }
+    },
+    {
+      "id": 12321594217,
+      "node_id": "MDg6QXJ0aWZhY3QxMjMyMTU5NDIxNw==",
+      "name": "verified-png-page-frame",
+      "size_in_bytes": 67548,
+      "url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12321594217",
+      "archive_download_url": "https://api.github.com/repos/jyvplay/OSB/actions/artifacts/12321594217/zip",
+      "expired": false,
+      "digest": "sha256:bcc989e21bf8993f275fcf44eeae524c9907913ac9e20b8673ff64c72cdcd14a",
+      "created_at": "2026-10-21T04:58:34Z",
+      "updated_at": "2026-10-21T04:58:34Z",
+      "expires_at": "2027-01-19T04:52:01Z",
+      "workflow_run": {
+        "id": 39546365951,
+        "repository_id": 1418072318,
+        "head_repository_id": 1418072318,
+        "head_branch": "arena/c31cbd33-osb",
+        "head_sha": "a1ea988cd1e5cbd7ae2572a6201c526b98f53a53"
+      }
+    }
+  ]
+}

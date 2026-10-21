@@ -279,11 +279,15 @@ class R26IntegrationAndAttackDeviceTest {
             listOf("desktop-find", "control-panel", "ime-slot-0", "ime-zeroize")
         )
 
-        // Trigger QuickPanel Amnesic Wipe & confirm wipe epoch increments cleanly
+        // Trigger QuickPanel Amnesic Wipe & confirm monotonic wipe epoch increments cleanly by +1
         compose.onNodeWithTag("control-panel").performScrollTo().performClick()
+        val beforeText = compose.onNodeWithTag("qp-posture-summary")
+            .fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text]
+            .joinToString("") { it.text }
+        val beforeEpoch = Regex("Wipe epoch: (\\d+)").find(beforeText)!!.groupValues[1].toLong()
         compose.onNodeWithTag("qp-amnesic-wipe").performScrollTo().performClick()
         compose.onNodeWithTag("qp-posture-summary").assertTextContains("Active session consents: 0", substring = true)
-        compose.onNodeWithTag("qp-posture-summary").assertTextContains("Wipe epoch: 1", substring = true)
+        compose.onNodeWithTag("qp-posture-summary").assertTextContains("Wipe epoch: ${beforeEpoch + 1}", substring = true)
         compose.onNodeWithTag("control-done").performClick()
     }
 }

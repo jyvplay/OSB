@@ -17,7 +17,13 @@ for extra in (
     if extra.is_dir() and str(extra) not in sys.path:
         sys.path.insert(0, str(extra))
 
-from PIL import Image  # noqa: E402
+import struct
+import zlib
+
+try:
+    from PIL import Image  # type: ignore
+except ImportError:
+    Image = None
 
 PHI = 1.618033988749895
 
@@ -114,11 +120,86 @@ def dock_metrics(width: float, font_scale: float, keyboard: bool, items: int) ->
     }
 
 
+def _decode_rgb_stdlib(data: bytes) -> tuple[int, int, bytearray]:
+    assert data[:8] == b"\x89PNG\r\n\x1a\n", "Not a PNG file"
+    off = 8
+    w = h = depth = color = 0
+    plte = b""
+    idat = bytearray()
+    while off < len(data):
+        size, kind = struct.unpack_from(">I4s", data, off)
+        body = data[off + 8 : off + 8 + size]
+        off += 12 + size
+        if kind == b"IHDR":
+            w, h, depth, color, _, _, _ = struct.unpack(">IIBBBBB", body)
+        elif kind == b"PLTE":
+            plte = body
+        elif kind == b"IDAT":
+            idat.extend(body)
+        elif kind == b"IEND":
+            break
+    bpp = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}[color]
+    stride = w * bpp
+    raw = zlib.decompress(bytes(idat))
+    prev = bytearray(stride)
+    rows = bytearray()
+    pos = 0
+    for _ in range(h):
+        filt = raw[pos]
+        pos += 1
+        cur = bytearray(raw[pos : pos + stride])
+        pos += stride
+        if filt == 1:
+            for i in range(bpp, stride):
+                cur[i] = (cur[i] + cur[i - bpp]) & 0xFF
+        elif filt == 2:
+            for i in range(stride):
+                cur[i] = (cur[i] + prev[i]) & 0xFF
+        elif filt == 3:
+            for i in range(stride):
+                left = cur[i - bpp] if i >= bpp else 0
+                cur[i] = (cur[i] + ((left + prev[i]) >> 1)) & 0xFF
+        elif filt == 4:
+            for i in range(stride):
+                a = cur[i - bpp] if i >= bpp else 0
+                b = prev[i]
+                c = prev[i - bpp] if i >= bpp else 0
+                p = a + b - c
+                pa, pb, pc = abs(p - a), abs(p - b), abs(p - c)
+                pr = a if (pa <= pb and pa <= pc) else (b if pb <= pc else c)
+                cur[i] = (cur[i] + pr) & 0xFF
+        rows.extend(cur)
+        prev = cur
+    if color == 2:
+        return w, h, rows
+    rgb = bytearray(w * h * 3)
+    dst = 0
+    if color == 6:
+        for s in range(0, len(rows), 4):
+            rgb[dst] = rows[s]
+            rgb[dst + 1] = rows[s + 1]
+            rgb[dst + 2] = rows[s + 2]
+            dst += 3
+    elif color == 3:
+        for s in rows:
+            rgb[dst : dst + 3] = plte[s * 3 : s * 3 + 3]
+            dst += 3
+    else:
+        step = bpp
+        for s in range(0, len(rows), step):
+            rgb[dst] = rgb[dst + 1] = rgb[dst + 2] = rows[s]
+            dst += 3
+    return w, h, rgb
+
+
 def inspect_png_frame(path: Path) -> dict:
-    with Image.open(path) as raw:
-        img = raw.convert("RGB")
-        w, h = img.size
-        buf = img.tobytes()
+    if Image is not None:
+        with Image.open(path) as raw:
+            img = raw.convert("RGB")
+            w, h = img.size
+            buf = img.tobytes()
+    else:
+        w, h, buf = _decode_rgb_stdlib(path.read_bytes())
     total_px = w * h
     colors = Counter()
     light_px = 0

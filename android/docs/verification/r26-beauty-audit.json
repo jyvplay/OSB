@@ -88,7 +88,7 @@
     }
   },
   "tabletop_floor_scene_share": 0.8316,
-  "verified_png_frames_count": 32,
+  "verified_png_frames_count": 36,
   "frames": [
     {
       "file": "docs/verification/r24-native-previews/art-studio-graphite.png",
@@ -648,6 +648,78 @@
         "#b7b8b8",
         "#0b0f10",
         "#0a0d0e"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r26-frames/r26-art-silver.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1241,
+      "light_pixel_fraction": 0.9445,
+      "silver_neutral_fraction": 0.936,
+      "max_foreground_background_wcag": 9.03,
+      "dominant_hex": [
+        "#dce2e8",
+        "#e9edf1",
+        "#f9fbfd",
+        "#fafcfe",
+        "#2f4965",
+        "#f9fbfe"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r26-frames/r26-business-light.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1442,
+      "light_pixel_fraction": 0.9417,
+      "silver_neutral_fraction": 0.6303,
+      "max_foreground_background_wcag": 7.85,
+      "dominant_hex": [
+        "#f3f6fb",
+        "#ffffff",
+        "#e8eef7",
+        "#fefeff",
+        "#feffff",
+        "#174ea6"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r26-frames/r26-hardened-ime.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1253,
+      "light_pixel_fraction": 0.9354,
+      "silver_neutral_fraction": 0.3519,
+      "max_foreground_background_wcag": 16.61,
+      "dominant_hex": [
+        "#ffffff",
+        "#f3f6fb",
+        "#e8eef7",
+        "#174ea6",
+        "#fcfdfe",
+        "#5e7085"
+      ],
+      "capture_kind": "ui_screen_capture"
+    },
+    {
+      "file": "docs/verification/r26-frames/r26-office-workbench.png",
+      "width": 360,
+      "height": 800,
+      "unique_colors": 1426,
+      "light_pixel_fraction": 0.9326,
+      "silver_neutral_fraction": 0.3535,
+      "max_foreground_background_wcag": 16.61,
+      "dominant_hex": [
+        "#ffffff",
+        "#f3f6fb",
+        "#e8eef7",
+        "#174ea6",
+        "#fcfdfe",
+        "#d9e7ff"
       ],
       "capture_kind": "ui_screen_capture"
     }
