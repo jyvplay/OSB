@@ -37,7 +37,7 @@
              in :core:security's manifest, so the no-INTERNET privacy companion
              keeps its exact component/permission scope. POST_NOTIFICATIONS already
              merges from :feature:capture. -->
-        <receiver android:name="dev.fusion.security.UsbWatchReceiver" android:exported="true">
+        <receiver android:name=".UsbWatchReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
                 <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-package dev.fusion.security
+package dev.fusion.shell
+
+import dev.fusion.security.UsbPolicy
 
 import android.Manifest
 import android.app.NotificationChannel

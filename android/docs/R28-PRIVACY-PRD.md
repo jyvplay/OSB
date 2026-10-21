@@ -22,7 +22,7 @@ no footprint/anonymity comparison is claimed without measurement.
 | P-ANON-2 | Tor VPN (Arti 2.7) as NEXT handoff | Documented R28 | Beta+experimental labels inherited; F-Droid/reproducible-builds noted; no code until stable + review |
 | P-CONS-1 | ConsentLedger: scoped single-use receipts (30-3600s TTL, replay/scope/expiry refusal) | EXECUTED (host, 112-suite) | run_r28_contracts + reference |
 | P-CONS-2 | ConsentDialog: scope + TTL confirmation UI | Authored R28 | Parse-gated 7/7; touch-target strict-clean; device run pending |
-| P-USB-1 | UsbWatchReceiver: attach/detach detection, UsbPolicy verdict text, bounded record, notification-if-permitted | Authored R28 | Parse-gated; manifest merged; device run pending. Detection ONLY. |
+| P-USB-1 | UsbWatchReceiver (app module): attach/detach detection, UsbPolicy verdict text, bounded record, notification-if-permitted | Authored R28 | Parse-gated; app-manifest registered; :privacy untouched (moved out of :core:security after a [NotificationPermission] lint failure — see RESULTS). Device run pending. Detection ONLY. |
 | P-USB-2 | Recommend Android 16+ USB Protection (charging-only while locked) | Documented R28 | Platform feature, Pixel 6+; Fusion cannot enforce it |
 | P-USB-3 | Recommend GrapheneOS USB-C port control (5 modes, hardware data-line disable) | Documented R28 | OS feature; Fusion cannot replicate it |
 | P-FOR-1 | Recommend Intrusion Logging (opt-in E2EE forensic logs, 12-month retention) for high-risk users | Documented R28 | Platform feature with Amnesty/RSF design input; Fusion keeps no cloud logs |

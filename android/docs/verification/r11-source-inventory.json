@@ -256,6 +256,12 @@
       "sha256": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7"
     },
     {
+      "path": "app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt",
+      "module": ":app",
+      "package": "dev.fusion.shell",
+      "sha256": "f309c8d7bfc55730887964bf2a7cd9c8bc5621a7f3ec6430bd1a20ee5c8e942c"
+    },
+    {
       "path": "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",
       "module": ":privacy",
       "package": "dev.fusion.privacy",
@@ -458,12 +464,6 @@
       "module": ":core:security",
       "package": "dev.fusion.security",
       "sha256": "3dc5bb0d72e76da2d4b8f851fd36237e5d0094a4a78ebb0baf71442dce3ab044"
-    },
-    {
-      "path": "core/security/src/main/java/dev/fusion/security/UsbWatchReceiver.kt",
-      "module": ":core:security",
-      "package": "dev.fusion.security",
-      "sha256": "7118703c62fd8990b0cca5438101ed8b4a23ecf8502e2632438064ed8a915e9c"
     },
     {
       "path": "core/security/src/main/java/dev/fusion/security/VaultCrypto.kt",

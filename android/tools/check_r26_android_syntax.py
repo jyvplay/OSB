@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FILES = [
     'app/src/main/java/dev/fusion/shell/AdaptiveDock.kt',
     'feature/media/src/main/java/dev/fusion/media/MediaHub.kt',  # R27: stream-player button
-    'core/security/src/main/java/dev/fusion/security/UsbWatchReceiver.kt',  # R28: USB watch receiver
+    'app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt',  # R28: USB watch receiver (app-only; keeps :privacy scope exact)
     'app/src/main/java/dev/fusion/shell/ConsentDialog.kt',  # R28: consent dialog
     'feature/media/src/main/java/dev/fusion/media/StreamPlayerActivity.kt',
     'feature/maps/src/main/java/dev/fusion/maps/VectorAtlasBridge.kt',
