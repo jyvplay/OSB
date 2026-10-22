@@ -69,10 +69,27 @@ limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Ledger entries are added after the R33 commit's runs are observed once
- (annotations API; logs unavailable). The `056625b` (R32 ledger) observation
- was folded into R32-RESULTS as an amendment inside the R33 commit —
- identical pre-existing shapes, R32 closure stands.
+4 workflows triggered on the R33 commit (path-filtered set: native, atlas,
+R25 PNG, R23/R22 — consistent with a kernels+docs-only delta). Triage is by
+annotations API (logs unavailable; claim only what annotations show).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 5ece6a0 | R23/R22 39813286022 | SUCCESS | — |
+| 5ece6a0 | native 39813285830: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 10 R33 kernels assemble both flavors; JVM tests pass. |
+| 5ece6a0 | native 39813285830 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases; the R24 audio-focus suspect flake absent again (1 fail in 4 observations — stays a watch item, resolving toward noise). |
+| 5ece6a0 | R25 PNG 39813285817 | FAIL | Same 2 pre-existing PNG cases in the focused job; frame/verify jobs fail downstream. Pre-existing shape. |
+| 5ece6a0 | atlas 39813286163 | FAIL | Pre-existing infra: root job exits 127 at "Install real compilation and emulator components", frame jobs fail downstream, Servo 0.7.0 AAR inspection succeeds. |
+
+Net: all R33 code compiles both flavors with green JVM tests. Every failure
+is a pre-existing shape (2 PNG cases wherever PNG device tests run, atlas
+exit-127 + downstream artifact misses); no transient infra outage and no new
+failure this round — no failure names an R33 file, and R33 touches no
+device-covered path (no Android code authored at all). Zero confirmed R33
+regressions. The `056625b` (R32 ledger) observation was folded into
+R32-RESULTS as an amendment inside the R33 commit — identical pre-existing
+shapes, R32 closure stands. Runs on the ledger commit itself will be
+observed per precedent and folded next round.
 
 ## Lab receipt
 
