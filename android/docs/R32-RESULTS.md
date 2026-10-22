@@ -79,11 +79,28 @@ limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Ledger commits observe per precedent: the R32 commit's runs will be triaged
-once (annotations API; logs unavailable) and a same-shape ledger amendment
-folded next round. The `7d30a44` (R31 ledger) observation was folded into
-R31-RESULTS as an amendment inside the R32 commit — identical pre-existing
-shapes, R31 closure stands.
+Two R32 candidates were observed once each (annotations API; logs
+unavailable — claim only what annotations show). The `7d30a44` (R31 ledger)
+observation was folded into R31-RESULTS as an amendment inside the R32
+commit — identical pre-existing shapes, R31 closure stands.
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 2f66a82 | native 39801235838: "Traceability, assemble both flavors, JVM tests" | FAIL | **R32's own break, repaired same turn**: `GeoPoint` redeclared `OfflineMap.GeoPoint` (`MapScreen.kt` unresolved `latitude`/`longitude`). Fix: `GeoUriPoint` + collision guard. |
+| 2f66a82 | R25 video 39801235606 | FAIL | Same break downstream (`:feature:maps:compileDebugKotlin FAILED`, same unresolved references). |
+| 2f66a82 | privacy 39801235722 | FAIL | Device assertion `PrivacyWorkspaceTest.pauseDropsBothFields...` (ActivityScenario lifecycle) naming no R32 file; R32 authors no Android code. Suspect flake; the workflow did not retrigger on the repair commit (path filters), so it stands unresolved — R33 watch item. |
+| 2f66a82 | API37 privacy 39801235648 | SUCCESS | — |
+| 2f66a82 | atlas 39801235721 | FAIL | Pre-existing infra: root job exits 127 at "Install real compilation and emulator components", frame jobs fail downstream, Servo 0.7.0 AAR inspection succeeds. |
+| 2addd15 | native 39803335939: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 10 R32 kernels assemble both flavors; JVM tests pass. |
+| 2addd15 | native 39803335939 device job | FAIL | Exactly 3 cases: the 2 pre-existing R25PngCopyDeviceTest cases + `R24LocalMediaDeviceTest...BackgroundRelease` ("Player must own real input focus"). The R24 case names no R32 file and no mechanism exists (no Android file authored or modified); suspect emulator flake — R33 watch item. |
+| 2addd15 | atlas 39803335984 | FAIL | Pre-existing infra: identical exit-127 + downstream shape, Servo job green. |
+
+Net: after the same-turn GeoPoint repair, all R32 code compiles both flavors
+with green JVM tests. Remaining failures are pre-existing shapes (2 PNG
+cases, atlas exit-127) plus two suspect device flakes (privacy lifecycle on
+2f66a82, R24 audio-focus on 2addd15), each naming no R32 file and each
+carried as an R33 watch item. Zero confirmed R32 regressions. Runs on the
+ledger commit itself will be observed per precedent and folded next round.
 
 ## Lab receipt
 
