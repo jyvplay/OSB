@@ -17,7 +17,25 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R30 — 10 executed kernels, pure-logic round (host evidence only)
+## Current R31 — 10 executed kernels, pure-logic round (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
+(20%), nine for the first time: PII redaction for diagnostics, capability
+enablement decisions, boolean search queries, editor offset math, vault item
+manifests, PDF trailer/xref reading, PSD resource-block walking, encoder ranking,
+phase-duration ledgers, robots.txt policy. No Android code authored this turn —
+no new components, permissions, or UI (touch audit +0 delta; manifest scope
+pinned). Fresh research: Tails 7.15 reconfirmed, GrapheneOS dual-layer port
+control + Motorola plans, Servo 0.6.0 LTS with 37.9 MB Android AAR, Orbot audit
+fixes itemized, Android 17 six-feature detail.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+152 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
+manifest-scope gates, 246/246 tool tests. [Results](android/docs/R31-RESULTS.md) ·
+[Contract](android/docs/R31-PLAN.md) · [Privacy PRD](android/docs/R31-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R30 — 10 executed kernels, pure-logic round (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
 (20%): RTSP request framing, video timecode math, VEVENT calendar import, Lamport

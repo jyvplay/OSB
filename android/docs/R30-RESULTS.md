@@ -84,6 +84,21 @@ no failure names an R30 file, and R30 touches no device-covered path (no
 Android code authored at all). Zero confirmed R30 regressions. Runs on the
 ledger commit itself will be observed per precedent and folded next round.
 
+## Amendment (folded into the R30 ledger inside the R31 commit)
+
+Per precedent, the ledger commit's runs were observed, not chased. Runs on
+`a1ea209` ("R30: record 2fb468c CI ledger"):
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| a1ea209 | native 39738981055: "Traceability, assemble both flavors, JVM tests" | SUCCESS | Second compile receipt on the ledger tree. |
+| a1ea209 | native 39738981055 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases; the full suite otherwise passes. |
+| a1ea209 | atlas 39738981093 | FAIL | Pre-existing infra (exit 127 root + downstream artifact misses), same shape as every run. |
+
+Identical pre-existing shapes, no new information: R30 closure stands
+(2 compile receipts, device failures limited to the PNG set + atlas infra,
+zero confirmed R30 regressions).
+
 ## Lab receipt
 
 R30 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).

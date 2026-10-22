@@ -1,0 +1,8 @@
+# Sample robots file
+User-agent: *
+Disallow: /private/
+Allow: /private/public
+
+User-agent: fusion-test
+Disallow: /
+Allow: /public/

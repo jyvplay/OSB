@@ -154,18 +154,26 @@
       "module": ":core:capabilities",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual Android RAM/SDK/display/role/declared-encoder observations with explicit unknown propagation; native case PASS at67fbd39",
+      "behavior": "Actual Android RAM/SDK/display/role/declared-encoder observations with explicit unknown propagation; native case PASS at67fbd39 R31 deepens with CapabilityGate: pure feature-enablement decisions over caller-supplied facts with deny-on-unknown and stable reasons executed on host JVM.",
       "production": [
-        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt"
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt",
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityGate.kt"
       ],
       "checks": [
-        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Observed inventory only: no NPU/physical display-out/session inference, codec initialization, performance or OEM/API36/37 acceptance",
       "sha256": {
         "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityProbe.kt": "9118012424e9b28ebf5cf7cf008734ad12a40a411c607d91f427588aaf140812",
-        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7"
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7",
+        "core/capabilities/src/main/java/dev/fusion/capabilities/CapabilityGate.kt": "5212ae97eb32eb8afe85143b41e9b2c51994e9bc94fb45c0c422434140a13f2f",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -340,54 +348,78 @@
       "module": ":core:perf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Deterministic codec/thermal decision policy, not measured governor",
+      "behavior": "Deterministic codec/thermal decision policy, not measured governor R31 deepens with PhaseLedger: named-phase duration ledger (caller clock, totals, shares, slowest) executed on host JVM.",
       "production": [
-        "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt"
+        "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt",
+        "core/perf/src/main/java/dev/fusion/perf/PhaseLedger.kt"
       ],
       "checks": [
-        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt"
+        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":testing:pilotContracts",
+      "command": ":testing:pilotContracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings",
       "sha256": {
         "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt": "8943c5233fe5bc3b565b463b4930961514c1f96a5d52a0abdf89a9f6810a6cd3",
-        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt": "4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5"
+        "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt": "4e18d010dbb3aae683e804df56bb600cd31c9b2f0a2d8d21176bb3f2f0832ea5",
+        "core/perf/src/main/java/dev/fusion/perf/PhaseLedger.kt": "a1d2379d62ad5c7f863b88880648d4607897ab35b70b88f8ff6150bdd2aef6f1",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
       "module": ":core:hw",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual Android video codec encoder/decoder declaration partition and audio feature inventory; native case PASS at67fbd39",
+      "behavior": "Actual Android video codec encoder/decoder declaration partition and audio feature inventory; native case PASS at67fbd39 R31 deepens with CodecPreference: pure encoder ranking over HwProbe lists (hardware-first, admitted software fallback, reasons) executed on host JVM.",
       "production": [
-        "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt"
+        "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt",
+        "core/hw/src/main/java/dev/fusion/hw/CodecPreference.kt"
       ],
       "checks": [
-        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in)",
+      "command": ":app:pixel6Api34ProDebugAndroidTest (disposable opt-in); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Declared hardware flags/preferences are NOT successful codec initialization, throughput or casting; physical/API36/37 and Compat acceptance remain open",
       "sha256": {
         "core/hw/src/main/java/dev/fusion/hw/HwProbe.kt": "4f09fcf0da21f0c5492b71a395664f12aa14158b9f08999eed750e65d82159f6",
-        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7"
+        "app/src/androidTest/java/dev/fusion/shell/RuntimeInventoryDeviceTest.kt": "9d47f72f0d544dc860b159f82ddd446d5c5a7fdf635277f6d5b0b0d69bbc36c7",
+        "core/hw/src/main/java/dev/fusion/hw/CodecPreference.kt": "4751eccb13dd9bf8fe336a815180fa34a7c8dab55ccddbadf5a6288e3fe14345",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
       "module": ":core:index",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded real encrypted index files, conflicts and search",
+      "behavior": "Bounded real encrypted index files, conflicts and search R31 deepens with SearchQuery: boolean query language (terms, phrases, NOT, OR, parens) with self-contained evaluation executed on host JVM.",
       "production": [
-        "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt"
+        "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt",
+        "core/index/src/main/kotlin/dev/fusion/index/SearchQuery.kt"
       ],
       "checks": [
-        "core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt"
+        "core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":testing:encryptedIndexContracts",
+      "command": ":testing:encryptedIndexContracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "S4 FTS/source/latency/battery decisions; explicit source consent/Vault/private-data exclusions, Android Keystore/filesystem/lifecycle integration, rollback/key lifecycle policy, native Find integration and device security acceptance",
       "sha256": {
         "core/index/src/main/kotlin/dev/fusion/index/EncryptedIndexFiles.kt": "cfd1fc18855633cde0f712752abf0eb824cea718afcf453e82e7582fd3a33d90",
-        "core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt": "85d70aa92b40a5727f576febabae618eecefa0bf0a97a66670227a4c32b121f7"
+        "core/index/src/contract/kotlin/dev/fusion/index/EncryptedIndexChecks.kt": "85d70aa92b40a5727f576febabae618eecefa0bf0a97a66670227a4c32b121f7",
+        "core/index/src/main/kotlin/dev/fusion/index/SearchQuery.kt": "aec57b38d995c78050c8fcf805278174f24c28f999e2a88e9ee867674b15f0b7",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -470,20 +502,28 @@
       "module": ":feature:editor",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real editing and lifecycle integration",
+      "behavior": "Real editing and lifecycle integration R31 deepens with TextOffsets: line starts, offset to line/column, and word bounds over plain text executed on host JVM.",
       "production": [
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt",
-        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt"
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
+        "feature/editor/src/main/java/dev/fusion/editor/TextOffsets.kt"
       ],
       "checks": [
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "53162f2e5f327c60baa4182bf81f6ccf71b902e6c3383ed4dbab80170875024c",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe"
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
+        "feature/editor/src/main/java/dev/fusion/editor/TextOffsets.kt": "88c98d493dfa60c2d070c4a5a213439b155c029b807fb06fd60762c033147a07",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -582,14 +622,15 @@
       "module": ":feature:browser",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI) R21 session-owned document consent invalidation including unsupported navigation; actual native boundary spike passed. No engine permission delegation. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R26 deepens with strict URL canonicalization, bounded host allow/block matching and private-session policy. R27 deepens with ContentBlocker: hosts + ABP-subset (|domain^, @@ exceptions) compiler with suffix decisions executed on host JVM against a real fixture. R28 deepens with CookieJar: RFC 6265-subset store/match/evict with Secure/HttpOnly/SameSite executed on host JVM against a real fixture.",
+      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI) R21 session-owned document consent invalidation including unsupported navigation; actual native boundary spike passed. No engine permission delegation. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R26 deepens with strict URL canonicalization, bounded host allow/block matching and private-session policy. R27 deepens with ContentBlocker: hosts + ABP-subset (|domain^, @@ exceptions) compiler with suffix decisions executed on host JVM against a real fixture. R28 deepens with CookieJar: RFC 6265-subset store/match/evict with Secure/HttpOnly/SameSite executed on host JVM against a real fixture. R31 deepens again with RobotsRules: robots.txt subset parser (groups, longest-prefix match, tie-goes-Allow) executed on host JVM against a real fixture.",
       "production": [
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserConsentSession.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/SafeNavigation.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/ContentBlocker.kt",
-        "feature/browser/src/main/kotlin/dev/fusion/browser/model/CookieJar.kt"
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/CookieJar.kt",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/RobotsRules.kt"
       ],
       "checks": [
         "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt",
@@ -606,9 +647,12 @@
         "tools/check_r27_reference.py",
         "testing/src/r28/kotlin/dev/fusion/testing/R28Checks.kt",
         "tools/test_r28_tools.py",
-        "tools/check_r28_reference.py"
+        "tools/check_r28_reference.py",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":testing:browserSessionContracts; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:browserSessionContracts; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "sha256": {
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
@@ -631,7 +675,11 @@
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/CookieJar.kt": "4ee2efecfabc7f92dc6dd4879cbf46ef895626832868747820c5926a0b2b54b0",
         "testing/src/r28/kotlin/dev/fusion/testing/R28Checks.kt": "e0b9dac85ae9c68e9b393bf859436a0e3708879bf3dcd197cdf15b3449c36acb",
         "tools/test_r28_tools.py": "c05e87d4a7363461e0f3144aa2f3a603b8cb7a16dc393f51ee1da550754bf46a",
-        "tools/check_r28_reference.py": "d588cdb4b3765cd3a307e0dd2879345bc990f6a467758fcf05382ec062b869b2"
+        "tools/check_r28_reference.py": "d588cdb4b3765cd3a307e0dd2879345bc990f6a467758fcf05382ec062b869b2",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/RobotsRules.kt": "8ec5131408800ae0c53f037d017ecefffe2404ef2826e5d411d8599e7091ba0a",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -670,18 +718,22 @@
       "module": ":feature:vault",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded AES256-GCM envelope with fresh96-bit nonce, authenticated header/context and bidirectional external crypto verification.",
+      "behavior": "Bounded AES256-GCM envelope with fresh96-bit nonce, authenticated header/context and bidirectional external crypto verification. R31 deepens with VaultManifest: validated item manifest (separator-free names, sha digests, canonical order-independent digest) executed on host JVM; encryption stays with VaultEnvelope.",
       "production": [
-        "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt"
+        "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt",
+        "feature/vault/src/main/kotlin/dev/fusion/vault/VaultManifest.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
         "tools/run_r15_contracts.py",
         "tools/run_r15_interop.py",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Caller supplies/protects key. No KDF/Keystore, replay/rollback protection, secure deletion, vault unlock or complete security gate acceptance.",
       "sha256": {
         "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt": "f3967e66f4ae6e84f7fb93cbbc45b1445e4ab8f431df69407beb7c069b9d6b1a",
@@ -689,7 +741,11 @@
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
         "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
         "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
+        "feature/vault/src/main/kotlin/dev/fusion/vault/VaultManifest.kt": "b137d025cf327bbf19d7c01888216a2711726916aac7da112b3f6246a8303364",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -1376,12 +1432,13 @@
       "module": ":format:pdf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 genuine platform native PDF rendering ONLY in isolated worker, fresh unlinked readonly seekable FD, source<=2MiB/pages<=1024/preview<=320px raw ARGB. Parent no child PNG/JPEG decoder; immutable page binding/serialized render. Exact23e8868 boundary39075701922 passed27/0 incl genuine PDF golden pixels/hostile wire/recovery/picker/source bytes/rapid pages and retained CSV/XLSX/FD controls. Full PDF/Office editing/signing/fidelity blocked; no honest-worker or no-disk/erasure claim.",
+      "behavior": "R24 genuine platform native PDF rendering ONLY in isolated worker, fresh unlinked readonly seekable FD, source<=2MiB/pages<=1024/preview<=320px raw ARGB. Parent no child PNG/JPEG decoder; immutable page binding/serialized render. Exact23e8868 boundary39075701922 passed27/0 incl genuine PDF golden pixels/hostile wire/recovery/picker/source bytes/rapid pages and retained CSV/XLSX/FD controls. Full PDF/Office editing/signing/fidelity blocked; no honest-worker or no-disk/erasure claim. R31 deepens with PdfTrailer: minimal PDF trailer/xref reader (version, Size/Root, startxref, table entries) executed on host JVM against a real fixture.",
       "production": [
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/OwnedFormatMemory.kt",
-        "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt"
+        "format/pdf/src/main/kotlin/dev/fusion/format/pdf/sandbox/OwnedPdfRequest.kt",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/PdfTrailer.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt",
@@ -1392,9 +1449,12 @@
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "0df998468d7c64228e2406c1ae1d56273dade36ee2e7a1b1e1d786d32854d9e1",
@@ -1409,7 +1469,11 @@
         "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
         "app/src/androidTest/java/dev/fusion/shell/R23MemoryTransportDeviceTest.kt": "bbfc688df66327acecff6b9b9968beadcab9a4a47b44b92d36fb138e2f45d659",
         "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "3028155b7e55f7e0504ca6fad17338226c72fe78c9c9a39b8ba9967951b499f7",
-        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b"
+        "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/PdfTrailer.kt": "1a75a6c11310888b16099be5bbafa64bbd32588d3e3de2f91bdf3fa77f29d76c",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -1458,18 +1522,26 @@
       "module": ":format:psd",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual header/composite parsing tests; not full layers/PSB/fidelity",
+      "behavior": "Actual header/composite parsing tests; not full layers/PSB/fidelity R31 deepens with PsdResources: walk of the image-resource section the composite engine skips (8BIM blocks, Pascal names, sizes) executed on host JVM against a real fixture.",
       "production": [
-        "format/psd/src/main/kotlin/dev/fusion/psd/PsdInfo.kt"
+        "format/psd/src/main/kotlin/dev/fusion/psd/PsdInfo.kt",
+        "format/psd/src/main/kotlin/dev/fusion/psd/PsdResources.kt"
       ],
       "checks": [
-        "format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt"
+        "format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":format:psd:testDebugUnitTest",
+      "command": ":format:psd:testDebugUnitTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "S13 corpus/layer/fidelity/isolation/roundtrip and safe-save acceptance",
       "sha256": {
         "format/psd/src/main/kotlin/dev/fusion/psd/PsdInfo.kt": "c96c40b7dca610aed8d63ce29662fbcab8462b96c8bfd14d9f0ef1ea9fc9c599",
-        "format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt": "cd123b32608342a5956176845fdddb2300169a85c34711da987c4a4fdc978115"
+        "format/psd/src/test/kotlin/dev/fusion/psd/PsdInfoTest.kt": "cd123b32608342a5956176845fdddb2300169a85c34711da987c4a4fdc978115",
+        "format/psd/src/main/kotlin/dev/fusion/psd/PsdResources.kt": "d48fe34a47c6f2ecdfa73850d611efeb65532ac126a98a46c0c7bd0689de714f",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
@@ -1630,7 +1702,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing offline/no-IME compartment now discards on observed input/IME/accessibility/additional-display changes, latches until an explicit empty restart and rejects stale buttons. Native real-IME-setting test authored; current-candidate device results separate. No passive-keylogger detection or hardware/host guarantee.",
+      "behavior": "Existing offline/no-IME compartment now discards on observed input/IME/accessibility/additional-display changes, latches until an explicit empty restart and rejects stale buttons. Native real-IME-setting test authored; current-candidate device results separate. No passive-keylogger detection or hardware/host guarantee. R31 deepens with LogScrubber: deterministic PII redaction (emails, phone runs, bearer/token secrets, device paths) with idempotence executed on host JVM against a real fixture.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
@@ -1638,7 +1710,8 @@
         "privacy/src/main/java/dev/fusion/privacy/ExposureProbe.kt",
         "privacy/src/main/java/dev/fusion/privacy/ExposureActivity.kt",
         "privacy/src/main/AndroidManifest.xml",
-        "privacy/src/main/res/values/ids.xml"
+        "privacy/src/main/res/values/ids.xml",
+        "privacy/src/main/java/dev/fusion/privacy/LogScrubber.kt"
       ],
       "checks": [
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt",
@@ -1647,9 +1720,12 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt",
         "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt",
+        "tools/test_r31_tools.py",
+        "tools/check_r31_reference.py"
       ],
-      "command": ":privacy:pixel6Api34DebugAndroidTest",
+      "command": ":privacy:pixel6Api34DebugAndroidTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "98166e0befc4cdbdf284b9e414abbd02c36d978e7b4d2a62d8c8a9d84dff825e",
@@ -1665,7 +1741,11 @@
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "562723aec87594b2ee65865719e682308c86f7c5d47627be4be152c788d3c13d",
         "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "732f89ff3b40b9b5f38e9e2c53f7dda1df079e4ec0d1b27f5e86ab13b972dd79",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "c2d446cf7b2471c9830269364f22df10503fc1bf4088ad44984a7ab8824c990c"
+        "privacy/src/androidTest/java/dev/fusion/privacy/R24InputChangeDeviceTest.kt": "c2d446cf7b2471c9830269364f22df10503fc1bf4088ad44984a7ab8824c990c",
+        "privacy/src/main/java/dev/fusion/privacy/LogScrubber.kt": "8eecf57a998ad50421e98c6323ccd9dcce359e39c8ead474ca3759160df21463",
+        "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
+        "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
+        "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b"
       }
     },
     {
