@@ -91,6 +91,17 @@ R32-RESULTS as an amendment inside the R33 commit — identical pre-existing
 shapes, R32 closure stands. Runs on the ledger commit itself will be
 observed per precedent and folded next round.
 
+### Amendment: runs on the ledger commit 2aea522 (folded in R34)
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 2aea522 | native 39817044602: compile + JVM | SUCCESS | Docs-only delta; nothing new to compile. |
+| 2aea522 | native 39817044602 device job | FAIL | Pre-existing PNG recreation case PLUS first-seen `R24TaskInputDeviceTest.oneNativeImeVisibleNewNoteTouchRequestsDiscardWithoutErasingDraft` — names no R33 file; the other pre-existing PNG case PASSED this run (pre-existing PNG failures vary 1–2 per run). The IME case is a new watch item, suspect flake. |
+| 2aea522 | atlas 39817044597 | FAIL | Pre-existing infra: root job fails at the same pre-compile install stage, this run with exit 1 (`sdk37-install`) rather than 127 — the atlas pre-compile failure is itself unstable run to run. Servo inspection succeeds. |
+
+Net: zero R33 regressions confirmed; R33 closure stands. The R24TaskInput IME
+case joins the R24 audio-focus case on the flake watch list for R34.
+
 ## Lab receipt
 
 R33 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).
