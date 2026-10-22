@@ -96,6 +96,18 @@ R33-RESULTS as an amendment inside the R34 commit — identical pre-existing
 shapes plus the IME watch item, R33 closure stands. Runs on the ledger
 commit itself will be observed per precedent and folded next round.
 
+### Amendment: runs on the ledger commit 0ab824b (folded in R35)
+
+Docs-only delta, so only native + atlas ran (path-filtered).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 0ab824b | native 39828376142: compile + JVM | SUCCESS | Docs-only; nothing new to compile. |
+| 0ab824b | native 39828376142 device job | FAIL | Same 2 pre-existing R25PngCopyDeviceTest cases (both "Failure detail" notices present; "Image seed not identified in actual DocumentsUI"). Both watch flakes absent: R24 audio-focus now 1 fail in 6 observations, R24TaskInput IME 1 in 3 — both resolving toward noise. |
+| 0ab824b | atlas 39828376097 | FAIL | Pre-existing infra: root job exits 127 at the install stage; Servo 0.7.0 AAR inspection succeeds; frame jobs fail downstream. |
+
+Net: zero R34 regressions confirmed; R34 closure stands.
+
 ## Lab receipt
 
 R34 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).

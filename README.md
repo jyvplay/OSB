@@ -17,19 +17,19 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R34 — 10 executed kernels, pure-logic round (host evidence only)
+## Current R35 — 10 executed kernels, pure-logic round (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
-(20%), all seconds (cumulative distinct holds at 45/50, 90%): descriptive stats,
-MIME lookup, Markdown outline, bracket matching, SOAP faults, pipeline splitting,
-JPEG markers, zlib headers, VTODO tasks, HMAC pseudonyms.
+(20%), all seconds (cumulative distinct holds at 45/50, 90%): exposure math,
+XOR secret splitting, word diff, duplicate grouping, snippet windows, ID3v2
+headers, tile coverage, vCard subset, field masks, indent detection.
 No Android code authored this turn — no new components, permissions, or UI (touch
-audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15 + browser
-micro-delta, Moto MTE/SE gap + Pixel 6 sunset, Servo monthly API churn vs LTS,
-Intrusion-Logging undeletability, Orbot 17.9.7 transports named.
+audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15 itemized,
+Signature 27 specs + Linux 6.18, Servo August report + LTS library-only scope,
+A17 six-feature enumeration + Intrusion-Logging terms, Orbot 17.9.7 stands.
 
 **50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
-166 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
+129 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
 manifest-scope gates, 246/246 tool tests. [Results](android/docs/R31-RESULTS.md) ·
 [Contract](android/docs/R31-PLAN.md) · [Privacy PRD](android/docs/R31-PRIVACY-PRD.md) ·
 [Try without Studio](android/docs/BUILD.md).
