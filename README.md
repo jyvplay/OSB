@@ -17,7 +17,24 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R29 — executed kernels + USB-allowlist privacy set (host evidence only)
+## Current R30 — 10 executed kernels, pure-logic round (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
+(20%): RTSP request framing, video timecode math, VEVENT calendar import, Lamport
+causal clock, GIF structure walk, settings patch scoping, POSIX tar headers,
+half-stop zoom ladder, SMS segment math (counts only, no sending), density-tier
+selection. No Android code authored this turn — no new components, permissions,
+or UI (touch audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15
+reconfirmed, GrapheneOS Oct 2026 USB/port controls, Servo 0.5.0 stable embed API,
+Tor VPN still beta.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+98 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
+manifest-scope gates, 237/237 tool tests. [Results](android/docs/R30-RESULTS.md) ·
+[Contract](android/docs/R30-PLAN.md) · [Privacy PRD](android/docs/R30-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R29 — executed kernels + USB-allowlist privacy set (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
 (20%): share-manifest offers, storage quota ledger, alert token-bucket throttle,

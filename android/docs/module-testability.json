@@ -172,9 +172,10 @@
       "module": ":core:model",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Original bounded workflow/gate policy plus explicit new pdf-preview consent route, distinct from still-blocked full PDF. Actual compiled policy attacks prove old full PDF cannot be authorized by preview consent and inverse; native picker/recreation/permission gates passed. No original feature/spike silently promoted.",
+      "behavior": "Original bounded workflow/gate policy plus explicit new pdf-preview consent route, distinct from still-blocked full PDF. Actual compiled policy attacks prove old full PDF cannot be authorized by preview consent and inverse; native picker/recreation/permission gates passed. No original feature/spike silently promoted. R30 deepens with DensitySelect: dpi-plus-touch density-tier selection (COMPACT/BALANCED/TOUCH, 180/280 cuts against the DensityProfile ladder) executed on host JVM.",
       "production": [
-        "core/model/src/main/kotlin/dev/fusion/model/LaunchLinks.kt"
+        "core/model/src/main/kotlin/dev/fusion/model/LaunchLinks.kt",
+        "core/model/src/main/kotlin/dev/fusion/model/DensitySelect.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
@@ -183,9 +184,12 @@
         "tools/run_r15_interop.py",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No Intent registration/dispatch, document grant, cross-device handoff or complete shared domain model.",
       "sha256": {
         "core/model/src/main/kotlin/dev/fusion/model/LaunchLinks.kt": "cbd0d0b85d035b317f9ac5372308c71c84849ecedb4a19eecbfa0a3d56ae6d9c",
@@ -195,7 +199,11 @@
         "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
         "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
         "testing/src/r24/kotlin/dev/fusion/testing/R24Checks.kt": "8112d1957d573597b73d1bb06fbcaab7967ebdf7e6bedcf8947de24a0525c45b",
-        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "3028155b7e55f7e0504ca6fad17338226c72fe78c9c9a39b8ba9967951b499f7"
+        "app/src/androidTest/java/dev/fusion/shell/R24PdfDeviceTest.kt": "3028155b7e55f7e0504ca6fad17338226c72fe78c9c9a39b8ba9967951b499f7",
+        "core/model/src/main/kotlin/dev/fusion/model/DensitySelect.kt": "fd2122a739e97af86bb0c4bdb2ed136e46c2cb99904461739a289fc9bd59cdab",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -744,10 +752,11 @@
       "module": ":feature:settings",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Shared appearance controls retain prior palettes/layouts; silver and tabletop/flat controls plus explicit paired presets added without mutating document/permission state. Native checks are runnable; original broader settings scope remains incomplete.",
+      "behavior": "Shared appearance controls retain prior palettes/layouts; silver and tabletop/flat controls plus explicit paired presets added without mutating document/permission state. Native checks are runnable; original broader settings scope remains incomplete. R30 deepens again with PatchScope: dotted-key settings patch scoping (exact/prefix permits, allow/refuse partition) executed on host JVM.",
       "production": [
         "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt",
-        "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt"
+        "feature/settings/src/main/java/dev/fusion/settingsui/AppearanceControls.kt",
+        "feature/settings/src/main/kotlin/dev/fusion/settingsui/PatchScope.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
@@ -755,9 +764,12 @@
         "tools/run_r14_contracts.py",
         "tools/run_r14_interop.py",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No durable transaction, authenticated import, permission grant or arbitrary-setting enablement. Host applies only density; native UI evidence pending.",
       "sha256": {
         "feature/settings/src/main/kotlin/dev/fusion/settingsui/SettingsPatch.kt": "938065ce1d36034bf86da9b65b400d0c7fd2c9ca7ba50c34940a608d38b4af09",
@@ -767,7 +779,11 @@
         "tools/run_r14_contracts.py": "8d8ab6409f4165a69503bd9abc79fc8dde869301dee18b1d21678f353684524e",
         "tools/run_r14_interop.py": "55e6845cc7d26590c4600eb9a465e0775c4f39dfe6c6c9ffcad336e940703639",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
-        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911"
+        "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
+        "feature/settings/src/main/kotlin/dev/fusion/settingsui/PatchScope.kt": "8c58b6bfe7c0db2528e42a446bcf9156d350562b8526b5341229de23dc297b10",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -892,18 +908,22 @@
       "module": ":feature:capture",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded monotonic pause/resume interval accounting, consumed by real recorder start/stop status.",
+      "behavior": "Bounded monotonic pause/resume interval accounting, consumed by real recorder start/stop status. R30 deepens with Timecode: millisecond to HH:MM:SS:FF conversion with fps-gated frame field and whole-day clamps executed on host JVM.",
       "production": [
-        "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt"
+        "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt",
+        "feature/capture/src/main/kotlin/dev/fusion/capture/Timecode.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
         "tools/run_r15_contracts.py",
         "tools/run_r15_interop.py",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Observed elapsed intervals are not encoded media timestamps. No new MediaProjection/encoder/thermal/physical gate acceptance.",
       "sha256": {
         "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt": "7a6e0d87e4d929542576c1c4de5b84ead4ab557d31433073c3e8ec897065e150",
@@ -911,7 +931,11 @@
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
         "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
         "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
+        "feature/capture/src/main/kotlin/dev/fusion/capture/Timecode.kt": "34a7c13059a0df3560afe7bb79ccaa1af48a5d81517ba2a278bcc5fe950936bc",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -946,24 +970,32 @@
       "module": ":feature:continuity",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded single UTC event ICS serialization; Unicode octet folding, escaped literals and independent-reader roundtrip.",
+      "behavior": "Bounded single UTC event ICS serialization; Unicode octet folding, escaped literals and independent-reader roundtrip. R30 deepens with VEventParse: single-VEVENT ICS parser (CRLF framing, unfold, text unescape, UTC instants, DTEND-after-DTSTART) executed on host JVM against a real fixture.",
       "production": [
-        "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt"
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt",
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/VEventParse.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt",
         "tools/run_r13_contracts.py",
-        "tools/run_r13_interop.py"
+        "tools/run_r13_interop.py",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md)",
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not wired to share UI, not CalendarContract, recurrence, reminders, synchronization, PC bridge or complete continuity.",
       "sha256": {
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt": "c7914208c08e577386bccb2f317449fbafad60fc073913e29a4617b89ba2b485",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt": "de3ffd899a78258d90223bd6d204e854b385766ed3b095888f4e611ac7102e50",
         "testing/src/r13/kotlin/dev/fusion/testing/R13Oracle.kt": "2d2227e2687333bcf2b5d145a84e7e98b11acaae7f2fff05b38e55e9b2778495",
         "tools/run_r13_contracts.py": "8ebeaa57066224d81463390942b110a816f1587e3198d7521e0f40b29fc8a39a",
-        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805"
+        "tools/run_r13_interop.py": "ae362b1f52d393b780723697cf63451e49384cc109a92613521e031e0dda9805",
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/VEventParse.kt": "9d8a21f50a9ea9f8e81181d68401789ca467339e8958185eef328faad7323fe0",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -1002,42 +1034,54 @@
       "module": ":feature:together",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real fixed-frame authenticated TCP state exchange and causal clock intervals; host/OpenSSL and API34 execution.",
+      "behavior": "Real fixed-frame authenticated TCP state exchange and causal clock intervals; host/OpenSSL and API34 execution. R30 deepens with LamportClock: Lamport causal clock (tick/receive/max-plus-one) with overflow refusal executed on host JVM.",
       "production": [
         "feature/together/src/main/kotlin/dev/fusion/together/TogetherChannel.kt",
-        "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt"
+        "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt",
+        "feature/together/src/main/kotlin/dev/fusion/together/LamportClock.kt"
       ],
       "checks": [
         "testing/src/r16/kotlin/dev/fusion/testing/R16Checks.kt",
         "tools/run_r16_interop.py",
-        "app/src/androidTest/java/dev/fusion/shell/R16TogetherDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R16TogetherDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r16_contracts.py; python3 tools/run_r16_interop.py; :app:pixel6Api34ProDebugAndroidTest",
+      "command": "python3 tools/run_r16_contracts.py; python3 tools/run_r16_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No pairing/rooms/player/Syncplay/multi-device synchronization; clock and key assumptions; S22 unpassed.",
       "sha256": {
         "feature/together/src/main/kotlin/dev/fusion/together/TogetherChannel.kt": "0396878b173b834a09a58c956f72fd0764ca508a25af318463d228487645dabb",
         "feature/together/src/main/kotlin/dev/fusion/together/PeerClock.kt": "3b25746b6b3a83b7dfd3ddf0c5f6d23e5973b9d8aaceb654a521bce9ea13dc90",
         "testing/src/r16/kotlin/dev/fusion/testing/R16Checks.kt": "753dab3bcc405558bb418d3fb637a0301219cc0367beda183f0f76f5e1b380dd",
         "tools/run_r16_interop.py": "f6e989a7fb20ed30690a308284863986583f0a128ce2d31decc5760b3d54d23b",
-        "app/src/androidTest/java/dev/fusion/shell/R16TogetherDeviceTest.kt": "a462bc304ea3980729b95765601b3a290dfdc3919d9488f906cf4023e3984067"
+        "app/src/androidTest/java/dev/fusion/shell/R16TogetherDeviceTest.kt": "a462bc304ea3980729b95765601b3a290dfdc3919d9488f906cf4023e3984067",
+        "feature/together/src/main/kotlin/dev/fusion/together/LamportClock.kt": "2eb18f4c5c380d632bd288bbfdcb6064c0b33e525bda87a693dd1e0cbf30e1dd",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
       "module": ":feature:lens",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Finite quarter-turn/mirror/fit/crop transforms and inverse, checked with exact rational references.",
+      "behavior": "Finite quarter-turn/mirror/fit/crop transforms and inverse, checked with exact rational references. R30 deepens with ZoomLadder: half-stop digital-zoom ladder (ratio/nearest-index, 1x-16x clamp) executed on host JVM.",
       "production": [
-        "feature/lens/src/main/kotlin/dev/fusion/lens/ViewportTransform.kt"
+        "feature/lens/src/main/kotlin/dev/fusion/lens/ViewportTransform.kt",
+        "feature/lens/src/main/kotlin/dev/fusion/lens/ZoomLadder.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
         "tools/run_r15_contracts.py",
         "tools/run_r15_interop.py",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not wired to CameraX sensor/metering pipeline. No virtual camera, segmentation, relighting or hardware acceptance.",
       "sha256": {
         "feature/lens/src/main/kotlin/dev/fusion/lens/ViewportTransform.kt": "444aebd14110b254fd1ab07e556e2aa531ca1bfc3258fdfaa641636662c49874",
@@ -1045,25 +1089,33 @@
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
         "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
         "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
+        "feature/lens/src/main/kotlin/dev/fusion/lens/ZoomLadder.kt": "59771b070317035e7c2b83c12649e764726369c0e773a4d8c2e6cb8bbb45abde",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
       "module": ":feature:messages",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Strict bounded plaintext transcript archive with actual file roundtrip and independent binary/CRC verification.",
+      "behavior": "Strict bounded plaintext transcript archive with actual file roundtrip and independent binary/CRC verification. R30 deepens with SmsSegments: GSM-7/extension/UCS-2 classification with septet counting and multipart segment math (counts only, no sending) executed on host JVM.",
       "production": [
-        "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt"
+        "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt",
+        "feature/messages/src/main/kotlin/dev/fusion/messages/SmsSegments.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt",
         "tools/run_r15_contracts.py",
         "tools/run_r15_interop.py",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not authentication/encryption, system message access, attachments, own-Mac/SMS/RCS transport or a completed messaging UI.",
       "sha256": {
         "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt": "f66857b47fba58f03f52b414f6540ef215f4064c4ad70269f9c09674d61c580d",
@@ -1071,7 +1123,11 @@
         "testing/src/r15/kotlin/dev/fusion/testing/R15Oracle.kt": "bb827881128e559fb526c8a8a6da55a27d01a645abb74277c2c35ba3f1140ff4",
         "tools/run_r15_contracts.py": "154512e627ac5a2f0bc07e6f090eb06f63bbb64d911651adec941186c8c7e564",
         "tools/run_r15_interop.py": "f4971a80de3f9cfb12588dce18f62aeae243ceced1e850abc6f0cf634dfebee1",
-        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786"
+        "app/src/androidTest/java/dev/fusion/shell/R15SubsetDeviceTest.kt": "25e9ca305bb83713c47150e6cc0d23d7400f1ceec5024fbff35cb0643511f786",
+        "feature/messages/src/main/kotlin/dev/fusion/messages/SmsSegments.kt": "7883f179e7cffd53f12ce9248cef10fff3da08b2982bc82b7368713125dcffc8",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -1204,24 +1260,32 @@
       "module": ":format:archive",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security R22 adds strict local/central agreement, actual bounded inflate/CRC and allowlisted members; narrow platform spike2/2 passed; not general extraction. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance.",
+      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security R22 adds strict local/central agreement, actual bounded inflate/CRC and allowlisted members; narrow platform spike2/2 passed; not general extraction. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R30 deepens with TarHeader: POSIX ustar header parser (octal fields, checksum, magic/version, name+prefix join) executed on host JVM against a real fixture.",
       "production": [
         "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt",
-        "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt"
+        "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt",
+        "format/archive/src/main/kotlin/dev/fusion/archive/TarHeader.kt"
       ],
       "checks": [
         "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": ":format:archive:test; python3 tools/run_r22_contracts.py; :testing:r22Contracts",
+      "command": ":format:archive:test; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
       "sha256": {
         "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75",
         "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt": "8874302c439ff4de753618f6b9264b18c82dd03ed945b6f9b3e5ec2ad570139a",
         "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt": "1d5eb798864f21d45ac03b50718347b400de5c4eca846e9c5baeb10e38de5260",
         "testing/src/r22/kotlin/dev/fusion/testing/R22Checks.kt": "b4001dab732025012b2010a5d277571354ad70bc59ee438c883ea3369b7d2b29",
-        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9"
+        "app/src/androidTest/java/dev/fusion/shell/R22BoundaryDeviceTest.kt": "63fbfd4a985007b380e3a158cfcad3cfab6fb10e5aaaa725e18235559ec2eaa9",
+        "format/archive/src/main/kotlin/dev/fusion/archive/TarHeader.kt": "ce379ac4a74bf3089a736c19214344554f8cfc228b5af2967978cd5458cc9026",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -1352,22 +1416,26 @@
       "module": ":format:image",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing owned ARGB transformations plus R25 bounded PNG metadata-copy kernel: exact retained chunk/image data, CRC/order/deflate checks, no source mutation. New native isolated-memory/picker path is authored but must pass its own device gates.",
+      "behavior": "Existing owned ARGB transformations plus R25 bounded PNG metadata-copy kernel: exact retained chunk/image data, CRC/order/deflate checks, no source mutation. New native isolated-memory/picker path is authored but must pass its own device gates. R30 deepens with GifInfo: GIF87a/89a logical-screen and frame-count walker (extension skipping, trailer exactness) executed on host JVM against a real fixture.",
       "production": [
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt",
         "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",
         "format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt",
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngLease.kt",
-        "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt"
+        "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt",
+        "format/image/src/main/kotlin/dev/fusion/format/image/GifInfo.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
         "app/src/androidTest/java/dev/fusion/shell/SubsetDeviceTest.kt",
         "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt",
         "tools/check_r25_png_reference.py",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": "python3 tools/run_r25_contracts.py; :testing:r25PngContracts; native R25PngCopyDeviceTest",
+      "command": "python3 tools/run_r25_contracts.py; :testing:r25PngContracts; native R25PngCopyDeviceTest; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Bounded RGB/RGBA8 samples, not arbitrary profiles/animation/orientation/printing, metadata-free visible content, malware sanitization, hostile-provider/worker guarantee or full original image workflow.",
       "sha256": {
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
@@ -1379,7 +1447,11 @@
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt": "afbe862f6762b116910fec9e1908322a9de61e319f0c818cafcf8654a885f411",
         "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt": "4ff9f6fd9464dcc21faac9ef65796975ef8b7e92bb4ebef3c3faf6b8f6b1cca1",
         "tools/check_r25_png_reference.py": "d4efb3d6b0a28a5497ece91938c604eb2120895e28cdac73b548ff117036dd7b",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614"
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "52fe5e2f0fa4797acc9c76d3c9bb13dff64b669d2780d870edbc3bce4e265614",
+        "format/image/src/main/kotlin/dev/fusion/format/image/GifInfo.kt": "1a6182c48e4baf02454df528f428f88def539c3a6c43ec72985ff9793a5743f1",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {
@@ -1448,18 +1520,26 @@
       "module": ":cast:airplay",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "SDP/protocol byte construction only, not hardware URL/audio/mirroring",
+      "behavior": "SDP/protocol byte construction only, not hardware URL/audio/mirroring R30 deepens with RtspMessage: strict RTSP/1.0 request parser/serializer (request line, CSeq, Content-Length framing, SDP body) executed on host JVM against a real fixture.",
       "production": [
-        "cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt"
+        "cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt",
+        "cast/airplay/src/main/kotlin/dev/fusion/airplay/RtspMessage.kt"
       ],
       "checks": [
-        "cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt"
+        "cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt",
+        "tools/test_r30_tools.py",
+        "tools/check_r30_reference.py"
       ],
-      "command": ":cast:airplay:test",
+      "command": ":cast:airplay:test; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "S18 hardware and S19 counsel/hardware gates; no mirroring or FairPlay bypass claim",
       "sha256": {
         "cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopSdp.kt": "84040f8065d19b1ce06abe1cfc6dbca156919525271b8cdf97c962c99e644d64",
-        "cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt": "e6a99e6eeef10399ff8616dbf51e16a1120a4ddb9b0fa6ab843125133e922a93"
+        "cast/airplay/src/test/kotlin/dev/fusion/airplay/RaopSdpTest.kt": "e6a99e6eeef10399ff8616dbf51e16a1120a4ddb9b0fa6ab843125133e922a93",
+        "cast/airplay/src/main/kotlin/dev/fusion/airplay/RtspMessage.kt": "341cc7de9fc12ebed71fe0872a579c32d880bd2f031a3a0164506c3932f2c5ab",
+        "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
+        "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
+        "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64"
       }
     },
     {

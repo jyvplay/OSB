@@ -1,17 +1,18 @@
-# R29 — executed kernels + USB-allowlist privacy set + static visual audit
+# R30 — 10 executed kernels (pure-logic round) + static visual audit
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
-[Exact results and limits](R29-RESULTS.md) · [Scope/acceptance contract](R29-PLAN.md) ·
-[Deepening census](R29-MODULE-DEEPENING.md) · [Alternatives](R29-ALTERNATIVES.md) ·
-[Privacy PRD](R29-PRIVACY-PRD.md) · Prior: [R28 results](R28-RESULTS.md).
+[Exact results and limits](R30-RESULTS.md) · [Scope/acceptance contract](R30-PLAN.md) ·
+[Deepening census](R30-MODULE-DEEPENING.md) · [Alternatives](R30-ALTERNATIVES.md) ·
+[Privacy PRD](R30-PRIVACY-PRD.md) · Prior: [R29 results](R29-RESULTS.md).
 
 **50/50 testable subsets (100%); 10/50 modules deepened with new executed kernels (20%).
 0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
-Host evidence only: 128 kotlinc/JVM assertions, independent Python recomputation,
+Host evidence only: 98 kotlinc/JVM assertions, independent Python recomputation,
 static touch-target audit (223 sites, 175 pre-existing findings queued, +0 delta),
-Android parse gate (0 syntax errors), manifest-scope gate, 227/227 tool tests.
-The 2 authored Android files (USB watch receiver, consent dialog) are authored,
-NOT executed — CI/Studio must compile and run them before any behavior claim.
+Android parse gate (0 syntax errors), manifest-scope gate, 237/237 tool tests.
+R30 authors no Android files; the 2 authored Android files (USB watch receiver,
+consent dialog) remain authored, NOT executed — CI/Studio must compile and run
+them before any behavior claim.
 
 ## Laptop / Android Studio Rabbit1 (R28)
 

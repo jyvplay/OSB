@@ -99,6 +99,24 @@ R29 regressions: no failure names an R29 file, and the two R29-edited
 production files (UsbWatchReceiver wiring, UpnpParsing addition) ride the
 green compile/JVM jobs.
 
+## Amendment (folded into the R29 ledger inside the R30 commit)
+
+Per R28 precedent, the final ledger-close commit's runs are observed, not
+chased. Runs on `a62ac00` ("R29: close ledger"):
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| a62ac00 | native 39660742343: "Traceability, assemble both flavors, JVM tests" | SUCCESS | Fourth compile receipt on the ledger-close tree. |
+| a62ac00 | native 39660742343 device job | FAIL | Only the same pre-existing R25PngCopyDeviceTest cases; the R24 IME-discard case PASSES here. |
+| a62ac00 | atlas 39660742441 | FAIL | Pre-existing infra (exit 127), same shape as every run. |
+
+The `a62ac00` tree differs from `8dcb520` by ledger TEXT alone, and the
+single R24 IME-discard failure seen on `8dcb520` does not reproduce on
+`a62ac00` — so the by-construction flake classification above is now
+CONFIRMED by observation. R29 closure stands: 4 compile receipts, device
+failures limited to the pre-existing PNG set + atlas infra + one confirmed
+flake, zero confirmed R29 regressions.
+
 ## Lab receipt
 
 R29 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).
