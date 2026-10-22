@@ -72,9 +72,31 @@ either. All limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Pending: filled after CI runs on the R35 commit, per precedent. The R24
-audio-focus case (1 fail in 6 observations) and the R24TaskInput IME case
-(1 fail in 3) are both watch items this round, both resolving toward noise.
+5 workflows triggered on the R35 commit (path-filtered set differs this
+round: native, atlas, R25 local video, R24 privacy experiment, offline
+privacy companion — no R23/R22, no R25 PNG job). Triage is by annotations
+API (logs unavailable; claim only what annotations show).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 5c8e82b | R25 local video 39843176017 | SUCCESS | — |
+| 5c8e82b | R24 privacy experiment 39843175940 | SUCCESS | — |
+| 5c8e82b | offline privacy companion 39843176112 | SUCCESS | — |
+| 5c8e82b | native 39843175934: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 10 R35 kernels assemble both flavors; JVM tests pass. |
+| 5c8e82b | native 39843175934 device job | FAIL | Noisy lab run: 8 "Failure detail" notices vs 2 on `7dc6dc3`. The 2 pre-existing PNG cases plus 6 flake-cluster cases: 2 R24TaskInput IME native-timeouts (`oneActualImeVisibleAddInArt/Business…WritesExactlyOneRevision`, "R24 native timeout: actual Find dialog"), the IME watch case recurring (`oneNativeImeVisible…`, now 2 fails in 4 observations — fail/pass/fail/pass pattern over device-identical candidates), an asleep-AVD prep failure, 2 two-hundred-percent-font IME/smoke cases, and 1 MP4-decoder case that PASSED in the dedicated R25-video workflow on the same commit (same test, different result across jobs = flakiness proof). R24 audio-focus absent (now 1 in 7). |
+| 5c8e82b | atlas 39843176034 | FAIL | Pre-existing infra: root job exits 127 at the install stage, Servo 0.7.0 AAR inspection succeeds, frame jobs fail downstream. |
+
+Net: all R35 code compiles both flavors with green JVM tests. The device
+job's extra failures are lab noise, not regressions: R35 authors no
+Android code and touches no device-covered path (every failing test is a
+dev.fusion.shell device test over R24/R25-era app code, unchanged since
+long before R35); the timeout/AVD-prep shapes, the font-scale sensitivity,
+and the cross-job MP4 flip all point at emulator flakiness. No failure
+names an R35 file. Zero confirmed R35 regressions. The `0ab824b` (R34
+ledger) observation was folded into R34-RESULTS as an amendment inside the
+R35 commit — 2 pre-existing PNG cases, atlas 127, R34 closure stands. Runs
+on the ledger commit itself will be observed per precedent and folded next
+round.
 
 ## Lab receipt
 
