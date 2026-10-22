@@ -70,10 +70,24 @@ no CI frame was visually inspected either. All limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Pending: first CI runs on the R31 commit. Rows below will record exact
-candidate SHAs, workflow run IDs, outcomes, and causes; failures will be
-triaged per-run against the R28–R30 pre-existing sets (2 PNG device cases,
-atlas exit-127 infra) with nothing inherited and no failure left untriaged.
+6 workflows triggered on the R31 commit (path-filtered set differs from
+R30's: R21 + API37 privacy instead of PNG/R24-boundaries — consistent with
+a kernels+docs-only delta). Triage is by annotations API (logs unavailable;
+claim only what annotations show).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 9f1731b | R21 39744975134, API37 privacy 39744975220, privacy 39744975139, R23/R22 39744975249 | 4 SUCCESS | — |
+| 9f1731b | native 39744975119: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 10 R31 kernels assemble both flavors; JVM tests pass. |
+| 9f1731b | native 39744975119 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases; the full suite otherwise passes. |
+| 9f1731b | atlas 39744975203 | FAIL | Pre-existing infra: root job exits 127, frame jobs fail downstream on missing artifacts; the Servo 0.7.0 AAR inspection job succeeds. Same shape as base/R28–R30. |
+
+Net: all R31 code compiles both flavors with green JVM tests. Every device
+failure is a pre-existing shape (2 PNG cases, atlas exit-127 + downstream
+artifact misses); no transient infra outage and no new failure this round —
+no failure names an R31 file, and R31 touches no device-covered path (no
+Android code authored at all). Zero confirmed R31 regressions. Runs on the
+ledger commit itself will be observed per precedent and folded next round.
 
 ## Lab receipt
 
