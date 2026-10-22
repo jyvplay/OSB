@@ -77,9 +77,30 @@ either. All limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Pending: filled after CI runs on the R36 commit, per precedent. The
-R24TaskInput IME case (2 fails in 5 observations) stays the watch item;
-R24 audio-focus (1 in 8) keeps resolving toward noise.
+6 workflows triggered on the R36 commit (path-filtered set this round:
+native, atlas, R25 local video, R24 privacy experiment, offline privacy
+companion, R25 PNG copy — the PNG job is back vs R35). Triage is by
+annotations API (logs unavailable; claim only what annotations show).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 2ba9c8e | R25 local video 39858857674 | SUCCESS | — |
+| 2ba9c8e | R24 privacy experiment 39858857692 | SUCCESS | — |
+| 2ba9c8e | offline privacy companion 39858857594 | FAIL | Single-case timing flake: `R24ScreenOffDeviceTest.realScreenOffDiscardsRevealedPadAndOldButtonCannotEnterOnWake` FAILs while the other 18 device tests PASS (compile + lint + APK build all green). First observation of this case failing (companion was green on `5c8e82b`/`7dc6dc3`); screen-off/wake timing on the emulator is the same flake class as the IME/audio-focus watches. R36 touches no device-covered path (KAnon is host-only and unreferenced by any device test); no failure names an R36 file. New watch item (1 in 1). |
+| 2ba9c8e | R25 PNG copy 39858857515 | FAIL | Same 2 pre-existing R25PngCopyDeviceTest cases (both "Failure detail" notices present). |
+| 2ba9c8e | native 39858857665: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 12 R36 kernels assemble both flavors; JVM tests pass. |
+| 2ba9c8e | native 39858857665 device job | FAIL | Quiet run: exactly the 2 pre-existing PNG cases, zero watch-flake cases (no IME, no audio-focus, no font-scale, no MP4) — same shape as `7dc6dc3`/`408c39f`. IME watch now 2 fails in 6 observations, audio-focus 1 in 9. |
+| 2ba9c8e | atlas 39858857606 | FAIL | Pre-existing infra: root install step exits 127, Servo 0.7.0 AAR inspection succeeds, frame jobs fail downstream. |
+
+Net: all R36 code compiles both flavors with green JVM tests. The device
+failures are the standing 2 pre-existing PNG cases plus one new
+single-case screen-off timing flake in the companion workflow — lab noise,
+not regressions: R36 authors no Android code (every failing test is a
+pre-existing device test over R24/R25-era code, unchanged by this round).
+No failure names an R36 file. Zero confirmed R36 regressions. The `408c39f`
+(R35 ledger) observation was folded into R35-RESULTS as an amendment inside
+the R36 commit. Runs on the ledger commit itself will be observed per
+precedent and folded next round.
 
 ## Lab receipt
 
