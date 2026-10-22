@@ -17,16 +17,16 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R32 — 10 executed kernels, pure-logic round (host evidence only)
+## Current R33 — 10 executed kernels, pure-logic round (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
-(20%), three for the first time (cumulative distinct 45/50, 90%): bounded rational
-approximation, an honest Office capability matrix, cast LOAD validation, argv
-splitting, PIN policy, retention sweeps, iCal durations, geo URIs, vault lockout
-backoff, CUE sheet cues. No Android code authored this turn — no new components,
-permissions, or UI (touch audit +0 delta; manifest scope pinned). Fresh research:
-Tails 7.15 + changelog detail, Signature 27 as first GrapheneOS Motorola device,
-Servo LTS-scope caveats, "Expert features" teardown, Orbot 17.9.7 reconfirmed.
+(20%), all seconds (cumulative distinct holds at 45/50, 90%): E.164 normalization,
+ANSI SGR styling, transfer chunk planning, glob matching, fuzzy scoring, vector
+clocks, unified-hunk rendering, BMP headers, gzip member headers, RFC 6238 TOTP.
+No Android code authored this turn — no new components, permissions, or UI (touch
+audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15 + expat threat
+case, Signature 27 November window + MTE, Servo 0.7.0 monthly vs LTS, Expert-features
+item flux, Orbot 17.9.7 changelog enumerated.
 
 **50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
 152 kotlinc/JVM assertions, independent recomputation, touch-target + parse +

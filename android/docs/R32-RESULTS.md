@@ -102,6 +102,15 @@ cases, atlas exit-127) plus two suspect device flakes (privacy lifecycle on
 carried as an R33 watch item. Zero confirmed R32 regressions. Runs on the
 ledger commit itself will be observed per precedent and folded next round.
 
+Ledger amendment (observed from the R33 turn): the `056625b` ("R32: record
+2f66a82/2addd15 CI ledger") runs show identical pre-existing shapes — native
+39807009302 compiles both flavors with green JVM tests while its device job
+fails only the same 2 pre-existing R25PngCopyDeviceTest cases (the R24
+audio-focus suspect flake did not recur: fail/pass/pass across the three
+observations, so it stays a watch item rather than a regression), and atlas
+39807009380 fails the pre-existing root exit-127. R32 closure stands; zero
+confirmed R32 regressions.
+
 ## Lab receipt
 
 R32 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).
