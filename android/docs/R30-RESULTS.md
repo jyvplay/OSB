@@ -65,10 +65,24 @@ visually inspected either. All limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Pending: first CI runs on the R30 commit. Rows below will record exact
-candidate SHAs, workflow run IDs, outcomes, and causes; failures will be
-triaged per-run against the R28/R29 pre-existing sets (2 PNG device cases,
-atlas exit-127 infra) with nothing inherited and no failure left untriaged.
+Only 6 workflows triggered on the R30 commit (path filters: kernels + docs
+only, no app/UI paths) — fewer than R29's 10, as expected. Triage is by
+annotations API (logs unavailable; claim only what annotations show).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 2fb468c | privacy 39736049334, R23/R22 39736049445, R24 boundaries 39736049209 | 3 SUCCESS | — |
+| 2fb468c | native 39736049355: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 10 R30 kernels assemble both flavors; JVM tests pass. |
+| 2fb468c | native 39736049355 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases (`recreation...`, `actualPngPicker...`); the full suite otherwise passes. |
+| 2fb468c | PNG 39736049227 | FAIL | Pre-existing: the same 2 R25PngCopyDeviceTest cases; the frame-transport jobs fail downstream on missing artifacts (no frames uploaded). |
+| 2fb468c | atlas 39736049520 | FAIL | Pre-existing infra: root job exits 127, frame jobs fail downstream on missing artifacts; the Servo 0.7.0 AAR inspection job succeeds. Same shape as base/R28/R29. |
+
+Net: all R30 code compiles both flavors with green JVM tests. Every device
+failure is a pre-existing shape (2 PNG cases, atlas exit-127 + downstream
+artifact misses); no transient infra outage and no new failure this round —
+no failure names an R30 file, and R30 touches no device-covered path (no
+Android code authored at all). Zero confirmed R30 regressions. Runs on the
+ledger commit itself will be observed per precedent and folded next round.
 
 ## Lab receipt
 
