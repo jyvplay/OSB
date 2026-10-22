@@ -71,10 +71,30 @@ either. All limits stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Pending: filled after CI runs on the R34 commit, per precedent. The R24
-audio-focus case (1 fail in 4 observations on R33 candidates) and the
-first-seen R24TaskInput IME case on `2aea522` are both watch items this
-round.
+6 workflows triggered on the R34 commit (native, atlas, R25 PNG, R23/R22,
+R24 privacy experiment, offline privacy companion). Triage is by
+annotations API (logs unavailable; claim only what annotations show).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 7dc6dc3 | R23/R22 39824796561 | SUCCESS | — |
+| 7dc6dc3 | R24 privacy experiment 39824796764 | SUCCESS | — |
+| 7dc6dc3 | offline privacy companion 39824796605 | SUCCESS | — |
+| 7dc6dc3 | native 39824796607: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 10 R34 kernels assemble both flavors; JVM tests pass. |
+| 7dc6dc3 | native 39824796607 device job | FAIL | Only the same 2 pre-existing R25PngCopyDeviceTest cases ("Image seed not identified in actual DocumentsUI"). Both watch flakes absent: R24 audio-focus now 1 fail in 5 observations, R24TaskInput IME 1 in 2 — both resolving toward noise. The "Historical focus experiment REPRODUCED" notice is byte-identical on `5ece6a0` (verified), a standing experiment, not a new signal. |
+| 7dc6dc3 | R25 PNG 39824796541 | FAIL | Emulator-setup infra: `:app:pixel6Api34Setup FAILED` (exit 1, zero device cases executed — "No executed device test cases found"); frame/verify jobs fail downstream. Names no R34 file. |
+| 7dc6dc3 | atlas 39824796731 | FAIL | Pre-existing infra: root job exits 127 at the install stage, Servo 0.7.0 AAR inspection succeeds, frame jobs fail downstream. |
+
+Net: all R34 code compiles both flavors with green JVM tests. Every failure
+is a pre-existing shape (2 PNG cases on the native device job, R25
+setup-stage infra, atlas exit-127 + downstream artifact misses); no
+transient infra outage beyond the known setup flakiness and no new failure
+this round — no failure names an R34 file, and R34 touches no
+device-covered path (no Android code authored at all). Zero confirmed R34
+regressions. The `2aea522` (R33 ledger) observation was folded into
+R33-RESULTS as an amendment inside the R34 commit — identical pre-existing
+shapes plus the IME watch item, R33 closure stands. Runs on the ledger
+commit itself will be observed per precedent and folded next round.
 
 ## Lab receipt
 
