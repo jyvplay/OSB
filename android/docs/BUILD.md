@@ -1,16 +1,16 @@
-# R35 — 10 executed kernels (pure-logic round) + static visual audit
+# R36 — 12 executed kernels (pure-logic round) + static visual audit
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
-[Exact results and limits](R35-RESULTS.md) · [Scope/acceptance contract](R35-PLAN.md) ·
-[Deepening census](R35-MODULE-DEEPENING.md) · [Alternatives](R35-ALTERNATIVES.md) ·
-[Privacy PRD](R35-PRIVACY-PRD.md) · Prior: [R34 results](R34-RESULTS.md).
+[Exact results and limits](R36-RESULTS.md) · [Scope/acceptance contract](R36-PLAN.md) ·
+[Deepening census](R36-MODULE-DEEPENING.md) · [Alternatives](R36-ALTERNATIVES.md) ·
+[Privacy PRD](R36-PRIVACY-PRD.md) · Prior: [R35 results](R35-RESULTS.md).
 
-**50/50 testable subsets (100%); 10/50 modules deepened with new executed kernels (20%).
+**50/50 testable subsets (100%); 12/50 modules deepened with new executed kernels (24%).
 0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
-Host evidence only: 129 kotlinc/JVM assertions, independent Python recomputation,
+Host evidence only: 176 kotlinc/JVM assertions, independent Python recomputation,
 static touch-target audit (223 sites, 175 pre-existing findings queued, +0 delta),
-Android parse gate (0 syntax errors), manifest-scope gate, 294/294 tool tests.
-R35 authors no Android files; the 2 authored Android files (USB watch receiver,
+Android parse gate (0 syntax errors), manifest-scope gate, 307/307 tool tests.
+R36 authors no Android files; the 2 authored Android files (USB watch receiver,
 consent dialog) remain authored, NOT executed — CI/Studio must compile and run
 them before any behavior claim.
 

@@ -98,6 +98,18 @@ R35 commit — 2 pre-existing PNG cases, atlas 127, R34 closure stands. Runs
 on the ledger commit itself will be observed per precedent and folded next
 round.
 
+### Amendment: runs on the ledger commit 408c39f (folded in R36)
+
+Docs-only delta, so only native + atlas ran (path-filtered).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 408c39f | native 39847139307: compile + JVM | SUCCESS | Docs-only; nothing new to compile. |
+| 408c39f | native 39847139307 device job | FAIL | Same 2 pre-existing R25PngCopyDeviceTest cases (both "Failure detail" notices present). Both watch flakes absent: R24TaskInput IME now 2 fails in 5 observations, R24 audio-focus 1 in 8 — both resolving toward noise. |
+| 408c39f | atlas 39847139357 | FAIL | Pre-existing infra: root job exits 127; all actual-frame children fail downstream. |
+
+Net: zero R35 regressions confirmed; R35 closure stands.
+
 ## Lab receipt
 
 R35 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).

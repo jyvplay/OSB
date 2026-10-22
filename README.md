@@ -17,19 +17,20 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R35 — 10 executed kernels, pure-logic round (host evidence only)
+## Current R36 — 12 executed kernels, pure-logic round (host evidence only)
 
-Branch **`arena/350b91e4-osb`**. Ten new host-executed kernels deepen 10/50 modules
-(20%), all seconds (cumulative distinct holds at 45/50, 90%): exposure math,
-XOR secret splitting, word diff, duplicate grouping, snippet windows, ID3v2
-headers, tile coverage, vCard subset, field masks, indent detection.
+Branch **`arena/350b91e4-osb`**. Twelve new host-executed kernels deepen 12/50 modules
+(24%), all seconds (cumulative distinct holds at 45/50, 90%): RPN evaluation,
+copy-name disambiguation, word wrap, redirect planning, Cast state machine,
+scale bars, WAV headers, TIFF headers, k-anonymity audits, attempt windows,
+depth-of-field limits, Shannon entropy.
 No Android code authored this turn — no new components, permissions, or UI (touch
-audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15 itemized,
-Signature 27 specs + Linux 6.18, Servo August report + LTS library-only scope,
-A17 six-feature enumeration + Intrusion-Logging terms, Orbot 17.9.7 stands.
+audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15 stands +
+Unsafe-Browser tab detail, Signature 27 November still dateless, Servo 0.7.0
+stands + LTS embed ships downstream, A17 six reconfirmed, Orbot 17.9.7 stands.
 
 **50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
-129 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
+176 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
 manifest-scope gates, 246/246 tool tests. [Results](android/docs/R31-RESULTS.md) ·
 [Contract](android/docs/R31-PLAN.md) · [Privacy PRD](android/docs/R31-PRIVACY-PRD.md) ·
 [Try without Studio](android/docs/BUILD.md).
