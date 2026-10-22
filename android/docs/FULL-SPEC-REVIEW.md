@@ -3,7 +3,7 @@
 **231 requirement records and36 cross-cutting obligations reviewed against the recorded scope; no whole feature or module accepted.**
 This is a traceability/ownership/gap audit, not a claim that every line of Kotlin was semantically verified. The recorded owner register is the source of scope; this does not independently prove that its transcription includes every sentence of the original specifications.
 
-50 included modules; 250 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
+50 included modules; 260 main Kotlin files inventoried with hashes. Internal source-package references checked against direct dependencies and transitive `api` exports. Reflection, generated code, external dependencies, public-signature type closure and Android/Gradle DSL compilation remain outside this scanner.
 
 ## Cross-cutting contract (v2.1 supersedes conflicting v2.0 clauses)
 

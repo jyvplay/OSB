@@ -89,6 +89,13 @@ no failure names an R31 file, and R31 touches no device-covered path (no
 Android code authored at all). Zero confirmed R31 regressions. Runs on the
 ledger commit itself will be observed per precedent and folded next round.
 
+Ledger amendment (observed from the R32 turn): the `7d30a44` ("R31: record
+9f1731b CI ledger") runs show identical pre-existing shapes — native
+39747906385 compiles both flavors with green JVM tests while its device job
+fails only the same 2 pre-existing R25PngCopyDeviceTest cases, and atlas
+39747906469 fails the pre-existing root exit-127. R31 closure stands; zero
+confirmed R31 regressions.
+
 ## Lab receipt
 
 R31 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).
