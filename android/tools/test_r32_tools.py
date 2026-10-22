@@ -29,6 +29,21 @@ class KernelHygiene(unittest.TestCase):
     def test_checks_consumer_exists(self):
         self.assertTrue((ROOT / 'testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt').is_file())
 
+class NoPackageCollisions(unittest.TestCase):
+    def test_no_top_level_redeclaration(self):
+        # Regression guard for the CI-caught GeoPoint clash: a kernel's
+        # top-level type names must be unique within its package directory.
+        decl = re.compile(r'^(?:data class|class|object|interface|typealias|enum class) (\w+)', re.M)
+        for rel in KERNELS:
+            here = ROOT / rel
+            names = set(decl.findall(here.read_text()))
+            self.assertTrue(names, rel)
+            for sib in here.parent.glob('*.kt'):
+                if sib == here:
+                    continue
+                clash = names & set(decl.findall(sib.read_text()))
+                self.assertEqual(clash, set(), f'{rel} redeclares {clash} from {sib.name}')
+
 class CueFixture(unittest.TestCase):
     def test_shape(self):
         text = (FIX / 'sheet.cue').read_text()

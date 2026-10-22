@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package dev.fusion.maps
 
-/** Parsed geo URI: WGS-84 lat/lon with optional altitude and uncertainty. */
-data class GeoPoint(val lat: Double, val lon: Double, val alt: Double?, val unc: Double?)
+/** Parsed geo URI: WGS-84 lat/lon with optional altitude and uncertainty. Named to avoid the existing OfflineMap GeoPoint. */
+data class GeoUriPoint(val lat: Double, val lon: Double, val alt: Double?, val unc: Double?)
 
 /**
  * RFC 5870 `geo:` subset: `geo:lat,lon[,alt][;crs=wgs84][;u=unc]`.
@@ -12,7 +12,7 @@ data class GeoPoint(val lat: Double, val lon: Double, val alt: Double?, val unc:
  * printing; `;u=` survives only when present.
  */
 object GeoUri {
-    fun parse(text: String): GeoPoint {
+    fun parse(text: String): GeoUriPoint {
         require(text.length <= 512) { "uri over 512 chars" }
         require(text.startsWith("geo:", ignoreCase = true)) { "missing geo: scheme" }
         val rest = text.substring(4)
@@ -43,10 +43,10 @@ object GeoUri {
                 else -> throw IllegalArgumentException("unknown parameter ${kv[0]}")
             }
         }
-        return GeoPoint(lat, lon, alt, unc)
+        return GeoUriPoint(lat, lon, alt, unc)
     }
 
-    fun format(p: GeoPoint): String {
+    fun format(p: GeoUriPoint): String {
         require(p.lat in -90.0..90.0 && p.lon in -180.0..180.0) { "coords out of range" }
         require(p.lat.isFinite() && p.lon.isFinite()) { "non-finite coords" }
         if (p.alt != null) require(p.alt.isFinite()) { "non-finite alt" }

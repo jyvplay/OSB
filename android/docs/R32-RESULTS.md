@@ -14,8 +14,9 @@ Working branch `arena/350b91e4-osb`. Contract: [R32-PLAN](R32-PLAN.md).
   argsplit 20, pin 12, sweep 2+2, duration 19 via a regex grammar, geo 14,
   lockout 6, cue 3 tracks via a regex grammar). The reference readers are
   deliberately distinct implementations, not ports of the kernels' scans.
-- `python3 tools/test_r32_tools.py`: 11/11 PASS (incl. the cue global-tags
-  ordering guard and the limit-denominator agreement check).
+- `python3 tools/test_r32_tools.py`: 12/12 PASS (incl. the cue global-tags
+  ordering guard, the limit-denominator agreement check, and the
+  same-package collision guard).
 - `python3 tools/check_r32_touch_targets.py`: detector self-test PASS; 223
   Button-family sites scanned, 175 static findings across 39 files (delta +0
   vs the R28 baseline — R32 authors no UI; queue is pre-existing).
@@ -38,6 +39,15 @@ Working branch `arena/350b91e4-osb`. Contract: [R32-PLAN](R32-PLAN.md).
   p) + huge-quotient shortcut, semiconvergent-vs-previous-convergent
   finish, 32min-cap KDoc honesty, CueSheet global TITLE/PERFORMER
   tolerance.
+- Post-push repair (CI-found, same turn): native 39801235838's assemble job
+  failed — R32's `GeoPoint` redeclared the existing
+  `OfflineMap.GeoPoint(latitude, longitude)` in package dev.fusion.maps,
+  breaking `MapScreen.kt` resolution. The per-kernel host compiles cannot
+  see sibling sources, so this class of break is CI-visible only. Fix:
+  renamed to `GeoUriPoint` (+ consumer), re-ran contracts green, and added
+  a same-package top-level-name collision guard to test_r32_tools.py
+  (12/12; positive-controlled against the old shape). Census shas
+  re-pinned, inventory regenerated, full lab re-run below.
 
 ## Authored Android (NONE this turn)
 
@@ -119,10 +129,10 @@ Harness: tools/r32_lab.py host --tools /home/user/.cache/fusion-host-r23
 - python test_r29_tools: PASS 10/10
 - python test_r30_tools: PASS 10/10
 - python test_r31_tools: PASS 9/9
-- python test_r32_tools: PASS 11/11
+- python test_r32_tools: PASS 12/12
 - python test_record_sdk_platform: PASS 2/2
 - python test_release_gate: PASS 5/5
 - python test_requirements: PASS 5/5
 Hashes (sha256, fixtures+consumers):
   c4f3370737db40596eb4cae41962097f527e27f78e3697e1a1b5b4bde755cb48  tools/fixtures/r32/sheet.cue
-  1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7  testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt
+  3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a  testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt

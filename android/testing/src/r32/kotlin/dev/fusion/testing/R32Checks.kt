@@ -11,7 +11,7 @@ import dev.fusion.security.PinRules
 import dev.fusion.privacy.AgedRecord
 import dev.fusion.privacy.RetentionSweep
 import dev.fusion.continuity.ICalDuration
-import dev.fusion.maps.GeoPoint
+import dev.fusion.maps.GeoUriPoint
 import dev.fusion.maps.GeoUri
 import dev.fusion.vault.LockState
 import dev.fusion.vault.LockoutPolicy
@@ -190,13 +190,13 @@ object R32Checks {
     }
 
     fun geo() {
-        ok(GeoUri.parse("geo:48.2,16.3") == GeoPoint(48.2, 16.3, null, null), "basic")
-        ok(GeoUri.parse("GEO:-33.86,151.20,12.5") == GeoPoint(-33.86, 151.2, 12.5, null), "upper + alt")
-        ok(GeoUri.parse("geo:48.2,16.3;crs=wgs84") == GeoPoint(48.2, 16.3, null, null), "crs ok")
-        ok(GeoUri.parse("geo:48.2,16.3;u=30") == GeoPoint(48.2, 16.3, null, 30.0), "unc ok")
-        ok(GeoUri.parse("geo:48.2,16.3;crs=WGS84;u=30.5") == GeoPoint(48.2, 16.3, null, 30.5), "both params")
-        ok(GeoUri.format(GeoPoint(48.2, 16.3, null, null)) == "geo:48.2,16.3", "format basic")
-        ok(GeoUri.parse(GeoUri.format(GeoPoint(-33.86, 151.2, 12.5, 30.0))) == GeoPoint(-33.86, 151.2, 12.5, 30.0), "round trip")
+        ok(GeoUri.parse("geo:48.2,16.3") == GeoUriPoint(48.2, 16.3, null, null), "basic")
+        ok(GeoUri.parse("GEO:-33.86,151.20,12.5") == GeoUriPoint(-33.86, 151.2, 12.5, null), "upper + alt")
+        ok(GeoUri.parse("geo:48.2,16.3;crs=wgs84") == GeoUriPoint(48.2, 16.3, null, null), "crs ok")
+        ok(GeoUri.parse("geo:48.2,16.3;u=30") == GeoUriPoint(48.2, 16.3, null, 30.0), "unc ok")
+        ok(GeoUri.parse("geo:48.2,16.3;crs=WGS84;u=30.5") == GeoUriPoint(48.2, 16.3, null, 30.5), "both params")
+        ok(GeoUri.format(GeoUriPoint(48.2, 16.3, null, null)) == "geo:48.2,16.3", "format basic")
+        ok(GeoUri.parse(GeoUri.format(GeoUriPoint(-33.86, 151.2, 12.5, 30.0))) == GeoUriPoint(-33.86, 151.2, 12.5, 30.0), "round trip")
         fails("no scheme") { GeoUri.parse("48.2,16.3") }
         fails("lat over") { GeoUri.parse("geo:90.1,0") }
         fails("lon over") { GeoUri.parse("geo:0,180.1") }
@@ -208,7 +208,7 @@ object R32Checks {
         fails("neg unc") { GeoUri.parse("geo:1,2;u=-1") }
         fails("nan") { GeoUri.parse("geo:NaN,0") }
         fails("space") { GeoUri.parse("geo:48.2, 16.3") }
-        fails("format range") { GeoUri.format(GeoPoint(91.0, 0.0, null, null)) }
+        fails("format range") { GeoUri.format(GeoUriPoint(91.0, 0.0, null, null)) }
     }
 
     fun lockout() {

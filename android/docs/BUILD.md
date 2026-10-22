@@ -9,7 +9,7 @@ Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the ro
 0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
 Host evidence only: 157 kotlinc/JVM assertions, independent Python recomputation,
 static touch-target audit (223 sites, 175 pre-existing findings queued, +0 delta),
-Android parse gate (0 syntax errors), manifest-scope gate, 257/257 tool tests.
+Android parse gate (0 syntax errors), manifest-scope gate, 258/258 tool tests.
 R32 authors no Android files; the 2 authored Android files (USB watch receiver,
 consent dialog) remain authored, NOT executed — CI/Studio must compile and run
 them before any behavior claim.

@@ -243,8 +243,8 @@
         "tools/test_r29_tools.py": "7c44618ca294b4292eb112d1057706c582dfdc14ad191ecba3cf56963a08b91b",
         "tools/check_r29_reference.py": "bfc4ddcb595e32658ef5eb59f60a4ebaa1608b5668a5995629fc25256c4b7102",
         "core/commands/src/main/kotlin/dev/fusion/commands/ArgSplit.kt": "91e7d793f40a6068ee087c93619ea8926534316dbe2e215a3784242d6edc4b2c",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -355,8 +355,8 @@
         "tools/test_r28_tools.py": "c05e87d4a7363461e0f3144aa2f3a603b8cb7a16dc393f51ee1da550754bf46a",
         "tools/check_r28_reference.py": "d588cdb4b3765cd3a307e0dd2879345bc990f6a467758fcf05382ec062b869b2",
         "core/security/src/main/kotlin/dev/fusion/security/PinRules.kt": "6ecfdd60def3d7e3972c3c2c518f40bf842e4243117565c7b43b50a947571c3b",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -767,8 +767,8 @@
         "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
         "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b",
         "feature/vault/src/main/kotlin/dev/fusion/vault/LockoutPolicy.kt": "5b580e0431c30fff245aeb30424d9ab16f2338698ca7fa6523ce32eaac7849b1",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -831,8 +831,8 @@
         "feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt": "049b18efbc9258276cb8f9ac9866dacd0a1c1f3d2c7c9d5a77723bcad2bc5fcf",
         "feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt": "a3d71c977661945024e7fa8704b563aabcde37345ab35faba29457046d5a6ecb",
         "feature/calc/src/main/kotlin/dev/fusion/calc/FractionApprox.kt": "135b661d1261776d66025db1770d80ee746272cce5b47d1de64f5b75cd6e32c0",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -937,8 +937,8 @@
         "tools/test_r28_tools.py": "c05e87d4a7363461e0f3144aa2f3a603b8cb7a16dc393f51ee1da550754bf46a",
         "tools/check_r28_reference.py": "d588cdb4b3765cd3a307e0dd2879345bc990f6a467758fcf05382ec062b869b2",
         "feature/media/src/main/kotlin/dev/fusion/media/CueSheet.kt": "b38649f54850530e4162814ce773c33b9f78a8c610d179ce8dab8528396c9e42",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -1097,8 +1097,8 @@
         "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",
         "tools/check_r30_reference.py": "30ce1afd78786eda6a868849a747e0acd9b66a8b0045e16784dc8dda7d11da64",
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/ICalDuration.kt": "3dd5588608caec442950f1845e39f46af8311aa6e9f53bf1cc6ced3b96ee8b62",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -1613,8 +1613,8 @@
         "format/lok/src/main/assets/osb-lok/OfficeSession.js": "a8a5850191233b57d497704bbc4f5fac5993d002822ab6f46d46e76b430751d3",
         "testing/src/r25js/LokWasmChecks.js": "7f7ceb207ccbace1f0dd6e74de4e64ec7740171566d7f2a890295ff006d443f3",
         "format/lok/src/main/java/dev/fusion/lok/OfficeCapability.kt": "1ae747875e2a2ceb0eb16da2edb8bf2fd221b3cbaed039bcd2d763037934f139",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -1691,8 +1691,8 @@
         "cast/castv2/src/main/kotlin/dev/fusion/castv2/Json.kt": "0ef260b857681162388c20512c2b736302e7282bcf58463379967e7e0b5f98a7",
         "cast/castv2/src/test/kotlin/dev/fusion/castv2/JsonTest.kt": "abc506fbaa5ad2da55b4e93160e4494194a209b9cf813037d219da9b587f87af",
         "cast/castv2/src/main/kotlin/dev/fusion/castv2/CastMediaMeta.kt": "ca0bbfc5918f0c52c4fb925e3ff7fc44ff15bb508e8a543907ff69a12b2817eb",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -1815,8 +1815,8 @@
         "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
         "tools/check_r31_reference.py": "debc30247744d84756368d592c710b47de77a1ec8d413edbc9f846357776068b",
         "privacy/src/main/java/dev/fusion/privacy/RetentionSweep.kt": "745e02e1b247cd34c9b9f7db34396e4955a5f064a1600b4911075f7ca80ae9bd",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     },
@@ -1870,9 +1870,9 @@
         "testing/src/r28/kotlin/dev/fusion/testing/R28Checks.kt": "e0b9dac85ae9c68e9b393bf859436a0e3708879bf3dcd197cdf15b3449c36acb",
         "tools/test_r28_tools.py": "c05e87d4a7363461e0f3144aa2f3a603b8cb7a16dc393f51ee1da550754bf46a",
         "tools/check_r28_reference.py": "d588cdb4b3765cd3a307e0dd2879345bc990f6a467758fcf05382ec062b869b2",
-        "feature/maps/src/main/kotlin/dev/fusion/maps/GeoUri.kt": "66cd151b2277fe78d92064fbfed2ee6c0607924d5063624e11ddb820789964a9",
-        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "1b3c4e7d414bbce911854fc3c5c7301910082d4bfb1e1b5b343adf52ace176c7",
-        "tools/test_r32_tools.py": "c64b904a8e1621efca4ba4f5438fdcd9d31760608071ee3e703ab3132a034c26",
+        "feature/maps/src/main/kotlin/dev/fusion/maps/GeoUri.kt": "8708018f507395a5111c1a3811803e21f9ac075dbd605f1ffd2213f3e0852cd4",
+        "testing/src/r32/kotlin/dev/fusion/testing/R32Checks.kt": "3d7c6b9aa13da9342296246ff46ef207e17e6158543610c567ed74043a72dc8a",
+        "tools/test_r32_tools.py": "4e7227ad99d9cccccc22df6ee06de9c510ca35ed2fbe1f2277fee1a6377c643f",
         "tools/check_r32_reference.py": "98060299a41b1ee413aa4856069dffa5c269493138fd3eb1c15e1c0940106806"
       }
     }

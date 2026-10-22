@@ -1117,7 +1117,7 @@
       "path": "feature/maps/src/main/kotlin/dev/fusion/maps/GeoUri.kt",
       "module": ":feature:maps",
       "package": "dev.fusion.maps",
-      "sha256": "66cd151b2277fe78d92064fbfed2ee6c0607924d5063624e11ddb820789964a9"
+      "sha256": "8708018f507395a5111c1a3811803e21f9ac075dbd605f1ffd2213f3e0852cd4"
     },
     {
       "path": "feature/maps/src/main/kotlin/dev/fusion/maps/GpxTrack.kt",
