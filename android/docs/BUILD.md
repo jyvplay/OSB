@@ -1,6 +1,39 @@
-# R37 — 14 executed kernels (pure-logic round) + host input-path audit
+# R38 — 17 executed kernels (pure-logic round), beam formats + hardware honesty
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R38-RESULTS.md) · [Scope/acceptance contract](R38-PLAN.md) ·
+[Deepening census](R38-MODULE-DEEPENING.md) · [Alternatives](R38-ALTERNATIVES.md) ·
+[Privacy PRD](R38-PRIVACY-PRD.md) · [Research record](research/r38-primary.md) ·
+Prior: [R37 results](R37-RESULTS.md).
+
+**50/50 testable subsets (100%); 15/50 modules deepened with new executed kernels (30%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence only: **326 kotlinc/JVM assertions** across 17 separately compiled
+kernels (MagnetParse, Bencode, FlacHead, WebpHead, SemVer, UuidInfo, HttpRange,
+QuotedPrint, PemBound, KeyCadence, IsoWeek, HslColor, EdidHead, VttTime,
+LuhnCheck, Soundex, PdfName), 17 independent Python mirrors — five held out to
+stdlib (uuid, quopri, colorsys, datetime.isocalendar, statistics/base64) — three
+binary byte fixtures with pinned sha256s, 337/337 tool tests (42 Python suites),
+R37 (274) and R34 (166) regressions green in the same lab run.
+R38 authors **zero** Android component/UI files; touch audit +0 delta, manifest
+scope unchanged (2 activities, 1 receiver, 0 services/providers).
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r38_contracts.py     # 326 assertions / 17 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r38_reference.py   # 17 independent Python mirrors
+python3 tools/test_r38_tools.py        # 24 hygiene/pin tests
+python3 tools/r38_lab.py host          # full battery: 14 gates + 42 suites, stamps R38-RESULTS.md
+```
+
+In-round repair (detail in R38-PLAN §I): the census deepen script initially
+claimed MagnetParse/Bencode were the beam module's *first* executed kernels —
+false (ShareManifest R29, ChunkPlan R33). Sentence corrected in the script and
+regenerated JSON, deepen re-run twice to idempotency, `--check` green.
+
+## Prior R37 — 14 executed kernels (pure-logic round) + host input-path audit
+
 [Exact results and limits](R37-RESULTS.md) · [Scope/acceptance contract](R37-PLAN.md) ·
 [Deepening census](R37-MODULE-DEEPENING.md) · [Alternatives](R37-ALTERNATIVES.md) ·
 [Privacy PRD](R37-PRIVACY-PRD.md) · [Research record](research/r37-primary.md) ·

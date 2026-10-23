@@ -17,9 +17,30 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R37 — 14 executed kernels, pure-logic round (host evidence only)
+## Current R38 — 17 executed kernels, pure-logic round (host evidence only)
 
-Branch **`arena/350b91e4-osb`**. Fourteen new host-executed kernels deepen 14/50
+Branch **`arena/350b91e4-osb`**. Seventeen new host-executed kernels deepen 15/50
+modules (30%), all seconds (cumulative distinct holds at 45/50, 90%): magnet
+links + strict bencode (first beam formats), FLAC/WebP/EDID headers with real
+byte fixtures, SemVer precedence, UUID v7 timestamps, HTTP ranges,
+quoted-printable, strict PEM, ISO week dates, CSS HSL, WebVTT timings, Luhn PAN
+redaction, NARA Soundex, PDF name escapes, and an explicitly evadable
+keystroke-cadence classifier (no "safe" verdict exists). No Android code
+authored — touch audit +0 delta; manifest scope pinned. Fresh research: two
+fetched primaries (BEP 3, BEP 9), stdlib-held-out mirrors (uuid, quopri,
+colorsys, isocalendar), **Tails 7.15.1 same-day currency** (eMudhra CA block,
+CVE-2026-113470), 2026 keystroke-timing numbers pinned in code.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+**326 kotlinc/JVM assertions** across 17 separately compiled kernels, 17
+independent Python mirrors, touch-target + parse + manifest-scope gates,
+337/337 tool tests (42 suites). [Results](android/docs/R38-RESULTS.md) ·
+[Contract](android/docs/R38-PLAN.md) · [Privacy PRD](android/docs/R38-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R37 — 14 executed kernels, pure-logic round (host evidence only)
+
+Fourteen host-executed kernels deepen 14/50
 modules (28%), all seconds (cumulative distinct holds at 45/50, 90%): heading slugs,
 IEC size scaling, VTODO tallies, XZ stream headers, paste re-indentation, RTSP
 reason phrases, tracking-parameter stripping, HIBP range scans, encoded polylines,

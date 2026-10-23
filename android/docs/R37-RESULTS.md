@@ -134,6 +134,27 @@ Zero confirmed R37 regressions. The ledger commit that records this table is
 docs-only; its own path-filtered runs will be observed and folded into R38 per
 the R35/R36 precedent.
 
+### Amendment: runs on the docs commits `b7bdad6`/`2f20920` (folded in R38)
+
+Docs-only delta, so only the path-filtered native and atlas workflows ran on
+the round-context correction commit `2f20920`. Triage is by the annotations
+API (run ids read for this commit; nothing inherited).
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| 2f20920 | native 39963506715: "Traceability, assemble both flavors, JVM tests" (job 120447927965) | SUCCESS | Docs-only; all 14 R37 kernels assemble both flavours, JVM tests pass. Compile receipt holds. |
+| 2f20920 | native 39963506715 device job 120447928356 | FAIL | The 2 standing `R25PngCopyDeviceTest` cases ("Image seed not identified in actual DocumentsUI", lines 104/131) **plus one new failure**: `R25LocalVideoDeviceTest.actualMp4DecoderProducesOrderedChangingSurfacePixelsAndReleasesOnHome` (`R25LocalVideoDeviceTest.kt:97`, bare `assertTrue`). That case PASSED on `d7db0ae` in this same workflow — **new watch item (1 fail in 2 recent observations of this job)**. The third PNG sibling `isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels` passed. All three `R24TaskInputDeviceTest` IME cases and `RealImeDeviceTest` passed → IME watch now 2 fails in 9 observations. |
+| 2f20920 | atlas 39963507027 | FAIL | Pre-existing infra: "Install real compilation and emulator components" exits 127; the pinned Servo 0.7.0 AAR inspection job (120447707072) succeeds; all four frame jobs and the PNG-bytes verification fail downstream (`No files were found … native-frames/`). |
+
+**Watch-item update carried into R38:** the R37 picker case
+`R22XlsxUiDeviceTest.actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource`
+**PASSED** inside the native device job on `2f20920` (listed PASS in the
+results annotation) — the watch is now **1 failure in 2 observations**,
+consistent with a DocumentsUI-dismissal timing flake, not a regression. The
+new `R25LocalVideo` MP4-decoder failure replaces it as the freshest
+single-observation watch; no R37/R38 file touches the decoder path. Net: zero
+R37 regressions on the docs commits; the R37 closure holds.
+
 ## Lab receipt
 
 R37 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).
