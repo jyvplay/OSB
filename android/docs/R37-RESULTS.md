@@ -105,11 +105,31 @@ are stated, not hidden.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Pending: the R37 commit and its workflow runs are recorded in the ledger commit
-per the R35/R36 precedent. Nothing is claimed here before the annotations are
-read; the two standing device failures (R25 PNG copy) and the atlas root-install
-exit 127 are expected to recur and will be reported as pre-existing only if the
-annotations show exactly that.
+Six workflows triggered on the R37 commit `d7db0ae` (the path-filtered set this
+round: native, atlas, R24 privacy experiment, offline privacy companion, R23
+memory/R22 boundaries, R25 local video — the PNG-copy and video workflows
+appeared because the commit touches `:privacy`, `:format:archive`, `:media`,
+`:maps` and friends). Triage is by the annotations API; logs are not
+downloadable here, so only what annotations show is claimed.
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| d7db0ae | R24 privacy experiment 39960770888 | SUCCESS | — |
+| d7db0ae | R25 local video 39960771300 | SUCCESS | — |
+| d7db0ae | offline privacy companion 39960770994 | SUCCESS | The screen-off/wake case that failed once on `2ba9c8e` **passed** here: that watch item is now 1 failure in 2 observations. |
+| d7db0ae | R23 memory / R22 boundaries 39960771116 | FAIL | **Single case**: `R22XlsxUiDeviceTest.actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource` fails at line 40 — `wait(Until.gone(documentsui), 10s)` after clicking the seed file, i.e. the SAF picker had not dismissed. 25 of 26 device tests PASS in the same run, including the two sibling picker tests `cancelledRealImportPickerKeepsDraftButInvalidatesExport` and `malformedRealProviderImportRetainsDraftAndCannotReusePriorExport`, and every R22/R23 memory-transport case. R37 touches no OOXML, CSV, SAF, MediaStore or picker code. Workflow was green on the previous eight commits (`7dc6dc3` … `f848e91`). **New watch item (1 in 1)**; re-run blocked by token permissions (403), so the flake-vs-regression call rests on the four facts above, not on a re-run. |
+| d7db0ae | native 39960770913: "Traceability, assemble both flavors, JVM tests" | SUCCESS | **Compile receipt**: all 14 R37 kernels assemble both flavours and JVM tests pass, including the repaired `VTodoParse`. |
+| d7db0ae | native 39960770913 device job | FAIL | Exactly the 2 pre-existing `R25PngCopyDeviceTest` cases ("Image seed not identified in actual DocumentsUI"; both `Failure detail` notices present). Everything else PASS — notably all three `R24TaskInputDeviceTest` IME cases (IME watch now 2 fails in 8 observations), all three `R24PdfDeviceTest` cases, all five `R24TabletopDeviceTest` cases, `R25LocalVideoDeviceTest`, and `RealImeDeviceTest`. |
+| d7db0ae | atlas 39960771335 | FAIL | Pre-existing infra: the "Install real compilation and emulator components" step (step 5) fails; the pinned Servo 0.7.0 AAR inspection succeeds; all four frame jobs and the PNG-bytes verification fail downstream. |
+
+Net: **all 14 R37 kernels compile in both flavours and pass JVM tests.** The
+device failures are the two standing R25 PNG cases plus one new single-case
+picker-dismissal flake in a workflow that had been green eight times; no failure
+names an R37 file, and no R37 code path is exercised by the failing assertions
+(they assert that DocumentsUI closed, not that Fusion produced wrong data).
+Zero confirmed R37 regressions. The ledger commit that records this table is
+docs-only; its own path-filtered runs will be observed and folded into R38 per
+the R35/R36 precedent.
 
 ## Lab receipt
 
