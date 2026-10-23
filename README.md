@@ -17,23 +17,38 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R36 — 12 executed kernels, pure-logic round (host evidence only)
+## Current R37 — 14 executed kernels, pure-logic round (host evidence only)
 
-Branch **`arena/350b91e4-osb`**. Twelve new host-executed kernels deepen 12/50 modules
-(24%), all seconds (cumulative distinct holds at 45/50, 90%): RPN evaluation,
-copy-name disambiguation, word wrap, redirect planning, Cast state machine,
-scale bars, WAV headers, TIFF headers, k-anonymity audits, attempt windows,
-depth-of-field limits, Shannon entropy.
+Branch **`arena/350b91e4-osb`**. Fourteen new host-executed kernels deepen 14/50
+modules (28%), all seconds (cumulative distinct holds at 45/50, 90%): heading slugs,
+IEC size scaling, VTODO tallies, XZ stream headers, paste re-indentation, RTSP
+reason phrases, tracking-parameter stripping, HIBP range scans, encoded polylines,
+MP4 box walks, OSC 8 hyperlinks, reciprocal-rank fusion, exit-status names,
+field-of-view math. Plus one host tool for HID input-path auditing (a transcript
+parser, explicitly NOT a keylogger detector).
 No Android code authored this turn — no new components, permissions, or UI (touch
-audit +0 delta; manifest scope pinned). Fresh research: Tails 7.15 stands +
-Unsafe-Browser tab detail, Signature 27 November still dateless, Servo 0.7.0
-stands + LTS embed ships downstream, A17 six reconfirmed, Orbot 17.9.7 stands.
+audit +0 delta; manifest scope pinned). Fresh research: three **fetched primaries**
+(RFC 2326, xz 1.2.1, RFC 5545) drove one shipped repair (VTODO `IN-PROCESS`) and
+two pre-run corrections; Tails 7.15 stands, Signature 27 still November, Servo
+0.7.0 stands, Orbot 17.9.7 stands, the A17 six stand.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
+274 kotlinc/JVM assertions across 14 separately compiled kernels, independent
+Python recomputation (14 mirrors), touch-target + parse + manifest-scope gates,
+326/326 tool tests. [Results](android/docs/R37-RESULTS.md) ·
+[Contract](android/docs/R37-PLAN.md) · [Privacy PRD](android/docs/R37-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R36 — 12 executed kernels, pure-logic round (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Twelve host-executed kernels deepened 12/50 modules
+(24%), all seconds. No Android code authored. Fresh research: Tails 7.15, Signature
+27 November still dateless, Servo 0.7.0 + downstream LTS embed, A17 six, Orbot 17.9.7.
 
 **50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim.** Executed:
 176 kotlinc/JVM assertions, independent recomputation, touch-target + parse +
-manifest-scope gates, 246/246 tool tests. [Results](android/docs/R31-RESULTS.md) ·
-[Contract](android/docs/R31-PLAN.md) · [Privacy PRD](android/docs/R31-PRIVACY-PRD.md) ·
-[Try without Studio](android/docs/BUILD.md).
+manifest-scope gates, 307/307 tool tests. [Results](android/docs/R36-RESULTS.md) ·
+[Contract](android/docs/R36-PLAN.md) · [Privacy PRD](android/docs/R36-PRIVACY-PRD.md).
 
 ## Prior R30 — 10 executed kernels, pure-logic round (host evidence only)
 

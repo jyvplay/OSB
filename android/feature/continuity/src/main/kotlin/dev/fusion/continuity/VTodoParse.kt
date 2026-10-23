@@ -7,7 +7,10 @@ package dev.fusion.continuity
  * Sits next to [VEventParse] (calendar events): nothing parses the to-do half
  * of iCalendar that handoff syncs alongside events. One `BEGIN:VTODO` …
  * `END:VTODO` block yields UID (required), SUMMARY (required), STATUS
- * (NEEDS-ACTION, IN-PROGRESS, COMPLETED, CANCELLED), DUE (UTC date or
+ * (NEEDS-ACTION, COMPLETED, IN-PROCESS, CANCELLED — the RFC 5545
+ * §3.8.1.11 `statvalue-todo` production, spelling included; the Java
+ * enum member is [Status.IN_PROGRESS] but the wire token is
+ * `IN-PROCESS`), DUE (UTC date or
  * date-time), PRIORITY (0–9), and PERCENT-COMPLETE (0–100). Line folding
  * (CRLF followed by a space) is unfolded before parsing, and `\,`/`\;`/`\\`/`\n`
  * escapes in text values are decoded. Like [VEventParse], unknown properties
@@ -57,7 +60,7 @@ object VTodoParse {
                 "SUMMARY" -> { require(value.isNotEmpty()) { "empty SUMMARY" }; summary = unescape(value) }
                 "STATUS" -> status = when (value) {
                     "NEEDS-ACTION" -> Status.NEEDS_ACTION
-                    "IN-PROGRESS" -> Status.IN_PROGRESS
+                    "IN-PROCESS" -> Status.IN_PROGRESS
                     "COMPLETED" -> Status.COMPLETED
                     "CANCELLED" -> Status.CANCELLED
                     else -> throw IllegalArgumentException("bad STATUS")

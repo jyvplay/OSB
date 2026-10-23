@@ -226,7 +226,7 @@ object R34Checks {
     }
 
     fun vtodo() {
-        val full = "BEGIN:VTODO\r\nUID:task-1\r\nSUMMARY:Write report\r\nSTATUS:IN-PROGRESS\r\n" +
+        val full = "BEGIN:VTODO\r\nUID:task-1\r\nSUMMARY:Write report\r\nSTATUS:IN-PROCESS\r\n" +
             "DUE:20261022T120000Z\r\nPRIORITY:1\r\nPERCENT-COMPLETE:50\r\nEND:VTODO"
         val t = VTodoParse.parse(full)
         ok(t.uid == "task-1", "uid")

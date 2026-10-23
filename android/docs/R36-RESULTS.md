@@ -102,6 +102,20 @@ No failure names an R36 file. Zero confirmed R36 regressions. The `408c39f`
 the R36 commit. Runs on the ledger commit itself will be observed per
 precedent and folded next round.
 
+### Amendment: runs on the ledger commit `adbb8a1` (folded in R37)
+
+Docs-only delta, so only the path-filtered native and atlas workflows ran.
+
+| Candidate | Workflow / run | Outcome | Cause |
+|---|---|---|---|
+| adbb8a1 | native 39862109098: compile + JVM | SUCCESS | Docs-only; all 12 R36 kernels assemble both flavours, JVM tests pass. |
+| adbb8a1 | native 39862109098 device job | FAIL | Exactly the 2 pre-existing `R25PngCopyDeviceTest` cases. No IME, audio-focus, font-scale or MP4 case appeared. IME watch now 2 fails in 7 observations; audio-focus 1 in 10; the screen-off companion case did not run (docs-only path filter). |
+| adbb8a1 | atlas 39862109259 | FAIL | Pre-existing infra: root install exits 127; the pinned Servo 0.7.0 AAR inspection succeeds; frame jobs fail downstream. |
+
+Net: zero R36 regressions on the ledger commit; the R36 closure and the
+standing-failure classification both hold. Nothing was inherited from the
+`2ba9c8e` runs — these annotations were read for this commit.
+
 ## Lab receipt
 
 R36 host lab PASS (openjdk version "17.0.9" 2023-10-17 / kotlinc-jvm 2.2.21 (JRE 17.0.9+9)).

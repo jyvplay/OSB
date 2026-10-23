@@ -189,7 +189,7 @@ def main():
     assert zlib.decompress(z) == b'hello fusion world! ' * 8
     report['zlib'] = {'roundtrip': True}
     # VTODO mirror: dict-based re-parse with folding.
-    v = ("BEGIN:VTODO\r\nUID:task-1\r\nSUMMARY:Write report\r\nSTATUS:IN-PROGRESS\r\n"
+    v = ("BEGIN:VTODO\r\nUID:task-1\r\nSUMMARY:Write report\r\nSTATUS:IN-PROCESS\r\n"
          "DUE:20261022T120000Z\r\nPRIORITY:1\r\nPERCENT-COMPLETE:50\r\nEND:VTODO")
     lines = []
     for ln in v.split('\r\n'):
@@ -202,10 +202,10 @@ def main():
     for ln in lines[1:-1]:
         k, _, val = ln.partition(':')
         props[k.split(';')[0]] = val
-    assert props == {'UID': 'task-1', 'SUMMARY': 'Write report', 'STATUS': 'IN-PROGRESS',
+    assert props == {'UID': 'task-1', 'SUMMARY': 'Write report', 'STATUS': 'IN-PROCESS',
                      'DUE': '20261022T120000Z', 'PRIORITY': '1', 'PERCENT-COMPLETE': '50'}
     assert re.fullmatch(r'\d{8}(T\d{6}Z?)?', props['DUE'])
-    assert props['STATUS'] in ('NEEDS-ACTION', 'IN-PROGRESS', 'COMPLETED', 'CANCELLED')
+    assert props['STATUS'] in ('NEEDS-ACTION', 'COMPLETED', 'IN-PROCESS', 'CANCELLED')
     report['vtodo'] = {'props': 6}
     # Pseudonym mirror: JVM interop -- compile Pseudonym + printer, compare to hmac.
     sys.path.insert(0, str(ROOT / 'tools'))

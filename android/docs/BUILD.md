@@ -1,18 +1,27 @@
-# R36 — 12 executed kernels (pure-logic round) + static visual audit
+# R37 — 14 executed kernels (pure-logic round) + host input-path audit
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
-[Exact results and limits](R36-RESULTS.md) · [Scope/acceptance contract](R36-PLAN.md) ·
-[Deepening census](R36-MODULE-DEEPENING.md) · [Alternatives](R36-ALTERNATIVES.md) ·
-[Privacy PRD](R36-PRIVACY-PRD.md) · Prior: [R35 results](R35-RESULTS.md).
+[Exact results and limits](R37-RESULTS.md) · [Scope/acceptance contract](R37-PLAN.md) ·
+[Deepening census](R37-MODULE-DEEPENING.md) · [Alternatives](R37-ALTERNATIVES.md) ·
+[Privacy PRD](R37-PRIVACY-PRD.md) · [Research record](research/r37-primary.md) ·
+Prior: [R36 results](R36-RESULTS.md).
 
-**50/50 testable subsets (100%); 12/50 modules deepened with new executed kernels (24%).
+**50/50 testable subsets (100%); 14/50 modules deepened with new executed kernels (28%).
 0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
-Host evidence only: 176 kotlinc/JVM assertions, independent Python recomputation,
+Host evidence only: **274 kotlinc/JVM assertions** across 14 separately compiled
+kernels, independent Python recomputation (14 deliberately different mirrors),
 static touch-target audit (223 sites, 175 pre-existing findings queued, +0 delta),
-Android parse gate (0 syntax errors), manifest-scope gate, 307/307 tool tests.
-R36 authors no Android files; the 2 authored Android files (USB watch receiver,
+Android parse gate (0 syntax errors), manifest-scope gate, HID topology parser run
+on labelled fixtures, 326/326 tool tests (41 Python suites).
+R37 authors no Android files; the 2 authored Android files (USB watch receiver,
 consent dialog) remain authored, NOT executed — CI/Studio must compile and run
 them before any behavior claim.
+
+Repairs this round (detail in R37-PLAN §I): one shipped fix — `VTodoParse` accepted
+`IN-PROGRESS`, RFC 5545 §3.8.1.11 says `IN-PROCESS`, so conformant VTODOs would have
+been refused (R34's 166 assertions + reference re-run green afterwards); two
+pre-run corrections from the fetched primaries — XZ SHA-256 Check ID is `0x0A` (not
+`0x07`) and the RTSP table gains `304` with the ABNF spellings.
 
 ## Laptop / Android Studio Rabbit1 (R28)
 
@@ -30,29 +39,28 @@ target37. Rabbit1 GUI was not run in this sandbox; push this branch for CI recei
    never blocking) and **ConsentDialog** (scope+TTL authorize-once UI).
    Prior authored surfaces (stream player, vector maps, Orbot handoff,
    BeautyDock still UNWIRED) are unchanged.
-4. No emulator exists in the sandbox: run `python3 tools/check_r28_touch_targets.py`
+4. No emulator exists in the sandbox: run `python3 tools/check_r37_touch_targets.py`
    for the static touch-target audit (223 sites; 175 pre-existing findings are
    a review queue, not rendered proof). Export real Compose layout bounds per
    page and validate with `python3 tools/check_r27_pagematrix.py status.json`
    (24-page matrix; honest coverage is 0.0 until exports exist).
 
-## Without Android Studio or a local SDK (R28)
+## Without Android Studio or a local SDK (R37)
 
-Real kotlinc/JVM execution of the new kernels plus structural gates — no Android:
+Everything this round runs without Studio:
 
-```sh
-cd android
-python3 tools/bootstrap_host_tools.py install   # Linux x86_64; disposable JRE17 + kotlinc into ~/.cache
-python3 tools/r28_lab.py host --tools "$HOME/.cache/fusion-host-r23"
-python3 tools/check_project.py
+```bash
+python3 tools/bootstrap_host_tools.py install     # pinned kotlinc + JRE into ~/.cache
+python3 tools/r37_lab.py host                     # 12 gates + 41 suites, receipted
+python3 tools/run_r37_contracts.py                # 274 assertions, 14 kernels
+python3 tools/check_r37_reference.py              # 14 independent Python mirrors
+python3 tools/hid_topology.py \
+  --verbose tools/fixtures/r37/lsusb-verbose.txt \
+  --tree    tools/fixtures/r37/lsusb-tree.txt     # HID input-path audit (transcript)
 ```
 
-This runs the 112-assertion R28 contracts, the independent reference
-recomputation, the touch-target static audit, the page-matrix and
-layout-bounds self-tests, the Android-parse gate, and the 10 R28 Python
-tests. It does not build an APK or touch a device. Native compile/device
-execution delegates to the recorded Gradle suites (`r28_lab.py device
---device-id ...` labels manual runs only; needs real JDK17 + SDK).
+The last command audits a **saved** `lsusb -v`/`lsusb -t` transcript. It cannot see
+a non-enumerating inline implant and says so in its own output.
 
 ---
 
