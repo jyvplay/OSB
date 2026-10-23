@@ -3,11 +3,14 @@
 Working branch `arena/350b91e4-osb`. Contract: [R37-PLAN](R37-PLAN.md).
 Evaluation date 2026-10-23.
 
-Round context: no re-provision happened between R36 and R37. The worktree
-continued from the ledger commit `adbb8a1`; before any R37 edit the only
-untracked paths were the 14 R37 kernels and `tools/fixtures/r37/`, the toolchain
-cache was intact (kotlinc-jvm 2.2.21, JRE 17.0.9), and R36's 176 assertions were
-re-run green **on this tree** first. Nothing was recovered from memory.
+Round context: the sandbox was re-provisioned between R36 and R37. Recovery was
+verified, not assumed: origin re-fetched, branch re-pointed with a mixed reset to
+`adbb8a1` (nothing tracked discarded), worktree **byte-clean**; the host toolchain
+cache (`~/.cache/fusion-host-r23`, outside the persisted snapshot) re-installed
+from the pinned manifest with hashes matching R36 (kotlinc-jvm 2.2.21, JRE
+17.0.9); R36's 176 assertions re-run green **on this tree** before any R37 edit;
+and the `adbb8a1` CI runs triaged from annotations (folded into R36-RESULTS).
+Nothing was recovered from memory.
 
 ## Host execution (this sandbox, 2026-10-23)
 

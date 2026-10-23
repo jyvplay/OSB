@@ -15,12 +15,15 @@ reference, 3 static gates, a lab, a census pass and this doc set. Every kernel
 is a *second or later* kernel for its module; the survey cut the last
 first-deepen candidates on ownership grounds (see B).
 
-Round context: unlike R34–R36, no re-provision happened between R36 and R37.
-The worktree continued from the ledger commit `adbb8a1`; `git status` before
-work showed only the 14 untracked kernels and the fixture directory, and the
-toolchain cache (`~/.cache/fusion-host-r23`) was intact (kotlinc 2.2.21,
-JRE 17.0.9), so no reinstall was needed. R36's 176 assertions were re-run
-first and passed on this exact tree before any R37 edit.
+Round context: like R34–R36, the sandbox was re-provisioned between R36 and
+R37. Recovery was verified, not assumed: origin was re-fetched, the branch
+re-pointed with a mixed reset to `adbb8a1` (nothing tracked discarded), and the
+worktree confirmed **byte-clean**; the host toolchain cache
+(`~/.cache/fusion-host-r23`, outside the persisted snapshot) was re-installed
+from the pinned manifest and its hashes matched the R36 manifest
+(kotlinc-jvm 2.2.21, JRE 17.0.9). R36's 176 assertions were then re-run and
+passed **on this exact tree** before any R37 edit, and the `adbb8a1` CI runs
+were triaged from annotations.
 
 ## A. Formal model (turn contract)
 
