@@ -78,11 +78,32 @@ remains a named downgrade.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Filled after the round push. Of special interest: first runs of
-r38Contracts (backport) and r41Contracts. Standing watches carried in:
-2 PNG picker signatures (every obs), atlas no-tests lane (every obs),
-Xlsx 2/5 (worst mover last round), IME 2/12, screen-off 1/5, R25 MP4
-1/4, audio-focus 1/10.
+Round commit `d27fdc2dcd965f820c60e7723c4b59cb84dcebfb`; all 8
+triggered workflows triaged by exact run id via the annotations API.
+**Zero R41 regressions in any JVM lane — and the bridge is VERIFIED
+end-to-end: the JVM job running `:testing:r38Contracts` through
+`:testing:r41Contracts` succeeded, so R38–R41's 77 kernels / 1391
+assertions now execute under the real Gradle toolchain in CI.**
+
+| Run id | Workflow | Conclusion | Triage |
+|---|---|---|---|
+| 40120890152 | Android native | failure | **JVM job SUCCESS — traceability + both flavors + JVM tests + r38/r39/r40/r41 contract tasks (1391 assertions under Gradle)**; device job: 2 standing `R25PngCopyDeviceTest` signatures + ONE NEW case, `NotesProcessDeathDeviceTest.acknowledgedDraftCheckpointSurvivesActualWriterProcessDeath` (first observation; R41 touches no notes/writer device surface — new watch at 1/1, no code suspect) |
+| 40120890073 | R25 actual PNG metadata copy | failure | same 2 standing PNG signatures |
+| 40120890262 | R24 continuation desktop media atlas | failure | standing no-tests install lane |
+| 40120890092 | Android offline privacy companion | failure | `PrivacyWorkspaceTest` IME-discard case — the IME watch family moves to 3 fails / 13 observations |
+| 40120890116 | Tasks focused diagnostic | **success** | notable: the R17 focus-repro lane PASSED for the first time in its observation history — watch flipped to intermittent-repro |
+| 40120890077 | R21 boundary checks | success | — |
+| 40120890076 | R23 memory and R22 boundary checks | success | Xlsx watch improves to 2/6 |
+| 40120890085 | R24 appearance, input and PDF boundaries | success | — |
+
+Not triggered (path filters): R25 media/web lanes, API37 experiment.
+
+Standing watch table after this round: 2 PNG picker signatures (every
+obs), atlas no-tests lane (every obs), IME family 3/13 (worst mover),
+Xlsx 2/6, screen-off 1/5 (lane failed via the IME case, counted there),
+R25 MP4 1/4 (not triggered), audio-focus 1/10, R17 focus repro now
+INTERMITTENT (passed once), NEW NotesProcessDeath 1/1. `rerun-failed-
+jobs` remains 403; rates accumulate across observations.
 
 ## Lab receipt
 
