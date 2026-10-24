@@ -17,7 +17,35 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R40 — 20 executed kernels + first CI-executed contract tasks
+## Current R41 — 21 executed kernels across 20 modules; CI bridge spans R38–R41
+
+Branch **`arena/350b91e4-osb`**. Round opened with a full sandbox-reset recovery
+(byte-clean re-sync, toolchain reinstall, prior baselines green before any
+edit). Twenty-one new host-executed kernels deepen 20/50 modules (40%): the
+spreadsheet ADDRESSING layer completes (SheetRange + R1c1Ref over the full
+16384×1048576 grid, no wrapping), writer gains UAX-11 column widths +
+provably-geometry-preserving tab expansion, plus PDF page-geometry
+composition, shlex-identical display quoting, calendar-honest ISO durations,
+carry-safe DMS, Android-order hex colors, Flesch arithmetic, EAN-13/UPC/ISBN
+algebra, RFC 2397 data: URLs, pg_trgm trigrams, turn rotation, bias-corrected
+EWMA, loss-refusing settings migration, cast namespaces, git-style sharding,
+span merging, BEP-3 piece math, and RTL-aware launcher grids. **Zero kernel
+repairs — first round since R38 where every kernel passed its full contract on
+first execution.** The CI bridge extends backwards (`r38Contracts`) and
+forwards (`r41Contracts`): once green, R38–R41's 77 kernels / 1391 assertions
+all execute under real Gradle in CI.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim — the
+Class-A question is answered honestly again in
+[R41-ALTERNATIVES](android/docs/R41-ALTERNATIVES.md).** Executed: **361
+kotlinc/JVM assertions** across 21 kernels, 21 Python mirrors (five held-out
+stdlib families), lab 20 gates + 45 suites / 451 tests.
+[Results](android/docs/R41-RESULTS.md) ·
+[Contract](android/docs/R41-PLAN.md) ·
+[Privacy PRD](android/docs/R41-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R40 — 20 executed kernels + first CI-executed contract tasks
 
 Branch **`arena/350b91e4-osb`**. Twenty new host-executed kernels deepen 19/50
 modules (38%): spreadsheet format-code structure + the seven classic error

@@ -1,4 +1,33 @@
-# R40 — 20 executed kernels + the CI-execution bridge
+# R41 — 21 executed kernels across 20 modules; the bridge spans R38–R41
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R41-RESULTS.md) · [Scope/acceptance contract](R41-PLAN.md) ·
+[Deepening census](R41-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R41-ALTERNATIVES.md) ·
+[Privacy PRD](R41-PRIVACY-PRD.md) · [Research record](research/r41-primary.md) ·
+Prior: [R40 results](R40-RESULTS.md).
+
+**50/50 testable subsets (100%); 20/50 modules deepened with new executed kernels (40%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence: **361 kotlinc/JVM assertions** across 21 kernels (SheetRange,
+R1c1Ref, PdfPageGeometry, ShlexJoin, DurationIso, DmsFormat, ColorHex,
+ReadEase, Ean13, DataUri, Trigram, TurnOrder, Ewma, KeyMigrate, CastNs,
+LineWidth, ShardPath, SpanMerge, PiecePlan, TabStops, GridPos), 21 Python
+mirrors (held-out: shlex, unicodedata, timedelta, base64/urllib, expandtabs),
+lab 20 gates + 45 suites / 451 tests with R40/R39/R38/R37/R34 regressions
+green in the same run. **Zero kernel repairs this round.** CI bridge now
+registers `:testing:r38Contracts` (backport) through `:testing:r41Contracts`
+— also runnable from Android Studio Rabbit 1's Gradle panel on your laptop.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r41_contracts.py       # 361 assertions / 21 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r41_reference.py     # 21 mirrors, five held-out stdlib families
+python3 -m unittest tools.test_r41_tools # 33 hygiene/pin tests
+python3 tools/r41_lab.py host            # full battery, stamps R41-RESULTS.md
+```
+
+## Prior R40 — 20 executed kernels + the CI-execution bridge
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R40-RESULTS.md) · [Scope/acceptance contract](R40-PLAN.md) ·
