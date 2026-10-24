@@ -97,13 +97,30 @@ a named downgrade.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Filled after the round push. Of special interest: the first execution
-of the two new Gradle contract tasks in the JVM lane. Standing watches
-carried in: 2 PNG picker signatures (every obs), atlas exit 127 (every
-obs), IME 2/11, Xlsx 1/4, screen-off 1/4, R25 MP4 1/4, audio-focus
-1/10, R17 focus repro (diagnostic lane — triggers this round because
-`.github/workflows/android.yml` is not in its path filter but the
-android/** lanes all fire on the kernel files).
+Round commit `c57a8e39d27a0f3735935b17d0fd75862843be36`; all 7 triggered
+workflows triaged by exact run id via the annotations API. **Zero R40
+regressions — and the CI bridge is VERIFIED: the JVM job that now runs
+`:testing:r39Contracts` + `:testing:r40Contracts` succeeded, so all 39
+R39+R40 kernels have executed under the real Gradle toolchain in CI.**
+
+| Run id | Workflow | Conclusion | Triage |
+|---|---|---|---|
+| 40055219493 | Android native | failure | **JVM job SUCCESS — traceability + both flavors + JVM tests + FIRST RUN of r39Contracts/r40Contracts (344+360 assertions under Gradle)**; managed-device job failed with exactly the 2 standing `R25PngCopyDeviceTest` signatures |
+| 40055219377 | R23 memory and R22 boundary checks | failure | standing `R22XlsxUiDeviceTest` picker signature — watch degrades to 2 fails / 5 observations |
+| 40055219540 | R24 continuation desktop media atlas | failure | standing install-lane state: "No executed device test cases found", exit-code family unchanged |
+| 40055219415 | R21 boundary checks | success | — |
+| 40055219392 | Android offline privacy companion | success | screen-off watch → 1/5 |
+| 40055219379 | R24 actual API37 privacy experiment | success | IME watch → 2/12 |
+| 40055219452 | R24 appearance, input and PDF boundaries | success | triggered this round (gradle/testing paths); green |
+
+Not triggered (path filters, recorded as non-triggers, not missing
+evidence): Tasks focused diagnostic, R25 PNG/media/web lanes.
+
+Standing watch table after this round: 2 PNG picker signatures (every
+observation), atlas no-tests lane (every observation), Xlsx 2/5 (worst
+mover this round), IME 2/12, screen-off 1/5, R25 MP4 1/4 (lane not
+triggered), audio-focus 1/10. `rerun-failed-jobs` remains 403; flake
+rates accumulate across observations instead.
 
 
 
