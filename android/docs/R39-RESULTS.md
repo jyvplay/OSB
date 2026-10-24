@@ -69,10 +69,30 @@ review remains open and is listed as a downgrade, not claimed.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Filled after the round push; triage by annotations API with exact run
-ids. Standing watches carried in: 2 PNG picker signatures (every obs),
-atlas exit 127 (every obs), R17 focus repro (diagnostic lane), IME 2/10,
-Xlsx 1/3, screen-off 1/3, R25 MP4 1/3, audio-focus 1/10.
+Round commit `4d6007e0ca7b65f9b5b461062112720375836ecc`; all 8 triggered
+workflows triaged by exact run id via the annotations API. **Zero R39
+regressions.** Two further workflows (Tasks focused diagnostic, R24
+appearance/input/PDF) are path-filtered and correctly did NOT trigger —
+R39 touches none of their watched paths (R38's automation kernel did);
+recorded as non-trigger, not as missing evidence.
+
+| Run id | Workflow | Conclusion | Triage |
+|---|---|---|---|
+| 40046709153 | Android native | failure | JVM job (traceability + both flavors + JVM tests, **compiles all 19 R39 kernels under real AGP/Gradle**) SUCCESS; managed-device job failed with exactly the 2 standing `R25PngCopyDeviceTest` signatures ("Image seed not identified in actual DocumentsUI", pick:80) |
+| 40046709079 | R25 actual PNG metadata copy | failure | same 2 standing PNG DocumentsUI signatures |
+| 40046709016 | R24 continuation desktop media atlas | failure | standing install exit 127, no device test executed |
+| 40046709102 | R25 actual local video decoding | success | MP4-decoder watch improves to 1 fail / 4 observations |
+| 40046709111 | R21 boundary checks | success | — |
+| 40046709024 | R24 actual API37 privacy experiment | success | IME watch → 2 fails / 11 observations |
+| 40046709109 | R23 memory and R22 boundary checks | success | Xlsx picker-dismiss watch → 1/4 |
+| 40046709034 | Android offline privacy companion | success | screen-off watch → 1/4 |
+
+Standing watch table after this round: 2 PNG picker signatures (every
+observation — now the only recurring device failure besides atlas),
+atlas exit 127 (every observation), R17 focus repro (diagnostic lane,
+not triggered this round), IME 2/11, Xlsx 1/4, screen-off 1/4, R25 MP4
+1/4, audio-focus 1/10 (did not recur). `rerun-failed-jobs` remains 403
+on this token; flake rates accumulate across observations instead.
 
 ## Lab receipt
 
