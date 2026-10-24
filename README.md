@@ -17,7 +17,32 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R38 — 17 executed kernels, pure-logic round (host evidence only)
+## Current R39 — 19 executed kernels, writer + spreadsheet push (host evidence only)
+
+Branch **`arena/350b91e4-osb`**. Nineteen new host-executed kernels deepen 16/50
+modules (32%): the spreadsheet trio (Excel serial dates with the Lotus phantom
+1900-02-29, the full A..XFD column bijection, exact ECMA-376 column-width pixel
+math), the writer trio (smart quotes with declared narrowings, UAX-14 soft
+hyphens, canonical Roman numbering with the full 1..3999 bijection), PDF
+CropBox rules, ICO directories with PNG-IHDR agreement, full RFC 3492 Punycode,
+USB device descriptors (input-path audit rung), MIDI notes, the canonical ULID
+codec, a JWS splitter that constitutionally cannot claim verification, IBAN
+mod-97, fnmatch-exact globs, MAC U/L-bit privacy analysis, strict RFC 3339,
+quiet-hours windows, and APEX exposure math. No Android code authored (touch
+audit +0; manifest pinned). Fresh research: ULID canonical spec fetched;
+same-day Tails 7.15.1 + eMudhra TLS-exit currency; 2026 HID-defense papers.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim — the
+"writer/spreadsheet to Class A this turn?" question is answered honestly in
+[R39-ALTERNATIVES](android/docs/R39-ALTERNATIVES.md).** Executed: **344
+kotlinc/JVM assertions** across 19 separately compiled kernels, 19 Python
+mirrors (six held-out stdlib verifiers), 350/350 tool tests (43 suites).
+[Results](android/docs/R39-RESULTS.md) ·
+[Contract](android/docs/R39-PLAN.md) ·
+[Privacy PRD](android/docs/R39-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R38 — 17 executed kernels, pure-logic round (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Seventeen new host-executed kernels deepen 15/50
 modules (30%), all seconds (cumulative distinct holds at 45/50, 90%): magnet

@@ -1,4 +1,39 @@
-# R38 — 17 executed kernels (pure-logic round), beam formats + hardware honesty
+# R39 — 19 executed kernels: writer + spreadsheet push, input-path descriptors
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R39-RESULTS.md) · [Scope/acceptance contract](R39-PLAN.md) ·
+[Deepening census](R39-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R39-ALTERNATIVES.md) ·
+[Privacy PRD](R39-PRIVACY-PRD.md) · [Research record](research/r39-primary.md) ·
+Prior: [R38 results](R38-RESULTS.md).
+
+**50/50 testable subsets (100%); 16/50 modules deepened with new executed kernels (32%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence only: **344 kotlinc/JVM assertions** across 19 separately compiled
+kernels (SerialDate, ColLetters, ColWidth, SmartQuote, HyphenSoft, RomanNum,
+CropBox, IcoDir, Punycode, UsbDesc, MidiNote, Ulid, JwtSplit, IbanCheck,
+GlobMatch, MacAddr, Rfc3339, QuietHours, ExposureEv), 19 independent Python
+mirrors — six held out to stdlib (datetime ×2, punycode codec, base64, fnmatch,
+bigint mod-97) — two binary byte fixtures with pinned sha256s, 350/350 tool
+tests (43 suites), R38 (326) + R37 (274) + R34 (166) regressions green in the
+same lab run. R39 authors **zero** Android component/UI files; touch audit +0,
+manifest scope unchanged.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r39_contracts.py     # 344 assertions / 19 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r39_reference.py   # 19 mirrors, six held-out stdlib verifiers
+python3 tools/test_r39_tools.py        # 30 hygiene/pin tests
+python3 tools/r39_lab.py host          # full battery: 16 gates + 43 suites, stamps R39-RESULTS.md
+```
+
+In-round repair (detail in R39-PLAN §I): one WRONG TEST VECTOR —
+`decode("BCHER-KVA")` expected lowercase output, but RFC 3492 preserves
+literal-portion case (the held-out Python codec agrees). The kernel was right;
+the test was fixed, contracts re-run from zero, and the mirror now pins both
+sides of the case rule.
+
+## Prior R38 — 17 executed kernels (pure-logic round), beam formats + hardware honesty
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R38-RESULTS.md) · [Scope/acceptance contract](R38-PLAN.md) ·
