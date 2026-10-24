@@ -1,4 +1,32 @@
-# R41 — 21 executed kernels across 20 modules; the bridge spans R38–R41
+# R42 — 22 executed kernels across 21 modules; the bridge spans R37–R42
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R42-RESULTS.md) · [Scope/acceptance contract](R42-PLAN.md) ·
+[Deepening census](R42-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R42-ALTERNATIVES.md) ·
+[Privacy PRD](R42-PRIVACY-PRD.md) · [Research record](research/r42-primary.md) ·
+Prior: [R41 results](R41-RESULTS.md).
+
+**50/50 testable subsets (100%); 21/50 modules deepened (42%). 0/50 full-spec
+accepted; no A-grade claim.** Host evidence: **362 kotlinc/JVM assertions**
+across 22 kernels (AbsRef, MergedCells, PdfDate, NmeaLat, HstsParse, PairPin,
+ArHead, CaseCycle, CommentToggle, UnitPrice, Rule3rds, Histo, CsiCursor,
+GpcHeader, PwPolicy, GainDb, HexBytes, SnoozeSeq, NiceStep, NextRun, Rfc2231,
+BmpHead), 22 handwritten Python mirrors (downgrade declared in-file), lab 22
+gates + 46 suites / 487 tests with R41/R40/R39/R38/R37/R34 regressions green
+in the same run. CI bridge now registers `:testing:r37Contracts` through
+`:testing:r42Contracts` (also runnable from Android Studio Rabbit 1's Gradle
+panel).
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r42_contracts.py       # 362 assertions / 22 kernels
+python3 tools/check_r42_reference.py     # 22 mirrors
+python3 -m unittest tools.test_r42_tools # 36 hygiene/pin tests
+python3 tools/r42_lab.py host            # full battery, stamps R42-RESULTS.md
+```
+
+## Prior R41 — 21 executed kernels across 20 modules; the bridge spans R38–R41
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R41-RESULTS.md) · [Scope/acceptance contract](R41-PLAN.md) ·

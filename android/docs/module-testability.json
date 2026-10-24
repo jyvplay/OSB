@@ -58,7 +58,7 @@
       "module": ":core:documents",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded encoding-preserving editor sessions, recovery and copy protocol R27 deepens with MarkdownDoc: CommonMark-subset blocks plus GFM tables, HTML stripped and counted, executed on host JVM against a real fixture. R33 deepens again with DiffHunks: unified-hunk rendering over LineDiff output (context merge, unified headers) executed on host JVM. R35 deepens again with WordDiff: word-level LCS diff over caller tokens (line-diff walk order, capped matrix) executed on host JVM. R39 deepens again with SmartQuote: a deterministic typographic-quote educator with the elision narrowing declared rather than hidden, executed on host JVM. R39 also adds HyphenSoft: UAX 14 soft-hyphen stripping, break candidates in stripped coordinates and split rendering, executed on host JVM. R40 deepens again with DashEducate: TeX-convention dash/ellipsis education (longest-match runs, 4+ runs untouched, ASCII de-education inverse) executed on host JVM. R40 also adds ObjReplace: U+FFFC object-placeholder bookkeeping with the partition invariant (visible chars + objects == length) executed on host JVM. R41 deepens again with LineWidth: a UAX 11 East-Asian-width subset (wide/zero/narrow, ambiguous-narrow declared, controls refused) cross-checked against held-out unicodedata, with fit() that never splits a wide character, executed on host JVM.",
+      "behavior": "Bounded encoding-preserving editor sessions, recovery and copy protocol R27 deepens with MarkdownDoc: CommonMark-subset blocks plus GFM tables, HTML stripped and counted, executed on host JVM against a real fixture. R33 deepens again with DiffHunks: unified-hunk rendering over LineDiff output (context merge, unified headers) executed on host JVM. R35 deepens again with WordDiff: word-level LCS diff over caller tokens (line-diff walk order, capped matrix) executed on host JVM. R39 deepens again with SmartQuote: a deterministic typographic-quote educator with the elision narrowing declared rather than hidden, executed on host JVM. R39 also adds HyphenSoft: UAX 14 soft-hyphen stripping, break candidates in stripped coordinates and split rendering, executed on host JVM. R40 deepens again with DashEducate: TeX-convention dash/ellipsis education (longest-match runs, 4+ runs untouched, ASCII de-education inverse) executed on host JVM. R40 also adds ObjReplace: U+FFFC object-placeholder bookkeeping with the partition invariant (visible chars + objects == length) executed on host JVM. R41 deepens again with LineWidth: a UAX 11 East-Asian-width subset (wide/zero/narrow, ambiguous-narrow declared, controls refused) cross-checked against held-out unicodedata, with fit() that never splits a wide character, executed on host JVM. R42 deepens again with CaseCycle: the writer change-case cycle with a stated simple title rule and the Turkish-i narrowing declared, executed on host JVM.",
       "production": [
         "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt",
         "core/documents/src/main/kotlin/dev/fusion/documents/MarkdownDoc.kt",
@@ -68,7 +68,8 @@
         "core/documents/src/main/kotlin/dev/fusion/documents/HyphenSoft.kt",
         "core/documents/src/main/kotlin/dev/fusion/documents/DashEducate.kt",
         "core/documents/src/main/kotlin/dev/fusion/documents/ObjReplace.kt",
-        "core/documents/src/main/kotlin/dev/fusion/documents/LineWidth.kt"
+        "core/documents/src/main/kotlin/dev/fusion/documents/LineWidth.kt",
+        "core/documents/src/main/kotlin/dev/fusion/documents/CaseCycle.kt"
       ],
       "checks": [
         "core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt",
@@ -89,9 +90,12 @@
         "tools/check_r40_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":testing:copyContracts; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:copyContracts; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Streaming large files, regex, full autosave/recovery, provider/IME/AX/process-death and physical persistence acceptance; complete Forge lifecycle absent",
       "sha256": {
         "core/documents/src/main/kotlin/dev/fusion/documents/CopyProtocol.kt": "c2087ef153ab436a893e636f23d68ddd3e8ab256724bff525d3ac3a87a3bc9fc",
@@ -121,7 +125,11 @@
         "core/documents/src/main/kotlin/dev/fusion/documents/LineWidth.kt": "dcf201d75d17a5ebb8884d5480ded2ac84e4d5b2821eb4282a047ac97bbb741c",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "core/documents/src/main/kotlin/dev/fusion/documents/CaseCycle.kt": "adb646d0026e5c73f624b7870b14fc63d0326582aa75efe4378bcdcb4ebd3ab9",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -530,12 +538,13 @@
       "module": ":core:perf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Deterministic codec/thermal decision policy, not measured governor R31 deepens with PhaseLedger: named-phase duration ledger (caller clock, totals, shares, slowest) executed on host JVM. R40 deepens again with Percentile: nearest-rank percentiles where every result is an actual observation, sortedness verified; the in-round FP-order repair (multiply before dividing) is pinned by regression attacks, executed on host JVM. R41 deepens again with Ewma: bias-corrected EWMA where the constant-series-equals-constant property holds at every step and the cold-start bias equals (1-a)^t exactly, both executed, on host JVM.",
+      "behavior": "Deterministic codec/thermal decision policy, not measured governor R31 deepens with PhaseLedger: named-phase duration ledger (caller clock, totals, shares, slowest) executed on host JVM. R40 deepens again with Percentile: nearest-rank percentiles where every result is an actual observation, sortedness verified; the in-round FP-order repair (multiply before dividing) is pinned by regression attacks, executed on host JVM. R41 deepens again with Ewma: bias-corrected EWMA where the constant-series-equals-constant property holds at every step and the cold-start bias equals (1-a)^t exactly, both executed, on host JVM. R42 deepens again with Histo: static half-open latency buckets with the exact conservation invariant executed under input reordering, auto-scaling refused by design, on host JVM.",
       "production": [
         "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt",
         "core/perf/src/main/java/dev/fusion/perf/PhaseLedger.kt",
         "core/perf/src/main/kotlin/dev/fusion/perf/Percentile.kt",
-        "core/perf/src/main/kotlin/dev/fusion/perf/Ewma.kt"
+        "core/perf/src/main/kotlin/dev/fusion/perf/Ewma.kt",
+        "core/perf/src/main/kotlin/dev/fusion/perf/Histo.kt"
       ],
       "checks": [
         "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt",
@@ -547,9 +556,12 @@
         "tools/check_r40_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":testing:pilotContracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:pilotContracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "ADPF/sustained/fallback governor, measured E1+ budgets on two devices, no fabricated ratings",
       "sha256": {
         "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt": "8943c5233fe5bc3b565b463b4930961514c1f96a5d52a0abdf89a9f6810a6cd3",
@@ -565,7 +577,11 @@
         "core/perf/src/main/kotlin/dev/fusion/perf/Ewma.kt": "2da362a4104d47ac2a1d0408d3503f5e22e1aae76f983597a00262046b5e3d81",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "core/perf/src/main/kotlin/dev/fusion/perf/Histo.kt": "4bccdb0e99a84560ce0a55f007530b11db8389948e9af0f0373c69f06dc14f5b",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -672,13 +688,14 @@
       "module": ":core:storage",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real AtomicFile checkpoint commit/readback/failure R29 deepens with QuotaLedger: per-scope byte quotas with allocate/release accounting and snapshot frames executed on host JVM. R38 deepens again with UuidInfo: RFC 9562 variant/version classification plus UUIDv7 48-bit millisecond timestamp extraction against the RFC test vector, executed on host JVM. R39 deepens again with Ulid: the canonical ULID codec (Crockford alphabet, 2^48-1 ceiling, case-insensitive decode, monotonic successor that fails on 80-bit overflow) executed on host JVM against the spec vectors. R41 deepens again with ShardPath: git-style digest sharding with canonicality checks and exact inverses, no IO by contract, executed on host JVM.",
+      "behavior": "Real AtomicFile checkpoint commit/readback/failure R29 deepens with QuotaLedger: per-scope byte quotas with allocate/release accounting and snapshot frames executed on host JVM. R38 deepens again with UuidInfo: RFC 9562 variant/version classification plus UUIDv7 48-bit millisecond timestamp extraction against the RFC test vector, executed on host JVM. R39 deepens again with Ulid: the canonical ULID codec (Crockford alphabet, 2^48-1 ceiling, case-insensitive decode, monotonic successor that fails on 80-bit overflow) executed on host JVM against the spec vectors. R41 deepens again with ShardPath: git-style digest sharding with canonicality checks and exact inverses, no IO by contract, executed on host JVM. R42 deepens again with HexBytes: the strict digest hex codec ShardPath consumes, lowercase canonical with prefix/whitespace refusals, executed on host JVM.",
       "production": [
         "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt",
         "core/storage/src/main/kotlin/dev/fusion/storage/QuotaLedger.kt",
         "core/storage/src/main/kotlin/dev/fusion/storage/UuidInfo.kt",
         "core/storage/src/main/kotlin/dev/fusion/storage/Ulid.kt",
-        "core/storage/src/main/kotlin/dev/fusion/storage/ShardPath.kt"
+        "core/storage/src/main/kotlin/dev/fusion/storage/ShardPath.kt",
+        "core/storage/src/main/kotlin/dev/fusion/storage/HexBytes.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/CheckpointDeviceTest.kt",
@@ -693,9 +710,12 @@
         "tools/check_r39_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Specified Room/migrations, process-death/disk-failure/power-loss acceptance and complete recovery lifecycle",
       "sha256": {
         "core/storage/src/main/java/dev/fusion/storage/CheckedAtomicFile.kt": "7b8f454f8ad2b8e8b4c8b3354122ec24431649c86bbcf5afbd940e384622cd36",
@@ -715,7 +735,11 @@
         "core/storage/src/main/kotlin/dev/fusion/storage/ShardPath.kt": "fa44e8e3b9a51a2f47c05afaf73214135a0d994a56a59ac6e13ea95597e62e58",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "core/storage/src/main/kotlin/dev/fusion/storage/HexBytes.kt": "f0ad687d4cf52e6947dadd842b9c6bb3e0f1e7c3610daebd0d77c308730f8d16",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -772,7 +796,7 @@
       "module": ":feature:editor",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real editing and lifecycle integration R31 deepens with TextOffsets: line starts, offset to line/column, and word bounds over plain text executed on host JVM. R34 deepens again with BracketMatch: lexical bracket-mate lookup over parens/brackets/braces (unbalanced returns null) executed on host JVM. R35 deepens again with IndentDetect: tabs-vs-spaces detection with GCD space width (mixed/noise yields null) executed on host JVM. R36 deepens again with WrapCol: greedy word wrap with space collapsing (overlong words and control chars refused) executed on host JVM. R37 deepens again with PasteWrap: paste re-indentation onto a base depth with blank-line collapse and ragged indents refused, executed on host JVM. R39 deepens again with RomanNum: canonical subtractive Roman numerals for upperRoman/lowerRoman list numbering with the full 1..3999 bijection executed as one property, on host JVM. R40 deepens again with FootnoteMark: the CMOS footnote-symbol cycle (18-mark cap enforced) plus Unicode superscript-digit marks with their inverse, executed on host JVM. R41 deepens again with TabStops: fixed tab-stop expansion and width where expand() provably removes tabs while preserving column geometry, complementing IndentDetect, executed on host JVM.",
+      "behavior": "Real editing and lifecycle integration R31 deepens with TextOffsets: line starts, offset to line/column, and word bounds over plain text executed on host JVM. R34 deepens again with BracketMatch: lexical bracket-mate lookup over parens/brackets/braces (unbalanced returns null) executed on host JVM. R35 deepens again with IndentDetect: tabs-vs-spaces detection with GCD space width (mixed/noise yields null) executed on host JVM. R36 deepens again with WrapCol: greedy word wrap with space collapsing (overlong words and control chars refused) executed on host JVM. R37 deepens again with PasteWrap: paste re-indentation onto a base depth with blank-line collapse and ragged indents refused, executed on host JVM. R39 deepens again with RomanNum: canonical subtractive Roman numerals for upperRoman/lowerRoman list numbering with the full 1..3999 bijection executed as one property, on host JVM. R40 deepens again with FootnoteMark: the CMOS footnote-symbol cycle (18-mark cap enforced) plus Unicode superscript-digit marks with their inverse, executed on host JVM. R41 deepens again with TabStops: fixed tab-stop expansion and width where expand() provably removes tabs while preserving column geometry, complementing IndentDetect, executed on host JVM. R42 deepens again with CommentToggle: IDE-semantics line-comment toggling (uniform-block involution, min-indent alignment), executed on host JVM.",
       "production": [
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
@@ -783,7 +807,8 @@
         "feature/editor/src/main/java/dev/fusion/editor/PasteWrap.kt",
         "feature/editor/src/main/java/dev/fusion/editor/RomanNum.kt",
         "feature/editor/src/main/java/dev/fusion/editor/FootnoteMark.kt",
-        "feature/editor/src/main/java/dev/fusion/editor/TabStops.kt"
+        "feature/editor/src/main/java/dev/fusion/editor/TabStops.kt",
+        "feature/editor/src/main/java/dev/fusion/editor/CommentToggle.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt",
@@ -810,9 +835,12 @@
         "tools/check_r40_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
@@ -849,7 +877,11 @@
         "feature/editor/src/main/java/dev/fusion/editor/TabStops.kt": "565826bcfce97931a6daa0e1fb272ba94bd0af0cab16eb95b1f18fdd282d47a6",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "feature/editor/src/main/java/dev/fusion/editor/CommentToggle.kt": "e9170748d6ddf6293ae8a9cde1baf0861aeaa9e8b0708f082ae83e8c468b950c",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -1028,7 +1060,7 @@
       "module": ":feature:browser",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI) R21 session-owned document consent invalidation including unsupported navigation; actual native boundary spike passed. No engine permission delegation. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R26 deepens with strict URL canonicalization, bounded host allow/block matching and private-session policy. R27 deepens with ContentBlocker: hosts + ABP-subset (|domain^, @@ exceptions) compiler with suffix decisions executed on host JVM against a real fixture. R28 deepens with CookieJar: RFC 6265-subset store/match/evict with Secure/HttpOnly/SameSite executed on host JVM against a real fixture. R31 deepens again with RobotsRules: robots.txt subset parser (groups, longest-prefix match, tie-goes-Allow) executed on host JVM against a real fixture. R38 deepens again with HttpRange: RFC 9110 section 14 byte-range resolution (suffix ranges, clamping, 416 refusal when nothing satisfies) executed on host JVM. R39 deepens again with Punycode: the full RFC 3492 encoder/decoder with overflow refusal and xn-- bracketing, cross-checked against the held-out Python punycode codec, executed on host JVM; IDNA mapping is declared out of scope. R40 deepens again with HtmlEntity: strict HTML character references (30-name subset, numeric forms with surrogate/C1 refusals \u2014 the cp1252 quirk is a declared narrowing) cross-checked against held-out html.unescape, executed on host JVM. R41 deepens again with DataUri: RFC 2397 decode-and-describe with the RFC default mediatype surfaced and strict base64/percent paths, cross-checked against held-out base64/urllib, executed on host JVM.",
+      "behavior": "Immutable session/group/split metadata and codec only; debug remote rendering belongs to :app; session-only exact-origin one-shot permission leases (not wired to browser permission UI) R21 session-owned document consent invalidation including unsupported navigation; actual native boundary spike passed. No engine permission delegation. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R26 deepens with strict URL canonicalization, bounded host allow/block matching and private-session policy. R27 deepens with ContentBlocker: hosts + ABP-subset (|domain^, @@ exceptions) compiler with suffix decisions executed on host JVM against a real fixture. R28 deepens with CookieJar: RFC 6265-subset store/match/evict with Secure/HttpOnly/SameSite executed on host JVM against a real fixture. R31 deepens again with RobotsRules: robots.txt subset parser (groups, longest-prefix match, tie-goes-Allow) executed on host JVM against a real fixture. R38 deepens again with HttpRange: RFC 9110 section 14 byte-range resolution (suffix ranges, clamping, 416 refusal when nothing satisfies) executed on host JVM. R39 deepens again with Punycode: the full RFC 3492 encoder/decoder with overflow refusal and xn-- bracketing, cross-checked against the held-out Python punycode codec, executed on host JVM; IDNA mapping is declared out of scope. R40 deepens again with HtmlEntity: strict HTML character references (30-name subset, numeric forms with surrogate/C1 refusals \u2014 the cp1252 quirk is a declared narrowing) cross-checked against held-out html.unescape, executed on host JVM. R41 deepens again with DataUri: RFC 2397 decode-and-describe with the RFC default mediatype surfaced and strict base64/percent paths, cross-checked against held-out base64/urllib, executed on host JVM. R42 deepens again with HstsParse: RFC 6797 value parsing where unknown directives are tolerated per spec but duplicates refuse, executed on host JVM.",
       "production": [
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/PermissionLeases.kt",
@@ -1040,7 +1072,8 @@
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/HttpRange.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/Punycode.kt",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/HtmlEntity.kt",
-        "feature/browser/src/main/kotlin/dev/fusion/browser/model/DataUri.kt"
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/DataUri.kt",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/HstsParse.kt"
       ],
       "checks": [
         "feature/browser/src/contract/kotlin/dev/fusion/browser/model/BrowserSessionChecks.kt",
@@ -1072,9 +1105,12 @@
         "tools/check_r40_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":testing:browserSessionContracts; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:browserSessionContracts; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "sha256": {
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/BrowserSessionCodec.kt": "52af07f7f0b5559255e0be92ded2387f2797c4a8171a3d7f13660751a8290c4b",
@@ -1117,19 +1153,24 @@
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/DataUri.kt": "31c0596bda04a0dbb7f636a361313ce7456d8edea4f45b9971e47ee521926fda",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "feature/browser/src/main/kotlin/dev/fusion/browser/model/HstsParse.kt": "1e3070e0e4be28583082f25cac23c66279681cf7f841e727942d29b39bd16d7d",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:terminal",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded quoted local-builtin argument lexer; empty arguments, escapes and malformed/over-budget refusal. R28 deepens with Scrollback: bounded line ring with exact greedy reflow executed on host JVM. R33 deepens again with AnsiSgr: SGR styling subset (attributes, 8/16/256/truecolor, unknown codes refused) plus SGR-only stripping executed on host JVM. R37 deepens again with OscLink: OSC 8 hyperlink sequence parsing with param validation and the empty-URI close marker executed on host JVM.",
+      "behavior": "Bounded quoted local-builtin argument lexer; empty arguments, escapes and malformed/over-budget refusal. R28 deepens with Scrollback: bounded line ring with exact greedy reflow executed on host JVM. R33 deepens again with AnsiSgr: SGR styling subset (attributes, 8/16/256/truecolor, unknown codes refused) plus SGR-only stripping executed on host JVM. R37 deepens again with OscLink: OSC 8 hyperlink sequence parsing with param validation and the empty-URI close marker executed on host JVM. R42 deepens again with CsiCursor: ECMA-48 cursor finals A-H with default-1/zero-means-1 parameters and clamping, disjoint from AnsiSgr by final byte, executed on host JVM.",
       "production": [
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt",
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/Scrollback.kt",
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/AnsiSgr.kt",
-        "feature/terminal/src/main/kotlin/dev/fusion/terminal/OscLink.kt"
+        "feature/terminal/src/main/kotlin/dev/fusion/terminal/OscLink.kt",
+        "feature/terminal/src/main/kotlin/dev/fusion/terminal/CsiCursor.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
@@ -1144,9 +1185,12 @@
         "tools/check_r33_reference.py",
         "testing/src/r37/kotlin/dev/fusion/testing/R37Checks.kt",
         "tools/test_r37_tools.py",
-        "tools/check_r37_reference.py"
+        "tools/check_r37_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not a POSIX grammar, PTY, process isolation, SSH, terminal emulation or Linux userland. LocalShell integration is separate from these host results.",
       "sha256": {
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/ShellWords.kt": "54406f22e35d9dfd86ec1f7b29eeb088393daedb21e663037915ca58a16a754d",
@@ -1165,14 +1209,18 @@
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/OscLink.kt": "5bd8153fbf3c75ba112526a72496dacb6c66685d18cfa5a933f51c9b7f49dfff",
         "testing/src/r37/kotlin/dev/fusion/testing/R37Checks.kt": "6fba1cbcd2b1e90895ba31e7176343b22d36f62c0992992285550201a8a211c2",
         "tools/test_r37_tools.py": "f0dbb2ff6364b4ce6f030bf47fd2e46a2252788d5b5ab7a283a72a9b99026a88",
-        "tools/check_r37_reference.py": "60a6c44ab4448ebd6d5d00f855776c2c3e18212e12f84c6c7ed939801ee52169"
+        "tools/check_r37_reference.py": "60a6c44ab4448ebd6d5d00f855776c2c3e18212e12f84c6c7ed939801ee52169",
+        "feature/terminal/src/main/kotlin/dev/fusion/terminal/CsiCursor.kt": "3c6f52e310d056fcb0915d8e84f56e8c6184388c55396457afdd30b09920924b",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:vault",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded AES256-GCM envelope with fresh96-bit nonce, authenticated header/context and bidirectional external crypto verification. R31 deepens with VaultManifest: validated item manifest (separator-free names, sha digests, canonical order-independent digest) executed on host JVM; encryption stays with VaultEnvelope. R32 deepens again with LockoutPolicy: brute-force backoff over caller instants (3 free, doubling 30s, saturation) executed on host JVM. R33 deepens again with TotpCode: RFC 6238 TOTP over caller instants (base32 secrets, \u00b1window verify, all six RFC vectors) executed on host JVM. R35 deepens again with XorSplit: 2-of-2 XOR secret splitting (caller mask, mismatches refused) executed on host JVM. R36 deepens again with ShannonBits: Shannon entropy in bits per symbol over raw bytes executed on host JVM. R39 deepens again with IbanCheck: ISO 13616 mod-97 validation with check-digit generation over a declared 12-country registry subset that refuses unknown countries instead of guessing, executed on host JVM. R40 deepens again with Bech32: the BIP-173/350 polymod checksum layer (both constants, mixed-case refusal, 90-char cap) with encode/decode round-trips, wallet semantics declared out of scope, executed on host JVM.",
+      "behavior": "Bounded AES256-GCM envelope with fresh96-bit nonce, authenticated header/context and bidirectional external crypto verification. R31 deepens with VaultManifest: validated item manifest (separator-free names, sha digests, canonical order-independent digest) executed on host JVM; encryption stays with VaultEnvelope. R32 deepens again with LockoutPolicy: brute-force backoff over caller instants (3 free, doubling 30s, saturation) executed on host JVM. R33 deepens again with TotpCode: RFC 6238 TOTP over caller instants (base32 secrets, \u00b1window verify, all six RFC vectors) executed on host JVM. R35 deepens again with XorSplit: 2-of-2 XOR secret splitting (caller mask, mismatches refused) executed on host JVM. R36 deepens again with ShannonBits: Shannon entropy in bits per symbol over raw bytes executed on host JVM. R39 deepens again with IbanCheck: ISO 13616 mod-97 validation with check-digit generation over a declared 12-country registry subset that refuses unknown countries instead of guessing, executed on host JVM. R40 deepens again with Bech32: the BIP-173/350 polymod checksum layer (both constants, mixed-case refusal, 90-char cap) with encode/decode round-trips, wallet semantics declared out of scope, executed on host JVM. R42 deepens again with PwPolicy: password policy compliance explicitly distinct from strength (stated in scope), reporting flags without ever returning substrings, executed on host JVM.",
       "production": [
         "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt",
         "feature/vault/src/main/kotlin/dev/fusion/vault/VaultManifest.kt",
@@ -1181,7 +1229,8 @@
         "feature/vault/src/main/kotlin/dev/fusion/vault/XorSplit.kt",
         "feature/vault/src/main/kotlin/dev/fusion/vault/ShannonBits.kt",
         "feature/vault/src/main/kotlin/dev/fusion/vault/IbanCheck.kt",
-        "feature/vault/src/main/kotlin/dev/fusion/vault/Bech32.kt"
+        "feature/vault/src/main/kotlin/dev/fusion/vault/Bech32.kt",
+        "feature/vault/src/main/kotlin/dev/fusion/vault/PwPolicy.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
@@ -1209,9 +1258,12 @@
         "tools/check_r39_reference.py",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt",
         "tools/test_r40_tools.py",
-        "tools/check_r40_reference.py"
+        "tools/check_r40_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Caller supplies/protects key. No KDF/Keystore, replay/rollback protection, secure deletion, vault unlock or complete security gate acceptance.",
       "sha256": {
         "feature/vault/src/main/kotlin/dev/fusion/vault/VaultEnvelope.kt": "f3967e66f4ae6e84f7fb93cbbc45b1445e4ab8f431df69407beb7c069b9d6b1a",
@@ -1247,14 +1299,18 @@
         "feature/vault/src/main/kotlin/dev/fusion/vault/Bech32.kt": "03fbbe89099f4e42cd7716e98a54b955739f07274fd8336e44fd2120ee8efd9b",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt": "b787d911e5016f6b3f8f4a0dea850dea3f4048ad095804ac272fad6d860430fb",
         "tools/test_r40_tools.py": "d5bb3f9d3577e4b2f2111399523f0619d9b7d0a0c7f789640e37166d4bbed3fa",
-        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9"
+        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9",
+        "feature/vault/src/main/kotlin/dev/fusion/vault/PwPolicy.kt": "a4433a8f0ea1c6335cc6666301b88d413381e1fdd9a2a153949172179b9acb0b",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:notes",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing actual revision/draft/checkpoint/backlink/trash behavior plus R24 pinned New/Save/checkpoint toolbar and field-first note form. Standalone real IME New/cancel case preserves dirty draft, and focused UI9 passed. Plaintext, no hardware/forensic secrecy, full recovery/AX/physical acceptance remains separate. R28 deepens with FrontMatter: flat typed note headers (no nesting/duplicates) executed on host JVM against a real fixture. R34 deepens again with OutlineParse: ATX heading outline with fenced-code suppression (Setext out of scope) executed on host JVM. R37 deepens again with SlugHead: GitHub-style heading slugs plus duplicate suffixes (hyphens not collapsed, non-ASCII refused) executed on host JVM. R40 deepens again with TaskCheckbox: GFM task-list items (marker-space rule, 9-digit ordinal cap, toggle and stats) distinct from the VTODO tally kernel, executed on host JVM.",
+      "behavior": "Existing actual revision/draft/checkpoint/backlink/trash behavior plus R24 pinned New/Save/checkpoint toolbar and field-first note form. Standalone real IME New/cancel case preserves dirty draft, and focused UI9 passed. Plaintext, no hardware/forensic secrecy, full recovery/AX/physical acceptance remains separate. R28 deepens with FrontMatter: flat typed note headers (no nesting/duplicates) executed on host JVM against a real fixture. R34 deepens again with OutlineParse: ATX heading outline with fenced-code suppression (Setext out of scope) executed on host JVM. R37 deepens again with SlugHead: GitHub-style heading slugs plus duplicate suffixes (hyphens not collapsed, non-ASCII refused) executed on host JVM. R40 deepens again with TaskCheckbox: GFM task-list items (marker-space rule, 9-digit ordinal cap, toggle and stats) distinct from the VTODO tally kernel, executed on host JVM. R42 deepens again with UnitPrice: per-base-unit price normalization that refuses cross-dimension comparison instead of pretending density, executed on host JVM.",
       "production": [
         "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt",
         "feature/notes/src/main/kotlin/dev/fusion/notes/NoteFiles.kt",
@@ -1263,7 +1319,8 @@
         "feature/notes/src/main/kotlin/dev/fusion/notes/FrontMatter.kt",
         "feature/notes/src/main/java/dev/fusion/notes/OutlineParse.kt",
         "feature/notes/src/main/java/dev/fusion/notes/SlugHead.kt",
-        "feature/notes/src/main/kotlin/dev/fusion/notes/TaskCheckbox.kt"
+        "feature/notes/src/main/kotlin/dev/fusion/notes/TaskCheckbox.kt",
+        "feature/notes/src/main/kotlin/dev/fusion/notes/UnitPrice.kt"
       ],
       "checks": [
         "feature/notes/src/contract/kotlin/dev/fusion/notes/NoteDraftChecks.kt",
@@ -1281,9 +1338,12 @@
         "tools/check_r37_reference.py",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt",
         "tools/test_r40_tools.py",
-        "tools/check_r40_reference.py"
+        "tools/check_r40_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":testing:noteDraftContracts; native: :app:pixel6Api34ProDebugAndroidTest (disposable opt-in); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:noteDraftContracts; native: :app:pixel6Api34ProDebugAndroidTest (disposable opt-in); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Whole-app lifecycle/power-cut/backup and full filesystem/IME/AX acceptance; version history, attachments/OCR/import/export and full PR-02 scope",
       "sha256": {
         "feature/notes/src/main/kotlin/dev/fusion/notes/NoteDraft.kt": "5a6918f57732fc403ed7c66bb0df2fe6d07a1b2cf95bc7c66ccbb879800d0e38",
@@ -1309,19 +1369,24 @@
         "feature/notes/src/main/kotlin/dev/fusion/notes/TaskCheckbox.kt": "418154ed07619bca8b506bce634b0f2f1e904425b2ba040f4f72bd5e5058f6bd",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt": "b787d911e5016f6b3f8f4a0dea850dea3f4048ad095804ac272fad6d860430fb",
         "tools/test_r40_tools.py": "d5bb3f9d3577e4b2f2111399523f0619d9b7d0a0c7f789640e37166d4bbed3fa",
-        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9"
+        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9",
+        "feature/notes/src/main/kotlin/dev/fusion/notes/UnitPrice.kt": "24a7c35f0eb8953f48c4754a8e104c5ad0ebe2515c5a3eb01575b7cb2a679563",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:calc",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real decimal/scientific/programmer/unit calculations R32 deepens with FractionApprox: best rational approximation with bounded denominator via continued fractions (semiconvergent finish, exact-for-fitting) executed on host JVM and cross-checked against an independent implementation. R34 deepens again with StatSummary: descriptive statistics (Welford mean/variance, median, min/max; non-finite refused) executed on host JVM. R36 deepens again with RpnEval: RPN stack evaluation (+ - * / neg sqrt over finite doubles; underflow/leftover refused) executed on host JVM.",
+      "behavior": "Real decimal/scientific/programmer/unit calculations R32 deepens with FractionApprox: best rational approximation with bounded denominator via continued fractions (semiconvergent finish, exact-for-fitting) executed on host JVM and cross-checked against an independent implementation. R34 deepens again with StatSummary: descriptive statistics (Welford mean/variance, median, min/max; non-finite refused) executed on host JVM. R36 deepens again with RpnEval: RPN stack evaluation (+ - * / neg sqrt over finite doubles; underflow/leftover refused) executed on host JVM. R42 deepens again with NiceStep: 1-2-5 axis step selection with the tick bound honored across a sweep, expression evaluation untouched, executed on host JVM.",
       "production": [
         "feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt",
         "feature/calc/src/main/kotlin/dev/fusion/calc/FractionApprox.kt",
         "feature/calc/src/main/kotlin/dev/fusion/calc/StatSummary.kt",
-        "feature/calc/src/main/kotlin/dev/fusion/calc/RpnEval.kt"
+        "feature/calc/src/main/kotlin/dev/fusion/calc/RpnEval.kt",
+        "feature/calc/src/main/kotlin/dev/fusion/calc/NiceStep.kt"
       ],
       "checks": [
         "feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
@@ -1333,9 +1398,12 @@
         "tools/check_r34_reference.py",
         "testing/src/r36/kotlin/dev/fusion/testing/R36Checks.kt",
         "tools/test_r36_tools.py",
-        "tools/check_r36_reference.py"
+        "tools/check_r36_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":testing:calculatorContracts; python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:calculatorContracts; python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "PR-09 complete actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance",
       "sha256": {
         "feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt": "049b18efbc9258276cb8f9ac9866dacd0a1c1f3d2c7c9d5a77723bcad2bc5fcf",
@@ -1351,7 +1419,11 @@
         "feature/calc/src/main/kotlin/dev/fusion/calc/RpnEval.kt": "3125590db33158130a240b3eee3b7efe1d965be19aa1065f80333eae57ad35fb",
         "testing/src/r36/kotlin/dev/fusion/testing/R36Checks.kt": "5878b667de680a14d76503a6947a064b4b92d3410086f357c099bee19134885e",
         "tools/test_r36_tools.py": "72d77b9ad8cb5237eb981f9a07f811a72e3b2136ec86acef17361c3bea23456c",
-        "tools/check_r36_reference.py": "da8529afa2c8c7c7efcc737035e00afb363326facd029940ca5e5ed03055af5a"
+        "tools/check_r36_reference.py": "da8529afa2c8c7c7efcc737035e00afb363326facd029940ca5e5ed03055af5a",
+        "feature/calc/src/main/kotlin/dev/fusion/calc/NiceStep.kt": "c1a8f10a336d9bfca428cbaef1776002704f9f6d710e7958083237b6c9b22d3d",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -1396,7 +1468,7 @@
       "module": ":feature:media",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Native selected-content foreground player, original subtitle/image routes preserved, strict commercial-service URL projection and explicit external-player handoff. Host policy tests executed; actual decoder/pixels require native receipts. Handoff is NOT streaming integration. R26 deepens with bounded M3U/M3U8/PLS parsing plus explicit disclosed external handoff for service links. R27 deepens with PodcastFeed (bounded RSS2/Atom enclosure reader, real fixtures) and StreamPolicy (explicit HLS variant choice, no silent auto-select) executed on host JVM; MediaHub gains an authored direct-URL stream-player button (parse-gated, not executed). R28 deepens with ChapterMarks: Podlove simple-chapters reader with monotonic starts executed on host JVM against a real fixture. R32 deepens again with CueSheetParser: CUE sheet subset to absolute CD-frame cues (global tags tolerated, INDEX 01 increasing) executed on host JVM against a real fixture. R35 deepens again with Id3Head: ID3v2 header reader (per-version flags, syncsafe size, frames outside) executed on host JVM against a real fixture. R36 deepens again with WavHead: canonical WAV header reader (PCM/float, geometry cross-checked) executed on host JVM against a real fixture. R37 deepens again with Mp4Box: ISO BMFF top-level box walk (64-bit largesize, to-end boxes) executed on host JVM against a real fixture. R38 deepens again with FlacHead: RFC 9639 fLaC marker plus 34-byte streaminfo bit unpacking (20-bit sample rate, 36-bit total samples, block-size floor 16) executed on host JVM against a real fixture. R39 deepens again with MidiNote: MIDI 0..127 naming under the C4=60 convention and 12-TET frequencies at A4=440 with cents deviation, executed on host JVM.",
+      "behavior": "Native selected-content foreground player, original subtitle/image routes preserved, strict commercial-service URL projection and explicit external-player handoff. Host policy tests executed; actual decoder/pixels require native receipts. Handoff is NOT streaming integration. R26 deepens with bounded M3U/M3U8/PLS parsing plus explicit disclosed external handoff for service links. R27 deepens with PodcastFeed (bounded RSS2/Atom enclosure reader, real fixtures) and StreamPolicy (explicit HLS variant choice, no silent auto-select) executed on host JVM; MediaHub gains an authored direct-URL stream-player button (parse-gated, not executed). R28 deepens with ChapterMarks: Podlove simple-chapters reader with monotonic starts executed on host JVM against a real fixture. R32 deepens again with CueSheetParser: CUE sheet subset to absolute CD-frame cues (global tags tolerated, INDEX 01 increasing) executed on host JVM against a real fixture. R35 deepens again with Id3Head: ID3v2 header reader (per-version flags, syncsafe size, frames outside) executed on host JVM against a real fixture. R36 deepens again with WavHead: canonical WAV header reader (PCM/float, geometry cross-checked) executed on host JVM against a real fixture. R37 deepens again with Mp4Box: ISO BMFF top-level box walk (64-bit largesize, to-end boxes) executed on host JVM against a real fixture. R38 deepens again with FlacHead: RFC 9639 fLaC marker plus 34-byte streaminfo bit unpacking (20-bit sample rate, 36-bit total samples, block-size floor 16) executed on host JVM against a real fixture. R39 deepens again with MidiNote: MIDI 0..127 naming under the C4=60 convention and 12-TET frequencies at A4=440 with cents deviation, executed on host JVM. R42 deepens again with GainDb: decibel conversions with the amplitude/power distinction hard-coded into the API surface, executed on host JVM.",
       "production": [
         "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt",
         "feature/media/src/main/java/dev/fusion/media/SubtitlePicker.kt",
@@ -1412,7 +1484,8 @@
         "feature/media/src/main/kotlin/dev/fusion/media/WavHead.kt",
         "feature/media/src/main/kotlin/dev/fusion/media/Mp4Box.kt",
         "feature/media/src/main/kotlin/dev/fusion/media/FlacHead.kt",
-        "feature/media/src/main/kotlin/dev/fusion/media/MidiNote.kt"
+        "feature/media/src/main/kotlin/dev/fusion/media/MidiNote.kt",
+        "feature/media/src/main/kotlin/dev/fusion/media/GainDb.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
@@ -1446,9 +1519,12 @@
         "tools/check_r38_reference.py",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt",
         "tools/test_r39_tools.py",
-        "tools/check_r39_reference.py"
+        "tools/check_r39_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r24c_contracts.py (host); native targets require Android; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r24c_contracts.py (host); native targets require Android; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
       "sha256": {
         "feature/media/src/main/kotlin/dev/fusion/media/SubRip.kt": "ca870b9b4ffbd91936f9026a94b28ee2f27b3cfed237db07047a1b69d50d299b",
@@ -1497,7 +1573,11 @@
         "feature/media/src/main/kotlin/dev/fusion/media/MidiNote.kt": "a4074758c741140cfca798653c960be80ee5ebfe17afe61328417ec7229af571",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt": "fdcd34941916dee9133ca7d06bb23d30e2fb8e686b1654f0713102614bfb7c41",
         "tools/test_r39_tools.py": "cf80040bb33e44a2d6d3dae9d574048452e73868b79c0e8cae1dbaa59e064042",
-        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e"
+        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e",
+        "feature/media/src/main/kotlin/dev/fusion/media/GainDb.kt": "f1997859bc8c106fd106110d32da0ce28cf21a0a55ed4633740659ae171344dc",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -1556,11 +1636,12 @@
       "module": ":feature:alerts",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal. R29 deepens with AlertThrottle: per-key token-bucket throttle with backwards-clock clamp and refuse-when-full table executed on host JVM. R39 deepens again with QuietHours: half-open minute-of-day windows with midnight wrap, boundary countdowns and brute-force-verified overlaps; the degenerate start==end window is refused as ambiguous; executed on host JVM.",
+      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal. R29 deepens with AlertThrottle: per-key token-bucket throttle with backwards-clock clamp and refuse-when-full table executed on host JVM. R39 deepens again with QuietHours: half-open minute-of-day windows with midnight wrap, boundary countdowns and brute-force-verified overlaps; the degenerate start==end window is refused as ambiguous; executed on host JVM. R42 deepens again with SnoozeSeq: capped doubling snooze ladders with monotonicity executed as a property, executed on host JVM.",
       "production": [
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt",
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertThrottle.kt",
-        "feature/alerts/src/main/kotlin/dev/fusion/alerts/QuietHours.kt"
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/QuietHours.kt",
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/SnoozeSeq.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
@@ -1572,9 +1653,12 @@
         "tools/check_r29_reference.py",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt",
         "tools/test_r39_tools.py",
-        "tools/check_r39_reference.py"
+        "tools/check_r39_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No notification ingestion or persistence integration. System listener remains disabled. Caller classification and single-owner use required.",
       "sha256": {
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt": "ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b",
@@ -1589,19 +1673,24 @@
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/QuietHours.kt": "708a69e0fd7aabb5a77d1e652b4b724592fee36a63eb25406a3e8ef1207a00a3",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt": "fdcd34941916dee9133ca7d06bb23d30e2fb8e686b1654f0713102614bfb7c41",
         "tools/test_r39_tools.py": "cf80040bb33e44a2d6d3dae9d574048452e73868b79c0e8cae1dbaa59e064042",
-        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e"
+        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e",
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/SnoozeSeq.kt": "60e73953bd807098c9accdeea1d3b9a85a2e8231bbdd00ee514f7fd18dbd4b14",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:capture",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded monotonic pause/resume interval accounting, consumed by real recorder start/stop status. R30 deepens with Timecode: millisecond to HH:MM:SS:FF conversion with fps-gated frame field and whole-day clamps executed on host JVM. R38 deepens again with VttTime: W3C WebVTT timestamp and cue-timings parsing (2+ digit hours, strict dot-milliseconds, end-after-start) executed on host JVM, distinct from the SMPTE Timecode kernel. R39 deepens again with ExposureEv: APEX exposure-value arithmetic (sunny-16 pinned at EV15, ISO rescaling, reciprocity solvers) with metering and luminance calibration declared out of scope, executed on host JVM.",
+      "behavior": "Bounded monotonic pause/resume interval accounting, consumed by real recorder start/stop status. R30 deepens with Timecode: millisecond to HH:MM:SS:FF conversion with fps-gated frame field and whole-day clamps executed on host JVM. R38 deepens again with VttTime: W3C WebVTT timestamp and cue-timings parsing (2+ digit hours, strict dot-milliseconds, end-after-start) executed on host JVM, distinct from the SMPTE Timecode kernel. R39 deepens again with ExposureEv: APEX exposure-value arithmetic (sunny-16 pinned at EV15, ISO rescaling, reciprocity solvers) with metering and luminance calibration declared out of scope, executed on host JVM. R42 deepens again with Rule3rds: thirds gridlines, power points and nearest-point snapping, geometry only, executed on host JVM.",
       "production": [
         "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt",
         "feature/capture/src/main/kotlin/dev/fusion/capture/Timecode.kt",
         "feature/capture/src/main/kotlin/dev/fusion/capture/VttTime.kt",
-        "feature/capture/src/main/kotlin/dev/fusion/capture/ExposureEv.kt"
+        "feature/capture/src/main/kotlin/dev/fusion/capture/ExposureEv.kt",
+        "feature/capture/src/main/kotlin/dev/fusion/capture/Rule3rds.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
@@ -1617,9 +1706,12 @@
         "tools/check_r38_reference.py",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt",
         "tools/test_r39_tools.py",
-        "tools/check_r39_reference.py"
+        "tools/check_r39_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Observed elapsed intervals are not encoded media timestamps. No new MediaProjection/encoder/thermal/physical gate acceptance.",
       "sha256": {
         "feature/capture/src/main/kotlin/dev/fusion/capture/RecordingTimeline.kt": "7a6e0d87e4d929542576c1c4de5b84ead4ab557d31433073c3e8ec897065e150",
@@ -1639,7 +1731,11 @@
         "feature/capture/src/main/kotlin/dev/fusion/capture/ExposureEv.kt": "7aa49b5aa3f5cc6cb60536b3fd8c7845177910dcf91129aada2c8b3afa1045e6",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt": "fdcd34941916dee9133ca7d06bb23d30e2fb8e686b1654f0713102614bfb7c41",
         "tools/test_r39_tools.py": "cf80040bb33e44a2d6d3dae9d574048452e73868b79c0e8cae1dbaa59e064042",
-        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e"
+        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e",
+        "feature/capture/src/main/kotlin/dev/fusion/capture/Rule3rds.kt": "f3966bb69696977b444671a5a406145bee14e1760715003ef47ead53445fbf7a",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -1682,14 +1778,15 @@
       "module": ":feature:continuity",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded single UTC event ICS serialization; Unicode octet folding, escaped literals and independent-reader roundtrip. R30 deepens with VEventParse: single-VEVENT ICS parser (CRLF framing, unfold, text unescape, UTC instants, DTEND-after-DTSTART) executed on host JVM against a real fixture. R32 deepens again with ICalDuration: RFC 5545 durations to seconds (weeks-alone, calendrical months/years refused) executed on host JVM. R34 deepens again with VTodoParse: single-VTODO parser (status/due/priority/percent, folding, unknown props refused) executed on host JVM. R35 deepens again with VCardParse: single-vCard subset parser (VERSION/FN/N/TEL/EMAIL, TYPE only, unknown refused) executed on host JVM. R37 deepens again with TaskTally: VTODO status tallies with a separate unspecified bucket executed on host JVM.",
+      "behavior": "Bounded single UTC event ICS serialization; Unicode octet folding, escaped literals and independent-reader roundtrip. R30 deepens with VEventParse: single-VEVENT ICS parser (CRLF framing, unfold, text unescape, UTC instants, DTEND-after-DTSTART) executed on host JVM against a real fixture. R32 deepens again with ICalDuration: RFC 5545 durations to seconds (weeks-alone, calendrical months/years refused) executed on host JVM. R34 deepens again with VTodoParse: single-VTODO parser (status/due/priority/percent, folding, unknown props refused) executed on host JVM. R35 deepens again with VCardParse: single-vCard subset parser (VERSION/FN/N/TEL/EMAIL, TYPE only, unknown refused) executed on host JVM. R37 deepens again with TaskTally: VTODO status tallies with a separate unspecified bucket executed on host JVM. R42 deepens again with PairPin: Damm-algorithm check digits (a fourth checksum family) with the all-single-errors and all-adjacent-transpositions properties executed as mutation sweeps, on host JVM.",
       "production": [
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt",
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/VEventParse.kt",
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/ICalDuration.kt",
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/VTodoParse.kt",
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/VCardParse.kt",
-        "feature/continuity/src/main/kotlin/dev/fusion/continuity/TaskTally.kt"
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/TaskTally.kt",
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/PairPin.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
@@ -1710,9 +1807,12 @@
         "tools/check_r35_reference.py",
         "testing/src/r37/kotlin/dev/fusion/testing/R37Checks.kt",
         "tools/test_r37_tools.py",
-        "tools/check_r37_reference.py"
+        "tools/check_r37_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not wired to share UI, not CalendarContract, recurrence, reminders, synchronization, PC bridge or complete continuity.",
       "sha256": {
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/CalendarExport.kt": "c7914208c08e577386bccb2f317449fbafad60fc073913e29a4617b89ba2b485",
@@ -1739,7 +1839,11 @@
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/TaskTally.kt": "a03935c73cae76dd5be34c93fbe59ba3add9a01faf26e6af04deaf5281aa9721",
         "testing/src/r37/kotlin/dev/fusion/testing/R37Checks.kt": "6fba1cbcd2b1e90895ba31e7176343b22d36f62c0992992285550201a8a211c2",
         "tools/test_r37_tools.py": "f0dbb2ff6364b4ce6f030bf47fd2e46a2252788d5b5ab7a283a72a9b99026a88",
-        "tools/check_r37_reference.py": "60a6c44ab4448ebd6d5d00f855776c2c3e18212e12f84c6c7ed939801ee52169"
+        "tools/check_r37_reference.py": "60a6c44ab4448ebd6d5d00f855776c2c3e18212e12f84c6c7ed939801ee52169",
+        "feature/continuity/src/main/kotlin/dev/fusion/continuity/PairPin.kt": "2f7131e9830fbada45e42ab38a824e4fb8f23efbf9ced928820da21f50badec0",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -1916,13 +2020,14 @@
       "module": ":feature:messages",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Strict bounded plaintext transcript archive with actual file roundtrip and independent binary/CRC verification. R30 deepens with SmsSegments: GSM-7/extension/UCS-2 classification with septet counting and multipart segment math (counts only, no sending) executed on host JVM. R33 deepens again with E164Format: grammar-only E.164 normalization (separators stripped, 00/trunk handling, no numbering-plan guessing) executed on host JVM. R38 deepens again with QuotedPrint: strict RFC 2045 section 6.7 quoted-printable decode/encode (uppercase-only escapes, soft breaks, 76-char line cap) executed on host JVM. R40 deepens again with Rfc2047: encoded-word decoding (B and Q, adjacent-word whitespace deletion, 75-char cap, three-charset subset) cross-checked against held-out email.header, executed on host JVM.",
+      "behavior": "Strict bounded plaintext transcript archive with actual file roundtrip and independent binary/CRC verification. R30 deepens with SmsSegments: GSM-7/extension/UCS-2 classification with septet counting and multipart segment math (counts only, no sending) executed on host JVM. R33 deepens again with E164Format: grammar-only E.164 normalization (separators stripped, 00/trunk handling, no numbering-plan guessing) executed on host JVM. R38 deepens again with QuotedPrint: strict RFC 2045 section 6.7 quoted-printable decode/encode (uppercase-only escapes, soft breaks, 76-char line cap) executed on host JVM. R40 deepens again with Rfc2047: encoded-word decoding (B and Q, adjacent-word whitespace deletion, 75-char cap, three-charset subset) cross-checked against held-out email.header, executed on host JVM. R42 deepens again with Rfc2231: parameter continuations and extended values at their proper layer (the mechanism Rfc2047 refused inline), stateless after an in-authoring purity repair, executed on host JVM.",
       "production": [
         "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt",
         "feature/messages/src/main/kotlin/dev/fusion/messages/SmsSegments.kt",
         "feature/messages/src/main/kotlin/dev/fusion/messages/E164Format.kt",
         "feature/messages/src/main/kotlin/dev/fusion/messages/QuotedPrint.kt",
-        "feature/messages/src/main/kotlin/dev/fusion/messages/Rfc2047.kt"
+        "feature/messages/src/main/kotlin/dev/fusion/messages/Rfc2047.kt",
+        "feature/messages/src/main/kotlin/dev/fusion/messages/Rfc2231.kt"
       ],
       "checks": [
         "testing/src/r15/kotlin/dev/fusion/testing/R15Checks.kt",
@@ -1941,9 +2046,12 @@
         "tools/check_r38_reference.py",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt",
         "tools/test_r40_tools.py",
-        "tools/check_r40_reference.py"
+        "tools/check_r40_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py (docs/BUILD.md); python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Not authentication/encryption, system message access, attachments, own-Mac/SMS/RCS transport or a completed messaging UI.",
       "sha256": {
         "feature/messages/src/main/kotlin/dev/fusion/messages/TranscriptArchive.kt": "f66857b47fba58f03f52b414f6540ef215f4064c4ad70269f9c09674d61c580d",
@@ -1967,14 +2075,18 @@
         "feature/messages/src/main/kotlin/dev/fusion/messages/Rfc2047.kt": "995b6f438e07c33860ed9ca407e54c21b715421393cf69babbc48a7ad822cf63",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt": "b787d911e5016f6b3f8f4a0dea850dea3f4048ad095804ac272fad6d860430fb",
         "tools/test_r40_tools.py": "d5bb3f9d3577e4b2f2111399523f0619d9b7d0a0c7f789640e37166d4bbed3fa",
-        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9"
+        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9",
+        "feature/messages/src/main/kotlin/dev/fusion/messages/Rfc2231.kt": "3653a736b3c457e08e3076623f46907fadd09cfd30892109c4e700d172d128ce",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:automation",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 pinned real save/reload toolbar and field-first plaintext form, keyboard-safe transient viewport. Actual standalone real IME single native tap in BOTH Business/Art writes exact revision1/single title, plus original R18 workflow passed UI9. Existing CSV/XLSX/new-copy/FD/wire/PDF27/CSV8 passed exact23e8868. No reminders/recurrence/sync/full productivity or universal UI stability claim. R27 deepens with CronSpec: Vixie 5-field parser with UTC next-fire minute scan executed on host JVM and cross-checked by an independent Python implementation. R28 deepens with Recurrence: RRULE-subset expansion with RFC invalid-date skips executed on host JVM and cross-checked in Python. R38 deepens again with IsoWeek: ISO 8601 week-date math (days-from-civil, long-year rule, year-boundary weeks) cross-checked against Python datetime.isocalendar, executed on host JVM. R41 deepens again with DurationIso: ISO 8601 durations where toSeconds refuses calendar-dependent years/months instead of assuming a calendar, cross-checked against timedelta, executed on host JVM.",
+      "behavior": "R24 pinned real save/reload toolbar and field-first plaintext form, keyboard-safe transient viewport. Actual standalone real IME single native tap in BOTH Business/Art writes exact revision1/single title, plus original R18 workflow passed UI9. Existing CSV/XLSX/new-copy/FD/wire/PDF27/CSV8 passed exact23e8868. No reminders/recurrence/sync/full productivity or universal UI stability claim. R27 deepens with CronSpec: Vixie 5-field parser with UTC next-fire minute scan executed on host JVM and cross-checked by an independent Python implementation. R28 deepens with Recurrence: RRULE-subset expansion with RFC invalid-date skips executed on host JVM and cross-checked in Python. R38 deepens again with IsoWeek: ISO 8601 week-date math (days-from-civil, long-year rule, year-boundary weeks) cross-checked against Python datetime.isocalendar, executed on host JVM. R41 deepens again with DurationIso: ISO 8601 durations where toSeconds refuses calendar-dependent years/months instead of assuming a calendar, cross-checked against timedelta, executed on host JVM. R42 deepens again with NextRun: anchor+period schedule arithmetic with the smallest-run-strictly-after law executed, the 60s floor enforced, zones left to CronSpec, executed on host JVM.",
       "production": [
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/TaskBook.kt",
@@ -1989,7 +2101,8 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/CronSpec.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/Recurrence.kt",
         "feature/automation/src/main/kotlin/dev/fusion/automation/IsoWeek.kt",
-        "feature/automation/src/main/kotlin/dev/fusion/automation/DurationIso.kt"
+        "feature/automation/src/main/kotlin/dev/fusion/automation/DurationIso.kt",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/NextRun.kt"
       ],
       "checks": [
         "testing/src/r13/kotlin/dev/fusion/testing/R13Checks.kt",
@@ -2026,9 +2139,12 @@
         "tools/check_r38_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (reader/compiler setup: docs/BUILD.md); python3 tools/run_r17_contracts.py; python3 tools/run_r17_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No permanent deletion/history/recurrence/reminders/calendar integration or Room; plaintext/same-process storage only; UI instability, keyboard/AX/physical acceptance remain open. FTS2 mutations prevent old-client downgrade reading. Action plans are not transactional/scheduled.",
       "sha256": {
         "feature/automation/src/main/kotlin/dev/fusion/automation/ActionPlan.kt": "76917eb1897526fda5d9871d6e6484c46458c175e52d4769d5f261f03a382623",
@@ -2079,7 +2195,11 @@
         "feature/automation/src/main/kotlin/dev/fusion/automation/DurationIso.kt": "20aa91f2186e7376e665a19603ee4620f7d67be2349036367b4fd5a9feed6c10",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "feature/automation/src/main/kotlin/dev/fusion/automation/NextRun.kt": "a52eca466ec0661fabe25a129d49295cd7e2119e7cb567b36bad00765957e306",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -2116,7 +2236,7 @@
       "module": ":format:archive",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security R22 adds strict local/central agreement, actual bounded inflate/CRC and allowlisted members; narrow platform spike2/2 passed; not general extraction. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R30 deepens with TarHeader: POSIX ustar header parser (octal fields, checksum, magic/version, name+prefix join) executed on host JVM against a real fixture. R33 deepens again with GzipInspect: gzip member-header reader (flag walk, FNAME capture, FHCRC verification) executed on host JVM against real fixtures. R34 deepens again with ZlibHead: RFC 1950 header reader (CMF/FLG, FCHECK enforced, preset dictionaries refused) executed on host JVM against a real fixture. R37 deepens again with XzHead: XZ stream header reader (magic, zero flags byte, assigned Check IDs including 0x0A SHA-256, CRC32 over flags) executed on host JVM against a real fixture. R40 deepens again with SevenZHead: the 7z 32-byte signature header with the StartHeaderCRC gate verified against held-out zlib.crc32, executed on host JVM against a real fixture.",
+      "behavior": "Actual read-only ZIP metadata listing/refusals, not extraction or consumed-byte bomb security R22 adds strict local/central agreement, actual bounded inflate/CRC and allowlisted members; narrow platform spike2/2 passed; not general extraction. R22 exact fe8dca2 full119/0 also passed; not full-spec acceptance. R30 deepens with TarHeader: POSIX ustar header parser (octal fields, checksum, magic/version, name+prefix join) executed on host JVM against a real fixture. R33 deepens again with GzipInspect: gzip member-header reader (flag walk, FNAME capture, FHCRC verification) executed on host JVM against real fixtures. R34 deepens again with ZlibHead: RFC 1950 header reader (CMF/FLG, FCHECK enforced, preset dictionaries refused) executed on host JVM against a real fixture. R37 deepens again with XzHead: XZ stream header reader (magic, zero flags byte, assigned Check IDs including 0x0A SHA-256, CRC32 over flags) executed on host JVM against a real fixture. R40 deepens again with SevenZHead: the 7z 32-byte signature header with the StartHeaderCRC gate verified against held-out zlib.crc32, executed on host JVM against a real fixture. R42 deepens again with ArHead: the unix ar / Debian .deb outer structure (60-byte headers, even-offset padding, deb layout check), executed on host JVM.",
       "production": [
         "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt",
         "format/archive/src/main/kotlin/dev/fusion/archive/StrictZip.kt",
@@ -2124,7 +2244,8 @@
         "format/archive/src/main/kotlin/dev/fusion/archive/GzipHead.kt",
         "format/archive/src/main/kotlin/dev/fusion/archive/ZlibHead.kt",
         "format/archive/src/main/kotlin/dev/fusion/archive/XzHead.kt",
-        "format/archive/src/main/kotlin/dev/fusion/archive/SevenZHead.kt"
+        "format/archive/src/main/kotlin/dev/fusion/archive/SevenZHead.kt",
+        "format/archive/src/main/kotlin/dev/fusion/archive/ArHead.kt"
       ],
       "checks": [
         "format/archive/src/test/kotlin/dev/fusion/archive/ZipGuardTest.kt",
@@ -2144,9 +2265,12 @@
         "tools/check_r37_reference.py",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt",
         "tools/test_r40_tools.py",
-        "tools/check_r40_reference.py"
+        "tools/check_r40_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":format:archive:test; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":format:archive:test; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Isolated full archive handling, traversal/bomb/encoding/roundtrip corpus and license closure",
       "sha256": {
         "format/archive/src/main/kotlin/dev/fusion/archive/ZipGuard.kt": "f2f5fbf7016de224fa781ab06d018f9855c16dd0bbfe21a5c1fad444bb37bc75",
@@ -2173,14 +2297,18 @@
         "format/archive/src/main/kotlin/dev/fusion/archive/SevenZHead.kt": "f8927069fb3a042ca6631d691d1e7af8d286bb66c146f8d9f0e5e9a0ba232d5d",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt": "b787d911e5016f6b3f8f4a0dea850dea3f4048ad095804ac272fad6d860430fb",
         "tools/test_r40_tools.py": "d5bb3f9d3577e4b2f2111399523f0619d9b7d0a0c7f789640e37166d4bbed3fa",
-        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9"
+        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9",
+        "format/archive/src/main/kotlin/dev/fusion/archive/ArHead.kt": "a78938e1d7c2158cf952a39fbdef777a36d2d4d4ff3a7ef2dcb82cff075f5201",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":format:ooxml",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing bounded literal/CSV/strict XML/ZIP/new-copy subset plus R24 exact-empty UTF8 encoder/decoder fast path. New strict JDK differential, empty input-vs-record/cell and dense32780byte frame attacks pass. Exact23e8868 original dense CSV8 and boundary27 passed unchanged5s watchdog/8s reply limits after prior deadline failures retained. Not full Office or universal timing/fidelity guarantee. R29 deepens with CsvDialect: delimiter sniffing plus quote-aware translation into the CsvTable comma grammar, executed end-to-end on host JVM against real fixtures. R39 deepens again with SerialDate: Excel 1900/1904 serial-date arithmetic keeping the Lotus phantom 1900-02-29 as serial 60 per ECMA-376, cross-checked against Python datetime, executed on host JVM. R39 also adds ColLetters: the bijective base-26 A..XFD column alphabet with the full 1..16384 bijection executed as one property, on host JVM. R39 also adds ColWidth: the ECMA-376 section 18.3.1.13 character/pixel/file-width conversions (MDW model, Excel default 8.43 chars = 64 px pinned) executed on host JVM. R40 deepens again with NumFmtSections: ECMA-376 section 18.8.31 number-format structure (quote/bracket/escape-aware section splitting, color and General classification) executed on host JVM; rendering stays out of scope and LiteralXlsxImport keeps refusing custom formats. R40 also adds CellErr: the seven classic SpreadsheetML error literals with format/parse bijection and the dynamic-array-era errors refused by name, executed on host JVM. R41 deepens again with SheetRange: A1 cells and rectangular ranges with corner normalization, containment, intersection and bounding boxes over the full 16384x1048576 grid, executed on host JVM and under Gradle in CI. R41 also adds R1c1Ref: the R1C1 reference style ColLetters declared out of scope \u2014 absolute/relative/mixed forms resolving against an anchor with no grid wrapping, executed on host JVM.",
+      "behavior": "Existing bounded literal/CSV/strict XML/ZIP/new-copy subset plus R24 exact-empty UTF8 encoder/decoder fast path. New strict JDK differential, empty input-vs-record/cell and dense32780byte frame attacks pass. Exact23e8868 original dense CSV8 and boundary27 passed unchanged5s watchdog/8s reply limits after prior deadline failures retained. Not full Office or universal timing/fidelity guarantee. R29 deepens with CsvDialect: delimiter sniffing plus quote-aware translation into the CsvTable comma grammar, executed end-to-end on host JVM against real fixtures. R39 deepens again with SerialDate: Excel 1900/1904 serial-date arithmetic keeping the Lotus phantom 1900-02-29 as serial 60 per ECMA-376, cross-checked against Python datetime, executed on host JVM. R39 also adds ColLetters: the bijective base-26 A..XFD column alphabet with the full 1..16384 bijection executed as one property, on host JVM. R39 also adds ColWidth: the ECMA-376 section 18.3.1.13 character/pixel/file-width conversions (MDW model, Excel default 8.43 chars = 64 px pinned) executed on host JVM. R40 deepens again with NumFmtSections: ECMA-376 section 18.8.31 number-format structure (quote/bracket/escape-aware section splitting, color and General classification) executed on host JVM; rendering stays out of scope and LiteralXlsxImport keeps refusing custom formats. R40 also adds CellErr: the seven classic SpreadsheetML error literals with format/parse bijection and the dynamic-array-era errors refused by name, executed on host JVM. R41 deepens again with SheetRange: A1 cells and rectangular ranges with corner normalization, containment, intersection and bounding boxes over the full 16384x1048576 grid, executed on host JVM and under Gradle in CI. R41 also adds R1c1Ref: the R1C1 reference style ColLetters declared out of scope \u2014 absolute/relative/mixed forms resolving against an anchor with no grid wrapping, executed on host JVM. R42 deepens again with AbsRef: $-marker absolute/mixed references with fill-shift semantics (absolute parts pinned, no grid wrapping), executed on host JVM and under Gradle in CI. R42 also adds MergedCells: merge-region disjointness, anchors and coverage per ECMA-376 mergeCells rules, executed on host JVM.",
       "production": [
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
@@ -2197,7 +2325,9 @@
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumFmtSections.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CellErr.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetRange.kt",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/R1c1Ref.kt"
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/R1c1Ref.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/AbsRef.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/MergedCells.kt"
       ],
       "checks": [
         "format/ooxml/src/contract/kotlin/dev/fusion/ooxml/OoxmlChecks.kt",
@@ -2234,9 +2364,12 @@
         "tools/check_r40_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":testing:ooxmlGuardContracts; python3 tools/run_r13_contracts.py; python3 tools/run_r13_interop.py (docs/BUILD.md); python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py; python3 tools/run_r15_contracts.py; python3 tools/run_r15_interop.py; python3 tools/run_r18_contracts.py; python3 tools/run_r18_interop.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "sha256": {
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt": "0e59af0c0682f04e76bbd844e4412ef26e23e07e53fbd3f2b3f553806420c24c",
@@ -2289,14 +2422,19 @@
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/R1c1Ref.kt": "4b7ed630fe1eaee5831d4089a8304d5a9f6fbf4bacbaa420cdae26f6877d6417",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/AbsRef.kt": "bcf62018c0081f27f82636e265f013caeb70e0b84ea9784829fd5ab0f37cf5a5",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/MergedCells.kt": "75a9143b8a950fea95afe7c1326a028f6d975a96f9c0b9110f0f5db0bc1c9a3a",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":format:pdf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "R24 genuine platform native PDF rendering ONLY in isolated worker, fresh unlinked readonly seekable FD, source<=2MiB/pages<=1024/preview<=320px raw ARGB. Parent no child PNG/JPEG decoder; immutable page binding/serialized render. Exact23e8868 boundary39075701922 passed27/0 incl genuine PDF golden pixels/hostile wire/recovery/picker/source bytes/rapid pages and retained CSV/XLSX/FD controls. Full PDF/Office editing/signing/fidelity blocked; no honest-worker or no-disk/erasure claim. R31 deepens with PdfTrailer: minimal PDF trailer/xref reader (version, Size/Root, startxref, table entries) executed on host JVM against a real fixture. R38 deepens again with PdfName: ISO 32000-1 section 7.3.5 name-object #-escape decode/encode with the #00 prohibition, executed on host JVM over the Table 4 examples. R39 deepens again with CropBox: ISO 32000-1 rectangle normalization plus the CropBox-defaults-to-MediaBox and intersection rules with disjoint crops refused, executed on host JVM. R40 deepens again with PdfRotate: ISO 32000-1 Table 30 /Rotate normalization, page-tree inheritance and visible-size swap with the full 4x4 composition table executed on host JVM. R41 deepens again with PdfPageGeometry: the CropBox+Rotate composition producing the actual display surface, with /UserUnit refused rather than scaled, executed on host JVM.",
+      "behavior": "R24 genuine platform native PDF rendering ONLY in isolated worker, fresh unlinked readonly seekable FD, source<=2MiB/pages<=1024/preview<=320px raw ARGB. Parent no child PNG/JPEG decoder; immutable page binding/serialized render. Exact23e8868 boundary39075701922 passed27/0 incl genuine PDF golden pixels/hostile wire/recovery/picker/source bytes/rapid pages and retained CSV/XLSX/FD controls. Full PDF/Office editing/signing/fidelity blocked; no honest-worker or no-disk/erasure claim. R31 deepens with PdfTrailer: minimal PDF trailer/xref reader (version, Size/Root, startxref, table entries) executed on host JVM against a real fixture. R38 deepens again with PdfName: ISO 32000-1 section 7.3.5 name-object #-escape decode/encode with the #00 prohibition, executed on host JVM over the Table 4 examples. R39 deepens again with CropBox: ISO 32000-1 rectangle normalization plus the CropBox-defaults-to-MediaBox and intersection rules with disjoint crops refused, executed on host JVM. R40 deepens again with PdfRotate: ISO 32000-1 Table 30 /Rotate normalization, page-tree inheritance and visible-size swap with the full 4x4 composition table executed on host JVM. R41 deepens again with PdfPageGeometry: the CropBox+Rotate composition producing the actual display surface, with /UserUnit refused rather than scaled, executed on host JVM. R42 deepens again with PdfDate: ISO 32000-1 section 7.9.4 date strings with field defaulting and the missing-offset-is-null honesty (never assumed UTC), executed on host JVM.",
       "production": [
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatLease.kt",
@@ -2306,7 +2444,8 @@
         "format/pdf/src/main/java/dev/fusion/format/pdf/PdfName.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/CropBox.kt",
         "format/pdf/src/main/java/dev/fusion/format/pdf/PdfRotate.kt",
-        "format/pdf/src/main/java/dev/fusion/format/pdf/PdfPageGeometry.kt"
+        "format/pdf/src/main/java/dev/fusion/format/pdf/PdfPageGeometry.kt",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/PdfDate.kt"
       ],
       "checks": [
         "app/src/androidTest/java/dev/fusion/shell/FormatIsolationDeviceTest.kt",
@@ -2332,9 +2471,12 @@
         "tools/check_r40_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r22_contracts.py; :testing:r22Contracts; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Complete bounded/isolation/view/edit/annotation/safe-save/fidelity/license acceptance; not sealed storage, arithmetic-veracity proof or defense against compromised same-UID ownership",
       "sha256": {
         "format/pdf/src/main/java/dev/fusion/format/pdf/sandbox/FormatWorkerService.kt": "0df998468d7c64228e2406c1ae1d56273dade36ee2e7a1b1e1d786d32854d9e1",
@@ -2369,14 +2511,18 @@
         "format/pdf/src/main/java/dev/fusion/format/pdf/PdfPageGeometry.kt": "6cbf78e7c31d5b48658d583348cbad621e32b71a4dc00b950820961bee33b580",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "format/pdf/src/main/java/dev/fusion/format/pdf/PdfDate.kt": "8892ca9bfffb5b224d4f286dbd4d75eca99aedeae80258ecb3d7eab7e1afb325",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":format:image",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing owned ARGB transformations plus R25 bounded PNG metadata-copy kernel: exact retained chunk/image data, CRC/order/deflate checks, no source mutation. New native isolated-memory/picker path is authored but must pass its own device gates. R30 deepens with GifInfo: GIF87a/89a logical-screen and frame-count walker (extension skipping, trailer exactness) executed on host JVM against a real fixture. R33 deepens again with BmpInspect: BMP header reader (BITMAPINFOHEADER, top-down orientation, RLE refused, no pixels decoded) executed on host JVM against a real fixture. R34 deepens again with JpegSeg: JPEG marker walker with SOF0/1/2 dimensions (stops at SOS, entropy never interpreted) executed on host JVM against a real fixture. R36 deepens again with TiffHead: TIFF header reader (either byte order, magic 42, even IFD offset) executed on host JVM against a real fixture. R38 deepens again with WebpHead: RFC 9649 RIFF/WEBP envelope and VP8X canvas/flag decoding (minus-one 24-bit dims, 2^32-1 pixel budget) executed on host JVM against a real fixture. R39 deepens again with IcoDir: ICONDIR/ICONDIRENTRY parsing with 0-means-256 dimensions, payload-kind detection and PNG-IHDR dimension agreement enforced, executed on host JVM against a real fixture.",
+      "behavior": "Existing owned ARGB transformations plus R25 bounded PNG metadata-copy kernel: exact retained chunk/image data, CRC/order/deflate checks, no source mutation. New native isolated-memory/picker path is authored but must pass its own device gates. R30 deepens with GifInfo: GIF87a/89a logical-screen and frame-count walker (extension skipping, trailer exactness) executed on host JVM against a real fixture. R33 deepens again with BmpInspect: BMP header reader (BITMAPINFOHEADER, top-down orientation, RLE refused, no pixels decoded) executed on host JVM against a real fixture. R34 deepens again with JpegSeg: JPEG marker walker with SOF0/1/2 dimensions (stops at SOS, entropy never interpreted) executed on host JVM against a real fixture. R36 deepens again with TiffHead: TIFF header reader (either byte order, magic 42, even IFD offset) executed on host JVM against a real fixture. R38 deepens again with WebpHead: RFC 9649 RIFF/WEBP envelope and VP8X canvas/flag decoding (minus-one 24-bit dims, 2^32-1 pixel budget) executed on host JVM against a real fixture. R39 deepens again with IcoDir: ICONDIR/ICONDIRENTRY parsing with 0-means-256 dimensions, payload-kind detection and PNG-IHDR dimension agreement enforced, executed on host JVM against a real fixture. R42 deepens again with BmpHead: standalone BMP headers (top-down heights surfaced, V4/V5 refused by biSize, 4-byte stride law), executed on host JVM.",
       "production": [
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt",
         "format/image/src/main/java/dev/fusion/format/image/ImageOps.kt",
@@ -2388,7 +2534,8 @@
         "format/image/src/main/kotlin/dev/fusion/format/image/JpegSeg.kt",
         "format/image/src/main/kotlin/dev/fusion/format/image/TiffHead.kt",
         "format/image/src/main/kotlin/dev/fusion/format/image/WebpHead.kt",
-        "format/image/src/main/kotlin/dev/fusion/format/image/IcoDir.kt"
+        "format/image/src/main/kotlin/dev/fusion/format/image/IcoDir.kt",
+        "format/image/src/main/kotlin/dev/fusion/format/image/BmpHead.kt"
       ],
       "checks": [
         "testing/src/subsets/kotlin/dev/fusion/testing/SubsetChecks.kt",
@@ -2413,9 +2560,12 @@
         "tools/check_r38_reference.py",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt",
         "tools/test_r39_tools.py",
-        "tools/check_r39_reference.py"
+        "tools/check_r39_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r25_contracts.py; :testing:r25PngContracts; native R25PngCopyDeviceTest; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r25_contracts.py; :testing:r25PngContracts; native R25PngCopyDeviceTest; python3 tools/run_r30_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r33_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Bounded RGB/RGBA8 samples, not arbitrary profiles/animation/orientation/printing, metadata-free visible content, malware sanitization, hostile-provider/worker guarantee or full original image workflow.",
       "sha256": {
         "format/image/src/main/kotlin/dev/fusion/format/image/ArgbImage.kt": "e8c17bb97f5542269c643c21a0fb6b31eba603f25f7b63643979fc27623d9058",
@@ -2451,7 +2601,11 @@
         "format/image/src/main/kotlin/dev/fusion/format/image/IcoDir.kt": "b65c779f9e3b2cc38b1ffadd4c7aa839f3015e5924d24b7e09731a9fb9827276",
         "testing/src/r39/kotlin/dev/fusion/testing/R39Checks.kt": "fdcd34941916dee9133ca7d06bb23d30e2fb8e686b1654f0713102614bfb7c41",
         "tools/test_r39_tools.py": "cf80040bb33e44a2d6d3dae9d574048452e73868b79c0e8cae1dbaa59e064042",
-        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e"
+        "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e",
+        "format/image/src/main/kotlin/dev/fusion/format/image/BmpHead.kt": "f0bcb646df474adb2114b6f3e540e3e2443d326d9158dd5197cbf4bed4a9b661",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
@@ -2694,7 +2848,7 @@
       "module": ":privacy",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Existing offline/no-IME compartment now discards on observed input/IME/accessibility/additional-display changes, latches until an explicit empty restart and rejects stale buttons. Native real-IME-setting test authored; current-candidate device results separate. No passive-keylogger detection or hardware/host guarantee. R31 deepens with LogScrubber: deterministic PII redaction (emails, phone runs, bearer/token secrets, device paths) with idempotence executed on host JVM against a real fixture. R32 deepens again with RetentionSweep: amnesia plumbing partitioning timestamped records into keep/purge by per-kind max ages (caller clock, unknown kinds refused), executed on host JVM. R34 deepens again with Pseudonym: HMAC-SHA256 pseudonyms with context domain separation (constant-time verify) executed on host JVM with JVM=hmac interop. R35 deepens again with FieldMask: allowlist/denylist field projection over flat records executed on host JVM. R36 deepens again with KAnon: k-anonymity auditing (equivalence groups, insertion-ordered violations) executed on host JVM. R37 deepens again with UtmStrip: known tracking-parameter stripping with fragment preservation executed on host JVM. R38 deepens again with LuhnCheck: ISO/IEC 7812 Luhn validation plus PCI DSS first6+last4 PAN masking and a free-text scrubber that leaves non-PAN digit runs alone, executed on host JVM. R39 deepens again with MacAddr: IEEE 802 U/L and I/G bit analysis across three address shapes with OUI suppressed for local addresses and redaction that keeps only the administration half; local-unicast is documented as a hint, never proof of randomization; executed on host JVM. R40 deepens again with IpRedact: strict v4/v6 parsing with /24 and /48 prefix-keeping redaction whose scope string states it reduces identifiability and is NOT anonymity, cross-checked against held-out ipaddress, executed on host JVM.",
+      "behavior": "Existing offline/no-IME compartment now discards on observed input/IME/accessibility/additional-display changes, latches until an explicit empty restart and rejects stale buttons. Native real-IME-setting test authored; current-candidate device results separate. No passive-keylogger detection or hardware/host guarantee. R31 deepens with LogScrubber: deterministic PII redaction (emails, phone runs, bearer/token secrets, device paths) with idempotence executed on host JVM against a real fixture. R32 deepens again with RetentionSweep: amnesia plumbing partitioning timestamped records into keep/purge by per-kind max ages (caller clock, unknown kinds refused), executed on host JVM. R34 deepens again with Pseudonym: HMAC-SHA256 pseudonyms with context domain separation (constant-time verify) executed on host JVM with JVM=hmac interop. R35 deepens again with FieldMask: allowlist/denylist field projection over flat records executed on host JVM. R36 deepens again with KAnon: k-anonymity auditing (equivalence groups, insertion-ordered violations) executed on host JVM. R37 deepens again with UtmStrip: known tracking-parameter stripping with fragment preservation executed on host JVM. R38 deepens again with LuhnCheck: ISO/IEC 7812 Luhn validation plus PCI DSS first6+last4 PAN masking and a free-text scrubber that leaves non-PAN digit runs alone, executed on host JVM. R39 deepens again with MacAddr: IEEE 802 U/L and I/G bit analysis across three address shapes with OUI suppressed for local addresses and redaction that keeps only the administration half; local-unicast is documented as a hint, never proof of randomization; executed on host JVM. R40 deepens again with IpRedact: strict v4/v6 parsing with /24 and /48 prefix-keeping redaction whose scope string states it reduces identifiability and is NOT anonymity, cross-checked against held-out ipaddress, executed on host JVM. R42 deepens again with GpcHeader: strict Sec-GPC and gpc.json parsing that refuses invalid values rather than coercing consent state, executed on host JVM.",
       "production": [
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt",
         "privacy/src/main/java/dev/fusion/privacy/GuardedPrivacyActivity.kt",
@@ -2711,7 +2865,8 @@
         "privacy/src/main/java/dev/fusion/privacy/UtmStrip.kt",
         "privacy/src/main/java/dev/fusion/privacy/LuhnCheck.kt",
         "privacy/src/main/java/dev/fusion/privacy/MacAddr.kt",
-        "privacy/src/main/java/dev/fusion/privacy/IpRedact.kt"
+        "privacy/src/main/java/dev/fusion/privacy/IpRedact.kt",
+        "privacy/src/main/java/dev/fusion/privacy/GpcHeader.kt"
       ],
       "checks": [
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt",
@@ -2747,9 +2902,12 @@
         "tools/check_r39_reference.py",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt",
         "tools/test_r40_tools.py",
-        "tools/check_r40_reference.py"
+        "tools/check_r40_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": ":privacy:pixel6Api34DebugAndroidTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": ":privacy:pixel6Api34DebugAndroidTest; python3 tools/run_r31_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r38_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r40_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No Tails equivalence/anonymity, host/OS/IME/AX secrecy, RAM/flash erasure, all IPC confinement, all-device/release acceptance",
       "sha256": {
         "privacy/src/main/java/dev/fusion/privacy/PrivacyActivity.kt": "98166e0befc4cdbdf284b9e414abbd02c36d978e7b4d2a62d8c8a9d84dff825e",
@@ -2801,14 +2959,18 @@
         "privacy/src/main/java/dev/fusion/privacy/IpRedact.kt": "f1ecc91bb6759f8770eb04c5b01c1366d74a2773aa78aa9e8ad2b6eb4bc8733b",
         "testing/src/r40/kotlin/dev/fusion/testing/R40Checks.kt": "b787d911e5016f6b3f8f4a0dea850dea3f4048ad095804ac272fad6d860430fb",
         "tools/test_r40_tools.py": "d5bb3f9d3577e4b2f2111399523f0619d9b7d0a0c7f789640e37166d4bbed3fa",
-        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9"
+        "tools/check_r40_reference.py": "95606d6fc67bd5c7dbc1001e5ed4c20ea9054b76d12e76acb95ea231f80010e9",
+        "privacy/src/main/java/dev/fusion/privacy/GpcHeader.kt": "988b6c9bdbc7545ebb73448ef68c019f40c9b5c60a38d140399687883671e927",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     },
     {
       "module": ":feature:maps",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Real geographic projection, inverse/pan, bounded bookmarks and spherical distances; actual public-domain coastline asset (128 rings/5143 vertices), compiled host contracts. Native canvas/store/UI is authored, not inferred verified from math. R26 deepens with bounded GPX 1.1 track import and spherical track length. R27 deepens with Gazetteer: 48 whole-degree offline cities with prefix search and haversine nearest executed on host JVM. R28 deepens with TileMath: slippy-tile forward/inverse math plus quadkey bijection executed on host JVM and cross-checked in Python. R32 deepens again with GeoUri: strict RFC 5870 geo-URI subset (wgs84-only, unknown params refused, round-trip format) executed on host JVM. R35 deepens again with TileCover: bbox tile coverage over TileMath (row-major, capped, antimeridian refused) executed on host JVM. R36 deepens again with ScaleBar: Web-Mercator ground resolution plus largest-fitting 1/2/5 scale bar executed on host JVM. R37 deepens again with PolyLine: Google encoded-polyline decode/encode at 1e-5 precision executed on host JVM against the canonical example. R41 deepens again with DmsFormat: decimal<->DMS with carry-on-round (59.9999 rolls up, never prints 60) and hemisphere-signed parsing, executed on host JVM.",
+      "behavior": "Real geographic projection, inverse/pan, bounded bookmarks and spherical distances; actual public-domain coastline asset (128 rings/5143 vertices), compiled host contracts. Native canvas/store/UI is authored, not inferred verified from math. R26 deepens with bounded GPX 1.1 track import and spherical track length. R27 deepens with Gazetteer: 48 whole-degree offline cities with prefix search and haversine nearest executed on host JVM. R28 deepens with TileMath: slippy-tile forward/inverse math plus quadkey bijection executed on host JVM and cross-checked in Python. R32 deepens again with GeoUri: strict RFC 5870 geo-URI subset (wgs84-only, unknown params refused, round-trip format) executed on host JVM. R35 deepens again with TileCover: bbox tile coverage over TileMath (row-major, capped, antimeridian refused) executed on host JVM. R36 deepens again with ScaleBar: Web-Mercator ground resolution plus largest-fitting 1/2/5 scale bar executed on host JVM. R37 deepens again with PolyLine: Google encoded-polyline decode/encode at 1e-5 precision executed on host JVM against the canonical example. R41 deepens again with DmsFormat: decimal<->DMS with carry-on-round (59.9999 rolls up, never prints 60) and hemisphere-signed parsing, executed on host JVM. R42 deepens again with NmeaLat: the NMEA ddmm.mmmm field shape DmsFormat declared out of scope, with hemisphere signs and sub-60 minute gates, executed on host JVM.",
       "production": [
         "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt",
         "feature/maps/src/main/java/dev/fusion/maps/MapScreen.kt",
@@ -2820,7 +2982,8 @@
         "feature/maps/src/main/kotlin/dev/fusion/maps/TileCover.kt",
         "feature/maps/src/main/kotlin/dev/fusion/maps/ScaleBar.kt",
         "feature/maps/src/main/kotlin/dev/fusion/maps/PolyLine.kt",
-        "feature/maps/src/main/kotlin/dev/fusion/maps/DmsFormat.kt"
+        "feature/maps/src/main/kotlin/dev/fusion/maps/DmsFormat.kt",
+        "feature/maps/src/main/kotlin/dev/fusion/maps/NmeaLat.kt"
       ],
       "checks": [
         "testing/src/r24c/kotlin/dev/fusion/testing/R24CChecks.kt",
@@ -2848,9 +3011,12 @@
         "tools/check_r37_reference.py",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt",
         "tools/test_r41_tools.py",
-        "tools/check_r41_reference.py"
+        "tools/check_r41_reference.py",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt",
+        "tools/test_r42_tools.py",
+        "tools/check_r42_reference.py"
       ],
-      "command": "python3 tools/run_r24c_contracts.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r24c_contracts.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r26_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r28_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r35_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "Low-resolution offline atlas, not street maps/navigation/GPS/geocoding/traffic or universal native/AX acceptance.",
       "sha256": {
         "feature/maps/src/main/kotlin/dev/fusion/maps/OfflineMap.kt": "2cd6abc258604e4390d5799a4a0ef3883bb781cd686e1f9ae0b6535b46a32069",
@@ -2889,7 +3055,11 @@
         "feature/maps/src/main/kotlin/dev/fusion/maps/DmsFormat.kt": "dd37064a1844772070231aea6e66e7295ed65168c68adb186c3a696352744cb6",
         "testing/src/r41/kotlin/dev/fusion/testing/R41Checks.kt": "58f6dd2620f698400e5e09bded04438b982b5d85aa45f8b6f9141838cff39051",
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
-        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d"
+        "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
+        "feature/maps/src/main/kotlin/dev/fusion/maps/NmeaLat.kt": "bb9d17bd3d3608f2cd01b14ebd3a211c89bed18ef6af4d5cd0f87e03d4a7de22",
+        "testing/src/r42/kotlin/dev/fusion/testing/R42Checks.kt": "556748d077d7dadf00f67592ff9d34545176418654eaea1bfd8a3500d0d6fc52",
+        "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
+        "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84"
       }
     }
   ]

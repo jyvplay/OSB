@@ -17,7 +17,32 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R41 — 21 executed kernels across 20 modules; CI bridge spans R38–R41
+## Current R42 — 22 executed kernels across 21 modules; CI bridge spans R37–R42
+
+Branch **`arena/350b91e4-osb`**. Second consecutive sandbox-reset recovery, then
+twenty-two new host-executed kernels deepening 21/50 modules (42%): spreadsheet
+fill semantics ($-pinned AbsRef) + merge-region law (MergedCells), writer case
+cycling + comment toggling, PDF date strings (spec example executed), NMEA
+fields, RFC 6797 HSTS (unknown-directive tolerance done spec-right), Damm
+pairing-code check digits (both published guarantees executed as mutation
+sweeps), ar/deb + BMP container walls, GPC consent intake that refuses to
+coerce, leak-proof password-policy checks, dB laws, strict hex, snooze ladders,
+1-2-5 axis steps, anchor+period schedules, RFC 2231 continuations, CSI cursor
+math, thirds grids, histograms, unit prices. Zero post-execution kernel
+repairs (second consecutive round); one pre-execution purity repair disclosed.
+Bridge: `r37Contracts` backport + `r42Contracts` — once green, R37–R42's 114
+kernels / 2027 assertions run under real Gradle in CI.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim —
+[R42-ALTERNATIVES](android/docs/R42-ALTERNATIVES.md) answers the Class-A
+question honestly again.** Executed: **362 kotlinc/JVM assertions** across 22
+kernels, 22 Python mirrors, lab 22 gates + 46 suites / 487 tests.
+[Results](android/docs/R42-RESULTS.md) ·
+[Contract](android/docs/R42-PLAN.md) ·
+[Privacy PRD](android/docs/R42-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R41 — 21 executed kernels across 20 modules; CI bridge spans R38–R41
 
 Branch **`arena/350b91e4-osb`**. Round opened with a full sandbox-reset recovery
 (byte-clean re-sync, toolchain reinstall, prior baselines green before any
