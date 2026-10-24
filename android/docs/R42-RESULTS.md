@@ -81,11 +81,31 @@ a named downgrade.
 
 ## CI ledger (exact candidates, nothing inherited)
 
-Filled after the round push. Of special interest: first runs of
-r37Contracts and r42Contracts. Standing watches carried in: 2 PNG
-picker signatures (every obs), atlas no-tests lane (every obs), IME
-family 3/13, Xlsx 2/6, screen-off 1/5, R25 MP4 1/4, audio-focus 1/10,
-R17 focus-repro now intermittent, NotesProcessDeath 1/1.
+Round commit `948f47d5389dae812e8f607faf2102a513018f24`; all 10
+triggered workflows triaged by exact run id. **Zero R42 regressions in
+any JVM lane — the six-round bridge is VERIFIED: the JVM job running
+`:testing:r37Contracts` through `:testing:r42Contracts` succeeded, so
+R37–R42's 114 kernels / 2027 assertions executed under the real Gradle
+toolchain in CI.**
+
+| Run id | Workflow | Conclusion | Triage |
+|---|---|---|---|
+| 40134781529 | Android native | failure | **JVM job SUCCESS — traceability + flavors + JVM tests + ALL SIX contract tasks**; device job: exactly the 2 standing `R25PngCopyDeviceTest` signatures (NotesProcessDeath did NOT recur — watch stays 1/2) |
+| 40134781577 | R25 actual PNG metadata copy | failure | same 2 standing PNG signatures |
+| 40134781468 | R24 desktop media atlas | failure | standing no-tests install lane |
+| 40134781463 | Tasks focused diagnostic | success | second consecutive pass — focus-repro watch now 2 passes after its all-fail history |
+| 40134781490 | R25 local video | success | MP4 watch → 1/5 |
+| 40134781480 | R21 | success | — |
+| 40134781493 | R24 API37 privacy | success | IME → 3/14 |
+| 40134781482 | offline privacy companion | success | companion recovers; IME-family discard case did not recur |
+| 40134781467 | R24 appearance/input/PDF | success | — |
+| 40134781494 | R23/R22 | success | Xlsx → 2/7 |
+
+Standing watches after this round: 2 PNG picker signatures (every
+obs), atlas no-tests lane (every obs), IME family 3/14, Xlsx 2/7,
+screen-off 1/6, R25 MP4 1/5, audio-focus 1/10, R17 focus-repro
+intermittent (2 recent passes), NotesProcessDeath 1/2. `rerun-failed-
+jobs` remains 403; rates accumulate across observations.
 
 
 ## Lab receipt
