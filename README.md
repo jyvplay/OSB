@@ -17,7 +17,33 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R39 — 19 executed kernels, writer + spreadsheet push (host evidence only)
+## Current R40 — 20 executed kernels + first CI-executed contract tasks
+
+Branch **`arena/350b91e4-osb`**. Twenty new host-executed kernels deepen 19/50
+modules (38%): spreadsheet format-code structure + the seven classic error
+literals; writer dash/ellipsis education, U+FFFC bookkeeping and CMOS footnote
+marks; PDF /Rotate with the full composition table; strict HTML entities (the
+cp1252 quirk refused AND documented); RFC 2047 encoded words; 7z signature CRC
+gate; FNV-1a; ICAO 9303 MRZ check digits reproducing the published specimen;
+filename safety; nearest-rank percentiles; GFM task checkboxes; exact-tiling
+snap fractions; bplist envelopes; launcher monograms; Bech32/Bech32m; otpauth
+intake hardening; IP /24-/48 redaction. **NEW: `:testing:r39Contracts` +
+`:testing:r40Contracts` run all 39 recent kernels under real Gradle in CI's
+JVM lane.** Six in-round repairs are documented in R40-PLAN §I — four kernel
+bugs caught by first execution, plus a lab-harness honesty hole (hollow
+"PASS 0/0" tool-suite lines) fixed and disclosed retroactively for R39.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim — the
+Class-A question is answered honestly again in
+[R40-ALTERNATIVES](android/docs/R40-ALTERNATIVES.md).** Executed: **360
+kotlinc/JVM assertions** across 20 separately compiled kernels, 20 Python
+mirrors (six held-out stdlib families), lab 18 gates + 44 suites / 418 tests.
+[Results](android/docs/R40-RESULTS.md) ·
+[Contract](android/docs/R40-PLAN.md) ·
+[Privacy PRD](android/docs/R40-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R39 — 19 executed kernels, writer + spreadsheet push (host evidence only)
 
 Branch **`arena/350b91e4-osb`**. Nineteen new host-executed kernels deepen 16/50
 modules (32%): the spreadsheet trio (Excel serial dates with the Lotus phantom

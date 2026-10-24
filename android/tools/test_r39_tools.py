@@ -9,12 +9,15 @@ ROOT = Path(__file__).resolve().parents[1]
 PASS = 0
 
 
+RESULTS = []
+
+
 def check(name, cond):
     global PASS
+    RESULTS.append((name, bool(cond)))
     if not cond:
         raise SystemExit(f'FAIL: {name}')
     PASS += 1
-    print(f'ok {PASS} {name}')
 
 
 KERNELS = {
@@ -109,8 +112,24 @@ def main():
           '612.0' in texts['format/pdf/src/main/java/dev/fusion/format/pdf/CropBox.kt'] and
           '595.276' in texts['format/pdf/src/main/java/dev/fusion/format/pdf/CropBox.kt'])
 
-    print(f'R39 tool tests: {PASS}/{PASS} OK (host-only hygiene/pins; not Android evidence).')
+    pass
+
+
+main()   # collect RESULTS at import so unittest sees one test per check
+
+import unittest
+
+
+class ToolChecks(unittest.TestCase):
+    pass
+
+
+for _i, (_name, _ok) in enumerate(RESULTS):
+    def _m(self, _ok=_ok, _name=_name):
+        self.assertTrue(_ok, _name)
+    _safe = ''.join(c if c.isalnum() else '_' for c in _name)[:60]
+    setattr(ToolChecks, '_'.join(['test', '%02d' % _i, _safe]), _m)
 
 
 if __name__ == '__main__':
-    main()
+    unittest.main(verbosity=1)

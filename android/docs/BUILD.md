@@ -1,4 +1,34 @@
-# R39 — 19 executed kernels: writer + spreadsheet push, input-path descriptors
+# R40 — 20 executed kernels + the CI-execution bridge
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R40-RESULTS.md) · [Scope/acceptance contract](R40-PLAN.md) ·
+[Deepening census](R40-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R40-ALTERNATIVES.md) ·
+[Privacy PRD](R40-PRIVACY-PRD.md) · [Research record](research/r40-primary.md) ·
+Prior: [R39 results](R39-RESULTS.md).
+
+**50/50 testable subsets (100%); 19/50 modules deepened with new executed kernels (38%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence: **360 kotlinc/JVM assertions** across 20 separately compiled
+kernels (NumFmtSections, CellErr, DashEducate, ObjReplace, FootnoteMark,
+PdfRotate, HtmlEntity, Rfc2047, SevenZHead, Fnv1a, Mrz, SafeName, Percentile,
+TaskCheckbox, SnapFraction, PlistHead, Monogram, Bech32, OtpauthUri, IpRedact),
+20 Python mirrors (held-out: html, email.header, zlib.crc32, plistlib,
+ipaddress, urllib), lab 18 gates + 44 suites / 418 tests with R39/R38/R37/R34
+regressions green in the same run. **New:** the CI JVM lane now executes
+`:testing:r39Contracts` and `:testing:r40Contracts` — all 39 recent kernels
+under the real Gradle toolchain (also runnable from Android Studio's Gradle
+panel on your laptop). Six in-round repairs documented in R40-PLAN §I.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r40_contracts.py     # 360 assertions / 20 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r40_reference.py   # 20 mirrors, six held-out stdlib families
+python3 -m unittest tools.test_r40_tools   # 38 hygiene/pin tests (real unittest now)
+python3 tools/r40_lab.py host          # full battery, stamps R40-RESULTS.md
+```
+
+## Prior R39 — 19 executed kernels: writer + spreadsheet push, input-path descriptors
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R39-RESULTS.md) · [Scope/acceptance contract](R39-PLAN.md) ·

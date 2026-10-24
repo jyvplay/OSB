@@ -110,6 +110,7 @@ def main():
             if r.get('sha256', {}).get(p) != sha(p):
                 stale.append((r['module'], p))
     owned = set(R39_CHECKS) | {prod for pairs in DEEPEN.values() for prod, _ in pairs} | set(TOUCHED)
+    owned.add('tools/test_r40_tools.py')  # sibling round's check file shares rows; joint harness edits re-pin here
     unexpected = [s for s in stale if s[1] not in owned]
     if unexpected:
         raise SystemExit(f'stale pairings outside the declared R39 edit set: {unexpected}')
