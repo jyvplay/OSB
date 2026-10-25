@@ -1,4 +1,28 @@
-# R42 — 22 executed kernels across 21 modules; the bridge spans R37–R42
+# R43 — 23 executed kernels across 23 modules; bridge spans R37–R43
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R43-RESULTS.md) · [Scope/acceptance contract](R43-PLAN.md) ·
+[Deepening census](R43-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R43-ALTERNATIVES.md) ·
+[Privacy PRD](R43-PRIVACY-PRD.md) · [Research record](research/r43-primary.md) ·
+Prior: [R42 results](R42-RESULTS.md).
+
+**50/50 testable subsets (100%); 23/50 modules deepened (46%). 0/50 full-spec
+accepted; no A-grade claim.** Host evidence: **372 kotlinc/JVM assertions**
+across 23 kernels, 23 handwritten mirrors (downgrade stated in-file), lab PASS
+with R42/R41/R40/R39/R38/R37/R34 regressions green in the same run. One
+genuine kernel repair (TrackerTier whitespace-URL regex) documented in
+R43-PLAN §I with its attack kept.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r43_contracts.py       # 372 assertions / 23 kernels
+python3 tools/check_r43_reference.py     # 23 mirrors
+python3 -m unittest tools.test_r43_tools # 38 hygiene/pin tests
+python3 tools/r43_lab.py host            # full battery, stamps R43-RESULTS.md
+```
+
+## Prior R42 — 22 executed kernels across 21 modules; the bridge spans R37–R42
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R42-RESULTS.md) · [Scope/acceptance contract](R42-PLAN.md) ·

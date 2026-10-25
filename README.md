@@ -17,7 +17,35 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R42 — 22 executed kernels across 21 modules; CI bridge spans R37–R42
+## Current R43 — 23 executed kernels across 23 modules (widest spread yet)
+
+Branch **`arena/350b91e4-osb`**. Third consecutive sandbox-reset recovery, then
+twenty-three new host-executed kernels deepening 23/50 modules (46%): frozen
+panes (cut twips formula upheld as cut), Trojan-Source bidi hygiene with
+stripping pinned as a user-visible choice, duplicate-line cleanup, PDF
+permission bits (policy-not-enforcement), the full 8-token Referrer-Policy
+table, Debian control fields, the pinned Android API 21..36 naming table
+(API 37 refused until named), golden-angle seat hues, median tap tempo,
+BEP-12 tracker tiers (one real regex hole found by first execution, repaired,
+attack kept), QR size law, WebAuthn RP-ID matching with pslChecked=false
+carried in the result type (the dangerous case executed to justify it),
+caret/tilde ranges, snippet windows with brute-force-agreed optimality, age
+string recognition (zero cryptography), breadcrumb trimming, Apdex, percent
+change (positive bases, declared), RTSP transport, Message-IDs, time
+coarsening (NOT anonymity, stated), aspect snapping, alert keys.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim —
+[R43-ALTERNATIVES](android/docs/R43-ALTERNATIVES.md) answers the Class-A
+question honestly again.** Executed: **372 kotlinc/JVM assertions** across 23
+kernels, 23 mirrors, lab PASS with six prior rounds' regressions inside;
+bridge now registers `:testing:r37Contracts` … `:testing:r43Contracts`
+(137 kernels / 2399 assertions under Gradle once green).
+[Results](android/docs/R43-RESULTS.md) ·
+[Contract](android/docs/R43-PLAN.md) ·
+[Privacy PRD](android/docs/R43-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R42 — 22 executed kernels across 21 modules; CI bridge spans R37–R42
 
 Branch **`arena/350b91e4-osb`**. Second consecutive sandbox-reset recovery, then
 twenty-two new host-executed kernels deepening 21/50 modules (42%): spreadsheet
