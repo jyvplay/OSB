@@ -65,11 +65,32 @@ page-matrix self-tests green; touch delta +0. Rendered review remains
 a named downgrade.
 
 ## CI ledger (exact candidates, nothing inherited)
-Filled after the round push. Of special interest: first run of
-r43Contracts. Standing watches carried in: 2 PNG picker signatures
-(every obs), atlas no-tests lane (every obs), IME family 3/14, Xlsx
-2/7, screen-off 1/6, R25 MP4 1/5, audio-focus 1/10, R17 focus-repro
-intermittent (2 recent passes), NotesProcessDeath 1/2.
+Round commit `f9733d5544695b68b94a1f273ea68abf34cc7ea8`; all 9
+triggered workflows triaged by exact run id. **Zero R43 regressions in
+any JVM lane — the SEVEN-round bridge is VERIFIED: the JVM job running
+`:testing:r37Contracts` through `:testing:r43Contracts` succeeded, so
+R37–R43's 137 kernels / 2399 assertions executed under the real
+Gradle toolchain in CI.**
+
+| Run id | Workflow | Conclusion | Triage |
+|---|---|---|---|
+| 40148736109 | Android native | failure | **JVM job SUCCESS — ALL SEVEN contract tasks**; device job: the 2 standing `R25PngCopyDeviceTest` signatures |
+| 40148736039 | R25 PNG metadata copy | failure | same 2 standing PNG signatures |
+| 40148736099 | R24 desktop media atlas | failure | standing no-tests install lane |
+| 40148736055 | R24 API37 privacy | failure | `R24ScreenOffDeviceTest` — screen-off watch family → 2/7 |
+| 40148736135 | R23/R22 | failure | NEW case: `R23MemoryTransportDeviceTest.memoryCallsRunInDistinctUid…` first observation — new watch 1/1, no R43 code suspect (R43 touches no memory-transport surface) |
+| 40148736065 | R25 local video | success | MP4 watch → 1/6 |
+| 40148736069 | R21 | success | — |
+| 40148736091 | offline privacy companion | success | — |
+| 40148736132 | R24 appearance/input/PDF | success | — |
+
+Standing watches after this round: 2 PNG picker signatures (every
+obs), atlas no-tests lane (every obs), screen-off family 2/7, IME
+3/14 (lane shows the screen-off case this time), Xlsx 2/7 (lane
+failed via the NEW memory case, Xlsx itself did not recur → 2/8),
+R25 MP4 1/6, audio-focus 1/10, R17 focus-repro intermittent,
+NotesProcessDeath 1/2 (did not recur → 1/3), NEW R23MemoryTransport
+1/1. `rerun-failed-jobs` remains 403; rates accumulate.
 
 ## Lab receipt
 
