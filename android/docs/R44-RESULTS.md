@@ -77,11 +77,30 @@ and page-matrix self-tests green; touch delta +0. Rendered review
 remains a named downgrade.
 
 ## CI ledger (exact candidates, nothing inherited)
-Filled after the round push. Of special interest: first run of
-r44Contracts. Standing watches carried in: 2 PNG picker signatures
-(every obs), atlas no-tests lane (every obs), screen-off 2/7, IME
-3/14, Xlsx 2/8, R25 MP4 1/6, audio-focus 1/10, R17 focus-repro
-intermittent, NotesProcessDeath 1/3, R23MemoryTransport 1/1.
+TWO pushes this round, both triaged by exact run id.
+
+**Push 1 (`dcab79e`)** — the FrameBudget redeclaration broke every
+AGP-compiling lane (native 40228827701, R21 40228827647, R22/R23
+40228827593, R24 40228827637, R25 video 40228827621, R25 PNG
+40228827602, API37 40228827737, atlas 40228827713 all failed on
+`:core:perf:compileDebugKotlin`; companion 40228827614 passed —
+its path set skips that module). This was a genuine regression I
+introduced, caught by the bridge, repaired same-session.
+
+**Push 2 (`86cf4e7`, the repair)** — triggered lanes:
+
+| Run id | Workflow | Conclusion | Triage |
+|---|---|---|---|
+| 40231857997 | Android native | failure | **JVM job SUCCESS — ALL EIGHT contract tasks r37..r44 (161 kernels / 2777 assertions under Gradle): the redeclaration is fixed and the bridge is verified**; device job: the 2 standing `R25PngCopyDeviceTest` signatures |
+| 40231857998 | R24 desktop media atlas | failure | standing no-tests install lane |
+
+Other lanes did not trigger on the repair commit's path set; their
+push-1 failures are attributed above to the named compile error, not
+to their own surfaces. Standing watches carry forward unchanged:
+2 PNG signatures (every obs), atlas (every obs), screen-off 2/7,
+IME 3/14, Xlsx 2/8, R25 MP4 1/6, audio-focus 1/10, R17 focus-repro
+intermittent, NotesProcessDeath 1/3, R23MemoryTransport 1/1 (did
+not recur on push 1's R22/R23 lane beyond the compile error).
 
 
 ## Lab receipt
