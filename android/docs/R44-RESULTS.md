@@ -91,7 +91,7 @@ introduced, caught by the bridge, repaired same-session.
 
 | Run id | Workflow | Conclusion | Triage |
 |---|---|---|---|
-| 40231857997 | Android native | failure | **JVM job SUCCESS — ALL EIGHT contract tasks r37..r44 (161 kernels / 2777 assertions under Gradle): the redeclaration is fixed and the bridge is verified**; device job: the 2 standing `R25PngCopyDeviceTest` signatures |
+| 40231857997 | Android native | failure | **JVM job SUCCESS — ALL EIGHT contract tasks r37..r44 (161 kernels / 2777 assertions under Gradle): the redeclaration is fixed and the bridge is verified**; device job: LEDGER CORRECTION — the first write of this row guessed the standing PNG pair, but the pulled annotations show the IME/200%-font family (`ShellSmokeTest.editorActionsRemainVisible…`, `RealImeDeviceTest.realImeAndLongEditorText…`, `R25UiReadinessDeviceTest`) — the IME watch moves to 4/15 and the readiness case joins it; no R44 code suspect (no UI surface touched) |
 | 40231857998 | R24 desktop media atlas | failure | standing no-tests install lane |
 
 Other lanes did not trigger on the repair commit's path set; their
