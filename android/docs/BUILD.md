@@ -1,4 +1,28 @@
-# R43 — 23 executed kernels across 23 modules; bridge spans R37–R43
+# R44 — 24 executed kernels across 23 modules; bridge spans R37–R44
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R44-RESULTS.md) · [Scope/acceptance contract](R44-PLAN.md) ·
+[Deepening census](R44-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R44-ALTERNATIVES.md) ·
+[Privacy PRD](R44-PRIVACY-PRD.md) · [Research record](research/r44-primary.md) ·
+Prior: [R43 results](R43-RESULTS.md).
+
+**50/50 testable subsets (100%); 23/50 modules deepened (46%). 0/50 full-spec
+accepted; no A-grade claim.** Host evidence: **380 kotlinc/JVM assertions**
+across 24 kernels, 24 handwritten mirrors (the Debian comparator fully
+re-implemented on the Python side), lab PASS with R43…R37 + R34 regressions
+green in the same run. Zero post-execution kernel repairs (third consecutive
+clean round) — the §I log carries the two wrong-vector fixes instead.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r44_contracts.py       # 380 assertions / 24 kernels
+python3 tools/check_r44_reference.py     # 24 mirrors
+python3 -m unittest tools.test_r44_tools # hygiene/pin tests
+python3 tools/r44_lab.py host            # full battery, stamps R44-RESULTS.md
+```
+
+## Prior R43 — 23 executed kernels across 23 modules; bridge spans R37–R43
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R43-RESULTS.md) · [Scope/acceptance contract](R43-PLAN.md) ·

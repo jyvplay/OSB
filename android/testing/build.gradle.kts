@@ -528,3 +528,37 @@ tasks.register<JavaExec>("r43Contracts") {
     dependsOn(r43.classesTaskName); classpath = r43.runtimeClasspath; mainClass.set("dev.fusion.testing.R43Checks")
     args(rootProject.file("tools/fixtures/r43").absolutePath)
 }
+
+// R44 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r44 by sourceSets.creating
+kotlin.sourceSets.named("r44") {
+    kotlin.srcDir("src/r44/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../feature/lens/src/main/kotlin")
+    kotlin.srcDir("../feature/terminal/src/main/kotlin")
+    kotlin.srcDir("../core/index/src/main/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.srcDir("../core/commands/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../feature/messages/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../core/hw/src/main/kotlin")
+    kotlin.srcDir("../feature/backup/src/main/kotlin")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../feature/notes/src/main/kotlin")
+    kotlin.srcDir("../core/perf/src/main/kotlin")
+    kotlin.srcDir("../feature/files/src/main/kotlin")
+    kotlin.srcDir("../feature/together/src/main/kotlin")
+    kotlin.include("**/AcceptLang.kt", "**/AlphaIndex.kt", "**/BackupName.kt", "**/ColLetters.kt", "**/CwdTilde.kt", "**/DebVersion.kt", "**/DisplayInch.kt", "**/Ean13.kt", "**/ExifOrient.kt", "**/FrameBudget.kt", "**/GoToLine.kt", "**/GpsRational.kt", "**/HiddenDot.kt", "**/HistDedup.kt", "**/Issn.kt", "**/Levenshtein.kt", "**/ObjNum.kt", "**/PrefKeyLint.kt", "**/QuoteNest.kt", "**/SampleBytes.kt", "**/SessionCode.kt", "**/SheetHide.kt", "**/SheetRange.kt", "**/SriHash.kt", "**/SubjectNorm.kt", "**/TagExtract.kt", "**/UpcE.kt", "**/R44Checks.kt")
+}
+tasks.register<JavaExec>("r44Contracts") {
+    dependsOn(r44.classesTaskName); classpath = r44.runtimeClasspath; mainClass.set("dev.fusion.testing.R44Checks")
+    args(rootProject.file("tools/fixtures/r44").absolutePath)
+}

@@ -17,7 +17,38 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R43 — 23 executed kernels across 23 modules (widest spread yet)
+## Current R44 — 24 executed kernels across 23 modules; bridge spans R37–R44
+
+Branch **`arena/350b91e4-osb`**. Fourth consecutive sandbox-reset recovery, then
+twenty-four new host-executed kernels deepening 23/50 modules (46%, tying the
+record): hidden-run grid arithmetic, email quote-depth hygiene, honest
+go-to-line (clamping reported, never silent), PDF indirect-reference canon
+(65535 free-list ceiling refused), SRI strongest-wins intake that never
+hashes, the full Debian version total order (tilde laws executed in TWO
+independent implementations), ISSN mod-11 with the computed X case, UPC-E
+zero-suppression (all four branches), HOME-collapse with the /homework bug
+refused by construction, banded Levenshtein with a 125-case agreement sweep,
+key-naming lint, readline history semantics incl. the ignorespace privacy
+convention, PCM byte math, subject threading normalization, EXIF GPS
+presence math (conversion ≠ stripping, stated), display diagonal math that
+refuses anisotropic averaging, snapshot naming with the lex==chrono law
+executed, fast-scroll buckets (Latin-only declared), EXIF orientation with
+its inverse involution, Accept-Language (fingerprint vector named in scope),
+inline tags, frame-budget ceil law, dot-hidden vs .nomedia kept distinct,
+and human-speakable session codes that explicitly do NOT claim a checksum.
+
+**50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim —
+[R44-ALTERNATIVES](android/docs/R44-ALTERNATIVES.md) answers the Class-A
+question honestly again.** Executed: **380 kotlinc/JVM assertions** across
+24 kernels, 24 mirrors, lab PASS first full run with seven prior rounds'
+regressions inside; bridge registers `:testing:r37Contracts` …
+`:testing:r44Contracts` (161 kernels / 2779 assertions once green).
+[Results](android/docs/R44-RESULTS.md) ·
+[Contract](android/docs/R44-PLAN.md) ·
+[Privacy PRD](android/docs/R44-PRIVACY-PRD.md) ·
+[Try without Studio](android/docs/BUILD.md).
+
+## Prior R43 — 23 executed kernels across 23 modules (widest spread yet)
 
 Branch **`arena/350b91e4-osb`**. Third consecutive sandbox-reset recovery, then
 twenty-three new host-executed kernels deepening 23/50 modules (46%): frozen
