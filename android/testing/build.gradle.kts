@@ -533,6 +533,7 @@ tasks.register<JavaExec>("r43Contracts") {
 val r44 by sourceSets.creating
 kotlin.sourceSets.named("r44") {
     kotlin.srcDir("src/r44/kotlin")
+    kotlin.srcDir("../feature/alerts/src/main/kotlin")
     kotlin.srcDir("../format/ooxml/src/main/kotlin")
     kotlin.srcDir("../core/documents/src/main/kotlin")
     kotlin.srcDir("../feature/editor/src/main/java")
@@ -556,7 +557,7 @@ kotlin.sourceSets.named("r44") {
     kotlin.srcDir("../core/perf/src/main/kotlin")
     kotlin.srcDir("../feature/files/src/main/kotlin")
     kotlin.srcDir("../feature/together/src/main/kotlin")
-    kotlin.include("**/AcceptLang.kt", "**/AlphaIndex.kt", "**/BackupName.kt", "**/ColLetters.kt", "**/CwdTilde.kt", "**/DebVersion.kt", "**/DisplayInch.kt", "**/Ean13.kt", "**/ExifOrient.kt", "**/FrameBudget.kt", "**/GoToLine.kt", "**/GpsRational.kt", "**/HiddenDot.kt", "**/HistDedup.kt", "**/Issn.kt", "**/Levenshtein.kt", "**/ObjNum.kt", "**/PrefKeyLint.kt", "**/QuoteNest.kt", "**/SampleBytes.kt", "**/SessionCode.kt", "**/SheetHide.kt", "**/SheetRange.kt", "**/SriHash.kt", "**/SubjectNorm.kt", "**/TagExtract.kt", "**/UpcE.kt", "**/R44Checks.kt")
+    kotlin.include("**/AcceptLang.kt", "**/AlphaIndex.kt", "**/BackupName.kt", "**/ColLetters.kt", "**/CwdTilde.kt", "**/DebVersion.kt", "**/DisplayInch.kt", "**/Ean13.kt", "**/ExifOrient.kt", "**/Severity.kt", "**/GoToLine.kt", "**/GpsRational.kt", "**/HiddenDot.kt", "**/HistDedup.kt", "**/Issn.kt", "**/Levenshtein.kt", "**/ObjNum.kt", "**/PrefKeyLint.kt", "**/QuoteNest.kt", "**/SampleBytes.kt", "**/SessionCode.kt", "**/SheetHide.kt", "**/SheetRange.kt", "**/SriHash.kt", "**/SubjectNorm.kt", "**/TagExtract.kt", "**/UpcE.kt", "**/R44Checks.kt")
 }
 tasks.register<JavaExec>("r44Contracts") {
     dependsOn(r44.classesTaskName); classpath = r44.runtimeClasspath; mainClass.set("dev.fusion.testing.R44Checks")

@@ -18,7 +18,7 @@ Access: bytes/strings/numbers in; no clocks/network/device state.
 Counted: executed assertions, mirrors, tool tests, census rows,
 CI-executed tasks. Success: FOR EVERY kernel K: compiled group +
 executed contracts + independent mirror + census row; AND totals
-strictly exceed R43 (24>23 kernels, 380>372 assertions; modules 23
+strictly exceed R43 (24>23 kernels, 378>372 assertions; modules 23
 tie the R43 record; tool tests and the lab battery grow). Not
 substituted: SRI parsing ≠ hashing (caller digests); GPS conversion ≠
 stripping (the privacy act is the caller's); session codes ≠ checksums
@@ -27,7 +27,7 @@ correction (GoToLine reports); dot-hidden ≠ media-excluded (two
 predicates).
 
 ## B. Outcome space
-H+ (achieved): 24/380/23 + the r44 bridge task. H− (standing): all-A
+H+ (achieved): 24/378/23 + the r44 bridge task. H− (standing): all-A
 in one turn impossible; 0/50 accepted; spreadsheet gains hidden-run
 arithmetic, writer gains quote-depth hygiene and honest go-to.
 H∂ (§I): zero post-execution kernel repairs — third consecutive clean
@@ -101,7 +101,12 @@ contracts named in KDocs (PrefKeyLint, SessionCode, HistDedup
 compose order).
 
 ## I. Repair log
-Zero post-execution kernel repairs (third consecutive). Two wrong
+ONE post-push repair, caught by CI not by host: FrameBudget
+redeclared an existing :core:perf class name (ownership violation;
+the grep sweep never queried the literal name). Cut and replaced by
+Severity (:feature:alerts); battery re-run from zero; the lesson —
+always grep the exact kernel name before writing — joins the
+standing list. Otherwise zero post-execution kernel repairs. Two wrong
 test vectors fixed where kernels were right (UPC-E interleave rule;
 diagonal pinned to the computed value instead of a rounded guess);
 one pre-compile visibility fix (cmpPart public); my test-main

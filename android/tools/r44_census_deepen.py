@@ -106,13 +106,13 @@ DEEPEN = {
         ('feature/notes/src/main/kotlin/dev/fusion/notes/TagExtract.kt',
          'R44 deepens again with TagExtract: the inline hash-tag namespace (distinct from wiki links and front matter) with #123 and mid-word hashes refused, executed on host JVM.'),
     ],
-    ':core:perf': [
-        ('core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt',
-         'R44 deepens again with FrameBudget: fixed-rate frame budgets with the missed-vsync ceil law executed (a 40ms frame misses two), on host JVM.'),
-    ],
     ':feature:files': [
         ('feature/files/src/main/kotlin/dev/fusion/filesui/HiddenDot.kt',
          'R44 deepens again with HiddenDot: dotfile and .nomedia predicates kept distinct so the UI cannot conflate scopes, executed on host JVM.'),
+    ],
+    ':feature:alerts': [
+        ('feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt',
+         'R44 deepens again with Severity: the four-level alert order where escalation only moves up (de-escalation refused as a human decision), replacing the FrameBudget kernel cut after CI exposed its name collision with the existing core:perf class, executed on host JVM.'),
     ],
     ':feature:together': [
         ('feature/together/src/main/kotlin/dev/fusion/together/SessionCode.kt',

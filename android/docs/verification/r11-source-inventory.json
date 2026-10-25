@@ -886,12 +886,6 @@
       "sha256": "2da362a4104d47ac2a1d0408d3503f5e22e1aae76f983597a00262046b5e3d81"
     },
     {
-      "path": "core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt",
-      "module": ":core:perf",
-      "package": "dev.fusion.perf",
-      "sha256": "cda317ae8129256a76910e666b9a32d42741e3c2ed8b1ac20513c5811587e785"
-    },
-    {
       "path": "core/perf/src/main/kotlin/dev/fusion/perf/Histo.kt",
       "module": ":core:perf",
       "package": "dev.fusion.perf",
@@ -1976,6 +1970,12 @@
       "module": ":feature:alerts",
       "package": "dev.fusion.alerts",
       "sha256": "708a69e0fd7aabb5a77d1e652b4b724592fee36a63eb25406a3e8ef1207a00a3"
+    },
+    {
+      "path": "feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt",
+      "module": ":feature:alerts",
+      "package": "dev.fusion.alerts",
+      "sha256": "f5d00347f1ab9ca6273b1308aca93e512fe387ba11c893e382aa588ccb1b42a2"
     },
     {
       "path": "feature/alerts/src/main/kotlin/dev/fusion/alerts/SnoozeSeq.kt",

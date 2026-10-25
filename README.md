@@ -39,10 +39,10 @@ and human-speakable session codes that explicitly do NOT claim a checksum.
 
 **50/50 testable (100%); 0/50 full-spec accepted; no A-grade claim —
 [R44-ALTERNATIVES](android/docs/R44-ALTERNATIVES.md) answers the Class-A
-question honestly again.** Executed: **380 kotlinc/JVM assertions** across
+question honestly again.** Executed: **378 kotlinc/JVM assertions (post-repair; the CI bridge caught and we cut a name-colliding kernel — disclosed in R44-RESULTS)** across
 24 kernels, 24 mirrors, lab PASS first full run with seven prior rounds'
 regressions inside; bridge registers `:testing:r37Contracts` …
-`:testing:r44Contracts` (161 kernels / 2779 assertions once green).
+`:testing:r44Contracts` (161 kernels / 2777 assertions once green).
 [Results](android/docs/R44-RESULTS.md) ·
 [Contract](android/docs/R44-PLAN.md) ·
 [Privacy PRD](android/docs/R44-PRIVACY-PRD.md) ·

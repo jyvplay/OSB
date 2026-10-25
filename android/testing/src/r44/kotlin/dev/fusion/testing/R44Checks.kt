@@ -23,7 +23,7 @@ import dev.fusion.launcher.AlphaIndex
 import dev.fusion.format.image.ExifOrient
 import dev.fusion.browser.model.AcceptLang
 import dev.fusion.notes.TagExtract
-import dev.fusion.perf.FrameBudget
+import dev.fusion.alerts.Severity
 import dev.fusion.filesui.HiddenDot
 import dev.fusion.together.SessionCode
 
@@ -464,21 +464,19 @@ object R44Checks {
         refuses("digit-led query") { TagExtract.hasTag("x", "9tag") }
     }
 
-    private fun frameBudget() {
-        ok(FrameBudget.missedVsyncs(1, 240) == 0L, "fastest frame at 240Hz")
-        refuses("negative duration") { FrameBudget.missedVsyncs(-1, 60) }
-        ok(FrameBudget.missedVsyncs(16_666_667, 60) == 1L, "one ns over budget misses one")
-        ok(FrameBudget.droppedFrames(LongArray(0), 60) == 0L, "no frames")
-        ok(FrameBudget.budgetNs(90) == 11_111_111L, "90Hz budget")
-        ok(FrameBudget.budgetNs(60) == 16_666_666L, "60Hz budget")
-        ok(FrameBudget.budgetNs(120) == 8_333_333L, "120Hz budget")
-        ok(FrameBudget.missedVsyncs(10_000_000, 60) == 0L, "fast frame misses none")
-        ok(FrameBudget.missedVsyncs(20_000_000, 60) == 1L, "20ms misses one")
-        ok(FrameBudget.missedVsyncs(40_000_000, 60) == 2L, "40ms misses two (the ceil law)")
-        ok(FrameBudget.missedVsyncs(16_666_666, 60) == 0L, "exactly on budget is clean")
-        ok(FrameBudget.droppedFrames(longArrayOf(10_000_000, 20_000_000, 40_000_000), 60) == 3L, "sum of misses")
-        refuses("zero duration") { FrameBudget.missedVsyncs(0, 60) }
-        refuses("500Hz") { FrameBudget.budgetNs(500) }
+    private fun severity() {
+        ok(Severity.Level.INFO < Severity.Level.WARN && Severity.Level.ERROR < Severity.Level.CRITICAL, "total order")
+        ok(Severity.parse("WARN") == Severity.Level.WARN, "canonical parse")
+        ok(Severity.atLeast(Severity.Level.ERROR, Severity.Level.WARN), "error clears a warn floor")
+        ok(!Severity.atLeast(Severity.Level.INFO, Severity.Level.WARN), "info below a warn floor")
+        ok(Severity.escalate(Severity.Level.WARN, Severity.Level.CRITICAL) == Severity.Level.CRITICAL, "escalation up")
+        ok(Severity.escalate(Severity.Level.ERROR, Severity.Level.ERROR) == Severity.Level.ERROR, "same level is legal")
+        ok(Severity.highest(listOf(Severity.Level.INFO, Severity.Level.CRITICAL, Severity.Level.WARN)) == Severity.Level.CRITICAL, "aggregate")
+        ok(Severity.filter(listOf("a" to Severity.Level.INFO, "b" to Severity.Level.ERROR), Severity.Level.WARN).single().first == "b", "floor filter")
+        ok(Severity.Level.values().size == 4, "exactly four levels")
+        refuses("de-escalation refused") { Severity.escalate(Severity.Level.CRITICAL, Severity.Level.WARN) }
+        refuses("lowercase name") { Severity.parse("warn") }
+        refuses("empty aggregate") { Severity.highest(emptyList()) }
     }
 
     private fun hiddenDot() {
@@ -521,7 +519,7 @@ object R44Checks {
         sheetHide(); quoteNest(); goToLine(); objNum(); sriHash(); debVersion()
         issn(); upcE(); cwdTilde(); levenshtein(); prefKeyLint(); histDedup()
         sampleBytes(); subjectNorm(); gpsRational(); displayInch(); backupName(); alphaIndex()
-        exifOrient(); acceptLang(); tagExtract(); frameBudget(); hiddenDot(); sessionCode()
+        exifOrient(); acceptLang(); tagExtract(); severity(); hiddenDot(); sessionCode()
         println("R44 PASS: " + count + " production-kernel assertions across 24 kernels. Host JVM only; not Android/device evidence.")
     }
 }

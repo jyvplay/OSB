@@ -38,7 +38,7 @@ KERNELS = {
     'format/image/src/main/kotlin/dev/fusion/format/image/ExifOrient.kt': 'object ExifOrient',
     'feature/browser/src/main/kotlin/dev/fusion/browser/model/AcceptLang.kt': 'object AcceptLang',
     'feature/notes/src/main/kotlin/dev/fusion/notes/TagExtract.kt': 'object TagExtract',
-    'core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt': 'object FrameBudget',
+    'feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt': 'object Severity',
     'feature/files/src/main/kotlin/dev/fusion/filesui/HiddenDot.kt': 'object HiddenDot',
     'feature/together/src/main/kotlin/dev/fusion/together/SessionCode.kt': 'object SessionCode',
 }
@@ -91,7 +91,7 @@ def main():
     check('ObjNum pins the free-list ceiling', '65535' in texts['format/pdf/src/main/java/dev/fusion/format/pdf/ObjNum.kt'])
 
     check('ISSN weights pinned', '(8 - i)' in texts['feature/lens/src/main/kotlin/dev/fusion/lens/Issn.kt'])
-    check('frame budget law pinned', '1_000_000_000L' in texts['core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt'])
+    check('severity refuses de-escalation', 'de-escalation' in texts['feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt'])
     check('UPC-E NS0 refusal pinned', 'NS 0 only' in texts['feature/lens/src/main/kotlin/dev/fusion/lens/UpcE.kt'])
     check('session alphabet re-pinned locally (no cross-module import)', 'ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"' in texts['feature/together/src/main/kotlin/dev/fusion/together/SessionCode.kt'])
     check('backup lex==chrono law stated', 'lex==chrono' in texts['feature/backup/src/main/kotlin/dev/fusion/backup/BackupName.kt'] or 'lexicographic' in texts['feature/backup/src/main/kotlin/dev/fusion/backup/BackupName.kt'].lower())

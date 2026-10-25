@@ -160,10 +160,11 @@ def tag_extract():
     assert [m.group(1) for m in rx.finditer('see #privacy and #Tor')] == ['privacy', 'Tor']
     assert not rx.findall('issue #123') and not rx.findall('a#b') and not rx.findall('##x')
 
-def frame_budget():
-    b = 1_000_000_000 // 60
-    assert b == 16_666_666
-    assert (40_000_000 + b - 1) // b - 1 == 2 and (16_666_666 + b - 1) // b - 1 == 0
+def severity():
+    order = ['INFO', 'WARN', 'ERROR', 'CRITICAL']
+    assert order.index('ERROR') > order.index('WARN')
+    assert max(['INFO', 'CRITICAL', 'WARN'], key=order.index) == 'CRITICAL'
+    assert [x for x in [('a', 'INFO'), ('b', 'ERROR')] if order.index(x[1]) >= order.index('WARN')] == [('b', 'ERROR')]
 
 def hidden_dot():
     assert '.config'.startswith('.') and not 'file.txt'.startswith('.')
@@ -177,7 +178,7 @@ def session_code():
 CHECKS = [sheet_hide, quote_nest, go_to_line, obj_num, sri_hash, deb_version, issn,
           upc_e, cwd_tilde, levenshtein, pref_key_lint, hist_dedup, sample_bytes,
           subject_norm, gps_rational, display_inch, backup_name, alpha_index,
-          exif_orient, accept_lang, tag_extract, frame_budget, hidden_dot, session_code]
+          exif_orient, accept_lang, tag_extract, severity, hidden_dot, session_code]
 
 def main():
     for fn in CHECKS: fn()

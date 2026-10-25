@@ -36,7 +36,7 @@ GROUPS = {
     'image-orient': ['format/image/src/main/kotlin/dev/fusion/format/image/ExifOrient.kt'],
     'browser-lang': ['feature/browser/src/main/kotlin/dev/fusion/browser/model/AcceptLang.kt'],
     'notes-tags': ['feature/notes/src/main/kotlin/dev/fusion/notes/TagExtract.kt'],
-    'perf-frame': ['core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt'],
+    'alerts-severity': ['feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt'],
     'files-dot': ['feature/files/src/main/kotlin/dev/fusion/filesui/HiddenDot.kt'],
     'together-code': ['feature/together/src/main/kotlin/dev/fusion/together/SessionCode.kt'],
 }

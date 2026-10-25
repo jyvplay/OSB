@@ -9,7 +9,7 @@
   `:baselineprofile`, `:testing`).
 - **0/50 specification-accepted. No A-grade claim.**
 
-## R44 kernels (sum 380 assertions, runtime-verified)
+## R44 kernels (sum 378 assertions (post-repair), runtime-verified)
 | Module | Kernel | | Module | Kernel |
 |---|---|---|---|---|
 | :format:ooxml | SheetHide | | :core:hw | DisplayInch |
@@ -18,19 +18,19 @@
 | :format:pdf | ObjNum | | :format:image | ExifOrient |
 | :core:security | SriHash | | :feature:browser | AcceptLang |
 | :format:archive | DebVersion | | :feature:notes | TagExtract |
-| :feature:lens | Issn + UpcE | | :core:perf | FrameBudget |
+| :feature:lens | Issn + UpcE | | :feature:alerts | Severity |
 | :feature:terminal | CwdTilde | | :feature:files | HiddenDot |
 | :core:index | Levenshtein | | :feature:together | SessionCode |
 | :core:settings | PrefKeyLint | | :feature:media | SampleBytes |
 | :core:commands | HistDedup | | :feature:messages | SubjectNorm |
 | :privacy | GpsRational | | | |
 
-Totals: 24 kernels / 23 modules / 380 assertions (R43: 23/23/372).
+Totals: 24 kernels / 23 modules / 378 assertions (R43: 23/23/372).
 Writer+spreadsheet: SheetHide + QuoteNest + GoToLine = 3 kernels.
 
 ## CI bridge
 `r44Contracts` joins the lane; once green, R37–R44 = **161 kernels /
-2779 assertions** under Gradle per push.
+2777 assertions** under Gradle per push.
 
 ## Ownership cuts this round (grep-verified; do not retry)
 - BboxMerge — `feature/maps/TileCover.kt` owns bbox work.
@@ -38,6 +38,9 @@ Writer+spreadsheet: SheetHide + QuoteNest + GoToLine = 3 kernels.
 - FontScaleBucket — designsystem metrics own scale handling.
 - PdfVersionHeader — `PdfTrailer.kt` owns the %PDF header.
 - DefinedName — adjacent to LiteralXlsxImport's refusals; cut as murky.
+- FrameBudget - CUT POST-PUSH: redeclared PerformancePolicy.kt's class;
+  CI caught what host isolation could not; replaced by Severity.
+  Grep the literal kernel name, always.
 - JournalSeq — `core/windowing/DesktopCommandStream.kt` owns stream
   sequencing; cut to avoid surface confusion.
 

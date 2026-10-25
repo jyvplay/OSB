@@ -7,16 +7,16 @@ Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the ro
 Prior: [R43 results](R43-RESULTS.md).
 
 **50/50 testable subsets (100%); 23/50 modules deepened (46%). 0/50 full-spec
-accepted; no A-grade claim.** Host evidence: **380 kotlinc/JVM assertions**
+accepted; no A-grade claim.** Host evidence: **378 kotlinc/JVM assertions (post-repair)**
 across 24 kernels, 24 handwritten mirrors (the Debian comparator fully
 re-implemented on the Python side), lab PASS with R43…R37 + R34 regressions
-green in the same run. Zero post-execution kernel repairs (third consecutive
-clean round) — the §I log carries the two wrong-vector fixes instead.
+green in the same run. One CI-caught ownership repair (FrameBudget name collision → cut,
+replaced by Severity) is §I-logged and disclosed in RESULTS.
 
 Run everything without Android Studio, from `android/`:
 
 ```
-python3 tools/run_r44_contracts.py       # 380 assertions / 24 kernels
+python3 tools/run_r44_contracts.py       # 378 assertions / 24 kernels
 python3 tools/check_r44_reference.py     # 24 mirrors
 python3 -m unittest tools.test_r44_tools # hygiene/pin tests
 python3 tools/r44_lab.py host            # full battery, stamps R44-RESULTS.md

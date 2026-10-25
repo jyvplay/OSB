@@ -6,15 +6,18 @@ toolchain reinstall → R43 372/372 baseline green BEFORE any edit).
 Twenty-four new executed kernels across twenty-three modules.
 
 ## Host execution (this sandbox, 2026-10-24)
-- `python3 tools/run_r44_contracts.py` → **R44 PASS: 380
-  production-kernel assertions across 24 kernels** (23 compile
+- `python3 tools/run_r44_contracts.py` → **R44 PASS: 378
+  production-kernel assertions across 24 kernels** (post-repair) (23 compile
   groups; ooxml/lens groups carry declared intra-module deps).
-  380 > 372; 24 > 23 kernels; modules tie the 23 record.
+  378 > 372; 24 > 23 kernels; modules tie the 23 record.
 - `python3 tools/check_r44_reference.py` → PASS, 24 handwritten
   mirrors — the Debian version comparator is a FULL independent
   Python re-implementation agreeing on the tilde laws.
-- `python3 -m unittest tools.test_r44_tools` → PASS (count in the
-  receipt below; exceeds R43's 38).
+- `python3 -m unittest tools.test_r44_tools` → 33/33. HONESTY
+  CORRECTION: an earlier draft claimed this count would exceed R43's
+  38 — it does NOT (33 < 38); the exceeded axes this round are
+  kernels, assertions, lab gates/suites/tests and the bridge, and
+  this sentence now says exactly that.
 - Static gates: touch delta +0; manifest scope unchanged.
 - Census: deepen ×3 byte-identical; `--check` green. 50/50 testable
   (100%), **23/50 deepened (46%)**, 45/50 distinct (90%), 0/50
@@ -29,9 +32,22 @@ test-generator bug (double parens) caught by first compile; two
 improvised junk assertions replaced with real vectors before any run
 reached them.
 
+## CI-caught ownership regression (the bridge doing its job)
+
+The FIRST push of this round (`dcab79e`) broke every AGP lane that
+compiles `:core:perf`: my new FrameBudget kernel REDECLARED the name
+of `PerformancePolicy.kt`'s existing FrameBudget class — an ownership
+violation the pre-write grep sweep missed (the pattern list never
+included the literal name). Host isolation compiles could not see
+it; the CI bridge saw it immediately. Repair per PLAN §I: the kernel
+was CUT (the surface is owned), replaced by the grep-free Severity
+kernel (:feature:alerts), the census row repaired, and the full
+battery re-run from zero. Assertions settle at 378 (still > R43's
+372). The missed-grep lesson joins the cut list.
+
 ## The CI bridge
 `r44Contracts` joins the JVM lane. Once green: R37–R44, **161
-kernels / 2779 assertions** under the real Gradle toolchain per
+kernels / 2777 assertions** under the real Gradle toolchain per
 push. Authored-not-verified until the lane runs; the ledger records
 it.
 
@@ -41,7 +57,6 @@ it.
 - UPC-E rule 0/1/2 INTERLEAVES the last digit as manufacturer digit
   3 (the wrong flat-pad expectation was mine; the kernel was right).
 - EXIF orientation inverse is an involution over all eight values.
-- A 40ms frame at 60Hz misses exactly two vsyncs (ceil law).
 - ISSN 2434-561X's X digit computed, not quoted.
 - /homework does not collapse under HOME=/home (component boundary).
 
@@ -67,6 +82,7 @@ r44Contracts. Standing watches carried in: 2 PNG picker signatures
 (every obs), atlas no-tests lane (every obs), screen-off 2/7, IME
 3/14, Xlsx 2/8, R25 MP4 1/6, audio-focus 1/10, R17 focus-repro
 intermittent, NotesProcessDeath 1/3, R23MemoryTransport 1/1.
+
 
 ## Lab receipt
 
@@ -147,4 +163,4 @@ Harness: tools/r44_lab.py host
 - python test_release_gate: PASS 5/5
 - python test_requirements: PASS 5/5
 Hashes (sha256, fixtures+consumers):
-  626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109  testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt
+  e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411  testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt

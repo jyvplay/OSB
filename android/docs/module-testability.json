@@ -143,9 +143,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "core/documents/src/main/kotlin/dev/fusion/documents/QuoteNest.kt": "5eff1702a06f69c7ecf0c4d94c49500af57aaba4d1dacf19479280ca019cdc4a",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -415,9 +415,9 @@
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
         "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
         "core/commands/src/main/kotlin/dev/fusion/commands/HistDedup.kt": "00e488d49ec541f92b0f9d82b0819bf18e7b22af9bc7f1a16ded23aecbbc62ed",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -469,9 +469,9 @@
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
         "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
         "core/settings/src/main/kotlin/dev/fusion/settings/PrefKeyLint.kt": "4b46891684388e03c78a42d666b4aef5941a23476a1b60f97a88d9363d509bed",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -601,24 +601,23 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "core/security/src/main/kotlin/dev/fusion/security/SriHash.kt": "d31c0069ad86a25fca7ca613d2d9859471303197e6b4b592ede78157f69210a6",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
       "module": ":core:perf",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Deterministic codec/thermal decision policy, not measured governor R31 deepens with PhaseLedger: named-phase duration ledger (caller clock, totals, shares, slowest) executed on host JVM. R40 deepens again with Percentile: nearest-rank percentiles where every result is an actual observation, sortedness verified; the in-round FP-order repair (multiply before dividing) is pinned by regression attacks, executed on host JVM. R41 deepens again with Ewma: bias-corrected EWMA where the constant-series-equals-constant property holds at every step and the cold-start bias equals (1-a)^t exactly, both executed, on host JVM. R42 deepens again with Histo: static half-open latency buckets with the exact conservation invariant executed under input reordering, auto-scaling refused by design, on host JVM. R43 deepens again with Apdex: the published score formula and rating bands with the 4T line fixed by spec, executed on host JVM. R44 deepens again with FrameBudget: fixed-rate frame budgets with the missed-vsync ceil law executed (a 40ms frame misses two), on host JVM.",
+      "behavior": "Deterministic codec/thermal decision policy, not measured governor R31 deepens with PhaseLedger: named-phase duration ledger (caller clock, totals, shares, slowest) executed on host JVM. R40 deepens again with Percentile: nearest-rank percentiles where every result is an actual observation, sortedness verified; the in-round FP-order repair (multiply before dividing) is pinned by regression attacks, executed on host JVM. R41 deepens again with Ewma: bias-corrected EWMA where the constant-series-equals-constant property holds at every step and the cold-start bias equals (1-a)^t exactly, both executed, on host JVM. R42 deepens again with Histo: static half-open latency buckets with the exact conservation invariant executed under input reordering, auto-scaling refused by design, on host JVM. R43 deepens again with Apdex: the published score formula and rating bands with the 4T line fixed by spec, executed on host JVM.",
       "production": [
         "core/perf/src/main/java/dev/fusion/perf/PerformancePolicy.kt",
         "core/perf/src/main/java/dev/fusion/perf/PhaseLedger.kt",
         "core/perf/src/main/kotlin/dev/fusion/perf/Percentile.kt",
         "core/perf/src/main/kotlin/dev/fusion/perf/Ewma.kt",
         "core/perf/src/main/kotlin/dev/fusion/perf/Histo.kt",
-        "core/perf/src/main/kotlin/dev/fusion/perf/Apdex.kt",
-        "core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt"
+        "core/perf/src/main/kotlin/dev/fusion/perf/Apdex.kt"
       ],
       "checks": [
         "testing/src/contract/kotlin/dev/fusion/testing/PilotCoreChecks.kt",
@@ -666,10 +665,9 @@
         "testing/src/r43/kotlin/dev/fusion/testing/R43Checks.kt": "acd1d6f84e12f7c69f9be2b968486da6b4d5220524e43609afa2cea5d7614015",
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
-        "core/perf/src/main/kotlin/dev/fusion/perf/FrameBudget.kt": "cda317ae8129256a76910e666b9a32d42741e3c2ed8b1ac20513c5811587e785",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -717,9 +715,9 @@
         "tools/test_r39_tools.py": "cf80040bb33e44a2d6d3dae9d574048452e73868b79c0e8cae1dbaa59e064042",
         "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e",
         "core/hw/src/main/kotlin/dev/fusion/hw/DisplayInch.kt": "ddc816dae511dd93f84004ba82c8775544352f589b967589ebfe1b5ce2d5ab77",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -783,9 +781,9 @@
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
         "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
         "core/index/src/main/kotlin/dev/fusion/index/Levenshtein.kt": "c4632c07ba56e2bfc9ecc03afd0ee91206a8914b819b99889d380e9b4335bb7b",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -999,9 +997,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/editor/src/main/java/dev/fusion/editor/GoToLine.kt": "9b4e81f8896b39949abd148199e9a5f5c75c4103f3f716fc72326dd468248ed3",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1057,9 +1055,9 @@
         "tools/test_r41_tools.py": "3e60c44e846977b05956ea1d419bcb82fb667e952743b409096a1cddec79406e",
         "tools/check_r41_reference.py": "2af92a3ad13da71dcd464f59d406ac901e4e692a5cb647a89462bed27d29713d",
         "feature/launcher/src/main/kotlin/dev/fusion/launcher/AlphaIndex.kt": "59c7bb1a7112b83e21afdf31906841c06f7eba4ea5140f5097b6321d8b4cb974",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1203,9 +1201,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/files/src/main/kotlin/dev/fusion/filesui/HiddenDot.kt": "95c46a9ee3e0bfa16d6fc1c40cec07af5d58a2262d984ce0a0bbd093e2ba0edc",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1323,9 +1321,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/AcceptLang.kt": "3671d374c35d4799d0d7c913ed37241830ead083617902cf08f10ff2034744de",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1387,9 +1385,9 @@
         "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
         "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84",
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/CwdTilde.kt": "db02974ba33797aebbf5416e565f9b91702bcfa649f10fadaf335e978ffe38e7",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1563,9 +1561,9 @@
         "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
         "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84",
         "feature/notes/src/main/kotlin/dev/fusion/notes/TagExtract.kt": "18a53b92b287fa3ad27941548cd1ebc438d2479bca2e8442ff9fd806674801b6",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1791,9 +1789,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/media/src/main/kotlin/dev/fusion/media/SampleBytes.kt": "ea88bcc126cf2d4674c78755e098488936d7cc6be4072f2534163640675ac0ef",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -1860,13 +1858,14 @@
       "module": ":feature:alerts",
       "substantial_testable_subset": true,
       "kind": "behavioral_subset",
-      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal. R29 deepens with AlertThrottle: per-key token-bucket throttle with backwards-clock clamp and refuse-when-full table executed on host JVM. R39 deepens again with QuietHours: half-open minute-of-day windows with midnight wrap, boundary countdowns and brute-force-verified overlaps; the degenerate start==end window is refused as ambiguous; executed on host JVM. R42 deepens again with SnoozeSeq: capped doubling snooze ladders with monotonicity executed as a property, executed on host JVM. R43 deepens again with AlertKey: canonical dedupe keys whose pipe refusal keeps keys stable forever, executed on host JVM.",
+      "behavior": "Bounded session-only public-notice retention, eviction, expiry and clock-independent privacy removal. R29 deepens with AlertThrottle: per-key token-bucket throttle with backwards-clock clamp and refuse-when-full table executed on host JVM. R39 deepens again with QuietHours: half-open minute-of-day windows with midnight wrap, boundary countdowns and brute-force-verified overlaps; the degenerate start==end window is refused as ambiguous; executed on host JVM. R42 deepens again with SnoozeSeq: capped doubling snooze ladders with monotonicity executed as a property, executed on host JVM. R43 deepens again with AlertKey: canonical dedupe keys whose pipe refusal keeps keys stable forever, executed on host JVM. R44 deepens again with Severity: the four-level alert order where escalation only moves up (de-escalation refused as a human decision), replacing the FrameBudget kernel cut after CI exposed its name collision with the existing core:perf class, executed on host JVM.",
       "production": [
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt",
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertThrottle.kt",
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/QuietHours.kt",
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/SnoozeSeq.kt",
-        "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertKey.kt"
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertKey.kt",
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt"
       ],
       "checks": [
         "testing/src/r14/kotlin/dev/fusion/testing/R14Checks.kt",
@@ -1884,9 +1883,12 @@
         "tools/check_r42_reference.py",
         "testing/src/r43/kotlin/dev/fusion/testing/R43Checks.kt",
         "tools/test_r43_tools.py",
-        "tools/check_r43_reference.py"
+        "tools/check_r43_reference.py",
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt",
+        "tools/test_r44_tools.py",
+        "tools/check_r44_reference.py"
       ],
-      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r43_contracts.py (host, needs KOTLINC/JAVA_HOME)",
+      "command": "python3 tools/run_r14_contracts.py; python3 tools/run_r14_interop.py (docs/BUILD.md); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r39_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r42_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r43_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r44_contracts.py (host, needs KOTLINC/JAVA_HOME)",
       "limit": "No notification ingestion or persistence integration. System listener remains disabled. Caller classification and single-owner use required.",
       "sha256": {
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/NoticeLedger.kt": "ea918604325ec870aa0f02e5f495da4d21323662a622e354137601b304ebcb6b",
@@ -1909,7 +1911,11 @@
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/AlertKey.kt": "73ef14e1e78501d23e45a4c34de232da18c345fa87ce2eb8d1439431ff01f322",
         "testing/src/r43/kotlin/dev/fusion/testing/R43Checks.kt": "acd1d6f84e12f7c69f9be2b968486da6b4d5220524e43609afa2cea5d7614015",
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
-        "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b"
+        "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
+        "feature/alerts/src/main/kotlin/dev/fusion/alerts/Severity.kt": "f5d00347f1ab9ca6273b1308aca93e512fe387ba11c893e382aa588ccb1b42a2",
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2009,9 +2015,9 @@
         "tools/test_r39_tools.py": "cf80040bb33e44a2d6d3dae9d574048452e73868b79c0e8cae1dbaa59e064042",
         "tools/check_r39_reference.py": "bcfb316cfeeac22b5249eccfb23e3fac433783c50137ebbd1a8768b4489de80e",
         "feature/backup/src/main/kotlin/dev/fusion/backup/BackupName.kt": "0561a3ab252b009896bcd0d29ce8ef2b5b5fecc99738fdc9a2872adf20495fb5",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2193,9 +2199,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/together/src/main/kotlin/dev/fusion/together/SessionCode.kt": "6f44c42830fdd3192014cf047eb11f932807452b75355e10c7d89ac1a714777d",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2285,9 +2291,9 @@
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/lens/src/main/kotlin/dev/fusion/lens/Issn.kt": "1768fe0a9ff1e4735d509350dd302bfe84f5f32364bea6dceab637ce1616c1ba",
         "feature/lens/src/main/kotlin/dev/fusion/lens/UpcE.kt": "32e589fd726ad12dcd32e26dafd66df1098b846871e89421acc4dd165e3acb5e",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2367,9 +2373,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "feature/messages/src/main/kotlin/dev/fusion/messages/SubjectNorm.kt": "0b34174d9fa2bd20db0ca19d791d88060ff6043897aaa1681e53525294055639",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2605,9 +2611,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "format/archive/src/main/kotlin/dev/fusion/archive/DebVersion.kt": "6d2faea211c0bc7a6b3f3d3629061a88452cc0b47b6943e0b1d6a9955aa1498a",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2747,9 +2753,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetHide.kt": "ac4fb5aa4854b68eeb8686c30dbdba53e224f5bf8dc1f8fdafb99bda15120a28",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2851,9 +2857,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "format/pdf/src/main/java/dev/fusion/format/pdf/ObjNum.kt": "c92c5bccdcd2119c064cccb708a75b8d914a44eb70890b429cba859ba8c87872",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -2949,9 +2955,9 @@
         "tools/test_r42_tools.py": "c2fedc99d0de9d24cfd1b3aba874625dcdf75ffd0dfe771fc4fd683e6d7b8783",
         "tools/check_r42_reference.py": "1637809f72419fad59416ad070927fbf0395d550eef21c0f56e5eafebea56d84",
         "format/image/src/main/kotlin/dev/fusion/format/image/ExifOrient.kt": "d60843efeeba98591f9f47585ae5c15e989396e029e5c34a8b2422cebd1545f1",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
@@ -3331,9 +3337,9 @@
         "tools/test_r43_tools.py": "7a904ea366470280b3a446891bd08a3a401edd8d4045907db4877612bc96ca02",
         "tools/check_r43_reference.py": "720a5710fe374be25978996caef51a5fe8edd5a58cbe35dc1ff860c26432a42b",
         "privacy/src/main/java/dev/fusion/privacy/GpsRational.kt": "3a1124900fec74b71e30b0c1a7b09891f4f11d0c1a76250637984bc7a46bfde3",
-        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "626706b3acc3eb9088b5653e53fdd525fc55dc71f5e7123c7da87db504f61109",
-        "tools/test_r44_tools.py": "62043fbaeed12c7b35466fa6a41e7782b1bcdbd2b1369c36c9323e2c186297cd",
-        "tools/check_r44_reference.py": "00962c07b333227342072d9ffb877f393451fed916b1bfa536a944ddc48b5196"
+        "testing/src/r44/kotlin/dev/fusion/testing/R44Checks.kt": "e893589caa48abba8f476cd629a9fa3df3f887c2c71748692aa3bd1490a3a411",
+        "tools/test_r44_tools.py": "fa8e9b936d2bce548d8685a889689833791921cc498a3089eb0680b1165803d7",
+        "tools/check_r44_reference.py": "491d215dd4d32387816521195ae5dcab343702bc1051c1e62bb4d580e491241b"
       }
     },
     {
