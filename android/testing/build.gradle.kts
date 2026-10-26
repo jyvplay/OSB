@@ -324,3 +324,242 @@ kotlin.sourceSets.named("r25png") {
 tasks.register<JavaExec>("r25PngContracts") {
     dependsOn(r25png.classesTaskName);classpath=r25png.runtimeClasspath;mainClass.set("dev.fusion.testing.PngChecks")
 }
+
+// R39 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r39 by sourceSets.creating
+kotlin.sourceSets.named("r39") {
+    kotlin.srcDir("src/r39/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../core/hw/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../core/storage/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../feature/vault/src/main/kotlin")
+    kotlin.srcDir("../feature/find/src/main/java")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../feature/backup/src/main/kotlin")
+    kotlin.srcDir("../feature/alerts/src/main/kotlin")
+    kotlin.srcDir("../feature/capture/src/main/kotlin")
+    kotlin.include("**/SerialDate.kt", "**/ColLetters.kt", "**/ColWidth.kt", "**/SmartQuote.kt", "**/HyphenSoft.kt", "**/RomanNum.kt", "**/CropBox.kt", "**/IcoDir.kt", "**/Punycode.kt", "**/UsbDesc.kt", "**/MidiNote.kt", "**/Ulid.kt", "**/JwtSplit.kt", "**/IbanCheck.kt", "**/GlobMatch.kt", "**/MacAddr.kt", "**/Rfc3339.kt", "**/QuietHours.kt", "**/ExposureEv.kt", "**/R39Checks.kt")
+}
+tasks.register<JavaExec>("r39Contracts") {
+    dependsOn(r39.classesTaskName); classpath = r39.runtimeClasspath; mainClass.set("dev.fusion.testing.R39Checks")
+    args(rootProject.file("tools/fixtures/r39").absolutePath)
+}
+
+// R40 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r40 by sourceSets.creating
+kotlin.sourceSets.named("r40") {
+    kotlin.srcDir("src/r40/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../feature/messages/src/main/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../core/index/src/main/kotlin")
+    kotlin.srcDir("../feature/lens/src/main/kotlin")
+    kotlin.srcDir("../core/files/src/main/java")
+    kotlin.srcDir("../core/perf/src/main/kotlin")
+    kotlin.srcDir("../feature/notes/src/main/kotlin")
+    kotlin.srcDir("../core/windowing/src/main/kotlin")
+    kotlin.srcDir("../cast/airplay/src/main/kotlin")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.srcDir("../feature/vault/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.include("**/NumFmtSections.kt", "**/CellErr.kt", "**/DashEducate.kt", "**/ObjReplace.kt", "**/FootnoteMark.kt", "**/PdfRotate.kt", "**/HtmlEntity.kt", "**/Rfc2047.kt", "**/SevenZHead.kt", "**/Fnv1a.kt", "**/Mrz.kt", "**/SafeName.kt", "**/Percentile.kt", "**/TaskCheckbox.kt", "**/SnapFraction.kt", "**/PlistHead.kt", "**/Monogram.kt", "**/Bech32.kt", "**/OtpauthUri.kt", "**/IpRedact.kt", "**/R40Checks.kt")
+}
+tasks.register<JavaExec>("r40Contracts") {
+    dependsOn(r40.classesTaskName); classpath = r40.runtimeClasspath; mainClass.set("dev.fusion.testing.R40Checks")
+    args(rootProject.file("tools/fixtures/r40").absolutePath)
+}
+
+// R38 kernels backported to CI execution (same bridge pattern as r39/r40).
+val r38 by sourceSets.creating
+kotlin.sourceSets.named("r38") {
+    kotlin.srcDir("src/r38/kotlin")
+    kotlin.srcDir("../feature/beam/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.srcDir("../core/model/src/main/kotlin")
+    kotlin.srcDir("../core/storage/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../feature/messages/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../feature/accessibility/src/main/kotlin")
+    kotlin.srcDir("../core/hw/src/main/kotlin")
+    kotlin.srcDir("../feature/capture/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../core/index/src/main/kotlin")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.include("**/MagnetParse.kt", "**/Bencode.kt", "**/FlacHead.kt", "**/WebpHead.kt", "**/SemVer.kt", "**/UuidInfo.kt", "**/HttpRange.kt", "**/QuotedPrint.kt", "**/PemBound.kt", "**/KeyCadence.kt", "**/IsoWeek.kt", "**/HslColor.kt", "**/EdidHead.kt", "**/VttTime.kt", "**/LuhnCheck.kt", "**/Soundex.kt", "**/PdfName.kt", "**/R38Checks.kt")
+}
+tasks.register<JavaExec>("r38Contracts") {
+    dependsOn(r38.classesTaskName); classpath = r38.runtimeClasspath; mainClass.set("dev.fusion.testing.R38Checks")
+    args(rootProject.file("tools/fixtures/r38").absolutePath)
+}
+
+// R41 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r41 by sourceSets.creating
+kotlin.sourceSets.named("r41") {
+    kotlin.srcDir("src/r41/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../core/commands/src/main/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../feature/maps/src/main/kotlin")
+    kotlin.srcDir("../core/model/src/main/kotlin")
+    kotlin.srcDir("../feature/accessibility/src/main/kotlin")
+    kotlin.srcDir("../feature/lens/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../core/index/src/main/kotlin")
+    kotlin.srcDir("../feature/together/src/main/kotlin")
+    kotlin.srcDir("../core/perf/src/main/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.srcDir("../cast/castv2/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../core/storage/src/main/kotlin")
+    kotlin.srcDir("../feature/find/src/main/java")
+    kotlin.srcDir("../feature/beam/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.include("**/ColLetters.kt", "**/SheetRange.kt", "**/R1c1Ref.kt", "**/CropBox.kt", "**/PdfRotate.kt", "**/PdfPageGeometry.kt", "**/ShlexJoin.kt", "**/DurationIso.kt", "**/DmsFormat.kt", "**/ColorHex.kt", "**/ReadEase.kt", "**/Ean13.kt", "**/DataUri.kt", "**/Trigram.kt", "**/TurnOrder.kt", "**/Ewma.kt", "**/KeyMigrate.kt", "**/CastNs.kt", "**/LineWidth.kt", "**/ShardPath.kt", "**/SpanMerge.kt", "**/PiecePlan.kt", "**/TabStops.kt", "**/GridPos.kt", "**/R41Checks.kt")
+}
+tasks.register<JavaExec>("r41Contracts") {
+    dependsOn(r41.classesTaskName); classpath = r41.runtimeClasspath; mainClass.set("dev.fusion.testing.R41Checks")
+    args(rootProject.file("tools/fixtures/r41").absolutePath)
+}
+
+// R37 kernels backported to CI execution (same bridge pattern).
+val r37 by sourceSets.creating
+kotlin.sourceSets.named("r37") {
+    kotlin.srcDir("src/r37/kotlin")
+    kotlin.srcDir("../feature/notes/src/main/java")
+    kotlin.srcDir("../feature/files/src/main/kotlin")
+    kotlin.srcDir("../feature/continuity/src/main/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../cast/airplay/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../feature/maps/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../feature/terminal/src/main/kotlin")
+    kotlin.srcDir("../feature/find/src/main/kotlin")
+    kotlin.srcDir("../core/commands/src/main/kotlin")
+    kotlin.srcDir("../feature/lens/src/main/kotlin")
+    kotlin.include("**/SlugHead.kt", "**/SizeBucket.kt", "**/VTodoParse.kt", "**/TaskTally.kt", "**/XzHead.kt", "**/PasteWrap.kt", "**/RtspReason.kt", "**/UtmStrip.kt", "**/HibpRange.kt", "**/PolyLine.kt", "**/Mp4Box.kt", "**/OscLink.kt", "**/RankFuse.kt", "**/ExitCode.kt", "**/FovMath.kt", "**/R37Checks.kt")
+}
+tasks.register<JavaExec>("r37Contracts") {
+    dependsOn(r37.classesTaskName); classpath = r37.runtimeClasspath; mainClass.set("dev.fusion.testing.R37Checks")
+    args(rootProject.file("tools/fixtures/r37").absolutePath)
+}
+
+// R42 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r42 by sourceSets.creating
+kotlin.sourceSets.named("r42") {
+    kotlin.srcDir("src/r42/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../feature/maps/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../feature/continuity/src/main/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../feature/notes/src/main/kotlin")
+    kotlin.srcDir("../feature/capture/src/main/kotlin")
+    kotlin.srcDir("../core/perf/src/main/kotlin")
+    kotlin.srcDir("../feature/terminal/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../feature/vault/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../core/storage/src/main/kotlin")
+    kotlin.srcDir("../feature/alerts/src/main/kotlin")
+    kotlin.srcDir("../feature/calc/src/main/kotlin")
+    kotlin.srcDir("../feature/automation/src/main/kotlin")
+    kotlin.srcDir("../feature/messages/src/main/kotlin")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.include("**/ColLetters.kt", "**/SheetRange.kt", "**/AbsRef.kt", "**/MergedCells.kt", "**/PdfDate.kt", "**/NmeaLat.kt", "**/HstsParse.kt", "**/PairPin.kt", "**/ArHead.kt", "**/CaseCycle.kt", "**/CommentToggle.kt", "**/UnitPrice.kt", "**/Rule3rds.kt", "**/Histo.kt", "**/CsiCursor.kt", "**/GpcHeader.kt", "**/PwPolicy.kt", "**/GainDb.kt", "**/HexBytes.kt", "**/SnoozeSeq.kt", "**/NiceStep.kt", "**/NextRun.kt", "**/Rfc2231.kt", "**/BmpHead.kt", "**/R42Checks.kt")
+}
+tasks.register<JavaExec>("r42Contracts") {
+    dependsOn(r42.classesTaskName); classpath = r42.runtimeClasspath; mainClass.set("dev.fusion.testing.R42Checks")
+    args(rootProject.file("tools/fixtures/r42").absolutePath)
+}
+
+// R43 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r43 by sourceSets.creating
+kotlin.sourceSets.named("r43") {
+    kotlin.srcDir("src/r43/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../core/capabilities/src/main/java")
+    kotlin.srcDir("../feature/together/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../feature/beam/src/main/kotlin")
+    kotlin.srcDir("../feature/lens/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../core/model/src/main/kotlin")
+    kotlin.srcDir("../feature/find/src/main/java")
+    kotlin.srcDir("../feature/vault/src/main/kotlin")
+    kotlin.srcDir("../feature/files/src/main/kotlin")
+    kotlin.srcDir("../core/perf/src/main/kotlin")
+    kotlin.srcDir("../feature/calc/src/main/kotlin")
+    kotlin.srcDir("../cast/airplay/src/main/kotlin")
+    kotlin.srcDir("../feature/messages/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../core/windowing/src/main/kotlin")
+    kotlin.srcDir("../feature/alerts/src/main/kotlin")
+    kotlin.include("**/ColLetters.kt", "**/SheetRange.kt", "**/SheetFreeze.kt", "**/BidiStrip.kt", "**/DupLines.kt", "**/PdfPerm.kt", "**/RefererPolicy.kt", "**/DebControl.kt", "**/ApiName.kt", "**/SeatColor.kt", "**/Bpm.kt", "**/TrackerTier.kt", "**/QrVersion.kt", "**/RpIdMatch.kt", "**/SemVer.kt", "**/VersionRange.kt", "**/SpanMerge.kt", "**/SnippetWindow.kt", "**/Bech32.kt", "**/AgeId.kt", "**/BreadcrumbTrim.kt", "**/Apdex.kt", "**/PercentChange.kt", "**/RtspTransport.kt", "**/MsgIdParse.kt", "**/TimeCoarse.kt", "**/AspectSnap.kt", "**/AlertKey.kt", "**/R43Checks.kt")
+}
+tasks.register<JavaExec>("r43Contracts") {
+    dependsOn(r43.classesTaskName); classpath = r43.runtimeClasspath; mainClass.set("dev.fusion.testing.R43Checks")
+    args(rootProject.file("tools/fixtures/r43").absolutePath)
+}
+
+// R44 kernels executed under real Gradle/AGP toolchain in CI (JVM lane).
+val r44 by sourceSets.creating
+kotlin.sourceSets.named("r44") {
+    kotlin.srcDir("src/r44/kotlin")
+    kotlin.srcDir("../feature/alerts/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.srcDir("../format/pdf/src/main/java")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../format/archive/src/main/kotlin")
+    kotlin.srcDir("../feature/lens/src/main/kotlin")
+    kotlin.srcDir("../feature/terminal/src/main/kotlin")
+    kotlin.srcDir("../core/index/src/main/kotlin")
+    kotlin.srcDir("../core/settings/src/main/kotlin")
+    kotlin.srcDir("../core/commands/src/main/kotlin")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../feature/messages/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/java")
+    kotlin.srcDir("../core/hw/src/main/kotlin")
+    kotlin.srcDir("../feature/backup/src/main/kotlin")
+    kotlin.srcDir("../feature/launcher/src/main/kotlin")
+    kotlin.srcDir("../format/image/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin")
+    kotlin.srcDir("../feature/notes/src/main/kotlin")
+    kotlin.srcDir("../core/perf/src/main/kotlin")
+    kotlin.srcDir("../feature/files/src/main/kotlin")
+    kotlin.srcDir("../feature/together/src/main/kotlin")
+    kotlin.include("**/AcceptLang.kt", "**/AlphaIndex.kt", "**/BackupName.kt", "**/ColLetters.kt", "**/CwdTilde.kt", "**/DebVersion.kt", "**/DisplayInch.kt", "**/Ean13.kt", "**/ExifOrient.kt", "**/Severity.kt", "**/GoToLine.kt", "**/GpsRational.kt", "**/HiddenDot.kt", "**/HistDedup.kt", "**/Issn.kt", "**/Levenshtein.kt", "**/ObjNum.kt", "**/PrefKeyLint.kt", "**/QuoteNest.kt", "**/SampleBytes.kt", "**/SessionCode.kt", "**/SheetHide.kt", "**/SheetRange.kt", "**/SriHash.kt", "**/SubjectNorm.kt", "**/TagExtract.kt", "**/UpcE.kt", "**/R44Checks.kt")
+}
+tasks.register<JavaExec>("r44Contracts") {
+    dependsOn(r44.classesTaskName); classpath = r44.runtimeClasspath; mainClass.set("dev.fusion.testing.R44Checks")
+    args(rootProject.file("tools/fixtures/r44").absolutePath)
+}

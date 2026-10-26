@@ -32,6 +32,17 @@
           receiver trust UI and network security review remain release blockers.
         -->
         <activity android:name=".PngCopyActivity" android:exported="false" />
+        <!-- R28: detection-only USB attach/detach alerts (verdict text + private
+             record + notification-if-permitted; never blocks). Registered here, NOT
+             in :core:security's manifest, so the no-INTERNET privacy companion
+             keeps its exact component/permission scope. POST_NOTIFICATIONS already
+             merges from :feature:capture. -->
+        <receiver android:name=".UsbWatchReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            </intent-filter>
+        </receiver>
         <!--
           No launchMode="singleTask": ActivityScenario (used by the instrumented
           smoke test) is unreliable with singleTask. Home-role relaunch still

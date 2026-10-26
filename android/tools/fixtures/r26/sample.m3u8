@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:214.5,Public Field Recording One
+https://media.example.org/audio/field-001.mp3
+#EXTINF:187.0,Public Field Recording Two
+https://media.example.org/audio/field-002.mp3
+#EXTINF:-1,Community Radio Stream
+https://stream.example.org/live/community

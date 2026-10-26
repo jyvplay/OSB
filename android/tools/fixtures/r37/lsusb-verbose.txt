@@ -1,0 +1,22 @@
+# Format fixture for tools/hid_topology.py. Illustrative text in real `lsusb -v`
+# shape; NOT a capture of any machine.
+
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused Class
+      bInterfaceProtocol      0 Full speed (or root) hub
+
+Bus 001 Device 003: ID 046d:c31c Logitech, Inc. Keyboard K120
+      bInterfaceClass         3 Human Interface Device
+      bInterfaceSubClass      1 Boot Interface Subclass
+      bInterfaceProtocol      1 Keyboard
+
+Bus 001 Device 005: ID 046d:c077 Logitech, Inc. M105 Optical Mouse
+      bInterfaceClass         3 Human Interface Device
+      bInterfaceSubClass      1 Boot Interface Subclass
+      bInterfaceProtocol      2 Mouse
+
+Bus 001 Device 007: ID 1209:0001 Generic Gadget, keyboard interface
+      bInterfaceClass         3 Human Interface Device
+      bInterfaceSubClass      1 Boot Interface Subclass
+      bInterfaceProtocol      1 Keyboard

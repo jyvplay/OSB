@@ -1,0 +1,4 @@
+contact ada@example.com or +1 555-123-4567
+token=abc123XYZ auth header: Bearer s3cr3t.token-value
+open /data/data/dev.fusion/files/x.log please
+plain line stays intact

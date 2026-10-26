@@ -1,3 +1,272 @@
+# R44 — 24 executed kernels across 23 modules; bridge spans R37–R44
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R44-RESULTS.md) · [Scope/acceptance contract](R44-PLAN.md) ·
+[Deepening census](R44-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R44-ALTERNATIVES.md) ·
+[Privacy PRD](R44-PRIVACY-PRD.md) · [Research record](research/r44-primary.md) ·
+Prior: [R43 results](R43-RESULTS.md).
+
+**50/50 testable subsets (100%); 23/50 modules deepened (46%). 0/50 full-spec
+accepted; no A-grade claim.** Host evidence: **378 kotlinc/JVM assertions (post-repair)**
+across 24 kernels, 24 handwritten mirrors (the Debian comparator fully
+re-implemented on the Python side), lab PASS with R43…R37 + R34 regressions
+green in the same run. One CI-caught ownership repair (FrameBudget name collision → cut,
+replaced by Severity) is §I-logged and disclosed in RESULTS.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r44_contracts.py       # 378 assertions / 24 kernels
+python3 tools/check_r44_reference.py     # 24 mirrors
+python3 -m unittest tools.test_r44_tools # hygiene/pin tests
+python3 tools/r44_lab.py host            # full battery, stamps R44-RESULTS.md
+```
+
+## Prior R43 — 23 executed kernels across 23 modules; bridge spans R37–R43
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R43-RESULTS.md) · [Scope/acceptance contract](R43-PLAN.md) ·
+[Deepening census](R43-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R43-ALTERNATIVES.md) ·
+[Privacy PRD](R43-PRIVACY-PRD.md) · [Research record](research/r43-primary.md) ·
+Prior: [R42 results](R42-RESULTS.md).
+
+**50/50 testable subsets (100%); 23/50 modules deepened (46%). 0/50 full-spec
+accepted; no A-grade claim.** Host evidence: **372 kotlinc/JVM assertions**
+across 23 kernels, 23 handwritten mirrors (downgrade stated in-file), lab PASS
+with R42/R41/R40/R39/R38/R37/R34 regressions green in the same run. One
+genuine kernel repair (TrackerTier whitespace-URL regex) documented in
+R43-PLAN §I with its attack kept.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r43_contracts.py       # 372 assertions / 23 kernels
+python3 tools/check_r43_reference.py     # 23 mirrors
+python3 -m unittest tools.test_r43_tools # 38 hygiene/pin tests
+python3 tools/r43_lab.py host            # full battery, stamps R43-RESULTS.md
+```
+
+## Prior R42 — 22 executed kernels across 21 modules; the bridge spans R37–R42
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R42-RESULTS.md) · [Scope/acceptance contract](R42-PLAN.md) ·
+[Deepening census](R42-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R42-ALTERNATIVES.md) ·
+[Privacy PRD](R42-PRIVACY-PRD.md) · [Research record](research/r42-primary.md) ·
+Prior: [R41 results](R41-RESULTS.md).
+
+**50/50 testable subsets (100%); 21/50 modules deepened (42%). 0/50 full-spec
+accepted; no A-grade claim.** Host evidence: **362 kotlinc/JVM assertions**
+across 22 kernels (AbsRef, MergedCells, PdfDate, NmeaLat, HstsParse, PairPin,
+ArHead, CaseCycle, CommentToggle, UnitPrice, Rule3rds, Histo, CsiCursor,
+GpcHeader, PwPolicy, GainDb, HexBytes, SnoozeSeq, NiceStep, NextRun, Rfc2231,
+BmpHead), 22 handwritten Python mirrors (downgrade declared in-file), lab 22
+gates + 46 suites / 487 tests with R41/R40/R39/R38/R37/R34 regressions green
+in the same run. CI bridge now registers `:testing:r37Contracts` through
+`:testing:r42Contracts` (also runnable from Android Studio Rabbit 1's Gradle
+panel).
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r42_contracts.py       # 362 assertions / 22 kernels
+python3 tools/check_r42_reference.py     # 22 mirrors
+python3 -m unittest tools.test_r42_tools # 36 hygiene/pin tests
+python3 tools/r42_lab.py host            # full battery, stamps R42-RESULTS.md
+```
+
+## Prior R41 — 21 executed kernels across 20 modules; the bridge spans R38–R41
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R41-RESULTS.md) · [Scope/acceptance contract](R41-PLAN.md) ·
+[Deepening census](R41-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R41-ALTERNATIVES.md) ·
+[Privacy PRD](R41-PRIVACY-PRD.md) · [Research record](research/r41-primary.md) ·
+Prior: [R40 results](R40-RESULTS.md).
+
+**50/50 testable subsets (100%); 20/50 modules deepened with new executed kernels (40%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence: **361 kotlinc/JVM assertions** across 21 kernels (SheetRange,
+R1c1Ref, PdfPageGeometry, ShlexJoin, DurationIso, DmsFormat, ColorHex,
+ReadEase, Ean13, DataUri, Trigram, TurnOrder, Ewma, KeyMigrate, CastNs,
+LineWidth, ShardPath, SpanMerge, PiecePlan, TabStops, GridPos), 21 Python
+mirrors (held-out: shlex, unicodedata, timedelta, base64/urllib, expandtabs),
+lab 20 gates + 45 suites / 451 tests with R40/R39/R38/R37/R34 regressions
+green in the same run. **Zero kernel repairs this round.** CI bridge now
+registers `:testing:r38Contracts` (backport) through `:testing:r41Contracts`
+— also runnable from Android Studio Rabbit 1's Gradle panel on your laptop.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r41_contracts.py       # 361 assertions / 21 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r41_reference.py     # 21 mirrors, five held-out stdlib families
+python3 -m unittest tools.test_r41_tools # 33 hygiene/pin tests
+python3 tools/r41_lab.py host            # full battery, stamps R41-RESULTS.md
+```
+
+## Prior R40 — 20 executed kernels + the CI-execution bridge
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R40-RESULTS.md) · [Scope/acceptance contract](R40-PLAN.md) ·
+[Deepening census](R40-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R40-ALTERNATIVES.md) ·
+[Privacy PRD](R40-PRIVACY-PRD.md) · [Research record](research/r40-primary.md) ·
+Prior: [R39 results](R39-RESULTS.md).
+
+**50/50 testable subsets (100%); 19/50 modules deepened with new executed kernels (38%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence: **360 kotlinc/JVM assertions** across 20 separately compiled
+kernels (NumFmtSections, CellErr, DashEducate, ObjReplace, FootnoteMark,
+PdfRotate, HtmlEntity, Rfc2047, SevenZHead, Fnv1a, Mrz, SafeName, Percentile,
+TaskCheckbox, SnapFraction, PlistHead, Monogram, Bech32, OtpauthUri, IpRedact),
+20 Python mirrors (held-out: html, email.header, zlib.crc32, plistlib,
+ipaddress, urllib), lab 18 gates + 44 suites / 418 tests with R39/R38/R37/R34
+regressions green in the same run. **New:** the CI JVM lane now executes
+`:testing:r39Contracts` and `:testing:r40Contracts` — all 39 recent kernels
+under the real Gradle toolchain (also runnable from Android Studio's Gradle
+panel on your laptop). Six in-round repairs documented in R40-PLAN §I.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r40_contracts.py     # 360 assertions / 20 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r40_reference.py   # 20 mirrors, six held-out stdlib families
+python3 -m unittest tools.test_r40_tools   # 38 hygiene/pin tests (real unittest now)
+python3 tools/r40_lab.py host          # full battery, stamps R40-RESULTS.md
+```
+
+## Prior R39 — 19 executed kernels: writer + spreadsheet push, input-path descriptors
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R39-RESULTS.md) · [Scope/acceptance contract](R39-PLAN.md) ·
+[Deepening census](R39-MODULE-DEEPENING.md) · [Alternatives + the honest Class-A answer](R39-ALTERNATIVES.md) ·
+[Privacy PRD](R39-PRIVACY-PRD.md) · [Research record](research/r39-primary.md) ·
+Prior: [R38 results](R38-RESULTS.md).
+
+**50/50 testable subsets (100%); 16/50 modules deepened with new executed kernels (32%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence only: **344 kotlinc/JVM assertions** across 19 separately compiled
+kernels (SerialDate, ColLetters, ColWidth, SmartQuote, HyphenSoft, RomanNum,
+CropBox, IcoDir, Punycode, UsbDesc, MidiNote, Ulid, JwtSplit, IbanCheck,
+GlobMatch, MacAddr, Rfc3339, QuietHours, ExposureEv), 19 independent Python
+mirrors — six held out to stdlib (datetime ×2, punycode codec, base64, fnmatch,
+bigint mod-97) — two binary byte fixtures with pinned sha256s, 350/350 tool
+tests (43 suites), R38 (326) + R37 (274) + R34 (166) regressions green in the
+same lab run. R39 authors **zero** Android component/UI files; touch audit +0,
+manifest scope unchanged.
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r39_contracts.py     # 344 assertions / 19 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r39_reference.py   # 19 mirrors, six held-out stdlib verifiers
+python3 tools/test_r39_tools.py        # 30 hygiene/pin tests
+python3 tools/r39_lab.py host          # full battery: 16 gates + 43 suites, stamps R39-RESULTS.md
+```
+
+In-round repair (detail in R39-PLAN §I): one WRONG TEST VECTOR —
+`decode("BCHER-KVA")` expected lowercase output, but RFC 3492 preserves
+literal-portion case (the held-out Python codec agrees). The kernel was right;
+the test was fixed, contracts re-run from zero, and the mirror now pins both
+sides of the case rule.
+
+## Prior R38 — 17 executed kernels (pure-logic round), beam formats + hardware honesty
+
+Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
+[Exact results and limits](R38-RESULTS.md) · [Scope/acceptance contract](R38-PLAN.md) ·
+[Deepening census](R38-MODULE-DEEPENING.md) · [Alternatives](R38-ALTERNATIVES.md) ·
+[Privacy PRD](R38-PRIVACY-PRD.md) · [Research record](research/r38-primary.md) ·
+Prior: [R37 results](R37-RESULTS.md).
+
+**50/50 testable subsets (100%); 15/50 modules deepened with new executed kernels (30%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence only: **326 kotlinc/JVM assertions** across 17 separately compiled
+kernels (MagnetParse, Bencode, FlacHead, WebpHead, SemVer, UuidInfo, HttpRange,
+QuotedPrint, PemBound, KeyCadence, IsoWeek, HslColor, EdidHead, VttTime,
+LuhnCheck, Soundex, PdfName), 17 independent Python mirrors — five held out to
+stdlib (uuid, quopri, colorsys, datetime.isocalendar, statistics/base64) — three
+binary byte fixtures with pinned sha256s, 337/337 tool tests (42 Python suites),
+R37 (274) and R34 (166) regressions green in the same lab run.
+R38 authors **zero** Android component/UI files; touch audit +0 delta, manifest
+scope unchanged (2 activities, 1 receiver, 0 services/providers).
+
+Run everything without Android Studio, from `android/`:
+
+```
+python3 tools/run_r38_contracts.py     # 326 assertions / 17 kernels (downloads pinned kotlinc+JRE)
+python3 tools/check_r38_reference.py   # 17 independent Python mirrors
+python3 tools/test_r38_tools.py        # 24 hygiene/pin tests
+python3 tools/r38_lab.py host          # full battery: 14 gates + 42 suites, stamps R38-RESULTS.md
+```
+
+In-round repair (detail in R38-PLAN §I): the census deepen script initially
+claimed MagnetParse/Bencode were the beam module's *first* executed kernels —
+false (ShareManifest R29, ChunkPlan R33). Sentence corrected in the script and
+regenerated JSON, deepen re-run twice to idempotency, `--check` green.
+
+## Prior R37 — 14 executed kernels (pure-logic round) + host input-path audit
+
+[Exact results and limits](R37-RESULTS.md) · [Scope/acceptance contract](R37-PLAN.md) ·
+[Deepening census](R37-MODULE-DEEPENING.md) · [Alternatives](R37-ALTERNATIVES.md) ·
+[Privacy PRD](R37-PRIVACY-PRD.md) · [Research record](research/r37-primary.md) ·
+Prior: [R36 results](R36-RESULTS.md).
+
+**50/50 testable subsets (100%); 14/50 modules deepened with new executed kernels (28%).
+0/50 full-spec accepted; all 50 unfinished at full scope. No A-grade claim.**
+Host evidence only: **274 kotlinc/JVM assertions** across 14 separately compiled
+kernels, independent Python recomputation (14 deliberately different mirrors),
+static touch-target audit (223 sites, 175 pre-existing findings queued, +0 delta),
+Android parse gate (0 syntax errors), manifest-scope gate, HID topology parser run
+on labelled fixtures, 326/326 tool tests (41 Python suites).
+R37 authors no Android files; the 2 authored Android files (USB watch receiver,
+consent dialog) remain authored, NOT executed — CI/Studio must compile and run
+them before any behavior claim.
+
+Repairs this round (detail in R37-PLAN §I): one shipped fix — `VTodoParse` accepted
+`IN-PROGRESS`, RFC 5545 §3.8.1.11 says `IN-PROCESS`, so conformant VTODOs would have
+been refused (R34's 166 assertions + reference re-run green afterwards); two
+pre-run corrections from the fetched primaries — XZ SHA-256 Check ID is `0x0A` (not
+`0x07`) and the RTSP table gains `304` with the ABNF spellings.
+
+## Laptop / Android Studio Rabbit1 (R28)
+
+Use a maintained **full JDK17** and real **SDK `platforms;android-37.0`** with build
+tools 36.0.0/35.0.0. Pins AGP9.1.1 / Gradle9.3.1 / Kotlin2.2.21; min34 / compile37 /
+target37. Rabbit1 GUI was not run in this sandbox; push this branch for CI receipts.
+
+1. Open `android/`, sync, select **app / proDebug** on a disposable **API34** AVD
+   with copied data.
+2. Existing Tabletop/Flat desktop, silver Art / light Business presets, local
+   MediaPlayer, offline atlas, PNG-copy and privacy scratchpad are unchanged; follow
+   the historical sections below for those bounded workflows.
+3. New files pending your verification: **UsbWatchReceiver** (USB attach/detach
+   detection + advisory verdict + notification-if-permitted; detection ONLY,
+   never blocking) and **ConsentDialog** (scope+TTL authorize-once UI).
+   Prior authored surfaces (stream player, vector maps, Orbot handoff,
+   BeautyDock still UNWIRED) are unchanged.
+4. No emulator exists in the sandbox: run `python3 tools/check_r37_touch_targets.py`
+   for the static touch-target audit (223 sites; 175 pre-existing findings are
+   a review queue, not rendered proof). Export real Compose layout bounds per
+   page and validate with `python3 tools/check_r27_pagematrix.py status.json`
+   (24-page matrix; honest coverage is 0.0 until exports exist).
+
+## Without Android Studio or a local SDK (R37)
+
+Everything this round runs without Studio:
+
+```bash
+python3 tools/bootstrap_host_tools.py install     # pinned kotlinc + JRE into ~/.cache
+python3 tools/r37_lab.py host                     # 12 gates + 41 suites, receipted
+python3 tools/run_r37_contracts.py                # 274 assertions, 14 kernels
+python3 tools/check_r37_reference.py              # 14 independent Python mirrors
+python3 tools/hid_topology.py \
+  --verbose tools/fixtures/r37/lsusb-verbose.txt \
+  --tree    tools/fixtures/r37/lsusb-tree.txt     # HID input-path audit (transcript)
+```
+
+The last command audits a **saved** `lsusb -v`/`lsusb -t` transcript. It cannot see
+a non-enumerating inline implant and says so in its own output.
+
+---
+
 # R24 continuation — tabletop, map and local media
 
 Current work branch **`arena/a8ac5475-osb`**. Open **`OSB/android`**, not the root Vite prototype.

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="OSB-R26-fixture">
+  <metadata><name>Raleigh test loop</name></metadata>
+  <trk><name>Raleigh test loop</name><trkseg>
+    <trkpt lat="35.7796" lon="-78.6382"><ele>96.0</ele></trkpt>
+    <trkpt lat="35.7806" lon="-78.6392"><ele>97.5</ele></trkpt>
+    <trkpt lat="35.7816" lon="-78.6402"><ele>99.0</ele></trkpt>
+  </trkseg></trk>
+</gpx>

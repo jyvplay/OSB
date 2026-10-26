@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Open Field Recordings</title>
+    <link>https://media.example.org/podcast</link>
+    <description>Public-domain field recordings.</description>
+    <item>
+      <title>Dawn Chorus</title>
+      <enclosure url="https://media.example.org/audio/dawn.mp3" length="4823456" type="audio/mpeg" />
+    </item>
+    <item>
+      <title>Night Rain</title>
+      <enclosure url="https://media.example.org/audio/rain.m4a" length="3120010" type="audio/m4a" />
+    </item>
+    <item>
+      <title>Show Notes PDF</title>
+      <enclosure url="https://media.example.org/docs/notes.pdf" length="8812" type="application/pdf" />
+    </item>
+  </channel>
+</rss>
