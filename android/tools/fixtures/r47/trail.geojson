@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "hq",
+      "properties": {"name": "Cleveland Campus"},
+      "geometry": {"type": "Point", "coordinates": [-81.509, 41.464]}
+    },
+    {
+      "type": "Feature",
+      "id": "route-1",
+      "properties": {"surface": "paved"},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-81.520, 41.460], [-81.510, 41.465], [-81.500, 41.470]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "zone-a",
+      "properties": {"zone": "offline-tile"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-81.530, 41.450], [-81.490, 41.450], [-81.490, 41.480], [-81.530, 41.480], [-81.530, 41.450]]]
+      }
+    }
+  ]
+}

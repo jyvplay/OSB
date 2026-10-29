@@ -1,0 +1,21 @@
+{
+  "scope": "Headless OpenJDK 17 Java2D visual preview over live R46 Kotlin kernels; NOT Android emulator/device evidence.",
+  "dimensions_px": [
+    1520,
+    980
+  ],
+  "png_bytes": 171717,
+  "font_metrics_bounds_enforced": true,
+  "font_metrics_non_overlap_checks": 77,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 15.86,
+    "muted_on_card": 10.05,
+    "muted_on_subtle": 8.84,
+    "emerald_on_subtle": 7.95,
+    "amber_on_subtle": 9.16,
+    "rose_on_subtle": 5.68,
+    "cyan_on_subtle": 7.14
+  },
+  "min_contrast_ratio": 5.68,
+  "tracked_copy": "docs/verification/r46-host-workbench/r46-workbench-preview.png"
+}

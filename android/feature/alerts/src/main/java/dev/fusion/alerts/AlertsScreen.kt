@@ -37,6 +37,17 @@ fun AlertsScreen(context: Context, onOpenListenerSettings: () -> Unit) {
     val rows: List<AlertRow> = remember(refresh, enabled) {
         if (enabled) runCatching { store.recent() }.getOrDefault(emptyList()) else emptyList()
     }
+    val diagSummary = remember(rows, enabled) {
+        val dispositions = rows.map {
+            NotificationDiagnosticLedger.classifyNotification(
+                isVisibilitySecret = false,
+                isOngoing = false,
+                isGroupSummary = false,
+                suppressedByFocusProfile = false,
+            )
+        }
+        NotificationDiagnosticLedger.summarizeDispositions(dispositions, enabled)
+    }
     val fmt = remember { SimpleDateFormat("MMM d HH:mm", Locale.getDefault()) }
 
     Column(Modifier.fillMaxSize().padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -54,7 +65,8 @@ fun AlertsScreen(context: Context, onOpenListenerSettings: () -> Unit) {
                 OutlinedButton(onClick = { store.clear(); refresh++ }) { Text("Clear log") }
                 OutlinedButton(onClick = onOpenListenerSettings) { Text("Access") }
             }
-            Text("${rows.size} stored (7-day retention, ongoing + group summaries skipped)")
+            val storedCnt = diagSummary.countsByDisposition[NotificationDiagnosticLedger.Disposition.STORED_IN_CENTER] ?: 0
+            Text("$storedCnt stored (${diagSummary.totalEvaluated} evaluated, 7-day retention, ongoing + group summaries + VISIBILITY_SECRET skipped)")
         }
         LazyColumn(Modifier.weight(1f)) {
             items(rows, key = { it.key }) { r ->

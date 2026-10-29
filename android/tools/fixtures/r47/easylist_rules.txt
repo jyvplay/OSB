@@ -1,0 +1,9 @@
+[Adblock Plus 2.0]
+! Fusion R47 EasyList / Brave adblock-rust test ruleset
+||doubleclick.example.net^$third-party
+||analytics.tracker.test^$script,xmlhttprequest
+@@||allow.analytics.tracker.test^$script
+|https://Pixels.BadCdn.example/beacon.gif$image
+news.example.org##.sponsored-banner
+~partner.news.example.org,news.example.org##.paywall-modal
+news.example.org#@#.keep-visible

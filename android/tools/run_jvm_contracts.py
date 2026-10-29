@@ -24,7 +24,8 @@ for folder in folders + ['feature/calc', 'feature/notes', 'feature/browser']:
     module_sources = sorted(source_root.rglob('*.kt'))
     module_name = folder.replace('/', '_')
     jar = out/(module_name+'.jar')
-    subprocess.run([compiler, '-jvm-target', '17', '-module-name', module_name,
+    extra_cp = ['-classpath', str(out/'format_archive.jar')] if folder == 'format/ooxml' else []
+    subprocess.run([compiler, '-jvm-target', '17', '-module-name', module_name, *extra_cp,
                     *map(str,module_sources), '-d', str(jar)], check=True)
     sources += module_sources
     jars.append(jar)

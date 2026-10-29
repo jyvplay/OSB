@@ -24,6 +24,7 @@ fun CommandPalette(commands:List<Command>,onSelect:(String)->Unit,onDismiss:()->
     var position by remember { mutableIntStateOf(0) }
     val registry=remember(commands) { CommandRegistry(commands) }
     val hits=remember(registry,query) { registry.search(query,32) }
+    val inlineCard=remember(query) { PaletteInlineAnswerEngine.evaluateQuery(query).firstOrNull() }
     val selectedIndex=position.coerceIn(0,maxOf(0,hits.lastIndex))
     val inputFocus=remember { FocusRequester() }
     val scroll=rememberLazyListState()
@@ -44,7 +45,15 @@ fun CommandPalette(commands:List<Command>,onSelect:(String)->Unit,onDismiss:()->
         }) {
             OutlinedTextField(query,{ if(it.length<=CommandRegistry.MAX_QUERY) query=it },singleLine=true,
                 label={ Text("Search modules, open windows and workspaces") },modifier=Modifier.fillMaxWidth().focusRequester(inputFocus).testTag("palette-query"))
-            Text("Local literal search • ↑/↓ select, Enter opens, Esc closes • 1024-character limit. No files, contacts, private-app or web index is searched.")
+            inlineCard?.let { card ->
+                Surface(tonalElevation = 2.dp, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("palette-inline-answer")) {
+                    Column(Modifier.padding(8.dp)) {
+                        Text(card.headline, style = MaterialTheme.typography.titleMedium)
+                        Text(card.subtitle, style = MaterialTheme.typography.labelSmall)
+                    }
+                }
+            }
+            Text("Local literal search • ↑/↓ select, Enter opens, Esc closes • 1024-character limit. Inline math/unit/radix answer card runs locally; no files, contacts, private-app or web index is searched.")
             LazyColumn(Modifier.fillMaxWidth().heightIn(max=280.dp),state=scroll) {
                 itemsIndexed(hits,key={ _,command -> command.id }) { index,command ->
                     TextButton(onClick={ onSelect(command.id) },modifier=Modifier.fillMaxWidth().heightIn(min=48.dp)

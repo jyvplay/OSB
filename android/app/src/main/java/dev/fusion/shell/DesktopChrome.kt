@@ -83,20 +83,30 @@ internal fun AppGlyph(id:String,modifier:Modifier) {
 fun DesktopTopBar(appearance:Appearance,activeTitle:String,workspace:Int,onFind:()->Unit,onSafety:()->Unit,onControl:()->Unit) {
     var clock by remember {mutableStateOf(LocalTime.now())}
     LaunchedEffect(Unit) {while(true) {clock=LocalTime.now();delay(15000)}}
-    Row(Modifier.fillMaxWidth().heightIn(min=56.dp).background(MaterialTheme.colorScheme.surface).padding(horizontal=8.dp),
-        verticalAlignment=Alignment.CenterVertically) {
-        Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()),verticalAlignment=Alignment.CenterVertically,
-            horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-            Text("F",fontWeight=FontWeight.Black,color=MaterialTheme.colorScheme.primary,fontSize=24.sp)
-            // Primary Find remains before the overflow title, with a real >=48dp layout box.
-            TextButton(onClick=onFind,modifier=Modifier.heightIn(min=48.dp).testTag("desktop-find")) {Text("Find")}
-            Text(if(appearance.layout==DesktopLayout.ART) activeTitle else "Fusion Shell",fontWeight=FontWeight.SemiBold,maxLines=1)
-            TextButton(onClick=onSafety,modifier=Modifier.heightIn(min=48.dp)) {Text("Pilot safety")}
-            Text("Workspace ${workspace+1}",color=MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(clock.format(DateTimeFormatter.ofPattern("HH:mm")),color=MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Row(Modifier.widthIn(max=148.dp).horizontalScroll(rememberScrollState())) {
-            TextButton(onClick=onControl,modifier=Modifier.heightIn(min=48.dp).testTag("control-panel")) {Text("Control panel")}
+    BoxWithConstraints(Modifier.fillMaxWidth().heightIn(min=56.dp).background(MaterialTheme.colorScheme.surface).padding(horizontal=8.dp)) {
+        val compact = maxWidth < 520.dp
+        Row(Modifier.fillMaxWidth().align(Alignment.CenterStart),verticalAlignment=Alignment.CenterVertically) {
+            Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()).padding(end=8.dp),verticalAlignment=Alignment.CenterVertically,
+                horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+                Text("F",fontWeight=FontWeight.Black,color=MaterialTheme.colorScheme.primary,fontSize=24.sp)
+                // Primary Find remains before the overflow title, with a real >=48dp layout box.
+                TextButton(onClick=onFind,modifier=Modifier.heightIn(min=48.dp).testTag("desktop-find")) {Text("Find")}
+                Text(
+                    if(appearance.layout==DesktopLayout.ART) activeTitle else "Fusion Shell",
+                    modifier=Modifier.widthIn(max=if(compact) 112.dp else 240.dp),
+                    fontWeight=FontWeight.SemiBold,
+                    maxLines=1,
+                    overflow=TextOverflow.Ellipsis,
+                )
+                TextButton(onClick=onSafety,modifier=Modifier.heightIn(min=48.dp)) {Text("Pilot safety")}
+                Text(if(compact) "WS ${workspace+1}" else "Workspace ${workspace+1}",color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=1)
+                Text(clock.format(DateTimeFormatter.ofPattern("HH:mm")),color=MaterialTheme.colorScheme.onSurfaceVariant,maxLines=1)
+            }
+            Box(Modifier.width(1.dp).height(24.dp).background(MaterialTheme.colorScheme.outlineVariant))
+            Spacer(Modifier.width(4.dp))
+            Row(Modifier.widthIn(max=148.dp).horizontalScroll(rememberScrollState())) {
+                TextButton(onClick=onControl,modifier=Modifier.heightIn(min=48.dp).testTag("control-panel")) {Text("Control panel")}
+            }
         }
     }
 }

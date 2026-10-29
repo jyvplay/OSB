@@ -1,0 +1,32 @@
+{
+  "round": "R46",
+  "scope": "Adversarial fixture vectors consumed by R46Checks on the host JVM",
+  "onion_grater_denied_commands": [
+    "GETCONF SocksPort",
+    "SETCONF ExitNodes={us}",
+    "SAVECONF",
+    "ADD_ONION NEW:ED25519-V3 Port=80",
+    "TAKEOWNERSHIP",
+    "SIGNAL SHUTDOWN",
+    "GETINFO address"
+  ],
+  "pipe_chain_injections": [
+    "grep error; rm -rf /",
+    "grep error && cat /etc/passwd",
+    "grep error || echo pwned",
+    "grep `whoami`",
+    "grep $(id)",
+    "grep error > /tmp/leak"
+  ],
+  "badusb_composite_interfaces": [
+    {"cls": 8, "sub": 6, "proto": 80},
+    {"cls": 3, "sub": 1, "proto": 1}
+  ],
+  "gs1_valid_gtins": [
+    "4006381333931",
+    "036000291452",
+    "96385074",
+    "09506000134352",
+    "006141411234567890"
+  ]
+}

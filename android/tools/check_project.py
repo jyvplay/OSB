@@ -69,3 +69,6 @@ assert hashlib.sha256((root/"core/windowing/src/contract/resources/desktop-v1.bi
 assert hashlib.sha256((root/'core/documents/src/contract/resources/editor-session-v2.bin').read_bytes()).hexdigest()=='369cf464ed4a97a484e79c954bf87395f21ebab285081b77f381d6baac0733d4', 'Historical editor v2 fixture changed'
 
 subprocess.run([sys.executable,str(root/'tools/module_testability.py'),'--check'],check=True)
+subprocess.run([sys.executable,str(root/'tools/check_r45_touch_targets.py')],check=True)
+subprocess.run([sys.executable,str(root/'tools/check_r45_manifest_scope.py')],check=True)
+

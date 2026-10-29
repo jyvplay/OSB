@@ -1,0 +1,34 @@
+{
+  "round": "R50",
+  "scope": "Headless OpenJDK 17 Java2D visual previews over live R50 Kotlin kernels (1840x1340 desktop + standalone 360x800 compact mobile) + pairwise 2D rectangle non-overlap + WCAG AAA >= 7.0:1; NOT Android emulator/device evidence.",
+  "dimensions_px": [
+    1840,
+    1380
+  ],
+  "compact_dimensions_px": [
+    360,
+    800
+  ],
+  "png_bytes": 325247,
+  "compact_png_bytes": 53268,
+  "png_sha256": "ffcf0ad89c6509ae220039eace2fc9b28337cc06e85cd7689d134de4086f4e68",
+  "compact_png_sha256": "73bdcb1ad3686965f5d1f05996fd34a148dca37d378be2b419f80ae2f36a6f76",
+  "font_metrics_bounds_enforced": true,
+  "pairwise_2d_non_overlap_enforced": true,
+  "font_metrics_non_overlap_checks": 321,
+  "pairwise_intersection_pairs_verified": 36942,
+  "compact_360dp_viewport_verified": true,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 18.03,
+    "muted_on_card": 13.14,
+    "muted_on_subtle": 12.34,
+    "emerald_on_subtle": 11.81,
+    "amber_on_subtle": 12.79,
+    "rose_on_subtle": 9.37,
+    "cyan_on_subtle": 11.69,
+    "violet_on_subtle": 10.93
+  },
+  "min_contrast_ratio": 9.37,
+  "tracked_copy": "docs/verification/r50-host-workbench/r50-workbench-overview.png",
+  "tracked_compact_copy": "docs/verification/r50-host-workbench/r50-compact-360x800.png"
+}

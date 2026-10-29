@@ -28,7 +28,7 @@ jobs:
       - name: Check source contracts and generated traceability
         run: |
           python3 tools/check_project.py
-          python3 -m unittest discover -s tools -p 'test_*.py' -v
+          PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_*.py' -v
       - name: Inspect runner SDK and install pinned platform
         run: |
           SDK_MANAGER="${ANDROID_HOME:?Runner did not expose ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
@@ -74,7 +74,16 @@ jobs:
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts :testing:r24cContracts :testing:r37Contracts :testing:r38Contracts :testing:r39Contracts :testing:r40Contracts :testing:r41Contracts :testing:r42Contracts :testing:r43Contracts :testing:r44Contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts :testing:r24cContracts :testing:r25PngContracts :testing:r26Contracts :testing:r27Contracts :testing:r28Contracts :testing:r29Contracts :testing:r30Contracts :testing:r31Contracts :testing:r32Contracts :testing:r33Contracts :testing:r34Contracts :testing:r35Contracts :testing:r36Contracts :testing:r37Contracts :testing:r38Contracts :testing:r39Contracts :testing:r40Contracts :testing:r41Contracts :testing:r42Contracts :testing:r43Contracts :testing:r44Contracts :testing:r45Contracts :testing:r46Contracts :testing:r47Contracts :testing:r48Contracts :testing:r49Contracts :testing:r50Contracts :testing:r51Contracts :testing:r52Contracts :testing:r53Contracts
+      - name: Run cross-language Python differential reference oracles on Gradle contract artifacts
+        run: |
+          python3 tools/check_r48_reference.py
+          python3 tools/check_r49_reference.py
+          python3 tools/check_r50_reference.py
+          python3 tools/check_r51_reference.py
+          python3 tools/check_r52_reference.py
+          python3 tools/check_r53_reference.py
+          PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_r*.py' -v
       - name: Lint both manifests and Android sources
         run: bash tools/run_gradle_ci.sh lint :app:lintProDebug :app:lintPlayDebug
       - name: Upload debug APKs

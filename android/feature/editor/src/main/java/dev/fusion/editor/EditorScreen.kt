@@ -4,6 +4,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.Alignment
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -123,7 +125,19 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
             }
         }
         if (active != null) {
-            OutlinedTextField(value = state.fields.getValue(active.id), onValueChange = { model.edit(active.id, it) },
+            val draftText = state.fields.getValue(active.id)
+            val metrics = remember(draftText) { ReadabilityMetrics.analyze(draftText) }
+            val mathCount = remember(draftText) { Regex("\\$[^$\\n]{1,120}\\$").findAll(draftText).count() }
+            val citeCount = remember(draftText) { Regex("\\[@[A-Za-z0-9_:-]+]").findAll(draftText).count() }
+            Text(
+                "Writer inspector: ${metrics.wordCount} words • ${metrics.sentenceCount} sentences • " +
+                    "FK grade ${"%.1f".format(metrics.fleschKincaidGrade)} • ~${metrics.estimatedReadingSeconds}s read" +
+                    (if (mathCount > 0) " • $mathCount LaTeX spans" else "") +
+                    (if (citeCount > 0) " • $citeCount [@citations]" else "") +
+                    (if (metrics.repeatedAdjacentWords.isNotEmpty()) " • duplicate: ${metrics.repeatedAdjacentWords.joinToString()}" else ""),
+                modifier = Modifier.testTag("editor-writer-inspector"),
+            )
+            OutlinedTextField(value = draftText, onValueChange = { model.edit(active.id, it) },
                 modifier = Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).focusRequester(editorFocus).testTag("editor-content"), enabled = !state.recoveryBlocked,
                 label = { Text(active.name + if (dirty) " — Unsaved changes" else " — No unsaved changes") })
         }
@@ -132,7 +146,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
         Box {
             OutlinedButton(onClick={ encodingMenu=true },enabled=ready) { Text("Open encoding: ${openingEncoding?.label ?: "BOM detection / UTF-8"}") }
-            DropdownMenu(expanded=encodingMenu,onDismissRequest={ encodingMenu=false }) {
+            DropdownMenu(expanded=encodingMenu,onDismissRequest={ encodingMenu=false },modifier=Modifier.widthIn(min=180.dp,max=280.dp)) {
                 DropdownMenuItem(text={ Text("BOM detection / strict UTF-8") },onClick={ openingEncoding=null;encodingMenu=false })
                 dev.fusion.documents.TextEncoding.entries.forEach { encoding ->
                     DropdownMenuItem(text={ Text(encoding.label) },onClick={ openingEncoding=encoding;encodingMenu=false })
@@ -140,7 +154,26 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
             }
         }
         active?.let { Text("Draft encoding: ${it.encoding.label}. Unrepresentable export characters are refused, not replaced.") }
-        Text("Strict UTF-8 / UTF-16 / explicit Windows-1252 • 2 MiB/document • 8 tabs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
+        val undoDepth = state.buffers[active?.id]?.undoDepth ?: 0
+        if (undoDepth > 0 && active != null) {
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
+                dev.fusion.designsystem.StackedUndoFanOverlayBar(
+                    itemsNewestFirst = (1..minOf(undoDepth, 3)).map { step ->
+                        dev.fusion.designsystem.InteractiveUndoCardModel(
+                            id = "${active.id}#u$step",
+                            summary = if (step == 1) "Edited ${active.name} ($undoDepth undo step(s))" else "Prior edit #$step in ${active.name}",
+                            ttlProgress = (1.0f - (step - 1) * 0.25f).coerceIn(0.25f, 1.0f),
+                            canUndo = step == 1,
+                        )
+                    },
+                    viewportWidthDp = 960.0,
+                    onUndoItem = { model.undo() },
+                    onDismissAll = {},
+                )
+            }
+        }
+        val selMenuCount = remember(active?.id) { EditorSelectionContextMenuPlanner.planForSelection(true, true, false).size }
+        Text("Strict UTF-8 / UTF-16 / explicit Windows-1252 • 2 MiB/document • 8 tabs • Selection menu=$selMenuCount right-sized verbs. Local recovery is not a backup or an external save. SAF atomic replacement is unavailable; use Save a Copy. Ctrl+O/N/S, Ctrl+Z/Shift+Z/Y, Ctrl+F/H/G. Undo is bounded and is not restored after process death.")
         }
     }
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })

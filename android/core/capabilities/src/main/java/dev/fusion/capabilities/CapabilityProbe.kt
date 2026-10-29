@@ -44,4 +44,8 @@ object CapabilityProbe {
             errors = failures.toList(),
         )
     }
+
+    /** R51 host-deterministic Wasm 2.0 128-bit SIMD (0xFD / v128) module audit hook. */
+    fun inspectWasmSimdModule(wasmBytes: ByteArray): WasmSimdModuleVerifier.VerificationReport =
+        WasmSimdModuleVerifier.verify(wasmBytes)
 }

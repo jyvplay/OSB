@@ -1,0 +1,60 @@
+{
+  "round": "R52",
+  "scope": "Headless OpenJDK 17 Java2D visual previews over live R52 Kotlin kernels (5x 1880x1400 sheets incl. Recall 4-Tier Studio, Right-Click Context Menu OS Benchmark, Original List/Grid/Columns Vector Logos + Miller Columns, Bottom-Right Translucent Z-Stack Undo Deck, and Master Overview + 360x800 Compact Mobile) + FontMetrics horizontal bounds + pairwise 2D rectangle non-overlap + WCAG AAA >= 11.93:1; NOT Android emulator/device evidence.",
+  "dimensions_px": [
+    1880,
+    1400
+  ],
+  "compact_dimensions_px": [
+    360,
+    800
+  ],
+  "sheets": {
+    "recall_studio": {
+      "path": "docs/verification/r52-host-workbench/r52-recall-studio.png",
+      "bytes": 314217,
+      "sha256": "892007f652cf599d5001f6d0b3fcc5d6dbd13dcdabc0b7d2955188dc8b377dec",
+      "boxes": 280
+    },
+    "context_menu_benchmark": {
+      "path": "docs/verification/r52-host-workbench/r52-context-menu-benchmark.png",
+      "bytes": 172926,
+      "sha256": "fab9c8d29d733c674f9701671f7c055e24c4f9c1dca59e867172b465a42bf3a3",
+      "boxes": 252
+    },
+    "view_mode_icons": {
+      "path": "docs/verification/r52-host-workbench/r52-view-mode-icons.png",
+      "bytes": 179705,
+      "sha256": "0dd357f1e5902b1aaad55ce3a6035d5fa80a4c42106200ed43ac956d3288f248",
+      "boxes": 153
+    },
+    "undo_zstack_toast": {
+      "path": "docs/verification/r52-host-workbench/r52-undo-zstack-toast.png",
+      "bytes": 236473,
+      "sha256": "d9c08796d00615bad57042ca0246acb72f30ceac8195c151f9f5037886caaeae",
+      "boxes": 234
+    },
+    "workbench_overview": {
+      "path": "docs/verification/r52-host-workbench/r52-workbench-overview.png",
+      "bytes": 214953,
+      "sha256": "292d95d6a7d68b7a8106837f3886b976c6475d9506ece8afcc32cc88610b4ddd",
+      "boxes": 189
+    }
+  },
+  "font_metrics_bounds_enforced": true,
+  "pairwise_2d_non_overlap_enforced": true,
+  "font_metrics_non_overlap_checks": 1108,
+  "pairwise_intersection_pairs_verified": 127341,
+  "compact_360dp_viewport_verified": true,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 18.57,
+    "muted_on_card": 15.02,
+    "muted_on_subtle": 14.48,
+    "emerald_on_subtle": 13.31,
+    "amber_on_subtle": 14.25,
+    "rose_on_subtle": 11.93,
+    "cyan_on_subtle": 12.88,
+    "violet_on_subtle": 12.49
+  },
+  "min_contrast_ratio": 11.93
+}

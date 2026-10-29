@@ -35,14 +35,35 @@ fun BrowserScreen() {
     var draft by remember { mutableStateOf("https://www.example.com") }
     val current = tabs.firstOrNull { it.id == active } ?: tabs.first()
     var ref by remember { mutableStateOf<WebView?>(null) }
+    var readerMode by remember { mutableStateOf(false) }
+    var blockedNavigations by remember { mutableStateOf(0) }
+    val isolationDemo = remember {
+        CrossOriginIsolationPolicy.evaluateDocumentHeaders(
+            mapOf("Cross-Origin-Opener-Policy" to "same-origin", "Cross-Origin-Embedder-Policy" to "require-corp"),
+        )
+    }
+    val defaultCsp = remember { CspHeaderDirective.parse("default-src 'self'; frame-ancestors 'none'") }
+    var recallEnabled by remember { mutableStateOf(true) }
+    var recallMode by remember { mutableStateOf("BY_URL_NAME") }
+    var recallCustomPattern by remember { mutableStateOf("RecallVault/{yyyy}-{mm}-{dd}/{domain}/{kind}") }
+    var capturedImages by remember { mutableStateOf(0) }
+    var capturedVideos by remember { mutableStateOf(0) }
+    var capturedMusic by remember { mutableStateOf(0) }
+    var activeRecallTier by remember { mutableStateOf("T1 Direct/206") }
+    var lastRecallFolder by remember { mutableStateOf("recall/www.example.com") }
 
     Column(Modifier.fillMaxSize().padding(8.dp)) {
         Row {
             OutlinedTextField(draft, { draft = it }, Modifier.weight(1f), singleLine = true, label = { Text("URL") })
             Button(onClick = {
-                val u = if (draft.startsWith("http")) draft else "https://$draft"
-                current.url = u
-                ref?.loadUrl(u)
+                val candidate = if (draft.contains("://")) draft else "https://$draft"
+                val safe = HtmlSanitizer.sanitizeUri(candidate)
+                if (safe != null) {
+                    current.url = safe
+                    ref?.loadUrl(safe)
+                } else {
+                    blockedNavigations++
+                }
             }) { Text("Go") }
         }
         Row {
@@ -52,7 +73,39 @@ fun BrowserScreen() {
                 val id = (tabs.maxOfOrNull { it.id } ?: 0) + 1
                 tabs.add(Tab(id, "https://www.example.com")); active = id; draft = "https://www.example.com"
             }) { Text("+ Tab") }
+            androidx.compose.material3.OutlinedButton(onClick = { readerMode = !readerMode }) {
+                Text(if (readerMode) "Web View" else "Reader Mode")
+            }
         }
+        if (readerMode) {
+            val extracted = remember(current.title, current.url) {
+                val sanitized = HtmlSanitizer.sanitize("<article><h1>${current.title.ifBlank { current.url }}</h1><p>Offline Reader Mode sanitizes active scripts via HtmlSanitizer and extracts clean prose via ArticleReaderExtractor.</p></article>")
+                ArticleReaderExtractor.extract(sanitized.cleanHtml)
+            }
+            Text("Reader Mode (${extracted.wordCount} words • COOP/COEP=${isolationDemo.crossOriginIsolated} • CSP=${defaultCsp.directives.size} rules • blocked schemes=$blockedNavigations): ${extracted.markdown}")
+        }
+        BrowserRecallHud(
+            recallEnabled = recallEnabled,
+            onToggleRecall = { recallEnabled = it },
+            delineationMode = recallMode,
+            onSelectDelineation = { mode ->
+                recallMode = mode
+                val cleanHost = dev.fusion.browser.model.CleanUrlTrackingParamStripper.sanitize(current.url)
+                    .sanitizedUrl.substringAfter("://").substringBefore('/')
+                lastRecallFolder = when (mode) {
+                    "BY_PAGE_TITLE" -> "recall/by-title/${current.title.ifBlank { cleanHost }.take(40)}"
+                    "BY_CUSTOM_TEMPLATE" -> recallCustomPattern.replace("{domain}", cleanHost)
+                    else -> "recall/by-url/$cleanHost"
+                }
+            },
+            customFolderPattern = recallCustomPattern,
+            onUpdateCustomPattern = { recallCustomPattern = it },
+            capturedImages = capturedImages,
+            capturedVideos = capturedVideos,
+            capturedMusic = capturedMusic,
+            activeTierLabel = activeRecallTier,
+            lastArchivedFolder = lastRecallFolder,
+        )
         Row {
             tabs.forEach { t ->
                 androidx.compose.material3.OutlinedButton(onClick = { active = t.id; draft = t.url }) {
@@ -66,6 +119,29 @@ fun BrowserScreen() {
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
                     webViewClient = object : WebViewClient() {
+                        override fun onLoadResource(view: WebView, resourceUrl: String) {
+                            if (!recallEnabled) return
+                            val lower = resourceUrl.substringBefore('?').lowercase()
+                            val decision = dev.fusion.browser.model.RecallMethodEscalationRouter.selectTier(
+                                dev.fusion.browser.model.RecallMethodEscalationRouter.ViewedResourceSignal(
+                                    url = resourceUrl,
+                                    contentType = "",
+                                    isBlobOrMediaSource = lower.startsWith("blob:"),
+                                )
+                            )
+                            if (decision is dev.fusion.browser.model.RecallMethodEscalationRouter.RoutingDecision.Selected) {
+                                activeRecallTier = "T${decision.tier.rank} ${decision.tier.name}"
+                            }
+                            when {
+                                lower.endsWith(".png") || lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".webp") || lower.endsWith(".avif") || lower.endsWith(".svg") ->
+                                    capturedImages++
+                                lower.endsWith(".mp4") || lower.endsWith(".webm") || lower.endsWith(".m3u8") || lower.endsWith(".mpd") ->
+                                    capturedVideos++
+                                lower.endsWith(".mp3") || lower.endsWith(".flac") || lower.endsWith(".ogg") || lower.endsWith(".opus") || lower.endsWith(".m4a") || lower.endsWith(".wav") ->
+                                    capturedMusic++
+                            }
+                        }
+
                         override fun onPageFinished(view: WebView, url: String) {
                             current.title = view.title ?: url
                         }
@@ -80,6 +156,12 @@ fun BrowserScreen() {
             },
             modifier = Modifier.fillMaxWidth().weight(1f)
         )
-        Text("Tabs: ${tabs.size}. Sleeping tabs, split view and extensions are not implemented.")
+        val linkCtxRows = remember(incognitoMode) {
+            dev.fusion.browser.model.BrowserLinkMediaContextMenuPlanner.buildMenu(
+                target = dev.fusion.browser.model.BrowserLinkMediaContextMenuPlanner.HitTargetKind.VIDEO_ELEMENT,
+                incognitoActive = incognitoMode,
+            )
+        }
+        Text("Tabs: ${tabs.size} • Right-sized link/media menu (${linkCtxRows.size} verbs; Recall 6-method submenu=${linkCtxRows.any { it.submenu.isNotEmpty() }}). Sleeping tabs, split view and extensions are not implemented.")
     }
 }

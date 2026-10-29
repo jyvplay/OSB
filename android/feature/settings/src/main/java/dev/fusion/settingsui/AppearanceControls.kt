@@ -74,6 +74,16 @@ fun AppearanceControls(graph:SettingsGraph,prefix:String) {
             TextButton(onClick={graph.setAppearance(mapOf("layout" to "business","theme" to "office_blue"))},modifier=Modifier.heightIn(min=48.dp).testTag("$prefix-preset-business")) {Text("Business · Light preset")}
         }
         Text("Only Fusion changes. Not Windows/macOS, not a keyboard preset, privacy mode or permission change.",style=MaterialTheme.typography.bodySmall)
+        val postureBaseline = remember {
+            PrivacyPostureScorecardCalculator.evaluate(
+                (1..20).map { i -> PrivacyPostureScorecardCalculator.DefenseControl("V$i", "Vector $i", 5, true) }
+            )
+        }
+        Text(
+            "R51 local shield baseline: ${postureBaseline.score0To100}/100 (${postureBaseline.grade}, ${postureBaseline.activeVectorCount} host-verifiable controls catalogued)",
+            modifier = Modifier.testTag("$prefix-r51-posture-summary"),
+            style = MaterialTheme.typography.bodySmall
+        )
         if(feedback.isNotEmpty()) Text(feedback,modifier=Modifier.testTag("$prefix-appearance-status"),style=MaterialTheme.typography.bodySmall)
     }
 }

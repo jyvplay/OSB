@@ -1,0 +1,26 @@
+{
+  "round": "R48",
+  "scope": "Headless OpenJDK 17 Java2D visual preview over live R48 Kotlin kernels + pairwise 2D rectangle non-overlap + 360dp compact viewport proof; NOT Android emulator/device evidence.",
+  "dimensions_px": [
+    1680,
+    1120
+  ],
+  "png_bytes": 246642,
+  "png_sha256": "af93941d1b4ecc50829cc3f2fd2133059b4c6216432cc7468d38e52ea3940af8",
+  "font_metrics_bounds_enforced": true,
+  "pairwise_2d_non_overlap_enforced": true,
+  "font_metrics_non_overlap_checks": 172,
+  "compact_360dp_viewport_verified": true,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 16.02,
+    "muted_on_card": 10.37,
+    "muted_on_subtle": 9.14,
+    "emerald_on_subtle": 8.05,
+    "amber_on_subtle": 9.27,
+    "rose_on_subtle": 5.75,
+    "cyan_on_subtle": 7.22,
+    "violet_on_subtle": 5.86
+  },
+  "min_contrast_ratio": 5.75,
+  "tracked_copy": "docs/verification/r48-host-workbench/r48-workbench-preview.png"
+}

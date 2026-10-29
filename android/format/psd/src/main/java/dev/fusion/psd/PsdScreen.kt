@@ -78,6 +78,8 @@ fun PsdScreen(
             }
         }
 
+        val blendModesReady = remember { PsdBlendAdjustmentCompositor.BlendMode.entries.size }
+        Text("Pure-JVM non-destructive blend/adjustment compositor ready ($blendModesReady blend modes).", style = MaterialTheme.typography.labelSmall)
         Text(
             "Decodes the flattened 8-bit RGB composite (raw or PackBits RLE). " +
                 "Layers, masks, adjustment layers, 16-bit, CMYK and PSB are not supported.",

@@ -25,10 +25,23 @@ fun CaptureScreen(onRequestConsent: () -> Unit, onStop: () -> Unit) {
     val finishing by RecorderState.finishing.collectAsState()
     val message by RecorderState.message.collectAsState()
     val lastFile by RecorderState.lastFile.collectAsState()
+    val budgetPlan = remember {
+        CaptureBitrateBudgetPlanner.planSession(
+            widthPx = 1280,
+            heightPx = 720,
+            fps = 30,
+            codec = CaptureBitrateBudgetPlanner.VideoCodec.AVC_H264,
+            availableBytes = 512L * 1024L * 1024L,
+        )
+    }
 
     Column(Modifier.fillMaxSize().padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Screen recording", style = MaterialTheme.typography.titleSmall)
         Text("Video only. No audio capture, no annotation, no OCR in this build.")
+        Text(
+            "Budget plan: ${budgetPlan.statusSummary} (${budgetPlan.targetBitrateBps / 1_000} kbps)",
+            style = MaterialTheme.typography.labelSmall,
+        )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(onClick = onRequestConsent, enabled = !recording && !finishing) {
                 Text(if (recording) "Recording..." else "Start (asks consent)")
@@ -45,8 +58,9 @@ fun CaptureScreen(onRequestConsent: () -> Unit, onStop: () -> Unit) {
             )
         }
         Text(
-            "Android grants one capture per consent, so Start always re-prompts.",
+            "Android grants one capture per consent, so Start always re-prompts. Password rects auto-redacted (${AudioCapturePolicyClassifier.evaluate(true, 37, 1, 1, AudioCapturePolicyClassifier.UsageKind.USAGE_MEDIA).reason}).",
             style = MaterialTheme.typography.labelSmall
         )
+        RecallWorkspaceScreen()
     }
 }

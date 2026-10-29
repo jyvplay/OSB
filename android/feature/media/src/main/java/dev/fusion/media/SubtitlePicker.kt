@@ -59,7 +59,16 @@ fun SubtitleInspector(subtitle: SubRip) {
     if (ms == null) Text("Enter a nonnegative time")
     else {
         val active = subtitle.at(ms)
-        Text("${active.size} active cues; showing up to 8", Modifier.testTag("subtitle-count"))
+        val vttLanes = remember(active, ms) {
+            val synth = buildString {
+                append("WEBVTT\n\n")
+                active.take(8).forEachIndexed { i, cue ->
+                    append("${i + 1}\n00:00:00.000 --> 00:59:59.999\n${cue.text}\n\n")
+                }
+            }
+            WebVttCueTimelineEngine.activeCuesAt(WebVttCueTimelineEngine.parseWebVtt(synth), 100L)
+        }
+        Text("${active.size} active cues; showing up to 8 (${vttLanes.size} collision-free WebVTT lane(s))", Modifier.testTag("subtitle-count"))
         active.take(8).forEach { Text(it.text) }
     }
 }

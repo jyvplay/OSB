@@ -37,4 +37,8 @@ object HwProbe {
             lowLatency, when { hevc -> "HEVC"; enc.any { it.mime.equals("video/avc", true) && it.hardwareAccelerated } -> "AVC"; else -> null }, errors.toList()
         )
     }
+
+    /** R51 Thunderclap USB4/PCIe IOMMU DMA + GhostTouch capacitive shield policy summary. */
+    fun evaluateLockedPeripheralDmaPolicy(event: Usb4PcieIommuDmaGuard.PeripheralAttachEvent): Usb4PcieIommuDmaGuard.PortGuardVerdict =
+        Usb4PcieIommuDmaGuard.evaluateAttach(event)
 }

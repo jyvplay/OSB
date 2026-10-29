@@ -37,6 +37,7 @@ fun PdfScreen(context: Context, uri: Uri?, onPick: () -> Unit) {
     var bitmap by remember(uri) { mutableStateOf<Bitmap?>(null) }
     var renderedPage by remember(uri) {mutableIntStateOf(-1)}
     var status by remember(uri) { mutableStateOf("No PDF opened.") }
+    var acroSummary by remember(uri) { mutableStateOf("Forms/signatures: no PDF inspected.") }
 
     DisposableEffect(uri) {
         onDispose { doc?.close(); doc = null }
@@ -44,7 +45,20 @@ fun PdfScreen(context: Context, uri: Uri?, onPick: () -> Unit) {
 
     LaunchedEffect(uri) {
         doc?.close(); doc = null; bitmap = null
-        if (uri == null) { status = "No PDF opened."; return@LaunchedEffect }
+        if (uri == null) { status = "No PDF opened."; acroSummary = "Forms/signatures: no PDF opened."; return@LaunchedEffect }
+        runCatching {
+            context.contentResolver.openInputStream(uri)?.use { stream ->
+                val sample = ByteArray(65_536)
+                val n = stream.read(sample)
+                if (n > 0) {
+                    val slice = sample.copyOf(n)
+                    val forms = PdfFormAcroFieldInspector.inspectPdfBytes(slice)
+                    val probeKey = PdfPkcs7SignatureVerifier.generateEd25519KeyPair().public
+                    val sig = PdfPkcs7SignatureVerifier.verifyPdfSignature(slice, probeKey)
+                    "AcroForm fields=${forms.fields.size} (XFA=${forms.hasXfaDeprecatedWarning}, JSQuarantined=${forms.hasJavaScriptActionsQuarantined}) · sig=${sig.status}"
+                } else "Empty PDF stream"
+            } ?: "Stream unavailable"
+        }.onSuccess { acroSummary = it }
         PdfDocument.open(context, uri).fold(
             onSuccess = { d -> doc = d; status = "${d.pageCount} page(s)" },
             onFailure = { status = it.message ?: "Could not open this PDF" }
@@ -71,6 +85,7 @@ fun PdfScreen(context: Context, uri: Uri?, onPick: () -> Unit) {
             ) { Text("Next") }
         }
         Text("$status${if ((doc?.pageCount ?: 0) > 0) "  ·  page ${page + 1}" else ""}",Modifier.testTag("pdf-status"))
+        Text(acroSummary, modifier = Modifier.testTag("pdf-acro-summary"), style = MaterialTheme.typography.labelSmall)
         bitmap?.takeIf {renderedPage==page}?.let {
             Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
                 Image(it.asImageBitmap(), contentDescription = "PDF page ${renderedPage + 1}", Modifier.fillMaxWidth())

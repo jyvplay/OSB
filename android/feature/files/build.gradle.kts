@@ -17,6 +17,7 @@ android {
 dependencies {
     // api: SafRepository and FileEntry appear in FilesScreen's public signature.
     api(project(":core:files"))
+    implementation(project(":core:designsystem"))
     implementation(platform(libs.androidx.compose.compose.bom))
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.foundation.foundation)

@@ -88,7 +88,7 @@ fun MapScreen(model: MapViewModel) {
         }
     }, confirmButton = { TextButton(onClick = { detailsVisible = false }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-details-done")) { Text("Done") } })
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 12.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedButton(onClick = { addVisible = true }, enabled = book != null && !model.busy, modifier = Modifier.heightIn(min = 48.dp).testTag("map-add-pin")) { Text("Add pin") }
             TextButton(onClick = { placesVisible = true }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-places")) { Text("Places (${book?.pins?.size ?: 0})") }
             MapAction("−", "Zoom out", "map-zoom-out", model.camera.zoom > 0) { model.camera = model.camera.copy(zoom = model.camera.zoom - 1) }
@@ -97,6 +97,7 @@ fun MapScreen(model: MapViewModel) {
             MapAction("→", "Pan east", "map-east") { model.camera = model.camera.pan(-96.0, 0.0) }
             MapAction("↑", "Pan north", "map-north") { model.camera = model.camera.pan(0.0, 96.0) }
             MapAction("↓", "Pan south", "map-south") { model.camera = model.camera.pan(0.0, -96.0) }
+            Box(Modifier.width(1.dp).height(24.dp).background(MaterialTheme.colorScheme.outlineVariant))
             TextButton(onClick = { model.camera = MapCamera(); model.cursor = model.camera.center }, modifier = Modifier.heightIn(min = 48.dp)) { Text("World") }
             val from = model.measureFrom
             TextButton(onClick = { if (from == null) model.measureFrom = model.cursor else model.measureFrom = null }, modifier = Modifier.heightIn(min = 48.dp).testTag("map-measure")) { Text(if (from == null) "Measure from selected point" else "Clear measurement") }

@@ -59,6 +59,18 @@ fun LensScreen() {
     var blurRequested by remember { mutableStateOf(false) }
     var autoFrameRequested by remember { mutableStateOf(false) }
     var useFront by remember { mutableStateOf(true) }
+    var softwareMuted by remember { mutableStateOf(false) }
+    val studioPosture = remember(useFront, softwareMuted) {
+        FoldPosturePresenterStudio.resolveStudioPosture(
+            hingeAngleDeg = 180.0,
+            externalDisplayDocked = false,
+            requestedOptic = if (useFront) FoldPosturePresenterStudio.LensOptic.FRONT_WIDE else FoldPosturePresenterStudio.LensOptic.REAR_PRIMARY,
+            hardwareCamKillSwitchClosed = false,
+            softwareCamMuted = softwareMuted,
+            micActive = false,
+        )
+    }
+    val thermalBudget = remember { VirtualWebcamMjpegStream.governCaptureBudget(skinTempCelsius = 37.5, requestedFps = 30, requestedHeightPx = 1080) }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -103,6 +115,15 @@ fun LensScreen() {
         )
 
         Text(status)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = { softwareMuted = !softwareMuted }) {
+                Text(if (softwareMuted) "Unmute feed" else "Mute feed (black frame)")
+            }
+            Text(
+                "Studio math: ${studioPosture.posture.name} · ${studioPosture.activeOptic.focalEqMm}mm · cap ${thermalBudget.second}p@${thermalBudget.first}fps",
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
         Text(
             "These switches record intent only; no segmentation or framing code runs. " +
                 "There is no virtual camera, so other apps cannot receive this feed.",

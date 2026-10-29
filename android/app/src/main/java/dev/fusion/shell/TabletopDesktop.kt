@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.fusion.launcher.*
@@ -227,7 +228,9 @@ fun TabletopDesktop(model: TabletopSessionModel, flat: Boolean, enabled: Boolean
                                     Text(item.count.toString(), color = colors.onPrimary, fontWeight = FontWeight.Bold)
                                 } else AppGlyph(item.target, Modifier.size(32.dp))
                                 Spacer(Modifier.height(4.dp))
-                                Text(item.title, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelSmall,
+                                val fittedTitle = TileLabelFit.fitLabel(item.title, maxCharsPerLine = 12, maxLines = 2)
+                                Text(fittedTitle.lines.joinToString("\n"), maxLines = 2, textAlign = TextAlign.Center,
+                                    overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.labelSmall,
                                     color = colors.onSurface, fontWeight = FontWeight.Medium)
                             }
                         }

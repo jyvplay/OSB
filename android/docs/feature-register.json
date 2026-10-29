@@ -9,7 +9,10 @@
     "tests": [
       "plan:T-SH-01",
       "jvm:SubsetChecks",
-      "android:SubsetDeviceTest"
+      "android:SubsetDeviceTest",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -28,7 +31,10 @@
       "jvm:SubsetChecks",
       "android:SubsetDeviceTest",
       "android:R24AppearanceDeviceTest",
-      "host:R24Checks"
+      "host:R24Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -42,7 +48,10 @@
     "route": "R24 native active-app menu/title, real local clock, Find and Control Panel; only actual app/workspace/appearance actions. Full menus/status/Beam indicator and external-display acceptance remain.",
     "tests": [
       "plan:T-SH-03",
-      "android:R24AppearanceDeviceTest"
+      "android:R24AppearanceDeviceTest",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -56,7 +65,10 @@
     "route": "R24 Business/Art layout and native gradient/flat workspace with professional palettes. Desktop icons/folders/widget host/context-menu scope remains missing; no stock OS replacement.",
     "tests": [
       "plan:T-SH-04",
-      "android:R24AppearanceDeviceTest"
+      "android:R24AppearanceDeviceTest",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -67,11 +79,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pure-JVM WidgetHostIsolationSupervisor circuit-breaker/suspend/crash-backoff kernel tested; Android AppWidgetHost Binder process & Compose surface hosting remain unintegrated.",
     "tests": [
-      "plan:T-SH-05"
+      "plan:T-SH-05",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -80,11 +96,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pure-JVM HotCornerGestureZone dwell/hysteresis/diagonal edge-trigger kernel tested; live multi-display MotionEvent dispatch remains unverified on device.",
     "tests": [
-      "plan:T-SH-06"
+      "plan:T-SH-06",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -96,7 +116,10 @@
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
-      "plan:physical-device-and-Android-acceptance"
+      "plan:physical-device-and-Android-acceptance",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -110,7 +133,10 @@
     "route": "Bounded versioned checksummed geometry snapshot; single-writer AtomicFile; legacy migration and explicit retained-byte reset. Room migration remains deferred.",
     "tests": [
       "testing/contract/PilotCoreChecks",
-      "plan:physical-device-and-Android-acceptance"
+      "plan:physical-device-and-Android-acceptance",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -121,11 +147,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pure-JVM ExternalMouseButtonMapper BACK/FORWARD/MIDDLE/EXTRA1/EXTRA2 remap & learn-mode kernel tested; physical USB/BT mouse HID capture and S15 acceptance remain pending.",
     "tests": [
-      "plan:T-SH-09"
+      "plan:T-SH-09",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S15"
     ]
@@ -136,11 +166,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pure-JVM BlackTopSessionCoordinator external-compositor state machine, phone-blackout & FGS lease planner tested; Android Presentation/SurfaceControl and S23 60-min device run remain pending.",
     "tests": [
-      "plan:T-SH-10"
+      "plan:T-SH-10",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S23"
     ]
@@ -151,11 +185,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.1",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pure-JVM BlackTopSessionCoordinator relative trackpad acceleration & two-finger scroll translator tested; live phone touchscreen-to-external-Presentation event bridge and S23 remain pending.",
     "tests": [
-      "plan:T-SH-11"
+      "plan:T-SH-11",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S23"
     ]
@@ -166,11 +204,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
+    "route": "Pure-JVM BlackTopSessionCoordinator frame-deadline jitter OEM throttle detector & remediation advisor tested; live Choreographer sampling and S23 device validation remain pending.",
     "tests": [
-      "plan:T-SH-12"
+      "plan:T-SH-12",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S23"
     ]
@@ -185,7 +227,10 @@
     "tests": [
       "testing/contract/PilotCoreChecks",
       "plan:physical-device-and-Android-acceptance",
-      "jvm:WindowRestoreChecks"
+      "jvm:WindowRestoreChecks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -202,7 +247,10 @@
     "tests": [
       "testing/contract/PilotCoreChecks",
       "plan:physical-device-and-Android-acceptance",
-      "jvm:WindowRestoreChecks"
+      "jvm:WindowRestoreChecks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -217,7 +265,10 @@
     "sources": "owner:v2.0 §7.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
-      "plan:T-WM-03"
+      "plan:T-WM-03",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -228,11 +279,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM MultiDisplayWindowBroker overview grid layout & title/workspace filter kernel tested; live window Surface thumbnail capture remains unimplemented.",
     "tests": [
-      "plan:T-WM-04"
+      "plan:T-WM-04",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -244,7 +299,10 @@
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
-      "plan:physical-device-and-Android-acceptance"
+      "plan:physical-device-and-Android-acceptance",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -255,11 +313,15 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM ExternalAppBrokerDensityPin multi-display launch target & fallback broker tested; Android ActivityOptions.setLaunchDisplayId external-app hosting and S1 spike remain pending.",
     "tests": [
-      "plan:T-WM-06"
+      "plan:T-WM-06",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S1"
     ]
@@ -270,11 +332,15 @@
     "tier": "A/B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM MultiDisplayWindowBroker multi-display hotplug evacuate/rebind & open-where-acted kernel tested; Android DisplayManager hotplug integration and S1 spike remain pending.",
     "tests": [
-      "plan:T-WM-07"
+      "plan:T-WM-07",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S1"
     ]
@@ -285,11 +351,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM WindowRuleMatcher per-module remembered geometry & clamp-to-work-area kernel tested; Room/DataStore durable persistence remains unverified on device.",
     "tests": [
-      "plan:T-WM-08"
+      "plan:T-WM-08",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -301,7 +371,10 @@
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
-      "plan:physical-device-and-Android-acceptance"
+      "plan:physical-device-and-Android-acceptance",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -314,11 +387,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM MultiDisplayWindowBroker distraction-free focus-mode chrome suppression & notification hold kernel tested; full shell chrome integration remains partial.",
     "tests": [
-      "plan:T-WM-10"
+      "plan:T-WM-10",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -327,11 +404,15 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM MultiDisplayWindowBroker always-on-top z-order pin ceiling (<=3 mini windows) kernel tested; Android window-layer z-order composition remains unverified on device.",
     "tests": [
-      "plan:T-WM-11"
+      "plan:T-WM-11",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -340,11 +421,15 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM ExternalAppBrokerDensityPin bounded per-app DPI override (120..640 dpi) with explicit compatibility-limits warning tested; system WindowManager density injection and S1 remain pending.",
     "tests": [
-      "plan:T-WM-12"
+      "plan:T-WM-12",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S1"
     ]
@@ -358,7 +443,10 @@
     "route": "Native workspace menu and Ctrl+Alt+Shift+1/2/3 wiring; pure reducer checked. Drag and native acceptance incomplete.",
     "tests": [
       "plan:T-WM-13",
-      "jvm:WindowRestoreChecks"
+      "jvm:WindowRestoreChecks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -369,11 +457,15 @@
     "tier": "B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM KeyToTouchOverlayMapper WASD/d-pad/button-to-normalized-touch coordinate profile engine tested; live MotionEvent overlay dispatch remains unverified on device.",
     "tests": [
-      "plan:T-WM-14"
+      "plan:T-WM-14",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -382,11 +474,15 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM KeyToTouchOverlayMapper single-window Cast VirtualDisplay aspect-fit surface planner tested; Android MediaProjection/SurfaceControl capture and S17 remain pending.",
     "tests": [
-      "plan:T-WM-15"
+      "plan:T-WM-15",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S17"
     ]
@@ -397,11 +493,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
+    "route": "Pure-JVM MultiDisplayWindowBroker external-display cursor confinement & edge-barrier clamp kernel tested; Android PointerIcon/View.requestPointerCapture and S1 remain pending.",
     "tests": [
-      "plan:T-WM-16"
+      "plan:T-WM-16",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S1"
     ]
@@ -415,7 +515,10 @@
     "route": "Native module/window/workspace command palette wired. File/contact/event/note/target index integration remains absent.",
     "tests": [
       "plan:T-SR-01",
-      "jvm:SearchAndGateChecks"
+      "jvm:SearchAndGateChecks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -428,11 +531,15 @@
     "tier": "A/B",
     "phase": "P1",
     "sources": "owner:v2.0 §7.3",
-    "route": "Local index/command registry; opt-in provider adapters",
+    "route": "Pure-JVM IndexChurnQuarantineMonitor runaway-mutation quarantine, path-exclusion & rebuild planner tested; background crawler integration and S4 device spike remain pending.",
     "tests": [
-      "plan:T-SR-02"
+      "plan:T-SR-02",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S4"
     ]
@@ -446,7 +553,10 @@
     "route": "Bounded local literal index only, locale-stable ranking and capacity refusal. No fuzzy/semantic engine.",
     "tests": [
       "plan:T-SR-03",
-      "jvm:SearchAndGateChecks"
+      "jvm:SearchAndGateChecks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -459,11 +569,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.3",
-    "route": "Local index/command registry; opt-in provider adapters",
+    "route": "Pure-JVM OptInWebAppSearchFederation local-first ranker keeping opt-in HTTPS privacy-search footer strictly below local hits tested; live browser handoff UI integration remains partial.",
     "tests": [
-      "plan:T-SR-04"
+      "plan:T-SR-04",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -472,11 +586,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.3",
-    "route": "Local index/command registry; opt-in provider adapters",
+    "route": "Pure-JVM BooleanQueryAst + ExtendedGlob + BoyerMooreHorspool scoped folder filter kernels tested; live SAF provider index integration and S4 remain pending.",
     "tests": [
-      "plan:T-SR-05"
+      "plan:T-SR-05",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S4"
     ]
@@ -487,11 +605,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.3",
-    "route": "Local index/command registry; opt-in provider adapters",
+    "route": "Pure-JVM PaletteInlineAnswerEngine BigDecimal math, unit conversion & base-radix inline card wired into CommandPalette (Palette.kt); live routine/cast trigger execution remains partial.",
     "tests": [
-      "plan:T-SR-06"
+      "plan:T-SR-06",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -500,11 +622,15 @@
     "tier": "B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.3",
-    "route": "Local index/command registry; opt-in provider adapters",
+    "route": "Pure-JVM OptInWebAppSearchFederation + AppFunctionsSchemaRegistry explicit per-package opt-in external content broker tested; Android AppSearchManager IPC remains unverified on device.",
     "tests": [
-      "plan:T-SR-07"
+      "plan:T-SR-07",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -513,11 +639,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.3",
-    "route": "Local index/command registry; opt-in provider adapters",
+    "route": "Pure-JVM IndexChurnQuarantineMonitor search-coverage & missing-result diagnostic explainer tested; full AppSearch/SAF source ledger integration remains pending.",
     "tests": [
-      "plan:T-SR-08"
+      "plan:T-SR-08",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -528,7 +658,10 @@
     "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
-      "plan:T-FM-01"
+      "plan:T-FM-01",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -539,11 +672,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM DualPaneContextMenuModel split dual-pane file commander + synchronized working-directory terminal drawer reducer tested; full SAF dual-pane drag UI acceptance remains pending.",
     "tests": [
-      "plan:T-FM-02"
+      "plan:T-FM-02",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -552,12 +689,16 @@
     "tier": "B",
     "phase": "P1",
     "sources": "owner:v2.0 §7.4",
-    "route": "Backend mutation entry points explicitly unavailable until S6; unsafe legacy provider copy/delete paths removed. Full journal unimplemented.",
+    "route": "Pure-JVM JournaledFileOpsPlanner write-ahead journal, SHA-256 verification, conflict resolution & inverse-undo planner tested; SAF backend mutations remain gated behind S6.",
     "tests": [
       "plan:T-FM-03",
-      "jvm:SearchAndGateChecks"
+      "jvm:SearchAndGateChecks",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S6"
     ]
@@ -568,11 +709,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM DuplicateFileClusterer Forge-peek headline wired into FilesScreen.kt plus FormatSandboxWatchdog/HeicIsomBoxInspector/AiPdfCompatibilityBridge kernels tested; isolated preview Service renderers remain partial.",
     "tests": [
-      "plan:T-FM-04"
+      "plan:T-FM-04",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -581,11 +726,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM ZipAesExtraFieldCodec WinZip AE-2 (0x9901) HMAC-SHA1/AES-CTR + FormatSandboxWatchdog zip-slip/compression-ratio bomb guards tested; SAF archive write integration remains pending.",
     "tests": [
-      "plan:T-FM-05"
+      "plan:T-FM-05",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -594,11 +743,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM DualPaneContextMenuModel concise/full/custom context-menu builder (Copy Path, Open Terminal Here, Send to Beam, mat2 scrub) tested; live shell wiring remains partial.",
     "tests": [
-      "plan:T-FM-06"
+      "plan:T-FM-06",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -607,11 +760,15 @@
     "tier": "B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM DuplicateFileClusterer SHA-256 duplicate clustering & top-large-file summary wired into FilesScreen.kt; full asynchronous SAF tree walk remains pending.",
     "tests": [
-      "plan:T-FM-07"
+      "plan:T-FM-07",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -620,11 +777,15 @@
     "tier": "A/B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM RemoteMountReconnectPlanner USB/SD/SMB/SFTP/WebDAV/FTP mount state machine with exponential-backoff reconnect & diagnostic classifier tested; live network VFS sockets remain unintegrated.",
     "tests": [
-      "plan:T-FM-08"
+      "plan:T-FM-08",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -633,11 +794,15 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM DuplicateFileClusterer CloudResidencyBadge (LOCAL_PINNED/CLOUD_PLACEHOLDER_OFFLINE/SYNCING/CONFLICT) classifier tested; live DocumentsContract column binding remains pending.",
     "tests": [
-      "plan:T-FM-09"
+      "plan:T-FM-09",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -646,11 +811,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM ArchiveDocumentsProviderTree virtual document-ID cursor & child-enumeration model tested; Android DocumentsProvider manifest authority registration remains unverified on device.",
     "tests": [
-      "plan:T-FM-10"
+      "plan:T-FM-10",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -662,7 +831,10 @@
     "route": "Legacy receipt inspection only, bounded and corruption-visible; trash/restore/purge backend refuses pending S6.",
     "tests": [
       "plan:T-FM-11",
-      "jvm:SearchAndGateChecks"
+      "jvm:SearchAndGateChecks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -688,11 +860,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM NewFileTemplateCatalog clean-room .txt/.md/.csv/.json/.xlsx/.docx/.html starter byte generator & safe filename validator tested; SAF createDocument wiring remains partial.",
     "tests": [
-      "plan:T-FM-13"
+      "plan:T-FM-13",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -701,11 +877,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM CrossWindowClipUriGrantor cross-window drag-drop ClipData planner enforcing explicit read/write URI flags and blocking Vault/private paths tested; Android View.startDragAndDrop device test remains pending.",
     "tests": [
-      "plan:T-FM-14"
+      "plan:T-FM-14",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -716,7 +896,10 @@
     "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
-      "plan:T-FM-15"
+      "plan:T-FM-15",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -729,7 +912,10 @@
     "sources": "owner:v2.0 §7.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
-      "plan:T-FM-16"
+      "plan:T-FM-16",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -740,11 +926,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.4",
-    "route": "SAF/MediaStore; isolated preview and journaled file operations",
+    "route": "Pure-JVM RemoteMountReconnectPlanner TTL-bounded incremental folder byte-size & file-count Rollup cache invalidator tested; background SAF tree walk scheduling remains partial.",
     "tests": [
-      "plan:T-FM-17"
+      "plan:T-FM-17",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -759,7 +949,10 @@
       "plan:SAF-provider-and-editor-device-matrix",
       "jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt",
       "androidTest:CopyContractDeviceTest (unrun)",
-      "plan:R5 picker/grant/process-recovery/provider-alias matrix"
+      "plan:R5 picker/grant/process-recovery/provider-alias matrix",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -772,7 +965,10 @@
     "sources": "owner:v2.0 §7.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
-      "plan:T-NC-01"
+      "plan:T-NC-01",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -783,11 +979,15 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.5",
-    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "route": "Pure-JVM FocusModeContextEvaluator workspace/schedule/foreground-app/presentation-display focus rule engine with explicit suppression reason strings tested; system NotificationListener integration remains pending.",
     "tests": [
-      "plan:T-NC-02"
+      "plan:T-NC-02",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -796,11 +996,15 @@
     "tier": "A/B",
     "phase": "P1",
     "sources": "owner:v2.0 §7.5",
-    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "route": "Pure-JVM OsdQuickPanelTileTokens 8-domain Quick Panel control reducer (audio, brightness, media, DND, night-light, battery, Beam, radio lockdown) tested; Android system-settings write permissions remain device-gated.",
     "tests": [
-      "plan:T-NC-03"
+      "plan:T-NC-03",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -809,11 +1013,15 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.5",
-    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "route": "Pure-JVM NotificationDiagnosticLedger (R49) + FocusModeContextEvaluator (R50) per-notification suppression/delivery reason audit tested; live shell diagnostic drawer remains partial.",
     "tests": [
-      "plan:T-NC-04"
+      "plan:T-NC-04",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -824,7 +1032,10 @@
     "sources": "owner:v2.0 §7.5",
     "route": "Capture foreground Stop action and finalization status; universal long-operation service layer still pending",
     "tests": [
-      "plan:T-NC-05"
+      "plan:T-NC-05",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -835,11 +1046,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.5",
-    "route": "NotificationListenerService; Room alert store; system settings panels",
+    "route": "Pure-JVM OsdQuickPanelTileTokens volume/brightness/keyboard-layout HUD OSD banner geometry & auto-dismiss token calculator tested; window-overlay rendering on device remains pending.",
     "tests": [
-      "plan:T-NC-06"
+      "plan:T-NC-06",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -854,7 +1069,10 @@
       "jvm:SubsetChecks",
       "android:SubsetDeviceTest",
       "host:R24Checks",
-      "android:R24AppearanceDeviceTest"
+      "android:R24AppearanceDeviceTest",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -865,11 +1083,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Pure-JVM OemSettingsDeepLinkCatalog (R49) + DefaultAppsRoleGuideEngine (R50) Samsung/Xiaomi/ColorOS/AOSP settings fallback resolver wired into SettingsScreen.kt (PARSE OK); physical OEM ROM verification remains pending.",
     "tests": [
-      "plan:T-ST-02"
+      "plan:T-ST-02",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -878,11 +1100,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Pure-JVM DefaultAppsRoleGuideEngine Android RoleManager HOME/BROWSER/SMS readiness guide with revocable-role explainers tested; live RoleManager intent launch on API 34-37 remains unrun.",
     "tests": [
-      "plan:T-ST-03"
+      "plan:T-ST-03",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -893,7 +1119,10 @@
     "sources": "owner:v2.0 §7.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
-      "plan:T-ST-04"
+      "plan:T-ST-04",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -906,7 +1135,10 @@
     "sources": "owner:v2.0 §7.6",
     "route": "Window geometry density only (minimum size/title controls), not full theme/font/spacing profiles",
     "tests": [
-      "plan:T-ST-05"
+      "plan:T-ST-05",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -917,11 +1149,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Pure-JVM ShortcutPresetConflictDetector + KeyboardShortcutProfileEditor modifier canonicalizer, collision detector & per-device override JSON keymap tested; global hardware-key intercept remains partial.",
     "tests": [
-      "plan:T-ST-06"
+      "plan:T-ST-06",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -930,11 +1166,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Pure-JVM ExternalAppBrokerDensityPin independent external-display UI scale factor calculator tested; live DisplayContext configuration override on HDMI/DP monitors remains pending.",
     "tests": [
-      "plan:T-ST-07"
+      "plan:T-ST-07",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -943,11 +1183,15 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Pure-JVM ManagedRestrictionsSchema (R49) + DefaultAppsRoleGuideEngine.mergeManagedRestrictions (R50) enterprise policy lock merger tested; Android RestrictionsManager broadcast receiver remains unrun on device.",
     "tests": [
-      "plan:T-ST-08"
+      "plan:T-ST-08",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -956,11 +1200,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Pure-JVM WorkspaceContextProfileEngine hysteresis-guarded Phone/Fold-Tabletop/Docked-Desktop automatic profile switcher tested; WindowInfoTracker/DisplayManager live sensor hookup remains pending.",
     "tests": [
-      "plan:T-ST-09"
+      "plan:T-ST-09",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -971,7 +1219,9 @@
     "sources": "owner:v2.0 §7.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
-      "plan:T-AP-01"
+      "plan:T-AP-01",
+      "jvm:R51Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -982,11 +1232,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.7",
-    "route": "PackageManager/LauncherApps and explicit system intents",
+    "route": "Pure-JVM AppInventoryLifecycleAdvisor clean own-data cache/vault/profile byte breakdown & residual-free uninstall checklist builder tested; OS uninstall-intent callback remains platform-limited.",
     "tests": [
-      "plan:T-AP-02"
+      "plan:T-AP-02",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -995,11 +1248,14 @@
     "tier": "B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.7",
-    "route": "PackageManager/LauncherApps and explicit system intents",
+    "route": "Pure-JVM AppInventoryLifecycleAdvisor Pro APK SHA-256 + signing-cert digest rotation & targetSdk>=34 pre-install auditor tested; PackageInstaller Session API execution remains device-gated.",
     "tests": [
-      "plan:T-AP-03"
+      "plan:T-AP-03",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1008,11 +1264,14 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.0 §7.7",
-    "route": "PackageManager/LauncherApps and explicit system intents",
+    "route": "Pure-JVM AppInventoryLifecycleAdvisor installer-origin catalog (F-Droid/Obtainium/GitHub/Play) & HTTPS update URL resolver tested; live PackageManager.getInstallSourceInfo query remains device-only.",
     "tests": [
-      "plan:T-AP-04"
+      "plan:T-AP-04",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1021,11 +1280,13 @@
     "tier": "B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.7",
-    "route": "PackageManager/LauncherApps and explicit system intents",
+    "route": "Pure-JVM own-app startup/memory-pressure inventory verified via StartupColdWarmRegressionGate & MemoryPressureTrimBudgeter (R51); external-app Shizuku/PackageManager binder inspection remains device-gated.",
     "tests": [
-      "plan:T-AP-05"
+      "plan:T-AP-05",
+      "jvm:R51Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1034,11 +1295,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.8",
-    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "route": "Pure-JVM VtTrueColorSafePasteEngine 24-bit SGR truecolor, SGR 1006 mouse & bracketed paste sanitizer + PromptOsc133 wired into TerminalScreen.kt; PTY process isolation and S5 remain pending.",
     "tests": [
-      "plan:T-TD-01"
+      "plan:T-TD-01",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S5"
     ]
@@ -1051,7 +1316,10 @@
     "sources": "owner:v2.0 §7.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
-      "plan:T-TD-02"
+      "plan:T-TD-02",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1064,11 +1332,15 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.8",
-    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "route": "Pure-JVM SshTransportKexFrameCodec RFC 4253 SSH-2.0 binary packet framer, curve25519/chacha20-poly1305 KEX negotiator (refusing legacy SHA-1/CBC) & USB-serial 8N1 validator tested; live socket/UsbManager transport remains unintegrated.",
     "tests": [
-      "plan:T-TD-03"
+      "plan:T-TD-03",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1077,11 +1349,14 @@
     "tier": "B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.8",
-    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "route": "Pure-JVM POSIX ShellPipelineTokenizer & Vt100AlternateScreenScrollback verified with zero-execve safety on host JVM (R51); S5 JNI PTY & live 16KB Linux proot execution remain device-gated.",
     "tests": [
-      "plan:T-TD-04"
+      "plan:T-TD-04",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S5"
     ]
@@ -1105,11 +1380,14 @@
     "tier": "B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.8",
-    "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
+    "route": "Pure-JVM Usb4PcieIommuDmaGuard port-quarantine & ShellPipelineTokenizer command-audit helpers verified on host JVM (R51); live Android wireless-debugging TLS pairing remains device-gated.",
     "tests": [
-      "plan:T-TD-06"
+      "plan:T-TD-06",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1126,7 +1404,10 @@
       "androidTest:ShellSmokeTest.editorLiteralReplaceIsOneUndoableDraftEdit (unrun)",
       "jvm:core/documents/src/contract/kotlin/dev/fusion/documents/CopyChecks.kt",
       "androidTest:CopyContractDeviceTest (unrun)",
-      "plan:R5 picker/grant/process-recovery/provider-alias matrix"
+      "plan:R5 picker/grant/process-recovery/provider-alias matrix",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1144,7 +1425,10 @@
       "jvm:NoteDraftChecks",
       "jvm:NoteTrashChecks",
       "android:NotesRecoveryDeviceTest",
-      "android:NotesProcessDeathDeviceTest"
+      "android:NotesProcessDeathDeviceTest",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1155,11 +1439,15 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM TaskRepository/TaskQuery (R17) + CalendarIcsRecurrenceEngine (R49) + MeteredBatteryLowRamScheduler (R50) local tasks & recurrence rules without exact-alarm permissions tested; WorkManager inexact notification firing remains unrun.",
     "tests": [
-      "plan:T-PR-03"
+      "plan:T-PR-03",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1168,11 +1456,15 @@
     "tier": "B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM CalendarIcsRecurrenceEngine RFC 5545 VEVENT + RRULE (DAILY/WEEKLY/MONTHLY) expansion kernel tested; Android CalendarContract provider sync remains unimplemented.",
     "tests": [
-      "plan:T-PR-04"
+      "plan:T-PR-04",
+      "jvm:R49Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1181,11 +1473,15 @@
     "tier": "A/B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM ContactsVcard4PickerModel RFC 6350 vCard 4.0 codec & API-37 least-privilege single-field contact picker projector (stripping unrequested notes/org/phones) tested; Android ContactsPicker intent remains device-only.",
     "tests": [
-      "plan:T-PR-05"
+      "plan:T-PR-05",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1194,11 +1490,15 @@
     "tier": "A",
     "phase": "P2/P4",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM ImapEnvelopeTriageStore RFC 3501 IMAP4rev1 FETCH ENVELOPE parser, UID STORE +FLAGS triage builder & RFC 6068 mailto handoff encoder tested; TLS socket sync remains unintegrated.",
     "tests": [
-      "plan:T-PR-06"
+      "plan:T-PR-06",
+      "jvm:R50Checks",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1209,7 +1509,10 @@
     "sources": "owner:v2.0 §7.9",
     "route": "New bounded immutable browser session metadata/codec, executed host contracts only; old in-process BrowserScreen blocked and not connected. Renderer/profile/process/native UI integrations absent; S29/S30 unpassed.",
     "tests": [
-      "plan:T-PR-07"
+      "plan:T-PR-07",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1225,7 +1528,10 @@
     "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
-      "plan:T-PR-07a"
+      "plan:T-PR-07a",
+      "jvm:R51Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1236,11 +1542,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace vertical tab tree, pin ordering, group filter & search kernel tested; live multi-process WebView/Gecko tab binding remains pending.",
     "tests": [
-      "plan:T-PR-07b"
+      "plan:T-PR-07b",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1249,11 +1558,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace named/colored/collapsible tab-group model tested; Compose tab-strip drag UI remains partial.",
     "tests": [
-      "plan:T-PR-07c"
+      "plan:T-PR-07c",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1262,11 +1574,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace horizontal split-tab independent-URL navigation state machine tested; dual WebView/engine surface composition and S14 spike remain pending.",
     "tests": [
-      "plan:T-PR-07d"
+      "plan:T-PR-07d",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S14"
     ]
@@ -1277,11 +1592,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace vertical split-tab ratio & independent navigation state machine tested; dual engine surface composition and S14 spike remain pending.",
     "tests": [
-      "plan:T-PR-07e"
+      "plan:T-PR-07e",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S14"
     ]
@@ -1292,11 +1610,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace pinned-tab immutability & close-protection kernel tested; durable browser profile storage remains partial.",
     "tests": [
-      "plan:T-PR-07f"
+      "plan:T-PR-07f",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1305,11 +1626,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace idle tab-discard & URL-restore state machine tested; live renderer memory reclaim measurement and S14 spike remain pending.",
     "tests": [
-      "plan:T-PR-07g"
+      "plan:T-PR-07g",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S14"
     ]
@@ -1322,7 +1646,9 @@
     "sources": "owner:v2.0 §7.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
-      "plan:T-PR-07h"
+      "plan:T-PR-07h",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1333,11 +1659,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserTabShortcutBatchBroker desktop browser chord dispatcher (Ctrl+T/W/L, Ctrl+Shift+T, Ctrl+1..9, F5) tested; live WebView/GeckoView key routing remains device-gated.",
     "tests": [
-      "plan:T-PR-07i"
+      "plan:T-PR-07i",
+      "jvm:R50Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1346,11 +1675,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserTabShortcutBatchBroker immutable cross-window tab detach/attach state reducer preserving pinned-tab guards tested; live multi-window drag gesture remains unrun.",
     "tests": [
-      "plan:T-PR-07j"
+      "plan:T-PR-07j",
+      "jvm:R50Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1359,11 +1691,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM ArticleReaderExtractor + HtmlSanitizer reader-mode pipeline wired into BrowserScreen.kt; full DOM readability pagination on device WebView remains partial.",
     "tests": [
-      "plan:T-PR-07k"
+      "plan:T-PR-07k",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1372,11 +1707,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM SitePermissionVault per-origin camera/mic/location/notification/JS lease & private-browsing ephemeral auto-wipe kernel tested; live engine permission callback hookup remains pending.",
     "tests": [
-      "plan:T-PR-07l"
+      "plan:T-PR-07l",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1385,11 +1723,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserProfileDirectoryIsolator Content-Disposition RFC 5987 filename sanitizer, path-traversal blocker & .part atomic download finalizer tested; Files SAF Downloads handoff remains partial.",
     "tests": [
-      "plan:T-PR-07m"
+      "plan:T-PR-07m",
+      "jvm:R50Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1398,11 +1739,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM FindInPageMatchEngine Unicode case-fold/diacritic-insensitive match ring & active-hit wraparound kernel tested; live WebView highlight overlay remains pending.",
     "tests": [
-      "plan:T-PR-07n"
+      "plan:T-PR-07n",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1411,11 +1755,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserProfileDirectoryIsolator disjoint per-profile storage/cookie/cache directory allocator with ephemeral wipe planner tested; WebView.setDataDirectorySuffix multi-process isolation remains device-only.",
     "tests": [
-      "plan:T-PR-07o"
+      "plan:T-PR-07o",
+      "jvm:R50Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1424,11 +1771,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM EasyListTrackerFilterEngine permissive ABP/EasyList domain-anchor & third-party resource blocker with per-site shield toggle tested; S30 browser engine request-intercept hook remains pending.",
     "tests": [
-      "plan:T-PR-07p"
+      "plan:T-PR-07p",
+      "jvm:R50Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S30"
     ]
@@ -1439,11 +1789,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserTabShortcutBatchBroker batch multi-tab close/mute/group/bookmark/send-to-Beam reducer tested; Compose tab-strip multi-select UI acceptance remains pending.",
     "tests": [
-      "plan:T-PR-07q"
+      "plan:T-PR-07q",
+      "jvm:R50Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1452,11 +1805,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BrowserSplitTabWorkspace deterministic session snapshot serialize/restore (tabs, groups, pins, splits) tested; encrypted on-disk session store integration remains partial.",
     "tests": [
-      "plan:T-PR-07r"
+      "plan:T-PR-07r",
+      "jvm:R49Checks",
+      "jvm:R52Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1465,11 +1821,13 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM BeamChunkedResumeReedSolomon + CastPrivacyExclusionGate (R49/R50) page-media URL cast eligibility & LAN parity planner wired into CastSendPanel.kt (PARSE OK); live HTML5 media extraction remains pending.",
     "tests": [
-      "plan:T-PR-07s"
+      "plan:T-PR-07s",
+      "jvm:R50Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1478,11 +1836,13 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM PdfFormAcroFieldInspector, PdfPageTextSearchHighlighter & PdfPkcs7SignatureVerifier Ed25519/ByteRange kernels wired into PdfScreen.kt; interactive ink/signature UI remains partial.",
     "tests": [
-      "plan:T-PR-08"
+      "plan:T-PR-08",
+      "jvm:R49Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1495,7 +1855,8 @@
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
       "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
-      "plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery"
+      "plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery",
+      "jvm:R53Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1506,11 +1867,13 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM CalendarIcsRecurrenceEngine (R49) + FocusModeContextEvaluator (R50) minute-of-day schedule window & timer deadline math without SCHEDULE_EXACT_ALARM tested; Android AlarmManager inexact UI remains partial.",
     "tests": [
-      "plan:T-PR-10"
+      "plan:T-PR-10",
+      "jvm:R50Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1519,11 +1882,13 @@
     "tier": "A/B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM OoxmlDom (DOCX/XLSX/PPTX), FormulaEval (130 functions + LAMBDA), SpillSheetEngine (23 array ops), DrawingMlChartBuilder & KnuthPlassLineBreaker tested; Android Office UI & S10 remain pending.",
     "tests": [
-      "plan:T-PR-11"
+      "plan:T-PR-11",
+      "jvm:R49Checks",
+      "jvm:R53Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S10"
     ]
@@ -1534,11 +1899,12 @@
     "tier": "A/B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM SensitiveClipboardGuard OTP/seed/JWT auto-expiry & paste-redaction kernel tested; optional Android InputMethodService global clipboard remains gated on S16.",
     "tests": [
-      "plan:T-PR-12"
+      "plan:T-PR-12",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S16"
     ]
@@ -1549,11 +1915,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose productivity modules; browser engine selected by spikes",
+    "route": "Pure-JVM StickyNoteBoardLayout snap-to-grid, collision-free z-order & Markdown checklist desktop sticky-note model tested; persistent tabletop overlay window binding remains partial.",
     "tests": [
-      "plan:T-PR-13"
+      "plan:T-PR-13",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1562,11 +1929,12 @@
     "tier": "B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM LokTileRenderCache tile-pyramid dirty-rect invalidation, LRU byte budget & zoom-level cache + OdfTrackedChangesCodec tested; native LibreOfficeKit .so packaging and S10 remain pending.",
     "tests": [
-      "plan:T-FF-01"
+      "plan:T-FF-01",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S10"
     ]
@@ -1577,11 +1945,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM clean-room OOXML/ODF/RTF/CSV/EPUB3 engines (FormulaEval 130 fns, SpillSheetEngine, PptxSlideDeck, DrawingMlChartBuilder, OoxmlMacroVbaInspector) tested; shaded POI parity & S11 remain pending.",
     "tests": [
-      "plan:T-FF-02"
+      "plan:T-FF-02",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S11"
     ]
@@ -1607,11 +1976,12 @@
     "tier": "A/B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM AiPdfCompatibilityBridge Adobe Illustrator %PDF stream extractor & explicit legacy PostScript-only refusal boundary tested; full vector path rasterization on device remains pending.",
     "tests": [
-      "plan:T-FF-04"
+      "plan:T-FF-04",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1650,11 +2020,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM HeicIsomBoxInspector ISO-BMFF ftyp/meta/ispe/pixi/iref/colr inspector tested; Android MediaCodec hardware HEVC/HEIC encode path and S12 device spike remain pending.",
     "tests": [
-      "plan:T-FF-07"
+      "plan:T-FF-07",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S12"
     ]
@@ -1695,11 +2066,12 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM Epub3Package OPF spine/manifest/NCX/XHTML reader & writer kernel tested; Compose paginated EPUB reader screen remains unintegrated.",
     "tests": [
-      "plan:T-FF-10"
+      "plan:T-FF-10",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1708,11 +2080,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM ExportFidelityAdvisor pre-save lossy-feature matrix (DOCX/XLSX/PPTX/ODF/CSV/MD/PDF) & user warning generator tested; Save-As dialog UI wiring remains partial.",
     "tests": [
-      "plan:T-FF-11"
+      "plan:T-FF-11",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1721,11 +2094,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.10",
-    "route": "Real isolated UID/read-only FD opaque-digest precursor:5/5 elementary API34 boundary cases passed at1ee1589, including exact-path/inode and positive-FD controls after ENOENT counterexample. Full parser sandbox, parent watchdog/RSS/CPU/socket/output guards absent; no S-gate promoted.",
+    "route": "Pure-JVM FormatSandboxWatchdog wall-clock timeout, byte-expansion ratio, XML/JSON nesting depth & zip-slip bomb guard tested; isolated Android Service enforcement across all formats remains partial.",
     "tests": [
-      "plan:T-FF-12"
+      "plan:T-FF-12",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1734,11 +2108,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM ThumbnailMetadataIndexer magic-byte MIME sniffer, PNG IHDR/JPEG SOF dimension parser & bounded LRU thumbnail budgeter tested; isolated-process bitmap decode service remains unintegrated.",
     "tests": [
-      "plan:T-FF-13"
+      "plan:T-FF-13",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1747,11 +2122,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM FormatsRegistryCatalog canonical formats.yaml parser/validator enforcing engine, fidelity grade, macro policy & process boundary tested; full runtime dispatch binding remains partial.",
     "tests": [
-      "plan:T-FF-14"
+      "plan:T-FF-14",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1777,11 +2153,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM ExportFidelityAdvisor structured feature-loss audit report (tracked changes, array spills, macros, speakers notes, layers) tested; pre-save modal confirmation UI remains partial.",
     "tests": [
-      "plan:T-FF-16"
+      "plan:T-FF-16",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1790,11 +2167,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Forge format router with isolated parsers and explicit fidelity",
+    "route": "Pure-JVM OoxmlMacroVbaInspector OLE2/vbaProject.bin/xlm_macros/AutoOpen detector & fail-closed macro-strip policy tested; Office open pipeline UI banner remains partial.",
     "tests": [
-      "plan:T-FF-17"
+      "plan:T-FF-17",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1846,11 +2224,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Pure-JVM VoiceRecorderWavWaveformCodec RIFF WAVE 16-bit PCM encoder/decoder & RMS/peak waveform envelope builder tested; Android AudioRecord capture loop remains device-gated.",
     "tests": [
-      "plan:T-MD-04"
+      "plan:T-MD-04",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1859,11 +2238,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Pure-JVM VirtualWebcamMjpegStream QR Wi-Fi/HTTPS/vCard classifier + PerspectiveDeskewBinarizer 8-DOF homography document rectifier & Sauvola binarizer tested; CameraX ImageAnalysis binding remains partial.",
     "tests": [
-      "plan:T-MD-05"
+      "plan:T-MD-05",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1872,11 +2252,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Pure-JVM VoiceRecorderWavWaveformCodec deterministic USB-DAC/wired/BLE-Audio/A2DP/speaker route priority selector tested; Android AudioManager.setCommunicationDevice hookup remains device-only.",
     "tests": [
-      "plan:T-MD-06"
+      "plan:T-MD-06",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1885,11 +2266,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Pure-JVM OklchPaletteContrastPicker perceptual Björn Ottosson OKLab/OKLCH gamut mapper & WCAG 2.1 AA/AAA contrast solver tested; API 37 system Eyedropper intent remains device-only.",
     "tests": [
-      "plan:T-MD-07"
+      "plan:T-MD-07",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1898,11 +2280,12 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.0 §7.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Pure-JVM Mp4KeyframeTrimPlanner ISO-BMFF sync-sample keyframe cut planner separating GOP lead-in re-encode from lossless stream-copy tested; Android MediaCodec/MediaMuxer execution remains device-only.",
     "tests": [
-      "plan:T-MD-08"
+      "plan:T-MD-08",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1911,11 +2294,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.11",
-    "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
+    "route": "Pure-JVM AudioFocusVolumeMatrix per-module gain/mute/ducking dB mixer & Android AudioFocus transition reducer tested; live AudioTrack/ExoPlayer stream binding remains pending.",
     "tests": [
-      "plan:T-MD-09"
+      "plan:T-MD-09",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1937,11 +2321,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM ModuleAppLockGate idle-timeout relock, screen-off immediate lock & exponential backoff PIN/biometric gate tested; Android BiometricPrompt Activity binding remains pending.",
     "tests": [
-      "plan:T-SC-02"
+      "plan:T-SC-02",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1950,11 +2335,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM PermissionRiskAuditor dangerous permission-combination scorer wired into SettingsScreen.kt; live PackageManager cross-app enumeration remains gated on OS visibility.",
     "tests": [
-      "plan:T-SC-03"
+      "plan:T-SC-03",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1963,11 +2349,12 @@
     "tier": "B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM VpnAppFirewallPolicy per-UID allow/deny, LAN-bypass & DNS sinkhole/DoH rule evaluator tested; Android VpnService TUN packet loop remains unimplemented.",
     "tests": [
-      "plan:T-SC-04"
+      "plan:T-SC-04",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1976,11 +2363,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM PrivacyPostureDashboardEngine weighted 0..100 posture scorer & actionable remediation advisor across Tor/BLUFFS/Wi-Fi/NFC/USB/clipboard guards tested; live OS permission-usage timeline requires Android SDK.",
     "tests": [
-      "plan:T-SC-05"
+      "plan:T-SC-05",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -1989,11 +2377,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM ScreenCaptureGuard + PixnappingSurfaceShield (CVE-2025-48561 blur-stacking & GPU.zip timing defense) tested; physical SurfaceFlinger FLAG_SECURE device verification remains pending.",
     "tests": [
-      "plan:T-SC-06"
+      "plan:T-SC-06",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2002,11 +2391,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM TinkAeadKeysetEnvelope HKDF-SHA256 + AES-256-GCM key-rotation keyset envelope codec tested; Android Keystore master-KEK wrapping on physical hardware remains pending.",
     "tests": [
-      "plan:T-SC-07"
+      "plan:T-SC-07",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2028,11 +2418,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Pure-JVM CastPrivacyExclusionGate Vault/incognito/FLAG_SECURE frame redaction, red recording indicator & lock-screen hard-kill state machine tested; live MediaProjection surface hook remains pending.",
     "tests": [
-      "plan:T-SC-09"
+      "plan:T-SC-09",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2058,11 +2449,12 @@
     "tier": "B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "Pure-JVM BackupHealthDrillScheduler two-way sync SHA-256 reconciliation & non-destructive conflict-inbox quarantine planner tested; background SAF folder transport remains pending.",
     "tests": [
-      "plan:T-BK-02"
+      "plan:T-BK-02",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2071,11 +2463,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "Pure-JVM ConfigExportBundleCodec canonical JSON + HMAC-SHA256 integrity + secret-key scrubbing config bundle codec tested; full SettingsGraph import UI remains partial.",
     "tests": [
-      "plan:T-BK-03"
+      "plan:T-BK-03",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2084,11 +2477,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "Pure-JVM BackupHealthDrillScheduler new-device migration readiness checklist wired into BackupScreen.kt; interactive step-by-step wizard remains partial.",
     "tests": [
-      "plan:T-BK-04"
+      "plan:T-BK-04",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2097,11 +2491,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "Pure-JVM BackupHealthDrillScheduler 30-day restore-drill SLA & archive-health evaluator wired into BackupScreen.kt; automated background WorkManager drill and S7 remain pending.",
     "tests": [
-      "plan:T-BK-05"
+      "plan:T-BK-05",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S7"
     ]
@@ -2112,11 +2507,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.13",
-    "route": "Spike-selected encrypted versioned backup; sync explicitly separate",
+    "route": "Pure-JVM ReedSolomonGf256 shard recovery + TinkAeadKeysetEnvelope user-held key envelope tested with zero cloud escrow; S7 recovery UX verification remains pending.",
     "tests": [
-      "plan:T-BK-06"
+      "plan:T-BK-06",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S7"
     ]
@@ -2140,11 +2536,12 @@
     "tier": "B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.14",
-    "route": "Android sharing/intents and clean-room continuity protocols",
+    "route": "Pure-JVM KdeConnectPacketCodec newline-framed JSON protocol v7 identity/pair/ping/clipboard/share packet codec & TLS SHA-256 pin verifier tested; LAN NSD/TLS socket service remains pending.",
     "tests": [
-      "plan:T-CT-02"
+      "plan:T-CT-02",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2153,11 +2550,12 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.0 §7.14",
-    "route": "Android sharing/intents and clean-room continuity protocols",
+    "route": "Pure-JVM KdeConnectPacketCodec (R49) + SharedFolderDeltaSyncPlanner (R50) continuity handoff envelope & SHA-256 delta state planner wired into ContinuityScreen.kt (PARSE OK); API 37 Continue-On OS service remains pending.",
     "tests": [
-      "plan:T-CT-03"
+      "plan:T-CT-03",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2179,11 +2577,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.14",
-    "route": "Android sharing/intents and clean-room continuity protocols",
+    "route": "Pure-JVM RemoteDesktopRfbTileCodec RFC 6143 RFB 3.8 CopyRect dirty-tile & pointer codec + SshTransportKexFrameCodec SSH-2.0 framer wired into ContinuityScreen.kt (PARSE OK); live socket canvas viewer remains pending.",
     "tests": [
-      "plan:T-CT-05"
+      "plan:T-CT-05",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2205,11 +2604,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.15",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM RaopRtpSyncPacketizer RFC 3550 RTP 16-bit PCM/ALAC framing, NTP-RTP sync & dB volume mapper tested; mDNS RAOP RTSP session and S18 hardware verification remain pending.",
     "tests": [
-      "plan:T-CA-01"
+      "plan:T-CA-01",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S18"
     ]
@@ -2235,11 +2635,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.15",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM CastSinkSrpPinVerifier (:cast:airplay) + DlnaDidlLitePlaylistQueue photo/media queue & AirPlayUrlSender (/play) wired into CastSendPanel/DlnaScreen (PARSE OK); live Apple TV photo slideshow pairing remains unrun.",
     "tests": [
-      "plan:T-CA-03"
+      "plan:T-CA-03",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2321,11 +2722,12 @@
     "tier": "A/B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.15",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM CastWebReceiverSessionModel receiver namespace message router, sender heartbeat & media-status state machine tested; live Cast socket + WebRTC track and S17 remain pending.",
     "tests": [
-      "plan:T-CA-09"
+      "plan:T-CA-09",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S17"
     ]
@@ -2349,11 +2751,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.15; owner:v2.1 §1.3",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM TogetherCoWatchSyncClock 4-timestamp NTP offset & 0.97x..1.03x PLL drift corrector + PresentationSpeakerNotesDualView wired into TogetherSession.kt (PARSE OK); live rooms/Syncplay & S22 remain blocked.",
     "tests": [
-      "plan:T-CA-11"
+      "plan:T-CA-11",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S22"
     ]
@@ -2364,11 +2767,12 @@
     "tier": "C",
     "phase": "P2",
     "sources": "owner:v2.0 §7.15",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM Miracast/Cast virtual-display aspect-ratio & overscan adaptation verified via CastVirtualDisplayBoundsScaler & CastV2MediaQueueController (R51); live WifiDisplay sink negotiation remains device-gated.",
     "tests": [
-      "plan:T-CA-12"
+      "plan:T-CA-12",
+      "jvm:R51Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2392,11 +2796,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.15",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM CastPrivacyExclusionGate zero-cloud-relay LAN-only verification, sensitive-surface blackout & screen-lock stop gate tested; live cast pipeline binding remains pending.",
     "tests": [
-      "plan:T-CA-14"
+      "plan:T-CA-14",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2405,11 +2810,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
+    "route": "Pure-JVM SharedClockSyncCoordinator Cristian/NTP min-RTT clock offset & multi-receiver playout lead-time scheduler tested; physical multi-speaker <=40ms S24 measurement remains pending.",
     "tests": [
-      "plan:T-CA-15"
+      "plan:T-CA-15",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S24"
     ]
@@ -2463,11 +2869,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.16",
-    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "route": "Pure-JVM FocusRingPointerTokens WCAG 2.2 SC 2.4.11 >=3:1 focus-ring contrast & >=24dp target validator tested; whole-app TalkBack/pointer device traversal and S15 remain pending.",
     "tests": [
-      "plan:T-AX-04"
+      "plan:T-AX-04",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S15"
     ]
@@ -2478,11 +2885,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.16",
-    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "route": "Pure-JVM HardwareKeyboardImeSwitcher dead-key compose & layout remapper + ImeIncognitoClipboardFirewall tested; isolated Android InputMethodService APK and S16 spike remain pending.",
     "tests": [
-      "plan:T-AX-05"
+      "plan:T-AX-05",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S16"
     ]
@@ -2493,11 +2901,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.16",
-    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "route": "Pure-JVM CommandPaletteFuzzyActionRanker spoken-utterance transcript action matcher + FocusRingDwellClickController tested; on-device SpeechRecognizer audio pipeline remains unintegrated.",
     "tests": [
-      "plan:T-AX-06"
+      "plan:T-AX-06",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2506,11 +2915,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.16",
-    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "route": "Pure-JVM WebVttCaptionCueTimeline W3C WebVTT cue parser, binary-search active cue lookup & HTML tag stripper tested; Media3 SubtitleView overlay wiring remains pending.",
     "tests": [
-      "plan:T-AX-07"
+      "plan:T-AX-07",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2519,11 +2929,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.16",
-    "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
+    "route": "Pure-JVM ColorBlindnessDaltonizeMatrix + FocusRingDwellClickController + EasySimpleModeLayoutScaler wired into Adaptation.kt plus host 48dp/WCAG/360dp automated gates tested; TalkBack UiAutomator S9 device suite remains pending.",
     "tests": [
-      "plan:T-AX-08"
+      "plan:T-AX-08",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S9"
     ]
@@ -2547,11 +2958,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.17",
-    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "route": "Pure-JVM WorkspaceContextProfileEngine deterministic multi-window workspace preset & audio/focus profile applier tested; full shell window-arrangement recall on device remains partial.",
     "tests": [
-      "plan:T-AU-02"
+      "plan:T-AU-02",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2560,11 +2972,12 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.0 §7.17",
-    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "route": "Pure-JVM AppFunctionsSchemaRegistry typed tool-parameter schema validator & user-consent gate tested; Android 16/17 AppFunctionService Binder registration remains pending.",
     "tests": [
-      "plan:T-AU-03"
+      "plan:T-AU-03",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2573,11 +2986,12 @@
     "tier": "A/B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.17",
-    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "route": "Pure-JVM WorkflowJsonImportExportSandbox versioned JSON workflow packager, SHA-256 verifier & zero-shell dry-run capability auditor wired into TaskPanel.kt (PARSE OK); opt-in local LLM runtime remains absent.",
     "tests": [
-      "plan:T-AU-04"
+      "plan:T-AU-04",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2586,11 +3000,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.17",
-    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "route": "Pure-JVM ThirdPartyIntentCommandGate HMAC-SHA256 capability token, replay-nonce window & command allowlist gate tested; exported BroadcastReceiver/Activity wiring remains disabled by default.",
     "tests": [
-      "plan:T-AU-05"
+      "plan:T-AU-05",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2613,11 +3028,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.18; owner:v2.1 §1.3",
-    "route": "Capability-led thermal/performance governor and platform probes",
+    "route": "Pure-JVM AdpfThermalRefreshPolicy 5-state thermal headroom -> ADPF/sustained/own-governor fallback state machine tested; Android PowerHintManager native Binder calls remain pending.",
     "tests": [
-      "plan:T-RG-02"
+      "plan:T-RG-02",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2626,11 +3042,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.18",
-    "route": "Capability-led thermal/performance governor and platform probes",
+    "route": "Pure-JVM AdpfThermalRefreshPolicy interaction boost vs idle refresh-rate throttle (120/90/60/30 Hz) policy tested; WindowManager.LayoutParams.preferredDisplayModeId device test remains pending.",
     "tests": [
-      "plan:T-RG-03"
+      "plan:T-RG-03",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2653,11 +3070,12 @@
     "tier": "C",
     "phase": "P3",
     "sources": "owner:v2.0 §7.18",
-    "route": "Capability-led thermal/performance governor and platform probes",
+    "route": "Pure-JVM thermal/memory trim budgeter & startup p95 regression gate verified via MemoryPressureTrimBudgeter & StartupColdWarmRegressionGate (R51); physical OEM game-overlay/cooler coexistence remains device-gated.",
     "tests": [
-      "plan:T-RG-05"
+      "plan:T-RG-05",
+      "jvm:R51Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2666,11 +3084,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.18",
-    "route": "Capability-led thermal/performance governor and platform probes",
+    "route": "Pure-JVM MeteredBatteryLowRamScheduler charging/battery-saver/metered-network background work gate tested; Android WorkManager Constraints live job dispatch remains device-only.",
     "tests": [
-      "plan:T-RG-06"
+      "plan:T-RG-06",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2679,11 +3098,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.18",
-    "route": "Capability-led thermal/performance governor and platform probes",
+    "route": "Pure-JVM MeteredBatteryLowRamScheduler deterministic Low-RAM profile capping warm browser tabs, thumbnail cache & blur animations tested; ActivityManager.isLowRamDevice device benchmark (S8) remains pending.",
     "tests": [
-      "plan:T-RG-07"
+      "plan:T-RG-07",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S8"
     ]
@@ -2720,11 +3140,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.19",
-    "route": "Optional compatibility boundary, never part of main APK",
+    "route": "Pure-JVM WebAppWindowManifestHost W3C Web App Manifest parser, HTTPS start_url/scope confinement gate & standalone chrome mode resolver tested; isolated WebView window hosting remains device-only.",
     "tests": [
-      "plan:T-CM-02"
+      "plan:T-CM-02",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2746,11 +3167,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.20; owner:v2.1 §1.3",
-    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "route": "Pure-JVM BillingEntitlementLedger $19.99 Core + $14.99 Pro one-time SKU catalog & zero-recurring-subscription state machine tested; Google Play BillingClient / direct store integration remains pending.",
     "tests": [
-      "plan:T-BL-01"
+      "plan:T-BL-01",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2759,11 +3181,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.20",
-    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "route": "Pure-JVM BillingEntitlementLedger Ed25519-signed offline entitlement token & grace-window verifier tested; Android Keystore device-key binding remains unverified on hardware.",
     "tests": [
-      "plan:T-BL-02"
+      "plan:T-BL-02",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2772,11 +3195,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.20",
-    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "route": "Pure-JVM BillingEntitlementLedger Ed25519 Pro license-key signature, optional device-fingerprint binding & transfer-cooldown verifier tested; production public-key provisioning remains pending.",
     "tests": [
-      "plan:T-BL-03"
+      "plan:T-BL-03",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2785,11 +3209,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.20",
-    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "route": "Pure-JVM BillingEntitlementLedger 14-day full trial -> nag-free read-only Files/Find expiry transition tested; shell-wide entitlement enforcement wiring remains partial.",
     "tests": [
-      "plan:T-BL-04"
+      "plan:T-BL-04",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2798,11 +3223,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.20",
-    "route": "Play Billing play; signed offline-tolerant own entitlements pro",
+    "route": "Pure-JVM BillingEntitlementLedger refund-safe capability downgrade preserving 100% of user files/notes/vault data tested; store revocation webhook/receipt flow remains pending.",
     "tests": [
-      "plan:T-BL-05"
+      "plan:T-BL-05",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2811,11 +3237,12 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.1 Δ3",
-    "route": "Compose desktopMouse/per-device learning; own input routing only",
+    "route": "Pure-JVM ExternalMouseButtonMapper press/release/scroll axis & interactive Learn-My-Mouse button capture state machine tested; physical mouse device matrix and S15 remain pending.",
     "tests": [
-      "plan:T-IN-01"
+      "plan:T-IN-01",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S15"
     ]
@@ -2826,11 +3253,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.1 Δ3",
-    "route": "Compose desktopMouse/per-device learning; own input routing only",
+    "route": "Pure-JVM GamepadPointerModeMapper radial-deadzone cubic stick-to-cursor velocity curve & shoulder-trigger click/scroll mapper tested; physical HID gamepad MotionEvent loop remains device-only.",
     "tests": [
-      "plan:T-IN-07"
+      "plan:T-IN-07",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2839,11 +3267,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 Δ3",
-    "route": "Compose desktopMouse/per-device learning; own input routing only",
+    "route": "Pure-JVM HardwareKeyboardImeSwitcher USB/BT VID:PID layout auto-selector & CapsLock/Ctrl+Space cycle with dead-key compose tested; Android InputManager layout broadcast remains device-only.",
     "tests": [
-      "plan:T-IN-08"
+      "plan:T-IN-08",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2852,11 +3281,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM FoldPosturePresenterStudio privacy-shutter/posture planner wired into LensScreen.kt (PARSE OK); GPU person-segmentation background blur shader and S26 spike remain unimplemented on device.",
     "tests": [
-      "plan:T-LN-01"
+      "plan:T-LN-01",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -2867,11 +3297,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM FoldPosturePresenterStudio.stepAutoFrameSpring critically-damped face-box pan/zoom smoother tested; live Camera2 face-landmark detector and S26 remain pending.",
     "tests": [
-      "plan:T-LN-02"
+      "plan:T-LN-02",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -2882,11 +3313,12 @@
     "tier": "A",
     "phase": "P4",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM FoldPosturePresenterStudio gaze-safe bounded framing target solver tested (eye-contact neural warp kept explicitly excluded as research-only); live front-camera landmark feed remains device-only.",
     "tests": [
-      "plan:T-LN-03"
+      "plan:T-LN-03",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2895,11 +3327,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM LensThermalQualityLadder (R49) + VirtualRelightNormalMap (R49) low-light luma/normal relight math tested; real-time Vulkan/GLSL denoise camera shader and S26 remain pending.",
     "tests": [
-      "plan:T-LN-04"
+      "plan:T-LN-04",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -2910,11 +3343,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM Fsr1EasuRcasUpscaler implementing MIT-licensed AMD FSR 1.0 Pass 1 EASU 12-tap directional elliptical Lanczos2 + Pass 2 RCAS adaptive sharpening tested against Python oracle; GPU compute path remains pending.",
     "tests": [
-      "plan:T-LN-05"
+      "plan:T-LN-05",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2923,11 +3357,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM VirtualRelightNormalMap Lambertian + Blinn-Phong 3D normal-map studio relighting kernel tested; GPU Vulkan/AGSL camera frame shader and S26 remain pending.",
     "tests": [
-      "plan:T-LN-06"
+      "plan:T-LN-06",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -2938,11 +3373,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM NlmsAcousticEchoGate RMS spectral noise gate & soft-knee dynamic limiter tested; real-time WebRTC APM/RNNoise native audio thread and S26 remain pending.",
     "tests": [
-      "plan:T-LN-07"
+      "plan:T-LN-07",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -2953,11 +3389,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM NlmsAcousticEchoGate WebRTC-style Normalized LMS adaptive FIR echo canceller with double-talk freeze guard achieving measurable ERLE dB gain tested; live AudioRecord/AudioTrack loop and S26 remain pending.",
     "tests": [
-      "plan:T-LN-08"
+      "plan:T-LN-08",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -2968,11 +3405,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM Cube3dLutColorGrader Adobe .cube 3D LUT parser, trilinear RGB lattice interpolator & Rec.709 zebra clipping analyzer tested; GPU 3D-texture preview shader remains pending.",
     "tests": [
-      "plan:T-LN-09"
+      "plan:T-LN-09",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2981,11 +3419,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM 8-DOF landmark perspective homography & capacitive touch-cluster verifier tested via DocumentDewarpPerspectiveEngine & CapacitiveGhostTouchFilter (R51); CameraX GPU hand-landmark runtime remains device-gated.",
     "tests": [
-      "plan:T-LN-10"
+      "plan:T-LN-10",
+      "jvm:R51Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -2994,11 +3433,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM VirtualRelightNormalMap + FoldPosturePresenterStudio scene/posture viewport compositor tested; real-time parallax GPU scene renderer remains device-only.",
     "tests": [
-      "plan:T-LN-11"
+      "plan:T-LN-11",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -3007,11 +3447,12 @@
     "tier": "A/B",
     "phase": "P4",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM permissive-license & RAM-tier admission budgeter verified via MemoryPressureTrimBudgeter & AirPlayFairPlayStubRefusalGate policy model (R51); S28 on-device NPU generative scene execution remains device-gated.",
     "tests": [
-      "plan:T-LN-12"
+      "plan:T-LN-12",
+      "jvm:R51Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S28"
     ]
@@ -3022,11 +3463,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM FoldPosturePresenterStudio WPM-paced teleprompter line scroller + PresentationSpeakerNotesDualView presenter console tested; live camera+slide PiP GPU composite and S26 remain pending.",
     "tests": [
-      "plan:T-LN-13"
+      "plan:T-LN-13",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -3037,11 +3479,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM FoldPosturePresenterStudio optic/posture preset resolver + ShortcutPresetConflictDetector hotkey binder wired into LensScreen.kt (PARSE OK); per-caller DataStore persistence remains partial.",
     "tests": [
-      "plan:T-LN-14"
+      "plan:T-LN-14",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -3050,11 +3493,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM LensThermalQualityLadder hysteresis-guarded FULL_1080P -> BALANCED_720P -> LITE_540P -> BYPASS_RAW thermal/FPS ladder tested; live Camera2 pipeline hook and S26 remain pending.",
     "tests": [
-      "plan:T-LN-15"
+      "plan:T-LN-15",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -3065,11 +3509,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM WebRtcIceCandidateScrubber (R49) + VirtualWebcamMjpegStream + NlmsAcousticEchoGate processed-frame/audio primitives tested; owned Fusion Meet WebRTC PeerConnection stack and S26 remain unbuilt.",
     "tests": [
-      "plan:T-LN-20"
+      "plan:T-LN-20",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -3080,11 +3525,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM SitePermissionVault (R49) + VirtualWebcamMjpegStream per-origin camera/mic lease & MJPEG frame boundary codec tested; S25/S30 browser MediaStream injection remains pending.",
     "tests": [
-      "plan:T-LN-21"
+      "plan:T-LN-21",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S25",
       "S30"
@@ -3096,11 +3542,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM VirtualWebcamMjpegStream multipart/x-mixed-replace MJPEG framer + thermal capture governor wired into LensScreen.kt (PARSE OK); USB UVC gadget / PC companion driver and S27 remain pending.",
     "tests": [
-      "plan:T-LN-22"
+      "plan:T-LN-22",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S27"
     ]
@@ -3111,11 +3558,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.1 §2.3",
-    "route": "Camera2/CameraX GPU+inference/audio pipeline; owned output routes only",
+    "route": "Pure-JVM VirtualWebcamMjpegStream thermal FPS/resolution governor + Mp4KeyframeTrimPlanner tested; live MediaCodec MP4/RTMP/SRT muxing and S26 remain pending.",
     "tests": [
-      "plan:T-LN-23"
+      "plan:T-LN-23",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": [
       "S26"
     ]
@@ -3126,11 +3574,12 @@
     "tier": "A/B",
     "phase": "P3",
     "sources": "owner:v2.1 §3",
-    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "route": "Pure-JVM Signal-style DoubleRatchetSessionEngine & SealedSenderPaddingEnvelope E2EE bridge framing verified on host JVM (R51); live user-owned Mac & Apple ID BlueBubbles socket remains external.",
     "tests": [
-      "plan:T-MS-01"
+      "plan:T-MS-01",
+      "jvm:R51Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -3165,11 +3614,12 @@
     "tier": "C",
     "phase": "—",
     "sources": "owner:v2.1 §3",
-    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "route": "Pure-JVM RcsHandoffUriBuilder RFC 5724 smsto: URI encoder & system-messaging Intent handoff builder tested (zero fake RCS API); live RoleManager handoff check on device remains pending.",
     "tests": [
-      "plan:T-MS-04"
+      "plan:T-MS-04",
+      "jvm:R49Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   },
   {
@@ -3191,11 +3641,12 @@
     "tier": "A",
     "phase": "P3/P4",
     "sources": "owner:v2.1 §3",
-    "route": "Own Compose clients; explicit platform/license/hardware boundaries",
+    "route": "Pure-JVM MatrixMegolmGroupRatchet (4-component forward-secure group ratchet) + XmppOmemoStanzaSeal (XEP-0384 urn:xmpp:omemo:2) + UnifiedPushSmsFallbackRouter wired into MessagesScreen.kt (PARSE OK); live homeserver/XMPP network transport remains absent.",
     "tests": [
-      "plan:T-MS-06"
+      "plan:T-MS-06",
+      "jvm:R50Checks"
     ],
-    "status": "not_implemented",
+    "status": "partial_unverified",
     "gates": []
   }
 ]

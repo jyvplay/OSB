@@ -18,6 +18,7 @@ android {
 
 dependencies {
     api(project(":core:documents"))
+    implementation(project(":core:designsystem"))
     implementation(project(":core:storage"))
     implementation(libs.androidx.lifecycle.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)

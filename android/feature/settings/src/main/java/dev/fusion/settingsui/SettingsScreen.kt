@@ -44,6 +44,17 @@ fun SettingsScreen(graph: SettingsGraph, probeText: String, density: String,
         if(patchStatus.isNotEmpty()) Text(patchStatus)
         Text("Changes minimum window size/title controls only. Full spacing/font/density profiles are not implemented.")
         Text("Pilot keyboard bindings are fixed. Windows/Mac presets and conflict detection need S1; no nonfunctional preset toggle is offered.")
+        val oemBatteryLink = remember {
+            OemSettingsDeepLinkCatalog.resolveForOem(android.os.Build.MANUFACTURER ?: "aosp", OemSettingsDeepLinkCatalog.SystemTarget.BATTERY_UNRESTRICTED)
+        }
+        val permBaseline = remember {
+            PermissionRiskAuditor.audit(setOf("POST_NOTIFICATIONS", "FOREGROUND_SERVICE_MEDIA_PROJECTION"))
+        }
+        Text(
+            "OEM handoff: ${oemBatteryLink.primaryIntentAction} · fallback=${oemBatteryLink.fallbackIntentAction} · shell permission posture=${permBaseline.severity} (${permBaseline.riskScore}/100)",
+            modifier = Modifier.padding(top = 6.dp).testTag("settings-oem-posture"),
+            style = MaterialTheme.typography.bodySmall,
+        )
         Text(probeText, Modifier.padding(top = 8.dp))
         Text("Report excludes fingerprint, document text, paths, network addresses and notification contents. It includes OS/SoC/RAM/codec observations; review before sharing.")
         Button(onClick = onShareReport) { Text("Share redacted report…") }

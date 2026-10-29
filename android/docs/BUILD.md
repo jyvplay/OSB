@@ -1,4 +1,224 @@
-# R44 — 24 executed kernels across 23 modules; bridge spans R37–R44
+# R53 — Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) + 7-OS Cascading Context Menus / 5-DPI Crisp List·Grid·Columns Logos / Interactive Undo Fan + 96 new executed kernels (+7 UI + 19 touched) across 50/50 modules (100%); 42 contiguous R13–R53 CI tasks + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`** (`2026-10-29`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R53-RESULTS.md) · [Scope/acceptance contract](R53-PLAN.md) ·
+[Deepening census](R53-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R53-ALTERNATIVES.md) ·
+[30-Vector Privacy & Hardware PRD](R53-PRIVACY-PRD.md) · [Class-A readiness](class-a-readiness-r53.json) · [Research record](research/r53-primary.md) ·
+Prior: [R52 results](R52-RESULTS.md).
+
+**50/50 testable subsets (100.00%); ALL 50/50 modules deepened in R53 (100.00%) under `kotlinc -Werror` host-JVM execution + 59/59 Android/Compose AST syntax checks (`1,101` `src/main` `.kt` files; `221/231` `partial_unverified` rows, `108` tagged `jvm:R53Checks`). 0/50 full-spec Class A accepted (0.00%); zero status inflation.**
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r53_contracts.py                     # 25,425 assertions / 96 new + 5 touched JVM kernels across 50/50 modules (77 artifacts)
+python3 tools/check_r53_reference.py                   # 411 independent Python 3.11 differential checks across 77 R53 artifacts
+python3 tools/render_r53_visual_preview.py             # 6x 1880x1400 Java2D PNGs + 3 SVGs (1,376 FontMetrics / 180,495 pairwise checks, 12.38:1 WCAG)
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM R53 daemon, Cards 1..30)
+python3 tools/r53_lab.py host                          # fast R53 host gate runner + all 57 Python unittest suites
+```
+
+---
+
+# R52 — Recall 4-Tier Browser Media Studio + Compact Context Menu / Original List·Grid·Columns Logos / Bottom-Right Z-Stack Undo + 91 new executed kernels (+6 UI + 17 touched) across 50/50 modules (100%); 41 contiguous R13–R52 CI tasks + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`** (`2026-10-28`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R52-RESULTS.md) · [Scope/acceptance contract](R52-PLAN.md) ·
+[Deepening census](R52-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R52-ALTERNATIVES.md) ·
+[25-Vector Privacy & Hardware PRD](R52-PRIVACY-PRD.md) · [Class-A readiness](class-a-readiness-r52.json) · [Research record](research/r52-primary.md) ·
+Prior: [R51 results](R51-RESULTS.md).
+
+**50/50 testable subsets (100.00%); ALL 50/50 modules deepened in R52 (100.00%) under `kotlinc -Werror` host-JVM execution + 52/52 Android/Compose AST syntax checks (`998` `.kt` files; `221/231` `partial_unverified` rows, `98` tagged `jvm:R52Checks`). 0/50 full-spec Class A accepted (0.00%); zero status inflation.**
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r52_contracts.py                     # 18,533 assertions / 91 new + 6 touched JVM kernels across 50/50 modules (56 artifacts)
+python3 tools/check_r52_reference.py                   # 306 independent Python 3.11 differential checks across 56 R52 artifacts
+python3 tools/render_r52_visual_preview.py             # 5x 1880x1400 Java2D PNGs (1,108 FontMetrics / 127,341 pairwise checks, 11.93:1 WCAG)
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM R52 daemon, Cards 1..26)
+python3 tools/r52_lab.py host --jobs 2                 # full host regression (51 gates) + 56 Python unittest suites
+```
+
+---
+
+# R51 — 85 new executed kernels (+16 touched) across 50/50 modules (100%); 40 contiguous R13–R51 CI tasks + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`** (`2026-10-28`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R51-RESULTS.md) · [Scope/acceptance contract](R51-PLAN.md) ·
+[Deepening census](R51-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R51-ALTERNATIVES.md) ·
+[20-Vector Privacy & Hardware PRD](R51-PRIVACY-PRD.md) · [Class-A readiness](class-a-readiness-r51.json) · [Research record](research/r51-primary.md) ·
+Prior: [R50 results](R50-RESULTS.md).
+
+**50/50 testable subsets (100.00%); ALL 50/50 modules deepened in R51 (100.00%) under `kotlinc -Werror` host-JVM execution + 46/46 Android/Compose AST syntax checks (`901` `.kt` files; `221/231` `partial_unverified` rows). 0/50 full-spec Class A accepted (0.00%); zero status inflation.**
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r51_contracts.py                     # 12,251 assertions / 85 new + 5 touched JVM kernels across 50/50 modules (41 artifacts)
+python3 tools/check_r51_reference.py                   # 208 independent Python 3.11 differential checks across 41 R51 artifacts
+python3 tools/render_r51_visual_preview.py             # 3x 1840x1380 + 360x800 Java2D PNGs (864 FontMetrics / 110,376 pairwise checks, 11.93:1 WCAG)
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM R51 daemon, Cards 1..22)
+python3 tools/r51_lab.py host --jobs 2                 # full host regression (47 gates) + 55 Python unittest suites
+```
+
+---
+
+# R50 — 80 new executed kernels (+14 touched) across 50/50 modules (100%); 39 contiguous R13–R50 CI tasks + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`** (`2026-10-27`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R50-RESULTS.md) · [Scope/acceptance contract](R50-PLAN.md) ·
+[Deepening census](R50-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R50-ALTERNATIVES.md) ·
+[15-Vector Privacy & Hardware PRD](R50-PRIVACY-PRD.md) · [Class-A readiness](class-a-readiness-r50.json) · [Research record](research/r50-primary.md) ·
+Prior: [R49 results](R49-RESULTS.md).
+
+**50/50 testable subsets (100.00%); ALL 50/50 modules deepened in R50 (100.00%) under `kotlinc -Werror` host-JVM execution + 35/35 Android/Compose AST syntax checks (`816` `.kt` files; `213/231` `partial_unverified` rows). 0/50 full-spec Class A accepted (0.00%); zero status inflation.**
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r50_contracts.py                     # 8,555 assertions / 80 new + 4 touched JVM kernels across 50/50 modules (26 artifacts)
+python3 tools/check_r50_reference.py                   # 146 independent Python 3.11 differential checks across 26 R50 artifacts
+python3 tools/render_r50_visual_preview.py             # 1840x1380 + 360x800 Java2D PNGs (321 FontMetrics / 36,942 pairwise checks, 9.37:1 WCAG)
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM R50 daemon, Cards 1..18)
+python3 tools/r50_lab.py host --jobs 2                 # full host regression + 54 Python unittest suites
+```
+
+---
+
+# R48 — 66 new executed kernels (+7 touched) across 50/50 modules (100%); zero-gap R13–R48 CI chain + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`**. Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R48-RESULTS.md) · [Scope/acceptance contract](R48-PLAN.md) ·
+[Deepening census](R48-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R48-ALTERNATIVES.md) ·
+[Privacy & Anti-Keylogger PRD](R48-PRIVACY-PRD.md) · [Class-A readiness](class-a-readiness-r48.json) · [Research record](research/r48-primary.md) ·
+Prior: [R47 results](R47-RESULTS.md).
+
+**50/50 testable subsets (100.00%); ALL 50/50 modules deepened in R48 (100.00%) under `kotlinc -Werror` host-JVM execution + 17/17 Android/Compose AST syntax checks. 0/50 full-spec Class A accepted (0.00%); zero status inflation.** Host evidence: **3,861 kotlinc/JVM assertions** across 66 new kernels + 7 touched (`FormulaEval` `61->95` fns + `{array}` + `LET`, `WasmSandbox` Wasm 2.0 `0xFC`, `EditorScreen`, `BrowserScreen`, `VaultScreen`, `NotesScreen`, `TerminalScreen`), **56/56** independent Python differential oracle checks, live warm-JVM browser workbench (`0.0.0.0:8765`), Java2D visual + pairwise-2D non-overlap + 360dp compact viewport preview (`docs/verification/r48-host-workbench/r48-workbench-preview.png`, `172` checks, min WCAG contrast `5.75:1`), and **863/863** Python `unittest` checks (`105` in `test_r48_tools`).
+
+Run everything without Android Studio, from `android/`:
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r48_contracts.py                     # 3,861 assertions / 66 new + 2 touched JVM kernels across 50/50 modules
+python3 tools/check_r48_reference.py                   # 56 independent Python differential checks across 15 R48 artifacts
+python3 tools/fusion_workbench_cli.py all              # standalone CLI: R45..R48 contracts + oracles + amnesic + PNGs
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM R48 daemon)
+PYTHONPATH=tools python3 -m unittest discover -s tools # 863 hygiene, census, audit, and structural tests across 52 suites
+python3 tools/r48_lab.py host --jobs 2                 # 35 gates + 52 unittest suites; stamps docs/R48-RESULTS.md
+```
+
+In Android Studio Rabbit 1 or a Gradle + SDK 37 CI runner:
+
+```bash
+./gradlew :testing:pilotContracts :testing:subsetContracts \
+  :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts \
+  :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts \
+  :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts \
+  :testing:r24cContracts :testing:r25PngContracts :testing:r26Contracts :testing:r27Contracts \
+  :testing:r28Contracts :testing:r29Contracts :testing:r30Contracts :testing:r31Contracts \
+  :testing:r32Contracts :testing:r33Contracts :testing:r34Contracts :testing:r35Contracts \
+  :testing:r36Contracts :testing:r37Contracts :testing:r38Contracts :testing:r39Contracts \
+  :testing:r40Contracts :testing:r41Contracts :testing:r42Contracts :testing:r43Contracts \
+  :testing:r44Contracts :testing:r45Contracts :testing:r46Contracts :testing:r47Contracts \
+  :testing:r48Contracts
+```
+
+## Prior R47 — 61 new executed kernels (+5 touched) across 48/50 modules (96%); contiguous bridge spans R26–R47 + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`**. Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R47-RESULTS.md) · [Scope/acceptance contract](R47-PLAN.md) ·
+[Deepening census](R47-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R47-ALTERNATIVES.md) ·
+[Privacy & Anti-Keylogger PRD](R47-PRIVACY-PRD.md) · [Research record](research/r47-primary.md) ·
+Prior: [R46 results](R46-RESULTS.md).
+
+**50/50 testable subsets (100.00%); 48/50 modules deepened in R47 (96.00% — 47/47 product modules + `:benchmark`) under `kotlinc -Werror` host-JVM execution. 0/50 full-spec Class A accepted (0.00%); zero status inflation.** Host evidence: **2,393 kotlinc/JVM assertions** across 61 new kernels + 5 touched (`MainActivity.kt`, `AdaptiveDock.kt`, `UsbWatchReceiver.kt`, `MapScreen.kt`, `FormulaEval.kt` `35->61` functions), **40/40** independent Python differential oracle checks, live warm-JVM browser workbench (`0.0.0.0:8765`), Java2D visual + 360dp compact viewport preview (`docs/verification/r47-host-workbench/r47-workbench-preview.png`, `111` `FontMetrics` checks, min WCAG contrast `5.68:1`), and **758/758** Python `unittest` checks (`82` in `test_r47_tools`).
+
+Run everything without Android Studio, from `android/`:
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r47_contracts.py                     # 2,393 assertions / 61 kernels (+5 touched) across 6 domain jars
+python3 tools/check_r47_reference.py                   # 40 independent Python differential checks across 10 binary/SVG artifacts
+python3 tools/fusion_workbench_cli.py all              # standalone CLI: R45+R46+R47 contracts + oracles + amnesic + PNGs
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM R47 daemon)
+python3 -m unittest discover -s tools -p 'test_*.py'   # 758 hygiene, census, audit, and structural tests (82 R47)
+python3 tools/r47_lab.py host                          # 31 gates + 51 unittest suites; stamps docs/R47-RESULTS.md
+```
+
+In Android Studio Rabbit 1 or a Gradle + SDK 37 CI runner:
+
+```bash
+./gradlew :testing:pilotContracts :testing:subsetContracts \
+  :testing:r26Contracts :testing:r27Contracts :testing:r28Contracts :testing:r29Contracts \
+  :testing:r30Contracts :testing:r31Contracts :testing:r32Contracts :testing:r33Contracts \
+  :testing:r34Contracts :testing:r35Contracts :testing:r36Contracts :testing:r37Contracts \
+  :testing:r38Contracts :testing:r39Contracts :testing:r40Contracts :testing:r41Contracts \
+  :testing:r42Contracts :testing:r43Contracts :testing:r44Contracts :testing:r45Contracts \
+  :testing:r46Contracts :testing:r47Contracts
+```
+
+## Prior R46 — 39 new executed kernels (+3 touched) across 34 modules; contiguous bridge spans R30–R46 + live `:8765` workbench
+
+Current work branch **`arena/64550eba-osb`**. Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.
+[Exact results and limits](R46-RESULTS.md) · [Scope/acceptance contract](R46-PLAN.md) ·
+[Deepening census](R46-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R46-ALTERNATIVES.md) ·
+[Privacy & Anti-Keylogger PRD](R46-PRIVACY-PRD.md) · [Research record](research/r46-primary.md) ·
+Prior: [R45 results](R45-RESULTS.md).
+
+**50/50 testable subsets (100.00%); 34/50 modules deepened in R46 (68.00%); 47/47 product modules (100.00%) deepened across R45 + R46 under `kotlinc -Werror` host-JVM execution. 0/50 full-spec accepted (0.00%); no Class-A claim.** Host evidence: **885 kotlinc/JVM assertions** across 39 new kernels + 3 touched (`DesktopChrome.kt`, `TabletopDesktop.kt`, `FormulaEval.kt`), **25** cross-engine differential checks (`openpyxl` 3-sheet `.xlsx`, ISO 32000-1 PDF 1.7 `xref`, POSIX PAX `tarfile`, RFC 2045/2047 `quopri`, PNG CRC-32, HMAC MAC, Wasm `fib(20)`), live warm-JVM browser workbench (`0.0.0.0:8765`), Java2D visual preview (`docs/verification/r46-host-workbench/r46-workbench-preview.png`, 77 `FontMetrics` checks, min WCAG contrast 5.68:1), and **676/676** Python `unittest` checks (`66` in `test_r46_tools`).
+
+Run everything without Android Studio, from `android/`:
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r46_contracts.py                     # 885 assertions / 39 kernels (+3 touched) across 34 jars
+python3 tools/check_r46_reference.py --verify          # 25 cross-engine openpyxl/PDF-xref/PAX/MIME/PNG/Wasm checks
+python3 tools/fusion_workbench_cli.py all              # standalone CLI: R45+R46 contracts + oracles + amnesic + PNG
+python3 tools/fusion_workbench_cli.py serve --port 8765 # live browser workbench (0.0.0.0:8765, warm Kotlin JVM daemon)
+python3 -m unittest discover -s tools -p 'test_*.py'   # 676 hygiene, census, audit, and structural tests (66 R46)
+python3 tools/r46_lab.py host                          # 25 gates + 50 unittest suites; stamps docs/R46-RESULTS.md
+```
+
+In Android Studio Rabbit 1 or a Gradle + SDK 37 CI runner:
+
+```bash
+./gradlew :testing:pilotContracts :testing:subsetContracts \
+  :testing:r30Contracts :testing:r31Contracts :testing:r32Contracts :testing:r33Contracts \
+  :testing:r34Contracts :testing:r35Contracts :testing:r36Contracts :testing:r37Contracts \
+  :testing:r38Contracts :testing:r39Contracts :testing:r40Contracts :testing:r41Contracts \
+  :testing:r42Contracts :testing:r43Contracts :testing:r44Contracts :testing:r45Contracts \
+  :testing:r46Contracts
+```
+
+## Prior R45 — 33 new executed kernels (+1 touched) across 26 modules; contiguous bridge spans R34–R45
+
+Current work branch **`arena/64550eba-osb`**. Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host workbench without Android Studio below.
+[Exact results and limits](R45-RESULTS.md) · [Scope/acceptance contract](R45-PLAN.md) ·
+[Deepening census](R45-MODULE-DEEPENING.md) · [Alternatives + honest Class-A path](R45-ALTERNATIVES.md) ·
+[Privacy & Anti-Keylogger PRD](R45-PRIVACY-PRD.md) · [Research record](research/r45-primary.md) ·
+Prior: [R44 results](R44-RESULTS.md).
+
+**50/50 testable subsets (100.00%); 26/50 modules deepened in R45 (52.00%); 47/50 modules (94.00%, 47/47 product modules) under `kotlinc -Werror` host-JVM execution. 0/50 full-spec accepted (0.00%); no Class-A claim.** Host evidence: **508 kotlinc/JVM assertions** across 33 new kernels + 1 touched (`DashEducate.educateOutside`), bidirectional `openpyxl` (`data_only=False` + `data_only=True`) + `.docx` + RFC 5869/6962 differential oracle, live Linux procfs/sysfs amnesic posture CLI, Java2D visual preview (`docs/verification/r45-host-workbench/r45-workbench-preview.png`), and **610/610** Python `unittest` checks (`52` in `test_r45_tools`). Four real issues caught and repaired during execution are §I-logged in `R45-PLAN.md` and `R45-RESULTS.md`.
+
+Run everything without Android Studio, from `android/`:
+
+```bash
+python3 tools/bootstrap_host_tools.py install          # one-time local JRE 17 + kotlinc 2.2.21 + openpyxl cache
+python3 tools/run_r45_contracts.py                     # 508 assertions / 33 kernels (+1 touched) across 26 jars
+python3 tools/check_r45_reference.py --verify          # bidirectional openpyxl/.docx/HKDF/Merkle/physics oracle
+python3 tools/fusion_workbench_cli.py all              # standalone CLI: contracts + diff-oracle + amnesic + visual PNG
+python3 -m unittest discover -s tools -p 'test_*.py'   # 610 hygiene, census, audit, and structural tests (52 R45)
+python3 tools/r45_lab.py host                          # full R45 + regression battery; stamps docs/R45-RESULTS.md
+```
+
+In Android Studio Rabbit 1 or a Gradle + SDK 37 CI runner:
+
+```bash
+./gradlew :testing:pilotContracts :testing:subsetContracts \
+  :testing:r34Contracts :testing:r35Contracts :testing:r36Contracts \
+  :testing:r37Contracts :testing:r38Contracts :testing:r39Contracts \
+  :testing:r40Contracts :testing:r41Contracts :testing:r42Contracts \
+  :testing:r43Contracts :testing:r44Contracts :testing:r45Contracts
+```
+
+## Prior R44 — 24 executed kernels across 23 modules; bridge spans R37–R44
 
 Current work branch **`arena/350b91e4-osb`**. Open **`OSB/android`**, not the root Vite prototype.
 [Exact results and limits](R44-RESULTS.md) · [Scope/acceptance contract](R44-PLAN.md) ·

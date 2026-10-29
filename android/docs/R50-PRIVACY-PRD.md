@@ -1,0 +1,30 @@
+# R50 Privacy & Local Hardware Origin-Defense PRD (15-Vector Tails-Light Architecture)
+
+Building directly on R47–R49's 9-vector posture (`Prop 351` onion isolation, `RFC 9458` OHTTP + `RFC 9292` BHTTP, `RFC 9849` TLS ECH, Tails `7.15.1` compromised-CA blocklist, `RFC 8828` Mode 4 WebRTC proxy-only scrubber, BadUSB/ChoiceJacking USB guard, Pixnapping GPU blur shield, SonarSnoop/CoAtNet acoustic/motion keystroke shield, and CSPRNG PIN/clipboard/OSC-52 guards), **R50 expands Fusion Shell's defense matrix to 15 verified vectors**:
+
+## Vectors V1–V9 (Preserved & Regression-Gated from R47–R49)
+
+- **V1**: Tor `Prop 351` per-origin SOCKS5 stream isolation + v3 `.onion` Ed25519/SHA3-256 checksum validation (`TorOnionV3Address`, `Socks5Isolator`).
+- **V2**: `RFC 9458` Oblivious HTTP + `RFC 9292` Binary HTTP 128-byte padded framing (`ObliviousHttpKeyConfig`, `BinaryHttpMessage`).
+- **V3**: `RFC 9849` TLS Encrypted Client Hello (`0xFE0D`) + GREASE + downgrade acceptance confirmation (`TlsEchConfigCodec`) + Tails `7.15.1` CA SHA-256 pin blocklist (`TailsCaTrustPinBlocklist`).
+- **V4**: `RFC 8828` Mode 4 `disable_non_proxied_udp` WebRTC SDP candidate scrubber (`WebRtcIceCandidateScrubber`).
+- **V5**: `ChoiceJacking` (`USENIX Security 2025`) USB AOAP + HID-to-BT auto-pair + keystroke-flooding quarantine (`ChoiceJackingUsbGuard`, `UsbDataSignalingController`).
+- **V6**: `Pixnapping` (`CVE-2025-48561`, `ACM CCS 2025`) stacked semi-transparent window + cross-UID rapid-relaunch GPU compression timing shield (`PixnappingSurfaceShield`).
+- **V7**: `CoAtNet`/`ASCA-Net`/`SonarSnoop` acoustic & IMU gyroscope/accelerometer keystroke-inference sampling clamp (`AcousticKeystrokeShield`, `SensorSamplingClamp`).
+- **V8**: Power/DVFS side-channel timing jitter (`PowerDvfsTimingMitigator`).
+- **V9**: CSPRNG scrambled keypad (`SecureKeypadScrambler`), Trojan-Source + OSC-52 terminal paste scrubber (`VtTrueColorSafePasteEngine`), and sensitive clipboard auto-TTL (`ClipboardSensitiveGuard`).
+
+## New R50 Vectors V10–V15 (Verified via 2026-10-27 Primary Sources)
+
+| Vector | Threat Mechanism | R50 Clean-Room Production Kernel | Deterministic Host Invariant |
+| --- | --- | --- | --- |
+| **V10 — Tor Pluggable Transports & `Conflux` Multi-Path** | ISP/national firewalls block public Tor guard IPs or fingerprint plain TLS ClientHellos; single-guard circuits bottleneck throughput. | `TorPluggableTransportConfig.kt` (`:privacy`) | Generates `torrc` / bridge descriptors for **`WebTunnel`** (HTTPS/uTLS mimicry, Tails `6.18+`/`7.x`), **`Snowflake`** (domain-fronted WebRTC broker), and **`obfs4`**, plus `Conflux` dual-leg sequence reassembly & `Vanguards-lite` guard rotation floors; rejects clearnet bridge HTTP URLs or malformed `cert=`/`iat-mode=` tokens. |
+| **V11 — Bluetooth `BLUFFS` / `KNOB` / `BIAS` Session Guard (`CVE-2023-24023`)** | Proximity MitM forces `SC -> LSC` role-switch downgrade (`BIAS`), negotiates `<= 7`-octet session key (`KNOB`), and replays derivation nonces (`BLUFFS`) to impersonate a Bluetooth keyboard/mouse across sessions. | `BluetoothBluffsSessionGuard.kt` (`:privacy`) | Enforces **Security Mode 4 Level 4 (`SC Only`)** and **`keyOctets == 16` (`128` bits)** for all HID/audio/continuity links; blocks `SC -> LSC` bond downgrades and quarantines repeated session derivation nonces (`W_s`). |
+| **V12 — Wi-Fi 802.11 Probe Sequence, SSID & `IFAT` Scrambler** | Trackers link rotated random MACs via monotonic 12-bit 802.11 sequence numbers, directed saved-SSID probes (WiGLE), and deterministic Inter-Probe Frame Arrival Time (`IFAT`) intervals (`arXiv:2606.25788`, Safeguard Oct 2026). | `WifiProbeSequenceScrambler.kt` (`:privacy`) | Generates locally-administered unicast MACs (`(b0 & 0x03) == 0x02`), **re-seeds 12-bit `seq_ctrl` (`0..4095`) on every MAC rotation**, forces zero-SSID wildcard probes, jitters `IFAT` cadence, and quarantines Evil-Twin captive-portal MitM downgrades. |
+| **V13 — NFC HCE Relay Distance-Bounding & Skimming Shield** | Two-radio proxy relays ISO-14443 APDU exchanges over Wi-Fi/LTE (`RTT >= 25 ms`), bypassing physical tap proximity (`NDSS 2025-703`). | `NfcRelayDistanceBoundingGate.kt` (`:core:security`) | Enforces strict **`RTT <= 12.0 ms`** near-field distance bound, single-use 128-bit cryptographic challenge nonces, screen-unlocked foreground state, and immediate session lock on relay-latency spikes. |
+| **V14 — Recursive `mat2` Container Metadata Scrubber & `TempestSDR` Display Harmonics Filter** | Embedded media inside `.docx`/`.xlsx`/`.pptx` retain GPS EXIF (`tails.net` metadata warning); sharp high-contrast glyph edges radiate coherent horizontal RF harmonics (`TempestSDR` / `Screen Gleaning`). | `Mat2RecursiveMetadataScrubber.kt` (`:format:archive`) & `TempestDisplayJitterFilter.kt` (`:core:hw`) | Recursively scrubs `docProps/*` + nested `*/media/*.{jpg,png}` EXIF/IPTC/XMP/tEXt chunks with byte-zero verification; applies bounded `+-2` LSB edge-directed scanline softening reducing `L2` RMS horizontal gradient RF power (`Parseval`). |
+| **V15 — Anti-BadUSB / Rubber-Ducky Keystroke-Injection Firewall** | Malicious USB-C cables/docks enumerate a composite HID keyboard (`0x03/0x01/0x01`) and inject `META+R` / `CTRL+ALT+T` shell chords at `1..4 ms` superhuman inter-keystroke intervals (`>2,500 WPM`). | `UsbBadHidKeystrokeRateGuard.kt` (`:core:security`) | Quarantines untrusted newly enumerated HID keyboards (`<5,000 ms` grace) attempting shell-launch chords and blocks superhuman `median IKI < 8.0 ms` keystroke bursts. |
+
+## Runtime Honesty Boundary (`H-`)
+
+Host contracts prove 100% of the cryptographic framing, protocol rejection state machines, byte-level container scrubbing, and timing/entropy bounds on OpenJDK 17 + Python 3.11. Physical Bluetooth HCI controller enforcement, kernel `nl80211` Wi-Fi firmware sequence-control override, NFC controller HAL latency, and RF spectrum analyzer measurements require physical API-37 hardware and remain explicitly tracked as open Class-A external gates in `docs/class-a-readiness-r50.json`.

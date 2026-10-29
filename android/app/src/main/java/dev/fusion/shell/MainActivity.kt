@@ -44,6 +44,11 @@ import dev.fusion.windowing.InputPresentation
 import dev.fusion.windowing.ViewportCommit
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import dev.fusion.designsystem.FusionViewModeIconBar
+import dev.fusion.designsystem.FusionViewModeVectorIcons
+import dev.fusion.designsystem.StackedToastUiModel
+import dev.fusion.designsystem.StackedUndoNotificationHost
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -675,7 +680,10 @@ class MainActivity : ComponentActivity() {
                                 var actionsOpen by remember(w.id) { mutableStateOf(false) }
                                 Box {
                                     TitleAction("⋮", Modifier.testTag("window-actions-${w.module}")) { actionsOpen = true }
-                                    DropdownMenu(expanded = actionsOpen, onDismissRequest = { actionsOpen = false }) {
+                                    DropdownMenu(expanded = actionsOpen,
+                                        onDismissRequest = { actionsOpen = false },
+                                        modifier = Modifier.widthIn(min = 180.dp, max = 280.dp).testTag("window-context-menu-${w.module}"),
+                                    ) {
                                         listOf("Tile left" to Tile.LEFT, "Tile right" to Tile.RIGHT, "Maximize" to Tile.MAXIMIZE).forEach { (label, tile) ->
                                             DropdownMenuItem(text = { Text(if(WindowEngine.canTile(desktop,tile)) label else "$label — viewport too small") },
                                                 enabled=!imeVisible && WindowEngine.canTile(desktop,tile), onClick = {
@@ -734,6 +742,23 @@ class MainActivity : ComponentActivity() {
                         paletteVisible=false
                     })
                 }
+
+                if (message.isNotBlank() && !imeVisible) {
+                    StackedUndoNotificationHost(
+                        notificationsNewestFirst = listOf(
+                            StackedToastUiModel("shell-front", message, undoLabel = "Undo"),
+                            StackedToastUiModel("shell-mid", "Recall archiver standing by (URL / Title / Custom)", undoLabel = null),
+                            StackedToastUiModel("shell-back", "Workspace ${desktop.workspace + 1} ready", undoLabel = null),
+                        ),
+                        viewportWidthDp = sw.toDouble().coerceAtLeast(240.0),
+                        onTriggerUndo = {
+                            editorModel.undo()
+                            message = "Reverted last reversible action."
+                        },
+                        onDismiss = { message = "" },
+                        modifier = Modifier.align(Alignment.BottomEnd).zIndex(950f),
+                    )
+                }
             }
 
             val recording by RecorderState.recording.collectAsState()
@@ -757,7 +782,7 @@ class MainActivity : ComponentActivity() {
                 fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = if(imeVisible) 1 else 2
             )
 
-            DesktopShelf(MODULES.map {module->ShelfApp(module,module.replaceFirstChar {it.uppercase()},
+            BeautyDock(MODULES.map {module->ShelfApp(module,module.replaceFirstChar {it.uppercase()},
                 desktop.windows.any {it.module==module},desktop.windows.any {it.module==module && it.id==desktop.activeId && !it.minimized})},
                 appearance,imeVisible,!desktopModel.loading && !desktopModel.blocked,::openModule)
 
@@ -965,6 +990,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun AppsContent() {
+        var appsViewMode by remember { mutableStateOf(FusionViewModeVectorIcons.ViewModeKind.LIST) }
         val activities = remember {
             runCatching {
                 packageManager.queryIntentActivities(
@@ -972,8 +998,15 @@ class MainActivity : ComponentActivity() {
                 ).sortedBy { it.loadLabel(packageManager).toString().lowercase() }
             }.getOrDefault(emptyList())
         }
-        Column(Modifier.fillMaxSize().padding(10.dp)) {
-            Text("Launchable apps (${activities.size}). Running-task state is not available to apps.", color = mint)
+        Column(Modifier.fillMaxSize().padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("Launchable apps (${activities.size}). Running-task state is not available to apps.", color = mint, modifier = Modifier.weight(1f))
+                dev.fusion.designsystem.CrispHintedViewModeToolbar(
+                    activeMode = appsViewMode,
+                    onModeChanged = { appsViewMode = it },
+                    surfaceLabel = "launcher-apps",
+                )
+            }
             LazyColumn {
                 items(activities) { item ->
                     Text(

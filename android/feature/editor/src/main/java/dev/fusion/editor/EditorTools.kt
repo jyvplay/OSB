@@ -67,6 +67,21 @@ internal fun EditorTools(model: EditorViewModel, onDismiss: () -> Unit) {
                     Text(prefix+line.text.take(1024).replace("\r","␍").replace("\n","␊\n"))
                 }
             }
+            val activeText = state.session.documents.find { it.id == state.session.selectedId }?.content.orEmpty()
+            val galleyPreview = remember(activeText) {
+                val blocks = activeText.split("\n\n").filter { it.isNotBlank() }.take(32).mapIndexed { idx, p ->
+                    val trimmed = p.trimStart()
+                    if (trimmed.startsWith("#")) {
+                        WidowOrphanGalleyPaginator.GalleyBlock.Heading("h$idx", trimmed.trimStart('#', ' '))
+                    } else {
+                        WidowOrphanGalleyPaginator.GalleyBlock.Paragraph("p$idx", p.chunked(70).take(24).ifEmpty { listOf("") })
+                    }
+                }
+                val pages = if (blocks.isEmpty()) 1 else WidowOrphanGalleyPaginator.paginate(blocks).pages.size
+                val parsedBib = CitationBibliographyFormatter.parseBibTex(activeText.take(65536))
+                "R51 Galley preview: $pages page(s) (widow/orphan guarded) · ${parsedBib.size} BibTeX entry(ies)"
+            }
+            Text(galleyPreview, Modifier.testTag("editor-r51-galley-preview"))
             if(state.toolsBusy) CircularProgressIndicator()
             Text(inputError ?: state.status,Modifier.semantics { liveRegion=LiveRegionMode.Polite })
         } },confirmButton={ TextButton(onClick=onDismiss) { Text("Close tools") } })

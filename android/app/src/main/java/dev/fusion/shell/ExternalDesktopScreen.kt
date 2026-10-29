@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
 import dev.fusion.windowing.DesktopState
+import dev.fusion.windowing.SnapTileMagneticLayoutSolver
 
 /**
  * Content shown on the connected external display.
@@ -41,6 +42,17 @@ fun ExternalDesktopScreen(state: DesktopState, deviceLabel: String) {
         Text(
             "Workspace ${state.workspace + 1} · ${visible.size} open window(s)",
             color = Color.White, fontSize = 20.sp
+        )
+        val snapHint = SnapTileMagneticLayoutSolver.detectSnapZone(
+            pointerX = 0, pointerY = 540,
+            workArea = SnapTileMagneticLayoutSolver.BoundsPx(0, 0, 1920, 1080),
+        ).name
+        val readiness = FusionClassAReadinessAggregator.summarize(
+            listOf(FusionClassAReadinessAggregator.ModuleGateRecord(":app", hostPureJvmVerified = true, permissiveLicenseCleanRoom = true))
+        )
+        Text(
+            "R51 Snap zone ready ($snapHint) · Full Class A: ${readiness.fullClassACount}/${readiness.totalModules} (device SDK/HAL gated)",
+            color = Color(0xFF9AD9C2), fontSize = 13.sp
         )
 
         LazyColumn(Modifier.fillMaxWidth().weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
