@@ -123,7 +123,7 @@
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
         "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt": "5da73a712deff99be672bae77233e1eff92d80bce095a61a10f725b831a0910b",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "fc08abd0791cfd392a954d3080df19dbed45fc7cccf202aed9e72c1ff0c6c5dd"
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "4840dcae4b514b90a84d4179bd8e907103a7411333cfa564cc893007f439f441"
       }
     },
     {
@@ -1851,7 +1851,7 @@
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
-        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "b9387965832bda385fc9591311ad2a1473f94cbf889f2d11b891483d37c0a9b3",
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "78173864c9e939e9e15cc4ec3ae5a3a518f8afedca2e7eba684ca3c418f2659d",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "feature/editor/src/main/java/dev/fusion/editor/TextOffsets.kt": "88c98d493dfa60c2d070c4a5a213439b155c029b807fb06fd60762c033147a07",
         "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
@@ -3073,9 +3073,9 @@
         "feature/calc/src/main/kotlin/dev/fusion/calc/SpreadsheetGoalSeekBrentSolver.kt": "0453ce38dc31d376a8698e9d6aabcb86bf29d7ac04071e5c155ae0a56be93bc1",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
-        "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt": "19059df52a11d31a4250374927f96e6c62416f183c5229e99d3b47a5d44c4096",
+        "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt": "72e2aaae512f8cb13dbdf9da18aa7aa9023560db3cccd5359903ec2684222218",
         "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt": "8b00634021e21515b0be8c02fbcf1ee52a299e4916caae22efeb1543139afaa7",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "fc08abd0791cfd392a954d3080df19dbed45fc7cccf202aed9e72c1ff0c6c5dd"
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "4840dcae4b514b90a84d4179bd8e907103a7411333cfa564cc893007f439f441"
       }
     },
     {

@@ -2462,7 +2462,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "b9387965832bda385fc9591311ad2a1473f94cbf889f2d11b891483d37c0a9b3"
+      "sha256": "78173864c9e939e9e15cc4ec3ae5a3a518f8afedca2e7eba684ca3c418f2659d"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorSelectionContextMenuPlanner.kt",
@@ -3674,7 +3674,7 @@
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "19059df52a11d31a4250374927f96e6c62416f183c5229e99d3b47a5d44c4096"
+      "sha256": "72e2aaae512f8cb13dbdf9da18aa7aa9023560db3cccd5359903ec2684222218"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt",

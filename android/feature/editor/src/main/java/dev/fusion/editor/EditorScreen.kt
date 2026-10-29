@@ -55,9 +55,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun EditorScreen(
     model: EditorViewModel,
-    officeExportStatus: String,
-    officeExportBusy: Boolean,
-    onExportDocx: (dev.fusion.documents.TextDocument) -> Unit,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
     onSaveCopy: (CopyPickerRequest) -> Unit,
 ) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -103,7 +103,7 @@ fun EditorScreen(
             OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
             Button(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
                 onClick = { copyConfirmId=active?.id }) { Text("Save a Copy") }
-            OutlinedButton(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
+            if (onExportDocx != null) OutlinedButton(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
                 onClick = { docxConfirmId=active?.id }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-export-docx")) { Text("Export DOCX copy…") }
             OutlinedButton(enabled = ready && active != null && pendingCopy?.documentId != active?.id,
                 onClick = {
@@ -195,7 +195,7 @@ fun EditorScreen(
                 docxConfirmId=null
                 val current=model.state.value
                 val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
-                if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportDocx(doc)
+                if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportDocx?.invoke(doc)
             }) { Text("Choose destination") } },
             dismissButton={ TextButton(onClick={ docxConfirmId=null }) { Text("Cancel") } })
     }

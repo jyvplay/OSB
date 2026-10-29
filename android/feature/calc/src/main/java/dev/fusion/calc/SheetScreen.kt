@@ -7,6 +7,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +51,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.fusion.ooxml.OfficeSheetDraft
 
 /** Bounded local authoring, deliberately separate from the blocked untrusted Office importer. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SheetScreen(
     model: SheetViewModel,
@@ -87,7 +90,9 @@ fun SheetScreen(
         .semantics { paneTitle = "Spreadsheet" }, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text("Spreadsheet", style = MaterialTheme.typography.titleLarge)
         Text("Local single-sheet authoring • A1–Z100 • 256 populated cells • 64 formulas. No XLSX import, styles or full Excel compatibility.", style = MaterialTheme.typography.bodySmall)
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+        // Keep the export action discoverable at compact widths instead of hiding it in an
+        // unmarked horizontal toolbar; wrapping also keeps actions reachable at larger fonts.
+        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             OutlinedTextField(jump, { if (it.length <= 8) jump = it }, modifier = Modifier.width(132.dp).testTag("sheet-address"),
                 enabled = ready, singleLine = true, label = { Text("Cell") })
             OutlinedButton(onClick = { selectCell(jump) }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-select")) { Text("Go") }

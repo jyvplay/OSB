@@ -10,6 +10,7 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: read
+  actions: read
 jobs:
   office:
     runs-on: ubuntu-24.04
@@ -25,8 +26,17 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
-      - name: Install pinned Android compilation platform
-        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-37.0" "build-tools;36.0.0"'
+      - name: Install Android platform and managed-emulator components
+        run: |
+          SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if "$SDK_MANAGER" 'platforms;android-37.0' 'build-tools;36.0.0' 'platform-tools' 'emulator' 'system-images;android-34;google_apis;x86_64' > sdk-setup.log 2>&1; then
+            cat sdk-setup.log
+          else
+            result=$?; cat sdk-setup.log
+            python3 tools/ci_annotations.py sdk-setup.log sdk-install
+            exit "$result"
+          fi
+          "$ANDROID_HOME/emulator/emulator" -version
       - name: Compile Android and run actual JVM contracts
         run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts
       - name: Independent document readers (host-only, not bundled)
@@ -44,6 +54,12 @@ jobs:
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
           -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest
           -Pandroid.experimental.enableAdditionalTestOutput=true
+      - name: Publish actual device cases
+        if: always()
+        run: python3 tools/report_device_results.py --mode cases
+      - name: Publish bounded device failure details
+        if: always()
+        run: python3 tools/report_device_results.py --mode failures
       - name: Upload actual diagnostics, reports and native captures
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,6 +69,8 @@ jobs:
           path: |
             android/assemble.log
             android/device.log
+            android/device-results.json
+            android/sdk-setup.log
             android/app/build/reports/**
             android/app/build/outputs/androidTest-results/**
             android/app/build/outputs/managed_device_android_test_additional_output/**
@@ -64,3 +82,49 @@ jobs:
           name: r54-pro-debug-apk
           path: android/app/build/outputs/apk/pro/debug/*.apk
           if-no-files-found: error
+  frames:
+    name: Actual frame ${{ matrix.image }} (not all-page acceptance)
+    needs: office
+    if: always()
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [r24c-sheet.png, r24c-writer.png]
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: r54-office-evidence
+          path: android/app/build/outputs/managed_device_android_test_additional_output/transport
+      - name: Native frame metadata
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(0,n,{n})'
+      - name: Native frame chunks 1
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(1,n,{n})'
+      - name: Native frame chunks 2
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(2,n,{n})'
+      - name: Native frame chunks 3
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(3,n,{n})'
+      - name: Native frame chunks 4
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(4,n,{n})'
+      - name: Native frame chunks 5
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(5,n,{n})'
+      - name: Native frame chunks 6
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(6,n,{n})'

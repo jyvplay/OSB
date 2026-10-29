@@ -74,7 +74,9 @@ class R54OfficeDeviceTest {
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 8", substring = true)).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("sheet-apply").performScrollTo().assertIsDisplayed()
         hideIme()
-        NativeVisualEvidence.capture(compose, compose.activity, "r24c-sheet", listOf("sheet-apply"))
+        compose.onNodeWithTag("sheet-export").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("sheet-apply").performScrollTo().assertIsDisplayed()
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-sheet", listOf("sheet-export", "sheet-apply"))
         compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("=A1*3")
         compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("C1")
         compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
@@ -85,7 +87,7 @@ class R54OfficeDeviceTest {
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("sheet-input").performScrollTo().assertTextContains("=A1*3")
-        compose.onNodeWithTag("sheet-selected-value").assertTextContains("displayed value: 8")
+        compose.onNodeWithTag("sheet-selected-value").assertTextContains("displayed value: 8", substring = true)
     }
 
     @Test fun writerExportDisclosureIsVisibleInRealEditor() {
@@ -100,7 +102,7 @@ class R54OfficeDeviceTest {
         compose.onNodeWithText("Export plain text as DOCX?").assertIsDisplayed()
         compose.onNodeWithText("No rich formatting", substring = true).assertExists()
         compose.onNodeWithText("Cancel").performClick()
-        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("Writer test")
+        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("Writer test", substring = true)
         hideIme()
         compose.onNodeWithTag("writer-export-docx").performScrollTo().assertIsDisplayed()
         NativeVisualEvidence.capture(compose, compose.activity, "r24c-writer", listOf("writer-export-docx"))
@@ -118,17 +120,22 @@ class R54OfficeDeviceTest {
         assertTrue(device.wait(Until.gone(documentsUi), 15_000))
         compose.waitUntil(30_000) { !vm.state.value.busy && vm.state.value.status.isNotEmpty() }
         assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
-        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("Writer test")
+        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("Writer test", substring = true)
     }
 
-    private fun created(extension: String, mime: String, body: (Uri) -> Unit) {
+    private fun created(extension: String, mime: String, materialize: Boolean = true, body: (Uri) -> Unit) {
         val uri = requireNotNull(resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, "fusion-r54-${UUID.randomUUID()}.$extension")
             put(MediaStore.MediaColumns.MIME_TYPE, mime)
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/FusionR54")
             put(MediaStore.MediaColumns.IS_PENDING, 1)
         }))
-        try { body(uri) } finally { resolver.delete(uri, null, null) }
+        try {
+            // MediaStore can insert a pending row without a readable file. Materialize an
+            // actual empty file for the normal cases; the separate negative case omits this.
+            if (materialize) requireNotNull(resolver.openOutputStream(uri, "wt")).use { }
+            body(uri)
+        } finally { resolver.delete(uri, null, null) }
     }
     private fun read(uri: Uri): ByteArray = requireNotNull(resolver.openInputStream(uri)).use { it.readBytes() }
     private fun zipPart(uri: Uri, name: String): String {
@@ -177,7 +184,7 @@ class R54OfficeDeviceTest {
                     assertEquals(0, read(staleDestination).size)
                     deliver(vm, current, destination, listOf(original.toString()))
                     compose.waitUntil(15_000) { !vm.state.value.busy }
-                    assertTrue(vm.state.value.status.contains("byte-for-byte"))
+                    assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
                     val xml = zipPart(destination, "word/document.xml")
                     assertTrue(xml.contains("first") && xml.contains("<w:tab/>") && xml.contains("second"))
                     assertEquals("original bytes", read(original).toString(Charsets.UTF_8))
@@ -196,6 +203,20 @@ class R54OfficeDeviceTest {
             compose.waitUntil(15_000) { !vm.state.value.busy }
             assertTrue(vm.state.value.status.contains("nonempty", ignoreCase = true))
             assertEquals("keep these bytes", read(destination).toString(Charsets.UTF_8))
+        }
+    }
+
+    @Test fun unreadableProviderDestinationFailsClosed() {
+        created("docx", CopyDestinationContract.DOCX_MIME, materialize = false) { destination ->
+            // On this provider a pending row is not a readable file until it is opened for writing.
+            assertTrue(runCatching { read(destination) }.isFailure)
+            val vm = exportModel()
+            val doc = TextDocument(UUID.randomUUID().toString(), "writer.txt", null, "new draft", TextBytes.digest("new draft"))
+            val request = beginWriter(vm, doc, emptyList())
+            deliver(vm, request, destination)
+            compose.waitUntil(15_000) { !vm.state.value.busy }
+            assertTrue(vm.state.value.status, vm.state.value.status.contains("unverified", ignoreCase = true))
+            assertTrue(runCatching { read(destination) }.isFailure)
         }
     }
 
@@ -230,7 +251,7 @@ class R54OfficeDeviceTest {
             assertEquals(CopyDestinationContract.XLSX_MIME, ready.mimeType)
             deliver(vm, ready, destination)
             compose.waitUntil(15_000) { !vm.state.value.busy }
-            assertTrue(vm.state.value.status.contains("byte-for-byte"))
+            assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
             val xml = zipPart(destination, "xl/worksheets/sheet1.xml")
             assertTrue(xml.contains("<f>A1*2</f>") && xml.contains("<v>14</v>"))
         }
