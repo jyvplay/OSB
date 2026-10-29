@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -44,13 +45,13 @@ fun VaultScreen(crypto: VaultCrypto = remember { VaultCrypto() }) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 rowCells.forEach { cell ->
                     OutlinedButton(onClick = {
-                        when (cell.token) {
-                            "CLR" -> pinBuffer = ""
-                            "DEL" -> if (pinBuffer.isNotEmpty()) pinBuffer = pinBuffer.dropLast(1)
-                            else -> if (pinBuffer.length < 12) pinBuffer += cell.token
+                        when (cell.label) {
+                            "OK" -> Unit
+                            "BACKSPACE" -> if (pinBuffer.isNotEmpty()) pinBuffer = pinBuffer.dropLast(1)
+                            else -> if (pinBuffer.length < 12) pinBuffer += cell.label
                         }
                         padLayout = SecureKeypadScrambler.generatePinPad() // per-tap spatial randomization
-                    }) { Text(cell.token) }
+                    }) { Text(cell.label) }
                 }
             }
         }
@@ -60,7 +61,7 @@ fun VaultScreen(crypto: VaultCrypto = remember { VaultCrypto() }) {
             repeat(20) { sb.append(a[r.nextInt(a.length)]) }
             pw = sb.toString()
         }) { Text("Generate password") }
-        if (pw.isNotEmpty()) Text("$pw (Clipboard guard: sensitive=${clipCheck.isSensitive}, TTL=${clipCheck.autoClearTtlMs / 1000}s, entropy=${"%.1f".format(pwStrength?.estimatedEntropyBits ?: 0.0)}b)")
+        if (pw.isNotEmpty()) Text("$pw (Clipboard guard: sensitive=${clipCheck.isSensitive}, TTL=${ClipboardSensitiveGuard.DEFAULT_SENSITIVE_TTL_MS / 1000}s, entropy=${"%.1f".format(pwStrength?.estimatedEntropyBits ?: 0.0)}b)")
         OutlinedTextField(note, { note = it }, Modifier.fillMaxWidth(), label = { Text("Secret note") }, minLines = 2)
         Button(onClick = {
             try {

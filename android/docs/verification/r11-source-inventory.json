@@ -3367,7 +3367,7 @@
       "path": "feature/vault/src/main/java/dev/fusion/vault/VaultScreen.kt",
       "module": ":feature:vault",
       "package": "dev.fusion.vault",
-      "sha256": "21a01de8e489c6281858d4b70c88af7a9021391911855c8ce4e836b84dab3b65"
+      "sha256": "59c2d1c3a124b72cd5c4c6885f7cdc0d2589b48e32bce4817d2243542fafff01"
     },
     {
       "path": "feature/vault/src/main/kotlin/dev/fusion/vault/AgeId.kt",
