@@ -680,13 +680,16 @@ object FormulaEval {
                 if (x is CellValue.Err) return x
                 val d = evalScalarAsNum(evalExpr(args[1], env))
                 if (d is CellValue.Err) return d
-                val digits = (d as CellValue.Num).value.toInt().coerceIn(-12, 12)
-                val factor = 10.0.pow(digits)
+                val digitsRaw = (d as CellValue.Num).value
                 val v = (x as CellValue.Num).value
-                // Excel half-away-from-zero rounding
-                val scaled = v * factor
-                val rounded = if (scaled >= 0.0) floor(scaled + 0.5) else -floor(-scaled + 0.5)
-                val out = rounded / factor
+                // Decimal HALF_UP is half-away-from-zero for either sign. Avoid binary
+                // multiplication ties (1.005 * 100) and never silently clamp precision to 12.
+                val out = when {
+                    digitsRaw >= 309.0 -> v
+                    digitsRaw <= -309.0 -> 0.0
+                    else -> java.math.BigDecimal.valueOf(v)
+                        .setScale(digitsRaw.toInt(), java.math.RoundingMode.HALF_UP).toDouble()
+                }
                 if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
             }
             "MOD" -> {

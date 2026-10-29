@@ -1,0 +1,21 @@
+name: R54 office host contracts
+on:
+  push:
+    paths: ['android/**', '.github/workflows/r54-office.yml']
+  pull_request:
+    paths: ['android/**', '.github/workflows/r54-office.yml']
+permissions:
+  contents: read
+jobs:
+  office-contracts:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python3 android/tools/bootstrap_host_tools.py install
+      - run: python3 android/tools/run_r54_contracts.py
