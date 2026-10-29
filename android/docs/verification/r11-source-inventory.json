@@ -211,7 +211,7 @@
       "path": "app/src/main/java/dev/fusion/shell/AdaptiveDock.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "1e546cf7ede1eb91554a80914bff935057f2abb640412b9071fe20a2b9f1acd7"
+      "sha256": "6ec0340f7b7cdd10eba51029d2590163a4ab9fdbf21aa3772e42576ea699f394"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/AppInventoryLifecycleAdvisor.kt",

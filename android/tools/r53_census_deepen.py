@@ -178,6 +178,7 @@ def main() -> int:
     data = json.loads(jp.read_text(encoding="utf-8"))
 
     also_allowed_repin = {
+        "app/src/main/java/dev/fusion/shell/AdaptiveDock.kt",
         "app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt",
         "tools/check_r26_android_syntax.py",
         "tools/fusion_workbench_server.py",

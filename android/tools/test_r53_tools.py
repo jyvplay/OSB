@@ -248,7 +248,8 @@ def _collect_checks() -> None:
     vault_ui = (ROOT / "feature/vault/src/main/java/dev/fusion/vault/VaultScreen.kt").read_text(encoding="utf-8")
     usb_rcv = (ROOT / "app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt").read_text(encoding="utf-8")
     main_ui = (ROOT / "app/src/main/java/dev/fusion/shell/MainActivity.kt").read_text(encoding="utf-8")
-    check("SDK-37 Zero-Trust UI-to-Kernel signature guard: NotesScreen, TerminalScreen, VaultScreen, UsbWatchReceiver, and MainActivity match exact pure-JVM contracts",
+    dock_ui = (ROOT / "app/src/main/java/dev/fusion/shell/AdaptiveDock.kt").read_text(encoding="utf-8")
+    check("SDK-37 Zero-Trust UI-to-Kernel signature guard: NotesScreen, TerminalScreen, VaultScreen, UsbWatchReceiver, AdaptiveDock, and MainActivity match exact pure-JVM contracts",
           "WikiLinkGraph.NoteInput(draftSlug," in notes_ui
           and "liveWikiIndex.outgoing[draftSlug]" in notes_ui
           and "liveWikiIndex.brokenLinks.size" in notes_ui
@@ -259,6 +260,7 @@ def _collect_checks() -> None:
           and "ClipboardSensitiveGuard.DEFAULT_SENSITIVE_TTL_MS" in vault_ui
           and "serialSha256Hex = null" in usb_rcv
           and "activeKeyboardCount = if (known) 0 else 1" in usb_rcv
+          and "plan.slotDp.coerceAtLeast(TileLabelFit.MIN_TOUCH_TARGET_DP)" in dock_ui
           and '!message.startsWith("Local first.")' in main_ui)
 
 

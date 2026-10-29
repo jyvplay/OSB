@@ -92,7 +92,7 @@
         "app/src/main/java/dev/fusion/shell/KeystrokeJitter.kt": "ebf9e20fa2e9be9982d56d048f625cf8b7f8dad72cc9335f46c0d846554064a9",
         "testing/src/r46/kotlin/dev/fusion/testing/R46Checks.kt": "f8d3b91c7d83a303148ae18b9865a3d4372316c8cf7d543de9beeeac510ea89d",
         "tools/test_r46_tools.py": "2abd3764a220e52b7152dfd41cc72b96888399759cb95cd1981daa79bc084eed",
-        "app/src/main/java/dev/fusion/shell/AdaptiveDock.kt": "1e546cf7ede1eb91554a80914bff935057f2abb640412b9071fe20a2b9f1acd7",
+        "app/src/main/java/dev/fusion/shell/AdaptiveDock.kt": "6ec0340f7b7cdd10eba51029d2590163a4ab9fdbf21aa3772e42576ea699f394",
         "app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt": "c3c9a70c1ac44976bc4dfd3583879b6deb1d15ab059ecded8e167edee42e5194",
         "app/src/main/java/dev/fusion/shell/SecureSurfacePolicy.kt": "b803dfe9c29bbd1aa87714030b66883a812b25a65b02bf7a1372661584004004",
         "testing/src/r47/kotlin/dev/fusion/testing/R47Checks.kt": "36ee7462d197786cc2702e1212824cc6fa97341c3aafdaae6940e418b6a871aa",
@@ -119,7 +119,7 @@
         "app/src/main/java/dev/fusion/shell/RecallAutoArchivalPipelineOrchestrator.kt": "59e5ef8943f8c6bdde1edb9df895bd1a558e6f657d5fe7260fb0ae686e647da6",
         "app/src/main/java/dev/fusion/shell/ShellMultiMonitorDpiScaleRouter.kt": "d603d73fb5a4b6f41c3ba5b83881556e251e85b8d034523fd314647c1232df7c",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -291,7 +291,7 @@
         "core/documents/src/main/kotlin/dev/fusion/documents/WriterSectionColumnsPageLayout.kt": "6e2dee132ef63ef136122a57f0c6aad9e80ccdb252371f078b6cd7edd8bd7172",
         "core/documents/src/main/kotlin/dev/fusion/documents/WriterTableOfFiguresIndexBuilder.kt": "482c00064aaf50bfcde2af66ec17da73f4b7bf8036f6eaa40a2fc82396d2ca24",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -405,7 +405,7 @@
         "core/windowing/src/main/kotlin/dev/fusion/windowing/DesktopWorkAreaInsetPartitioner.kt": "6e9a44195fd079f4a3f93be34162dfa1bda85c1eb607133b3b7eb451b95e4203",
         "core/windowing/src/main/kotlin/dev/fusion/windowing/PointerSafeTriangleSubmenuFilter.kt": "2eb51557cbc3ce3c376c6fe16972d9565acdd82b4c0e950fde56de9f11b0bd7e",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -511,7 +511,7 @@
         "core/files/src/main/kotlin/dev/fusion/files/RecallCdxjReplayIndexCodec.kt": "f3f36cbe238fd2cebf5966049775c6f0e4f03403e12f536f752ee4bdd70ca609",
         "core/files/src/main/kotlin/dev/fusion/files/RecallVaultQuotaLifecyclePruner.kt": "96f040336cee02dd0eeb8d9e44c00f8d862578b72260555f1402458afdc328c2",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -601,7 +601,7 @@
         "core/capabilities/src/main/java/dev/fusion/capabilities/SeccompBpfSyscallAllowlistPlanner.kt": "b47d96632a2c86e8752d2b6b40b24eb4f32e221a6ca719c02185140f9cfaac43",
         "core/capabilities/src/main/java/dev/fusion/capabilities/WasmMultiMemoryIsolationVerifier.kt": "8c11b9b724bc57fec6f45f1628d9a2b680645e49eeb99e3d4d4c0ab97be70024",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -713,7 +713,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "core/model/src/main/kotlin/dev/fusion/model/DeterministicUlidGenerator.kt": "31a0f27a0e8d3e6d1e4fec2cb3977c25915e9535059b1edcbcb9bfd0d9536143",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -841,7 +841,7 @@
         "core/commands/src/main/kotlin/dev/fusion/commands/ContextMenuMnemonicKeyNavigator.kt": "2fe214740973047ff5b71b1952b668a126171fc47301a589ccc5c215cd20a743",
         "core/commands/src/main/kotlin/dev/fusion/commands/UndoDeckInteractiveFanController.kt": "e49433f7eec44700031fb7af43205c492bb38453a974ef1541b63a0a0c7bc134",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -943,7 +943,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "core/settings/src/main/kotlin/dev/fusion/settings/RecallUserPreferencesSchema.kt": "cf0522d25be7552529c8cba18c1ded47eb796e304618100deafbc0ffb50bff10",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1157,7 +1157,7 @@
         "core/security/src/main/kotlin/dev/fusion/security/ChaCha20Rfc8439StreamBlock.kt": "fdc67a7cfcd84ef839d5652692184ec35d33f7754dd8cf2bf82d1201107c04ff",
         "core/security/src/main/kotlin/dev/fusion/security/Slip39MnemonicShareChecksumCodec.kt": "7586516896d9f64a7f46c9cacb5c3393e950b7499457bb13ec5db0ccd12dbfdc",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1271,7 +1271,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "core/perf/src/main/kotlin/dev/fusion/perf/RingBufferLockFreeTelemetry.kt": "d9d9f1952a6633df2f6572fc777f062a538e9e181e4c6a632e57f980eefe355d",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1397,7 +1397,7 @@
         "core/hw/src/main/kotlin/dev/fusion/hw/TempestSubpixelEmsecDitherer.kt": "b749933406b8ee4f5dcae4d1cd2407cf2d50588d37dfa323a2ee31de436f514b",
         "core/hw/src/main/kotlin/dev/fusion/hw/VerifiedBootVbmetaDigestAuditor.kt": "afb7968069606814d528b7de8c6b2e2ef8d2546d8ebc48ca5d2a2882eadc450c",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1517,7 +1517,7 @@
         "core/index/src/main/kotlin/dev/fusion/index/PositionalPhraseInvertedIndex.kt": "6f970fccf019ad737942d8327855768e9795c96f8aa5765aa321ee766deedcc8",
         "core/index/src/main/kotlin/dev/fusion/index/RecallPerceptualDHashDeduplicator.kt": "5b143f1aec8fa31a3154c8ef2bfdc6b47dfba6d75c61f1b42c123aa0488f323a",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1625,7 +1625,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "core/storage/src/main/kotlin/dev/fusion/storage/ContentAddressedBlobCasStore.kt": "ce3ebcc6c2d52907a465582e1a30bfe91099eca16c849b091c1b167f39acefc7",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1743,7 +1743,7 @@
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/StackedUndoFanOverlayBar.kt": "c6f30f844b59dc3b48796a3e8bbaedf3bfbdd4b9385287dea967580ddac1adbc",
         "core/designsystem/src/main/kotlin/dev/fusion/designsystem/CrispHintedViewModeToolbar.kt": "f95a98c0c3c7ff6166c2789528449f4bf9bf151c415d2b4a971f27ef057bf038",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -1923,7 +1923,7 @@
         "feature/editor/src/main/java/dev/fusion/editor/SyntaxHighlightLexicalScanner.kt": "2242befe971604293673bba293862e9a0952a2001447e81c07a4dbdc63558b43",
         "feature/editor/src/main/java/dev/fusion/editor/WriterTrackChangesAcceptRejectEngine.kt": "106299c729cd56262e0b761003d01c02995c5589d38046d2cc2f243b5c208158",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2033,7 +2033,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/launcher/src/main/kotlin/dev/fusion/launcher/ShelfAppCategoryColumnsModel.kt": "cde213604a589a8ca13360a91a0985f3c5661b6630bbe2b80f9066f8e001434c",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2149,7 +2149,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/find/src/main/kotlin/dev/fusion/find/TrigramFuzzyCommandMatcher.kt": "03147e90fb17469df854d2b8972707dc7d04a066fff32bd147c6e6615dc896aa",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2289,7 +2289,7 @@
         "feature/files/src/main/kotlin/dev/fusion/filesui/DualPaneViewModeSyncStore.kt": "30333d4d3c811b65cb7341dea46f8bd3876b93bd39c9b1f9503dbcee4e09ce25",
         "feature/files/src/main/java/dev/fusion/filesui/FilesDualPaneInspectorBar.kt": "74cf120f851ec48ef682351fcd5895697a175c428085afd3b511162f26c6487e",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2519,7 +2519,7 @@
         "feature/browser/src/main/kotlin/dev/fusion/browser/model/RecallTier5WarcIso28500Archiver.kt": "047f6b6758e035856d38e582c3d9294e3606422bae1d13d71dd44aa301ad630e",
         "feature/browser/src/main/java/dev/fusion/browser/RecallSixMethodMatrixSheet.kt": "768e586ffd7b47ddc18febb90f55d9ffdc7788d838d30fa70252e0fcb369427e",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2637,7 +2637,7 @@
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/AnsiSgrTruecolorScrollbackBuffer.kt": "f66d947a72ef994dbf77716360cc751ac4d0f2ef91448ba6a362aee3ee881c58",
         "feature/terminal/src/main/kotlin/dev/fusion/terminal/TerminalOsc52ClipboardSanitizer.kt": "a13876d244416f3405854d4e80665266acb670f29d4176eccf90344742301271",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2797,7 +2797,7 @@
         "feature/vault/src/main/kotlin/dev/fusion/vault/VaultItemViewModeOrganizer.kt": "c5164e9d27ab242edffcdad457cfdbfab74ffb1e112a7b1b255364f995e95578",
         "feature/vault/src/main/java/dev/fusion/vault/VaultColumnsSecretBrowser.kt": "f1ad4c75638db0727ee409ddf08626f50307e7f9063aa134a296cc9d126df7e3",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -2941,7 +2941,7 @@
         "feature/notes/src/main/kotlin/dev/fusion/notes/NotesCanvasInfiniteGraphLayout.kt": "b6ff15df0467e29c2b9e1f8539ec420b72a900bf1137ccf905b04163452bdbf8",
         "feature/notes/src/main/kotlin/dev/fusion/notes/NotesCollectionViewModeSorter.kt": "1598c8418dc51ad601c265c73699da2baf20ad5fd1c931733be9aa2363af5a92",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3059,7 +3059,7 @@
         "feature/calc/src/main/kotlin/dev/fusion/calc/MonteCarloSensitivityTableRunner.kt": "498aabd2db4e756319710d250e39036e192deef7e636c448bc7f9ac2a5373e4c",
         "feature/calc/src/main/kotlin/dev/fusion/calc/SpreadsheetGoalSeekBrentSolver.kt": "0453ce38dc31d376a8698e9d6aabcb86bf29d7ac04071e5c155ae0a56be93bc1",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3147,7 +3147,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/settings/src/main/kotlin/dev/fusion/settingsui/UiErgonomicsPreferencesValidator.kt": "7f239602afd7466889dd88873d89eea57c6b30da231056a5bf95d32a9199d727",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3353,7 +3353,7 @@
         "feature/media/src/main/kotlin/dev/fusion/media/RecallAudioSilenceTrackSplitter.kt": "719da0e1ecf97c01ae3d8096aeee7f39464f9153995846d60264eeee896198a7",
         "feature/media/src/main/java/dev/fusion/media/MediaLibraryMultiViewPanel.kt": "bec61610a05b45490a67084cd63d7563f1fb0c3cc4405ada8cfc1a7c0a470085",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3465,7 +3465,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/beam/src/main/kotlin/dev/fusion/beam/MdnsServiceTxtPrivacySanitizer.kt": "1ef6a2cbd20af511cc7fbb78279d856e59d8b12ef34597dd22c9c475105fed30",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3581,7 +3581,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/alerts/src/main/kotlin/dev/fusion/alerts/SensitiveOtpNotificationRedactor.kt": "85668fd8f0381a54d3f4fd07ecb997d53ebbce3d5decb55d644db47a30387604",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3697,7 +3697,7 @@
         "feature/capture/src/main/kotlin/dev/fusion/capture/CaptureSegmentConcatManifestBuilder.kt": "3c68e3acf0234045aed94a1dbd834498fe098860d1aaba45c6d7cb1c5083eeaf",
         "feature/capture/src/main/kotlin/dev/fusion/capture/RecallViewportCursorAnnotationCompositor.kt": "1b8804bfdc89f943902b6eb693743684de3927405f7a2170336d91a87d1deadf",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3791,7 +3791,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/backup/src/main/kotlin/dev/fusion/backup/RabinKarpDeltaPatchGenerator.kt": "dbbd0ee006d26c2569f037160b0753c586eb382bced6fd9d84ff41753e0aa1f9",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -3919,7 +3919,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/continuity/src/main/kotlin/dev/fusion/continuity/ClipboardAutoExpireSanitizer.kt": "709b5c32809bde554cc41ee33eb619ccdbec12192a3b4f4ea3b7d956efad49e4",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4021,7 +4021,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/accessibility/src/main/kotlin/dev/fusion/a11y/ReducedTransparencyAndMotionAdapter.kt": "4a1adc36316ecab074a16986a37dedac579617c048406df484038c2d0957681e",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4135,7 +4135,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/together/src/main/kotlin/dev/fusion/together/CausalTreeAwarenessPresenceRoster.kt": "07e1dfe6d423c7e7bfeaf51805208a644d8a59a2c1594635e5b8a812d1d627e1",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4291,7 +4291,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/lens/src/main/kotlin/dev/fusion/lens/DocumentSkewQuadRectifier.kt": "49e0a23cae0c3f8779903c34d2b22ccac3efceaf18bfba66098736f4df92c2a5",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4429,7 +4429,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/messages/src/main/kotlin/dev/fusion/messages/SealedCertificateBucketEnvelope.kt": "d866cbe06a546952b9d1de3d90a860cb2fb0860420986a60fd02063cec97ebdf",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4603,7 +4603,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/automation/src/main/kotlin/dev/fusion/automation/CronNextFireScheduleEvaluator.kt": "7503b9826f77e84280c8fc1103e260f595de9c2d01dda1c05cd1a2e0e9a96222",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4689,7 +4689,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "format/native/src/main/kotlin/dev/fusion/nativefmt/Gltf2BinaryGlbChunkInspector.kt": "5fbb06d5d511a3a2aa27c55c456f1648ae194f42e15c258462299d090494b226",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -4833,7 +4833,7 @@
         "format/archive/src/main/kotlin/dev/fusion/archive/EpubCfiFragmentLocator.kt": "f06f178d44be0e07ab98f980e0754930d9553df68ff0a54be5e3137b1faa5047",
         "format/archive/src/main/kotlin/dev/fusion/archive/WarcGzipConcatMemberInspector.kt": "b1a755fe4fbec5589adb9281d62b7f5184551d9839786634adf0bed69770e678",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5075,7 +5075,7 @@
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PptxMasterThemeColorSchemeWriter.kt": "96f26707408ce854646d79c6b14651aba96045f3e1b21cf895b33746905d1d41",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxPivotCacheRecordsWriter.kt": "f9c30930fb479c588347dd1aff7f8a62810e82c0e60799dd3263c194336e0ebc",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5247,7 +5247,7 @@
         "format/pdf/src/main/java/dev/fusion/format/pdf/PdfOptionalContentLayersWriter.kt": "2eb4fc47998ecb9ef330d0a618ac3c940830c13f91e7f7dfb05443c908d80706",
         "format/pdf/src/main/java/dev/fusion/format/pdf/PdfTextColumnReflowExtractor.kt": "5f1f597b4e2b7efcf9570d05b837f11764a90b5fec9e1bd11bfc27a57682f7b2",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5397,7 +5397,7 @@
         "format/image/src/main/kotlin/dev/fusion/format/image/JpegExifAppMarkerSanitizer.kt": "550feb7573db99fa43022f09bc9448148b3c90760151e312572295f4f5efecab",
         "format/image/src/main/kotlin/dev/fusion/format/image/PngChunkSanitizerAndCrcCodec.kt": "cf54d9f0821e715006c92246ec6cba1d49aef8227bb167eed8cfed9e6a9f5100",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5473,7 +5473,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "format/psd/src/main/kotlin/dev/fusion/psd/PsdImageResourceIccExtractor.kt": "916a8ac2a7615c376aa966a91e2d7663f8c59e9addb9eb19ce4262dbeb86956b",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5561,7 +5561,7 @@
         "format/lok/src/main/java/dev/fusion/lok/OdfPresentationOdpBuilder.kt": "feef4121d8251bfbf9b0cbbf252c89c324d919017de5d60607c345f30d4da3a2",
         "format/lok/src/main/java/dev/fusion/lok/OdfSpreadsheetFormulaTranslator.kt": "ea00fc81ef8eb56b6c2a925ecc22fdbff3b309a33d736daffb93961051793a98",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5645,7 +5645,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "cast/dlna/src/main/kotlin/dev/fusion/cast/dlna/UpnpSoapActionEnvelopeSanitizer.kt": "31e57a8d340a5aebe02b3a0142210f0726d35de83c68ed09835a8c38b39430ff",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5747,7 +5747,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "cast/airplay/src/main/kotlin/dev/fusion/airplay/RaopRtpTimingSyncCalculator.kt": "b94d25d5e33cc264c0ad90b4ae76afe4ba42b5d304c9681cad0a3ca7da98acfd",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5841,7 +5841,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2FramingHeaderCodec.kt": "94ff027b70583886e0741da07540969eea805f3d44f49fb36f134599b4b710e2",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5909,7 +5909,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "benchmark/src/main/java/dev/fusion/benchmark/MannWhitneyNonParametricGate.kt": "025ad315c9083b6deefca108a9d3c810bb9f68136cfa5f27e478246c4153697f",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -5967,7 +5967,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "baselineprofile/src/main/kotlin/dev/fusion/baselineprofile/StartupDexLayoutHotnessScorer.kt": "2132c0d020dcaa1c6ad9f995155f133aaa7861ef0f3d0aa4f456970d096ea067",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -6021,7 +6021,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "testing/src/main/kotlin/dev/fusion/testing/DifferentialBytecodeMutationOracle.kt": "26bbce63add601b931eda969f76c4fb0a283db08a6671c69683b513ebcea66e4",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -6255,7 +6255,7 @@
         "privacy/src/main/kotlin/dev/fusion/privacy/TailsMetadataAnonymizer.kt": "581e51d6e2256f7cac927017f776c2e2dd9911b3036ecfc310778b47fbb28f1d",
         "privacy/src/main/kotlin/dev/fusion/privacy/TorConfluxMultipathScheduler.kt": "8f1697ee84949292bd282b509f515dda0a98af6141b20a49adebfa3cc50045f0",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     },
     {
@@ -6399,7 +6399,7 @@
         "tools/test_r52_tools.py": "9fe2228497dd121d6907782ee1a470d47469827ba7036b257f796a2fe4ea114b",
         "feature/maps/src/main/kotlin/dev/fusion/maps/DouglasPeuckerTrackSimplifier.kt": "98982b8854cb7968bf6d3d095a3d422b842c90b1e2a6431750f9307369c4507f",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-        "tools/test_r53_tools.py": "ea60b34ea70d4a299608ffbd3fb11dd2dbd16939660f5245976a44b45967c3fc"
+        "tools/test_r53_tools.py": "2f3bc5c769c1784c550b57b8d2b66f6e3dac3209d2cc573f9f0d273942f75cff"
       }
     }
   ]

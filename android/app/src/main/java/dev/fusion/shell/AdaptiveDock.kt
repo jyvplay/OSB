@@ -61,7 +61,7 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
             density.fontScale.toDouble().coerceIn(.5, 5.0), apps.size)
         val metrics = DesktopMetrics.dock(widthDp,
             density.fontScale.toDouble().coerceIn(.5, 5.0), imeVisible, apps.size)
-        val slotDp = plan.slotDp.coerceAtLeast(TileLabelFit.MIN_TOUCH_TARGET_DP.toDouble())
+        val slotDp = plan.slotDp.coerceAtLeast(TileLabelFit.MIN_TOUCH_TARGET_DP)
         Surface(shape = RoundedCornerShape(if (art) 22.dp else 0.dp), tonalElevation = 0.dp,
             color = if (art) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
             modifier = Modifier.padding(horizontal = if (art) 12.dp else 0.dp, vertical = if (art) 6.dp else 0.dp)
