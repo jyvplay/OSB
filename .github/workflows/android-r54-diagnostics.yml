@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       evidence_run:
-        description: Run ID containing r54-office-evidence (empty selects the latest completed PR run)
+        description: Run ID containing r54-office-evidence (empty selects the latest completed run)
         required: false
         type: string
 permissions:
@@ -26,9 +26,9 @@ jobs:
         run: |
           id="$OVERRIDE"
           if [ -z "$id" ]; then
-            id=$(gh run list --branch "$GITHUB_REF_NAME" --workflow android-r54-office.yml --event pull_request --status completed --limit 1 --json databaseId --jq '.[0].databaseId')
+            id=$(gh run list --branch "$GITHUB_REF_NAME" --workflow android-r54-office.yml --status completed --limit 1 --json databaseId --jq '.[0].databaseId')
           fi
-          [[ "$id" =~ ^[0-9]+$ ]] || { echo 'No completed R54 PR evidence run selected'; exit 1; }
+          [[ "$id" =~ ^[0-9]+$ ]] || { echo 'No completed R54 evidence run selected'; exit 1; }
           echo "Using source run $id"
           echo "run_id=$id" >> "$GITHUB_OUTPUT"
   cases:
@@ -59,6 +59,9 @@ jobs:
               matches=[line for line in lines if any(w in line.lower() for w in ('warning:', 'error:', 'failed to install', 'emulator', 'no space', 'exception'))]
               text='\n'.join(matches[-35:]).encode()[-2900:].decode(errors='replace')
               print('::notice::Actual device log excerpts: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
+          for p in Path('testing/build/r54/imported-evidence').rglob('sdk-setup.log'):
+              text=p.read_bytes()[-3500:].decode(errors='replace')
+              print('::notice::Actual SDK setup log tail: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
           PY
   frames:
     needs: select
