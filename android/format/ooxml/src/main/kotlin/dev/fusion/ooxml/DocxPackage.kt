@@ -144,7 +144,7 @@ object DocxPackage {
                     append("""<w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="monospace" w:hAnsi="monospace"/></w:rPr>""")
                     for ((idx, line) in b.lines.withIndex()) {
                         if (idx > 0) append("<w:br/>")
-                        append("""<w:t xml:space="preserve">${escapeXml(line)}</w:t>""")
+                        appendTextContent(line)
                     }
                     append("</w:r></w:p>")
                 }
@@ -155,7 +155,9 @@ object DocxPackage {
                     for (row in b.rows) {
                         append("<w:tr>")
                         for (cell in row) {
-                            append("""<w:tc><w:p><w:r><w:t xml:space="preserve">${escapeXml(cell)}</w:t></w:r></w:p></w:tc>""")
+                            append("<w:tc><w:p><w:r>")
+                            appendTextContent(cell)
+                            append("</w:r></w:p></w:tc>")
                         }
                         append("</w:tr>")
                     }
@@ -179,8 +181,22 @@ object DocxPackage {
                 if (r.code) append("""<w:rFonts w:ascii="monospace" w:hAnsi="monospace"/>""")
                 append("</w:rPr>")
             }
-            append("""<w:t xml:space="preserve">${escapeXml(r.text)}</w:t></w:r>""")
+            appendTextContent(r.text)
+            append("</w:r>")
         }
+    }
+
+    /** WordprocessingML represents tabs and soft line breaks as elements, not literal w:t whitespace. */
+    private fun StringBuilder.appendTextContent(text: String) {
+        var start = 0
+        for (index in text.indices) {
+            val character = text[index]
+            if (character != '\t' && character != '\n') continue
+            if (index > start) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start, index))}</w:t>""")
+            append(if (character == '\t') "<w:tab/>" else "<w:br/>")
+            start = index + 1
+        }
+        if (start < text.length) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start))}</w:t>""")
     }
 
     private fun parseDocumentBlocks(docBytes: ByteArray, numberingDefs: DocxNumbering.Definitions?): Document {
@@ -479,6 +495,7 @@ object DocxPackage {
             '>' -> append("&gt;")
             '"' -> append("&quot;")
             '\'' -> append("&apos;")
+            '\r' -> append("&#13;") // XML parsers otherwise normalize a literal CR to LF.
             else -> append(c)
         }
     }

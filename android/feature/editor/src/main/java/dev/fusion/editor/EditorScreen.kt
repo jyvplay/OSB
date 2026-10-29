@@ -53,7 +53,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 /** PR-01 / FF-15 / FM-18. Real SAF I/O is owned by an Activity-scoped ViewModel. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit) {
+fun EditorScreen(
+    model: EditorViewModel,
+    officeExportStatus: String,
+    officeExportBusy: Boolean,
+    onExportDocx: (dev.fusion.documents.TextDocument) -> Unit,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) {
     val state by model.state.collectAsStateWithLifecycle()
     val session = state.session
     val pendingCopy = session.pendingCopy
@@ -63,6 +69,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
     val editorFocus = remember { FocusRequester() }
     LaunchedEffect(toolsOpen,active?.id) { if(!toolsOpen && active != null) editorFocus.requestFocus() }
     var copyConfirmId by remember { mutableStateOf<String?>(null) }
+    var docxConfirmId by remember { mutableStateOf<String?>(null) }
     var retryConfirm by remember { mutableStateOf(false) }
     var retryConfirmId by remember { mutableStateOf<String?>(null) }
     var abandoningCopy by remember { mutableStateOf(false) }
@@ -83,7 +90,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                 Key.Z -> { model.undo(redo=event.isShiftPressed); true }
                 Key.Y -> { model.undo(redo=true); true }
                 Key.F, Key.H, Key.G -> if(active != null) { toolsOpen=true; true } else false
-                Key.S -> if(active != null && pendingCopy==null) { copyConfirmId=active.id; true } else false
+                Key.S -> if(active != null && pendingCopy==null && !officeExportBusy) { copyConfirmId=active.id; true } else false
                 Key.O -> { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")); true }
                 Key.N -> { model.newDocument(); true }
                 else -> false
@@ -94,8 +101,10 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         FlowRow(Modifier.weight(0.4f,fill=false).fillMaxWidth().verticalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
             OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
-            Button(enabled = ready && active != null && pendingCopy == null,
+            Button(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
                 onClick = { copyConfirmId=active?.id }) { Text("Save a Copy") }
+            OutlinedButton(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
+                onClick = { docxConfirmId=active?.id }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-export-docx")) { Text("Export DOCX copy…") }
             OutlinedButton(enabled = ready && active != null && pendingCopy?.documentId != active?.id,
                 onClick = {
                     active?.let { if (dirty) closingId = it.id else model.closeDocument(it.id) }
@@ -117,6 +126,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
         if (state.loading || state.busy || state.toolsBusy) CircularProgressIndicator()
         Text(state.status, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        if (officeExportStatus.isNotEmpty()) Text(officeExportStatus, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         if (pendingCopy != null) {
             Text("Frozen copy: ${pendingCopy.name}. State: ${pendingCopy.stage}. Retry invalidates older results and keeps the original frozen payload. Inspect any partial destination first; no in-place replay or automatic deletion.")
             FlowRow(Modifier.fillMaxWidth()) {
@@ -178,10 +188,21 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
     }
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })
+    docxConfirmId?.let { id ->
+        AlertDialog(onDismissRequest={ docxConfirmId=null }, title={ Text("Export plain text as DOCX?") },
+            text={ Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.", Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
+            confirmButton={ TextButton(onClick={
+                docxConfirmId=null
+                val current=model.state.value
+                val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
+                if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportDocx(doc)
+            }) { Text("Choose destination") } },
+            dismissButton={ TextButton(onClick={ docxConfirmId=null }) { Text("Cancel") } })
+    }
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",
-        onDismiss={ copyConfirmId=null },onConfirm={ copyConfirmId=null; model.prepareCopy(id,onSaveCopy) }) }
+        onDismiss={ copyConfirmId=null },onConfirm={ copyConfirmId=null; if (!officeExportBusy) model.prepareCopy(id,onSaveCopy) }) }
     if(retryConfirm) CopyAdmissionDialog("Retry the original frozen payload?",
-        onDismiss={ retryConfirm=false },onConfirm={ retryConfirm=false; model.retryCopy(retryConfirmId,onSaveCopy) })
+        onDismiss={ retryConfirm=false },onConfirm={ retryConfirm=false; if (!officeExportBusy) model.retryCopy(retryConfirmId,onSaveCopy) })
     if(abandoningCopy) AlertDialog(onDismissRequest={ abandoningCopy=false },title={ Text("Abandon this copy attempt?") },
         text={ Text("Keeps the current draft, but retires this frozen save payload. A late result for this attempt will not authorize a newer save. Any partial destination stays for you to inspect; it is not deleted.") },
         confirmButton={ TextButton(onClick={ model.cancelCopy(abandoningCopyId); abandoningCopy=false }) { Text("Abandon attempt") } },

@@ -1527,3 +1527,21 @@ tasks.register<JavaExec>("r53Contracts") {
     dependsOn(r53.classesTaskName); classpath = r53.runtimeClasspath; mainClass.set("dev.fusion.testing.R53Checks")
     args(rootProject.file("testing/build/r53/artifacts").absolutePath)
 }
+
+// R54: actual bounded office authoring and copy contracts. Android/provider gates are separate.
+val r54 by sourceSets.creating
+kotlin.sourceSets.named("r54") {
+    kotlin.srcDir("src/r54/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.include("**/R54Checks.kt", "**/MarkdownOfficeBridge.kt")
+}
+dependencies {
+    add(r54.implementationConfigurationName, project(":format:ooxml"))
+    add(r54.implementationConfigurationName, project(":core:documents"))
+}
+tasks.register<JavaExec>("r54Contracts") {
+    dependsOn(r54.classesTaskName)
+    classpath = r54.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R54Checks")
+    args(rootProject.file("testing/build/r54/artifacts").absolutePath)
+}

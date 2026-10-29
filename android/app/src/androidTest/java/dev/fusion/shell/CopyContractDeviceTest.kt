@@ -29,6 +29,14 @@ class CopyContractDeviceTest {
         assertFalse(info.exported)
         assertEquals(setOf("dev.fusion.editor.COPY_REQUEST","dev.fusion.editor.COPY_NAME"),launch.extras!!.keySet())
     }
+    @Test fun officeMimeIsExplicitlyAllowlistedWithoutChangingPlainTextContract() {
+        val contract=CopyDestinationContract()
+        val docx=contract.createIntent(context,CopyPickerRequest(id,"copy.docx",CopyDestinationContract.DOCX_MIME))
+        assertEquals(CopyDestinationContract.DOCX_MIME,docx.getStringExtra("dev.fusion.editor.COPY_MIME"))
+        val xlsx=contract.createIntent(context,CopyPickerRequest(id,"copy.xlsx",CopyDestinationContract.XLSX_MIME))
+        assertEquals(CopyDestinationContract.XLSX_MIME,xlsx.getStringExtra("dev.fusion.editor.COPY_MIME"))
+        assertTrue(runCatching { contract.createIntent(context,CopyPickerRequest(id,"copy.bin","application/x-unknown")) }.isFailure)
+    }
     @Test fun uncorrelatedResultNeverBecomesCurrentCancellation() {
         val contract=CopyDestinationContract()
         assertNull(contract.parseResult(Activity.RESULT_CANCELED,null))
