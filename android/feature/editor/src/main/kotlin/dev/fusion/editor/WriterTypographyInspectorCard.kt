@@ -17,11 +17,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import dev.fusion.documents.LiangHyphenationTrieEngine
+import dev.fusion.documents.OpenTypeSfntMetricsParser
 import dev.fusion.documents.OptimalParagraphComposer
-import dev.fusion.documents.LiangHyphenationTrieEngine
-import dev.fusion.documents.OpenTypeSfntMetricsParser
-import dev.fusion.documents.LiangHyphenationTrieEngine
-import dev.fusion.documents.OpenTypeSfntMetricsParser
 
 /**
  * R54 Writer typography inspector card.
@@ -40,12 +38,12 @@ fun WriterTypographyInspectorCard(
     val spaces = paragraphText.length * (fontSizePt * 0.5f)
     val items = OptimalParagraphComposer.tokenizeParagraph(
         words = paragraphText.split(" ").filter { it.isNotEmpty() },
-        measureText = { word -> word.length * fontSizePt * 0.5f },
-        spaceWidth = fontSizePt * 0.25f,
-        hyphenWidth = fontSizePt * 0.2f,
+        measureText = { word: String -> word.length * fontSizePt.toDouble() * 0.5 },
+        spaceWidth = fontSizePt.toDouble() * 0.25,
+        hyphenWidth = fontSizePt.toDouble() * 0.2,
         hyphenator = { word -> LiangHyphenationTrieEngine.hyphenateWord(word) },
     )
-    val result = OptimalParagraphComposer.compose(items, { measureDp })
+    val result = OptimalParagraphComposer.compose(items, { measureDp.toDouble() })
     val worstRatio = result.lines.maxOfOrNull { kotlin.math.abs(it.adjustmentRatio) } ?: 0.0
     val hyphenRuns = result.lines.count { it.endsWithHyphen }
     val quality = when {
