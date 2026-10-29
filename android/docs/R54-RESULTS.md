@@ -4,7 +4,7 @@
 
 ## Runtime honesty and census
 
-- This sandbox has no Android SDK, `adb`, emulator, Android Studio GUI or physical device. The native code, instrumented tests and screenshot capture were **authored, not locally compiled or executed**. The SDK-free Kotlin syntax gate is not a type check. Do not interpret a host preview, ZIP/XML read, test source or CI configuration as Android execution or visual approval. The dedicated GitHub Actions job records actual outcomes separately.
+- This sandbox has no Android SDK, `adb`, emulator, Android Studio GUI or physical device. The native code, instrumented tests and screenshot capture were **authored, not locally compiled or executed**. The first remote Android CI attempt ([run 40973921050](https://github.com/jyvplay/OSB/actions/runs/40973921050)) actually failed on nullable URI type errors in the export coordinator before device tests; the fix must be checked by a later run. The SDK-free Kotlin syntax gate is not a type check. Do not interpret a host preview, ZIP/XML read, test source or CI configuration as Android execution or visual approval.
 - The reviewed, source-hash-bound census records **50/50 included Gradle modules (100%)** with at least one *bounded substantial testable subset*. This is a review of evidence pairings, including historical runnable checks; it is not a fresh run of every behavior or a claim that an entire module is functional. **0/50 modules (0%) are full-spec accepted; 50/50 remain unfinished** by the separate audit. Presence or quantity of kernels, tests or files cannot change that acceptance count.
 - Original Office requirements PR-11, FF-01, FF-02, FF-11 and FF-17 and the S10/S11 security/fidelity gates remain incomplete. The existing `docs` importer remains blocked; this work does not route arbitrary Office inputs through it.
 
@@ -52,6 +52,8 @@
 | 18 | Non-heading `#tag` is a normal heading | Former Markdown bridge loop now consumes non-headings; host checks include `#`, `#tag`, invalid depth and mixed input. The bridge remains a lossy subset, not CommonMark. |
 | 19 | A prior success marker proves the current run | Commands are rerun after repairs; build artifacts are generated files, not universal evidence. The first concurrent Python run saw incomplete fixtures and was rerun after generation. |
 | 20 | Emulator acceptance means real hardware/accessibility | Even a future AVD pass cannot establish physical OEM, TalkBack, Switch Access or all viewport/provider behavior. |
+| 21 | `ROUND` silently clamping precision is a valid computed answer | The existing shared evaluator clamps digits to ±12; this new authoring path refuses `ROUND` until correct semantics are implemented and independently checked. |
+| 22 | Small input implies small derived string | Repeated concatenation can grow exponentially. The authoring path refuses `CONCAT` and `&` until a derived-value resource budget is implemented. |
 
 ## E. Mechanism-distinct portfolio (not six versions of the same test)
 
@@ -85,7 +87,7 @@ The host suite exercises invalid UTF-8/XML inputs, malformed formulas, oversized
 
 | Actual command | Result / scope |
 |---|---|
-| `python3 tools/run_r54_contracts.py` | **659 JVM assertions passed**; sample DOCX, XLSX and recovery bytes generated. |
+| `python3 tools/run_r54_contracts.py` | **662 JVM assertions passed**; sample DOCX, XLSX and recovery bytes generated. |
 | `PYTHONPATH=<host-reader-paths> python3 tools/check_r54_reference.py --require-office-libraries` | **21 checks passed**, including openpyxl 3.1.5 and python-docx 1.2.0; no formula recalculation by readers. |
 | `python3 tools/run_jvm_contracts.py` | Core pilot, OOXML guards, editor, copy, calculator, notes, gate and other real pure-JVM contracts passed; Android excluded. |
 | `python3 tools/run_r24_contracts.py` | **65,097** host assertions passed, including pilot policies. |
@@ -102,6 +104,8 @@ The host Java 17.0.9 runtime and Kotlin 2.2.21 were installed in a disposable to
 ## I. Repair and re-verification
 
 - Word tab/break handling and spreadsheet carriage-return escaping were changed after checking actual serialization; R54, existing R45, and independent readers were rerun. New samples do not prove complete OOXML behavior.
+- Review found the shared evaluator silently clamps `ROUND` precision and permits concatenation growth without a derived-text budget. The new authoring route now refuses both until repaired and verified; host adversarial refusals were added. Existing legacy evaluator behavior was not relabelled as fixed.
+- Remote Android compilation exposed a cross-module nullable-property error missed by syntax parsing; the selected URI is now held in a stable checked local. This repair requires a real Android compile rerun, not inference from host checks.
 - A non-advancing Markdown parser loop on `#`-prefixed non-headings was repaired; the host runner has a timeout and regression inputs, and the existing R48 bridge suite passed afterward. No claim of lossless Markdown conversion is made.
 - Changed source hashes were reviewed and updated in the census; ownership inventory and project checks were regenerated. An initial concurrent Python run observed missing/partial R50/R53 fixtures; after both generators completed the full suite was rerun. A later test flagged historical headings changed in documentation; the headings were restored and all 1,520 tests passed. An earlier incorrect test discovery path was corrected. No failed run is relabelled as a pass.
 

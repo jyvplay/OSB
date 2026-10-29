@@ -97,7 +97,7 @@ object R54Checks {
         for (ref in listOf("A0", "AA1", "Z101", "A01", "Sheet1!A1", "\$A1", "A1 x")) {
             refuses("out-of-scope address $ref") { OfficeSheetDraft.address(ref) }
         }
-        for (bad in listOf("=NOW()", "=SEQUENCE(1000000)", "=A101", "=AA1", "=[Book]Sheet!A1", "=INDIRECT(\"A1\")", "=Name", "=SUM(A1", "=1+", "=1E999")) {
+        for (bad in listOf("=NOW()", "=SEQUENCE(1000000)", "=A101", "=AA1", "=[Book]Sheet!A1", "=INDIRECT(\"A1\")", "=Name", "=SUM(A1", "=1+", "=1E999", "=ROUND(1.234,13)", "=CONCAT(A1,A1)", "=A1&A1")) {
             refuses("formula $bad") { OfficeSheetDraft.replace(sheet, "F1", cell(formula, bad)) }
         }
         refuses("malformed number") { OfficeSheetDraft.replace(sheet, "F1", cell(number, "NaN")) }

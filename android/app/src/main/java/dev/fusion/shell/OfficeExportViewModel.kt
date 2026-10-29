@@ -79,7 +79,10 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
             return
         }
         if (result.requestId != pending.requestId) return // stale results cannot consume a newer attempt
-        if (result.outcome != CopyPickerOutcome.SELECTED || result.uri == null) {
+        // CopyPickerResult comes from another module; hold its nullable property in a stable local
+        // before checking it so the compiler can safely narrow it inside the I/O coroutine.
+        val uri = result.uri
+        if (result.outcome != CopyPickerOutcome.SELECTED || uri == null) {
             pending.cancel(result.requestId)
             attempt = null
             mutable.value = State(false, "Export canceled or picker failed. The draft remains unchanged.")
@@ -93,7 +96,6 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
         }
         val bytes = pending.claim(result.requestId) ?: return
         attempt = null
-        val uri = result.uri
         val forbidden = (pending.forbiddenUris + currentSources + recentDestinations).distinct()
         mutable.value = State(true, "Checking destination, writing the frozen copy and verifying readback…")
         viewModelScope.launch {

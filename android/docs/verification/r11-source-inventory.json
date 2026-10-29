@@ -278,7 +278,7 @@
       "path": "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "219efd8dbdbd573e9513fca3b57c39bcf9f568037271eca7378f378c7369b378"
+      "sha256": "5da73a712deff99be672bae77233e1eff92d80bce095a61a10f725b831a0910b"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -5774,7 +5774,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetDraft.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "8bd49cdfa22e0727b54c9e5c4e6bea3c0cb949f1cfefd352bedd33ce89f6012c"
+      "sha256": "fd3cd90dea0644b3a025df5ce368d5000073f99957f8e6da5e651a2fe8735153"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
