@@ -1,17 +1,39 @@
 name: R54 native evidence diagnostics
 on:
+  push:
+    paths: ['.github/workflows/android-r54-diagnostics.yml']
   workflow_dispatch:
     inputs:
       evidence_run:
-        description: Run ID containing the r54-office-evidence artifact
-        required: true
+        description: Run ID containing r54-office-evidence (empty selects the latest completed PR run)
+        required: false
         type: string
 permissions:
   contents: read
   actions: read
 jobs:
+  select:
+    name: Select a completed Office evidence run
+    runs-on: ubuntu-24.04
+    outputs:
+      run_id: ${{ steps.select.outputs.run_id }}
+    steps:
+      - id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          OVERRIDE: ${{ inputs.evidence_run }}
+        run: |
+          id="$OVERRIDE"
+          if [ -z "$id" ]; then
+            id=$(gh run list --branch "$GITHUB_REF_NAME" --workflow android-r54-office.yml --event pull_request --status completed --limit 1 --json databaseId --jq '.[0].databaseId')
+          fi
+          [[ "$id" =~ ^[0-9]+$ ]] || { echo 'No completed R54 PR evidence run selected'; exit 1; }
+          echo "Using source run $id"
+          echo "run_id=$id" >> "$GITHUB_OUTPUT"
   cases:
     name: Actual R54 test outcomes and failure details
+    needs: select
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -22,7 +44,7 @@ jobs:
         with:
           name: r54-office-evidence
           path: android/testing/build/r54/imported-evidence
-          run-id: ${{ inputs.evidence_run }}
+          run-id: ${{ needs.select.outputs.run_id }}
           github-token: ${{ github.token }}
       - name: Enumerate actual test cases, not invented results
         run: python3 tools/report_device_results.py --root testing/build/r54/imported-evidence --mode cases
@@ -39,6 +61,7 @@ jobs:
               print('::notice::Actual device log excerpts: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
           PY
   frames:
+    needs: select
     name: Actual frame ${{ matrix.image }} (not all-page acceptance)
     runs-on: ubuntu-24.04
     strategy:
@@ -54,7 +77,7 @@ jobs:
         with:
           name: r54-office-evidence
           path: android/app/build/outputs/managed_device_android_test_additional_output/transport
-          run-id: ${{ inputs.evidence_run }}
+          run-id: ${{ needs.select.outputs.run_id }}
           github-token: ${{ github.token }}
       - name: Native frame metadata
         env:
