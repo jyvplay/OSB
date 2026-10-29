@@ -31,7 +31,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused."
+        "Typed single-sheet DAG formula engine (350 pure functions R54 expanding 300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: CIRCULANT/HILBERT/CHOLESKY/GRAMMATRIX/ROW_NORM/EWMA_ARRAY/SAVITZKY_GOLAY5/HADAMARD_PROD + SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH/LOG + IMTAN/IMSEC/IMCSC/IMCOT/IMSINH/IMCOSH/IMLOG10/IMLOG2 + FVSCHEDULE/XNPV/XIRR/PRICEMAT/ACCRINTM + GAUSS/PHI/SKEW.P/VAR.P/VAR.S/STDEV.P/STDEV.S/NORM.INV + MTRACE/FROBENIUS_NORM + REPT/REPLACE/SEARCH/DAYS/DAYS360 + HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -1258,6 +1258,18 @@ object FormulaEval {
             "FISHER", "FISHERINV", "STANDARDIZE", "CONFIDENCE.T",
             "HARMEAN", "TRIMMEAN", "DEVSQ", "AVEDEV", "SERIESSUM", "MULTINOMIAL" ->
                 evalR53ScalarFunction(name, args, env)
+            "CIRCULANT", "HILBERT", "CHOLESKY", "GRAMMATRIX", "ROW_NORM", "EWMA_ARRAY", "SAVITZKY_GOLAY5", "HADAMARD_PROD" -> {
+                val g = evalR54Grid(name, args, env)
+                if (g.size == 1 && g[0].size == 1) g[0][0] else g.firstOrNull()?.firstOrNull() ?: CellValue.Err(CellErr.Err.VALUE)
+            }
+            "SIN", "COS", "TAN", "ASIN", "ACOS", "ATAN", "ATAN2",
+            "SINH", "COSH", "TANH", "ASINH", "ACOSH", "ATANH", "LOG",
+            "IMTAN", "IMSEC", "IMCSC", "IMCOT", "IMSINH", "IMCOSH", "IMLOG10", "IMLOG2",
+            "FVSCHEDULE", "XNPV", "XIRR", "PRICEMAT", "ACCRINTM",
+            "GAUSS", "PHI", "SKEW.P", "VAR.P", "VAR.S", "STDEV.P", "STDEV.S", "NORM.INV",
+            "MTRACE", "FROBENIUS_NORM",
+            "REPT", "REPLACE", "SEARCH", "DAYS", "DAYS360" ->
+                evalR54ScalarFunction(name, args, env)
             else -> {
                 val lexicalClosure = runtimeState.get().richScopes[normalizeVarName(rawName)]
                 if (lexicalClosure is RichBinding.Closure) {
@@ -1419,6 +1431,7 @@ object FormulaEval {
             "EXPAND", "TRIMRANGE", "GROUPBY", "PIVOTBY", "LINEST", "LOGEST", "FLATTEN" -> evalR51Grid(name, call.args, env)
             "OUTERPRODUCT", "CUMSUM", "DIFFARRAY", "MOVINGAVERAGE", "ZSCOREGRID", "DIAGONAL" -> evalR52Grid(name, call.args, env)
             "HANKEL", "TOEPLITZ", "VANDERMONDE", "KRONECKER", "CONVOLVE1D", "PARETOGRID" -> evalR53Grid(name, call.args, env)
+            "CIRCULANT", "HILBERT", "CHOLESKY", "GRAMMATRIX", "ROW_NORM", "EWMA_ARRAY", "SAVITZKY_GOLAY5", "HADAMARD_PROD" -> evalR54Grid(name, call.args, env)
             "SEQUENCE", "TRANSPOSE" -> evalEmbeddedSequenceOrTranspose(name, call.args, env)
             else -> {
                 val lexicalClosure = runtimeState.get().richScopes[normalizeVarName(call.name)]
@@ -5336,6 +5349,478 @@ object FormulaEval {
                     acc += a * x.pow(n0 + i * step)
                 }
                 CellValue.Num(normalizeNegZero(acc))
+            }
+            else -> CellValue.Err(CellErr.Err.NAME)
+        }
+    }
+
+    private fun evalR54Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>> {
+        fun errGrid(e: CellErr.Err = CellErr.Err.VALUE) = listOf(listOf(CellValue.Err(e)))
+        fun numGrid(e: Expr): List<List<Double>>? {
+            val g = exprTo2DGrid(e, env) ?: return null
+            if (g.isEmpty() || g[0].isEmpty()) return null
+            return g.map { row ->
+                row.map { cell ->
+                    if (cell !is CellValue.Num || !cell.value.isFinite()) return null
+                    cell.value
+                }
+            }
+        }
+        fun flatNums(e: Expr): List<Double>? = numGrid(e)?.flatten()?.takeIf { it.isNotEmpty() }
+
+        return when (name) {
+            "CIRCULANT" -> {
+                if (args.size != 1) return errGrid()
+                val v = flatNums(args[0]) ?: return errGrid()
+                val n = v.size
+                List(n) { r ->
+                    List(n) { c ->
+                        val idx = ((c - r) % n + n) % n
+                        CellValue.Num(normalizeNegZero(v[idx]))
+                    }
+                }
+            }
+            "HILBERT" -> {
+                if (args.size != 1) return errGrid()
+                val nVal = evalScalarAsNum(evalExpr(args[0], env))
+                if (nVal is CellValue.Err) return listOf(listOf(nVal))
+                val n = (nVal as CellValue.Num).value.toInt()
+                if (n !in 1..64) return errGrid(CellErr.Err.NUM)
+                List(n) { r ->
+                    List(n) { c -> CellValue.Num(normalizeNegZero(1.0 / (r + c + 1).toDouble())) }
+                }
+            }
+            "CHOLESKY" -> {
+                if (args.size != 1) return errGrid()
+                val a = numGrid(args[0]) ?: return errGrid()
+                val n = a.size
+                if (a.any { it.size != n }) return errGrid(CellErr.Err.VALUE)
+                val l = Array(n) { DoubleArray(n) }
+                for (i in 0 until n) {
+                    for (j in 0..i) {
+                        if (abs(a[i][j] - a[j][i]) > 1e-9 * (1.0 + abs(a[i][j]))) return errGrid(CellErr.Err.NUM)
+                        var sum = a[i][j]
+                        for (k in 0 until j) sum -= l[i][k] * l[j][k]
+                        if (i == j) {
+                            if (sum <= 1e-14) return errGrid(CellErr.Err.NUM)
+                            l[i][j] = sqrt(sum)
+                        } else {
+                            l[i][j] = sum / l[j][j]
+                        }
+                    }
+                }
+                List(n) { r -> List(n) { c -> CellValue.Num(normalizeNegZero(l[r][c])) } }
+            }
+            "GRAMMATRIX" -> {
+                if (args.size != 1) return errGrid()
+                val x = numGrid(args[0]) ?: return errGrid()
+                val rows = x.size; val cols = x[0].size
+                List(cols) { i ->
+                    List(cols) { j ->
+                        var dot = 0.0
+                        for (r in 0 until rows) dot += x[r][i] * x[r][j]
+                        CellValue.Num(normalizeNegZero(dot))
+                    }
+                }
+            }
+            "ROW_NORM" -> {
+                if (args.size != 1) return errGrid()
+                val x = numGrid(args[0]) ?: return errGrid()
+                x.map { row ->
+                    val norm = sqrt(row.sumOf { it * it })
+                    if (norm <= 1e-15) return errGrid(CellErr.Err.DIV0)
+                    row.map { v -> CellValue.Num(normalizeNegZero(v / norm)) }
+                }
+            }
+            "EWMA_ARRAY" -> {
+                if (args.size != 2) return errGrid()
+                val v = flatNums(args[0]) ?: return errGrid()
+                val alphaCell = evalScalarAsNum(evalExpr(args[1], env))
+                if (alphaCell is CellValue.Err) return listOf(listOf(alphaCell))
+                val alpha = (alphaCell as CellValue.Num).value
+                if (alpha <= 0.0 || alpha > 1.0) return errGrid(CellErr.Err.NUM)
+                var cur = v[0]
+                v.mapIndexed { idx, x ->
+                    if (idx > 0) cur = alpha * x + (1.0 - alpha) * cur
+                    listOf(CellValue.Num(normalizeNegZero(cur)))
+                }
+            }
+            "SAVITZKY_GOLAY5" -> {
+                if (args.size != 1) return errGrid()
+                val v = flatNums(args[0]) ?: return errGrid()
+                if (v.size < 5) return errGrid(CellErr.Err.NUM)
+                val weights = doubleArrayOf(-3.0, 12.0, 17.0, 12.0, -3.0)
+                List(v.size) { i ->
+                    val smoothed = if (i in 2 until v.size - 2) {
+                        var s = 0.0
+                        for (k in -2..2) s += weights[k + 2] * v[i + k]
+                        s / 35.0
+                    } else {
+                        v[i]
+                    }
+                    listOf(CellValue.Num(normalizeNegZero(smoothed)))
+                }
+            }
+            "HADAMARD_PROD" -> {
+                if (args.size != 2) return errGrid()
+                val a = numGrid(args[0]) ?: return errGrid()
+                val b = numGrid(args[1]) ?: return errGrid()
+                if (a.size != b.size || a[0].size != b[0].size) return errGrid(CellErr.Err.VALUE)
+                List(a.size) { r ->
+                    List(a[0].size) { c -> CellValue.Num(normalizeNegZero(a[r][c] * b[r][c])) }
+                }
+            }
+            else -> errGrid(CellErr.Err.NAME)
+        }
+    }
+
+    private fun evalR54ScalarFunction(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        fun errIfAny(limit: Int = args.size): CellValue.Err? {
+            for (i in 0 until minOf(limit, args.size)) {
+                val e = args[i]
+                val g = exprTo2DGrid(e, env)
+                if (g != null) {
+                    for (r in g) for (c in r) if (c is CellValue.Err) return c
+                } else {
+                    val v = evalExpr(e, env)
+                    if (v is CellValue.Err) return v
+                }
+            }
+            return null
+        }
+        fun numArg(idx: Int): Double? {
+            if (idx >= args.size) return null
+            val v = evalScalarAsNum(evalExpr(args[idx], env))
+            return (v as? CellValue.Num)?.value?.takeIf { it.isFinite() }
+        }
+        fun collectNums(): List<Double>? {
+            val out = ArrayList<Double>()
+            for (a in args) {
+                val g = exprTo2DGrid(a, env)
+                if (g != null) {
+                    for (r in g) for (c in r) {
+                        if (c is CellValue.Err) return null
+                        if (c is CellValue.Num) out.add(c.value)
+                    }
+                } else {
+                    val v = evalScalarAsNum(evalExpr(a, env))
+                    if (v !is CellValue.Num) return null
+                    out.add(v.value)
+                }
+            }
+            return out
+        }
+        fun stdNormPhi(z: Double): Double = exp(-0.5 * z * z) / sqrt(2.0 * Math.PI)
+        fun stdNormCdf(z: Double): Double {
+            val sign = if (z < 0.0) -1.0 else 1.0
+            val x = abs(z) / sqrt(2.0)
+            // Abramowitz-Stegun 7.1.26 rational erf approximation (max error <= 1.5e-7)
+            val t = 1.0 / (1.0 + 0.3275911 * x)
+            val poly = (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t
+            val erfApprox = 1.0 - poly * exp(-x * x)
+            return 0.5 * (1.0 + sign * erfApprox)
+        }
+        fun stdNormInv(p: Double): Double {
+            // Peter Acklam rational inverse normal CDF (relative error < 1.15e-9)
+            val a1 = -3.969683028665376e+01; val a2 = 2.209460984245205e+02; val a3 = -2.759285104469687e+02
+            val a4 = 1.383577518672690e+02; val a5 = -3.066479806614716e+01; val a6 = 2.506628277459239e+00
+            val b1 = -5.447609879822406e+01; val b2 = 1.615858368580409e+02; val b3 = -1.556989798598866e+02
+            val b4 = 6.680131188771972e+01; val b5 = -1.328068155288572e+01
+            val c1 = -7.784894002430293e-03; val c2 = -3.223964580411365e-01; val c3 = -2.400758277161838e+00
+            val c4 = -2.549732539343734e+00; val c5 = 4.374664141464968e+00; val c6 = 2.938163982698783e+00
+            val d1 = 7.784695709041462e-03; val d2 = 3.224671290700398e-01; val d3 = 2.445134137142996e+00; val d4 = 3.754408661907416e+00
+            val pLow = 0.02425; val pHigh = 1.0 - pLow
+            return when {
+                p < pLow -> {
+                    val q = sqrt(-2.0 * ln(p))
+                    (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1.0)
+                }
+                p <= pHigh -> {
+                    val q = p - 0.5; val r = q * q
+                    (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1.0)
+                }
+                else -> {
+                    val q = sqrt(-2.0 * ln(1.0 - p))
+                    -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1.0)
+                }
+            }
+        }
+        return when (name) {
+            "SIN", "COS", "TAN", "ASIN", "ACOS", "ATAN", "SINH", "COSH", "TANH", "ASINH", "ACOSH", "ATANH", "GAUSS", "PHI" -> {
+                if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(1)?.let { return it }
+                val x = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val res = when (name) {
+                    "SIN" -> kotlin.math.sin(x)
+                    "COS" -> kotlin.math.cos(x)
+                    "TAN" -> kotlin.math.tan(x)
+                    "ASIN" -> if (x < -1.0 || x > 1.0) Double.NaN else kotlin.math.asin(x)
+                    "ACOS" -> if (x < -1.0 || x > 1.0) Double.NaN else kotlin.math.acos(x)
+                    "ATAN" -> kotlin.math.atan(x)
+                    "SINH" -> kotlin.math.sinh(x)
+                    "COSH" -> kotlin.math.cosh(x)
+                    "TANH" -> kotlin.math.tanh(x)
+                    "ASINH" -> kotlin.math.asinh(x)
+                    "ACOSH" -> if (x < 1.0) Double.NaN else kotlin.math.acosh(x)
+                    "ATANH" -> if (x <= -1.0 || x >= 1.0) Double.NaN else kotlin.math.atanh(x)
+                    "PHI" -> stdNormPhi(x)
+                    "GAUSS" -> stdNormCdf(x) - 0.5
+                    else -> Double.NaN
+                }
+                if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
+            }
+            "ATAN2" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val xNum = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val yNum = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (xNum == 0.0 && yNum == 0.0) return CellValue.Err(CellErr.Err.DIV0)
+                // Excel/ODFF ATAN2(x_num, y_num) == atan2(y_num, x_num)
+                CellValue.Num(normalizeNegZero(kotlin.math.atan2(yNum, xNum)))
+            }
+            "LOG" -> {
+                if (args.size !in 1..2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny()?.let { return it }
+                val x = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val base = if (args.size == 2) (numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)) else 10.0
+                if (x <= 0.0 || base <= 0.0 || base == 1.0) return CellValue.Err(CellErr.Err.NUM)
+                CellValue.Num(normalizeNegZero(ln(x) / ln(base)))
+            }
+            "IMTAN", "IMSEC", "IMCSC", "IMCOT", "IMSINH", "IMCOSH", "IMLOG10", "IMLOG2" -> {
+                if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(1)?.let { return it }
+                val z = parseComplexText(evalExpr(args[0], env).displayText()) ?: return CellValue.Err(CellErr.Err.NUM)
+                fun cDiv(nr: Double, ni: Double, dr: Double, di: Double): Pair<Double, Double>? {
+                    val den = dr * dr + di * di
+                    if (den <= 1e-30) return null
+                    return ((nr * dr + ni * di) / den) to ((ni * dr - nr * di) / den)
+                }
+                val sinR = kotlin.math.sin(z.re) * kotlin.math.cosh(z.im)
+                val sinI = kotlin.math.cos(z.re) * kotlin.math.sinh(z.im)
+                val cosR = kotlin.math.cos(z.re) * kotlin.math.cosh(z.im)
+                val cosI = -kotlin.math.sin(z.re) * kotlin.math.sinh(z.im)
+                val pair: Pair<Double, Double>? = when (name) {
+                    "IMTAN" -> cDiv(sinR, sinI, cosR, cosI)
+                    "IMSEC" -> cDiv(1.0, 0.0, cosR, cosI)
+                    "IMCSC" -> cDiv(1.0, 0.0, sinR, sinI)
+                    "IMCOT" -> cDiv(cosR, cosI, sinR, sinI)
+                    "IMSINH" -> (kotlin.math.sinh(z.re) * kotlin.math.cos(z.im)) to (kotlin.math.cosh(z.re) * kotlin.math.sin(z.im))
+                    "IMCOSH" -> (kotlin.math.cosh(z.re) * kotlin.math.cos(z.im)) to (kotlin.math.sinh(z.re) * kotlin.math.sin(z.im))
+                    "IMLOG10" -> {
+                        val mag = kotlin.math.hypot(z.re, z.im)
+                        if (mag <= 0.0) null else (ln(mag) / ln(10.0)) to (kotlin.math.atan2(z.im, z.re) / ln(10.0))
+                    }
+                    "IMLOG2" -> {
+                        val mag = kotlin.math.hypot(z.re, z.im)
+                        if (mag <= 0.0) null else (ln(mag) / ln(2.0)) to (kotlin.math.atan2(z.im, z.re) / ln(2.0))
+                    }
+                    else -> null
+                }
+                val (orRe, orIm) = pair ?: return CellValue.Err(CellErr.Err.NUM)
+                if (!orRe.isFinite() || !orIm.isFinite()) return CellValue.Err(CellErr.Err.NUM)
+                CellValue.Text(formatComplex(orRe, orIm, z.suffix))
+            }
+            "FVSCHEDULE" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val principal = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val ratesGrid = exprTo2DGrid(args[1], env) ?: listOf(listOf(evalExpr(args[1], env)))
+                var acc = principal
+                for (r in ratesGrid) for (c in r) {
+                    if (c is CellValue.Err) return c
+                    if (c is CellValue.Num) acc *= (1.0 + c.value)
+                    else if (c != CellValue.Empty) return CellValue.Err(CellErr.Err.VALUE)
+                }
+                CellValue.Num(normalizeNegZero(acc))
+            }
+            "XNPV" -> {
+                if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(3)?.let { return it }
+                val rate = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (rate <= -1.0) return CellValue.Err(CellErr.Err.NUM)
+                val cfs = (exprTo2DGrid(args[1], env)?.flatten() ?: return CellValue.Err(CellErr.Err.VALUE)).map {
+                    (it as? CellValue.Num)?.value ?: return CellValue.Err(CellErr.Err.VALUE)
+                }
+                val dts = (exprTo2DGrid(args[2], env)?.flatten() ?: return CellValue.Err(CellErr.Err.VALUE)).map {
+                    (it as? CellValue.Num)?.value ?: return CellValue.Err(CellErr.Err.VALUE)
+                }
+                if (cfs.isEmpty() || cfs.size != dts.size) return CellValue.Err(CellErr.Err.NUM)
+                val d0 = dts[0]
+                var total = 0.0
+                for (i in cfs.indices) {
+                    total += cfs[i] / (1.0 + rate).pow((dts[i] - d0) / 365.0)
+                }
+                if (!total.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(total))
+            }
+            "XIRR" -> {
+                if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny()?.let { return it }
+                val cfs = (exprTo2DGrid(args[0], env)?.flatten() ?: return CellValue.Err(CellErr.Err.VALUE)).map {
+                    (it as? CellValue.Num)?.value ?: return CellValue.Err(CellErr.Err.VALUE)
+                }
+                val dts = (exprTo2DGrid(args[1], env)?.flatten() ?: return CellValue.Err(CellErr.Err.VALUE)).map {
+                    (it as? CellValue.Num)?.value ?: return CellValue.Err(CellErr.Err.VALUE)
+                }
+                val guess = if (args.size == 3) (numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)) else 0.1
+                if (cfs.size < 2 || cfs.size != dts.size || cfs.none { it > 0.0 } || cfs.none { it < 0.0 }) return CellValue.Err(CellErr.Err.NUM)
+                val d0 = dts[0]
+                var r = guess.coerceIn(-0.9, 10.0)
+                var converged = false
+                for (iter in 0 until 100) {
+                    var f = 0.0; var df = 0.0
+                    for (i in cfs.indices) {
+                        val t = (dts[i] - d0) / 365.0
+                        val denom = (1.0 + r).pow(t)
+                        f += cfs[i] / denom
+                        if (t != 0.0) df -= t * cfs[i] / ((1.0 + r).pow(t + 1.0))
+                    }
+                    if (abs(f) < 1e-10) { converged = true; break }
+                    if (abs(df) < 1e-15) break
+                    val next = (r - f / df).coerceIn(-0.9999, 100.0)
+                    if (abs(next - r) < 1e-11) { r = next; converged = true; break }
+                    r = next
+                }
+                if (!converged || !r.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(r))
+            }
+            "ACCRINTM" -> {
+                if (args.size !in 4..5) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny()?.let { return it }
+                val issue = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val settle = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val rate = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val par = numArg(3) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val basis = if (args.size == 5) (numArg(4)?.toInt() ?: return CellValue.Err(CellErr.Err.VALUE)) else 0
+                if (issue >= settle || rate <= 0.0 || par <= 0.0 || basis !in 0..4) return CellValue.Err(CellErr.Err.NUM)
+                val yearDays = when (basis) { 0, 2, 4 -> 360.0; 1, 3 -> 365.0; else -> 365.0 }
+                CellValue.Num(normalizeNegZero(par * rate * ((settle - issue) / yearDays)))
+            }
+            "PRICEMAT" -> {
+                if (args.size !in 5..6) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny()?.let { return it }
+                val settle = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val maturity = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val issue = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val rate = numArg(3) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val yld = numArg(4) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val basis = if (args.size == 6) (numArg(5)?.toInt() ?: return CellValue.Err(CellErr.Err.VALUE)) else 0
+                if (settle >= maturity || issue > settle || rate < 0.0 || yld < 0.0 || basis !in 0..4) return CellValue.Err(CellErr.Err.NUM)
+                val b = when (basis) { 0, 2, 4 -> 360.0; else -> 365.0 }
+                val dim = maturity - issue; val dsm = maturity - settle; val a = settle - issue
+                val price = (100.0 + (dim / b) * rate * 100.0) / (1.0 + (dsm / b) * yld) - (a / b) * rate * 100.0
+                CellValue.Num(normalizeNegZero(price))
+            }
+            "NORM.INV" -> {
+                if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(3)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val mean = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val sd = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (p <= 0.0 || p >= 1.0 || sd <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                CellValue.Num(normalizeNegZero(mean + sd * stdNormInv(p)))
+            }
+            "VAR.P", "VAR.S", "STDEV.P", "STDEV.S", "SKEW.P" -> {
+                errIfAny()?.let { return it }
+                val xs = collectNums() ?: return CellValue.Err(CellErr.Err.VALUE)
+                val minN = if (name == "VAR.S" || name == "STDEV.S") 2 else 1
+                if (xs.size < minN) return CellValue.Err(CellErr.Err.DIV0)
+                val mean = xs.average()
+                val ss = xs.sumOf { (it - mean) * (it - mean) }
+                when (name) {
+                    "VAR.P" -> CellValue.Num(normalizeNegZero(ss / xs.size))
+                    "VAR.S" -> CellValue.Num(normalizeNegZero(ss / (xs.size - 1)))
+                    "STDEV.P" -> CellValue.Num(normalizeNegZero(sqrt(ss / xs.size)))
+                    "STDEV.S" -> CellValue.Num(normalizeNegZero(sqrt(ss / (xs.size - 1))))
+                    "SKEW.P" -> {
+                        val sd = sqrt(ss / xs.size)
+                        if (sd <= 1e-15) return CellValue.Err(CellErr.Err.DIV0)
+                        val m3 = xs.sumOf { ((it - mean) / sd).pow(3.0) } / xs.size
+                        CellValue.Num(normalizeNegZero(m3))
+                    }
+                    else -> CellValue.Err(CellErr.Err.NAME)
+                }
+            }
+            "MTRACE", "FROBENIUS_NORM" -> {
+                if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(1)?.let { return it }
+                val g = exprTo2DGrid(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (g.isEmpty() || g[0].isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+                if (name == "MTRACE") {
+                    if (g.any { it.size != g.size }) return CellValue.Err(CellErr.Err.VALUE)
+                    var tr = 0.0
+                    for (i in g.indices) {
+                        val cell = g[i][i] as? CellValue.Num ?: return CellValue.Err(CellErr.Err.VALUE)
+                        tr += cell.value
+                    }
+                    CellValue.Num(normalizeNegZero(tr))
+                } else {
+                    var sumSq = 0.0
+                    for (r in g) for (c in r) {
+                        val cell = c as? CellValue.Num ?: return CellValue.Err(CellErr.Err.VALUE)
+                        sumSq += cell.value * cell.value
+                    }
+                    CellValue.Num(normalizeNegZero(sqrt(sumSq)))
+                }
+            }
+            "REPT" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val txt = evalExpr(args[0], env).displayText()
+                val n = numArg(1)?.toInt() ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (n < 0 || txt.length.toLong() * n > 32_767L) return CellValue.Err(CellErr.Err.VALUE)
+                CellValue.Text(txt.repeat(n))
+            }
+            "REPLACE" -> {
+                if (args.size != 4) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(4)?.let { return it }
+                val oldTxt = evalExpr(args[0], env).displayText()
+                val startOne = numArg(1)?.toInt() ?: return CellValue.Err(CellErr.Err.VALUE)
+                val numChars = numArg(2)?.toInt() ?: return CellValue.Err(CellErr.Err.VALUE)
+                val newTxt = evalExpr(args[3], env).displayText()
+                if (startOne < 1 || numChars < 0) return CellValue.Err(CellErr.Err.VALUE)
+                val s = (startOne - 1).coerceAtMost(oldTxt.length)
+                val e = (s + numChars).coerceAtMost(oldTxt.length)
+                CellValue.Text(oldTxt.substring(0, s) + newTxt + oldTxt.substring(e))
+            }
+            "SEARCH" -> {
+                if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny()?.let { return it }
+                val needle = evalExpr(args[0], env).displayText().lowercase()
+                val hay = evalExpr(args[1], env).displayText().lowercase()
+                val startOne = if (args.size == 3) (numArg(2)?.toInt() ?: return CellValue.Err(CellErr.Err.VALUE)) else 1
+                if (startOne < 1 || startOne > hay.length + 1) return CellValue.Err(CellErr.Err.VALUE)
+                val idx = hay.indexOf(needle, startOne - 1)
+                if (idx < 0) CellValue.Err(CellErr.Err.VALUE) else CellValue.Num((idx + 1).toDouble())
+            }
+            "DAYS" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val endSerial = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val startSerial = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                CellValue.Num(normalizeNegZero(floor(endSerial) - floor(startSerial)))
+            }
+            "DAYS360" -> {
+                if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny()?.let { return it }
+                val startSerial = numArg(0)?.toLong() ?: return CellValue.Err(CellErr.Err.VALUE)
+                val endSerial = numArg(1)?.toLong() ?: return CellValue.Err(CellErr.Err.VALUE)
+                val euro = if (args.size == 3) {
+                    val b = evalAsBool(evalExpr(args[2], env))
+                    if (b is CellValue.Err) return b
+                    (b as CellValue.Bool).value
+                } else false
+                val epoch = LocalDate.of(1899, 12, 30)
+                val d1 = epoch.plusDays(startSerial)
+                val d2 = epoch.plusDays(endSerial)
+                var day1 = d1.dayOfMonth; var day2 = d2.dayOfMonth
+                if (euro) {
+                    if (day1 == 31) day1 = 30
+                    if (day2 == 31) day2 = 30
+                } else {
+                    if (day1 == 31 || (d1.monthValue == 2 && day1 == d1.lengthOfMonth())) day1 = 30
+                    if (day2 == 31 && day1 == 30) day2 = 30
+                }
+                val diff = (d2.year - d1.year) * 360 + (d2.monthValue - d1.monthValue) * 30 + (day2 - day1)
+                CellValue.Num(diff.toDouble())
             }
             else -> CellValue.Err(CellErr.Err.NAME)
         }

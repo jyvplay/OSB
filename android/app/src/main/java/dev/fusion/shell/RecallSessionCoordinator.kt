@@ -41,7 +41,7 @@ object RecallSessionCoordinator {
         val skippedIncognitoCount: Int = 0,
     ) {
         val tierCounts: Map<Int, Int>
-            get() = (1..6).associateWith { t -> receipts.count { it.tierUsed == t } }
+            get() = (1..7).associateWith { t -> receipts.count { it.tierUsed == t } }
 
         val kindCounts: Map<String, Int>
             get() = listOf("IMAGE", "VIDEO", "MUSIC").associateWith { k -> receipts.count { it.mediaKind == k } }
@@ -70,7 +70,7 @@ object RecallSessionCoordinator {
         pageUrl: String,
         deduplicated: Boolean,
     ): SessionState {
-        require(tierUsed in 1..6 && byteSize > 0L && relativeArchivePath.isNotBlank()) {
+        require(tierUsed in 1..7 && byteSize > 0L && relativeArchivePath.isNotBlank()) {
             "Invalid Recall capture receipt parameters"
         }
         val digest = MessageDigest.getInstance("SHA-256")

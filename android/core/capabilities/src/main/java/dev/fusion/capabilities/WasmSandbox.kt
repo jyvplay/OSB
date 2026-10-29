@@ -36,6 +36,7 @@ object WasmSandbox {
     const val HARD_MAX_TABLE_ELEMENTS = 4_096
 
     private const val TYPE_I32 = 0x7F
+    const val TYPE_I64 = 0x7E
     private const val TYPE_F32 = 0x7D
     private const val TYPE_F64 = 0x7C
     const val TYPE_V128 = 0x7B
@@ -263,6 +264,25 @@ object WasmSandbox {
             return Double.fromBits(res[0])
         }
 
+        fun invokeI64(
+            exportName: String,
+            args: List<Long> = emptyList(),
+            fuelBudget: Long = 50_000L,
+            maxCallDepth: Int = 32,
+        ): Long {
+            require(fuelBudget in 1L..5_000_000L) { "fuelBudget $fuelBudget outside 1..5_000_000" }
+            require(maxCallDepth in 1..HARD_MAX_CALL_DEPTH) { "maxCallDepth $maxCallDepth outside 1..$HARD_MAX_CALL_DEPTH" }
+            val exp = module.exports[exportName] ?: throw IllegalArgumentException("unknown export '$exportName'")
+            require(exp.first == 0) { "export '$exportName' is not a function (kind=${exp.first})" }
+            val fn = module.funcs[exp.second]
+            val ft = module.types[fn.typeIdx]
+            require(args.size == ft.paramCount) { "export '$exportName' expects ${ft.paramCount} i64 args, got ${args.size}" }
+            val state = ExecState(fuelBudget, maxCallDepth)
+            val res = execFunc(exp.second, LongArray(args.size) { args[it] }, 0, state)
+            require(res.size == 1) { "expected 1 i64 return value from '$exportName'" }
+            return res[0]
+        }
+
         fun memoryCount(): Int = memories.size
 
         fun memoryPages(memIdx: Int = 0): Int {
@@ -476,6 +496,22 @@ object WasmSandbox {
                         val c = pop()
                         if (c != 0) pc = branchTo(lbl)
                     }
+                    0x0E -> { // br_table <vec(labelIdx)> <defaultLabelIdx>
+                        val (vecCount, n0) = readU32Leb(code, pc)
+                        require(vecCount in 0..4096) { "br_table target vector too large: $vecCount" }
+                        val labels = IntArray(vecCount)
+                        var cur = n0
+                        for (i in 0 until vecCount) {
+                            val (lbl, nxt) = readU32Leb(code, cur)
+                            labels[i] = lbl
+                            cur = nxt
+                        }
+                        val (defaultLbl, after) = readU32Leb(code, cur)
+                        pc = after
+                        val selector = pop()
+                        val chosen = if (selector >= 0 && selector < vecCount) labels[selector] else defaultLbl
+                        pc = branchTo(chosen)
+                    }
                     0x0F -> { // return
                         return if (ft.resultCount == 1) longArrayOf(pop64()) else LongArray(0)
                     }
@@ -622,6 +658,22 @@ object WasmSandbox {
                             ((targetMem[p + 3].toInt() and 0xFF) shl 24)
                         push(v)
                     }
+                    0x29 -> { // i64.load (8-byte little-endian, Wasm 3.0 multi-memory 0x40 memarg supported)
+                        val (alignFlags, n1) = readU32Leb(code, pc)
+                        val (memIdx, nMem) = if ((alignFlags and 0x40) != 0) readU32Leb(code, n1) else 0 to n1
+                        val (offset, n2) = readU32Leb(code, nMem); pc = n2
+                        require(memIdx in memories.indices) { "invalid memory index $memIdx" }
+                        val targetMem = memories[memIdx]
+                        val base = pop()
+                        val ea = (base.toLong() and 0xFFFF_FFFFL) + (offset.toLong() and 0xFFFF_FFFFL)
+                        if (ea < 0L || ea + 8L > targetMem.size) {
+                            throw WasmTrapException(TrapKind.OUT_OF_BOUNDS_MEMORY, "i64.load at $ea (size=${targetMem.size})")
+                        }
+                        val p = ea.toInt()
+                        var bits = 0L
+                        for (bIdx in 0..7) bits = bits or ((targetMem[p + bIdx].toLong() and 0xFFL) shl (bIdx * 8))
+                        push64(bits)
+                    }
                     0x2D -> { // i32.load8_u
                         val (alignFlags, n1) = readU32Leb(code, pc)
                         val (memIdx, nMem) = if ((alignFlags and 0x40) != 0) readU32Leb(code, n1) else 0 to n1
@@ -667,6 +719,20 @@ object WasmSandbox {
                         var bits = 0L
                         for (bIdx in 0..7) bits = bits or ((targetMem[p + bIdx].toLong() and 0xFFL) shl (bIdx * 8))
                         push64(bits)
+                    }
+                    0x37 -> { // i64.store (8-byte little-endian, Wasm 3.0 multi-memory 0x40 memarg supported)
+                        val (alignFlags, n1) = readU32Leb(code, pc)
+                        val (memIdx, nMem) = if ((alignFlags and 0x40) != 0) readU32Leb(code, n1) else 0 to n1
+                        val (offset, n2) = readU32Leb(code, nMem); pc = n2
+                        require(memIdx in memories.indices) { "invalid memory index $memIdx" }
+                        val targetMem = memories[memIdx]
+                        val bits = pop64(); val base = pop()
+                        val ea = (base.toLong() and 0xFFFF_FFFFL) + (offset.toLong() and 0xFFFF_FFFFL)
+                        if (ea < 0L || ea + 8L > targetMem.size) {
+                            throw WasmTrapException(TrapKind.OUT_OF_BOUNDS_MEMORY, "i64.store at $ea (size=${targetMem.size})")
+                        }
+                        val p = ea.toInt()
+                        for (bIdx in 0..7) targetMem[p + bIdx] = ((bits ushr (bIdx * 8)) and 0xFFL).toByte()
                     }
                     0x39 -> { // f64.store (8-byte little-endian)
                         val (alignFlags, n1) = readU32Leb(code, pc)
@@ -715,6 +781,10 @@ object WasmSandbox {
                     0x41 -> { // i32.const
                         val (v, next) = readS32Leb(code, pc); pc = next
                         push(v)
+                    }
+                    0x42 -> { // i64.const
+                        val (v, next) = readS64Leb(code, pc); pc = next
+                        push64(v)
                     }
                     0x43 -> { // f32.const (4 little-endian IEEE-754 bytes)
                         require(pc + 4 <= code.size) { "truncated f32.const" }
@@ -838,6 +908,55 @@ object WasmSandbox {
                     0xA4 -> { val b = popF64(); val a = popF64(); pushF64(min(a, b)) } // f64.min
                     0xA5 -> { val b = popF64(); val a = popF64(); pushF64(max(a, b)) } // f64.max
                     0xA6 -> { val b = popF64(); val a = popF64(); pushF64(a.withSign(b)) } // f64.copysign
+                    0x50 -> push(if (pop64() == 0L) 1 else 0) // i64.eqz
+                    0x51 -> { val b = pop64(); val a = pop64(); push(if (a == b) 1 else 0) } // i64.eq
+                    0x52 -> { val b = pop64(); val a = pop64(); push(if (a != b) 1 else 0) } // i64.ne
+                    0x53 -> { val b = pop64(); val a = pop64(); push(if (a < b) 1 else 0) } // i64.lt_s
+                    0x54 -> { val b = pop64(); val a = pop64(); push(if (java.lang.Long.compareUnsigned(a, b) < 0) 1 else 0) } // i64.lt_u
+                    0x55 -> { val b = pop64(); val a = pop64(); push(if (a > b) 1 else 0) } // i64.gt_s
+                    0x56 -> { val b = pop64(); val a = pop64(); push(if (java.lang.Long.compareUnsigned(a, b) > 0) 1 else 0) } // i64.gt_u
+                    0x57 -> { val b = pop64(); val a = pop64(); push(if (a <= b) 1 else 0) } // i64.le_s
+                    0x58 -> { val b = pop64(); val a = pop64(); push(if (java.lang.Long.compareUnsigned(a, b) <= 0) 1 else 0) } // i64.le_u
+                    0x59 -> { val b = pop64(); val a = pop64(); push(if (a >= b) 1 else 0) } // i64.ge_s
+                    0x5A -> { val b = pop64(); val a = pop64(); push(if (java.lang.Long.compareUnsigned(a, b) >= 0) 1 else 0) } // i64.ge_u
+                    0x79 -> push64(java.lang.Long.numberOfLeadingZeros(pop64()).toLong()) // i64.clz
+                    0x7A -> push64(java.lang.Long.numberOfTrailingZeros(pop64()).toLong()) // i64.ctz
+                    0x7B -> push64(java.lang.Long.bitCount(pop64()).toLong()) // i64.popcnt
+                    0x7C -> { val b = pop64(); val a = pop64(); push64(a + b) } // i64.add
+                    0x7D -> { val b = pop64(); val a = pop64(); push64(a - b) } // i64.sub
+                    0x7E -> { val b = pop64(); val a = pop64(); push64(a * b) } // i64.mul
+                    0x7F -> { // i64.div_s
+                        val b = pop64(); val a = pop64()
+                        if (b == 0L) throw WasmTrapException(TrapKind.INTEGER_DIVIDE_BY_ZERO, "i64.div_s by zero")
+                        if (a == Long.MIN_VALUE && b == -1L) throw WasmTrapException(TrapKind.INTEGER_OVERFLOW, "i64.div_s(MIN_VALUE, -1)")
+                        push64(a / b)
+                    }
+                    0x80 -> { // i64.div_u
+                        val b = pop64(); val a = pop64()
+                        if (b == 0L) throw WasmTrapException(TrapKind.INTEGER_DIVIDE_BY_ZERO, "i64.div_u by zero")
+                        push64(java.lang.Long.divideUnsigned(a, b))
+                    }
+                    0x81 -> { // i64.rem_s
+                        val b = pop64(); val a = pop64()
+                        if (b == 0L) throw WasmTrapException(TrapKind.INTEGER_DIVIDE_BY_ZERO, "i64.rem_s by zero")
+                        push64(if (a == Long.MIN_VALUE && b == -1L) 0L else a % b)
+                    }
+                    0x82 -> { // i64.rem_u
+                        val b = pop64(); val a = pop64()
+                        if (b == 0L) throw WasmTrapException(TrapKind.INTEGER_DIVIDE_BY_ZERO, "i64.rem_u by zero")
+                        push64(java.lang.Long.remainderUnsigned(a, b))
+                    }
+                    0x83 -> { val b = pop64(); val a = pop64(); push64(a and b) } // i64.and
+                    0x84 -> { val b = pop64(); val a = pop64(); push64(a or b) } // i64.or
+                    0x85 -> { val b = pop64(); val a = pop64(); push64(a xor b) } // i64.xor
+                    0x86 -> { val b = (pop64() and 63L).toInt(); val a = pop64(); push64(a shl b) } // i64.shl
+                    0x87 -> { val b = (pop64() and 63L).toInt(); val a = pop64(); push64(a shr b) } // i64.shr_s
+                    0x88 -> { val b = (pop64() and 63L).toInt(); val a = pop64(); push64(a ushr b) } // i64.shr_u
+                    0x89 -> { val b = (pop64() and 63L).toInt(); val a = pop64(); push64(java.lang.Long.rotateLeft(a, b)) } // i64.rotl
+                    0x8A -> { val b = (pop64() and 63L).toInt(); val a = pop64(); push64(java.lang.Long.rotateRight(a, b)) } // i64.rotr
+                    0xA7 -> push(pop64().toInt()) // i32.wrap_i64
+                    0xAC -> push64(pop().toLong()) // i64.extend_i32_s
+                    0xAD -> push64(pop().toLong() and 0xFFFF_FFFFL) // i64.extend_i32_u
                     0xAA -> { // i32.trunc_f64_s
                         val d = popF64()
                         if (d.isNaN()) throw WasmTrapException(TrapKind.INVALID_CONVERSION_TO_INTEGER, "i32.trunc_f64_s(NaN)")
@@ -1198,7 +1317,7 @@ object WasmSandbox {
         val bodies = ArrayList<Pair<Int, ByteArray>>()
 
         fun isSupportedValType(t: Int): Boolean =
-            t == TYPE_I32 || t == TYPE_F32 || t == TYPE_F64 || t == TYPE_V128 || t == REFTYPE_FUNCREF
+            t == TYPE_I32 || t == TYPE_I64 || t == TYPE_F32 || t == TYPE_F64 || t == TYPE_V128 || t == REFTYPE_FUNCREF
 
         fun readConstInitExpr64(src: ByteArray, startPos: Int): Pair<Long, Int> {
             val initOp = src[startPos].toInt() and 0xFF
@@ -1207,6 +1326,11 @@ object WasmSandbox {
                     val (v, n1) = readS32Leb(src, startPos + 1)
                     require((src[n1].toInt() and 0xFF) == 0x0B) { "const expr must terminate with 0x0B" }
                     v.toLong() to (n1 + 1)
+                }
+                0x42 -> { // i64.const
+                    val (v, n1) = readS64Leb(src, startPos + 1)
+                    require((src[n1].toInt() and 0xFF) == 0x0B) { "const expr must terminate with 0x0B" }
+                    v to (n1 + 1)
                 }
                 0x43 -> { // f32.const
                     val p = startPos + 1
@@ -1450,7 +1574,7 @@ object WasmSandbox {
 
     private fun blockArity(bt: Int): Int = when (bt) {
         BLOCK_VOID -> 0
-        TYPE_I32, TYPE_F32, TYPE_F64, TYPE_V128, REFTYPE_FUNCREF -> 1
+        TYPE_I32, TYPE_I64, TYPE_F32, TYPE_F64, TYPE_V128, REFTYPE_FUNCREF -> 1
         else -> throw IllegalArgumentException("unsupported blocktype 0x${bt.toString(16)}")
     }
 
@@ -1479,11 +1603,17 @@ object WasmSandbox {
                     }
                 }
                 0x0C, 0x0D, 0x10, 0x12, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0xD2 -> pc = readU32Leb(code, pc).second
+                0x0E -> {
+                    val (vecCount, n0) = readU32Leb(code, pc)
+                    var cur = n0
+                    for (i in 0..vecCount) cur = readU32Leb(code, cur).second
+                    pc = cur
+                }
                 0x11, 0x13 -> {
                     val n1 = readU32Leb(code, pc).second
                     pc = readU32Leb(code, n1).second
                 }
-                0x28, 0x2A, 0x2B, 0x2D, 0x36, 0x38, 0x39, 0x3A -> {
+                0x28, 0x29, 0x2A, 0x2B, 0x2D, 0x36, 0x37, 0x38, 0x39, 0x3A -> {
                     val (alignFlags, n1) = readU32Leb(code, pc)
                     val nMem = if ((alignFlags and 0x40) != 0) readU32Leb(code, n1).second else n1
                     pc = readU32Leb(code, nMem).second
@@ -1491,6 +1621,7 @@ object WasmSandbox {
                 0x3F, 0x40 -> pc = readU32Leb(code, pc).second
                 0xD0 -> pc++
                 0x41 -> pc = readS32Leb(code, pc).second
+                0x42 -> pc = readS64Leb(code, pc).second
                 0x43 -> pc += 4 // f32.const 4 raw bytes (MUST NOT misparse 0x0B inside float bytes as structured end!)
                 0x44 -> pc += 8 // f64.const 8 raw bytes (MUST NOT misparse 0x0B inside double bytes as structured end!)
                 0xFC -> {
@@ -1544,6 +1675,23 @@ object WasmSandbox {
         } while ((b and 0x80) != 0)
         if (shift < 32 && (b and 0x40) != 0) {
             result = result or (-1 shl shift)
+        }
+        return result to p
+    }
+
+    private fun readS64Leb(buf: ByteArray, start: Int): Pair<Long, Int> {
+        var result = 0L
+        var shift = 0
+        var p = start
+        var b: Int
+        do {
+            require(p < buf.size && shift < 70) { "malformed s64 LEB128 at $start" }
+            b = buf[p++].toInt() and 0xFF
+            result = result or ((b.toLong() and 0x7FL) shl shift)
+            shift += 7
+        } while ((b and 0x80) != 0)
+        if (shift < 64 && (b and 0x40) != 0) {
+            result = result or (-1L shl shift)
         }
         return result to p
     }

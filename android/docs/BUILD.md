@@ -1,3 +1,18 @@
+# R54 — R54 contracts on Android SDK 37 CI (`:testing:r54Contracts`)
+
+```bash
+# Host (no Android Studio): compile + execute all R54 kernels, then the independent Python oracle
+python3 tools/run_r54_contracts.py          # R54_CONTRACTS_OK assertions=1109 kernels=22 modules=50/50
+python3 tools/check_r54_reference.py        # R54_ORACLE_OK checks=139 artifacts=21
+python3 tools/render_r54_visual_preview.py  # R54 VISUAL AUDIT PASS sheets=3 boxes=124 pairs=2534 minContrast=7.58
+python3 tools/check_r26_android_syntax.py   # 62/62 PARSE OK (3 new Compose files)
+python3 tools/r54_class_a_readiness.py      # 0/50 Class A, 50/50 testable subsets
+python3 tools/r54_lab.py host               # every gate above in order
+
+# CI (Android SDK 37): the contract task is registered in android/testing/build.gradle.kts
+./gradlew :testing:r54Contracts
+```
+
 # R53 — Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) + 7-OS Cascading Context Menus / 5-DPI Crisp List·Grid·Columns Logos / Interactive Undo Fan + 96 new executed kernels (+7 UI + 19 touched) across 50/50 modules (100%); 42 contiguous R13–R53 CI tasks + live `:8765` workbench
 
 Current work branch **`arena/64550eba-osb`** (`2026-10-29`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.

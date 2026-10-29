@@ -1,0 +1,31 @@
+{
+  "round": "R54",
+  "size": [
+    1880,
+    1400
+  ],
+  "sheets": [
+    {
+      "file": "r54-writer-typography.png",
+      "boxes": 38,
+      "pairs": 703,
+      "writer_min_contrast": 7.579731931287398
+    },
+    {
+      "file": "r54-spreadsheet-class-a.png",
+      "boxes": 38,
+      "pairs": 703,
+      "calc_min_contrast": 7.579731931287398
+    },
+    {
+      "file": "r54-recall-shield-ergonomics.png",
+      "boxes": 48,
+      "pairs": 1128,
+      "recall_min_contrast": 7.579731931287398
+    }
+  ],
+  "total_text_boxes": 124,
+  "total_pairwise_checks": 2534,
+  "min_wcag_contrast": 7.58,
+  "honesty": "Host-side rasterisation of real host kernel output. Not Android device rendering; no Class A module is claimed (0/50)."
+}

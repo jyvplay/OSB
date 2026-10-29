@@ -73,6 +73,9 @@ FILES = [
     'feature/media/src/main/java/dev/fusion/media/MediaLibraryMultiViewPanel.kt',  # R53: Media Hub List / Grid / Columns multi-view panel
     'feature/files/src/main/java/dev/fusion/filesui/FilesDualPaneInspectorBar.kt',  # R53: Dual-pane synced List/Grid/Columns + cascading context-menu bar
     'feature/vault/src/main/java/dev/fusion/vault/VaultColumnsSecretBrowser.kt',  # R53: Encrypted Vault List / Grid / Columns secret browser
+    'feature/editor/src/main/kotlin/dev/fusion/editor/WriterTypographyInspectorCard.kt',  # R54: Knuth-Plass + sfnt inspector
+    'feature/calc/src/main/kotlin/dev/fusion/calc/SpreadsheetOptimizerPanel.kt',  # R54: Simplex/MILP + decimal128 panel
+    'feature/browser/src/main/kotlin/dev/fusion/browser/RecallSevenMethodStudioSheet.kt',  # R54: 7-method Recall studio
 ]
 SYNTAX = re.compile(r'error: (expecting|syntax|mismatched input|unclosed|unresolved reference \S*$)')
 

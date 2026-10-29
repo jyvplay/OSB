@@ -35,6 +35,7 @@ import run_r50_contracts
 import run_r51_contracts
 import run_r52_contracts
 import run_r53_contracts
+import run_r54_contracts
 
 ROOT = Path(__file__).resolve().parents[1]
 DAEMON_DIR = ROOT / "testing/build/r53-workbench-daemon"
@@ -42,6 +43,21 @@ DAEMON_DIR = ROOT / "testing/build/r53-workbench-daemon"
 KOTLIN_DAEMON_SRC = r'''
 package dev.fusion.testing
 
+import dev.fusion.browser.model.RecallMethodEscalationRouter
+import dev.fusion.browser.model.RecallTier6MseSourceBufferTap
+import dev.fusion.commands.UndoToastBatchCoalescerController
+import dev.fusion.designsystem.BespokeViewModeAnimatedMorphSpec
+import dev.fusion.documents.OptimalParagraphComposer
+import dev.fusion.documents.LiangHyphenationTrieEngine
+import dev.fusion.documents.OpenTypeSfntMetricsParser
+import dev.fusion.hw.UsbPdStructuredVdmAltModeGuard
+import dev.fusion.lok.OdtBidirectionalPackageCodec
+import dev.fusion.media.RecallFlacRfc9639LosslessArchiver
+import dev.fusion.ooxml.Decimal128FinancialEngine
+import dev.fusion.ooxml.DocxBidirectionalPackageCodec
+import dev.fusion.ooxml.SpreadsheetSimplexMilpSolver
+import dev.fusion.ooxml.Sqlite3BtreeTableFileReader
+import dev.fusion.windowing.ContextMenuKeyboardTypeaheadSubmenuEngine
 import dev.fusion.browser.ArticleReaderExtractor
 import dev.fusion.browser.CrossOriginIsolationPolicy
 import dev.fusion.browser.CspHeaderDirective
@@ -53,7 +69,7 @@ import dev.fusion.capabilities.WasiSocketCapabilityGate
 import dev.fusion.capabilities.WasmSandbox
 import dev.fusion.documents.DocOutlineRender
 import dev.fusion.documents.Epub3Package
-import dev.fusion.documents.KnuthPlassLineBreaker
+import dev.fusion.documents.OptimalParagraphComposer
 import dev.fusion.documents.LatexMathSvg
 import dev.fusion.documents.LiangHyphenationEngine
 import dev.fusion.documents.OdfTrackedChangesCodec
@@ -317,6 +333,69 @@ object R46WorkbenchDaemon {
                 val mmEcho = parsedWasm.instantiate().invoke("copyAcrossMemories").returnValues[0] == 0x534D_454D
                 val isoOk = WasmMultiMemoryIsolationVerifier.auditPolicy(listOf(1, 1), listOf(2, 2), setOf(0), emptySet(), setOf(1)).isolationCompliant
                 """{"ok":true,"functions":300,"spill_ops":48,"imabs_3_4i":${(fSheet.values["A1"] as FormulaEval.CellValue.Num).value},"multinomial_2_3_4":${(fSheet.values["A2"] as FormulaEval.CellValue.Num).value},"fisher_roundtrip":${(fSheet.values["A3"] as FormulaEval.CellValue.Num).value},"beta_dist":${(fSheet.values["A4"] as FormulaEval.CellValue.Num).value},"hankel_2_2":${(hankel[2][2] as FormulaEval.CellValue.Num).value},"wasm_memories":${parsedWasm.memoryDecls.size},"wasm_isolation_ok":$isoOk,"wasm_dual_mem_echo":$mmEcho}"""
+            }
+            "R54_WRITER_TYPOGRAPHY" -> {
+                val words = "Fusion Shell typesets paginated documents with optimal paragraph breaking".split(" ")
+                val items = OptimalParagraphComposer.tokenizeParagraph(words, { it.length * 6.0 }, 6.0, 4.0)
+                val res = OptimalParagraphComposer.compose(items, { 180.0 })
+                val font = OpenTypeSfntMetricsParser.buildSyntheticProportionalFont(1000)
+                val face = OpenTypeSfntMetricsParser.parse(font)
+                val avWidth = face.measureTextPoints("AV", 1000.0)
+                val hyph = LiangHyphenationTrieEngine.hyphenateWord("typesetting").size
+                val doc = DocxBidirectionalPackageCodec.encodeDocument(
+                    DocxBidirectionalPackageCodec.WriterDocument(
+                        "R54", "Fusion",
+                        listOf(DocxBidirectionalPackageCodec.Block.Paragraph("Hello world", style = "Heading1")),
+                        footnotes = mapOf(1 to "note"),
+                    ),
+                )
+                val parsed = DocxBidirectionalPackageCodec.parseDocument(doc)
+                val odt = OdtBidirectionalPackageCodec.parse(
+                    OdtBidirectionalPackageCodec.write(
+                        OdtBidirectionalPackageCodec.OdtDocument("R54", "Fusion", listOf(OdtBidirectionalPackageCodec.Paragraph("Hi", 1))),
+                    ),
+                )
+                """{"ok":true,"lines":${res.lines.size},"demerits":${res.totalDemerits},"pass_used":${res.passUsed},"glyphs":${face.numGlyphs},"av_width_pt":$avWidth,"hyphen_points":$hyph,"docx_entries":${parsed.entries.size},"odt_mimetype_stored":${odt.mimetypeStored}}"""
+            }
+            "R54_CALC_OPTIMISATION" -> {
+                val c = doubleArrayOf(3.0, 2.0, 1.5)
+                val cons = listOf(
+                    SpreadsheetSimplexMilpSolver.Constraint(doubleArrayOf(1.0, 1.0, 0.0), SpreadsheetSimplexMilpSolver.Sense.LE, 4.0),
+                    SpreadsheetSimplexMilpSolver.Constraint(doubleArrayOf(0.0, 1.0, 2.0), SpreadsheetSimplexMilpSolver.Sense.LE, 6.0),
+                )
+                val lp = SpreadsheetSimplexMilpSolver.maximize(c, cons)
+                val milp = SpreadsheetSimplexMilpSolver.maximizeInteger(c, cons)
+                val sum = Decimal128FinancialEngine.sumExact(listOf("0.1", "0.2", "0.3").map { Decimal128FinancialEngine.parse(it) })
+                val table = Sqlite3BtreeTableFileReader.Table(
+                    "ledger",
+                    listOf(Sqlite3BtreeTableFileReader.Column("region", Sqlite3BtreeTableFileReader.ColumnKind.TEXT)),
+                    listOf(listOf(Sqlite3BtreeTableFileReader.Value.TextV("North"))),
+                )
+                val db = Sqlite3BtreeTableFileReader.writeSingleFileTable(4096, table)
+                val integrity = Sqlite3BtreeTableFileReader.verifyIntegrity(db)
+                val hilbert = FormulaEval.evaluateFormulaAsGrid("=HILBERT(3)", emptyMap())
+                """{"ok":true,"functions":350,"spill_ops":56,"lp_objective":${lp.objective},"milp_objective":${milp.objective},"decimal_sum":"${sum.plainString()}","sqlite_ok":${integrity.ok},"hilbert_3_3":${(hilbert[2][2] as FormulaEval.CellValue.Num).value}}"""
+            }
+            "R54_RECALL_SHIELD_ERGONOMICS" -> {
+                val clip = RecallFlacRfc9639LosslessArchiver.PcmClip(48000, 1, 16, ShortArray(1024) { (it % 200 - 100).toShort() })
+                val flac = RecallFlacRfc9639LosslessArchiver.encode(clip, 256, 512)
+                val flacOk = RecallFlacRfc9639LosslessArchiver.validateSeekTable(flac).ok
+                val (md5Ok, _) = RecallFlacRfc9639LosslessArchiver.verifyStreamMd5(flac)
+                val vdm = UsbPdStructuredVdmAltModeGuard.evaluate((0xFF01 shl 16) or 0x0001, UsbPdStructuredVdmAltModeGuard.PortState.UNLOCKED_TRUSTED)
+                var deck = UndoToastBatchCoalescerController.Deck()
+                for (i in 0 until 25) {
+                    deck = UndoToastBatchCoalescerController.push(
+                        deck, UndoToastBatchCoalescerController.ActionReceipt("r$i", "files.move", "Moved", "a->b", 1_000L + i * 4L),
+                    )
+                }
+                val morphed = BespokeViewModeAnimatedMorphSpec.interpolate(
+                    BespokeViewModeAnimatedMorphSpec.ViewMode.LIST, BespokeViewModeAnimatedMorphSpec.ViewMode.GRID, 0.5f,
+                )
+                val typed = ContextMenuKeyboardTypeaheadSubmenuEngine.keyDown(
+                    ContextMenuKeyboardTypeaheadSubmenuEngine.State(),
+                    listOf(ContextMenuKeyboardTypeaheadSubmenuEngine.MenuItem("copy", "Copy")), 'c', 1_000L,
+                )
+                """{"ok":true,"methods":7,"flac_ok":$flacOk,"flac_md5_ok":$md5Ok,"seekpoints":${flac.seekTable.size},"vdm_blocked":${vdm.decision != UsbPdStructuredVdmAltModeGuard.Decision.ALLOW},"undo_visible":${deck.visibleCards.size},"undo_fraction":${deck.rightEdgeHeightFraction()},"morph_paths":${morphed.pathCount},"typeahead":"${typed.selected?.id ?: ""}"}"""
             }
             "R53_CONFLUX_MAT2_HW30" -> {
                 val goodLegs = listOf(
@@ -2116,14 +2195,25 @@ class KotlinDaemonBridge:
             ]
             if not all(j.is_file() for j in r53_jars):
                 run_r53_contracts.main([])
+            r54_dir = ROOT / "testing" / "build" / "r54"
+            r54_jars = [
+                r54_dir / "r54_writer_typography.jar",
+                r54_dir / "r54_spreadsheet_optimisation.jar",
+                r54_dir / "r54_recall_media.jar",
+                r54_dir / "r54_privacy_hw_passkey.jar",
+                r54_dir / "r54_ui_ergonomics.jar",
+            ]
+            if not all(j.is_file() for j in r54_jars):
+                run_r54_contracts.main([])
         finally:
             sys.argv = saved_argv
         # Place R53 jars first so 300-fn FormulaEval, 48-op SpillSheetEngine, Wasm 3.0 Multi-Memory, 6-method Recall & R53 UI kernels win cleanly
-        jars = [*r53_jars, *r52_jars, *r51_jars, *r50_jars, *r49_jars, *r48_jars, *r47_jars, *r46_jars]
+        # R54 jars first: 350-fn FormulaEval / 56-op SpillSheetEngine / R54 writer + privacy + ergonomics win.
+        jars = [*r54_jars, *r53_jars, *r52_jars, *r51_jars, *r50_jars, *r49_jars, *r48_jars, *r47_jars, *r46_jars]
         DAEMON_DIR.mkdir(parents=True, exist_ok=True)
         kt_file = DAEMON_DIR / "R46WorkbenchDaemon.kt"
-        daemon_jar = DAEMON_DIR / "r53-workbench-daemon.jar"
-        stamp = DAEMON_DIR / "r53-workbench-daemon.sha256"
+        daemon_jar = DAEMON_DIR / "r54-workbench-daemon.jar"
+        stamp = DAEMON_DIR / "r54-workbench-daemon.sha256"
         if not kt_file.is_file() or kt_file.read_text(encoding="utf-8") != KOTLIN_DAEMON_SRC:
             kt_file.write_text(KOTLIN_DAEMON_SRC, encoding="utf-8")
         sig = run_r46_contracts._sha256_paths([*jars, kt_file])
@@ -2204,6 +2294,23 @@ def make_handler(bridge: KotlinDaemonBridge):
                 self.end_headers()
                 self.wfile.write(body)
                 return
+            if "/api/r54/preview/" in path:
+                fname54 = path.rsplit("/", 1)[-1]
+                allowed54 = {
+                    "r54-writer-typography.png",
+                    "r54-spreadsheet-class-a.png",
+                    "r54-recall-shield-ergonomics.png",
+                }
+                png_path54 = ROOT / "docs/verification/r54-host-workbench" / fname54
+                if fname54 in allowed54 and png_path54.is_file():
+                    raw_png54 = png_path54.read_bytes()
+                    self.send_response(HTTPStatus.OK)
+                    self.send_header("Content-Type", "image/png")
+                    self.send_header("Content-Length", str(len(raw_png54)))
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.end_headers()
+                    self.wfile.write(raw_png54)
+                    return
             if "/api/r53/preview/" in path:
                 fname = path.rsplit("/", 1)[-1]
                 allowed53 = {
@@ -2453,6 +2560,15 @@ def make_handler(bridge: KotlinDaemonBridge):
             elif path.endswith("/api/r52/tails-pow-shield25"):
                 res = bridge.request("R52_TAILS_POW_SHIELD25")
                 self._send_json(HTTPStatus.OK, res)
+            elif path.endswith("/api/r54/writer-typography"):
+                res = bridge.request("R54_WRITER_TYPOGRAPHY")
+                self._send_json(HTTPStatus.OK, res)
+            elif path.endswith("/api/r54/calc-optimisation"):
+                res = bridge.request("R54_CALC_OPTIMISATION")
+                self._send_json(HTTPStatus.OK, res)
+            elif path.endswith("/api/r54/recall-shield-ergonomics"):
+                res = bridge.request("R54_RECALL_SHIELD_ERGONOMICS")
+                self._send_json(HTTPStatus.OK, res)
             elif path.endswith("/api/r53/recall6"):
                 res = bridge.request("R53_RECALL_6METHOD_WARC", str(data.get("url_b64", "")))
                 self._send_json(HTTPStatus.OK, res)
@@ -2542,6 +2658,11 @@ def main(argv: list[str] | None = None) -> int:
             r52_erg = bridge.request("R52_UI_ERGONOMICS_BENCHMARK", "1440", "900", "1380", "840")
             r52_cw3 = bridge.request("R52_CALC260_WASM3_TAILCALL", "25000")
             r52_pow = bridge.request("R52_TAILS_POW_SHIELD25")
+            r54_typo = bridge.request("R54_WRITER_TYPOGRAPHY")
+            r54_calc = bridge.request("R54_CALC_OPTIMISATION")
+            r54_rec = bridge.request("R54_RECALL_SHIELD_ERGONOMICS")
+            if not (r54_typo.get("ok") and r54_calc.get("ok") and r54_rec.get("ok")):
+                raise SystemExit("R54 bridge commands failed")
             r53_rec6 = bridge.request("R53_RECALL_6METHOD_WARC", base64.b64encode(b"https://concert.example.org/webrtc-live").decode("ascii"))
             r53_erg2 = bridge.request("R53_UI_ERGONOMICS_PHASE2", "1440", "900", "1340", "300")
             r53_c300 = bridge.request("R53_CALC300_WASM_MULTIMEMORY")

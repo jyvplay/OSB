@@ -13,7 +13,7 @@ package dev.fusion.ooxml
  */
 object SpillSheetEngine {
     const val SCOPE =
-        "2D dynamic-array spreadsheet spill engine (48 spilled array, Hankel/Toeplitz/Vandermonde/Kronecker/convolution/Pareto, grouping, pivot, matrix linear-algebra, regression, time-series & higher-order LAMBDA ops expanding 42 R52, 36 spilled R51, 29 R50, and 23 R49 baselines: SEQUENCE, UNIQUE, SORT, SORTBY, FILTER, TEXTSPLIT, TRANSPOSE, MMULT, MINVERSE, MUNIT, FREQUENCY, TREND, GROWTH, EXPAND, TRIMRANGE, GROUPBY, PIVOTBY, LINEST, LOGEST, FLATTEN, OUTERPRODUCT, CUMSUM, DIFFARRAY, MOVINGAVERAGE, ZSCOREGRID, DIAGONAL, HANKEL, TOEPLITZ, VANDERMONDE, KRONECKER, CONVOLVE1D, PARETOGRID, MAP, REDUCE, SCAN, BYROW, BYCOL, MAKEARRAY, VSTACK, HSTACK, TAKE, DROP, TOCOL, TOROW, CHOOSECOLS, CHOOSEROWS, WRAPROWS, WRAPCOLS, LET-spills, A1# spill-range anchor references, deterministic #SPILL! collision detection, and _xlfn._xlws. OOXML formula normalization); volatile RANDARRAY refused."
+        "2D dynamic-array spreadsheet spill engine (56 spilled array, Circulant/Hilbert/Cholesky/Gram/RowNorm/EWMA/SavitzkyGolay/Hadamard, Hankel/Toeplitz/Vandermonde/Kronecker/convolution/Pareto, grouping, pivot, matrix linear-algebra, regression, time-series & higher-order LAMBDA ops expanding 48 R53, 42 R52, 36 spilled R51, 29 R50, and 23 R49 baselines: SEQUENCE, UNIQUE, SORT, SORTBY, FILTER, TEXTSPLIT, TRANSPOSE, MMULT, MINVERSE, MUNIT, FREQUENCY, TREND, GROWTH, EXPAND, TRIMRANGE, GROUPBY, PIVOTBY, LINEST, LOGEST, FLATTEN, OUTERPRODUCT, CUMSUM, DIFFARRAY, MOVINGAVERAGE, ZSCOREGRID, DIAGONAL, HANKEL, TOEPLITZ, VANDERMONDE, KRONECKER, CONVOLVE1D, PARETOGRID, CIRCULANT, HILBERT, CHOLESKY, GRAMMATRIX, ROW_NORM, EWMA_ARRAY, SAVITZKY_GOLAY5, HADAMARD_PROD, MAP, REDUCE, SCAN, BYROW, BYCOL, MAKEARRAY, VSTACK, HSTACK, TAKE, DROP, TOCOL, TOROW, CHOOSECOLS, CHOOSEROWS, WRAPROWS, WRAPCOLS, LET-spills, A1# spill-range anchor references, deterministic #SPILL! collision detection, and _xlfn._xlws. OOXML formula normalization); volatile RANDARRAY refused."
 
     const val SPILL_ERROR_LITERAL = "#SPILL!"
     const val MAX_SPILL_CELLS = 4_096
@@ -224,6 +224,7 @@ object SpillSheetEngine {
         "EXPAND", "TRIMRANGE", "GROUPBY", "PIVOTBY", "LINEST", "LOGEST", "FLATTEN",
         "OUTERPRODUCT", "CUMSUM", "DIFFARRAY", "MOVINGAVERAGE", "ZSCOREGRID", "DIAGONAL",
         "HANKEL", "TOEPLITZ", "VANDERMONDE", "KRONECKER", "CONVOLVE1D", "PARETOGRID",
+        "CIRCULANT", "HILBERT", "CHOLESKY", "GRAMMATRIX", "ROW_NORM", "EWMA_ARRAY", "SAVITZKY_GOLAY5", "HADAMARD_PROD",
     )
 
     private fun isDynamicArrayHead(body: String): Boolean {
