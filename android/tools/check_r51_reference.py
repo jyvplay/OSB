@@ -160,17 +160,38 @@ def main(argv: list[str] | None = None) -> None:
         p = art / name
         ok(p.is_file() and p.stat().st_size > 0, f"missing or empty artifact {name}")
 
-    # 1. r51-structured-table.xlsx via openpyxl + zipfile + XML table1.xml schema (18 checks)
-    import openpyxl
+    # 1. r51-structured-table.xlsx via openpyxl (when installed) or stdlib ECMA-376 XML fallback + zipfile + XML table1.xml schema (18 checks)
     xlsx_path = art / "r51-structured-table.xlsx"
-    wb = openpyxl.load_workbook(xlsx_path, data_only=True)
-    ws = wb.active
-    ok(ws["B2"].value == "Region" and ws["C2"].value == "Q1" and ws["D2"].value == "Q2", "StructuredTable headers B2:D2")
-    ok(ws["B3"].value == "North" and abs(float(ws["C3"].value) - 120.0) < 1e-9 and abs(float(ws["D3"].value) - 180.0) < 1e-9, "North row")
-    ok(ws["B4"].value == "South" and abs(float(ws["C4"].value) - 200.0) < 1e-9 and abs(float(ws["D4"].value) - 250.0) < 1e-9, "South row")
-    ok(ws["B5"].value == "Total", "Totals label cell B5")
-    ok(abs(float(ws["C5"].value) - 320.0) < 1e-9, "Totals Q1 SUBTOTAL(109)=320")
-    ok(abs(float(ws["D5"].value) - 430.0) < 1e-9, "Totals Q2 SUBTOTAL(109)=430")
+    try:
+        import openpyxl  # type: ignore[import-not-found]
+    except ModuleNotFoundError:
+        openpyxl = None  # type: ignore[assignment]
+    if openpyxl is not None:
+        wb = openpyxl.load_workbook(xlsx_path, data_only=True)
+        ws = wb.active
+        ok(ws["B2"].value == "Region" and ws["C2"].value == "Q1" and ws["D2"].value == "Q2", "StructuredTable headers B2:D2")
+        ok(ws["B3"].value == "North" and abs(float(ws["C3"].value) - 120.0) < 1e-9 and abs(float(ws["D3"].value) - 180.0) < 1e-9, "North row")
+        ok(ws["B4"].value == "South" and abs(float(ws["C4"].value) - 200.0) < 1e-9 and abs(float(ws["D4"].value) - 250.0) < 1e-9, "South row")
+        ok(ws["B5"].value == "Total", "Totals label cell B5")
+        ok(abs(float(ws["C5"].value) - 320.0) < 1e-9, "Totals Q1 SUBTOTAL(109)=320")
+        ok(abs(float(ws["D5"].value) - 430.0) < 1e-9, "Totals Q2 SUBTOTAL(109)=430")
+    else:
+        ns_sml = {"s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+        with zipfile.ZipFile(xlsx_path, "r") as zf_xml:
+            sh_root = ET.fromstring(zf_xml.read("xl/worksheets/sheet1.xml"))
+            cell_map: dict[str, str] = {}
+            for c_el in sh_root.findall(".//s:c", ns_sml):
+                ref = c_el.attrib.get("r", "")
+                if c_el.attrib.get("t") == "inlineStr":
+                    cell_map[ref] = c_el.findtext(".//s:t", default="", namespaces=ns_sml)
+                else:
+                    cell_map[ref] = c_el.findtext("s:v", default="", namespaces=ns_sml)
+            ok(cell_map.get("B2") == "Region" and cell_map.get("C2") == "Q1" and cell_map.get("D2") == "Q2", "StructuredTable headers B2:D2")
+            ok(cell_map.get("B3") == "North" and abs(float(cell_map["C3"]) - 120.0) < 1e-9 and abs(float(cell_map["D3"]) - 180.0) < 1e-9, "North row")
+            ok(cell_map.get("B4") == "South" and abs(float(cell_map["C4"]) - 200.0) < 1e-9 and abs(float(cell_map["D4"]) - 250.0) < 1e-9, "South row")
+            ok(cell_map.get("B5") == "Total", "Totals label cell B5")
+            ok(abs(float(cell_map["C5"]) - 320.0) < 1e-9, "Totals Q1 SUBTOTAL(109)=320")
+            ok(abs(float(cell_map["D5"]) - 430.0) < 1e-9, "Totals Q2 SUBTOTAL(109)=430")
     with zipfile.ZipFile(xlsx_path, "r") as zf:
         names = set(zf.namelist())
         ok("xl/tables/table1.xml" in names, "xl/tables/table1.xml present")

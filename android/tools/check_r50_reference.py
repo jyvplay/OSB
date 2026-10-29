@@ -125,19 +125,41 @@ def main(argv: list[str] | None = None) -> None:
         p = art / name
         ok(p.is_file() and p.stat().st_size > 0, f"missing or empty artifact {name}")
 
-    # 1. r50-multisheet-3d.xlsx via openpyxl + zipfile
-    import openpyxl
+    # 1. r50-multisheet-3d.xlsx via openpyxl (when installed) or stdlib ECMA-376 XML fallback + zipfile
     xlsx_path = art / "r50-multisheet-3d.xlsx"
-    wb_val = openpyxl.load_workbook(xlsx_path, data_only=True)
-    wb_frm = openpyxl.load_workbook(xlsx_path, data_only=False)
-    ok(wb_val.sheetnames == ["Q1", "Q2", "Q3", "Summary"], f"unexpected sheets {wb_val.sheetnames}")
-    for idx_q, sh_name in enumerate(("Q1", "Q2", "Q3"), start=1):
-        ok(abs(float(wb_val[sh_name]["B2"].value) - 100.0 * idx_q) < 1e-9, f"{sh_name}!B2 value")
-        ok(abs(float(wb_val[sh_name]["B3"].value) - 25.0 * idx_q) < 1e-9, f"{sh_name}!B3 value")
-    ok(abs(float(wb_val["Summary"]["A1"].value) - 750.0) < 1e-9, "Summary!A1 cached 3D SUM")
-    ok(abs(float(wb_val["Summary"]["A2"].value) - 200.0) < 1e-9, "Summary!A2 cached 3D AVERAGE")
-    ok(str(wb_frm["Summary"]["A1"].value).startswith("="), "Summary!A1 formula preserved")
-    ok(str(wb_frm["Summary"]["A2"].value).startswith("="), "Summary!A2 formula preserved")
+    try:
+        import openpyxl  # type: ignore[import-not-found]
+    except ModuleNotFoundError:
+        openpyxl = None  # type: ignore[assignment]
+    if openpyxl is not None:
+        wb_val = openpyxl.load_workbook(xlsx_path, data_only=True)
+        wb_frm = openpyxl.load_workbook(xlsx_path, data_only=False)
+        ok(wb_val.sheetnames == ["Q1", "Q2", "Q3", "Summary"], f"unexpected sheets {wb_val.sheetnames}")
+        for idx_q, sh_name in enumerate(("Q1", "Q2", "Q3"), start=1):
+            ok(abs(float(wb_val[sh_name]["B2"].value) - 100.0 * idx_q) < 1e-9, f"{sh_name}!B2 value")
+            ok(abs(float(wb_val[sh_name]["B3"].value) - 25.0 * idx_q) < 1e-9, f"{sh_name}!B3 value")
+        ok(abs(float(wb_val["Summary"]["A1"].value) - 750.0) < 1e-9, "Summary!A1 cached 3D SUM")
+        ok(abs(float(wb_val["Summary"]["A2"].value) - 200.0) < 1e-9, "Summary!A2 cached 3D AVERAGE")
+        ok(str(wb_frm["Summary"]["A1"].value).startswith("="), "Summary!A1 formula preserved")
+        ok(str(wb_frm["Summary"]["A2"].value).startswith("="), "Summary!A2 formula preserved")
+    else:
+        ns_sml = {"s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+        with zipfile.ZipFile(xlsx_path, "r") as zf_xml:
+            wb_root = ET.fromstring(zf_xml.read("xl/workbook.xml"))
+            sheet_names = [el.attrib.get("name", "") for el in wb_root.findall(".//s:sheet", ns_sml)]
+            ok(sheet_names == ["Q1", "Q2", "Q3", "Summary"], f"unexpected sheets {sheet_names}")
+            for idx_q, sh_name in enumerate(("Q1", "Q2", "Q3"), start=1):
+                sh_root = ET.fromstring(zf_xml.read(f"xl/worksheets/sheet{idx_q}.xml"))
+                cells = {c.attrib["r"]: (c.findtext("s:v", default="", namespaces=ns_sml)) for c in sh_root.findall(".//s:c", ns_sml)}
+                ok(abs(float(cells["B2"]) - 100.0 * idx_q) < 1e-9, f"{sh_name}!B2 value")
+                ok(abs(float(cells["B3"]) - 25.0 * idx_q) < 1e-9, f"{sh_name}!B3 value")
+            sum_root = ET.fromstring(zf_xml.read("xl/worksheets/sheet4.xml"))
+            sum_vals = {c.attrib["r"]: c.findtext("s:v", default="", namespaces=ns_sml) for c in sum_root.findall(".//s:c", ns_sml)}
+            sum_frms = {c.attrib["r"]: c.findtext("s:f", default="", namespaces=ns_sml) for c in sum_root.findall(".//s:c", ns_sml)}
+            ok(abs(float(sum_vals["A1"]) - 750.0) < 1e-9, "Summary!A1 cached 3D SUM")
+            ok(abs(float(sum_vals["A2"]) - 200.0) < 1e-9, "Summary!A2 cached 3D AVERAGE")
+            ok(bool(sum_frms["A1"]), "Summary!A1 formula preserved")
+            ok(bool(sum_frms["A2"]), "Summary!A2 formula preserved")
     with zipfile.ZipFile(xlsx_path, "r") as zf:
         ok(all("vbaProject" not in n for n in zf.namelist()), "no VBA macro payload allowed")
         for zi in zf.infolist():

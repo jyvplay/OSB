@@ -263,6 +263,11 @@ def _collect_checks() -> None:
           and "plan.slotDp.coerceAtLeast(TileLabelFit.MIN_TOUCH_TARGET_DP)" in dock_ui
           and '!message.startsWith("Local first.")' in main_ui)
 
+    r50_ref_src = (ROOT / "tools/check_r50_reference.py").read_text(encoding="utf-8")
+    r51_ref_src = (ROOT / "tools/check_r51_reference.py").read_text(encoding="utf-8")
+    check("CI stdlib fallback: check_r50_reference.py and check_r51_reference.py guard ModuleNotFoundError for openpyxl with ECMA-376 XML fallback",
+          "except ModuleNotFoundError:" in r50_ref_src and "except ModuleNotFoundError:" in r51_ref_src)
+
 
 _collect_checks()
 
