@@ -104,7 +104,7 @@ class R54ToolTests(unittest.TestCase):
 
         ui = [
             "feature/editor/src/main/kotlin/dev/fusion/editor/WriterTypographyInspectorCard.kt",
-            "feature/calc/src/main/kotlin/dev/fusion/calc/SpreadsheetOptimizerPanel.kt",
+            "feature/calc/src/main/java/dev/fusion/calcui/SpreadsheetOptimizerPanel.kt",
             "feature/browser/src/main/kotlin/dev/fusion/browser/RecallSevenMethodStudioSheet.kt",
         ]
         for rel in ui:

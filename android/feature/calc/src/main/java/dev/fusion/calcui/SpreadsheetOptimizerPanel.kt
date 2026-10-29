@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-package dev.fusion.calc
+package dev.fusion.calcui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

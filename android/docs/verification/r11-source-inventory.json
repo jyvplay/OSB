@@ -3773,6 +3773,12 @@
       "sha256": "397f1bdf9944a13b6e108c22947becd3d797d6c4b7b7fccb1e30d33a3ee13d02"
     },
     {
+      "path": "feature/calc/src/main/java/dev/fusion/calcui/SpreadsheetOptimizerPanel.kt",
+      "module": ":feature:calc",
+      "package": "dev.fusion.calcui",
+      "sha256": "ebd6619eb40c3268d2490121f1870a74fdb963da369b494e2d2c206c0ec685be"
+    },
+    {
       "path": "feature/calc/src/main/kotlin/dev/fusion/calc/Calculator.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
@@ -3867,12 +3873,6 @@
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
       "sha256": "0453ce38dc31d376a8698e9d6aabcb86bf29d7ac04071e5c155ae0a56be93bc1"
-    },
-    {
-      "path": "feature/calc/src/main/kotlin/dev/fusion/calc/SpreadsheetOptimizerPanel.kt",
-      "module": ":feature:calc",
-      "package": "dev.fusion.calc",
-      "sha256": "aa1724707b9af2dd7daf1e0191d7bd67287f0e49be5d2503d2403502e9df25d3"
     },
     {
       "path": "feature/calc/src/main/kotlin/dev/fusion/calc/StatSummary.kt",
