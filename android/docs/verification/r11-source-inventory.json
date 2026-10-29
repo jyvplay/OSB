@@ -2678,7 +2678,7 @@
       "path": "feature/editor/src/main/kotlin/dev/fusion/editor/WriterTypographyInspectorCard.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "da1915d803448dd7ec94006827e7f3426c537aa10c2fa680e508ba8709068f91"
+      "sha256": "b087ff4fdb3b395e425ee5c0abf9d647f2beb67cce701636f5bbfc353d8fe60d"
     },
     {
       "path": "feature/launcher/src/main/java/dev/fusion/launcher/FuzzyAppSearch.kt",
