@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package dev.fusion.shell
 
+import dev.fusion.hw.UsbGuardPolicy
 import dev.fusion.security.UsbPolicy
 
 import android.Manifest
+import android.app.KeyguardManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Notification
@@ -49,11 +51,31 @@ class UsbWatchReceiver : BroadcastReceiver() {
         }.getOrDefault(false)
         val verdict = UsbPolicy.evaluate(
             DEFAULT_RULES, policyDevice, if (known) listOf(policyDevice) else emptyList())
+        val locked = runCatching {
+            context.getSystemService(KeyguardManager::class.java)?.isDeviceLocked == true
+        }.getOrDefault(false)
+        val guardCandidate = UsbGuardPolicy.UsbCandidate(
+            vendorId = policyDevice.vid,
+            productId = policyDevice.pid,
+            serialSha256Hex = null,
+            interfaces = ifaces.map { UsbGuardPolicy.UsbInterfaceSpec(it.cls, it.sub, it.proto) },
+        )
+        val guardVerdict = UsbGuardPolicy.evaluate(
+            guardCandidate,
+            UsbGuardPolicy.HostContext(
+                screenLocked = locked,
+                activeKeyboardCount = if (known) 0 else 1,
+                lastKeyboardDisconnectMs = null,
+                nowMs = System.currentTimeMillis(),
+            ),
+        )
         val attached = action == UsbManager.ACTION_USB_DEVICE_ATTACHED
-        val summary = "USB ${if (attached) "attached" else "detached"}: %04x:%04x %s -> %s (%s; NOT blocked)".format(
+        val summary = "USB ${if (attached) "attached" else "detached"}: %04x:%04x %s -> %s / guard=%s:%s (%s; NOT blocked)".format(
             policyDevice.vid, policyDevice.pid,
             ifaces.sortedBy { it.toString() }.joinToString(","),
             verdict.target.name,
+            guardVerdict.action.name,
+            guardVerdict.ruleId,
             if (known) "allowlisted, still recorded" else "review")
         appendRecord(context, summary)
         if (context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {

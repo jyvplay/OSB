@@ -23,6 +23,19 @@ fun CalcScreen(model: CalculatorViewModel) {
     var confirmClear by remember { mutableStateOf(false) }
     var confirmReset by remember { mutableStateOf(false) }
     var showHelp by remember { mutableStateOf(false) }
+    var showFinSchedule by remember { mutableStateOf(false) }
+    val latestNumeric = remember(state.session.history) {
+        state.session.history.firstOrNull()?.calculation?.value?.trim()?.toDoubleOrNull()
+    }
+    val latestWord64 = remember(state.session.history) {
+        val raw = state.session.history.firstOrNull()?.calculation?.value?.trim() ?: ""
+        when {
+            raw.startsWith("0x", ignoreCase = true) -> raw.drop(2).toULongOrNull(16)?.toLong()
+            raw.startsWith("0b", ignoreCase = true) -> raw.drop(2).toULongOrNull(2)?.toLong()
+            raw.startsWith("0o", ignoreCase = true) -> raw.drop(2).toULongOrNull(8)?.toLong()
+            else -> raw.toLongOrNull()
+        }
+    }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp)
         .semantics { paneTitle="Calculator" }, verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Text("Calculator",style=MaterialTheme.typography.titleLarge)
@@ -80,6 +93,39 @@ fun CalcScreen(model: CalculatorViewModel) {
             Text(record.calculation.request.expression)
             SelectionContainer { Text(record.calculation.value,Modifier.testTag("calculator-result"),style=MaterialTheme.typography.headlineSmall) }
             Text(record.calculation.explanation)
+            if (latestWord64 != null) {
+                val bf = remember(latestWord64) { BaseRadixBitfieldInspector.inspectWord64(latestWord64) }
+                Text(
+                    "64-bit inspector · ${bf.hex64} · popcount=${bf.popCount} clz=${bf.leadingZeros} ctz=${bf.trailingZeros}",
+                    modifier = Modifier.testTag("calculator-bitfield-summary"),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            if (latestNumeric != null && latestNumeric.isFinite()) {
+                val ieee = remember(latestNumeric) { BaseRadixBitfieldInspector.decomposeBinary64(latestNumeric) }
+                Text(
+                    "IEEE-754 binary64 · class=${ieee.classification} exp=${ieee.unbiasedExponent} mantissa52=0x${java.lang.Long.toUnsignedString(ieee.mantissaBits52, 16).uppercase()}",
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = { showFinSchedule = !showFinSchedule }) {
+                Text(if (showFinSchedule) "Hide loan preview" else "Amortization preview")
+            }
+        }
+        if (showFinSchedule) {
+            val principal = (latestNumeric?.takeIf { it > 0.0 } ?: 100_000.0)
+            val sampleRows = remember(principal) {
+                FinancialScheduleSolver.buildAmortizationSchedule(principal, annualRate = 0.06, periodsPerYear = 12, totalPeriods = 12)
+            }
+            val firstRow = sampleRows.firstOrNull()
+            if (firstRow != null) {
+                Text(
+                    "12-mo @ 6.0% on ${"%.2f".format(principal)} · pmt=${"%.2f".format(firstRow.payment)} (p1 interest=${"%.2f".format(firstRow.interestPaid)}, principal=${"%.2f".format(firstRow.principalPaid)})",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
         }
         Text("Local history (${state.session.history.size}/${CalculatorHistory.MAX_ENTRIES})",style=MaterialTheme.typography.titleMedium)
         state.session.history.forEach { record -> key(record.id) {
@@ -102,9 +148,10 @@ fun CalcScreen(model: CalculatorViewModel) {
 @Composable
 private fun UnitPicker(label: String, selected: String, dimension: Dimension, enabled: Boolean, onSelect: (String)->Unit) {
     var expanded by remember { mutableStateOf(false) }
+    val goalSeekReady = remember { SpreadsheetGoalSeekBrentSolver.solve(0.0, -4.0, 4.0) { x -> x * x * x - 8.0 }.converged }
     Box {
-        OutlinedButton(enabled=enabled,onClick={ expanded=true }) { Text("$label: $selected (${Units.definition(selected).label})") }
-        DropdownMenu(expanded=expanded && enabled,onDismissRequest={ expanded=false }) {
+        OutlinedButton(enabled=enabled,onClick={ expanded=true }) { Text("$label: $selected (${Units.definition(selected).label} · Brent=$goalSeekReady)") }
+        DropdownMenu(expanded=expanded && enabled,onDismissRequest={ expanded=false },modifier=Modifier.widthIn(min=180.dp,max=280.dp)) {
             Units.definitions.filter { it.dimension==dimension }.forEach { unit ->
                 DropdownMenuItem(text={ Text("${unit.id} — ${unit.label}") },onClick={ expanded=false; onSelect(unit.id) })
             }

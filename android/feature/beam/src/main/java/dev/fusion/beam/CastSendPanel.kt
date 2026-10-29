@@ -68,7 +68,10 @@ fun CastSendPanel(
             modifier = Modifier.fillMaxWidth()
         )
         if (mediaUrl.isNotBlank()) {
-            Text("Will cast: $mediaUrl", style = MaterialTheme.typography.labelSmall)
+            val parityBytes = remember(mediaUrl) {
+                BeamChunkedResumeReedSolomon.computeParityShard(listOf(mediaUrl.encodeToByteArray())).size
+            }
+            Text("Will cast: $mediaUrl (LAN parity shard preview: ${parityBytes}B)", style = MaterialTheme.typography.labelSmall)
         } else if (mediaInput.isNotBlank()) {
             Text("Local file sharing is disabled. A Files folder grant does not publish files. Use an existing http(s) URL.",
                 style = MaterialTheme.typography.labelSmall)

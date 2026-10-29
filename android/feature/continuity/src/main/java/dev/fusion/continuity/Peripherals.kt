@@ -56,4 +56,14 @@ object Peripherals {
         }
         context.startActivity(Intent.createChooser(send, "Share from Fusion"))
     }
+
+    /** R51 NTP-compensated equal-power crossfade audio route handoff planner. */
+    fun planSafeAudioHandoff(
+        sourcePositionMs: Long,
+        t1ClientSendMs: Long,
+        t2PeerRecvMs: Long,
+        t3PeerSendMs: Long,
+        t4ClientRecvMs: Long,
+    ): AudioOutputHandoffCoordinator.HandoffPlan =
+        AudioOutputHandoffCoordinator.planHandoff(sourcePositionMs, t1ClientSendMs, t2PeerRecvMs, t3PeerSendMs, t4ClientRecvMs)
 }

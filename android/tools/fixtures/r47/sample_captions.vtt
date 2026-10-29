@@ -1,0 +1,11 @@
+WEBVTT
+
+NOTE Offline caption fixture for R47
+
+cue-1
+00:01.250 --> 00:04.500 align:center line:85%
+<v Narrator>Welcome to <b>Fusion Shell</b> &amp; Offline Suite.
+
+cue-2
+01:02:03.000 --> 01:02:06.750 position:50%
+Zero network telemetry &lt;verified&gt;.

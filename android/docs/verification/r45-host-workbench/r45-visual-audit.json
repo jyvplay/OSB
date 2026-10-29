@@ -1,0 +1,21 @@
+{
+  "scope": "Host Java2D kernel-output visual preview ONLY \u2014 NOT Android emulator or device screenshot.",
+  "png_path": "testing/build/r45/r45-workbench-preview.png",
+  "png_bytes": 143729,
+  "dimensions": [
+    1440,
+    940
+  ],
+  "font_metrics_bounds_enforced": true,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 15.66,
+    "primary_on_subtle": 13.76,
+    "muted_on_card": 9.72,
+    "muted_on_subtle": 8.54,
+    "emerald_on_subtle": 7.84,
+    "amber_on_card": 10.28,
+    "cyan_on_subtle": 7.04,
+    "rose_on_subtle": 5.6
+  },
+  "min_contrast_ratio": 5.6
+}

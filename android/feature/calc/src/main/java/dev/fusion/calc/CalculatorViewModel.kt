@@ -76,6 +76,12 @@ class CalculatorViewModel(application: Application) : AndroidViewModel(applicati
         setRequest(record.calculation.request)
         mutable.value=state.value.copy(message="Recalled input and its original mode/angle/radix/units. Press Calculate to recompute.")
     }
+    /** R51 pure-JVM Goal Seek preview (Brent/Secant root finder; never mutates calculator history). */
+    fun previewLinearGoalSeek(slope: Double, intercept: Double, target: Double, initialGuess: Double = 1.0): GoalSeekSimplexSolver.GoalSeekResult =
+        GoalSeekSimplexSolver.goalSeek(targetValue = target, initialGuess = initialGuess) { x -> slope * x + intercept }
+    /** R51 pure-JVM Simplex LP preview for resource-allocation inspection. */
+    fun previewSimplexLp(objective: List<Double>, lhs: List<List<Double>>, rhs: List<Double>): GoalSeekSimplexSolver.LpSolution =
+        GoalSeekSimplexSolver.solveLinearProgramMax(objective = objective, lhs = lhs, rhs = rhs)
     /** UI requires explicit confirmation. Failure does not claim deletion or secure erasure. */
     fun clearHistory() {
         if(!ready()) return

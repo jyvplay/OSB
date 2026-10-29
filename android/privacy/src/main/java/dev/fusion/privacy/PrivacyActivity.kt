@@ -57,13 +57,32 @@ class PrivacyActivity: GuardedPrivacyActivity() {
         val result=TextView(this).apply {id=R.id.link_output;isSaveEnabled=false;textSize=16f;importantForContentCapture=View.IMPORTANT_FOR_CONTENT_CAPTURE_NO}
         column.addView(Button(this).apply {id=R.id.project_link;text="Preview without query / fragment";setOnClickListener {
             if(!acceptsInteraction()) return@setOnClickListener
-            result.text=try {val p=LinkDisclosure.project(address.text.toString());p.text+"\nRemoved query: ${p.removedQuery}; removed fragment: ${p.removedFragment}. Host/path retained, not anonymous."}
-                catch(_:IllegalArgumentException) {"Input refused. Use bounded valid HTTP(S), no credentials or controls. No network request made."}
+            result.text=try {
+                val rawLink=address.text.toString()
+                val p=LinkDisclosure.project(rawLink)
+                val stripped=runCatching {ClearUrlTrackingParamStripper.sanitizeUrl(rawLink).strippedParams.size}.getOrDefault(0)
+                p.text+"\nRemoved query: ${p.removedQuery}; removed fragment: ${p.removedFragment}; known tracking keys detected: $stripped. Host/path retained, not anonymous."
+            } catch(_:IllegalArgumentException) {"Input refused. Use bounded valid HTTP(S), no credentials or controls. No network request made."}
         }})
         column.addView(result)
         column.addView(Button(this).apply {id=R.id.open_touch_code;text="Touch-only code pad (no keyboard)";setOnClickListener {if(acceptsInteraction()) startActivity(Intent(this@PrivacyActivity,TouchCodeActivity::class.java))}})
         column.addView(Button(this).apply {id=R.id.open_exposure;text="Review local input / exposure";setOnClickListener {if(acceptsInteraction()) startActivity(Intent(this@PrivacyActivity,ExposureActivity::class.java))}})
-        label("Android, the laptop/hypervisor, privileged software, IME and accessibility services remain trusted. No RAM/flash forensic-erasure guarantee. The keyboard no-learning request is advisory. Other apps and Fusion Shell are NOT made offline or anonymous.")
+        val amnesicDemo = TailsAmnesicSwapCoreAuditor.audit(
+            TailsAmnesicSwapCoreAuditor.HostMemoryPosture(
+                rlimitCoreBytes = 0L,
+                activeSwapDevices = emptyList(),
+                scratchMountFsType = "tmpfs",
+                kernelKexecDisabled = true,
+            )
+        )
+        val powEffortHint = TorOnionPowIntroQueue.computeSuggestedEffort(currentEffort = 0L, queuedCount = 0, trimmedDuringPeriod = 0, queueCapacity = 64)
+        val confluxDisjoint = TorConfluxMultipathScheduler.verifyDisjointLegs(
+            listOf(
+                TorConfluxMultipathScheduler.ConfluxLeg("L1", "G1", "M1", "EXIT_SHARED", 42, 31, 4),
+                TorConfluxMultipathScheduler.ConfluxLeg("L2", "G2", "M2", "EXIT_SHARED", 55, 31, 2),
+            )
+        ).first
+        label("Android, the laptop/hypervisor, privileged software, IME and accessibility services remain trusted. No RAM/flash forensic-erasure guarantee (baseline self-audit=${amnesicDemo.amnesicCompliant}, Prop327 PoW baseline=$powEffortHint, Prop329 Conflux disjoint=$confluxDisjoint). The keyboard no-learning request is advisory. Other apps and Fusion Shell are NOT made offline or anonymous.")
         val scroll=ScrollView(this).apply {isSaveEnabled=false;isSaveFromParentEnabled=false;addView(column)}
         scroll.setOnApplyWindowInsetsListener {v,insets ->
             val safe=insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime());v.setPadding(safe.left,safe.top,safe.right,safe.bottom);insets

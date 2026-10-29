@@ -1,0 +1,41 @@
+{
+  "round": "R53",
+  "sheets": 6,
+  "resolution": "1880x1400",
+  "font_metrics_boxes": 1376,
+  "pairwise_2d_checks": 180495,
+  "min_wcag_contrast": 12.38,
+  "per_sheet_boxes": [
+    298,
+    170,
+    205,
+    138,
+    173,
+    392
+  ],
+  "per_sheet_pairs": [
+    44253,
+    14365,
+    20910,
+    9453,
+    14878,
+    76636
+  ],
+  "sheets_files": [
+    "r53-recall-6method-studio.png",
+    "r53-context-menu-cascade-benchmark.png",
+    "r53-crisp-view-mode-matrix.png",
+    "r53-undo-fan-zstack-overlay.png",
+    "r53-tails-conflux-hw30-shield.png",
+    "r53-workbench-overview.png"
+  ],
+  "sha256": {
+    "r53-recall-6method-studio.png": "62223d8d9e1b195b69bfd47fba94bee85ccb1b3cbe0e4d3a79aafda5f900e0bf",
+    "r53-context-menu-cascade-benchmark.png": "090467501f0dfa96598f34774ffcd79ace95adf798df9e5a51a4e602246e11cd",
+    "r53-crisp-view-mode-matrix.png": "05c432e7f602e02edc87e692f77b5f9d78b0cec677a8d0da6f2aa94f537d8c9b",
+    "r53-undo-fan-zstack-overlay.png": "fa7031722b021712d958908ce3b76ee9dfeb12b39476e60fa37fe0d56eedec95",
+    "r53-tails-conflux-hw30-shield.png": "55cb80aaf8d4fa4b8073a2a3d4f8ac9acaca8a0c1485ede876998dc803e9a5d0",
+    "r53-workbench-overview.png": "a2b1e2acc2c80e614a5ea3dc9a8ebbdc0267fc8409d4a1fbd247e24e4ddaed66"
+  },
+  "honesty_boundary": "OpenJDK 17 Java2D headless layout & geometry proof from live R53 Kotlin production kernels; NOT Android SurfaceFlinger/emulator rendering (0/50 Class A)."
+}

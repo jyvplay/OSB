@@ -56,17 +56,19 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
         Modifier.fillMaxWidth().background(if (art) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.surface),
         contentAlignment = Alignment.BottomCenter) {
         val density = LocalDensity.current
-        val plan = BeautyStandard.dockPlan(maxWidth.value.toDouble().coerceAtLeast(48.0),
+        val widthDp = maxWidth.value.toDouble().coerceAtLeast(48.0)
+        val plan = BeautyStandard.dockPlan(widthDp,
             density.fontScale.toDouble().coerceIn(.5, 5.0), apps.size)
-        val metrics = DesktopMetrics.dock(maxWidth.value.toDouble().coerceAtLeast(48.0),
+        val metrics = DesktopMetrics.dock(widthDp,
             density.fontScale.toDouble().coerceIn(.5, 5.0), imeVisible, apps.size)
+        val slotDp = plan.slotDp.coerceAtLeast(TileLabelFit.MIN_TOUCH_TARGET_DP)
         Surface(shape = RoundedCornerShape(if (art) 22.dp else 0.dp), tonalElevation = 0.dp,
             color = if (art) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
             modifier = Modifier.padding(horizontal = if (art) 12.dp else 0.dp, vertical = if (art) 6.dp else 0.dp)
                 .widthIn(max = if (art) plan.viewportDp.dp else 10000.dp).then(if (!art) Modifier.fillMaxWidth() else Modifier)
                 .testTag(if (art) "art-dock" else "business-taskbar")) {
             Row(Modifier.horizontalScroll(rememberScrollState()).testTag("shelf-scroll")
-                .padding(horizontal = 8.dp, vertical = if (imeVisible) 2.dp else 8.dp),
+                .padding(horizontal = 12.dp, vertical = if (imeVisible) 2.dp else 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(plan.gapDp.dp), verticalAlignment = Alignment.Bottom) {
                 apps.forEachIndexed { index, app ->
                     val interactions = remember(app.id) { MutableInteractionSource() }
@@ -75,7 +77,7 @@ fun BeautyDock(apps: List<ShelfApp>, appearance: Appearance, imeVisible: Boolean
                     LaunchedEffect(hovered, focused) { if (hovered || focused) hot = index else if (hot == index) hot = null }
                     val target = DockMagnification.scale(index, hot, appearance.layout, appearance.dockZoom && !imeVisible)
                     val scale by animateFloatAsState(target, animationSpec = tween(if (appearance.dockZoom) 120 else 0), label = "dock-${app.id}")
-                    Column(Modifier.width(plan.slotDp.dp).height(metrics.height.dp)
+                    Column(Modifier.width(slotDp.dp).height(metrics.height.dp)
                         .testTag("shelf-${app.id}").hoverable(interactions, enabled)
                         .clickable(enabled = enabled, role = Role.Button, interactionSource = interactions,
                             indication = androidx.compose.foundation.LocalIndication.current) { onOpen(app.id) }

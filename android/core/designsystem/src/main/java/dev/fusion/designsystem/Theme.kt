@@ -41,3 +41,9 @@ fun FusionTheme(profile: DensityProfile = DensityProfile.BALANCED,
     val d=when(profile) {DensityProfile.COMPACT->FusionDensity.Compact;DensityProfile.BALANCED->FusionDensity.Balanced;DensityProfile.TOUCH->FusionDensity.Touch}
     CompositionLocalProvider(LocalDensityProfile provides d) {MaterialTheme(colorScheme=scheme,content=content)}
 }
+
+/** R51 WCAG 2.2 + perceptual Lc contrast check over ProfessionalPalette foreground/background pairs. */
+fun auditPaletteContrast(palette: dev.fusion.settings.ProfessionalPalette): ApcaContrastTypographyScale.ContrastMetrics {
+    val c = ProfessionalPalettes.colors(palette)
+    return ApcaContrastTypographyScale.evaluatePair(textRgb24 = c.text, bgRgb24 = c.background)
+}

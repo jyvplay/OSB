@@ -9,8 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import dev.fusion.designsystem.ContextMenuEntrySpec
+import dev.fusion.designsystem.FusionContextMenuPopup
+import dev.fusion.designsystem.FusionViewModeIconBar
+import dev.fusion.designsystem.FusionViewModeVectorIcons
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -62,6 +68,8 @@ fun FilesScreen(
     val dir = stack.lastOrNull()
     var filter by remember(treeUri) { mutableStateOf("") }
     var order by remember { mutableStateOf(ListingOrder.NAME) }
+    var viewMode by remember { mutableStateOf(FusionViewModeVectorIcons.ViewModeKind.LIST) }
+    var contextTarget by remember { mutableStateOf<FileEntry?>(null) }
     var listing by remember { mutableStateOf<Result<List<FileEntry>>?>(null) }
     LaunchedEffect(entries,filter,order) {
         listing=null
@@ -228,36 +236,98 @@ fun FilesScreen(
 
         OutlinedTextField(filter,{ if(it.length<=128) filter=it },label={ Text("Filter this folder (literal, limit128)") },
             modifier=Modifier.fillMaxWidth().testTag("files-filter"),singleLine=true)
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick={ order=ListingOrder.NAME },enabled=order!=ListingOrder.NAME) { Text("Name") }
             OutlinedButton(onClick={ order=ListingOrder.LARGEST },enabled=order!=ListingOrder.LARGEST) { Text("Largest") }
+            Spacer(Modifier.width(4.dp))
+            FusionViewModeIconBar(
+                selectedMode = viewMode,
+                onSelectMode = { viewMode = it },
+            )
         }
         if(listing?.isFailure==true) Text("Folder query refused: malformed metadata, duplicate identity or budget exceeded. No partial listing shown.")
         if(listing==null) Text("Updating folder query…")
-        Text("${(listing?.getOrDefault(emptyList())?.size ?: 0)} of ${entries.size} entries. Query limit:5000 entries; provider enumeration is not time-bounded. Provider size0 may mean unknown.")
-        LazyColumn(Modifier.weight(1f)) {
-            items(listing?.getOrDefault(emptyList()) ?: emptyList(), key = { it.uri.toString() }) { e ->
-                Text(
-                    (if (e.isDirectory) "[Folder] " else "[File] ") + e.name,
-                    Modifier.fillMaxWidth()
-                        .background(if (selected?.uri == e.uri) Color(0xFF28453C) else Color.Transparent)
-                        .clickable {
-                            selected = e
-                            if (e.isDirectory) {
-                                val d = dir ?: return@clickable
-                                scope.launch {
-                                    val child = repo.child(d, e.uri)
-                                    if (child != null) { stack = stack + child; selected = null }
-                                }
-                            } else if (e.name.endsWith(".txt", true) || e.name.endsWith(".md", true)) {
-                                onOpenText(e)
-                            }
-                        }
-                        .padding(9.dp),
-                    maxLines = 1, overflow = TextOverflow.Ellipsis
-                )
-            }
+        val folderAudit = remember(entries) {
+            DuplicateFileClusterer.analyzeDirectory(
+                entries.mapIndexed { idx, fe ->
+                    DuplicateFileClusterer.ScannedFile(
+                        id = fe.uri.toString(),
+                        name = fe.name,
+                        sizeBytes = fe.size.coerceAtLeast(0L),
+                        sha256Hex = if (fe.isDirectory) null else DuplicateFileClusterer.sha256Hex("${fe.name.lowercase()}:${fe.size}".toByteArray()),
+                    )
+                },
+            )
         }
+        val scaledBytes = remember(folderAudit.totalBytes) { SizeBucket.scale(folderAudit.totalBytes) }
+        Text(
+            "${(listing?.getOrDefault(emptyList())?.size ?: 0)} of ${entries.size} entries (${"%.1f".format(scaledBytes.value)} ${scaledBytes.unit}; candidate dup clusters=${folderAudit.duplicateClusters.size}). Query limit:5000 entries; provider enumeration is not time-bounded. Provider size0 may mean unknown.",
+            modifier = Modifier.testTag("files-storage-summary"),
+        )
+        selected?.let { sel ->
+            Text(
+                "Peek: ${DuplicateFileClusterer.formatForgePeekHeadline(sel.name, sel.size.coerceAtLeast(0L), sel.isDirectory)}",
+                modifier = Modifier.testTag("files-peek-headline"),
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+        androidx.compose.foundation.layout.Box(Modifier.weight(1f).fillMaxWidth()) {
+            FilesViewCollectionPane(
+                mode = viewMode,
+                breadcrumbSegments = stack.mapNotNull { it.name },
+                entries = listing?.getOrDefault(emptyList()) ?: emptyList(),
+                selectedEntry = selected,
+                onPrimaryClick = { e ->
+                    selected = e
+                    if (e.isDirectory) {
+                        val d = dir ?: return@FilesViewCollectionPane
+                        scope.launch {
+                            val child = repo.child(d, e.uri)
+                            if (child != null) { stack = stack + child; selected = null }
+                        }
+                    } else if (e.name.endsWith(".txt", true) || e.name.endsWith(".md", true)) {
+                        onOpenText(e)
+                    }
+                },
+                onContextClick = { e ->
+                    selected = e
+                    contextTarget = e
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
+            val ctxEntry = contextTarget
+            FusionContextMenuPopup(
+                expanded = ctxEntry != null,
+                onDismiss = { contextTarget = null },
+                viewportWidthDp = 960.0,
+                items = remember(ctxEntry) {
+                    DualPaneContextMenuModel.buildContextMenu(
+                        verbosity = DualPaneContextMenuModel.MenuVerbosity.CONCISE,
+                        isDirectory = ctxEntry?.isDirectory == true,
+                    ).map { m ->
+                        ContextMenuEntrySpec(
+                            id = m.actionId,
+                            label = m.label,
+                            shortcut = m.shortcutHint,
+                            sectionBreakBefore = m.sectionBreakBefore,
+                        )
+                    }
+                },
+                onSelect = { actionId ->
+                    val target = ctxEntry ?: return@FusionContextMenuPopup
+                    when (actionId) {
+                        "open" -> if (!target.isDirectory && (target.name.endsWith(".txt", true) || target.name.endsWith(".md", true))) onOpenText(target)
+                        else -> onMessage("Action '$actionId' queued for ${target.name}")
+                    }
+                },
+            )
+        }
+        FilesDualPaneInspectorBar(
+            leftPath = dir?.name ?: "/Documents",
+            rightPath = "/Downloads",
+            viewportWidthDp = 960.0,
+            onActionTriggered = { act -> onMessage("Commander action '$act' selected") },
+        )
         Text(
             if (mutationsAllowed) "Experimental file operations; cross-folder move is not offered." else "Original documents cannot be modified from this Files panel.",
             style = MaterialTheme.typography.labelSmall

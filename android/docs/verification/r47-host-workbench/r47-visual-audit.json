@@ -1,0 +1,23 @@
+{
+  "round": "R47",
+  "scope": "Headless OpenJDK 17 Java2D visual preview over live R47 Kotlin kernels + 360dp compact viewport proof; NOT Android emulator/device evidence.",
+  "dimensions_px": [
+    1560,
+    1020
+  ],
+  "png_bytes": 198475,
+  "font_metrics_bounds_enforced": true,
+  "font_metrics_non_overlap_checks": 111,
+  "compact_360dp_viewport_verified": true,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 15.86,
+    "muted_on_card": 10.05,
+    "muted_on_subtle": 8.84,
+    "emerald_on_subtle": 7.95,
+    "amber_on_subtle": 9.16,
+    "rose_on_subtle": 5.68,
+    "cyan_on_subtle": 7.14
+  },
+  "min_contrast_ratio": 5.68,
+  "tracked_copy": "docs/verification/r47-host-workbench/r47-workbench-preview.png"
+}

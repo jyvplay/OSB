@@ -1,0 +1,167 @@
+{
+  "schema": "fusion.class_a_readiness.v4",
+  "round": "R52",
+  "date": "2026-10-28",
+  "runtime_honesty_verdict": {
+    "can_claim_full_class_a_in_host_sandbox": false,
+    "full_spec_modules_accepted": 0,
+    "full_spec_modules_total": 50,
+    "full_spec_modules_percentage": 0.0,
+    "testable_subset_modules_verified": 50,
+    "testable_subset_modules_total": 50,
+    "testable_subset_modules_percentage": 100.0,
+    "r52_new_pure_jvm_kernels": 91,
+    "r52_new_compose_ui_files": 6,
+    "r52_touched_production_files": 17,
+    "r52_total_created_or_touched_files": 114,
+    "r52_total_production_files_on_disk": 997,
+    "android_compose_ast_syntax_verified_files": 52,
+    "r52_contract_assertions": 18533,
+    "r52_differential_oracle_checks": 306,
+    "r52_artifacts_verified": 56,
+    "feature_register_total": 231,
+    "feature_register_advanced_in_r52": 98,
+    "feature_register_by_status": {
+      "partial_unverified": 221,
+      "not_implemented": 6,
+      "superseded": 1,
+      "excluded": 3,
+      "verified": 0
+    },
+    "kept_not_implemented_under_h_minus": [
+      "CA-04",
+      "CA-06",
+      "CA-07",
+      "CM-01",
+      "FM-12",
+      "TD-05"
+    ],
+    "why_full_class_a_remains_0_of_50": "Android SDK 37 (android.jar, aapt2, d8, R8), Android emulator/physical hardware, SurfaceFlinger FLAG_SECURE, MediaProjection/AudioPlaybackCaptureConfiguration live Binder services, TalkBack AccessibilityService, UsbManager/BluetoothAdapter/WifiManager/NfcAdapter/Camera2/AudioRecord HALs, and 16 KB ELF APK install gates do not exist in this Linux host container. Under Runtime Honesty (H-), full-spec Class A stays strictly 0/50 (0.00%) while all 50/50 (100.00%) modules carry host-compiled (kotlinc 2.2.21 -Werror), JVM-17-executed, and Python-3.11-differential-oracle-verified pure-JVM testable subsets."
+  },
+  "pillars": [
+    {
+      "id": "recall_browser_media_vault",
+      "title": "Recall Automatic 4-Tier Browser Image, Video & Music Recording Studio (:feature:browser + :feature:media + :feature:capture + :core:files + :core:index + :feature:files + :app)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Live Android API 29-37 MediaProjection + AudioPlaybackCaptureConfiguration Binder session & multi-process GeckoView/WebView network hook on physical hardware (S14, S29, S30)"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 delivers RecallFolderDelineator supporting (1) BY_URL_NAME, (2) BY_PAGE_TITLE, and (3) BY_CUSTOM_TEMPLATE folder delineation with NFKC/IDNA/Windows-device-name traversal confinement and SHA-256 deduplicated manifest.recall.json disk persistence.",
+        "4 distinct recording tiers verified end-to-end: Method 1 RecallTier1DirectAssetHarvester (DOM/srcset/inline-SVG/data-URI + RFC 9110 HTTP 206 Partial Content range assembler), Method 2 RecallTier2HlsDashAssembler + RecallDashMpdSegmentResolver + RecallIsoBmffFragmentMuxer (RFC 8216 HLS #EXT-X-MAP/#EXT-X-BYTERANGE/clear-key AES-128-CBC + ISO 23009-1 MPEG-DASH + ISO/IEC 14496-12 fMP4 ftyp/moov/mvex/trex/moof/tfhd/tfdt/trun/mdat with strict Widevine/PlayReady/FairPlay/SAMPLE-AES DRM refusal), Method 3 RecallTier3CanvasWebAudioSiphoner (TPDF-dithered 48kHz 16-bit RIFF/WAVE .wav + RFC 7845 Ogg Opus + lossless RGBA8 <canvas> PNG), and Method 4 RecallTier4NativeScreenAudioRecorder (MediaProjection + AudioPlaybackCaptureConfiguration policy gate refusing FLAG_SECURE/EME/ALLOW_CAPTURE_BY_NONE, even-YUV420p browser-viewport cropper, and <=20ms rational Bresenham A/V PTS synchronizer).",
+        "Complete companion suite: RecallMethodEscalationRouter, Id3v24MusicTagEmbedder, FlacStreamInfoVorbisInspector (RFC 9639), RecallWebVttCaptionArchiver, RecallPlaylistSidecarWriter, RecallHarArchiveExporter (redacted HAR 1.2), RecallMediaTranscriptSearchIndex, RecallCaptureRolloverPlanner, RecallArchiveCatalog, RecallSessionCoordinator, BrowserRecallHud.kt, and RecallWorkspaceScreen.kt."
+      ]
+    },
+    {
+      "id": "desktop_ergonomics_icons_notifications",
+      "title": "Right-Sized Context Menus, Original List/Grid/Columns Vector Icons & Bottom-Right Translucent Z-Stack Undo Deck (:core:windowing + :core:designsystem + :core:commands + :feature:files + :feature:launcher)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_VISUAL_INSPECTION_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Physical mouse/trackpad secondary-click hardware dispatch, Android PopupWindow multi-display edge clamping, and TalkBack focus-announcement verification on reference devices (S9, S15)"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "RightClickContextMenuGeometry + FusionContextMenuPopup.kt enforce compact 180..280dp desktop width (<=34% of window width, benchmarked against WinUI 3 456px, macOS NSMenu ~240pt, GNOME HIG <=33%, and Material 3 112..280dp) with cursor-quadrant auto-flip so right-click menus NEVER span the full width of the page.",
+        "FusionViewModeVectorIcons + FusionViewModeIconBar.kt + FilesViewColumnsPane.kt + MillerColumnsTreeNavigator provide 100% original from-scratch mathematical 24x24 vector logos for List, Grid, and Columns across Files, Recall, Launcher, and Workbench.",
+        "StackedUndoNotificationDeck + StackedUndoNotificationHost.kt + UndoRedoStack.toBottomRightToastEntry anchor action/undo notifications in the bottom-right corner in a front-to-back translucent Z-stack (maxVisible=3, alpha 0.88->0.68->0.48, scale 1.00->0.95->0.90, <=340dp width, <=32% height fraction) wired across MainActivity, FilesScreen, BrowserScreen, RecallWorkspaceScreen, EditorScreen, NotesScreen, VaultScreen, PrivacyActivity, and TerminalScreen."
+      ]
+    },
+    {
+      "id": "writer_publishing",
+      "title": "Writer & Desktop Publishing Suite (:feature:editor + :core:documents + :format:ooxml + :format:lok + :format:pdf + :feature:notes)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Android SDK 37 / AGP 9.1.1 / aapt2 / d8 full APK build & R8 shrinking, HarfBuzz complex-script shaping, SAF URI lifecycle, S10 LibreOfficeKit spike, and TalkBack 200% font-scale device audit"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 adds DocxContentControlBinder (<w:sdt> structured document tags), OdfMasterPageHeaderFooterEngine (<style:master-page> running headers/footers), OdfTrackedChangesRedlineEngine (<text:tracked-changes>), DocsBibliographyCiteFormatter (APA 7th + IEEE), DocumentCrossRefResolver, WriterMailMergeEngine, WriterFootnotePaginator, MultiCaretBlockEditor, ZettelkastenBacklinkGraph (PageRank + orphan detector), NotesFlashcardSrsScheduler (SM-2/FSRS), and MarkdownPipeTablePrettyFormatter."
+      ]
+    },
+    {
+      "id": "spreadsheet_calc",
+      "title": "Spreadsheet & Quantitative Analytics Suite (:format:ooxml + :format:lok + :feature:calc)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Android SDK 37 APK build, Jetpack Compose 100k-cell lazy 2D viewport frame-time (<8ms) on physical hardware, and S11 desktop Calc/Excel round-trip gate"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 expands FormulaEval to 260 pure functions (+35 statistical, Bessel, Treasury-bill/discount finance, hyperbolic/inverse-trig, radix, URL/text, and Unicode functions) and SpillSheetEngine to 42 spilled dynamic-array operators (adding OUTERPRODUCT, CUMSUM, DIFFARRAY, MOVINGAVERAGE, ZSCOREGRID, DIAGONAL while keeping volatile RANDARRAY refused), plus OoxmlSparklineEngine, XlsxAutoFilterEvaluator, SheetSolverSensitivityEngine, and ConditionalFormattingScaleEvaluator."
+      ]
+    },
+    {
+      "id": "slides_pdf_formats",
+      "title": "Presentation (.pptx <p:timing>), PDF Outlines/AcroForm/Imposition, AVIF, EPUB 3.3 & PSD (:format:ooxml + :format:pdf + :format:native + :format:archive + :format:image + :format:psd)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Android isolatedProcess Binder parser sandbox stress test, MediaCodec HEIC/AV1 hardware encode (S12), and physical HDMI/Cast dual-screen presenter verification"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 upgrades PptxSlideDeck with writeDeckWithMediaTimings/inspectSlideMediaTimings (<p:timing> slide media cues), SlideShapeSnapDistributor, PdfBookmarkOutlineWriter, PdfAcroFormFieldFiller, PdfBookletImpositionPlanner, IsoHeifAvifContainerProbe (ftypavif + ispe), Epub33PackageManifestBuilder (EPUB 3.3 OPF), TextureAtlasShelfPacker, and PsdSeparableBlendCompositor."
+      ]
+    },
+    {
+      "id": "zero_trust_browser",
+      "title": "Zero-Trust Privacy Browser & Web-App Host (:feature:browser + :core:capabilities)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Multi-process GeckoView/WebView surface embedding (S14, S29, S30) & live network capture on physical Android hardware"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 adds CleanUrlTrackingParamStripper (ClearURLs/Brave-style query & hash tracker removal), BounceTrackingRedirectPurger (stateful CNAME/redirect bounce tracker state eviction), RecallHarArchiveExporter (Cookie/Authorization-redacted HAR 1.2), and BrowserScreen Recall HUD integration with zero addJavascriptInterface."
+      ]
+    },
+    {
+      "id": "wasm3_wasi_sandbox",
+      "title": "Pure-JVM WebAssembly 3.0 (Tail Calls 0x12/0x13 + 128-bit SIMD + IEEE-754 f64) & Capability Sandbox (:core:capabilities)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_AND_DIFF_ORACLE (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Official WebAssembly Core 3.0 specwast full suite execution & Android ART cgroup isolation benchmarks on reference hardware"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 upgrades WasmSandbox with WebAssembly 3.0 tail-call instructions 0x12 (return_call) and 0x13 (return_call_indirect) executing 25,000 tail-recursive calls in O(1) frame space under maxCallDepth=2 (including precomputeStructuredBlocks immediate scanner update), plus WasmTailCallVerifier and CapabilityDelegationAttenuator."
+      ]
+    },
+    {
+      "id": "tails_light_anonymity",
+      "title": "Tails-Light (7.x / Tor Prop 327 Onion PoW & Amnesic Posture) (:privacy + :core:security)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Live Android VpnService tun0 fail-closed capture + Arti onion service circuit integration on physical device"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 adds clean-room Apache-2.0 TorOnionPowIntroQueue implementing RFC 7693 BLAKE2b + Tor Proposal 327 effort-weighted INTRODUCE1 priority queue (avoiding LGPL-3.0 upstream Equi-X/HashX), TailsAmnesicSwapCoreAuditor (swap/zram/RLIMIT_CORE/kdump leak detector), and Rfc5869HkdfSha256."
+      ]
+    },
+    {
+      "id": "hardware_anti_keylogger_shield",
+      "title": "Anti-Keylogger & Local Physical/Hardware Side-Channel Shield — Vectors #1–#25 (:core:hw + :core:security + :core:designsystem + :feature:vault)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Physical USB PD current probe, ultrasonic MEMS transducer chamber, FLIR thermal camera, SensorManager HAL hook, and Android Keystore StrongBox attestation on reference devices"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 extends hardware side-channel defenses to 25 vectors: #21 ChargerSurfingPowerMasker (USENIX '21 USB power-trace PIN equalization), #22 UltrasonicDolphinAttackFilter (CCS '17 >20kHz Goertzel ultrasonic voice-injection blocker), #23 ThermalResidueWipeAdvisor (Thermanator multi-touch glass cooldown scrub), #24 ImuKeystrokeMotionZeroizer (TapLogger/ACCessory accelerometer/gyroscope PIN-window zeroizer), and #25 ShoulderSurfingPrivacyVeil (off-axis micro-louvre contrast limiter), plus VaultPassphraseEntropyAuditor."
+      ]
+    },
+    {
+      "id": "connected_workspace_cast_perf",
+      "title": "Continuity, E2EE Messaging, Beam/Cast, Backup, Maps, Lens & Statistical Perf Gates (:feature:* + :cast:* + :core:perf + :core:storage + :benchmark + :baselineprofile + :testing)",
+      "full_spec_class_a_status": "NOT_ACCEPTED_HOST_ONLY (0/50 = 0.00%)",
+      "testable_subset_status": "VERIFIED_HOST_JVM_DIFF_ORACLE_AND_AST (100.00%)",
+      "remaining_external_gates_for_full_class_a": [
+        "Two-device Wi-Fi/BLE/Cast hardware spikes (S17-S27), Android Macrobenchmark cold-start trace on physical devices, and 16 KB ELF page-size APK install verification"
+      ],
+      "host_verified_capabilities_r1_to_r52": [
+        "R52 adds MessagingSymmetricChainRatchet, ContinuityHybridLogicalClock, ThreeWayDocumentLineMerger, GearRollingChunkSlicer, BeamMerkleChunkVerifier, LensQrPayloadSemanticGuard, MapsElevationTravelEstimator, OfflineMmrExtractiveSummarizer, CastSinkCodecNegotiator, SlideRehearsalPacingCoach, HttpRangeResumePlanner, SegmentedLruStorageQuotaGovernor, SqliteWalFrameIntegrityVerifier, LocalFrameJankHistogram, BenchmarkWelchRegressionGate, BaselineProfileRuleConsolidator, and DeterministicFuzzShrinker."
+      ]
+    }
+  ]
+}

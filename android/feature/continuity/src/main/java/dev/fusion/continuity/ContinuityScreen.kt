@@ -48,6 +48,9 @@ fun ContinuityScreen(context: Context, incomingShare: String?) {
 
         Text("Share in", style = MaterialTheme.typography.titleSmall)
         Text(incomingShare ?: "Nothing received. Send text to Fusion Shell from another app to see it here.")
+        val rfbHandshake = remember { RemoteDesktopRfbTileCodec.RFB_3_8_BANNER.trim() }
+        val syncScope = remember { SharedFolderDeltaSyncPlanner.SCOPE }
+        Text("Continuity codecs ready (pure-JVM): $rfbHandshake · $syncScope", style = MaterialTheme.typography.labelSmall)
 
         Text(
             "Bluetooth pairing lists are not read (that needs BLUETOOTH_CONNECT). " +

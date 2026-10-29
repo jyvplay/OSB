@@ -1,0 +1,13 @@
+# Fusion R47 Privacy & Suite Profile
+profile_name = "tails-light-r47"
+schema_version = 47
+amnesic = true
+
+[network.tor]
+socks_user = "<torS0X>0"
+max_circuit_idle_sec = 600
+allowed_ports = [80, 443, 9050]
+
+[office]
+default_zoom = 1.25
+formats = ["docx", "xlsx", "odt", "pdf"]

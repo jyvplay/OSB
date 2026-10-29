@@ -1,0 +1,7 @@
+[
+  {"op": "test", "path": "/suite", "value": "Fusion"},
+  {"op": "add", "path": "/features/-", "value": "xlsx-styled"},
+  {"op": "replace", "path": "/round", "value": 47},
+  {"op": "copy", "path": "/backupSuite", "from": "/suite"},
+  {"op": "remove", "path": "/legacy"}
+]

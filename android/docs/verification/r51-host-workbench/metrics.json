@@ -1,0 +1,54 @@
+{
+  "round": "R51",
+  "scope": "Headless OpenJDK 17 Java2D visual previews over live R51 Kotlin kernels (3x 1840x1380 studio/shield/browser sheets + standalone 360x800 compact mobile) + FontMetrics horizontal bounds + pairwise 2D rectangle non-overlap + WCAG AAA >= 9.40:1; NOT Android emulator/device evidence.",
+  "dimensions_px": [
+    1840,
+    1380
+  ],
+  "compact_dimensions_px": [
+    360,
+    800
+  ],
+  "sheets": {
+    "office_studio": {
+      "path": "docs/verification/r51-host-workbench/r51-class-a-office-studio.png",
+      "bytes": 297913,
+      "sha256": "ae328809540d7a1d9863eb0be3b4970926561ab37445183be843e1c288f7c69c",
+      "boxes": 270
+    },
+    "tails_shield_workbench": {
+      "path": "docs/verification/r51-host-workbench/r51-tails-shield-workbench.png",
+      "bytes": 300855,
+      "sha256": "a84e95ef0c05d2953c3754ab7ebfb0b71acbe263cc39c7ea514b8f0d5b247f90",
+      "boxes": 270
+    },
+    "browser_wasm_simd_deck": {
+      "path": "docs/verification/r51-host-workbench/r51-browser-wasm-simd-deck.png",
+      "bytes": 292376,
+      "sha256": "69c7ece62fa8b1133fb67eccff5f959285e729a82e05b75b660638bdd7fe9f2f",
+      "boxes": 270
+    },
+    "compact_360x800": {
+      "path": "docs/verification/r51-host-workbench/r51-compact-360x800.png",
+      "bytes": 56007,
+      "sha256": "818f0130cfd7ced2c068dc41c3d447de06aa045281e0770e3aad9ed4569cf0bc",
+      "boxes": 54
+    }
+  },
+  "font_metrics_bounds_enforced": true,
+  "pairwise_2d_non_overlap_enforced": true,
+  "font_metrics_non_overlap_checks": 864,
+  "pairwise_intersection_pairs_verified": 110376,
+  "compact_360dp_viewport_verified": true,
+  "wcag_contrast_ratios": {
+    "primary_on_card": 18.57,
+    "muted_on_card": 15.02,
+    "muted_on_subtle": 14.48,
+    "emerald_on_subtle": 13.31,
+    "amber_on_subtle": 14.25,
+    "rose_on_subtle": 11.93,
+    "cyan_on_subtle": 12.88,
+    "violet_on_subtle": 12.49
+  },
+  "min_contrast_ratio": 11.93
+}

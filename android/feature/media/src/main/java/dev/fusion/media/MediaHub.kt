@@ -29,13 +29,29 @@ fun MediaScreen(context: Context, onView: (Uri, String) -> Unit) {
     }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("player" to "Player", "services" to "Online services", "library" to "Images & subtitles").forEach { (key, title) ->
+            listOf("player" to "Player", "recall" to "Recall archives", "services" to "Online services", "library" to "Images & subtitles").forEach { (key, title) ->
                 FilterChip(selected = page == key, onClick = { page = key }, label = { Text(title) }, modifier = Modifier.heightIn(min = 48.dp).testTag("media-tab-$key"))
             }
         }
         when (page) {
             "library" -> MediaLibraryScreen(context, onView)
             "services" -> ServiceLinksScreen(context)
+            "recall" -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("Recall Browser Media Archives", style = MaterialTheme.typography.headlineSmall)
+                Text("Automatically captured non-DRM browser Images, Videos, and Music organized by (1) URL Name, (2) Page Title, or (3) Custom Folder Template, with ID3v2.4 audio tags, EBU R128 LUFS metering, zero-crossing silence track splitting, and WebVTT captions.")
+                Text("6 Recording Methods: T1 Direct/HTTP-206 • T2 HLS/DASH/fMP4 Muxer • T2.5 WebRTC RTP Opus/VP8 • T3 Canvas/WebAudio Siphon • T4 Native Viewport Screen + AudioPlaybackCapture • T5 ISO 28500 WARC/1.1.", style = MaterialTheme.typography.bodySmall)
+                MediaLibraryMultiViewPanel(
+                    items = remember {
+                        listOf(
+                            MediaCollectionViewModeGrouper.MediaItemRecord("m1", "Concert Stream Pt.1", "archive.example.org", "2026-10-29_LiveSet", 184_000L),
+                            MediaCollectionViewModeGrouper.MediaItemRecord("m2", "Keynote Demo 1080p", "docs.example.org", "Product_Keynote", 412_000L),
+                        )
+                    }
+                )
+                Button(onClick = { pick.launch(arrayOf("image/*", "audio/*", "video/*")) }, modifier = Modifier.heightIn(min = 48.dp).testTag("media-open-recall-archive")) {
+                    Text("Open archived Recall folder item…")
+                }
+            }
             else -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text("Your media, locally", style = MaterialTheme.typography.headlineSmall)
                 Text("Open selected audio or video in Fusion's native foreground player. Play/pause, seek and aspect-fit video use Android's actual decoder. Nothing autoplays. Leaving the player releases playback; reopen explicitly to continue.")

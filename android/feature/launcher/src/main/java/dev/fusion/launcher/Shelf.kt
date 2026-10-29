@@ -17,8 +17,25 @@ data class ShelfItem(val key: String, val title: String, val running: Boolean)
 /** Shelf: pinned + running only. No fake task list, no badges without data. */
 @Composable
 fun ShelfBar(items: List<ShelfItem>, active: String?, onOpen: (String) -> Unit, workspaces: Int = 3, current: Int = 0, onWorkspace: (Int) -> Unit = {}) {
+    val dockPlan = PinnedWorkspaceDockLayoutEngine.planDock(
+        availableWidthDp = 1280.0,
+        pinnedItems = items.map { item ->
+            PinnedWorkspaceDockLayoutEngine.DockItem(id = item.key, label = item.title, pinned = true)
+        },
+        recentItems = emptyList(),
+    )
+    val shelfSections = LauncherViewModeShelfPlanner.organize(
+        apps = items.map { LauncherViewModeShelfPlanner.AppTileSpec(it.key, it.title, "Workspace") },
+        mode = LauncherViewModeShelfPlanner.ShelfMode.LIST,
+        viewportWidthDp = 1280.0,
+    )
+    val shelfColumns = ShelfAppCategoryColumnsModel.projectColumns(
+        apps = items.map { ShelfAppCategoryColumnsModel.ShelfAppEntry(it.key, it.title, "Workspace", listOf("Open", "Pin")) },
+        activeCategory = "Workspace",
+        activeAppId = active,
+    )
     Row(Modifier.horizontalScroll(rememberScrollState()).padding(4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        items.forEach { item ->
+        items.take(maxOf(dockPlan.visibleItems.size, shelfSections.sumOf { it.items.size }, shelfColumns.column2Apps.size)).forEach { item ->
             if (item.running) OutlinedButton(onClick = { onOpen(item.key) }) { Text(item.title + " ●") }
             else Button(onClick = { onOpen(item.key) }) { Text(item.title) }
         }

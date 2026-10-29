@@ -111,6 +111,13 @@ fun MessagesScreen(context: Context) {
                     }
                     OutlinedTextField(body, { body = it }, Modifier.fillMaxWidth(),
                         label = { Text("SMS message") }, minLines = 2)
+                    if (body.isNotEmpty()) {
+                        val segPlan = remember(body) { UnifiedPushSmsFallbackRouter.planSmsSegments(body) }
+                        Text(
+                            "PDU segment preview: ${segPlan.encoding} · ${segPlan.septetOrCodeUnitCount} units · ${segPlan.partsCount} segment(s)",
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Button(enabled = sendGranted && recipient.isNotBlank() && body.isNotBlank(), onClick = {
                             scope.launch {
@@ -154,7 +161,11 @@ fun MessagesScreen(context: Context) {
                 )
             }
             "iMessage" -> Text("Not implemented. Per spec, own-Mac relay (BlueBubbles-compatible) only; no on-phone iMessage path is permitted.")
-            else -> Text("Not implemented. No Matrix SDK or transport is present in this build.")
+            else -> {
+                val megolmInfo = remember { MatrixMegolmGroupRatchet.SCOPE }
+                Text("Not implemented. No Matrix SDK or transport is present in this build.")
+                Text("Host-verified crypto primitive ready: $megolmInfo", style = MaterialTheme.typography.labelSmall)
+            }
         }
         if (status.isNotEmpty()) Text(status, style = MaterialTheme.typography.labelSmall)
     }

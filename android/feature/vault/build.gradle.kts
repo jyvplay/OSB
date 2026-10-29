@@ -17,6 +17,7 @@ android {
 dependencies {
     // api: VaultCrypto appears as a default parameter in VaultScreen.
     api(project(":core:security"))
+    implementation(project(":core:designsystem"))
     implementation(platform(libs.androidx.compose.compose.bom))
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.foundation.foundation)

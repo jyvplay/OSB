@@ -65,6 +65,19 @@ fun AccessibilityScreen(context: Context) {
         Text("Colour inversion: ${if (s.colorInversion) "on" else "off"}")
         Text("Touch exploration (TalkBack-style): ${if (s.touchExplorationOn) "on" else "off"}")
         Text("Enabled accessibility services: ${s.activeServices}")
+        val focusRing = remember(s.highContrastText) {
+            FocusRingDwellClickController.buildFocusRing(highVisibilityEnabled = s.highContrastText, darkTheme = true)
+        }
+        val simpleScale = remember(s.fontScale) {
+            EasySimpleModeLayoutScaler.buildSimpleLauncher(listOf("files" to "Files", "notes" to "Notes"), systemFontScale = s.fontScale)
+        }
+        val daltonizedRed = remember {
+            ColorBlindnessDaltonizeMatrix.daltonize(ColorBlindnessDaltonizeMatrix.CvdMode.DEUTERANOPIA, 0.90, 0.20, 0.20)
+        }
+        Text(
+            "R50 A11y tokens: ring=${focusRing.innerStrokeDp}dp (${focusRing.innerArgbHex}) · EasyMode>=${simpleScale.minTouchTargetDp}dp@${simpleScale.effectiveFontScale}x · DeutanR=${"%.2f".format(daltonizedRed[0])}",
+            style = MaterialTheme.typography.labelSmall
+        )
         Text(
             "Fusion does not run an accessibility service and never injects input. " +
                 "Full TalkBack/Switch Access validation of the window manager has not been done yet.",

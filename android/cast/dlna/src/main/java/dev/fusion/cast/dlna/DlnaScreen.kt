@@ -88,6 +88,14 @@ fun DlnaScreen(
             label = { Text("Existing media http(s) URL") },
             modifier = Modifier.fillMaxWidth()
         )
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            val didlPreview = remember(url) {
+                DlnaDidlLitePlaylistQueue.buildDidlLiteXml(
+                    DlnaDidlLitePlaylistQueue.DlnaTrack("1", "Fusion Stream", "video/mp4", url.trim(), "00:05:00")
+                )
+            }
+            Text("DIDL-Lite envelope ready (${didlPreview.length} bytes, XXE-safe)", style = MaterialTheme.typography.labelSmall)
+        }
 
         Button(enabled = selected != null && url.isNotBlank(), onClick = {
             val r = selected ?: return@Button

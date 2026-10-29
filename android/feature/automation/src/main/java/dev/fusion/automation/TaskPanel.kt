@@ -206,6 +206,18 @@ fun TaskPanel(context: Context,modifier:Modifier=Modifier) {
             Button(enabled=!busy && !blocked && editingId==null,onClick={execute(keepUndoOnNoOp=true) {repo.merge(preview)}},modifier=Modifier.testTag("tasks-confirm-merge")) {Text("Confirm append-only merge")}
             Button(enabled=!busy,onClick={mergePreview=null;status="Preview discarded; no tasks changed."}) {Text("Discard merge preview")}
         }
+        val workflowDryRunHint = remember(book?.revision) {
+            WorkflowJsonImportExportSandbox.exportJson(
+                WorkflowJsonImportExportSandbox.WorkflowPack(
+                    schemaVersion = 1,
+                    name = "local-task-snapshot",
+                    trigger = "manual",
+                    requiredCapabilities = setOf("tasks.read"),
+                    steps = listOf("verify_revision_${book?.revision ?: 0L}"),
+                )
+            )
+        }
+        Text("Workflow sandbox pack (${workflowDryRunHint.length} chars, zero shell capabilities)", style = MaterialTheme.typography.labelSmall)
         }
     }
 }

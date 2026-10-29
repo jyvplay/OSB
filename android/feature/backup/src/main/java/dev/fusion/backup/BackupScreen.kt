@@ -27,11 +27,36 @@ fun BackupScreen(
     onRestore: (CharArray) -> Unit
 ) {
     var password by remember { mutableStateOf("") }
+    var lastDrillVerified by remember { mutableStateOf(false) }
     val tooShort = password.length < 8
+    val drillHealth = remember(lastDrillVerified) {
+        val nowMs = System.currentTimeMillis()
+        BackupHealthDrillScheduler.evaluateHealth(
+            nowEpochMs = nowMs,
+            lastExportEpochMs = nowMs,
+            lastVerifiedDrillEpochMs = if (lastDrillVerified) nowMs else null,
+        )
+    }
+    val migrationChecklist = remember(lastDrillVerified, tooShort) {
+        BackupHealthDrillScheduler.buildNewDeviceChecklist(
+            encryptedNotesExported = !tooShort,
+            configBundleExported = true,
+            userHoldsRecoverySharesOffline = !tooShort,
+            restoreDrillPassedOnTarget = lastDrillVerified,
+        )
+    }
 
     Column(Modifier.fillMaxSize().padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Encrypted export", style = MaterialTheme.typography.titleSmall)
         Text("Exports app-private notes into one AES-256-GCM file you choose. SAF folders you browsed are NOT included.")
+        Text(
+            "Restore-drill health: ${drillHealth.grade} — ${drillHealth.summary} (${migrationChecklist.count { it.completed }}/${migrationChecklist.size} migration steps)",
+            modifier = Modifier.fillMaxWidth(),
+            style = MaterialTheme.typography.labelSmall,
+        )
+        OutlinedButton(onClick = { lastDrillVerified = !lastDrillVerified }) {
+            Text(if (lastDrillVerified) "Mark restore drill unverified" else "Record dry-run restore drill")
+        }
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },

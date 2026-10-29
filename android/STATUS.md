@@ -1,4 +1,132 @@
-# Current R24 continuation status — full specification remains incomplete
+# Latest R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-29`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`1,101` Kotlin `src/main` production files).
+0/50 full original-spec Class A accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements (`221` `partial_unverified` = `95.67%`, `6` `not_implemented`, `0` `verified`, `3` `excluded`, `1` `superseded`; `108` rows carrying `jvm:R53Checks`) / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R53 authored **96 new pure-JVM production kernels + 7 new Compose UI files + 19 touched (`FormulaEval.kt` `260->300` fns, `SpillSheetEngine.kt` `42->48` ops, `WasmSandbox.kt` Wasm 3.0 Multi-Memory up to `8` memories, `RecallMethodEscalationRouter.kt` & `RecallSessionCoordinator.kt` `6` methods, plus 14 Compose UI / Activity screens with `59/59` AST `PARSE OK`) across ALL 50/50 modules**, expanded **`Recall` to 6 distinct browser media recording methods** (`WebRTC RTP Opus` + `ISO 28500 WARC/1.1` + `CDXJ` + `EBU R128`) FIRST followed by **7-OS cascading right-click submenus (`180..280dp` + `168..240dp`), 5-DPI pixel-grid crisp original `List`/`Grid`/`Columns` vector logos across 8 surfaces, and bottom-right interactive hover-fanned translucent `Undo` notifications (`8.44%` compact / `20.44%` fanned)**, expanded CI to **42 contiguous round tasks (`:testing:r13Contracts`..`:testing:r53Contracts`)**, executed **25,425** R53 assertions (`77` artifacts) + **411/411** independent Python 3.11 differential oracle checks, verified the warm-JVM R53 workbench on `0.0.0.0:8765` (`Cards 1..30`), and visually inspected 6 Java2D PNGs (`docs/verification/r53-host-workbench/`, **1,376** `FontMetrics` + **180,495** pairwise 2D checks, min WCAG contrast **12.38:1**). Host JVM + Java2D + CI SDK-37 compile only — NOT physical-device/HAL/TalkBack Class-A acceptance; exact external Class-A gates enumerated in [`docs/class-a-readiness-r53.json`](docs/class-a-readiness-r53.json).
+
+[Exact R53 results](docs/R53-RESULTS.md) · [A–J contract](docs/R53-PLAN.md) · [Per-module deepening](docs/R53-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R53-ALTERNATIVES.md) · [30-Vector Tails & Hardware PRD](docs/R53-PRIVACY-PRD.md) · [Class-A readiness](docs/class-a-readiness-r53.json) · [Prior R52 results](docs/R52-RESULTS.md).
+
+---
+
+# Latest R52 Recall 4-Tier Browser Media Studio / Compact Context Menu & Original List·Grid·Columns Logos & Bottom-Right Z-Stack Undo / 260-fn Calc / Wasm 3.0 Tail Calls / Tor Prop 327 PoW & 25-vector shield status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-28`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`998` Kotlin production files).
+0/50 full original-spec Class A accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements (`221` `partial_unverified` = `95.67%`, `6` `not_implemented`, `0` `verified`, `3` `excluded`, `1` `superseded`; `98` rows carrying `jvm:R52Checks`) / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R52 authored **91 new pure-JVM production kernels + 6 new Compose UI files + 17 touched (`FormulaEval.kt` `225->260` fns, `SpillSheetEngine.kt` `36->42` ops, `PptxSlideDeck.kt` `<p:timing>`, `WasmSandbox.kt` Wasm 3.0 `0x12`/`0x13` tail calls, `UndoRedoStack.kt`, `DualPaneContextMenuModel.kt`, plus 11 Compose UI / Activity screens with `52/52` AST `PARSE OK`) across ALL 50/50 modules**, built the **4-Tier `Recall` Browser Media Recording System** (`BY_URL_NAME` / `BY_PAGE_TITLE` / `BY_CUSTOM_TEMPLATE`) FIRST followed by **compact `180..280dp` right-click context menus, 3 original mathematical `List`/`Grid`/`Columns` vector logos + Miller Columns explorer, and bottom-right translucent Z-stack `Undo` notifications**, expanded CI to **41 contiguous round tasks (`:testing:r13Contracts`..`:testing:r52Contracts`)**, executed **18,533** R52 assertions (`56` artifacts) + **306/306** independent Python 3.11 differential oracle checks, verified and launched the warm-JVM R52 workbench on `0.0.0.0:8765` (`Cards 1..26`), and visually inspected 5 Java2D PNGs (`docs/verification/r52-host-workbench/`, **1,108** `FontMetrics` + **127,341** pairwise 2D checks, min WCAG contrast **11.93:1**). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence; exact external Class-A gates enumerated in [`docs/class-a-readiness-r52.json`](docs/class-a-readiness-r52.json).
+
+[Exact R52 results](docs/R52-RESULTS.md) · [A–J contract](docs/R52-PLAN.md) · [Per-module deepening](docs/R52-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R52-ALTERNATIVES.md) · [25-Vector Tails & Hardware PRD](docs/R52-PRIVACY-PRD.md) · [Class-A readiness](docs/class-a-readiness-r52.json) · [Prior R51 results](docs/R51-RESULTS.md).
+
+---
+
+# Latest R51 215-fn/Table-R1C1-LP / Galley-PDFUA1 / Wasm-v128-SIMD / 20-vector Tails-7.15.1 & hardware shield status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-28`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`901` Kotlin production files).
+0/50 full original-spec Class A accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements (`221` `partial_unverified` = `95.67%`, `6` `not_implemented`, `0` `verified`, `3` `excluded`, `1` `superseded`) / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R51 authored **85 new pure-JVM production kernels + 16 touched (`FormulaEval.kt` `168->215` fns, `SpillSheetEngine.kt` `29->36` ops, `DocxRichDocument.kt` multi-section/bookmarks, `OdtRichWriter.kt` scholarly ODT, `WasmSandbox.kt` Wasm 2.0 `0x7B`/`0xFD` `v128` SIMD, plus 11 Compose UI / Activity files with `46/46` AST `PARSE OK`) across ALL 50/50 modules**, expanded CI to **40 contiguous round tasks (`:testing:r13Contracts`..`:testing:r51Contracts`)**, executed **12,251** R51 assertions (`41` artifacts) + **208/208** independent Python 3.11 differential oracle checks, verified the warm-JVM R51 workbench on `0.0.0.0:8765` (`Cards 1..22`), and rendered 4 Java2D PNGs (`docs/verification/r51-host-workbench/`, **864** `FontMetrics` + **110,376** pairwise 2D checks, min WCAG contrast **11.93:1**). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence; exact external Class-A gates enumerated in [`docs/class-a-readiness-r51.json`](docs/class-a-readiness-r51.json).
+
+[Exact R51 results](docs/R51-RESULTS.md) · [A–J contract](docs/R51-PLAN.md) · [Per-module deepening](docs/R51-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R51-ALTERNATIVES.md) · [20-Vector Tails & Hardware PRD](docs/R51-PRIVACY-PRD.md) · [Class-A readiness](docs/class-a-readiness-r51.json) · [Prior R50 results](docs/R50-RESULTS.md).
+
+---
+
+# Latest R50 168-fn/3D-sheet / Wasm-f64-table / Lens-FSR1-NLMS / 15-vector hardware & Tails-Light status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-27`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`816` Kotlin production files).
+0/50 full original-spec Class A accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements (`213` `partial_unverified` = `92.21%`, `14` `not_implemented`, `0` `verified`, `3` `excluded`, `1` `superseded`) / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R50 authored **80 new pure-JVM production kernels + 14 touched (`FormulaEval.kt` `130->168` fns, `SpillSheetEngine.kt` `23->29` ops, `MultiSheetBook.kt` `evaluate3d`/`write3d`, `WasmSandbox.kt` Wasm 2.0 `f64` + `table.*`, plus 10 Compose UI / Activity screens with `35/35` AST `PARSE OK`) across ALL 50/50 modules**, expanded CI to **39 contiguous round tasks (`:testing:r13Contracts`..`:testing:r50Contracts`)**, executed **8,555** R50 assertions (`26` artifacts) + **146/146** independent Python 3.11 differential oracle checks, launched the live warm-JVM R50 workbench on `0.0.0.0:8765`, and rendered `1840x1380` + `360x800` Java2D PNGs (`docs/verification/r50-host-workbench/`, **321** `FontMetrics` + **36,942** pairwise 2D checks, min WCAG contrast **9.37:1**). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence; exact external Class-A gates enumerated in [`docs/class-a-readiness-r50.json`](docs/class-a-readiness-r50.json) (building on [`docs/R49-RESULTS.md`](docs/R49-RESULTS.md)).
+
+[Exact R50 results](docs/R50-RESULTS.md) · [A–J contract](docs/R50-PLAN.md) · [Per-module deepening](docs/R50-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R50-ALTERNATIVES.md) · [15-Vector Tails & Hardware PRD](docs/R50-PRIVACY-PRD.md) · [Class-A readiness](docs/class-a-readiness-r50.json) · [Prior R49 results](docs/R49-RESULTS.md).
+
+---
+
+# Current R48 office-spill / PPTX-EPUB / OHTTP-BHTTP / acoustic-HID shield status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-26`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`661` Kotlin production files).
+0/50 full original-spec Class A accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R48 authored **66 new pure-JVM production kernels + 7 touched (`FormulaEval.kt` `61->95` fns + `{array}` + `LET`, `WasmSandbox.kt` Wasm 2.0 `0xFC`, `EditorScreen.kt`, `BrowserScreen.kt`, `VaultScreen.kt`, `NotesScreen.kt`, `TerminalScreen.kt`) across ALL 50/50 modules (100.00%)**,
+closed the `r25PngContracts` CI gap to establish **37 contiguous round tasks (`:testing:r13Contracts`..`:testing:r48Contracts`, zero gaps)**, verified **`17/17`** Android/Compose files `PARSE OK`, executed **3,861** R48
+assertions + **56/56** independent Python differential oracle checks (`.pptx`, `.epub` `STORED@38`, `.ods` `of:=`, fillable AcroForm `.pdf` `9/9` `xref` offsets, `RFC 9292` BHTTP, `RFC 9458` OHTTP keys, Tor v3 `.onion` `SHA3-256`, `RFC 5869` HKDF, `.7z` dual CRC-32, `16 KB` ELF64, `.ppm` P6, `tmux` 16-bit checksum, `IRR`/`NPER`/`XIRR`, dynamic spill) + **35** host lab gates + **863/863** Python `unittest` checks across **52** suites
+(`105` in `test_r48_tools`), upgraded and launched the live warm-JVM browser workbench on `0.0.0.0:8765` (`tools/fusion_workbench_server.py`), and rendered a pairwise-2D-non-overlap + `FontMetrics`-checked (`172` checks incl. exact `360px` compact phone viewport), WCAG-verified (`5.75:1` min) Java2D preview
+(`docs/verification/r48-host-workbench/r48-workbench-preview.png`). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence; exact remaining Class-A gates per feature enumerated in [`docs/class-a-readiness-r48.json`](docs/class-a-readiness-r48.json).
+
+[Exact R48 results](docs/R48-RESULTS.md) · [A–J contract](docs/R48-PLAN.md) · [Per-module deepening](docs/R48-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R48-ALTERNATIVES.md) · [OHTTP & 5-Channel Anti-Keylogger PRD](docs/R48-PRIVACY-PRD.md) · [Class-A readiness](docs/class-a-readiness-r48.json) · [Run without Studio](docs/BUILD.md).
+
+---
+
+# Prior R47 rich-office / WASI-cap / Tor-Prop-351 / anti-keylogger status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-26`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+48/50 modules (96.00% overall; 47/47 = 100.00% of product modules + `:benchmark`) deepened in-round under `kotlinc -Werror` host-JVM execution.
+0/50 full original-spec Class A accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R47 authored **61 new pure-JVM production kernels + 5 touched (`MainActivity.kt`, `AdaptiveDock.kt`, `UsbWatchReceiver.kt`, `MapScreen.kt`, `FormulaEval.kt`) across 48/50 modules (96.00%)**,
+expanded the contiguous Gradle CI lane to **22 tasks (`:testing:r26Contracts`..`:testing:r47Contracts`, unbroken `r13..r47` CI chain)**, executed **2,393** R47
+assertions + **40/40** independent Python differential oracle checks (`.docx`, `.xlsx`, `.pdf` `xref`, `.odt` `STORED@38`, `.svg`, `.wav` 1-LSB 440 Hz, `.idx` SHA-1, `.ar` `#1/36`, `.icc` v4, `PMT`/`PV`/`FV`/`NPV`, Tor Prop 351 `<torS0X>0`, SMPTE 29.97 DF, GF(256) Shamir, ICAO 9303 MRZ) + **31** host lab gates + **758/758** Python `unittest` checks across **51** suites
+(`82` in `test_r47_tools`), upgraded and launched the live warm-JVM browser workbench on `0.0.0.0:8765` (`tools/fusion_workbench_server.py`), and rendered a `FontMetrics`-checked (`111` checks incl. exact `360px` compact phone viewport), WCAG-verified (`5.68:1` min) Java2D preview
+(`docs/verification/r47-host-workbench/r47-workbench-preview.png`). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence.
+
+[Exact R47 results](docs/R47-RESULTS.md) · [A–J contract](docs/R47-PLAN.md) · [Per-module deepening](docs/R47-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R47-ALTERNATIVES.md) · [Tor Prop 351 & Anti-Keylogger PRD](docs/R47-PRIVACY-PRD.md) · [Run without Studio](docs/BUILD.md).
+
+---
+
+# Prior R46 multi-sheet/PDF/Wasm/anti-keylogger workbench status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-26`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+47/50 modules (94.00% overall; 47/47 = 100.00% of product modules) execute `kotlinc -Werror` host-JVM contracts.
+0/50 full original-spec accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R46 authored **39 new pure-JVM production kernels + 3 touched (`DesktopChrome.kt`, `TabletopDesktop.kt`, `FormulaEval.kt`) across 34/50 modules (68.00%)**,
+expanded the contiguous Gradle CI lane to **17 rounds (`:testing:r30Contracts`..`:testing:r46Contracts`)**, executed **885** R46
+assertions + **25** cross-engine `openpyxl`/PDF-`xref`/PAX-`tarfile`/`quopri`/PNG-CRC/Wasm differential checks + **25** host lab gates + **676/676** Python `unittest` checks
+(`66` in `test_r46_tools`), launched the live warm-JVM browser workbench on `0.0.0.0:8765` (`tools/fusion_workbench_server.py`), and rendered a `FontMetrics`-checked (`77` checks), WCAG-verified (`5.68:1` min) Java2D preview
+(`docs/verification/r46-host-workbench/r46-workbench-preview.png`). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence.
+
+[Exact R46 results](docs/R46-RESULTS.md) · [A–J contract](docs/R46-PLAN.md) · [Per-module deepening](docs/R46-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R46-ALTERNATIVES.md) · [Tails-Mod & Anti-Keylogger PRD](docs/R46-PRIVACY-PRD.md) · [Run without Studio](docs/BUILD.md).
+
+---
+
+# Prior R45 host-kernel & privacy hardening status — full specification remains incomplete
+
+Branch `arena/64550eba-osb`, `2026-10-26`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
+47/50 modules (94.00% overall; 47/47 = 100.00% of product modules) execute `kotlinc -Werror` host-JVM contracts.
+0/50 full original-spec accepted (0.00%); 50/50 unfinished at full scope (100.00%).**
+231 requirements / 36 cross-cutting obligations / 30 unpassed formal spikes remain the governing register.
+
+R45 authored **33 new pure-JVM production kernels + 1 touched (`DashEducate.kt`) across 26/50 modules (52.00%)**,
+wired a contiguous 12-round Gradle CI lane (`:testing:r34Contracts`..`:testing:r45Contracts`), executed **508** R45
+assertions + bidirectional Python `openpyxl`/`.docx`/RFC differential oracles + **610/610** Python `unittest` checks
+(`52` in `test_r45_tools`), and rendered a `FontMetrics`-checked, WCAG-verified (`>= 5.6:1`) Java2D workbench preview
+(`docs/verification/r45-host-workbench/r45-workbench-preview.png`). Host JVM + Java2D only — NOT Android SDK/emulator/device evidence.
+
+[Exact R45 results](docs/R45-RESULTS.md) · [A–J contract](docs/R45-PLAN.md) · [Per-module deepening](docs/R45-MODULE-DEEPENING.md)
+· [Permissive alternatives](docs/R45-ALTERNATIVES.md) · [Tails-Mod Privacy PRD](docs/R45-PRIVACY-PRD.md) · [Run without Studio](docs/BUILD.md).
+
+---
+
+# Historical R24 continuation status — full specification remains incomplete
 
 Branch `arena/a8ac5475-osb`,2026-10-18. **49/50 substantial code+runnable-test subsets98%;1/50 unestablished2%
 (:format:lok).0/50 full original-spec accepted;50/50 unfinished at full scope.**
