@@ -271,7 +271,7 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "a33fe46423c0ef1a9ef1070839b5873f8c22ed9cabf4b9099c7a5a6689f7f685"
+      "sha256": "677cbebeed8416c5dba9639732a7c29717e8cfbacddce2584545d3a010285811"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -337,7 +337,7 @@
       "path": "app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "53f3346d0f00fbb69948a0202088ef0b2333d442617fdddf4c59c45269f68c12"
+      "sha256": "c3c9a70c1ac44976bc4dfd3583879b6deb1d15ab059ecded8e167edee42e5194"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/WorkspaceContextProfileEngine.kt",
@@ -3253,7 +3253,7 @@
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/TerminalScreen.kt",
       "module": ":feature:terminal",
       "package": "dev.fusion.terminal",
-      "sha256": "e0ca82961ca3f3be255b3bcfa63cf9fd3c1fddfd69348a9333a9edfb7f9c623c"
+      "sha256": "b0d1cf6a1485108fc8711cb2e5e209ddd5b862726a3c1dfcf9913d94bcd07426"
     },
     {
       "path": "feature/terminal/src/main/java/dev/fusion/terminal/VtTrueColorSafePasteEngine.kt",
@@ -3499,7 +3499,7 @@
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt",
       "module": ":feature:notes",
       "package": "dev.fusion.notes",
-      "sha256": "7993c1e428d725757bd789c97fb0eaf3b772cfca84b74655411869a60d4f8d63"
+      "sha256": "765c043b21f558c85f1a305773c1d56e2cadea1c92fe7d4432ff68021ea547b3"
     },
     {
       "path": "feature/notes/src/main/java/dev/fusion/notes/NotesStore.kt",

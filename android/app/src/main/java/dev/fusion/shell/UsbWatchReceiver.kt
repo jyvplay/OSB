@@ -57,12 +57,17 @@ class UsbWatchReceiver : BroadcastReceiver() {
         val guardCandidate = UsbGuardPolicy.UsbCandidate(
             vendorId = policyDevice.vid,
             productId = policyDevice.pid,
-            serialNumber = null,
+            serialSha256Hex = null,
             interfaces = ifaces.map { UsbGuardPolicy.UsbInterfaceSpec(it.cls, it.sub, it.proto) },
         )
         val guardVerdict = UsbGuardPolicy.evaluate(
             guardCandidate,
-            UsbGuardPolicy.HostContext(screenLocked = locked, attachedHidCount = if (known) 0 else 1),
+            UsbGuardPolicy.HostContext(
+                screenLocked = locked,
+                activeKeyboardCount = if (known) 0 else 1,
+                lastKeyboardDisconnectMs = null,
+                nowMs = System.currentTimeMillis(),
+            ),
         )
         val attached = action == UsbManager.ACTION_USB_DEVICE_ATTACHED
         val summary = "USB ${if (attached) "attached" else "detached"}: %04x:%04x %s -> %s / guard=%s:%s (%s; NOT blocked)".format(

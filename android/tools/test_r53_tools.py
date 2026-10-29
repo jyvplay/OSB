@@ -243,6 +243,20 @@ def _collect_checks() -> None:
           and "val draftRaw = draftText.text" in edt_ui
           and "ReadabilityMetrics.analyze(draftRaw)" in edt_ui)
 
+    notes_ui = (ROOT / "feature/notes/src/main/java/dev/fusion/notes/NotesScreen.kt").read_text(encoding="utf-8")
+    term_ui = (ROOT / "feature/terminal/src/main/java/dev/fusion/terminal/TerminalScreen.kt").read_text(encoding="utf-8")
+    usb_rcv = (ROOT / "app/src/main/java/dev/fusion/shell/UsbWatchReceiver.kt").read_text(encoding="utf-8")
+    main_ui = (ROOT / "app/src/main/java/dev/fusion/shell/MainActivity.kt").read_text(encoding="utf-8")
+    check("SDK-37 Zero-Trust UI-to-Kernel signature guard: NotesScreen, TerminalScreen, UsbWatchReceiver, and MainActivity match exact pure-JVM contracts",
+          "WikiLinkGraph.NoteInput(draftSlug," in notes_ui
+          and "liveWikiIndex.outgoing[draftSlug]" in notes_ui
+          and "liveWikiIndex.brokenLinks.size" in notes_ui
+          and "ZettelkastenFolgezettel.parse(state.name).raw" in notes_ui
+          and "parsed.completedBlocks.size" in term_ui
+          and "serialSha256Hex = null" in usb_rcv
+          and "activeKeyboardCount = if (known) 0 else 1" in usb_rcv
+          and '!message.startsWith("Local first.")' in main_ui)
+
 
 _collect_checks()
 

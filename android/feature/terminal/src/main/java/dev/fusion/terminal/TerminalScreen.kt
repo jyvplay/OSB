@@ -45,9 +45,12 @@ fun TerminalScreen(shell: LocalShell) {
             if (rawOut.firstOrNull() == "__clear__") {
                 lines.clear()
             } else {
-                val parsed = PromptOsc133.parseStream(rawOut.joinToString("\n"))
-                droppedOsc52 += parsed.droppedOsc52Count
-                promptEvents += parsed.records.size
+                val joined = rawOut.joinToString("\n")
+                val parsed = PromptOsc133.parseStream(joined)
+                if (joined.contains("\u001B]52;") && !TerminalOsc52ClipboardSanitizer.evaluateOsc52Sequence(joined).permitted) {
+                    droppedOsc52 += 1
+                }
+                promptEvents += parsed.completedBlocks.size
                 lines.add("$ $input")
                 lines.addAll(rawOut)
             }

@@ -743,7 +743,7 @@ class MainActivity : ComponentActivity() {
                     })
                 }
 
-                if (message.isNotBlank() && !imeVisible) {
+                if (message.isNotBlank() && !message.startsWith("Local first.") && !imeVisible) {
                     StackedUndoNotificationHost(
                         notificationsNewestFirst = listOf(
                             StackedToastUiModel("shell-front", message, undoLabel = "Undo"),

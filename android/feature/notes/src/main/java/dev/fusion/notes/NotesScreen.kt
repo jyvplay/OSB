@@ -35,14 +35,14 @@ fun NotesScreen(model: NotesViewModel) {
         Text("Plaintext local note • not encrypted",style=MaterialTheme.typography.labelSmall)
         OutlinedTextField(state.name,model::name,Modifier.fillMaxWidth().testTag("notes-name"),enabled=ready && revision==null,singleLine=true,label={ Text("Note name (no path or extension)") })
         OutlinedTextField(state.text,model::edit,Modifier.fillMaxWidth().heightIn(min=180.dp,max=480.dp).testTag("notes-text"),enabled=ready,label={ Text("Markdown source") })
+        val draftSlug = WikiLinkGraph.slugify(state.name).ifBlank { "draft" }
         val liveWikiIndex = remember(state.name, state.text) {
-            WikiLinkGraph.build(listOf(WikiLinkGraph.NoteInput(state.name.ifBlank { "draft" }, state.text)))
+            WikiLinkGraph.build(listOf(WikiLinkGraph.NoteInput(draftSlug, state.name.ifBlank { "draft" }, state.text)))
         }
-        val draftSlug = WikiLinkGraph.slugify(state.name.ifBlank { "draft" })
-        val liveOutCount = liveWikiIndex.forwardLinks[draftSlug]?.size ?: 0
+        val liveOutCount = liveWikiIndex.outgoing[draftSlug]?.size ?: 0
         val liveClozeCount = remember(state.name, state.text) { NotesFlashcardSrsScheduler.extractClozeCards(draftSlug, state.text).size }
-        val folgeHint = remember(state.name) { runCatching { ZettelkastenFolgezettel.parse(state.name).canonical }.getOrNull() ?: "freeform" }
-        Text("Live draft graph: $liveOutCount outgoing [[wikilinks]] (${liveWikiIndex.unresolvedTargets.size} unresolved in draft preview) • Cloze flashcards=$liveClozeCount • Folgezettel=$folgeHint.",
+        val folgeHint = remember(state.name) { runCatching { ZettelkastenFolgezettel.parse(state.name).raw }.getOrNull() ?: "freeform" }
+        Text("Live draft graph: $liveOutCount outgoing [[wikilinks]] (${liveWikiIndex.brokenLinks.size} unresolved in draft preview) • Cloze flashcards=$liveClozeCount • Folgezettel=$folgeHint.",
             style=MaterialTheme.typography.labelSmall, modifier=Modifier.testTag("notes-live-wikigraph"))
         Text("256 KiB/note • 256 notes. Save explicitly. Draft recovery checkpoints are separate from Save note; unconfirmed recent edits can be lost. Saved-note wiki backlinks are explicit scans; no encryption, attachments, OCR or backup is claimed.")
         Text(state.recoveryStatus,Modifier.testTag("notes-recovery-status").semantics { liveRegion=LiveRegionMode.Polite })
