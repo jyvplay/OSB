@@ -2449,7 +2449,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "877068a4d31d6bd1390fe767fffa3b4c673e2bc9827d3fca0719caa2c2de0b6c"
+      "sha256": "78ccc4948fc5c86c994a51baf9a4ae10e7c64554cbcfabd50968c0030158a8e1"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorSelectionContextMenuPlanner.kt",
@@ -2935,7 +2935,7 @@
       "path": "feature/browser/src/main/java/dev/fusion/browser/BrowserScreen.kt",
       "module": ":feature:browser",
       "package": "dev.fusion.browser",
-      "sha256": "bc1dfb6acb2d9dac8dc573b3d422e3b741f0e41cf3b6b5dd1aca7deda8114c3c"
+      "sha256": "b7a0d3d32ee4e060a36adc47175ade2cea73081563df28846357664094f48c30"
     },
     {
       "path": "feature/browser/src/main/java/dev/fusion/browser/BrowserSplitTabWorkspace.kt",
@@ -3649,7 +3649,7 @@
       "path": "feature/calc/src/main/java/dev/fusion/calc/Calc.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "a8a6d7f70c7a1cabc22a6bc7ac81ea2c71a715588ab24beb52217eaf439ab40a"
+      "sha256": "24b1c313dc6b335fe18cdd41658fee7025e505ff8ed2e8d87a03b32d64fb01c3"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/CalculatorViewModel.kt",
@@ -4447,7 +4447,7 @@
       "path": "feature/capture/src/main/java/dev/fusion/capture/CaptureScreen.kt",
       "module": ":feature:capture",
       "package": "dev.fusion.capture",
-      "sha256": "a7593f91944d3dbb9da71ed35201f329f936f53b416cb3f1383975e83f9f13fb"
+      "sha256": "0a47e29f988ab156b54590c63bbd9b5dd69580a80da4b0a4a69625b080ab4f50"
     },
     {
       "path": "feature/capture/src/main/java/dev/fusion/capture/RecallWorkspaceScreen.kt",

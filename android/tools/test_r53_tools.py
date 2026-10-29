@@ -230,6 +230,19 @@ def _collect_checks() -> None:
           "run_r53_contracts" in (ROOT / "tools/fusion_workbench_cli.py").read_text(encoding="utf-8")
           and "run_r53_contracts.py" in (ROOT / "tools/r53_lab.py").read_text(encoding="utf-8"))
 
+    # Adversarial zero-trust regression test for SDK-37 / Compose UI symbol binding across CaptureScreen, Calc, BrowserScreen & EditorScreen
+    cap_ui = (ROOT / "feature/capture/src/main/java/dev/fusion/capture/CaptureScreen.kt").read_text(encoding="utf-8")
+    calc_ui = (ROOT / "feature/calc/src/main/java/dev/fusion/calc/Calc.kt").read_text(encoding="utf-8")
+    brw_ui = (ROOT / "feature/browser/src/main/java/dev/fusion/browser/BrowserScreen.kt").read_text(encoding="utf-8")
+    edt_ui = (ROOT / "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt").read_text(encoding="utf-8")
+    check("SDK-37 Compose UI regression: CaptureScreen imports remember, Calc uses firstRow.interestPaid, BrowserScreen uses sanitized.html & incognitoMode, EditorScreen extracts draftText.text",
+          "import androidx.compose.runtime.remember" in cap_ui
+          and "firstRow.interestPaid" in calc_ui
+          and "sanitized.html" in brw_ui
+          and "var incognitoMode by remember" in brw_ui
+          and "val draftRaw = draftText.text" in edt_ui
+          and "ReadabilityMetrics.analyze(draftRaw)" in edt_ui)
+
 
 _collect_checks()
 

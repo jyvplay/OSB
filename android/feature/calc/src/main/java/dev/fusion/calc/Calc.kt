@@ -122,7 +122,7 @@ fun CalcScreen(model: CalculatorViewModel) {
             val firstRow = sampleRows.firstOrNull()
             if (firstRow != null) {
                 Text(
-                    "12-mo @ 6.0% on ${"%.2f".format(principal)} · pmt=${"%.2f".format(firstRow.payment)} (p1 interest=${"%.2f".format(firstRow.interest)}, principal=${"%.2f".format(firstRow.principalPaid)})",
+                    "12-mo @ 6.0% on ${"%.2f".format(principal)} · pmt=${"%.2f".format(firstRow.payment)} (p1 interest=${"%.2f".format(firstRow.interestPaid)}, principal=${"%.2f".format(firstRow.principalPaid)})",
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

@@ -43,6 +43,7 @@ fun BrowserScreen() {
         )
     }
     val defaultCsp = remember { CspHeaderDirective.parse("default-src 'self'; frame-ancestors 'none'") }
+    var incognitoMode by remember { mutableStateOf(false) }
     var recallEnabled by remember { mutableStateOf(true) }
     var recallMode by remember { mutableStateOf("BY_URL_NAME") }
     var recallCustomPattern by remember { mutableStateOf("RecallVault/{yyyy}-{mm}-{dd}/{domain}/{kind}") }
@@ -80,7 +81,7 @@ fun BrowserScreen() {
         if (readerMode) {
             val extracted = remember(current.title, current.url) {
                 val sanitized = HtmlSanitizer.sanitize("<article><h1>${current.title.ifBlank { current.url }}</h1><p>Offline Reader Mode sanitizes active scripts via HtmlSanitizer and extracts clean prose via ArticleReaderExtractor.</p></article>")
-                ArticleReaderExtractor.extract(sanitized.cleanHtml)
+                ArticleReaderExtractor.extract(sanitized.html)
             }
             Text("Reader Mode (${extracted.wordCount} words • COOP/COEP=${isolationDemo.crossOriginIsolated} • CSP=${defaultCsp.directives.size} rules • blocked schemes=$blockedNavigations): ${extracted.markdown}")
         }

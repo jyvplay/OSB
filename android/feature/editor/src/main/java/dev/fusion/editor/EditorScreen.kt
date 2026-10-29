@@ -126,9 +126,10 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
         if (active != null) {
             val draftText = state.fields.getValue(active.id)
-            val metrics = remember(draftText) { ReadabilityMetrics.analyze(draftText) }
-            val mathCount = remember(draftText) { Regex("\\$[^$\\n]{1,120}\\$").findAll(draftText).count() }
-            val citeCount = remember(draftText) { Regex("\\[@[A-Za-z0-9_:-]+]").findAll(draftText).count() }
+            val draftRaw = draftText.text
+            val metrics = remember(draftRaw) { ReadabilityMetrics.analyze(draftRaw) }
+            val mathCount = remember(draftRaw) { Regex("\\$[^$\\n]{1,120}\\$").findAll(draftRaw).count() }
+            val citeCount = remember(draftRaw) { Regex("\\[@[A-Za-z0-9_:-]+]").findAll(draftRaw).count() }
             Text(
                 "Writer inspector: ${metrics.wordCount} words • ${metrics.sentenceCount} sentences • " +
                     "FK grade ${"%.1f".format(metrics.fleschKincaidGrade)} • ~${metrics.estimatedReadingSeconds}s read" +
