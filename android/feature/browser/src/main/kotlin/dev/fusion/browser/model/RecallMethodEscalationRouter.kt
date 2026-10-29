@@ -23,6 +23,53 @@ object RecallMethodEscalationRouter {
         TIER_5_WARC_ISO28500_BUNDLE(6, "Archival ISO 28500:2017 WARC/1.1 Multi-Resource Replay Bundle"),
     }
 
+    enum class ExtendedRecordingMethod(val methodNumber: Int, val tierAlias: String, val complexityLabel: String) {
+        METHOD_1_DIRECT_RANGE(1, "T1", "Direct DOM / srcset / HTTP-206 Byte-Range"),
+        METHOD_2_HLS_DASH_FMP4(2, "T2", "RFC 8216 HLS & ISO 23009-1 DASH -> fMP4"),
+        METHOD_3_WEBRTC_RTP(3, "T2.5", "RFC 3550 / RFC 7587 WebRTC RTP Opus/VP8 De-packetizer"),
+        METHOD_4_CANVAS_WEBAUDIO(4, "T3", "WebAudio PCM/Opus & Canvas Lossless Siphon"),
+        METHOD_5_NATIVE_VIEWPORT_AV(5, "T4", "Native MediaProjection + AudioPlaybackCapture Loopback"),
+        METHOD_6_WARC_ISO28500(6, "T5", "ISO 28500:2017 WARC/1.1 Multi-Resource Replay Bundle"),
+        METHOD_7_MSE_SOURCEBUFFER_FLAC_TAP(7, "T6", "W3C MSE SourceBuffer Init+Media Segment & RFC 9639 FLAC Lossless Tap"),
+    }
+
+    sealed interface ExtendedRoutingDecision {
+        data class Selected(val method: ExtendedRecordingMethod, val rationale: String) : ExtendedRoutingDecision
+        data class SkippedOrRefused(val code: String, val reason: String) : ExtendedRoutingDecision
+    }
+
+    fun selectExtendedMethod(sig: ViewedResourceSignal): ExtendedRoutingDecision {
+        if (sig.incognitoTab && !sig.explicitIncognitoOverride) {
+            return ExtendedRoutingDecision.SkippedOrRefused("SKIP_AMNESIC_INCOGNITO", "Incognito tabs default to zero disk archival")
+        }
+        if (sig.drmEncryptedEme) {
+            return ExtendedRoutingDecision.SkippedOrRefused("REFUSED_DRM_EME", "DRM/EME streams are never circumvented")
+        }
+        if (sig.flagSecureSurface) {
+            return ExtendedRoutingDecision.SkippedOrRefused("REFUSED_FLAG_SECURE", "Window carries FLAG_SECURE protection")
+        }
+        if (sig.mseSourceBufferTapAvailable) {
+            return ExtendedRoutingDecision.Selected(
+                ExtendedRecordingMethod.METHOD_7_MSE_SOURCEBUFFER_FLAC_TAP,
+                "W3C Media Source Extensions SourceBuffer init+media segment & RFC 9639 FLAC lossless tap",
+            )
+        }
+        return when (val base = selectTier(sig)) {
+            is RoutingDecision.SkippedOrRefused -> ExtendedRoutingDecision.SkippedOrRefused(base.code, base.reason)
+            is RoutingDecision.Selected -> {
+                val mapped = when (base.tier) {
+                    RecordingTier.TIER_1_DIRECT_RANGE -> ExtendedRecordingMethod.METHOD_1_DIRECT_RANGE
+                    RecordingTier.TIER_2_HLS_DASH_FMP4 -> ExtendedRecordingMethod.METHOD_2_HLS_DASH_FMP4
+                    RecordingTier.TIER_25_WEBRTC_RTP_DEPACKETIZER -> ExtendedRecordingMethod.METHOD_3_WEBRTC_RTP
+                    RecordingTier.TIER_3_CANVAS_WEBAUDIO -> ExtendedRecordingMethod.METHOD_4_CANVAS_WEBAUDIO
+                    RecordingTier.TIER_4_NATIVE_VIEWPORT_AV -> ExtendedRecordingMethod.METHOD_5_NATIVE_VIEWPORT_AV
+                    RecordingTier.TIER_5_WARC_ISO28500_BUNDLE -> ExtendedRecordingMethod.METHOD_6_WARC_ISO28500
+                }
+                ExtendedRoutingDecision.Selected(mapped, base.rationale)
+            }
+        }
+    }
+
     data class ViewedResourceSignal(
         val url: String,
         val contentType: String,
@@ -36,6 +83,7 @@ object RecallMethodEscalationRouter {
         val priorFailedTiers: Set<RecordingTier> = emptySet(),
         val isWebRtcRtpStream: Boolean = false,
         val warcBundleRequested: Boolean = false,
+        val mseSourceBufferTapAvailable: Boolean = false,
     )
 
     sealed interface RoutingDecision {

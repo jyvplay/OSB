@@ -1136,7 +1136,7 @@ kotlin.sourceSets.named("r49") {
     kotlin.srcDir("../baselineprofile/src/main/kotlin")
     kotlin.include(
         "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt", "**/SpillSheetEngine.kt",
-        "**/KnuthPlassLineBreaker.kt", "**/LiangHyphenationEngine.kt", "**/MultiColumnPagePaginator.kt", "**/OdfTrackedChangesCodec.kt",
+        "**/KnuthPlassLineBreaker.kt", "**/OptimalParagraphComposer.kt", "**/LiangHyphenationEngine.kt", "**/MultiColumnPagePaginator.kt", "**/OdfTrackedChangesCodec.kt",
         "**/MailMergeTemplateEngine.kt", "**/DocumentCompareDiff.kt", "**/BibliographyCitationEngine.kt",
         "**/StickyNoteBoardLayout.kt", "**/MarkdownSlideExporter.kt",
         "**/DrawingMlChartBuilder.kt", "**/SheetSparklineRenderer.kt", "**/SheetSolverSimplex.kt", "**/OoxmlMacroVbaInspector.kt",
@@ -1522,6 +1522,40 @@ kotlin.sourceSets.named("r53") {
         "**/BrowserLinkMediaContextMenuPlanner.kt", "**/MediaCollectionViewModeGrouper.kt", "**/VaultItemViewModeOrganizer.kt",
         "**/NotesCollectionViewModeSorter.kt", "**/EditorSelectionContextMenuPlanner.kt", "**/R53Checks.kt",
     )
+}
+val r54 by sourceSets.creating
+kotlin.sourceSets.named("r54") {
+    kotlin.srcDir("src/r54/kotlin")
+    kotlin.srcDir("src/main/kotlin")
+    kotlin.srcDir("../core/documents/src/main/kotlin")
+    kotlin.srcDir("../format/ooxml/src/main/kotlin")
+    kotlin.srcDir("../format/lok/src/main/kotlin")
+    kotlin.srcDir("../feature/browser/src/main/kotlin/dev/fusion/browser/model")
+    kotlin.srcDir("../feature/media/src/main/kotlin")
+    kotlin.srcDir("../privacy/src/main/kotlin")
+    kotlin.srcDir("../core/security/src/main/kotlin")
+    kotlin.srcDir("../core/hw/src/main/kotlin")
+    kotlin.srcDir("../core/windowing/src/main/kotlin")
+    kotlin.srcDir("../core/designsystem/src/main/kotlin")
+    kotlin.srcDir("../core/commands/src/main/kotlin")
+    kotlin.srcDir("../app/src/main/java")
+    kotlin.include(
+        "**/R54Checks.kt", "**/KnuthPlassLineBreaker.kt", "**/OptimalParagraphComposer.kt", "**/LiangHyphenationTrieEngine.kt",
+        "**/OpenTypeSfntMetricsParser.kt", "**/PeritextRichSpanCrdtEngine.kt", "**/DocxBidirectionalPackageCodec.kt",
+        "**/OdtBidirectionalPackageCodec.kt", "**/SpreadsheetSimplexMilpSolver.kt", "**/Decimal128FinancialEngine.kt",
+        "**/Sqlite3BtreeTableFileReader.kt", "**/RecallTier6MseSourceBufferTap.kt", "**/RecallFlacRfc9639LosslessArchiver.kt",
+        "**/MlKem768NttPolynomialEngine.kt", "**/TorProp340PackedRelayCellCodec.kt", "**/WebAuthnLevel3AuthDataVerifier.kt",
+        "**/UsbPdStructuredVdmAltModeGuard.kt", "**/DvfsHertzbleedFrequencyNoiseGuard.kt", "**/GpuPixelTimingPixnappingShield.kt",
+        "**/WifiCsiKeystrokeSensingMitigator.kt", "**/HallMagnetometerCoverSpoofGuard.kt",
+        "**/ContextMenuKeyboardTypeaheadSubmenuEngine.kt", "**/BespokeViewModeAnimatedMorphSpec.kt",
+        "**/UndoToastBatchCoalescerController.kt", "**/RecallMethodEscalationRouter.kt", "**/RecallSessionCoordinator.kt",
+        "**/FormulaEval.kt", "**/SpillSheetEngine.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt",
+    )
+}
+configurations[r54.implementationConfigurationName].extendsFrom(configurations.implementation.get())
+tasks.register<JavaExec>("r54Contracts") {
+    dependsOn(r54.classesTaskName); classpath = r54.runtimeClasspath; mainClass.set("dev.fusion.testing.R54Checks")
+    args(rootProject.file("testing/build/r54/artifacts").absolutePath)
 }
 tasks.register<JavaExec>("r53Contracts") {
     dependsOn(r53.classesTaskName); classpath = r53.runtimeClasspath; mainClass.set("dev.fusion.testing.R53Checks")

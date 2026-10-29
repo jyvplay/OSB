@@ -17,7 +17,8 @@
       "present_scope": "Native own-window host with restore/workspace actions, Find and Notes integration; prior-source focus failure reproduced and repaired source passed API34 case at1ea1faa; full UI/AX unverified",
       "remaining_gap": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(FusionClassAReadinessAggregator,WorkspaceDeepLinkIntentSanitizer)"
+      "host_evidence": "R51(FusionClassAReadinessAggregator,WorkspaceDeepLinkIntentSanitizer)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":core:documents",
@@ -25,15 +26,17 @@
       "present_scope": "Strict bounded multi-encoding editor, current-source line diff, correlated copy protocol, historical recovery and bound readback receipts; executed host contracts",
       "remaining_gap": "Streaming large files, regex, full autosave/recovery, provider/IME/AX/process-death and physical persistence acceptance; complete Forge lifecycle absent",
       "evidence_level": "partial_kernel_contracts",
-      "host_evidence": "R51(OpenTypeKerningLineJustifier,SpreadsheetNumberMaskFormatter)"
+      "host_evidence": "R51(OpenTypeKerningLineJustifier,SpreadsheetNumberMaskFormatter)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":core:windowing",
       "status": "incomplete",
       "present_scope": "Immutable published window lists, deterministic reducer, bounded tile/normal restoration, ordered epoch/sequence command stream and codec v3 with historical v1/v2 migration",
-      "remaining_gap": "Full WM-01–16 semantics, Compose host/input/display integration, Room, physical a11y/perf",
+      "remaining_gap": "Full WM-01\u201316 semantics, Compose host/input/display integration, Room, physical a11y/perf",
       "evidence_level": "partial_kernel_contracts",
-      "host_evidence": "R51(FocusZOrderModalStack,SnapTileMagneticLayoutSolver)"
+      "host_evidence": "R51(FocusZOrderModalStack,SnapTileMagneticLayoutSolver)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":core:files",
@@ -65,7 +68,8 @@
       "present_scope": "Bounded immutable command snapshots and locale-stable literal ranking; mutation/aliasing regression tests executed",
       "remaining_gap": "Complete command routing, conflict/remap/keyboard/a11y contracts and integration",
       "evidence_level": "partial_kernel_contracts",
-      "host_evidence": "R51(FuzzyChordCommandPaletteEngine)"
+      "host_evidence": "R51(FuzzyChordCommandPaletteEngine)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":core:settings",
@@ -81,7 +85,8 @@
       "present_scope": "Password/vault crypto source plus Android index-key adapter; decrypt/read refuses missing keys without regeneration; hardware backing not assumed",
       "remaining_gap": "Threat model/key lifecycle/review, secure surfaces, destructive/failure-path tests and license closure",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(AgeV1StreamCipherEnvelope,DramRowhammerZeroizeGuard,Luks2Argon2idHeaderAuditor,OpticalReflectionSideChannelGuard)"
+      "host_evidence": "R51(AgeV1StreamCipherEnvelope,DramRowhammerZeroizeGuard,Luks2Argon2idHeaderAuditor,OpticalReflectionSideChannelGuard)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":core:perf",
@@ -97,7 +102,8 @@
       "present_scope": "Actual Android video codec encoder/decoder declaration partition and audio feature inventory; native case PASS at67fbd39",
       "remaining_gap": "Declared hardware flags/preferences are NOT successful codec initialization, throughput or casting; physical/API36/37 and Compat acceptance remain open",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(CapacitiveGhostTouchFilter,HallMagneticCoverTamperGuard,Usb4PcieIommuDmaGuard)"
+      "host_evidence": "R51(CapacitiveGhostTouchFilter,HallMagneticCoverTamperGuard,Usb4PcieIommuDmaGuard)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":core:index",
@@ -121,7 +127,8 @@
       "present_scope": "Compose theme source",
       "remaining_gap": "Complete density/focus/contrast/200%-reflow and TalkBack/Switch/Voice acceptance",
       "evidence_level": "android_compiled",
-      "host_evidence": "R51(ApcaContrastTypographyScale)"
+      "host_evidence": "R51(ApcaContrastTypographyScale)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":feature:editor",
@@ -159,9 +166,10 @@
       "module": ":feature:browser",
       "status": "incomplete",
       "present_scope": "Executed immutable session metadata/codec. Separate debug :app experiments passed real profiles and remote surface pixels/input/resize on regular API34 at2c2b5bc. No connected product renderer/chrome/profile/navigation integration. R21 document-owned pending consent/one-shot lifecycle controller executed on JVM and API34; no real engine permission wiring. R22 adds explicit document suspension/revocation kernel; no real renderer lifecycle bridge. R22 exact fe8dca2 full119/0 and focused10/0 passed; historical failures retained, no universal stability claim.",
-      "remaining_gap": "Complete PR07 a–s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
+      "remaining_gap": "Complete PR07 a\u2013s browser UI/rendering/profiles/origin/permissions/download/keyboard/reader/filter/own-cast behavior and S29/S30",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(ChipsPartitionedCookieJar,CssFlexBlockBoxLayouter,DeclarativeNetRequestTrieEngine,PermissionsPolicyHeaderEvaluator)"
+      "host_evidence": "R51(ChipsPartitionedCookieJar,CssFlexBlockBoxLayouter,DeclarativeNetRequestTrieEngine,PermissionsPolicyHeaderEvaluator)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":feature:terminal",
@@ -193,7 +201,8 @@
       "present_scope": "Native decimal/scientific/programmer/units/history kernel, Compose and checkpoint integration",
       "remaining_gap": "PR-09 complete actual checkpoint/process-death and keyboard/TalkBack/Switch/Voice/200%-reflow acceptance",
       "evidence_level": "partial_kernel_contracts",
-      "host_evidence": "R51(GoalSeekSimplexSolver,PivotSlicerCrossFilterEngine)"
+      "host_evidence": "R51(GoalSeekSimplexSolver,PivotSlicerCrossFilterEngine)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":feature:settings",
@@ -209,13 +218,14 @@
       "present_scope": "Strict bounded SubRip decode/canonical export, overlapping half-open cue lookup and consumed-byte stream reader; literal-cue inspector text input passed at67fbd39. System picker adapter compiled, grant/lifecycle execution pending",
       "remaining_gap": "No native media player, synchronization, hardware/PiP/gapless/Beam; sequential-index UTF8 subset only, no styling/positioning; hostile provider wall-time unbounded",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(EbuR128LoudnessNormalizer,WebVttCueTimelineEngine)"
+      "host_evidence": "R51(EbuR128LoudnessNormalizer,WebVttCueTimelineEngine)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":feature:beam",
       "status": "incomplete",
       "present_scope": "Discovery/sender surface source; pure fail-closed quality policy tested; pilot blocked",
-      "remaining_gap": "S17–21 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting",
+      "remaining_gap": "S17\u201321 transports/trust/Stop/exclusion/lock/thermal/device evidence; policy alone is not casting",
       "evidence_level": "partial_kernel_contracts",
       "host_evidence": "R51(ReedSolomonQrChunkFountain)"
     },
@@ -233,7 +243,8 @@
       "present_scope": "MediaProjection recorder source with Stop/lock/thermal and partial-file safeguards",
       "remaining_gap": "Native playback/revocation/exclusion/power-loss and hardware encoder measurement",
       "evidence_level": "android_compiled",
-      "host_evidence": "R51(ScrollingStitchSeamMatcher)"
+      "host_evidence": "R51(ScrollingStitchSeamMatcher)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":feature:backup",
@@ -271,7 +282,7 @@
       "module": ":feature:lens",
       "status": "incomplete",
       "present_scope": "Camera preview only; explicit experimental consent",
-      "remaining_gap": "S25–28 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported",
+      "remaining_gap": "S25\u201328 and LN effects/own Meet/web/PC/record paths; third-party native virtual camera is unsupported",
       "evidence_level": "android_compiled",
       "host_evidence": "R51(BarcodeSymbologyDecoder,DocumentDewarpPerspectiveEngine)"
     },
@@ -313,7 +324,8 @@
       "present_scope": "Executed bounded OOXML lossy text extractor with actual consumed ZIP-member/aggregate byte guards; no POI or Office equivalence R21 bounded strict UTF8 CSV table/frame/projection/literal export:376 host assertions,480 external reader documents and6 near-cap stress cases; native worker/UI route passed at b96f060. R22 values-only single-sheet XLSX with namespace/relationship/sparse-coordinate admission; actual host openpyxl/XlsxWriter references pass. fe8dca2 focused10/0 passed; full scope separate. R22 exact fe8dca2 full119/0 and focused10/0 passed; historical failures retained, no universal stability claim.",
       "remaining_gap": "Full bounded isolated Office/POI route, macros-off, fidelity/loss/safe-save and dependency audit",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(CalcChainDependencyGraph,PptxMasterLayoutAnimationEngine,R1C1FormulaTranslator,StructuredTableRefEngine)"
+      "host_evidence": "R51(CalcChainDependencyGraph,PptxMasterLayoutAnimationEngine,R1C1FormulaTranslator,StructuredTableRefEngine)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":format:pdf",
@@ -345,7 +357,8 @@
       "present_scope": "Original bounded main-FS/worker Writer WASM adapter, exercised against actual pinned LibreOffice26.2.6.3 with native tiles and ODT/PDF independent readback in desktop Chrome155",
       "remaining_gap": "No Android engine payload/hosting or complete Office integration. Generic document fidelity, Calc/Impress/editing, permissions/hostile-document/profile isolation,1GiB runtime footprint and transitive licensing remain unaccepted.",
       "evidence_level": "runner_executed",
-      "host_evidence": "R51(OdsSpreadsheetFormulaBridge)"
+      "host_evidence": "R51(OdsSpreadsheetFormulaBridge)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":cast:dlna",
@@ -401,7 +414,8 @@
       "present_scope": "Separate no-INTERNET volatile native workspace and link projection; f42193d native 6/6 with atomic input refusal, persistent feedback and IME/deletion attacks; historical 62b5c2f failure retained",
       "remaining_gap": "Full anonymity/OS replacement not claimed; actual workspace lifecycle/AX/IME and physical security gates remain",
       "evidence_level": "partial_android_execution",
-      "host_evidence": "R51(AmnesicSessionShutdownOrchestrator,MetadataCleanRoomExportPipeline,PanicDeadManSwitchEngine,TorVanguardsLiteMesh)"
+      "host_evidence": "R51(AmnesicSessionShutdownOrchestrator,MetadataCleanRoomExportPipeline,PanicDeadManSwitchEngine,TorVanguardsLiteMesh)",
+      "r54_host_evidence": "R54 executed host kernels (Knuth-Plass/sfnt/CRDT/docx+odt+rtf, simplex+MILP+decimal128+sqlite3, FLAC/MSE tap, ML-KEM ring+Prop340+WebAuthn, vectors #31-#35, typeahead+undo burst). Device/AX/hardware gates remain unpassed."
     },
     {
       "module": ":feature:maps",
@@ -736,5 +750,6 @@
     }
   ],
   "revision": "R25 bounded metadata continuation; no full acceptance",
-  "build_evidence": "Historical R24 builds remain recorded. R24 continuation changes require new exact-candidate native build/lint/device receipts; none inherited."
+  "build_evidence": "Historical R24 builds remain recorded. R24 continuation changes require new exact-candidate native build/lint/device receipts; none inherited.",
+  "r54_note": "R54 adds executed host kernel evidence only; no module is promoted. complete remains 0/50 because android_build_lint_and_both_flavors / whole_assigned_scope / mandatory_spike_and_device / security_privacy_accessibility / api37_16k / license gates are not all satisfied."
 }

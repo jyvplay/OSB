@@ -1,3 +1,14 @@
+# Latest R54
+
+- **Writer (Class-A depth on host, `0/50` Class A honest):** `OptimalParagraphComposer` (three-pass Knuth–Plass with inverted-slice and hard hyphen-cap guards), `LiangHyphenationTrieEngine`, `OpenTypeSfntMetricsParser` (real `sfnt` `cmap` format 4/12, `hmtx`, `kern`), `PeritextRichSpanCrdtEngine`, `DocxBidirectionalPackageCodec` (11-part `.docx` + RTF 1.9.1 incl. astral signed UTF-16) and `OdtBidirectionalPackageCodec` (`mimetype` first **and** STORED per ODF 1.3 Part 2 §2.2.1).
+- **Spreadsheet (Class-A depth on host):** `SpreadsheetSimplexMilpSolver` (Big-M + Bland, validated against exhaustive integer enumeration), `Decimal128FinancialEngine` (IEEE 754 decimal128 exact ledgers vs binary64 drift), `Sqlite3BtreeTableFileReader` (writer read back by CPython `sqlite3` with `integrity_check = ok`), `FormulaEval` **350** functions, `SpillSheetEngine` **56** spilled ops.
+- **Recall 7 methods:** new `RecallTier6MseSourceBufferTap` (W3C MSE init+media tap with dedupe/trim/gap) and `RecallFlacRfc9639LosslessArchiver` (RFC 9639 lossless frames, first-frame-relative `SEEKTABLE`, PCM MD5 verified) alongside R53's `T1..T5`.
+- **Post-quantum Tails-Light:** `MlKem768NttPolynomialEngine` (NTT/basemul vs schoolbook, CBD₂, compress bounds, hybrid X25519 KDF, SHA-3/SHAKE KATs), `TorProp340PackedRelayCellCodec`, `WebAuthnLevel3AuthDataVerifier` (+RFC 6238 TOTP).
+- **Hardware shields `#31`–`#35`:** USB-PD structured-VDM/`EnterUSB` guard, DVFS/Hertzbleed correlation guard, GPU pixnapping quantiser, Wi-Fi CSI cadence mitigator, Hall+magnetometer spoof guard → **35 vectors** total.
+- **Ergonomics:** keyboard typeahead + mnemonic + safe-triangle hover + left-flip cascade (`180..280dp`/`168..240dp`), morphing half-pixel `List`/`Grid`/`Columns` glyphs, and a 50-receipt `Undo` burst coalescer that stays at `7.11%` of the right edge.
+- **Measured:** `R54_CONTRACTS_OK assertions=1109 kernels=22 modules=50/50`, `R54_ORACLE_OK checks=139 artifacts=21`, `62/62 PARSE OK`, `R54 VISUAL AUDIT PASS sheets=3 boxes=124 pairs=2534 minContrast=7.58`.
+- **Honesty:** `0/50` full-spec Class A; `50/50` host-testable subsets. See `android/docs/R54-RESULTS.md`.
+
 # Latest R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
 
 Branch `arena/64550eba-osb`, `2026-10-29`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).

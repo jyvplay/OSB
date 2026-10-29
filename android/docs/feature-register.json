@@ -4,7 +4,7 @@
     "feature": "Launcher pinned/all-apps/folders/recents/search",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Bounded immutable pin/reorder/search/catalog reconciliation kernel tested; caller-supplied targets only. Actual LauncherApps/Home/folders/widgets/recents and persistent host integration remain missing.",
     "tests": [
       "plan:T-SH-01",
@@ -24,7 +24,7 @@
     "feature": "Shelf pinned/running/badges/previews/edges",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "R24 native own-app full-width Business taskbar / centered Art dock, real running indicators, bounded pointer/focus magnification and shared persistence. Full pinning/badges/previews/edge/third-party task integration and physical/AX matrix remain.",
     "tests": [
       "plan:T-SH-02",
@@ -44,7 +44,7 @@
     "feature": "Top bar menus/status/clock/Beam indicator",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "R24 native active-app menu/title, real local clock, Find and Control Panel; only actual app/workspace/appearance actions. Full menus/status/Beam indicator and external-display acceptance remain.",
     "tests": [
       "plan:T-SH-03",
@@ -61,7 +61,7 @@
     "feature": "Desktop wallpaper/icons/folders/widgets/context menu/layouts",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "R24 Business/Art layout and native gradient/flat workspace with professional palettes. Desktop icons/folders/widget host/context-menu scope remains missing; no stock OS replacement.",
     "tests": [
       "plan:T-SH-04",
@@ -78,7 +78,7 @@
     "feature": "Widget host with suspend and crash isolation",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Pure-JVM WidgetHostIsolationSupervisor circuit-breaker/suspend/crash-backoff kernel tested; Android AppWidgetHost Binder process & Compose surface hosting remain unintegrated.",
     "tests": [
       "plan:T-SH-05",
@@ -95,7 +95,7 @@
     "feature": "Hot corners/edge triggers/mouse gestures",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Pure-JVM HotCornerGestureZone dwell/hysteresis/diagonal edge-trigger kernel tested; live multi-display MotionEvent dispatch remains unverified on device.",
     "tests": [
       "plan:T-SH-06",
@@ -112,7 +112,7 @@
     "feature": "Local-first onboarding/permission explainers/config/license",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Compose shell; HOME/LauncherApps/AppWidgetHost where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -129,7 +129,7 @@
     "feature": "Session restore after death/reboot",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Bounded versioned checksummed geometry snapshot; single-writer AtomicFile; legacy migration and explicit retained-byte reset. Room migration remains deferred.",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -146,7 +146,7 @@
     "feature": "Configurable mouse navigation buttons (alias IN-01 contract)",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Pure-JVM ExternalMouseButtonMapper BACK/FORWARD/MIDDLE/EXTRA1/EXTRA2 remap & learn-mode kernel tested; physical USB/BT mouse HID capture and S15 acceptance remain pending.",
     "tests": [
       "plan:T-SH-09",
@@ -165,7 +165,7 @@
     "feature": "BlackTop external compositor/phone blackout/foreground session",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM BlackTopSessionCoordinator external-compositor state machine, phone-blackout & FGS lease planner tested; Android Presentation/SurfaceControl and S23 60-min device run remain pending.",
     "tests": [
       "plan:T-SH-10",
@@ -184,7 +184,7 @@
     "feature": "Phone-as-touchpad/keyboard for own compositor",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.1",
+    "sources": "owner:v2.0 \u00a77.1",
     "route": "Pure-JVM BlackTopSessionCoordinator relative trackpad acceleration & two-finger scroll translator tested; live phone touchscreen-to-external-Presentation event bridge and S23 remain pending.",
     "tests": [
       "plan:T-SH-11",
@@ -203,7 +203,7 @@
     "feature": "OEM throttle detector and guidance",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM BlackTopSessionCoordinator frame-deadline jitter OEM throttle detector & remediation advisor tested; live Choreographer sampling and S23 device validation remain pending.",
     "tests": [
       "plan:T-SH-12",
@@ -222,7 +222,7 @@
     "feature": "Move/resize/minimize/maximize/close/z/focus/title/menu compositor",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Own native H1 host; JVM snapshot ownership plus maximize/tile/restore geometry. Android UI/AX unrun.",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -242,7 +242,7 @@
     "feature": "Half/third/quarter/custom tiling/edge drag/named groups",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent.",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -262,7 +262,7 @@
     "feature": "Named/reorderable/per-window workspaces",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "plan:T-WM-03",
@@ -278,7 +278,7 @@
     "feature": "Overview grid/search/live own-window thumbnails",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM MultiDisplayWindowBroker overview grid layout & title/workspace filter kernel tested; live window Surface thumbnail capture remains unimplemented.",
     "tests": [
       "plan:T-WM-04",
@@ -295,7 +295,7 @@
     "feature": "App/window/workspace switcher modes",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -312,7 +312,7 @@
     "feature": "Probe-chosen S1-S4 external-app broker and display pinning",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM ExternalAppBrokerDensityPin multi-display launch target & fallback broker tested; Android ActivityOptions.setLaunchDisplayId external-app hosting and S1 spike remain pending.",
     "tests": [
       "plan:T-WM-06",
@@ -331,7 +331,7 @@
     "feature": "Multi-display layouts/hotplug/open-where-acted",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM MultiDisplayWindowBroker multi-display hotplug evacuate/rebind & open-where-acted kernel tested; Android DisplayManager hotplug integration and S1 spike remain pending.",
     "tests": [
       "plan:T-WM-07",
@@ -350,7 +350,7 @@
     "feature": "Window rules and remembered geometry",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM WindowRuleMatcher per-module remembered geometry & clamp-to-work-area kernel tested; Room/DataStore durable persistence remains unverified on device.",
     "tests": [
       "plan:T-WM-08",
@@ -367,7 +367,7 @@
     "feature": "Keyboard-only move/resize/tile",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure Kotlin window reducer; Compose H1; platform broker only where allowed",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -386,7 +386,7 @@
     "feature": "Distraction-free focus mode",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM MultiDisplayWindowBroker distraction-free focus-mode chrome suppression & notification hold kernel tested; full shell chrome integration remains partial.",
     "tests": [
       "plan:T-WM-10",
@@ -403,7 +403,7 @@
     "feature": "Always-on-top mini windows",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM MultiDisplayWindowBroker always-on-top z-order pin ceiling (<=3 mini windows) kernel tested; Android window-layer z-order composition remains unverified on device.",
     "tests": [
       "plan:T-WM-11",
@@ -420,7 +420,7 @@
     "feature": "Per-app density override with limits label",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM ExternalAppBrokerDensityPin bounded per-app DPI override (120..640 dpi) with explicit compatibility-limits warning tested; system WindowManager density injection and S1 remain pending.",
     "tests": [
       "plan:T-WM-12",
@@ -439,7 +439,7 @@
     "feature": "Move windows across workspaces with drag/menu/keyboard",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Native workspace menu and Ctrl+Alt+Shift+1/2/3 wiring; pure reducer checked. Drag and native acceptance incomplete.",
     "tests": [
       "plan:T-WM-13",
@@ -456,7 +456,7 @@
     "feature": "Key-to-touch mapper overlay",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM KeyToTouchOverlayMapper WASD/d-pad/button-to-normalized-touch coordinate profile engine tested; live MotionEvent overlay dispatch remains unverified on device.",
     "tests": [
       "plan:T-WM-14",
@@ -473,7 +473,7 @@
     "feature": "Fusion window-to-cast render-to-Surface",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.2",
+    "sources": "owner:v2.0 \u00a77.2",
     "route": "Pure-JVM KeyToTouchOverlayMapper single-window Cast VirtualDisplay aspect-fit surface planner tested; Android MediaProjection/SurfaceControl capture and S17 remain pending.",
     "tests": [
       "plan:T-WM-15",
@@ -492,7 +492,7 @@
     "feature": "Cursor confinement on external display",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM MultiDisplayWindowBroker external-display cursor confinement & edge-barrier clamp kernel tested; Android PointerIcon/View.requestPointerCapture and S1 remain pending.",
     "tests": [
       "plan:T-WM-16",
@@ -511,7 +511,7 @@
     "feature": "Palette apps/commands/windows/settings/files/contacts/events/notes/targets",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Native module/window/workspace command palette wired. File/contact/event/note/target index integration remains absent.",
     "tests": [
       "plan:T-SR-01",
@@ -530,7 +530,7 @@
     "feature": "Index health/exclusions/rebuild/churn quarantine",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Pure-JVM IndexChurnQuarantineMonitor runaway-mutation quarantine, path-exclusion & rebuild planner tested; background crawler integration and S4 device spike remain pending.",
     "tests": [
       "plan:T-SR-02",
@@ -549,7 +549,7 @@
     "feature": "Exact/fuzzy search then opt-in semantic embeddings",
     "tier": "A",
     "phase": "P1/P3",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Bounded local literal index only, locale-stable ranking and capacity refusal. No fuzzy/semantic engine.",
     "tests": [
       "plan:T-SR-03",
@@ -568,7 +568,7 @@
     "feature": "Opt-in web results below local results",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Pure-JVM OptInWebAppSearchFederation local-first ranker keeping opt-in HTTPS privacy-search footer strictly below local hits tested; live browser handoff UI integration remains partial.",
     "tests": [
       "plan:T-SR-04",
@@ -585,7 +585,7 @@
     "feature": "In-folder scoped search",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Pure-JVM BooleanQueryAst + ExtendedGlob + BoyerMooreHorspool scoped folder filter kernels tested; live SAF provider index integration and S4 remain pending.",
     "tests": [
       "plan:T-SR-05",
@@ -604,7 +604,7 @@
     "feature": "Palette calculator/conversion/notes/focus/settings/routines/casting",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Pure-JVM PaletteInlineAnswerEngine BigDecimal math, unit conversion & base-radix inline card wired into CommandPalette (Palette.kt); live routine/cast trigger execution remains partial.",
     "tests": [
       "plan:T-SR-06",
@@ -621,7 +621,7 @@
     "feature": "Opt-in external app content via AppSearch/AppFunctions",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Pure-JVM OptInWebAppSearchFederation + AppFunctionsSchemaRegistry explicit per-package opt-in external content broker tested; Android AppSearchManager IPC remains unverified on device.",
     "tests": [
       "plan:T-SR-07",
@@ -638,7 +638,7 @@
     "feature": "Search coverage and missing-result diagnostics",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.3",
+    "sources": "owner:v2.0 \u00a77.3",
     "route": "Pure-JVM IndexChurnQuarantineMonitor search-coverage & missing-result diagnostic explainer tested; full AppSearch/SAF source ledger integration remains pending.",
     "tests": [
       "plan:T-SR-08",
@@ -655,7 +655,7 @@
     "feature": "Tabbed file browser/list/grid/column/gallery/tree/tags/favorites/F2",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-01",
@@ -671,7 +671,7 @@
     "feature": "Dual pane/split and optional terminal pane",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM DualPaneContextMenuModel split dual-pane file commander + synchronized working-directory terminal drawer reducer tested; full SAF dual-pane drag UI acceptance remains pending.",
     "tests": [
       "plan:T-FM-02",
@@ -688,7 +688,7 @@
     "feature": "Journaled copy/move/delete/rename/batch/conflicts/undo/pause/checksums",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM JournaledFileOpsPlanner write-ahead journal, SHA-256 verification, conflict resolution & inverse-undo planner tested; SAF backend mutations remain gated behind S6.",
     "tests": [
       "plan:T-FM-03",
@@ -708,7 +708,7 @@
     "feature": "Isolated Forge Peek for image/PDF/text/media/archive/Office/PSD/HEIC",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM DuplicateFileClusterer Forge-peek headline wired into FilesScreen.kt plus FormatSandboxWatchdog/HeicIsomBoxInspector/AiPdfCompatibilityBridge kernels tested; isolated preview Service renderers remain partial.",
     "tests": [
       "plan:T-FM-04",
@@ -725,7 +725,7 @@
     "feature": "Archive browse/read/write/encrypted ZIP/slip-bomb guards",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM ZipAesExtraFieldCodec WinZip AE-2 (0x9901) HMAC-SHA1/AES-CTR + FormatSandboxWatchdog zip-slip/compression-ratio bomb guards tested; SAF archive write integration remains pending.",
     "tests": [
       "plan:T-FM-05",
@@ -742,7 +742,7 @@
     "feature": "Concise/full/custom context menus/terminal/path/cast",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM DualPaneContextMenuModel concise/full/custom context-menu builder (Copy Path, Open Terminal Here, Send to Beam, mat2 scrub) tested; live shell wiring remains partial.",
     "tests": [
       "plan:T-FM-06",
@@ -759,7 +759,7 @@
     "feature": "Storage overview/cleanup/duplicates/large files",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM DuplicateFileClusterer SHA-256 duplicate clustering & top-large-file summary wired into FilesScreen.kt; full asynchronous SAF tree walk remains pending.",
     "tests": [
       "plan:T-FM-07",
@@ -776,7 +776,7 @@
     "feature": "USB/SD/SMB/SFTP/WebDAV/FTP and reconnect diagnostics",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM RemoteMountReconnectPlanner USB/SD/SMB/SFTP/WebDAV/FTP mount state machine with exponential-backoff reconnect & diagnostic classifier tested; live network VFS sockets remain unintegrated.",
     "tests": [
       "plan:T-FM-08",
@@ -793,7 +793,7 @@
     "feature": "Cloud/placeholder state badges",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM DuplicateFileClusterer CloudResidencyBadge (LOCAL_PINNED/CLOUD_PLACEHOLDER_OFFLINE/SYNCING/CONFLICT) classifier tested; live DocumentsContract column binding remains pending.",
     "tests": [
       "plan:T-FM-09",
@@ -810,7 +810,7 @@
     "feature": "DocumentsProvider for network/cloud/archive",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM ArchiveDocumentsProviderTree virtual document-ID cursor & child-enumeration model tested; Android DocumentsProvider manifest authority registration remains unverified on device.",
     "tests": [
       "plan:T-FM-10",
@@ -827,7 +827,7 @@
     "feature": "Trash with origin/date/size/retention",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Legacy receipt inspection only, bounded and corruption-visible; trash/restore/purge backend refuses pending S6.",
     "tests": [
       "plan:T-FM-11",
@@ -846,7 +846,7 @@
     "feature": "Android data/obb via Shizuku/ADB",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-12"
@@ -859,7 +859,7 @@
     "feature": "New-file templates and context-menu New",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM NewFileTemplateCatalog clean-room .txt/.md/.csv/.json/.xlsx/.docx/.html starter byte generator & safe filename validator tested; SAF createDocument wiring remains partial.",
     "tests": [
       "plan:T-FM-13",
@@ -876,7 +876,7 @@
     "feature": "Cross-window/app ClipData drag-drop with URI grants",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM CrossWindowClipUriGrantor cross-window drag-drop ClipData planner enforcing explicit read/write URI flags and blocking Vault/private paths tested; Android View.startDragAndDrop device test remains pending.",
     "tests": [
       "plan:T-FM-14",
@@ -893,7 +893,7 @@
     "feature": "Selection count/size/batch toolbar",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-15",
@@ -909,7 +909,7 @@
     "feature": "Quick filter bar",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "SAF/MediaStore; isolated preview and journaled file operations",
     "tests": [
       "plan:T-FM-16",
@@ -925,7 +925,7 @@
     "feature": "Cached background folder sizes",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.4",
+    "sources": "owner:v2.0 \u00a77.4",
     "route": "Pure-JVM RemoteMountReconnectPlanner TTL-bounded incremental folder byte-size & file-count Rollup cache invalidator tested; background SAF tree walk scheduling remains partial.",
     "tests": [
       "plan:T-FM-17",
@@ -942,8 +942,8 @@
     "feature": "SAF session-copy safe-save/reopen verification/Save a Copy fallback",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 §1.3/§4",
-    "route": "Strict UTF-8 session; durable picker snapshot; new SAF copy only; closed-output exact readback; never claims atomic replacement; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Strict UTF-8 session; durable picker snapshot; new SAF copy only; closed-output exact readback; never claims atomic replacement; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
     "tests": [
       "core:documents/DocumentSafetyTest",
       "plan:SAF-provider-and-editor-device-matrix",
@@ -962,7 +962,7 @@
     "feature": "Grouped alerts/history/snooze/reply/rules/pin/search/batch dismiss",
     "tier": "B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.5",
+    "sources": "owner:v2.0 \u00a77.5",
     "route": "NotificationListenerService; Room alert store; system settings panels",
     "tests": [
       "plan:T-NC-01",
@@ -978,7 +978,7 @@
     "feature": "Focus modes by workspace/time/app/display with reason",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.5",
+    "sources": "owner:v2.0 \u00a77.5",
     "route": "Pure-JVM FocusModeContextEvaluator workspace/schedule/foreground-app/presentation-display focus rule engine with explicit suppression reason strings tested; system NotificationListener integration remains pending.",
     "tests": [
       "plan:T-NC-02",
@@ -995,7 +995,7 @@
     "feature": "Quick panel audio/brightness/media/DND/light/battery/Beam/radio panels",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.5",
+    "sources": "owner:v2.0 \u00a77.5",
     "route": "Pure-JVM OsdQuickPanelTileTokens 8-domain Quick Panel control reducer (audio, brightness, media, DND, night-light, battery, Beam, radio lockdown) tested; Android system-settings write permissions remain device-gated.",
     "tests": [
       "plan:T-NC-03",
@@ -1012,7 +1012,7 @@
     "feature": "Notification diagnostics",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.5",
+    "sources": "owner:v2.0 \u00a77.5",
     "route": "Pure-JVM NotificationDiagnosticLedger (R49) + FocusModeContextEvaluator (R50) per-notification suppression/delivery reason audit tested; live shell diagnostic drawer remains partial.",
     "tests": [
       "plan:T-NC-04",
@@ -1029,7 +1029,7 @@
     "feature": "Observable own-operation progress/live updates",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.5",
+    "sources": "owner:v2.0 \u00a77.5",
     "route": "Capture foreground Stop action and finalization status; universal long-operation service layer still pending",
     "tests": [
       "plan:T-NC-05",
@@ -1045,7 +1045,7 @@
     "feature": "Volume/brightness/layout OSD",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.5",
+    "sources": "owner:v2.0 \u00a77.5",
     "route": "Pure-JVM OsdQuickPanelTileTokens volume/brightness/keyboard-layout HUD OSD banner geometry & auto-dismiss token calculator tested; window-overlay rendering on device remains pending.",
     "tests": [
       "plan:T-NC-06",
@@ -1062,7 +1062,7 @@
     "feature": "Settings graph IDs/aliases/lock reasons/history/undo/export/import",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "R24 typed professional palette/layout/magnification values and one observable SharedPreferences graph drive Settings and Control Panel. Bounded canonical snapshot inspection still never applies values. Full DataStore/migration/history/atomic import/lock reasons remain.",
     "tests": [
       "plan:T-ST-01",
@@ -1082,7 +1082,7 @@
     "feature": "Curated system-settings deep links per OEM",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Pure-JVM OemSettingsDeepLinkCatalog (R49) + DefaultAppsRoleGuideEngine (R50) Samsung/Xiaomi/ColorOS/AOSP settings fallback resolver wired into SettingsScreen.kt (PARSE OK); physical OEM ROM verification remains pending.",
     "tests": [
       "plan:T-ST-02",
@@ -1099,7 +1099,7 @@
     "feature": "Default-apps guide",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Pure-JVM DefaultAppsRoleGuideEngine Android RoleManager HOME/BROWSER/SMS readiness guide with revocable-role explainers tested; live RoleManager intent launch on API 34-37 remains unrun.",
     "tests": [
       "plan:T-ST-03",
@@ -1116,7 +1116,7 @@
     "feature": "Capabilities/fingerprint/thermal/memory/codec/redacted diagnostics",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Settings registry/history and capability/system-settings adapters",
     "tests": [
       "plan:T-ST-04",
@@ -1132,7 +1132,7 @@
     "feature": "Theme/dynamic color/accent/density/motion/font scale",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Window geometry density only (minimum size/title controls), not full theme/font/spacing profiles",
     "tests": [
       "plan:T-ST-05",
@@ -1148,7 +1148,7 @@
     "feature": "Shortcut presets/conflict detection/per-device profiles",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Pure-JVM ShortcutPresetConflictDetector + KeyboardShortcutProfileEditor modifier canonicalizer, collision detector & per-device override JSON keymap tested; global hardware-key intercept remains partial.",
     "tests": [
       "plan:T-ST-06",
@@ -1165,7 +1165,7 @@
     "feature": "External-display UI scale independent of system",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Pure-JVM ExternalAppBrokerDensityPin independent external-display UI scale factor calculator tested; live DisplayContext configuration override on HDMI/DP monitors remains pending.",
     "tests": [
       "plan:T-ST-07",
@@ -1182,7 +1182,7 @@
     "feature": "RestrictionsManager managed configuration",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Pure-JVM ManagedRestrictionsSchema (R49) + DefaultAppsRoleGuideEngine.mergeManagedRestrictions (R50) enterprise policy lock merger tested; Android RestrictionsManager broadcast receiver remains unrun on device.",
     "tests": [
       "plan:T-ST-08",
@@ -1199,7 +1199,7 @@
     "feature": "Phone/desktop per-context profiles",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.6",
+    "sources": "owner:v2.0 \u00a77.6",
     "route": "Pure-JVM WorkspaceContextProfileEngine hysteresis-guarded Phone/Fold-Tabletop/Docked-Desktop automatic profile switcher tested; WindowInfoTracker/DisplayManager live sensor hookup remains pending.",
     "tests": [
       "plan:T-ST-09",
@@ -1216,7 +1216,7 @@
     "feature": "App info hub",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.7",
+    "sources": "owner:v2.0 \u00a77.7",
     "route": "PackageManager/LauncherApps and explicit system intents",
     "tests": [
       "plan:T-AP-01",
@@ -1231,7 +1231,7 @@
     "feature": "Own-data uninstall assistant",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.7",
+    "sources": "owner:v2.0 \u00a77.7",
     "route": "Pure-JVM AppInventoryLifecycleAdvisor clean own-data cache/vault/profile byte breakdown & residual-free uninstall checklist builder tested; OS uninstall-intent callback remains platform-limited.",
     "tests": [
       "plan:T-AP-02",
@@ -1247,7 +1247,7 @@
     "feature": "Pro APK install manager",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.7",
+    "sources": "owner:v2.0 \u00a77.7",
     "route": "Pure-JVM AppInventoryLifecycleAdvisor Pro APK SHA-256 + signing-cert digest rotation & targetSdk>=34 pre-install auditor tested; PackageInstaller Session API execution remains device-gated.",
     "tests": [
       "plan:T-AP-03",
@@ -1263,7 +1263,7 @@
     "feature": "App update links/inventory",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.7",
+    "sources": "owner:v2.0 \u00a77.7",
     "route": "Pure-JVM AppInventoryLifecycleAdvisor installer-origin catalog (F-Droid/Obtainium/GitHub/Play) & HTTPS update URL resolver tested; live PackageManager.getInstallSourceInfo query remains device-only.",
     "tests": [
       "plan:T-AP-04",
@@ -1279,7 +1279,7 @@
     "feature": "Own background/startup inventory; Shizuku for others",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.7",
+    "sources": "owner:v2.0 \u00a77.7",
     "route": "Pure-JVM own-app startup/memory-pressure inventory verified via StartupColdWarmRegressionGate & MemoryPressureTrimBudgeter (R51); external-app Shizuku/PackageManager binder inspection remains device-gated.",
     "tests": [
       "plan:T-AP-05",
@@ -1294,7 +1294,7 @@
     "feature": "Terminal emulator tabs/profiles/true color/mouse/search/safe paste",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.8",
+    "sources": "owner:v2.0 \u00a77.8",
     "route": "Pure-JVM VtTrueColorSafePasteEngine 24-bit SGR truecolor, SGR 1006 mouse & bracketed paste sanitizer + PromptOsc133 wired into TerminalScreen.kt; PTY process isolation and S5 remain pending.",
     "tests": [
       "plan:T-TD-01",
@@ -1313,7 +1313,7 @@
     "feature": "Local shell plus PTY",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.8",
+    "sources": "owner:v2.0 \u00a77.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-02",
@@ -1331,7 +1331,7 @@
     "feature": "SSH/SFTP/USB serial",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.8",
+    "sources": "owner:v2.0 \u00a77.8",
     "route": "Pure-JVM SshTransportKexFrameCodec RFC 4253 SSH-2.0 binary packet framer, curve25519/chacha20-poly1305 KEX negotiator (refusing legacy SHA-1/CBC) & USB-serial 8N1 validator tested; live socket/UsbManager transport remains unintegrated.",
     "tests": [
       "plan:T-TD-03",
@@ -1348,7 +1348,7 @@
     "feature": "Read-only 16KB-compatible Linux proot payload",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.8",
+    "sources": "owner:v2.0 \u00a77.8",
     "route": "Pure-JVM POSIX ShellPipelineTokenizer & Vt100AlternateScreenScrollback verified with zero-execve safety on host JVM (R51); S5 JNI PTY & live 16KB Linux proot execution remain device-gated.",
     "tests": [
       "plan:T-TD-04",
@@ -1366,7 +1366,7 @@
     "feature": "Non-protected AVF VM where available",
     "tier": "C",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.8",
+    "sources": "owner:v2.0 \u00a77.8",
     "route": "Permissive terminal libraries; JNI PTY; opt-in payloads",
     "tests": [
       "plan:T-TD-05"
@@ -1379,7 +1379,7 @@
     "feature": "Pro wireless-debugging helper",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.8",
+    "sources": "owner:v2.0 \u00a77.8",
     "route": "Pure-JVM Usb4PcieIommuDmaGuard port-quarantine & ShellPipelineTokenizer command-audit helpers verified on host JVM (R51); live Android wireless-debugging TLS pairing remains device-gated.",
     "tests": [
       "plan:T-TD-06",
@@ -1395,7 +1395,7 @@
     "feature": "Text/Markdown editor encodings/large files/autosave/diff/regex",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Bounded8-draft encoding-preserving native editor, undo/literal tools, current-source line diff and correlated Save-a-Copy/recovery. Host contracts and selected API34 UI cases executed; streaming large files, regex, autosave/provider/process-death/IME/AX acceptance incomplete.",
     "tests": [
       "core:documents/DocumentSafetyTest",
@@ -1407,7 +1407,8 @@
       "plan:R5 picker/grant/process-recovery/provider-alias matrix",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1417,7 +1418,7 @@
     "feature": "Local Markdown notes/attachments/backlinks/OCR/export",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Real bounded/revision-checked Markdown, saved-note backlinks, trash/restore and separate strict local draft recovery with coalesced single-writer checkpoints. Native stale/corrupt/recreated-owner/writer-process-death/queue and cross-owner tests passed at2c2b5bc; see R12 exact limits. Attachments/OCR/import/export, version history, full Markdown and physical/AX acceptance remain incomplete.",
     "tests": [
       "plan:T-PR-02",
@@ -1438,7 +1439,7 @@
     "feature": "Tasks/reminders without exact alarms",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM TaskRepository/TaskQuery (R17) + CalendarIcsRecurrenceEngine (R49) + MeteredBatteryLowRamScheduler (R50) local tasks & recurrence rules without exact-alarm permissions tested; WorkManager inexact notification firing remains unrun.",
     "tests": [
       "plan:T-PR-03",
@@ -1455,7 +1456,7 @@
     "feature": "CalendarContract calendar",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM CalendarIcsRecurrenceEngine RFC 5545 VEVENT + RRULE (DAILY/WEEKLY/MONTHLY) expansion kernel tested; Android CalendarContract provider sync remains unimplemented.",
     "tests": [
       "plan:T-PR-04",
@@ -1472,7 +1473,7 @@
     "feature": "ContactsContract/API37 picker",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM ContactsVcard4PickerModel RFC 6350 vCard 4.0 codec & API-37 least-privilege single-field contact picker projector (stripping unrequested notes/org/phones) tested; Android ContactsPicker intent remains device-only.",
     "tests": [
       "plan:T-PR-05",
@@ -1489,7 +1490,7 @@
     "feature": "Mail handoff/triage then native IMAP",
     "tier": "A",
     "phase": "P2/P4",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM ImapEnvelopeTriageStore RFC 3501 IMAP4rev1 FETCH ENVELOPE parser, UID STORE +FLAGS triage builder & RFC 6068 mailto handoff encoder tested; TLS socket sync remains unintegrated.",
     "tests": [
       "plan:T-PR-06",
@@ -1506,13 +1507,14 @@
     "feature": "Desktop-class browser (parent requirement)",
     "tier": "A",
     "phase": "P2/P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "New bounded immutable browser session metadata/codec, executed host contracts only; old in-process BrowserScreen blocked and not connected. Renderer/profile/process/native UI integrations absent; S29/S30 unpassed.",
     "tests": [
       "plan:T-PR-07",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1525,7 +1527,7 @@
     "feature": "Visible horizontal browser tab strip",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07a",
@@ -1541,7 +1543,7 @@
     "feature": "Vertical tab sidebar/reorder/groups/pins/search",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace vertical tab tree, pin ordering, group filter & search kernel tested; live multi-process WebView/Gecko tab binding remains pending.",
     "tests": [
       "plan:T-PR-07b",
@@ -1557,7 +1559,7 @@
     "feature": "Named/colored/collapsible tab groups",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace named/colored/collapsible tab-group model tested; Compose tab-strip drag UI remains partial.",
     "tests": [
       "plan:T-PR-07c",
@@ -1573,7 +1575,7 @@
     "feature": "Horizontal split tab view with independent navigation",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace horizontal split-tab independent-URL navigation state machine tested; dual WebView/engine surface composition and S14 spike remain pending.",
     "tests": [
       "plan:T-PR-07d",
@@ -1591,7 +1593,7 @@
     "feature": "Vertical split tab view",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace vertical split-tab ratio & independent navigation state machine tested; dual engine surface composition and S14 spike remain pending.",
     "tests": [
       "plan:T-PR-07e",
@@ -1609,7 +1611,7 @@
     "feature": "Pinned browser tabs",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace pinned-tab immutability & close-protection kernel tested; durable browser profile storage remains partial.",
     "tests": [
       "plan:T-PR-07f",
@@ -1625,7 +1627,7 @@
     "feature": "Sleeping tabs and restore by URL",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace idle tab-discard & URL-restore state machine tested; live renderer memory reclaim measurement and S14 spike remain pending.",
     "tests": [
       "plan:T-PR-07g",
@@ -1643,7 +1645,7 @@
     "feature": "Desktop UA on display/keyboard with per-site override",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Native Compose productivity modules; browser engine selected by spikes",
     "tests": [
       "plan:T-PR-07h",
@@ -1658,7 +1660,7 @@
     "feature": "Full browser keyboard shortcuts",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserTabShortcutBatchBroker desktop browser chord dispatcher (Ctrl+T/W/L, Ctrl+Shift+T, Ctrl+1..9, F5) tested; live WebView/GeckoView key routing remains device-gated.",
     "tests": [
       "plan:T-PR-07i",
@@ -1674,7 +1676,7 @@
     "feature": "Tab drag-out/drag-in between compositor windows",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserTabShortcutBatchBroker immutable cross-window tab detach/attach state reducer preserving pinned-tab guards tested; live multi-window drag gesture remains unrun.",
     "tests": [
       "plan:T-PR-07j",
@@ -1690,7 +1692,7 @@
     "feature": "Reader mode",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM ArticleReaderExtractor + HtmlSanitizer reader-mode pipeline wired into BrowserScreen.kt; full DOM readability pagination on device WebView remains partial.",
     "tests": [
       "plan:T-PR-07k",
@@ -1706,7 +1708,7 @@
     "feature": "Per-site camera/mic/location/notification/popup/JS permissions",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM SitePermissionVault per-origin camera/mic/location/notification/JS lease & private-browsing ephemeral auto-wipe kernel tested; live engine permission callback hookup remains pending.",
     "tests": [
       "plan:T-PR-07l",
@@ -1722,7 +1724,7 @@
     "feature": "Downloads integrated with Files",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserProfileDirectoryIsolator Content-Disposition RFC 5987 filename sanitizer, path-traversal blocker & .part atomic download finalizer tested; Files SAF Downloads handoff remains partial.",
     "tests": [
       "plan:T-PR-07m",
@@ -1738,7 +1740,7 @@
     "feature": "Find in page",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM FindInPageMatchEngine Unicode case-fold/diacritic-insensitive match ring & active-hit wraparound kernel tested; live WebView highlight overlay remains pending.",
     "tests": [
       "plan:T-PR-07n",
@@ -1754,7 +1756,7 @@
     "feature": "Separate-data-directory browser profiles",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserProfileDirectoryIsolator disjoint per-profile storage/cookie/cache directory allocator with ephemeral wipe planner tested; WebView.setDataDirectorySuffix multi-process isolation remains device-only.",
     "tests": [
       "plan:T-PR-07o",
@@ -1770,7 +1772,7 @@
     "feature": "License-verified content/tracker filtering with per-site disable",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM EasyListTrackerFilterEngine permissive ABP/EasyList domain-anchor & third-party resource blocker with per-site shield toggle tested; S30 browser engine request-intercept hook remains pending.",
     "tests": [
       "plan:T-PR-07p",
@@ -1788,7 +1790,7 @@
     "feature": "Batch tab close/bookmark/select/group/window/send actions",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserTabShortcutBatchBroker batch multi-tab close/mute/group/bookmark/send-to-Beam reducer tested; Compose tab-strip multi-select UI acceptance remains pending.",
     "tests": [
       "plan:T-PR-07q",
@@ -1804,7 +1806,7 @@
     "feature": "Named browser sessions restoring windows/tabs/groups/splits",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BrowserSplitTabWorkspace deterministic session snapshot serialize/restore (tabs, groups, pins, splits) tested; encrypted on-disk session store integration remains partial.",
     "tests": [
       "plan:T-PR-07r",
@@ -1820,7 +1822,7 @@
     "feature": "Page-media cast to Beam",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM BeamChunkedResumeReedSolomon + CastPrivacyExclusionGate (R49/R50) page-media URL cast eligibility & LAN parity planner wired into CastSendPanel.kt (PARSE OK); live HTML5 media extraction remains pending.",
     "tests": [
       "plan:T-PR-07s",
@@ -1835,12 +1837,13 @@
     "feature": "PDF/image viewer annotations/signing",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM PdfFormAcroFieldInspector, PdfPageTextSearchHighlighter & PdfPkcs7SignatureVerifier Ed25519/ByteRange kernels wired into PdfScreen.kt; interactive ink/signature UI remains partial.",
     "tests": [
       "plan:T-PR-08",
       "jvm:R49Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1850,13 +1853,14 @@
     "feature": "Basic/scientific/programmer/unit calculator with history",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted.",
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
       "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
       "plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1866,7 +1870,7 @@
     "feature": "Clock/timers/inexact alarms",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM CalendarIcsRecurrenceEngine (R49) + FocusModeContextEvaluator (R50) minute-of-day schedule window & timer deadline math without SCHEDULE_EXACT_ALARM tested; Android AlarmManager inexact UI remains partial.",
     "tests": [
       "plan:T-PR-10",
@@ -1881,7 +1885,7 @@
     "feature": "Native Office via Forge with optional external open",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM OoxmlDom (DOCX/XLSX/PPTX), FormulaEval (130 functions + LAMBDA), SpillSheetEngine (23 array ops), DrawingMlChartBuilder & KnuthPlassLineBreaker tested; Android Office UI & S10 remain pending.",
     "tests": [
       "plan:T-PR-11",
@@ -1898,7 +1902,7 @@
     "feature": "Optional IME global clipboard; in-module history/sensitive/expiry/remap",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM SensitiveClipboardGuard OTP/seed/JWT auto-expiry & paste-redaction kernel tested; optional Android InputMethodService global clipboard remains gated on S16.",
     "tests": [
       "plan:T-PR-12",
@@ -1914,7 +1918,7 @@
     "feature": "Desktop sticky notes",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.9",
+    "sources": "owner:v2.0 \u00a77.9",
     "route": "Pure-JVM StickyNoteBoardLayout snap-to-grid, collision-free z-order & Markdown checklist desktop sticky-note model tested; persistent tabletop overlay window binding remains partial.",
     "tests": [
       "plan:T-PR-13",
@@ -1928,11 +1932,12 @@
     "feature": "LOKit Office open/render/edit/save",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM LokTileRenderCache tile-pyramid dirty-rect invalidation, LRU byte budget & zoom-level cache + OdfTrackedChangesCodec tested; native LibreOfficeKit .so packaging and S10 remain pending.",
     "tests": [
       "plan:T-FF-01",
-      "jvm:R49Checks"
+      "jvm:R49Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1944,11 +1949,12 @@
     "feature": "Shaded POI headless Office read/write/convert/extract",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM clean-room OOXML/ODF/RTF/CSV/EPUB3 engines (FormulaEval 130 fns, SpillSheetEngine, PptxSlideDeck, DrawingMlChartBuilder, OoxmlMacroVbaInspector) tested; shaded POI parity & S11 remain pending.",
     "tests": [
       "plan:T-FF-02",
-      "jvm:R49Checks"
+      "jvm:R49Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1960,12 +1966,13 @@
     "feature": "PDF render/annotate/sign/export",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.10",
-    "route": "R24 separate consent-gated readonly PDF preview: actual platform renderer only in isolated child with readonly seekable FD, source≤2MiB/pages≤1024/preview≤320px per side, bounded raw ARGB parent. Full PDF editing/signing/export/fidelity and full Office gates remain blocked.",
+    "sources": "owner:v2.0 \u00a77.10",
+    "route": "R24 separate consent-gated readonly PDF preview: actual platform renderer only in isolated child with readonly seekable FD, source\u22642MiB/pages\u22641024/preview\u2264320px per side, bounded raw ARGB parent. Full PDF editing/signing/export/fidelity and full Office gates remain blocked.",
     "tests": [
       "plan:T-FF-03",
       "android:R24PdfDeviceTest",
-      "host:R24Checks"
+      "host:R24Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1975,7 +1982,7 @@
     "feature": "PDF-compatible AI; non-PDF AI boundary",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM AiPdfCompatibilityBridge Adobe Illustrator %PDF stream extractor & explicit legacy PostScript-only refusal boundary tested; full vector path rasterization on device remains pending.",
     "tests": [
       "plan:T-FF-04",
@@ -1989,7 +1996,7 @@
     "feature": "Raster open/edit/export",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Decoded ARGB integer crop/rotation/flip kernel and actual Android software Bitmap adapters tested; no complete image editor/format pipeline/fidelity/export acceptance.",
     "tests": [
       "plan:T-FF-05",
@@ -2004,7 +2011,7 @@
     "feature": "HEIC/HEIF/AVIF decode via platform/audited fallback",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-06"
@@ -2019,7 +2026,7 @@
     "feature": "Platform hardware HEIC encode/export",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM HeicIsomBoxInspector ISO-BMFF ftyp/meta/ispe/pixi/iref/colr inspector tested; Android MediaCodec hardware HEVC/HEIC encode path and S12 device spike remain pending.",
     "tests": [
       "plan:T-FF-07",
@@ -2035,7 +2042,7 @@
     "feature": "PSD/PSB layers/composite/export",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Forge format router with isolated parsers and explicit fidelity",
     "tests": [
       "plan:T-FF-08"
@@ -2050,7 +2057,7 @@
     "feature": "SVG render/export and text/Markdown/CSV/RTF edit; vector editor later",
     "tier": "A",
     "phase": "P2/P3",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Bounded strict CSV and UTF8 kernels tested including multiline/empty-cell preservation; existing text/Markdown subsets only. No complete SVG/RTF/edit/export Forge route.",
     "tests": [
       "plan:T-FF-09",
@@ -2065,7 +2072,7 @@
     "feature": "EPUB reader",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM Epub3Package OPF spine/manifest/NCX/XHTML reader & writer kernel tested; Compose paginated EPUB reader screen remains unintegrated.",
     "tests": [
       "plan:T-FF-10",
@@ -2079,7 +2086,7 @@
     "feature": "Save-As/export fidelity warning",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM ExportFidelityAdvisor pre-save lossy-feature matrix (DOCX/XLSX/PPTX/ODF/CSV/MD/PDF) & user warning generator tested; Save-As dialog UI wiring remains partial.",
     "tests": [
       "plan:T-FF-11",
@@ -2093,7 +2100,7 @@
     "feature": "Isolated format sandbox/watchdogs/bomb guards",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM FormatSandboxWatchdog wall-clock timeout, byte-expansion ratio, XML/JSON nesting depth & zip-slip bomb guard tested; isolated Android Service enforcement across all formats remains partial.",
     "tests": [
       "plan:T-FF-12",
@@ -2107,7 +2114,7 @@
     "feature": "Thumbnail/metadata service",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.10",
+    "sources": "owner:v2.0 \u00a77.10",
     "route": "Pure-JVM ThumbnailMetadataIndexer magic-byte MIME sniffer, PNG IHDR/JPEG SOF dimension parser & bounded LRU thumbnail budgeter tested; isolated-process bitmap decode service remains unintegrated.",
     "tests": [
       "plan:T-FF-13",
@@ -2121,7 +2128,7 @@
     "feature": "formats.yaml engine/grade/boundary registry",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM FormatsRegistryCatalog canonical formats.yaml parser/validator enforcing engine, fidelity grade, macro policy & process boundary tested; full runtime dispatch binding remains partial.",
     "tests": [
       "plan:T-FF-14",
@@ -2135,8 +2142,8 @@
     "feature": "Open/dirty/save/recovery/close-confirm document lifecycle",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §1.3/§4",
-    "route": "Activity-scoped text sessions; bounded versioned AtomicFile recovery; tabs; discard confirmation; other Forge formats deferred; R5 correlated Save-a-Copy attempts, v1→v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
+    "route": "Activity-scoped text sessions; bounded versioned AtomicFile recovery; tabs; discard confirmation; other Forge formats deferred; R5 correlated Save-a-Copy attempts, v1\u2192v2 migration, reservation checkpoint and bound readback receipts; Android/provider acceptance pending",
     "tests": [
       "core:documents/DocumentSafetyTest",
       "plan:SAF-provider-and-editor-device-matrix",
@@ -2152,11 +2159,12 @@
     "feature": "Conversion/loss report before lossy save",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM ExportFidelityAdvisor structured feature-loss audit report (tracked changes, array spills, macros, speakers notes, layers) tested; pre-save modal confirmation UI remains partial.",
     "tests": [
       "plan:T-FF-16",
-      "jvm:R49Checks"
+      "jvm:R49Checks",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2166,7 +2174,7 @@
     "feature": "Macros disabled by default",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM OoxmlMacroVbaInspector OLE2/vbaProject.bin/xlm_macros/AutoOpen detector & fail-closed macro-strip policy tested; Office open pipeline UI banner remains partial.",
     "tests": [
       "plan:T-FF-17",
@@ -2180,10 +2188,11 @@
     "feature": "Capture recording/audio/annotation/blur/redact/OCR/commit-first",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
-      "plan:T-MD-01"
+      "plan:T-MD-01",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -2195,7 +2204,7 @@
     "feature": "Hardware media player/subtitles/PiP/gapless/Beam",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "Real bounded read-only UTF8 SRT picker/inspection UI with millisecond half-open/overlap lookup and canonical export kernel. No native player, synchronized subtitles, PiP/gapless or Beam acceptance.",
     "tests": [
       "plan:T-MD-02",
@@ -2210,10 +2219,11 @@
     "feature": "Photos with non-destructive edits/HEIC",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "MediaProjection/MediaCodec/MediaStore/Media3 with per-use consent",
     "tests": [
-      "plan:T-MD-03"
+      "plan:T-MD-03",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2223,7 +2233,7 @@
     "feature": "Voice recorder",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "Pure-JVM VoiceRecorderWavWaveformCodec RIFF WAVE 16-bit PCM encoder/decoder & RMS/peak waveform envelope builder tested; Android AudioRecord capture loop remains device-gated.",
     "tests": [
       "plan:T-MD-04",
@@ -2237,7 +2247,7 @@
     "feature": "Camera/scan/QR hooks",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "Pure-JVM VirtualWebcamMjpegStream QR Wi-Fi/HTTPS/vCard classifier + PerspectiveDeskewBinarizer 8-DOF homography document rectifier & Sauvola binarizer tested; CameraX ImageAnalysis binding remains partial.",
     "tests": [
       "plan:T-MD-05",
@@ -2251,7 +2261,7 @@
     "feature": "Audio devices panel",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "Pure-JVM VoiceRecorderWavWaveformCodec deterministic USB-DAC/wired/BLE-Audio/A2DP/speaker route priority selector tested; Android AudioManager.setCommunicationDevice hookup remains device-only.",
     "tests": [
       "plan:T-MD-06",
@@ -2265,8 +2275,8 @@
     "feature": "API37 color picker",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.11",
-    "route": "Pure-JVM OklchPaletteContrastPicker perceptual Björn Ottosson OKLab/OKLCH gamut mapper & WCAG 2.1 AA/AAA contrast solver tested; API 37 system Eyedropper intent remains device-only.",
+    "sources": "owner:v2.0 \u00a77.11",
+    "route": "Pure-JVM OklchPaletteContrastPicker perceptual Bj\u00f6rn Ottosson OKLab/OKLCH gamut mapper & WCAG 2.1 AA/AAA contrast solver tested; API 37 system Eyedropper intent remains device-only.",
     "tests": [
       "plan:T-MD-07",
       "jvm:R50Checks"
@@ -2279,7 +2289,7 @@
     "feature": "Hardware video trim/export",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "Pure-JVM Mp4KeyframeTrimPlanner ISO-BMFF sync-sample keyframe cut planner separating GOP lead-in re-encode from lossless stream-copy tested; Android MediaCodec/MediaMuxer execution remains device-only.",
     "tests": [
       "plan:T-MD-08",
@@ -2293,7 +2303,7 @@
     "feature": "Own-module audio focus/volume dashboard",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.11",
+    "sources": "owner:v2.0 \u00a77.11",
     "route": "Pure-JVM AudioFocusVolumeMatrix per-module gain/mute/ducking dB mixer & Android AudioFocus transition reducer tested; live AudioTrack/ExoPlayer stream binding remains pending.",
     "tests": [
       "plan:T-MD-09",
@@ -2307,10 +2317,11 @@
     "feature": "Passwords/passkeys/TOTP/notes/provider/autofill/StrongBox/import/export",
     "tier": "A/B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
-      "plan:T-SC-01"
+      "plan:T-SC-01",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2320,7 +2331,7 @@
     "feature": "Module app lock",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM ModuleAppLockGate idle-timeout relock, screen-off immediate lock & exponential backoff PIN/biometric gate tested; Android BiometricPrompt Activity binding remains pending.",
     "tests": [
       "plan:T-SC-02",
@@ -2334,7 +2345,7 @@
     "feature": "Permission/special-access audit",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM PermissionRiskAuditor dangerous permission-combination scorer wired into SettingsScreen.kt; live PackageManager cross-app enumeration remains gated on OS visibility.",
     "tests": [
       "plan:T-SC-03",
@@ -2348,7 +2359,7 @@
     "feature": "Pro VpnService per-app firewall/DNS filter",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM VpnAppFirewallPolicy per-UID allow/deny, LAN-bypass & DNS sinkhole/DoH rule evaluator tested; Android VpnService TUN packet loop remains unimplemented.",
     "tests": [
       "plan:T-SC-04",
@@ -2362,7 +2373,7 @@
     "feature": "Privacy dashboard",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM PrivacyPostureDashboardEngine weighted 0..100 posture scorer & actionable remediation advisor across Tor/BLUFFS/Wi-Fi/NFC/USB/clipboard guards tested; live OS permission-usage timeline requires Android SDK.",
     "tests": [
       "plan:T-SC-05",
@@ -2376,7 +2387,7 @@
     "feature": "FLAG_SECURE per window",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM ScreenCaptureGuard + PixnappingSurfaceShield (CVE-2025-48561 blur-stacking & GPU.zip timing defense) tested; physical SurfaceFlinger FLAG_SECURE device verification remains pending.",
     "tests": [
       "plan:T-SC-06",
@@ -2390,7 +2401,7 @@
     "feature": "Tink encrypted containers",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM TinkAeadKeysetEnvelope HKDF-SHA256 + AES-256-GCM key-rotation keyset envelope codec tested; Android Keystore master-KEK wrapping on physical hardware remains pending.",
     "tests": [
       "plan:T-SC-07",
@@ -2404,10 +2415,11 @@
     "feature": "Telemetry off/local logs/redacted export",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Keystore/least-privilege platform services; isolated security boundaries",
     "tests": [
-      "plan:T-SC-08"
+      "plan:T-SC-08",
+      "jvm:R54Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2417,7 +2429,7 @@
     "feature": "Cast excludes Vault/secure surfaces; red indicator; stop on lock",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.12",
+    "sources": "owner:v2.0 \u00a77.12",
     "route": "Pure-JVM CastPrivacyExclusionGate Vault/incognito/FLAG_SECURE frame redaction, red recording indicator & lock-screen hard-kill state machine tested; live MediaProjection surface hook remains pending.",
     "tests": [
       "plan:T-SC-09",
@@ -2431,7 +2443,7 @@
     "feature": "Timeline encrypted incremental backup/remote targets/restore browser",
     "tier": "B",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.13",
+    "sources": "owner:v2.0 \u00a77.13",
     "route": "New bounded noncompressed FBC1 content codec validated before returning entries; not encryption, legacy migration, restore publication or full backup. Legacy restore remains blocked by S7.",
     "tests": [
       "plan:T-BK-01",
@@ -2448,7 +2460,7 @@
     "feature": "Folder sync with conflict inbox",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.13",
+    "sources": "owner:v2.0 \u00a77.13",
     "route": "Pure-JVM BackupHealthDrillScheduler two-way sync SHA-256 reconciliation & non-destructive conflict-inbox quarantine planner tested; background SAF folder transport remains pending.",
     "tests": [
       "plan:T-BK-02",
@@ -2462,7 +2474,7 @@
     "feature": "Configuration export/import",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.13",
+    "sources": "owner:v2.0 \u00a77.13",
     "route": "Pure-JVM ConfigExportBundleCodec canonical JSON + HMAC-SHA256 integrity + secret-key scrubbing config bundle codec tested; full SettingsGraph import UI remains partial.",
     "tests": [
       "plan:T-BK-03",
@@ -2476,7 +2488,7 @@
     "feature": "New-device checklist",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.13",
+    "sources": "owner:v2.0 \u00a77.13",
     "route": "Pure-JVM BackupHealthDrillScheduler new-device migration readiness checklist wired into BackupScreen.kt; interactive step-by-step wizard remains partial.",
     "tests": [
       "plan:T-BK-04",
@@ -2490,7 +2502,7 @@
     "feature": "Backup health and monthly sampled restore drill",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.13",
+    "sources": "owner:v2.0 \u00a77.13",
     "route": "Pure-JVM BackupHealthDrillScheduler 30-day restore-drill SLA & archive-health evaluator wired into BackupScreen.kt; automated background WorkManager drill and S7 remain pending.",
     "tests": [
       "plan:T-BK-05",
@@ -2506,7 +2518,7 @@
     "feature": "User-held recovery keys/no default cloud escrow",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.13",
+    "sources": "owner:v2.0 \u00a77.13",
     "route": "Pure-JVM ReedSolomonGf256 shard recovery + TinkAeadKeysetEnvelope user-held key envelope tested with zero cloud escrow; S7 recovery UX verification remains pending.",
     "tests": [
       "plan:T-BK-06",
@@ -2522,7 +2534,7 @@
     "feature": "Share-sheet send/receive and Quick Share",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.14",
+    "sources": "owner:v2.0 \u00a77.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-01"
@@ -2535,7 +2547,7 @@
     "feature": "Clean-room KDE-Connect-protocol PC bridge",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.14",
+    "sources": "owner:v2.0 \u00a77.14",
     "route": "Pure-JVM KdeConnectPacketCodec newline-framed JSON protocol v7 identity/pair/ping/clipboard/share packet codec & TLS SHA-256 pin verifier tested; LAN NSD/TLS socket service remains pending.",
     "tests": [
       "plan:T-CT-02",
@@ -2549,7 +2561,7 @@
     "feature": "API37 Handoff/Continue-On",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.14",
+    "sources": "owner:v2.0 \u00a77.14",
     "route": "Pure-JVM KdeConnectPacketCodec (R49) + SharedFolderDeltaSyncPlanner (R50) continuity handoff envelope & SHA-256 delta state planner wired into ContinuityScreen.kt (PARSE OK); API 37 Continue-On OS service remains pending.",
     "tests": [
       "plan:T-CT-03",
@@ -2563,7 +2575,7 @@
     "feature": "Cast/present superseded by CA family",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.14",
+    "sources": "owner:v2.0 \u00a77.14",
     "route": "CA-01 through CA-15; not an additional transport",
     "tests": [
       "plan:T-CT-04"
@@ -2576,7 +2588,7 @@
     "feature": "RDP/VNC/SSH remote desktop clients",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.14",
+    "sources": "owner:v2.0 \u00a77.14",
     "route": "Pure-JVM RemoteDesktopRfbTileCodec RFC 6143 RFB 3.8 CopyRect dirty-tile & pointer codec + SshTransportKexFrameCodec SSH-2.0 framer wired into ContinuityScreen.kt (PARSE OK); live socket canvas viewer remains pending.",
     "tests": [
       "plan:T-CT-05",
@@ -2590,7 +2602,7 @@
     "feature": "Peripheral manager",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.14",
+    "sources": "owner:v2.0 \u00a77.14",
     "route": "Android sharing/intents and clean-room continuity protocols",
     "tests": [
       "plan:T-CT-06"
@@ -2603,7 +2615,7 @@
     "feature": "RAOP/AirPlay2 audio sender/pairing/sync/volume/metadata",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Pure-JVM RaopRtpSyncPacketizer RFC 3550 RTP 16-bit PCM/ALAC framing, NTP-RTP sync & dB volume mapper tested; mDNS RAOP RTSP session and S18 hardware verification remain pending.",
     "tests": [
       "plan:T-CA-01",
@@ -2619,7 +2631,7 @@
     "feature": "AirPlay URL video/pairing/Range server/HW transcode/scrub",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-02"
@@ -2634,7 +2646,7 @@
     "feature": "AirPlay photo/slideshow",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Pure-JVM CastSinkSrpPinVerifier (:cast:airplay) + DlnaDidlLitePlaylistQueue photo/media queue & AirPlayUrlSender (/play) wired into CastSendPanel/DlnaScreen (PARSE OK); live Apple TV photo slideshow pairing remains unrun.",
     "tests": [
       "plan:T-CA-03",
@@ -2648,7 +2660,7 @@
     "feature": "Pro legal-gated AirPlay screen mirror/FairPlay client",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-04"
@@ -2663,7 +2675,7 @@
     "feature": "Beam discovery/source/route chooser/indicator/quality/latency/audio routes",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15; owner:v2.1 §1.3",
+    "sources": "owner:v2.0 \u00a77.15; owner:v2.1 \u00a71.3",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-05"
@@ -2676,7 +2688,7 @@
     "feature": "Separate GPL APK AirPlay audio receiver",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-06"
@@ -2691,7 +2703,7 @@
     "feature": "Separate GPL APK AirPlay mirroring/video receiver",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-07"
@@ -2706,7 +2718,7 @@
     "feature": "Cast SDK play/own castv2 pro; files/URLs/queue/scrub/volume",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-08"
@@ -2721,7 +2733,7 @@
     "feature": "Custom Cast web receiver plus WebRTC screen/window mirror",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Pure-JVM CastWebReceiverSessionModel receiver namespace message router, sender heartbeat & media-status state machine tested; live Cast socket + WebRTC track and S17 remain pending.",
     "tests": [
       "plan:T-CA-09",
@@ -2737,7 +2749,7 @@
     "feature": "Own DLNA SSDP/AVTransport/RenderingControl sender and renderer",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-10"
@@ -2750,7 +2762,7 @@
     "feature": "Together sync/controls/chat/presence/QR; Syncplay/own-copy mode",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.15; owner:v2.1 §1.3",
+    "sources": "owner:v2.0 \u00a77.15; owner:v2.1 \u00a71.3",
     "route": "Pure-JVM TogetherCoWatchSyncClock 4-timestamp NTP offset & 0.97x..1.03x PLL drift corrector + PresentationSpeakerNotesDualView wired into TogetherSession.kt (PARSE OK); live rooms/Syncplay & S22 remain blocked.",
     "tests": [
       "plan:T-CA-11",
@@ -2766,7 +2778,7 @@
     "feature": "Miracast settings panel and active-session adaptation",
     "tier": "C",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Pure-JVM Miracast/Cast virtual-display aspect-ratio & overscan adaptation verified via CastVirtualDisplayBoundsScaler & CastV2MediaQueueController (R51); live WifiDisplay sink negotiation remains device-gated.",
     "tests": [
       "plan:T-CA-12",
@@ -2780,7 +2792,7 @@
     "feature": "Measured-link/thermal/receiver-aware cast quality ladder",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Beam owned transports; receiver GPL separate APK; explicit target trust",
     "tests": [
       "plan:T-CA-13"
@@ -2795,7 +2807,7 @@
     "feature": "Cast exclusions/lock-critical stop/trust/no default relay",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.15",
+    "sources": "owner:v2.0 \u00a77.15",
     "route": "Pure-JVM CastPrivacyExclusionGate zero-cloud-relay LAN-only verification, sensitive-surface blackout & screen-lock stop gate tested; live cast pipeline binding remains pending.",
     "tests": [
       "plan:T-CA-14",
@@ -2809,7 +2821,7 @@
     "feature": "Shared-clock multi-receiver synchronized casting",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 §1.3/§4",
+    "sources": "owner:v2.1 \u00a71.3/\u00a74",
     "route": "Pure-JVM SharedClockSyncCoordinator Cristian/NTP min-RTT clock offset & multi-receiver playout lead-time scheduler tested; physical multi-speaker <=40ms S24 measurement remains pending.",
     "tests": [
       "plan:T-CA-15",
@@ -2825,7 +2837,7 @@
     "feature": "Semantics/panes and TalkBack/Switch/Voice release gate",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-01"
@@ -2840,7 +2852,7 @@
     "feature": "Keyboard-complete shell",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-02"
@@ -2855,7 +2867,7 @@
     "feature": "Font scale/contrast/reduced motion adaptation",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Compose semantics and keyboard/pointer/assistive-technology validation",
     "tests": [
       "plan:T-AX-03"
@@ -2868,7 +2880,7 @@
     "feature": "Pointer/touch/touchpad/focus rings",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Pure-JVM FocusRingPointerTokens WCAG 2.2 SC 2.4.11 >=3:1 focus-ring contrast & >=24dp target validator tested; whole-app TalkBack/pointer device traversal and S15 remain pending.",
     "tests": [
       "plan:T-AX-04",
@@ -2884,7 +2896,7 @@
     "feature": "Fusion IME input remap",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Pure-JVM HardwareKeyboardImeSwitcher dead-key compose & layout remapper + ImeIncognitoClipboardFirewall tested; isolated Android InputMethodService APK and S16 spike remain pending.",
     "tests": [
       "plan:T-AX-05",
@@ -2900,7 +2912,7 @@
     "feature": "Voice palette input",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Pure-JVM CommandPaletteFuzzyActionRanker spoken-utterance transcript action matcher + FocusRingDwellClickController tested; on-device SpeechRecognizer audio pipeline remains unintegrated.",
     "tests": [
       "plan:T-AX-06",
@@ -2914,7 +2926,7 @@
     "feature": "Player captions",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Pure-JVM WebVttCaptionCueTimeline W3C WebVTT cue parser, binary-search active cue lookup & HTML tag stripper tested; Media3 SubtitleView overlay wiring remains pending.",
     "tests": [
       "plan:T-AX-07",
@@ -2928,7 +2940,7 @@
     "feature": "Accessibility test automation",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.16",
+    "sources": "owner:v2.0 \u00a77.16",
     "route": "Pure-JVM ColorBlindnessDaltonizeMatrix + FocusRingDwellClickController + EasySimpleModeLayoutScaler wired into Adaptation.kt plus host 48dp/WCAG/360dp automated gates tested; TalkBack UiAutomator S9 device suite remains pending.",
     "tests": [
       "plan:T-AX-08",
@@ -2944,7 +2956,7 @@
     "feature": "Routines triggers/actions/dry-run/audit/per-action permissions",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.17",
+    "sources": "owner:v2.0 \u00a77.17",
     "route": "Own local automation registry with dry-run/permission/audit boundaries",
     "tests": [
       "plan:T-AU-01"
@@ -2957,7 +2969,7 @@
     "feature": "Workspace presets",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.17",
+    "sources": "owner:v2.0 \u00a77.17",
     "route": "Pure-JVM WorkspaceContextProfileEngine deterministic multi-window workspace preset & audio/focus profile applier tested; full shell window-arrangement recall on device remains partial.",
     "tests": [
       "plan:T-AU-02",
@@ -2971,7 +2983,7 @@
     "feature": "AppFunctions exposure",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.17",
+    "sources": "owner:v2.0 \u00a77.17",
     "route": "Pure-JVM AppFunctionsSchemaRegistry typed tool-parameter schema validator & user-consent gate tested; Android 16/17 AppFunctionService Binder registration remains pending.",
     "tests": [
       "plan:T-AU-03",
@@ -2985,7 +2997,7 @@
     "feature": "Opt-in local assistant/visible tool calls/memory/no idle process",
     "tier": "A/B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.17",
+    "sources": "owner:v2.0 \u00a77.17",
     "route": "Pure-JVM WorkflowJsonImportExportSandbox versioned JSON workflow packager, SHA-256 verifier & zero-shell dry-run capability auditor wired into TaskPanel.kt (PARSE OK); opt-in local LLM runtime remains absent.",
     "tests": [
       "plan:T-AU-04",
@@ -2999,7 +3011,7 @@
     "feature": "Third-party automation Intent API",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.17",
+    "sources": "owner:v2.0 \u00a77.17",
     "route": "Pure-JVM ThirdPartyIntentCommandGate HMAC-SHA256 capability token, replay-nonce window & command allowlist gate tested; exported BroadcastReceiver/Activity wiring remains disabled by default.",
     "tests": [
       "plan:T-AU-05",
@@ -3013,7 +3025,7 @@
     "feature": "Five-state thermal governor for index/effects/backup/cast",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.18; owner:v2.1 §1.3",
+    "sources": "owner:v2.0 \u00a77.18; owner:v2.1 \u00a71.3",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -3027,7 +3039,7 @@
     "feature": "ADPF then sustained-performance then own-governor fallback",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.18; owner:v2.1 §1.3",
+    "sources": "owner:v2.0 \u00a77.18; owner:v2.1 \u00a71.3",
     "route": "Pure-JVM AdpfThermalRefreshPolicy 5-state thermal headroom -> ADPF/sustained/own-governor fallback state machine tested; Android PowerHintManager native Binder calls remain pending.",
     "tests": [
       "plan:T-RG-02",
@@ -3041,7 +3053,7 @@
     "feature": "Interaction/idle refresh policy",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.18",
+    "sources": "owner:v2.0 \u00a77.18",
     "route": "Pure-JVM AdpfThermalRefreshPolicy interaction boost vs idle refresh-rate throttle (120/90/60/30 Hz) policy tested; WindowManager.LayoutParams.preferredDisplayModeId device test remains pending.",
     "tests": [
       "plan:T-RG-03",
@@ -3055,7 +3067,7 @@
     "feature": "Own-process PSS/CPU/wakeups/IO/net/exit/memory-limiter monitor",
     "tier": "A/B",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.18",
+    "sources": "owner:v2.0 \u00a77.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "testing/contract/PilotCoreChecks",
@@ -3069,7 +3081,7 @@
     "feature": "OEM game overlay/cooler coexistence spike",
     "tier": "C",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.18",
+    "sources": "owner:v2.0 \u00a77.18",
     "route": "Pure-JVM thermal/memory trim budgeter & startup p95 regression gate verified via MemoryPressureTrimBudgeter & StartupColdWarmRegressionGate (R51); physical OEM game-overlay/cooler coexistence remains device-gated.",
     "tests": [
       "plan:T-RG-05",
@@ -3083,7 +3095,7 @@
     "feature": "Charging/battery/metered-aware work",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.18",
+    "sources": "owner:v2.0 \u00a77.18",
     "route": "Pure-JVM MeteredBatteryLowRamScheduler charging/battery-saver/metered-network background work gate tested; Android WorkManager Constraints live job dispatch remains device-only.",
     "tests": [
       "plan:T-RG-06",
@@ -3097,7 +3109,7 @@
     "feature": "Low-RAM mode",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.0 §7.18",
+    "sources": "owner:v2.0 \u00a77.18",
     "route": "Pure-JVM MeteredBatteryLowRamScheduler deterministic Low-RAM profile capping warm browser tabs, thumbnail cache & blur animations tested; ActivityManager.isLowRamDevice device benchmark (S8) remains pending.",
     "tests": [
       "plan:T-RG-07",
@@ -3113,7 +3125,7 @@
     "feature": "Hardware codec/NPU/Vulkan report and routing",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.18",
+    "sources": "owner:v2.0 \u00a77.18",
     "route": "Capability-led thermal/performance governor and platform probes",
     "tests": [
       "plan:T-RG-08"
@@ -3126,7 +3138,7 @@
     "feature": "Separate Wine/Box64 APK with user installers",
     "tier": "B",
     "phase": "P4",
-    "sources": "owner:v2.0 §7.19",
+    "sources": "owner:v2.0 \u00a77.19",
     "route": "Optional compatibility boundary, never part of main APK",
     "tests": [
       "plan:T-CM-01"
@@ -3139,7 +3151,7 @@
     "feature": "Web-app windows",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.0 §7.19",
+    "sources": "owner:v2.0 \u00a77.19",
     "route": "Pure-JVM WebAppWindowManifestHost W3C Web App Manifest parser, HTTPS start_url/scope confinement gate & standalone chrome mode resolver tested; isolated WebView window hosting remains device-only.",
     "tests": [
       "plan:T-CM-02",
@@ -3152,8 +3164,8 @@
     "id": "CM-03",
     "feature": "No macOS application execution",
     "tier": "X",
-    "phase": "—",
-    "sources": "owner:v2.0 §7.19",
+    "phase": "\u2014",
+    "sources": "owner:v2.0 \u00a77.19",
     "route": "Optional compatibility boundary, never part of main APK",
     "tests": [
       "plan:T-CM-03"
@@ -3166,7 +3178,7 @@
     "feature": "One-time purchase $19.99 and optional $14.99 Pro pack",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.20; owner:v2.1 §1.3",
+    "sources": "owner:v2.0 \u00a77.20; owner:v2.1 \u00a71.3",
     "route": "Pure-JVM BillingEntitlementLedger $19.99 Core + $14.99 Pro one-time SKU catalog & zero-recurring-subscription state machine tested; Google Play BillingClient / direct store integration remains pending.",
     "tests": [
       "plan:T-BL-01",
@@ -3180,7 +3192,7 @@
     "feature": "Signed Keystore-bound offline/grace entitlement cache",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.20",
+    "sources": "owner:v2.0 \u00a77.20",
     "route": "Pure-JVM BillingEntitlementLedger Ed25519-signed offline entitlement token & grace-window verifier tested; Android Keystore device-key binding remains unverified on hardware.",
     "tests": [
       "plan:T-BL-02",
@@ -3194,7 +3206,7 @@
     "feature": "Pro Ed25519 license keys/optional device binding/transfers",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.20",
+    "sources": "owner:v2.0 \u00a77.20",
     "route": "Pure-JVM BillingEntitlementLedger Ed25519 Pro license-key signature, optional device-fingerprint binding & transfer-cooldown verifier tested; production public-key provisioning remains pending.",
     "tests": [
       "plan:T-BL-03",
@@ -3208,7 +3220,7 @@
     "feature": "14-day full trial then read-only Files/Find and nag-free state",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.20",
+    "sources": "owner:v2.0 \u00a77.20",
     "route": "Pure-JVM BillingEntitlementLedger 14-day full trial -> nag-free read-only Files/Find expiry transition tested; shell-wide entitlement enforcement wiring remains partial.",
     "tests": [
       "plan:T-BL-04",
@@ -3222,7 +3234,7 @@
     "feature": "Refund-safe revocation/no user-data wipe",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.0 §7.20",
+    "sources": "owner:v2.0 \u00a77.20",
     "route": "Pure-JVM BillingEntitlementLedger refund-safe capability downgrade preserving 100% of user files/notes/vault data tested; store revocation webhook/receipt flow remains pending.",
     "tests": [
       "plan:T-BL-05",
@@ -3236,7 +3248,7 @@
     "feature": "Mouse press-release/scroll mapping/hover/Learn my mouse",
     "tier": "A",
     "phase": "P1",
-    "sources": "owner:v2.1 Δ3",
+    "sources": "owner:v2.1 \u03943",
     "route": "Pure-JVM ExternalMouseButtonMapper press/release/scroll axis & interactive Learn-My-Mouse button capture state machine tested; physical mouse device matrix and S15 remain pending.",
     "tests": [
       "plan:T-IN-01",
@@ -3252,7 +3264,7 @@
     "feature": "Game-controller pointer mode",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 Δ3",
+    "sources": "owner:v2.1 \u03943",
     "route": "Pure-JVM GamepadPointerModeMapper radial-deadzone cubic stick-to-cursor velocity curve & shoulder-trigger click/scroll mapper tested; physical HID gamepad MotionEvent loop remains device-only.",
     "tests": [
       "plan:T-IN-07",
@@ -3266,7 +3278,7 @@
     "feature": "External-keyboard IME switcher",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 Δ3",
+    "sources": "owner:v2.1 \u03943",
     "route": "Pure-JVM HardwareKeyboardImeSwitcher USB/BT VID:PID layout auto-selector & CapsLock/Ctrl+Space cycle with dead-key compose tested; Android InputManager layout broadcast remains device-only.",
     "tests": [
       "plan:T-IN-08",
@@ -3280,7 +3292,7 @@
     "feature": "Segmented background blur/replace/remove",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM FoldPosturePresenterStudio privacy-shutter/posture planner wired into LensScreen.kt (PARSE OK); GPU person-segmentation background blur shader and S26 spike remain unimplemented on device.",
     "tests": [
       "plan:T-LN-01",
@@ -3296,7 +3308,7 @@
     "feature": "Smoothed auto-frame/multi-person crop",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM FoldPosturePresenterStudio.stepAutoFrameSpring critically-damped face-box pan/zoom smoother tested; live Camera2 face-landmark detector and S26 remain pending.",
     "tests": [
       "plan:T-LN-02",
@@ -3312,7 +3324,7 @@
     "feature": "Gaze-aware framing; eye-contact redirect research only",
     "tier": "A",
     "phase": "P4",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM FoldPosturePresenterStudio gaze-safe bounded framing target solver tested (eye-contact neural warp kept explicitly excluded as research-only); live front-camera landmark feed remains device-only.",
     "tests": [
       "plan:T-LN-03",
@@ -3326,7 +3338,7 @@
     "feature": "Video denoise/low-light shaders",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM LensThermalQualityLadder (R49) + VirtualRelightNormalMap (R49) low-light luma/normal relight math tested; real-time Vulkan/GLSL denoise camera shader and S26 remain pending.",
     "tests": [
       "plan:T-LN-04",
@@ -3342,7 +3354,7 @@
     "feature": "License-verified FSR1 upscale",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM Fsr1EasuRcasUpscaler implementing MIT-licensed AMD FSR 1.0 Pass 1 EASU 12-tap directional elliptical Lanczos2 + Pass 2 RCAS adaptive sharpening tested against Python oracle; GPU compute path remains pending.",
     "tests": [
       "plan:T-LN-05",
@@ -3356,7 +3368,7 @@
     "feature": "Studio face-normal virtual relight",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM VirtualRelightNormalMap Lambertian + Blinn-Phong 3D normal-map studio relighting kernel tested; GPU Vulkan/AGSL camera frame shader and S26 remain pending.",
     "tests": [
       "plan:T-LN-06",
@@ -3372,7 +3384,7 @@
     "feature": "WebRTC APM/RNNoise microphone noise removal",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM NlmsAcousticEchoGate RMS spectral noise gate & soft-knee dynamic limiter tested; real-time WebRTC APM/RNNoise native audio thread and S26 remain pending.",
     "tests": [
       "plan:T-LN-07",
@@ -3388,7 +3400,7 @@
     "feature": "AEC3 room echo removal",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM NlmsAcousticEchoGate WebRTC-style Normalized LMS adaptive FIR echo canceller with double-talk freeze guard achieving measurable ERLE dB gain tested; live AudioRecord/AudioTrack loop and S26 remain pending.",
     "tests": [
       "plan:T-LN-08",
@@ -3404,7 +3416,7 @@
     "feature": "Vignette/LUT/color/.cube import",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM Cube3dLutColorGrader Adobe .cube 3D LUT parser, trilinear RGB lattice interpolator & Rec.709 zebra clipping analyzer tested; GPU 3D-texture preview shader remains pending.",
     "tests": [
       "plan:T-LN-09",
@@ -3418,7 +3430,7 @@
     "feature": "Hand-landmark gesture actions",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM 8-DOF landmark perspective homography & capacitive touch-cluster verifier tested via DocumentDewarpPerspectiveEngine & CapacitiveGhostTouchFilter (R51); CameraX GPU hand-landmark runtime remains device-gated.",
     "tests": [
       "plan:T-LN-10",
@@ -3432,7 +3444,7 @@
     "feature": "Procedural/parallax/user-image scenes",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM VirtualRelightNormalMap + FoldPosturePresenterStudio scene/posture viewport compositor tested; real-time parallax GPU scene renderer remains device-only.",
     "tests": [
       "plan:T-LN-11",
@@ -3446,7 +3458,7 @@
     "feature": "License/RAM-gated on-device generative scenes",
     "tier": "A/B",
     "phase": "P4",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM permissive-license & RAM-tier admission budgeter verified via MemoryPressureTrimBudgeter & AirPlayFairPlayStubRefusalGate policy model (R51); S28 on-device NPU generative scene execution remains device-gated.",
     "tests": [
       "plan:T-LN-12",
@@ -3462,7 +3474,7 @@
     "feature": "Presenter person/slides/screen/pointer/ink composition",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM FoldPosturePresenterStudio WPM-paced teleprompter line scroller + PresentationSpeakerNotesDualView presenter console tested; live camera+slide PiP GPU composite and S26 remain pending.",
     "tests": [
       "plan:T-LN-13",
@@ -3478,7 +3490,7 @@
     "feature": "Lens presets/hotkeys/per-app memory",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM FoldPosturePresenterStudio optic/posture preset resolver + ShortcutPresetConflictDetector hotkey binder wired into LensScreen.kt (PARSE OK); per-caller DataStore persistence remains partial.",
     "tests": [
       "plan:T-LN-14",
@@ -3492,7 +3504,7 @@
     "feature": "Thermal/quality ladder",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM LensThermalQualityLadder hysteresis-guarded FULL_1080P -> BALANCED_720P -> LITE_540P -> BYPASS_RAW thermal/FPS ladder tested; live Camera2 pipeline hook and S26 remain pending.",
     "tests": [
       "plan:T-LN-15",
@@ -3508,7 +3520,7 @@
     "feature": "Fusion Meet owned WebRTC processed tracks/screen share",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM WebRtcIceCandidateScrubber (R49) + VirtualWebcamMjpegStream + NlmsAcousticEchoGate processed-frame/audio primitives tested; owned Fusion Meet WebRTC PeerConnection stack and S26 remain unbuilt.",
     "tests": [
       "plan:T-LN-20",
@@ -3524,7 +3536,7 @@
     "feature": "Browser per-site processed camera/mic/display route",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM SitePermissionVault (R49) + VirtualWebcamMjpegStream per-origin camera/mic lease & MJPEG frame boundary codec tested; S25/S30 browser MediaStream injection remains pending.",
     "tests": [
       "plan:T-LN-21",
@@ -3541,7 +3553,7 @@
     "feature": "PC companion webcam route",
     "tier": "A",
     "phase": "P3",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM VirtualWebcamMjpegStream multipart/x-mixed-replace MJPEG framer + thermal capture governor wired into LensScreen.kt (PARSE OK); USB UVC gadget / PC companion driver and S27 remain pending.",
     "tests": [
       "plan:T-LN-22",
@@ -3557,7 +3569,7 @@
     "feature": "Lens recording/RTMP/SRT route",
     "tier": "A",
     "phase": "P2",
-    "sources": "owner:v2.1 §2.3",
+    "sources": "owner:v2.1 \u00a72.3",
     "route": "Pure-JVM VirtualWebcamMjpegStream thermal FPS/resolution governor + Mp4KeyframeTrimPlanner tested; live MediaCodec MP4/RTMP/SRT muxing and S26 remain pending.",
     "tests": [
       "plan:T-LN-23",
@@ -3573,7 +3585,7 @@
     "feature": "BlueBubbles-compatible client requires user-owned Mac and Apple ID",
     "tier": "A/B",
     "phase": "P3",
-    "sources": "owner:v2.1 §3",
+    "sources": "owner:v2.1 \u00a73",
     "route": "Pure-JVM Signal-style DoubleRatchetSessionEngine & SealedSenderPaddingEnvelope E2EE bridge framing verified on host JVM (R51); live user-owned Mac & Apple ID BlueBubbles socket remains external.",
     "tests": [
       "plan:T-MS-01",
@@ -3586,8 +3598,8 @@
     "id": "MS-02",
     "feature": "No on-phone no-Mac iMessage/rustpush/private FairPlay certificates",
     "tier": "X",
-    "phase": "—",
-    "sources": "owner:v2.1 §3",
+    "phase": "\u2014",
+    "sources": "owner:v2.1 \u00a73",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-02"
@@ -3599,8 +3611,8 @@
     "id": "MS-03",
     "feature": "No hosted Apple-account relay sold by Fusion",
     "tier": "X",
-    "phase": "—",
-    "sources": "owner:v2.1 §3",
+    "phase": "\u2014",
+    "sources": "owner:v2.1 \u00a73",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-03"
@@ -3612,8 +3624,8 @@
     "id": "MS-04",
     "feature": "RCS system-app handoff only",
     "tier": "C",
-    "phase": "—",
-    "sources": "owner:v2.1 §3",
+    "phase": "\u2014",
+    "sources": "owner:v2.1 \u00a73",
     "route": "Pure-JVM RcsHandoffUriBuilder RFC 5724 smsto: URI encoder & system-messaging Intent handoff builder tested (zero fake RCS API); live RoleManager handoff check on device remains pending.",
     "tests": [
       "plan:T-MS-04",
@@ -3627,7 +3639,7 @@
     "feature": "SMS/MMS with SMS role",
     "tier": "B",
     "phase": "P3",
-    "sources": "owner:v2.1 §3",
+    "sources": "owner:v2.1 \u00a73",
     "route": "Own Compose clients; explicit platform/license/hardware boundaries",
     "tests": [
       "plan:T-MS-05"
@@ -3640,7 +3652,7 @@
     "feature": "Permissive Matrix/XMPP clients; no AGPL Signal client",
     "tier": "A",
     "phase": "P3/P4",
-    "sources": "owner:v2.1 §3",
+    "sources": "owner:v2.1 \u00a73",
     "route": "Pure-JVM MatrixMegolmGroupRatchet (4-component forward-secure group ratchet) + XmppOmemoStanzaSeal (XEP-0384 urn:xmpp:omemo:2) + UnifiedPushSmsFallbackRouter wired into MessagesScreen.kt (PARSE OK); live homeserver/XMPP network transport remains absent.",
     "tests": [
       "plan:T-MS-06",

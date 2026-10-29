@@ -28,6 +28,7 @@ import check_r50_reference
 import check_r51_reference
 import check_r52_reference
 import check_r53_reference
+import check_r54_reference
 import fusion_workbench_server
 import render_r45_visual_preview
 import render_r46_visual_preview
@@ -38,6 +39,7 @@ import render_r50_visual_preview
 import render_r51_visual_preview
 import render_r52_visual_preview
 import render_r53_visual_preview
+import render_r54_visual_preview
 import run_r45_contracts
 import run_r46_contracts
 import run_r47_contracts
@@ -47,6 +49,7 @@ import run_r50_contracts
 import run_r51_contracts
 import run_r52_contracts
 import run_r53_contracts
+import run_r54_contracts
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -73,6 +76,7 @@ def main(argv: list[str] | None = None) -> int:
         run_r51_contracts.main()
         run_r52_contracts.main()
         run_r53_contracts.main()
+        run_r54_contracts.main()
         return 0
     if args.cmd == "diff-oracle":
         check_r45_reference.main(["--verify"])
@@ -84,11 +88,13 @@ def main(argv: list[str] | None = None) -> int:
         check_r51_reference.main()
         check_r52_reference.main()
         check_r53_reference.main()
+        check_r54_reference.main()
         return 0
     if args.cmd == "amnesic-audit":
         return amnesic_posture.main(["--json"])
     if args.cmd == "visual-preview":
-        return render_r53_visual_preview.main()
+        render_r53_visual_preview.main()
+        return render_r54_visual_preview.main()
     if args.cmd == "serve-self-test":
         return fusion_workbench_server.main(["--self-test"])
     if args.cmd == "serve":
@@ -103,6 +109,7 @@ def main(argv: list[str] | None = None) -> int:
         run_r51_contracts.main()
         run_r52_contracts.main()
         run_r53_contracts.main()
+        run_r54_contracts.main()
         check_r45_reference.main(["--verify"])
         check_r46_reference.main(["--verify"])
         check_r47_reference.main()
@@ -112,6 +119,7 @@ def main(argv: list[str] | None = None) -> int:
         check_r51_reference.main()
         check_r52_reference.main()
         check_r53_reference.main()
+        check_r54_reference.main()
         amnesic_posture.main([])
         fusion_workbench_server.main(["--self-test"])
         render_r45_visual_preview.main()
@@ -123,6 +131,7 @@ def main(argv: list[str] | None = None) -> int:
         render_r51_visual_preview.main()
         render_r52_visual_preview.main()
         render_r53_visual_preview.main()
+        render_r54_visual_preview.main()
         return 0
     return 1
 
