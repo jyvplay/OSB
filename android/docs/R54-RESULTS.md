@@ -8,6 +8,19 @@ Executed on `2026-10-29` on host OpenJDK `17.0.9+9` with Kotlin `2.2.21` (`-Werr
 - **Not executed (so not claimed):** physical Android devices, live TalkBack/Switch/Voice review, hardware `MediaProjection`/`FLAG_SECURE` capture, USB-C TCPM kernel enforcement, Wi-Fi firmware CSI suppression, 16 KB physical install, StrongBox attestation, LibreOfficeKit C++ layout parity, HarfBuzz complex-script shaping.
 - **Module accounting (both numbers):** host-testable subsets **`50/50 = 100.00%`**; full-spec Class A **`0/50 = 0.00%`**. Writer and Spreadsheet are *deepened to Class-A-depth behaviour on host* but are **not** declared Class A, because the conjunction gate (both-flavour build + lint, whole-scope, mandatory device spikes, security/privacy/AX review, API37/16K, licence/SBOM) is still open.
 
+## Real GitHub Actions Android SDK 37.0 CI evidence (PR #11, run `40973816244`, job `123796946466`)
+
+**`PASS` in `11m46s`, all 33 steps `success`** — steps 6–16: source contracts/traceability, SDK 37.0 install (`platforms/android-37.0`, `Pkg.Revision=2`, `ExtensionLevel=22`, `android.jar` `43,044,472 B`, `sha256: bf1b4387…`), `Assemble both flavors`, APK byte/hash recording, all Gradle JVM unit tests, **`Production Kotlin pilot contracts` (all `43` tasks `r13..r54`)**, the cross-language Python differential oracles, and `Lint both manifests and Android sources`.
+
+| APK | bytes | sha256 |
+|---|---:|---|
+| `app-play-debug.apk` | `45,906,504` | `90832a9736f5f932e9d6f9e854376051b8269a798929cf71ff1e6c08bbd0fe23` |
+| `app-pro-debug.apk` | `45,906,564` | `6e19c80507424dd158e995798faebf809a83a02b3265680f9f89af78fde895cf` |
+
+CI bundles: `fusion-native-debug` `34,930,486 B`, `native-test-reports` `169,390 B`, `sdk-setup-diagnostics` `25,569 B`.
+
+Four CI iterations were needed and each failure was real, not cosmetic: (1) stale `native_source_audit` inventory; (2) `WriterTypographyInspectorCard` duplicate imports + `Float`/`Double` mismatches; (3) that same inventory going stale again after the fix; (4) the `contract` source set's `**/calc/*.kt` glob pulling Compose code into a pure-JVM compile — fixed by moving the panel to `dev.fusion.calcui` under `src/main/java`. Managed-device (`API34`) jobs are separate workflows and are **not** part of this claim.
+
 ## What was added (22 kernels, 3 Compose files, 5 touched kernels)
 
 | Area | Files | Executed proof |
