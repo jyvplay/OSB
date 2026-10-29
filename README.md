@@ -1,5 +1,13 @@
 # Fusion Shell — native Android development
 
+## R54 — Office correctness repairs
+
+Nested and bounded Writer mail merge, validated footnote pagination, and decimal
+spreadsheet ROUND repairs. **630 new host assertions + 25,425 R53 regression
+assertions + 411 reference checks passed locally.** No native Class-A claim.
+[Exact scope, counts, evidence and remaining gaps](android/docs/R54-RESULTS.md).
+
+
 Open **[`android/`](android/README.md)** in Android Studio. That is the Kotlin /
 Jetpack Compose application, not a browser recreation.
 

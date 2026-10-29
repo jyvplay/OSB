@@ -28,7 +28,17 @@ object WriterFootnotePaginator {
         usablePageHeightPt: Double = 648.0,
         footnoteSeparatorHeightPt: Double = 10.0,
     ): List<PaginatedWriterPage> {
-        require(lines.isNotEmpty() && usablePageHeightPt >= 120.0)
+        require(lines.isNotEmpty() && lines.size <= 100_000)
+        require(usablePageHeightPt.isFinite() && usablePageHeightPt >= 120.0)
+        require(footnoteSeparatorHeightPt.isFinite() && footnoteSeparatorHeightPt >= 0.0)
+        require(lines.map { it.lineIndex }.toSet().size == lines.size) { "Duplicate line index" }
+        for (line in lines) {
+            require(line.lineHeightPt.isFinite() && line.lineHeightPt > 0.0)
+            require(line.referencedFootnoteHeightsPt.all { it.isFinite() && it > 0.0 })
+            val height = line.lineHeightPt + line.referencedFootnoteHeightsPt.sum() +
+                if (line.referencedFootnoteHeightsPt.isEmpty()) 0.0 else footnoteSeparatorHeightPt
+            require(height <= usablePageHeightPt) { "Line ${line.lineIndex} and its notes require splitting; unsupported" }
+        }
         val pages = ArrayList<PaginatedWriterPage>()
         var idx = 0
         var pageNo = 1
@@ -44,7 +54,7 @@ object WriterFootnotePaginator {
                 val sepCost = if (nextNoteCount > 0) footnoteSeparatorHeightPt else 0.0
                 val projected = usedBody + cand.lineHeightPt + sepCost + usedNotes + extraNotes
                 if (accepted.isNotEmpty() && projected > usablePageHeightPt) break
-                // Always accept at least 1 line per page to guarantee strict forward termination
+                // Preflight guarantees at least one complete line fits on an empty page.
                 accepted.add(cand.lineIndex)
                 usedBody += cand.lineHeightPt
                 usedNotes += extraNotes
