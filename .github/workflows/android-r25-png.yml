@@ -25,6 +25,11 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
+      - name: Install the emulator's Linux host audio library
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libpulse0
+          ldconfig -p | grep -F 'libpulse.so.0'
       - name: Actual compilation platform
         run: |
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-37.0' 'build-tools;36.0.0'
