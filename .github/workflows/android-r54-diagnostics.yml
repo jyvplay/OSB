@@ -60,8 +60,11 @@ jobs:
               text='\n'.join(matches[-35:]).encode()[-2900:].decode(errors='replace')
               print('::notice::Actual device log excerpts: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
           for p in Path('testing/build/r54/imported-evidence').rglob('sdk-setup.log'):
-              text=p.read_bytes()[-3500:].decode(errors='replace')
-              print('::notice::Actual SDK setup log tail: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
+              # SDK manager can exit zero after reporting failed downloads as warnings.
+              lines=p.read_text(errors='replace').replace('\r','\n').splitlines()
+              selected=[line for line in lines if any(word in line.lower() for word in ('warning:', 'error:', 'exception', 'failed', 'no space', 'corrupt'))]
+              text='\n'.join(selected[-25:])[-3500:] or '(no warning/error lines found)'
+              print('::notice::Actual SDK setup warnings: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
           PY
   frames:
     needs: select
