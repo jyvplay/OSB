@@ -91,7 +91,8 @@ class SdkInstallationOrchestration(unittest.TestCase):
         self.assertEqual(self.calls('image'), 0)
         self.assertIn('emulator -version exited 127', self.log.read_text())
         self.assertIn('emulator -version exited 127', r.stdout)
-        self.assertIn('synthetic-emulator-version-or-error', self.log.read_text())
+        self.assertIn('error: emulator output: synthetic-emulator-version-or-error', self.log.read_text())
+        self.assertIn('error: emulator output: synthetic-emulator-version-or-error', r.stdout)
 
     def test_nonzero_sdk_exit_refused_even_if_artifacts_exist(self):
         r = self.run_setup('nonzero-platform')

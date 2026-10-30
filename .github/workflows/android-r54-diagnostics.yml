@@ -62,7 +62,7 @@ jobs:
           for p in Path('testing/build/r54/imported-evidence').rglob('sdk-setup.log'):
               # SDK manager can exit zero after reporting failed downloads as warnings.
               lines=p.read_text(errors='replace').replace('\r','\n').splitlines()
-              selected=[line for line in lines if any(word in line.lower() for word in ('warning:', 'error:', 'exception', 'failed', 'no space', 'corrupt'))]
+              selected=[line for line in lines if any(word in line.lower() for word in ('warning:', 'error:', 'exception', 'failed', 'no space', 'corrupt', 'not found', 'symbol lookup'))]
               text='\n'.join(selected[-25:])[-3500:] or '(no warning/error lines found)'
               print('::notice::Actual SDK setup warnings: '+text.replace('%','%25').replace('\r','%0D').replace('\n','%0A'))
           PY

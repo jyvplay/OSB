@@ -30,16 +30,19 @@ platform_ready() {
      -x "$ANDROID_HOME/platform-tools/adb" ]]
 }
 emulator_ready() {
-  local executable="$ANDROID_HOME/emulator/emulator" result
+  local executable="$ANDROID_HOME/emulator/emulator" result output line
   if [[ ! -x "$executable" ]]; then
     printf 'error: emulator executable is missing or not executable: %s\n' "$executable" >> "$LOG"
     return 1
   fi
-  if "$executable" -version >> "$LOG" 2>&1; then
+  if output=$("$executable" -version 2>&1); then
+    printf '%s\n' "$output" >> "$LOG"
     return 0
   else
     result=$?
     printf 'error: emulator -version exited %s\n' "$result" >> "$LOG"
+    # Prefix each line so the bounded CI annotation preserves the actual loader message.
+    while IFS= read -r line; do printf 'error: emulator output: %s\n' "$line" >> "$LOG"; done <<< "$output"
     # ldd is diagnostic only. Its absence or failure must not hide the emulator failure.
     if command -v ldd >/dev/null 2>&1; then ldd "$executable" >> "$LOG" 2>&1 || true; fi
     return 1
