@@ -109,6 +109,13 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("sheet-input").performScrollTo().performTextInput("=COUNT(B1)")
         compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 1", substring = true)).fetchSemanticsNodes().isNotEmpty() }
+        // ROUND was formerly refused in this editor; assert the actual typed result after applying.
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("=ROUND(1.005,2)")
+        compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 1.01", substring = true)).fetchSemanticsNodes().isNotEmpty() }
+        hideIme()
+        compose.onNodeWithTag("sheet-apply").performScrollTo().assertIsDisplayed()
+        NativeVisualEvidence.capture(compose, compose.activity, "r24c-round", listOf("sheet-apply"))
     }
 
     @Test fun writerExportDisclosureIsVisibleInRealEditor() {
@@ -134,7 +141,12 @@ class R54OfficeDeviceTest {
         compose.onNodeWithText("Choose destination").performClick()
         val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         val documentsUi = By.pkg(Pattern.compile(".*documentsui"))
-        assertTrue(device.wait(Until.hasObject(documentsUi), 15_000))
+        if (!device.wait(Until.hasObject(documentsUi), 15_000)) {
+            val actions = device.findObjects(By.clickable(true)).take(15).map {
+                "${it.className} id=${it.resourceName} text=${it.text.orEmpty().take(60)} desc=${it.contentDescription.orEmpty().take(80)}"
+            }
+            throw AssertionError("Writer picker not observed; foreground=${device.currentPackageName}; export=${vm.state.value}; actions=$actions")
+        }
         val filename = requireNotNull(device.wait(Until.findObject(By.clazz("android.widget.EditText")), 10_000))
         filename.text = "fusion-r54-${UUID.randomUUID()}.docx"
         requireNotNull(device.wait(Until.findObject(By.text(Pattern.compile("(?i)save"))), 10_000)).click()

@@ -120,10 +120,9 @@ object OfficeSheetDraft {
     private val NUMBER_TOKEN = Regex("(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?")
     private val REFERENCE = Regex("\\$?[A-Za-z]\\$?(?:100|[1-9][0-9]?)")
     private val IDENTIFIER = Regex("[A-Za-z_][A-Za-z0-9_.]*")
-    // ROUND in the shared legacy evaluator silently clamps its digits argument; do not expose
-    // that behavior as a trustworthy spreadsheet result. CONCAT and '&' are withheld because
-    // chained formulas can otherwise amplify text exponentially without a derived-value budget.
-    private val FUNCTIONS = setOf("SUM", "AVERAGE", "MIN", "MAX", "COUNT", "COUNTA", "IF", "IFERROR", "AND", "OR", "NOT", "ABS", "MOD", "INT", "LEN")
+    // CONCAT and '&' remain withheld because chained formulas can otherwise amplify text
+    // exponentially without a derived-value budget. ROUND uses a bounded decimal scale.
+    private val FUNCTIONS = setOf("SUM", "AVERAGE", "MIN", "MAX", "COUNT", "COUNTA", "IF", "IFERROR", "AND", "OR", "NOT", "ABS", "ROUND", "MOD", "INT", "LEN")
 
     /**
      * Admission is narrower than FormulaEval: no external/3-D links, named expressions,

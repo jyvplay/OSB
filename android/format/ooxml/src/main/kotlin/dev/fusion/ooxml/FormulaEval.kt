@@ -11,6 +11,8 @@ import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sign
 import kotlin.math.sqrt
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -695,13 +697,16 @@ object FormulaEval {
                 if (x is CellValue.Err) return x
                 val d = evalScalarAsNum(evalExpr(args[1], env))
                 if (d is CellValue.Err) return d
-                val digits = (d as CellValue.Num).value.toInt().coerceIn(-12, 12)
-                val factor = 10.0.pow(digits)
+                val digits = (d as CellValue.Num).value
                 val v = (x as CellValue.Num).value
-                // Excel half-away-from-zero rounding
-                val scaled = v * factor
-                val rounded = if (scaled >= 0.0) floor(scaled + 0.5) else -floor(-scaled + 0.5)
-                val out = rounded / factor
+                // Round the canonical decimal representation of this finite binary64 value,
+                // halfway away from zero. Never clamp the requested digits to a different scale
+                // or multiply by 10^digits in binary, which can overflow or perturb decimal ties.
+                // Every finite double has fewer than 400 integer/fraction decimal positions in
+                // its canonical representation; avoid allocating an arbitrary requested scale.
+                if (digits >= 400.0) return CellValue.Num(normalizeNegZero(v))
+                if (digits <= -400.0) return CellValue.Num(0.0)
+                val out = BigDecimal.valueOf(v).setScale(digits.toInt(), RoundingMode.HALF_UP).toDouble()
                 if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
             }
             "MOD" -> {

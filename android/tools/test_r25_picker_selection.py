@@ -37,6 +37,25 @@ class PickerSelectionReportTests(unittest.TestCase):
         self.write()
         self.assertEqual(picker.collect(self.root)[0]['target_id'], 'android:id/title')
 
+    def test_card_body_tap_is_inside_card_and_outside_preview(self):
+        self.row.update(strategy='preview-card-body', target_id='com.google.android.documentsui:id/item_root',
+                        item_bounds=[20, 40, 220, 300], preview_bounds=[160, 50, 210, 100], tap=[120, 274])
+        self.write()
+        self.assertEqual(picker.collect(self.root)[0]['tap'], [120, 274])
+        for key, value in (('tap', [170, 70]), ('tap', [5, 5]), ('tap', [True, 70]),
+                           ('preview_bounds', [0, 0, 400, 500]), ('item_bounds', [0, 0, 40, 40]),
+                           ('target_id', 'other.documentsui:id/item_root'), ('matched_description', 'Other.png')):
+            old = self.row[key]
+            self.row[key] = value
+            self.write()
+            with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                picker.collect(self.root)
+            self.row[key] = old
+        del self.row['tap']
+        self.write()
+        with self.assertRaises(ValueError):
+            picker.collect(self.root)
+
     def test_refuses_unverified_description_as_selection(self):
         self.row.update(strategy='filename-text', target_id=self.row['matched_id'])
         self.write()

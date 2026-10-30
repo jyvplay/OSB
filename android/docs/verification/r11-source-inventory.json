@@ -5732,7 +5732,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "53447c9331cb47b632b8dd35b265464f6c0249cbc7f1569fd1af42fb83f1b400"
+      "sha256": "6d48cb3d597b69660c570678741b458f431b72b1378b74f2c79ead60ebcfc466"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt",
@@ -5774,7 +5774,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetDraft.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "fd3cd90dea0644b3a025df5ce368d5000073f99957f8e6da5e651a2fe8735153"
+      "sha256": "48d85b88eb46446ff43bec36d19b91507904ba9b8502499cc1d054113ea02fe5"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",

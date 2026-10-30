@@ -18,6 +18,7 @@ import androidx.test.uiautomator.Until
 import dev.fusion.format.image.PngMetadata
 import dev.fusion.format.image.sandbox.PngLease
 import dev.fusion.format.image.sandbox.PngWorkerService
+import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
@@ -99,20 +100,37 @@ class R25PngCopyDeviceTest {
         val matched=file
         var target=matched
         var strategy="filename-text"
+        var tap:android.graphics.Point?=null
+        var previewBounds:android.graphics.Rect?=null
+        var itemBounds:android.graphics.Rect?=null
         if(matched.resourceName.orEmpty().endsWith(":id/preview_icon")) {
-            var parent=matched.parent
-            var title:androidx.test.uiautomator.UiObject2?=null
-            repeat(4) {
-                val container=parent
-                if(container!=null && title==null) {
-                    val titles=container.findObjects(By.res("android","title"))
-                    check(titles.size<=1) {"Ambiguous DocumentsUI preview parent for $name"}
-                    title=titles.singleOrNull()
-                    parent=container.parent
+            // API 34's accessibility tree can hide the separate title node. Identify the
+            // unique card containing this exact preview, then use a real tap outside the
+            // preview hotspot. Never click the preview or inject a picker result.
+            val packageName=matched.resourceName.orEmpty().substringBefore(":id/")
+            check(packageName.endsWith("documentsui")) {"Unexpected picker package $packageName"}
+            val preview=matched.visibleBounds
+            val cards=device.findObjects(By.res(packageName,"item_root"))
+            val candidates=cards.filter {it.visibleBounds.contains(preview)}
+            if(candidates.size!=1) {
+                val lineage=ArrayList<String>()
+                var ancestor:androidx.test.uiautomator.UiObject2?=matched
+                repeat(8) {
+                    val current=ancestor
+                    if(current!=null) {
+                        lineage.add("${current.className} id=${current.resourceName} bounds=${current.visibleBounds}")
+                        ancestor=current.parent
+                    }
                 }
+                throw AssertionError("No unique DocumentsUI item card for $name; preview=$preview; cards=${cards.map{it.visibleBounds}}; ancestors=$lineage")
             }
-            target=checkNotNull(title) {"DocumentsUI preview matched but no sibling filename title for $name"}
-            strategy="preview-sibling-title"
+            target=candidates.single()
+            val item=target.visibleBounds
+            check(item.width()>=48 && item.height()>=48 && !preview.isEmpty) {"Picker card too small: card=$item preview=$preview"}
+            val point=android.graphics.Point(item.centerX(),item.bottom-maxOf(2,item.height()/10))
+            check(item.contains(point.x,point.y) && !preview.contains(point.x,point.y)) {"Picker card body overlaps preview: card=$item preview=$preview tap=$point"}
+            tap=point;previewBounds=preview;itemBounds=item
+            strategy="preview-card-body"
         } else check(selector=="text") {"Ambiguous filename description is not an admitted selection target: ${matched.resourceName}"}
         // Persist only disposable-fixture selector metadata, not user documents or image bytes.
         require(name.matches(Regex("r25-(src|rec)-[a-f0-9]{8}\\.png")))
@@ -120,13 +138,19 @@ class R25PngCopyDeviceTest {
         val folder=InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let(::File)
             ?: File(instrumentation.targetContext.getExternalFilesDir(null),"r25-native-captures")
         check(folder.exists() || folder.mkdirs())
-        File(folder,"r25-picker-selection-${name.removeSuffix(".png")}.json").writeText(JSONObject()
+        val observation=JSONObject()
             .put("schema",1).put("origin","android-instrumentation").put("api",android.os.Build.VERSION.SDK_INT)
             .put("fixture",name).put("foreground",device.currentPackageName.orEmpty().take(128))
             .put("selector",selector).put("matched_id",matched.resourceName.orEmpty().take(128))
             .put("matched_description",matched.contentDescription.orEmpty().take(160))
-            .put("strategy",strategy).put("target_id",target.resourceName.orEmpty().take(128)).toString())
-        target.click();app()
+            .put("strategy",strategy).put("target_id",target.resourceName.orEmpty().take(128))
+        fun bounds(rect:android.graphics.Rect)=JSONArray(listOf(rect.left,rect.top,rect.right,rect.bottom))
+        if(tap!=null) observation.put("tap",JSONArray(listOf(tap.x,tap.y)))
+            .put("item_bounds",bounds(requireNotNull(itemBounds))).put("preview_bounds",bounds(requireNotNull(previewBounds)))
+        File(folder,"r25-picker-selection-${name.removeSuffix(".png")}.json").writeText(observation.toString())
+        val point=tap
+        if(point==null) target.click() else assertTrue("Native card-body tap was not injected",device.click(point.x,point.y))
+        app()
     }
     @Test fun isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels() {
         val input=fixture();val corrupt=input.copyOf();corrupt[corrupt.lastIndex]=(corrupt.last().toInt() xor 1).toByte()

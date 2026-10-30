@@ -1556,3 +1556,14 @@ tasks.register<JavaExec>("r55Contracts") {
     mainClass.set("dev.fusion.testing.R55Checks")
     args(rootProject.file("testing/build/r55/artifacts").absolutePath)
 }
+
+// R56: finite ROUND and typed authoring/cached-XLSX contracts; independent checks are separate.
+val r56 by sourceSets.creating
+kotlin.sourceSets.named("r56") { kotlin.srcDir("src/r56/kotlin") }
+dependencies { add(r56.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r56Contracts") {
+    dependsOn(r56.classesTaskName)
+    classpath = r56.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R56Checks")
+    args(rootProject.file("testing/build/r56/artifacts").absolutePath)
+}

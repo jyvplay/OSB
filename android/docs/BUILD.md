@@ -20,6 +20,8 @@ python3 tools/check_r54_reference.py --require-office-libraries
 python3 tools/run_r55_contracts.py
 # Also install formualizer==0.13.0 on the host for the independent formula comparison.
 python3 tools/check_r55_reference.py --require-reference
+python3 tools/run_r56_contracts.py
+python3 tools/check_r56_reference.py --require-reference
 python3 tools/check_project.py
 python3 -m unittest discover -s tools -p 'test_*.py'
 ```
@@ -33,7 +35,7 @@ For the authored destructive-reset instrumentation tests, use **only a disposabl
   -Pandroid.experimental.enableAdditionalTestOutput=true
 ```
 
-The test includes a real DocumentsUI writer flow plus separate MediaStore tests with injected callbacks. Source/configuration alone is not a pass: [run 41006261319](https://github.com/jyvplay/OSB/actions/runs/41006261319) passed 11 targeted cases on `f85ae06`, and its two native frames were inspected. Later changes need their own run. [R54 outcomes and open gates](R54-RESULTS.md) · [R55 continuation, visual evidence and limits](R55-RESULTS.md). Older instructions below are historical.
+The test includes a real DocumentsUI writer flow plus separate MediaStore tests with injected callbacks. Source/configuration alone is not a pass: [run 41006261319](https://github.com/jyvplay/OSB/actions/runs/41006261319) passed 11 targeted cases on `f85ae06`, and its two native frames were inspected. Later changes need their own run. [R54 outcomes and open gates](R54-RESULTS.md) · [R55 continuation and visual evidence](R55-RESULTS.md) · [R56 rounding and device continuation](R56-RESULTS.md). Older instructions below are historical.
 
 ---
 

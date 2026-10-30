@@ -97,9 +97,11 @@ object R54Checks {
         for (ref in listOf("A0", "AA1", "Z101", "A01", "Sheet1!A1", "\$A1", "A1 x")) {
             refuses("out-of-scope address $ref") { OfficeSheetDraft.address(ref) }
         }
-        for (bad in listOf("=NOW()", "=SEQUENCE(1000000)", "=A101", "=AA1", "=[Book]Sheet!A1", "=INDIRECT(\"A1\")", "=Name", "=SUM(A1", "=1+", "=1E999", "=ROUND(1.234,13)", "=CONCAT(A1,A1)", "=A1&A1")) {
+        for (bad in listOf("=NOW()", "=SEQUENCE(1000000)", "=A101", "=AA1", "=[Book]Sheet!A1", "=INDIRECT(\"A1\")", "=Name", "=SUM(A1", "=1+", "=1E999", "=CONCAT(A1,A1)", "=A1&A1")) {
             refuses("formula $bad") { OfficeSheetDraft.replace(sheet, "F1", cell(formula, bad)) }
         }
+        val rounded = edit(sheet, "F1", formula, "=ROUND(0.00000000000015,13)")
+        verify(OfficeSheetDraft.calculate(rounded).values["F1"] == FormulaEval.CellValue.Num(2e-13), "bounded ROUND admitted without scale clamp")
         refuses("malformed number") { OfficeSheetDraft.replace(sheet, "F1", cell(number, "NaN")) }
         refuses("boolean") { OfficeSheetDraft.replace(sheet, "F1", cell(bool, "true")) }
         refuses("invalid cell XML") { OfficeSheetDraft.replace(sheet, "F1", cell(textKind, "\u0001")) }

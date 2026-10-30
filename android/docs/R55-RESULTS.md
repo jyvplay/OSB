@@ -83,7 +83,7 @@ The reference command requires separately installed, host-only `openpyxl==3.1.5`
 
 ## G. Adversarial scope
 
-Cases cover zero versus truly absent sources, explicit empty string, booleans, errors, direct-vs-referenced text, negative values, arithmetic underflow/overflow, formula dependencies, source clearing, recovery, old snapshots, and typed comparator mutations. The 913-formula comparison uses a fixed small source grid and relative tolerance `1e-12` with zero absolute tolerance. It is not a fuzzer, exhaustive proof, Excel process, hostile-provider experiment, or timing guarantee. Legacy `ROUND`, concatenation and many other operations remain outside the bounded R54 authoring route.
+Cases cover zero versus truly absent sources, explicit empty string, booleans, errors, direct-vs-referenced text, negative values, arithmetic underflow/overflow, formula dependencies, source clearing, recovery, old snapshots, and typed comparator mutations. The 913-formula comparison uses a fixed small source grid and relative tolerance `1e-12` with zero absolute tolerance. It is not a fuzzer, exhaustive proof, Excel process, hostile-provider experiment, or timing guarantee. At the R55 revision, legacy `ROUND`, concatenation and many other operations remained outside the bounded authoring route. [R56](R56-RESULTS.md) later repairs and enables a bounded `ROUND`; concatenation remains refused.
 
 ## H. Executed verification
 
