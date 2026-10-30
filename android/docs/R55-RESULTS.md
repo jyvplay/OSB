@@ -1,6 +1,6 @@
 # R55 — spreadsheet blank-reference repair and native verification continuation
 
-**Date:** 2026-10-30. This is a bounded correctness improvement and evidence report, **not Class A acceptance**. The [R54 report](R54-RESULTS.md) describes the current Writer/sheet/export scope and unresolved gates. The draft [PR #12](https://github.com/jyvplay/OSB/pull/12) must remain open.
+**Date:** 2026-10-30. This is a bounded correctness improvement and evidence report, **not Class A acceptance**. The [R54 report](R54-RESULTS.md) describes the current Writer/sheet/export scope and unresolved gates. The draft [PR #12](https://github.com/jyvplay/OSB/pull/12) was to remain open in R55; the later R56 request to merge after verification supersedes that instruction.
 
 ## Runtime honesty, census, and pre-commit threshold
 
@@ -102,4 +102,4 @@ The repair is in `FormulaEval.evaluateSheet`, with a separate internal temporary
 
 ## J. Remaining work / stopping rule
 
-Keep the PR open. Finish the historical child-focus counterexample and relevant regressions, diagnose the failed PNG picker cases, and run the new blank-reference UI assertion on its committed revision. The prior Writer/sheet/provider rerun and the two finite frame inspections are recorded above, not generalized to new code or other devices. Separately pursue full Writer and spreadsheet editing/import/fidelity, Office-suite differential recalculation, broader provider/alias/race/process-death behavior, physical devices, multiple sizes and font scales, keyboard/IME, accessibility, security, performance, release and remaining modules. No test quantity or isolated fix upgrades those outstanding acceptance gates.
+R55 originally required keeping the PR open; see R56 for the later merge request and continuation. Finish the historical child-focus/candidate comparison and relevant regressions, and diagnose the failed PNG picker cases. The blank-reference UI assertion subsequently passed one API 34 PR run, while another run failed earlier in the type menu; both are recorded in R56. The prior Writer/sheet/provider rerun and the two finite frame inspections are recorded above, not generalized to new code or other devices. Separately pursue full Writer and spreadsheet editing/import/fidelity, Office-suite differential recalculation, broader provider/alias/race/process-death behavior, physical devices, multiple sizes and font scales, keyboard/IME, accessibility, security, performance, release and remaining modules. No test quantity or isolated fix upgrades those outstanding acceptance gates.

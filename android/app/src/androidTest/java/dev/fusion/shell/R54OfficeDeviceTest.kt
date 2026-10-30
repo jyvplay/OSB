@@ -54,21 +54,31 @@ class R54OfficeDeviceTest {
         }
         compose.waitForIdle()
     }
+    private fun chooseSheetKind(kind: String) {
+        compose.onNodeWithTag("sheet-kind").performScrollTo().assertIsEnabled().assertIsDisplayed().performClick()
+        // Observe the actual popup instead of assuming the tap instantly created its nodes.
+        compose.waitUntil(5_000) { compose.onAllNodesWithText(kind).fetchSemanticsNodes().size == 1 }
+        compose.onNodeWithText(kind).performClick()
+    }
+    private fun awaitSelectedCell(address: String) {
+        compose.waitUntil(15_000) {
+            compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("Selected $address", substring = true)).fetchSemanticsNodes().isNotEmpty()
+        }
+    }
 
     @Test fun sheetEditsRecalculatesKeepsUnappliedInputAndCapturesActualUi() {
         openModule("spreadsheet")
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
         maximize("spreadsheet")
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithTag("sheet-kind").performScrollTo().performClick()
-        compose.onNodeWithText("Number").performClick()
+        chooseSheetKind("Number")
         compose.onNodeWithTag("sheet-input").performScrollTo().performTextInput("4")
         compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 4", substring = true)).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
         compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
-        compose.onNodeWithTag("sheet-kind").performScrollTo().performClick()
-        compose.onNodeWithText("Formula").performClick()
+        awaitSelectedCell("B1")
+        chooseSheetKind("Formula")
         compose.onNodeWithTag("sheet-input").performScrollTo().performTextInput("=A1*2")
         compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 8", substring = true)).fetchSemanticsNodes().isNotEmpty() }
@@ -94,8 +104,8 @@ class R54OfficeDeviceTest {
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 0", substring = true)).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("C1")
         compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
-        compose.onNodeWithTag("sheet-kind").performScrollTo().performClick()
-        compose.onNodeWithText("Formula").performClick()
+        awaitSelectedCell("C1")
+        chooseSheetKind("Formula")
         compose.onNodeWithTag("sheet-input").performScrollTo().performTextInput("=COUNT(B1)")
         compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 1", substring = true)).fetchSemanticsNodes().isNotEmpty() }

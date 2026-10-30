@@ -18,10 +18,12 @@ import androidx.test.uiautomator.Until
 import dev.fusion.format.image.PngMetadata
 import dev.fusion.format.image.sandbox.PngLease
 import dev.fusion.format.image.sandbox.PngWorkerService
+import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.nio.ByteBuffer
 import java.util.UUID
 import java.util.regex.Pattern
@@ -76,11 +78,17 @@ class R25PngCopyDeviceTest {
     }
     private fun pick(name:String) {
         button("png_copy_choose").click();picker()
-        // Image grid tiles can expose their real filename as accessibility description, not visible TextView text.
+        // A filename may also occur in the accessibility description of the separate
+        // preview icon. Clicking that icon opens an external viewer, not the document.
         val end=SystemClock.elapsedRealtime()+10000
         var file:androidx.test.uiautomator.UiObject2?=null
+        var selector=""
         while(file==null && SystemClock.elapsedRealtime()<end) {
-            file=device.findObject(By.text(name)) ?: device.findObject(By.desc(Pattern.compile("(?s).*"+Pattern.quote(name)+".*")))
+            file=device.findObject(By.text(name))
+            if(file!=null) selector="text" else {
+                file=device.findObject(By.desc(Pattern.compile("(?s).*"+Pattern.quote(name)+".*")))
+                if(file!=null) selector="description"
+            }
             if(file==null)SystemClock.sleep(50)
         }
         if(file==null) {
@@ -88,7 +96,37 @@ class R25PngCopyDeviceTest {
             val descriptions=device.findObjects(By.desc(Pattern.compile(".+"))).take(20).map {it.contentDescription.take(130)}
             throw AssertionError("Image seed not identified in actual DocumentsUI: $name; foreground=${device.currentPackageName}; text=$texts; descriptions=$descriptions")
         }
-        file.click();app()
+        val matched=file
+        var target=matched
+        var strategy="filename-text"
+        if(matched.resourceName.orEmpty().endsWith(":id/preview_icon")) {
+            var parent=matched.parent
+            var title:androidx.test.uiautomator.UiObject2?=null
+            repeat(4) {
+                val container=parent
+                if(container!=null && title==null) {
+                    val titles=container.findObjects(By.res("android","title"))
+                    check(titles.size<=1) {"Ambiguous DocumentsUI preview parent for $name"}
+                    title=titles.singleOrNull()
+                    parent=container.parent
+                }
+            }
+            target=checkNotNull(title) {"DocumentsUI preview matched but no sibling filename title for $name"}
+            strategy="preview-sibling-title"
+        } else check(selector=="text") {"Ambiguous filename description is not an admitted selection target: ${matched.resourceName}"}
+        // Persist only disposable-fixture selector metadata, not user documents or image bytes.
+        require(name.matches(Regex("r25-(src|rec)-[a-f0-9]{8}\\.png")))
+        val instrumentation=InstrumentationRegistry.getInstrumentation()
+        val folder=InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let(::File)
+            ?: File(instrumentation.targetContext.getExternalFilesDir(null),"r25-native-captures")
+        check(folder.exists() || folder.mkdirs())
+        File(folder,"r25-picker-selection-${name.removeSuffix(".png")}.json").writeText(JSONObject()
+            .put("schema",1).put("origin","android-instrumentation").put("api",android.os.Build.VERSION.SDK_INT)
+            .put("fixture",name).put("foreground",device.currentPackageName.orEmpty().take(128))
+            .put("selector",selector).put("matched_id",matched.resourceName.orEmpty().take(128))
+            .put("matched_description",matched.contentDescription.orEmpty().take(160))
+            .put("strategy",strategy).put("target_id",target.resourceName.orEmpty().take(128)).toString())
+        target.click();app()
     }
     @Test fun isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels() {
         val input=fixture();val corrupt=input.copyOf();corrupt[corrupt.lastIndex]=(corrupt.last().toInt() xor 1).toByte()

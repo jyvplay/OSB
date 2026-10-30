@@ -50,6 +50,9 @@ jobs:
       - name: Actual named outcomes
         if: always()
         run: python3 tools/report_device_results.py
+      - name: Actual disposable picker selector observations
+        if: always()
+        run: python3 tools/report_r25_picker_selection.py
       - name: Actual UI preconditions
         if: always()
         run: python3 tools/r25_ui_lab.py --require-observed

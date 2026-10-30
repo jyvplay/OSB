@@ -23,6 +23,25 @@ class R22XlsxUiDeviceTest {
   return requireNotNull(initialized.wait(Until.findObject(By.res(pkg,id)),10000))
  }
  private fun status(prefix:String) {assertTrue("Missing status $prefix",device.wait(Until.hasObject(By.res(pkg,"csv_status").textStartsWith(prefix)),15000))}
+ private fun app(selection:String="picker") {
+  val end=android.os.SystemClock.elapsedRealtime()+15000
+  var returned=false
+  while(android.os.SystemClock.elapsedRealtime()<end) {
+   if(device.currentPackageName==pkg && device.hasObject(By.res(pkg,"csv_scroll"))) {returned=true;break}
+   android.os.SystemClock.sleep(50)
+  }
+  if(!returned) {
+   val actions=device.findObjects(By.clickable(true)).take(15).map {
+    "${it.className} id=${it.resourceName} text=${it.text.orEmpty().take(60)} desc=${it.contentDescription.orEmpty().take(80)}"
+   }
+   throw AssertionError("$selection did not return to CSV activity; foreground=${device.currentPackageName}; actions=$actions")
+  }
+ }
+ private fun pickFile(name:String) {
+  val file=requireNotNull(device.wait(Until.findObject(By.text(name)),10000))
+  val observed="selected id=${file.resourceName} class=${file.className} desc=${file.contentDescription}"
+  file.click();app(observed)
+ }
  @Test fun actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource() {
   val resolver=context.contentResolver;val name="r22-source-${UUID.randomUUID()}.xlsx";val output="r22-copy-${UUID.randomUUID()}.xlsx"
   val original=CsvTable.of(listOf(listOf("name","value","secret"),listOf("Alice","=1+1","DO_NOT_EXPORT"))).workbook().bytes
@@ -36,8 +55,7 @@ class R22XlsxUiDeviceTest {
    ActivityScenario.launch(CsvWorkbenchActivity::class.java).use {s->
     node("csv_import").click()
     assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-    requireNotNull(device.wait(Until.findObject(By.text(name)),10000)).click()
-    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    pickFile(name)
     node("csv_status");status("XLSX imported:")
     node("csv_columns").text="2";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())}
     node("csv_parse").click();node("csv_status");status("Preview ready.")
@@ -46,14 +64,13 @@ class R22XlsxUiDeviceTest {
     assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
     requireNotNull(device.wait(Until.findObject(By.clazz("android.widget.EditText")),10000)).text=output
     requireNotNull(device.wait(Until.findObject(By.text(Pattern.compile("(?i)save"))),10000)).click()
-    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    app("save picker")
     node("csv_status");status("XLSX readback verified:")
     resolver.openInputStream(uri)!!.use {assertArrayEquals(original,it.readBytes())}
     // A picker-created document need not be queryable through this app's MediaStore collection.
     // Reopen through a fresh real picker grant; never add broad storage permission just for a test.
     node("csv_import").click();assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-    requireNotNull(device.wait(Until.findObject(By.text(output)),10000)).click()
-    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    pickFile(output)
     node("csv_status");status("XLSX imported:")
     // Patch attack: old source had 3 columns; new copy has only 1. Column2 must now refuse.
     node("csv_parse").click();node("csv_status");status("CSV/columns/XLSX refused")
@@ -72,7 +89,7 @@ class R22XlsxUiDeviceTest {
    node("csv_source").text="KEEP";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())}
    node("csv_parse").click();node("csv_status");status("Preview ready.")
    node("csv_import").click();assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-   device.pressBack();assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+   device.pressBack();app("cancelled picker")
    node("csv_status");status("Import cancelled;")
    s.onActivity {a->assertEquals("KEEP",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString());assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled)}
   }
@@ -90,8 +107,7 @@ class R22XlsxUiDeviceTest {
     node("csv_source").text="retained";s.onActivity {it.window.insetsController?.hide(android.view.WindowInsets.Type.ime())}
     node("csv_parse").click();node("csv_status");status("Preview ready.")
     node("csv_import").click();assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-    requireNotNull(device.wait(Until.findObject(By.text(name)),10000)).click()
-    assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    pickFile(name)
     node("csv_status");status("XLSX refused or unavailable.")
     s.onActivity {a->assertFalse(a.findViewById<Button>(dev.fusion.automation.R.id.csv_save).isEnabled);assertEquals("retained",a.findViewById<EditText>(dev.fusion.automation.R.id.csv_source).text.toString())}
     resolver.openInputStream(uri)!!.use {assertArrayEquals(bytes,it.readBytes())}
