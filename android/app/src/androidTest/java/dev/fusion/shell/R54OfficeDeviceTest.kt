@@ -88,6 +88,17 @@ class R54OfficeDeviceTest {
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("sheet-input").performScrollTo().assertTextContains("=A1*3")
         compose.onNodeWithTag("sheet-selected-value").assertTextContains("displayed value: 8", substring = true)
+        // A bare reference to a truly empty cell is a numeric zero when stored as a formula.
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("=A3")
+        compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 0", substring = true)).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("C1")
+        compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
+        compose.onNodeWithTag("sheet-kind").performScrollTo().performClick()
+        compose.onNodeWithText("Formula").performClick()
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextInput("=COUNT(B1)")
+        compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 1", substring = true)).fetchSemanticsNodes().isNotEmpty() }
     }
 
     @Test fun writerExportDisclosureIsVisibleInRealEditor() {

@@ -1545,3 +1545,14 @@ tasks.register<JavaExec>("r54Contracts") {
     mainClass.set("dev.fusion.testing.R54Checks")
     args(rootProject.file("testing/build/r54/artifacts").absolutePath)
 }
+
+// R55: typed blank-reference behavior and a finite independent-comparison corpus.
+val r55 by sourceSets.creating
+kotlin.sourceSets.named("r55") { kotlin.srcDir("src/r55/kotlin") }
+dependencies { add(r55.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r55Contracts") {
+    dependsOn(r55.classesTaskName)
+    classpath = r55.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R55Checks")
+    args(rootProject.file("testing/build/r55/artifacts").absolutePath)
+}

@@ -89,7 +89,14 @@ object FormulaEval {
         val dependencies: Map<String, Set<String>>,
     )
 
-    fun evaluateSheet(cells: Map<String, CellInput>): EvaluatedSheet {
+    fun evaluateSheet(cells: Map<String, CellInput>): EvaluatedSheet = evaluateSheet(cells, materializeFormulaResults = true)
+
+    // SpillSheetEngine uses a temporary cell to evaluate a subexpression, not an actual
+    // output cell. Preserve the intermediate Empty value in that private probe context.
+    internal fun evaluateSheetForSubexpression(cells: Map<String, CellInput>): EvaluatedSheet =
+        evaluateSheet(cells, materializeFormulaResults = false)
+
+    private fun evaluateSheet(cells: Map<String, CellInput>, materializeFormulaResults: Boolean): EvaluatedSheet {
         require(cells.size <= MAX_CELLS) { "sheet exceeds $MAX_CELLS populated cells" }
         val canonicalInputs = LinkedHashMap<String, CellInput>(cells.size)
         for ((rawRef, inp) in cells) {
@@ -122,7 +129,15 @@ object FormulaEval {
                 is CellInput.TextLiteral -> CellValue.Text(inp.value)
                 is CellInput.BoolLiteral -> CellValue.Bool(inp.value)
                 is CellInput.ErrorLiteral -> CellValue.Err(inp.error)
-                is CellInput.Formula -> evalExpr(parsedAsts[ref]!!, evaluated)
+                is CellInput.Formula -> {
+                    // An empty reference can remain empty *inside* an expression (for example,
+                    // a range aggregate ignores an empty source). Once a scalar formula result
+                    // is stored in a cell, however, Excel-style evaluation exposes that result as
+                    // numeric zero rather than an unoccupied cell. Do not conflate this with a
+                    // formula returning explicit empty text, which remains a counted text value.
+                    val result = evalExpr(parsedAsts[ref]!!, evaluated)
+                    if (materializeFormulaResults && result == CellValue.Empty) CellValue.Num(0.0) else result
+                }
             }
         }
         return EvaluatedSheet(evaluated, order, deps)

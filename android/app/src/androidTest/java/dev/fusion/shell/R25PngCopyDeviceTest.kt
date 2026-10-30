@@ -55,7 +55,16 @@ class R25PngCopyDeviceTest {
     }
     private fun button(name:String) = requireNotNull(device.wait(Until.findObject(By.res(context.packageName,name)),10000))
     private fun picker()=assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-    private fun app()=assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    private fun app() {
+        // DocumentsUI disappearing is not sufficient: a third-party photo app can be
+        // foreground instead of returning the result to our activity.
+        if (!device.wait(Until.hasObject(By.res(context.packageName,"png_copy_choose")),15000)) {
+            val actions=device.findObjects(By.clickable(true)).take(18).map {
+                "${it.className} id=${it.resourceName} text=${it.text.orEmpty().take(60)} desc=${it.contentDescription.orEmpty().take(80)}"
+            }
+            throw AssertionError("Picker did not return to PNG activity; foreground=${device.currentPackageName}; actions=$actions")
+        }
+    }
     private fun seed(name:String,bytes:ByteArray):Uri {
         val uri=requireNotNull(context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME,name);put(MediaStore.MediaColumns.MIME_TYPE,"image/png")

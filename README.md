@@ -19,7 +19,7 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 
 ## Current R54 — experimental Office authoring, not Class A
 
-This branch adds a bounded plaintext-to-DOCX copy path and an experimental single-sheet editor with XLSX-copy export, plus a Markdown parser progress repair. The new Android UI and picker/provider tests are authored but have not been run locally; see the [R54 evidence and exact limits](android/docs/R54-RESULTS.md) and [Studio instructions](android/docs/BUILD.md). Use disposable data. The historical **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
+This branch adds a bounded plaintext-to-DOCX copy path and an experimental single-sheet editor with XLSX-copy export, plus a Markdown parser progress repair. The local sandbox has no Android SDK; a remote API 34 run passed 11 targeted Office/copy cases on `f85ae06`, including a Writer system-picker export. The [R55 continuation](android/docs/R55-RESULTS.md) records a later spreadsheet correctness repair and its precise verification limits; see also [R54 evidence](android/docs/R54-RESULTS.md) and [Studio instructions](android/docs/BUILD.md). Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
 
 The following R53 section is historical and predates the current R54 work.
 
