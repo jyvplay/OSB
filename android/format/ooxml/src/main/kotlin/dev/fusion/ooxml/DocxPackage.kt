@@ -443,12 +443,18 @@ object DocxPackage {
     private fun stylesXml(): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:styles xmlns:w="$WORD_NS">""")
+        append("""<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>""")
+        val halfPointSizes = listOf(32, 28, 26, 24, 22, 20)
         for (lvl in 1..6) {
-            append("""<w:style w:type="paragraph" w:styleId="Heading$lvl"><w:name w:val="heading $lvl"/></w:style>""")
+            val size = halfPointSizes[lvl - 1]
+            append("""<w:style w:type="paragraph" w:styleId="Heading$lvl"><w:name w:val="heading $lvl"/>""")
+            append("""<w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/>""")
+            append("""<w:pPr><w:keepNext/><w:outlineLvl w:val="${lvl - 1}"/></w:pPr>""")
+            append("""<w:rPr><w:b/><w:bCs/><w:sz w:val="$size"/><w:szCs w:val="$size"/></w:rPr></w:style>""")
         }
-        append("""<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/></w:style>""")
-        append("""<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/></w:style>""")
-        append("""<w:style w:type="paragraph" w:styleId="CodeBlock"><w:name w:val="Code Block"/></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/><w:basedOn w:val="Normal"/></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/><w:basedOn w:val="Normal"/><w:pPr><w:ind w:left="720"/></w:pPr><w:rPr><w:i/></w:rPr></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="CodeBlock"><w:name w:val="Code Block"/><w:basedOn w:val="Normal"/></w:style>""")
         append("""</w:styles>""")
     }
 

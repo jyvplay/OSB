@@ -59,11 +59,15 @@ class PickerSelectionReportTests(unittest.TestCase):
     def test_grid_item_ancestry_and_preview_geometry(self):
         self.row.update(strategy='preview-grid-item-body', target_id='', target_class='android.widget.LinearLayout',
                         grid_id='com.google.android.documentsui:id/dir_list',
-                        item_bounds=[64, 549, 366, 851], preview_bounds=[240, 549, 366, 675], tap=[215, 821])
+                        item_bounds=[64, 549, 366, 851], preview_bounds=[240, 549, 366, 675], tap=[215, 821],
+                        description_bounds=[[240, 549, 366, 675], [64, 549, 366, 851]])
         self.write()
         self.assertEqual(picker.collect(self.root)[0]['tap'], [215, 821])
+        self.assertEqual(len(picker.collect(self.root)[0]['description_bounds']), 2)
         for key, value in (('grid_id', 'other:id/dir_list'), ('target_class', ''),
-                           ('tap', [300, 600]), ('preview_bounds', [0, 0, 1000, 1000])):
+                           ('tap', [300, 600]), ('preview_bounds', [0, 0, 1000, 1000]),
+                           ('description_bounds', [[240, 549, 366, 675], [367, 549, 500, 851]]),
+                           ('description_bounds', [[64, 549, 366, 851]]), ('description_bounds', [[True, 1, 2, 3]])):
             old = self.row[key]
             self.row[key] = value
             self.write()

@@ -102,6 +102,49 @@ object NativeVisualEvidence {
             .put("preview_filter","bilinear downsample; original app-window PNG retained")
             .put("scope","One actual native page/frame, not all pages/states or beauty/AX acceptance").toString(2))
     }
+    /** Dialogs occupy a separate window: use a real whole-display capture, only on the disposable AVD. */
+    fun captureDialogDisplay(compose: ComposeContentTestRule, activity: Activity, name: String, tag: String) {
+        require(name.matches(Regex("r24c-[a-z-]{1,40}")))
+        compose.waitForIdle()
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        check(InstrumentationRegistry.getArguments().getString("fusionDisposable") == "true" && android.os.Build.HARDWARE in setOf("ranchu", "goldfish")) {
+            "Whole-display capture is restricted to an explicitly opted-in disposable emulator"
+        }
+        val density = activity.resources.displayMetrics.density
+        val node = compose.onNodeWithTag(tag).assertIsDisplayed()
+        val bounds = node.getUnclippedBoundsInRoot()
+        val visible = node.fetchSemanticsNode().boundsInRoot
+        val widthDp = (bounds.right - bounds.left).value
+        val heightDp = (bounds.bottom - bounds.top).value
+        val visibleWidthDp = visible.width / density
+        val visibleHeightDp = visible.height / density
+        assertTrue(widthDp >= 47.99f && heightDp >= 47.99f && visibleWidthDp >= 47.99f && visibleHeightDp >= 47.99f)
+        val folder = InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let(::File)
+            ?: File(instrumentation.targetContext.getExternalFilesDir(null), "r24c-native-captures")
+        check(folder.exists() || folder.mkdirs())
+        val audit = File(folder, "$name.json"); check(!audit.exists() || audit.delete())
+        val full = File(folder, "$name-full.png")
+        check(!full.exists() || full.delete())
+        assertTrue("Actual disposable-emulator display screenshot required", androidx.test.uiautomator.UiDevice.getInstance(instrumentation).takeScreenshot(full))
+        val raw = requireNotNull(android.graphics.BitmapFactory.decodeFile(full.absolutePath))
+        val rawWidth = raw.width; val rawHeight = raw.height
+        assertTrue(rawWidth >= 100 && rawHeight >= 100)
+        val width = minOf(360, rawWidth); val height = (rawHeight.toLong() * width / rawWidth).toInt()
+        val scaled = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        try {
+            Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), Paint(Paint.FILTER_BITMAP_FLAG))
+            File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+        } finally { scaled.recycle(); raw.recycle() }
+        val target = JSONObject().put("tag", tag).put("width_dp", widthDp).put("height_dp", heightDp)
+            .put("visible_width_dp", visibleWidthDp).put("visible_height_dp", visibleHeightDp)
+        audit.writeText(JSONObject().put("schema", 1).put("origin", "android-instrumentation")
+            .put("api", android.os.Build.VERSION.SDK_INT).put("density", density)
+            .put("font_scale", activity.resources.configuration.fontScale).put("required_targets", JSONArray().put(target))
+            .put("native_image_width", rawWidth).put("native_image_height", rawHeight)
+            .put("preview_width", width).put("preview_height", height).put("preview_filter", "bilinear downsample; whole-display original retained")
+            .put("capture_api", "UiDevice.takeScreenshot whole display, disposable AVD only; includes the separate dialog window")
+            .put("scope", "One actual native dialog/frame, not all pages, font scales or accessibility acceptance").toString(2))
+    }
     fun capture(compose: ComposeContentTestRule, activity: Activity, name: String, requiredTargets: List<String>) {
         require(name.matches(Regex("r24c-[a-z-]{1,40}")))
         compose.waitForIdle()

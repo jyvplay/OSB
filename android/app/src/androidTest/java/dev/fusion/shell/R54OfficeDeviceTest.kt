@@ -75,6 +75,8 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("sheet-input").performScrollTo().performTextInput("4")
         compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 4", substring = true)).fetchSemanticsNodes().isNotEmpty() }
+        // Wrapped Clear is reachable without horizontally scrolling the action row, even with IME state retained.
+        compose.onNodeWithTag("sheet-clear").performScrollTo().assertIsDisplayed().assertIsEnabled()
         compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
         compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
         awaitSelectedCell("B1")
@@ -156,6 +158,35 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("Writer test", substring = true)
     }
 
+    @Test fun structuredWriterOptionUsesRealEditorAndSystemPicker() {
+        openModule("editor")
+        maximize("editor")
+        compose.waitUntil(10_000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("New").performScrollTo().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        val text = "# Heading\n- **bold** and *italic*\n> `code`"
+        compose.onNodeWithTag("editor-content").performScrollTo().performTextInput(text)
+        hideIme()
+        compose.onNodeWithTag("writer-export-docx").performScrollTo().performClick()
+        compose.onNodeWithTag("writer-structured-option").performScrollTo().performClick()
+        compose.onNodeWithText("Export formatted DOCX copy?").assertIsDisplayed()
+        compose.onNodeWithText("Not a rich editor or full Markdown", substring = true).assertExists()
+        compose.onNodeWithTag("writer-structured-confirm").assertIsDisplayed()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r24c-structured", "writer-structured-confirm")
+        val vm = exportModel()
+        compose.onNodeWithTag("writer-structured-confirm").performClick()
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val documentsUi = By.pkg(Pattern.compile(".*documentsui"))
+        assertTrue("Actual Create Document picker required", device.wait(Until.hasObject(documentsUi), 15_000))
+        val filename = requireNotNull(device.wait(Until.findObject(By.clazz("android.widget.EditText")), 10_000))
+        filename.text = "fusion-r57-${UUID.randomUUID()}.docx"
+        requireNotNull(device.wait(Until.findObject(By.text(Pattern.compile("(?i)save"))), 10_000)).click()
+        assertTrue(device.wait(Until.gone(documentsUi), 15_000))
+        compose.waitUntil(30_000) { !vm.state.value.busy && vm.state.value.status.isNotEmpty() }
+        assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
+        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains(text, substring = true)
+    }
+
     private fun created(extension: String, mime: String, materialize: Boolean = true, body: (Uri) -> Unit) {
         val uri = requireNotNull(resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, "fusion-r54-${UUID.randomUUID()}.$extension")
@@ -222,6 +253,30 @@ class R54OfficeDeviceTest {
                     assertTrue(xml.contains("first") && xml.contains("<w:tab/>") && xml.contains("second"))
                     assertEquals("original bytes", read(original).toString(Charsets.UTF_8))
                 }
+            }
+        }
+    }
+
+    @Test fun structuredWriterRealProviderReadbackPreservesSource() {
+        created("txt", "text/plain") { original ->
+            val source = "# Heading\n- **bold** and *italic*\n> `code`"
+            resolver.openOutputStream(original, "wt")!!.use { it.write(source.toByteArray(Charsets.UTF_8)) }
+            created("docx", CopyDestinationContract.DOCX_MIME) { destination ->
+                val vm = exportModel()
+                val doc = TextDocument(UUID.randomUUID().toString(), "writer.txt", original.toString(), source, TextBytes.digest(source))
+                val request = AtomicReference<CopyPickerRequest>()
+                compose.runOnUiThread { vm.structuredWriter(doc, listOf(original.toString())) { request.set(it) } }
+                compose.waitUntil(15_000) { request.get() != null || !vm.state.value.busy }
+                val ready = requireNotNull(request.get()) { vm.state.value.status }
+                assertEquals(CopyDestinationContract.DOCX_MIME, ready.mimeType)
+                deliver(vm, ready, destination, listOf(original.toString()))
+                compose.waitUntil(15_000) { !vm.state.value.busy }
+                assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
+                val xml = zipPart(destination, "word/document.xml")
+                assertTrue(xml.contains("<w:pStyle w:val=\"Heading1\"/>") && xml.contains("<w:numPr>") && xml.contains("<w:b/>") && xml.contains("<w:i/>") && xml.contains("monospace"))
+                val styles = zipPart(destination, "word/styles.xml")
+                assertTrue(styles.contains("<w:sz w:val=\"32\"/>") && styles.contains("<w:outlineLvl w:val=\"0\"/>"))
+                assertArrayEquals(source.toByteArray(Charsets.UTF_8), read(original))
             }
         }
     }

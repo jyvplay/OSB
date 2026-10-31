@@ -58,6 +58,7 @@ fun EditorScreen(
     officeExportStatus: String = "",
     officeExportBusy: Boolean = false,
     onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
     onSaveCopy: (CopyPickerRequest) -> Unit,
 ) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -70,6 +71,7 @@ fun EditorScreen(
     LaunchedEffect(toolsOpen,active?.id) { if(!toolsOpen && active != null) editorFocus.requestFocus() }
     var copyConfirmId by remember { mutableStateOf<String?>(null) }
     var docxConfirmId by remember { mutableStateOf<String?>(null) }
+    var structuredDocxConfirmId by remember { mutableStateOf<String?>(null) }
     var retryConfirm by remember { mutableStateOf(false) }
     var retryConfirmId by remember { mutableStateOf<String?>(null) }
     var abandoningCopy by remember { mutableStateOf(false) }
@@ -190,7 +192,11 @@ fun EditorScreen(
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })
     docxConfirmId?.let { id ->
         AlertDialog(onDismissRequest={ docxConfirmId=null }, title={ Text("Export plain text as DOCX?") },
-            text={ Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.", Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
+            text={ Column(Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) {
+                Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.")
+                if (onExportStructuredDocx != null) TextButton(onClick={ docxConfirmId=null; structuredDocxConfirmId=id },
+                    modifier=Modifier.testTag("writer-structured-option")) { Text("Format simple text markers instead…") }
+            } },
             confirmButton={ TextButton(onClick={
                 docxConfirmId=null
                 val current=model.state.value
@@ -198,6 +204,17 @@ fun EditorScreen(
                 if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportDocx?.invoke(doc)
             }) { Text("Choose destination") } },
             dismissButton={ TextButton(onClick={ docxConfirmId=null }) { Text("Cancel") } })
+    }
+    structuredDocxConfirmId?.let { id ->
+        AlertDialog(onDismissRequest={ structuredDocxConfirmId=null }, title={ Text("Export formatted DOCX copy?") },
+            text={ Text("Not a rich editor or full Markdown. Each line becomes a paragraph: # through ###### followed by a space makes a heading; '- ' makes a bullet and '> ' a quote. Paired **bold**, *italic* and `code` format runs wherever they appear; nested, escaped, unmatched or ambiguous inline markers stay literal. Use plain export to keep all markers. CR/LF is normalized. Limits: 128 KiB UTF-8, 2,048 lines, 8,192 runs. Source and draft stay unchanged. Choose a new file; provider atomicity is not guaranteed.", Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
+            confirmButton={ TextButton(onClick={
+                structuredDocxConfirmId=null
+                val current=model.state.value
+                val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
+                if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportStructuredDocx?.invoke(doc)
+            }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-confirm")) { Text("Choose destination") } },
+            dismissButton={ TextButton(onClick={ structuredDocxConfirmId=null }) { Text("Cancel") } })
     }
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",
         onDismiss={ copyConfirmId=null },onConfirm={ copyConfirmId=null; if (!officeExportBusy) model.prepareCopy(id,onSaveCopy) }) }

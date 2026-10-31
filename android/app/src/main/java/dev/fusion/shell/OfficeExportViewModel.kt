@@ -16,6 +16,7 @@ import dev.fusion.editor.CopyPickerRequest
 import dev.fusion.editor.CopyPickerResult
 import dev.fusion.ooxml.OfficeSheetDraft
 import dev.fusion.ooxml.PlainWriterDocx
+import dev.fusion.ooxml.StructuredWriterDocx
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,12 +35,18 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
     private val recentDestinations = ArrayList<String>()
     private val resolver get() = getApplication<Application>().contentResolver
 
-    fun writer(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) {
+    fun writer(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) =
+        writerCopy(doc, forbidden, formatted = false, openPicker = openPicker)
+
+    fun structuredWriter(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) =
+        writerCopy(doc, forbidden, formatted = true, openPicker = openPicker)
+
+    private fun writerCopy(doc: TextDocument, forbidden: List<String>, formatted: Boolean, openPicker: (CopyPickerRequest) -> Unit) {
         val base = doc.name.substringBeforeLast('.', doc.name).map {
             if (it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' || it == '_') it else '_'
         }.joinToString("").take(64).trim('_').ifEmpty { "document" }
         prepare("$base-copy.docx", CopyDestinationContract.DOCX_MIME, forbidden, openPicker) {
-            PlainWriterDocx.write(doc.content)
+            if (formatted) StructuredWriterDocx.write(doc.content) else PlainWriterDocx.write(doc.content)
         }
     }
 

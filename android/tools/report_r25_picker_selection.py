@@ -56,7 +56,17 @@ def collect(root):
             if not (ir-il >= 48 and ib-it >= 48 and il <= pl < pr <= ir and it <= pt < pb <= ib and
                     il <= x < ir and it <= y < ib and not (pl <= x < pr and pt <= y < pb)):
                 raise ValueError('Tap does not avoid the preview within its unique card')
+            if 'description_bounds' in row:
+                boxes = row['description_bounds']
+                if (type(boxes) is not list or not 1 <= len(boxes) <= 8 or preview not in boxes or
+                        any(type(b) is not list or len(b) != 4 or any(type(v) is not int for v in b) or
+                            not (il <= b[0] < b[2] <= ir and it <= b[1] < b[3] <= ib) for b in boxes)):
+                    raise ValueError('Filename descriptions do not fit the same observed grid item')
         geometry = ('item_bounds', 'preview_bounds', 'tap') if row['strategy'] in ('preview-card-body', 'preview-grid-item-body') else ()
+        if 'description_bounds' in row and row['strategy'] not in ('preview-card-body', 'preview-grid-item-body'):
+            raise ValueError('Description geometry without an observed item')
+        if 'description_bounds' in row:
+            geometry += ('description_bounds',)
         ancestry = ('grid_id', 'target_class') if row['strategy'] == 'preview-grid-item-body' else ()
         navigation = ('navigation',) if 'navigation' in row else ()
         keys = ('api', *KEYS, *geometry, *ancestry, *navigation)

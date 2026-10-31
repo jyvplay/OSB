@@ -1567,3 +1567,14 @@ tasks.register<JavaExec>("r56Contracts") {
     mainClass.set("dev.fusion.testing.R56Checks")
     args(rootProject.file("testing/build/r56/artifacts").absolutePath)
 }
+
+// R57: bounded opt-in Writer conversion. Independent reader and device tests remain separate.
+val r57 by sourceSets.creating
+kotlin.sourceSets.named("r57") { kotlin.srcDir("src/r57/kotlin") }
+dependencies { add(r57.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r57Contracts") {
+    dependsOn(r57.classesTaskName)
+    classpath = r57.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R57Checks")
+    args(rootProject.file("testing/build/r57/artifacts").absolutePath)
+}

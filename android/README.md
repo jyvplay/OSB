@@ -1,6 +1,6 @@
-# R54 — current experimental Office authoring
+# R57 — current experimental Office authoring
 
-Open `android/` in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`; see [build instructions](docs/BUILD.md), [R54 results](docs/R54-RESULTS.md) and [R55 continuation](docs/R55-RESULTS.md) and [R56 rounding/device evidence](docs/R56-RESULTS.md). The Writer DOCX-copy and bounded spreadsheet/XLSX-copy paths are experimental. They were not run locally; 11 targeted Office/copy cases passed on a remote API 34 emulator at `f85ae06`, and later changes need their own run. Use disposable data. **50/50 modules (100%) have a reviewed testable subset; 0/50 (0%) are full-spec accepted.** These are different measures.
+Open `android/` in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`; see [build instructions](docs/BUILD.md) and [R57 results and limits](docs/R57-RESULTS.md). The plain and optional simple-marker DOCX-copy paths and bounded spreadsheet/XLSX-copy path are experimental; consult revision-specific remote API 34 results rather than assuming a local Android run. These are not a complete rich editor or full Office compatibility. Use disposable data. **50/50 modules (100%) have a reviewed testable subset; 0/50 (0%) are full-spec accepted.** These are different measures.
 
 The older sections below are historical and retain their original branch names and counts.
 

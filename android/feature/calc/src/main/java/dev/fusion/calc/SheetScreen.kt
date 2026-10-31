@@ -102,7 +102,10 @@ fun SheetScreen(
                 modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-export")) { Text("Export XLSX copy…") }
         }
         Text("Selected $selected · displayed value: ${state.data.values[selected]?.displayText().orEmpty()}", modifier = Modifier.testTag("sheet-selected-value"))
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+        // Wrap the cell actions rather than hiding Clear off the right edge. The
+        // surrounding vertical editor is now their only scroll ancestor, so an IME
+        // can be scrolled past without trapping a kind/action in an inner horizontal row.
+        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Box {
                 OutlinedButton(onClick = { kindMenu = true }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-kind")) { Text("Type: ${kind.name.lowercase().replaceFirstChar { it.uppercase() }}") }
                 DropdownMenu(expanded = kindMenu, onDismissRequest = { kindMenu = false }) {
@@ -112,7 +115,7 @@ fun SheetScreen(
                 }
             }
             Button(onClick = { model.apply(selected, kind, edit) }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-apply")) { Text("Apply cell") }
-            OutlinedButton(onClick = { confirmClear = true }, enabled = ready && !unapplied && original != null, modifier = Modifier.heightIn(min = 48.dp)) { Text("Clear cell…") }
+            OutlinedButton(onClick = { confirmClear = true }, enabled = ready && !unapplied && original != null, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-clear")) { Text("Clear cell…") }
         }
         OutlinedTextField(edit, model::updateInput,
             modifier = Modifier.fillMaxWidth().testTag("sheet-input"), enabled = ready,

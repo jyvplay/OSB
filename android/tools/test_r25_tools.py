@@ -72,6 +72,12 @@ class R25ToolTests(unittest.TestCase):
         self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['png-copy']))
         with self.assertRaises(ValueError): capture.export(0, 'r25-png-copy.png')
 
+    def test_writer_dialog_is_its_own_actual_capture_group(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['r57-writer'], {'r24c-structured.png'})
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r57-writer']))
+        with self.assertRaises(ValueError): capture.export(0, 'r24c-structured.png')
+
     def test_png_source_owner_is_existing_image_module_not_denominator_inflation(self):
         import module_audit
         included = module_audit.included_modules()

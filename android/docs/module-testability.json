@@ -69,7 +69,7 @@
       "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r45_contracts.py; python3 tools/run_r46_contracts.py; python3 tools/run_r47_contracts.py; python3 tools/run_r48_contracts.py; python3 tools/run_r49_contracts.py; python3 tools/run_r50_contracts.py; python3 tools/run_r51_contracts.py; python3 tools/run_r52_contracts.py; python3 tools/run_r53_contracts.py; :app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
-        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "8ef5d54300de00c8621ca88141019b2d27aae6fbd325728976e4dff2872e507e",
+        "app/src/main/java/dev/fusion/shell/MainActivity.kt": "4fafd8f835d10ccb4c76f0a4f410e04f9d2a44004daa300363a1d9d6b914ac78",
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "c198a3972d0593de3c0990dfcba7c595bd6e6478861b6188db9c76d4dde8ea07",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "38696deb14e4c05c4737e4db3a08ec0fd1c2484fda72418452a42432045ce180",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
@@ -77,10 +77,10 @@
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
-        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "bb4c95fb1e5649cf793c9745d4d10141819c6d41768e00e77bff0fe018a4eadb",
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "bb73ae4de33137c91cf679866359d746b3dead62ab24b692a920edf89a96e457",
         "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73",
         "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "c1ae60ded0967dc08fd62ccaf644a25402158bd1154e47ff630419999d53202f",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "099611153b27ac2adb3f6c4b05f4877a95ccda9d34d96a5b46ad0d6d27634fc7",
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "1955af2184c32f41120c5ae09590734b6b44af50fe5d1bc0e130657a1022cd82",
         "testing/src/r27/kotlin/dev/fusion/testing/R27Checks.kt": "e98a2e7e5069882d4c7d602befce965caa8523024689585268149f19fa96a408",
         "tools/test_r27_tools.py": "fbcb5f7c258a7c5737c86fa7a2626e4af87a4fe6356077dc8ba35f6de1b47fe6",
         "tools/check_r27_reference.py": "25f3e458b007b6fc24b0f6490e35cf4b8cf6052d414d0b0e2f3adc2216392358",
@@ -122,8 +122,8 @@
         "app/src/main/java/dev/fusion/shell/ShellMultiMonitorDpiScaleRouter.kt": "d603d73fb5a4b6f41c3ba5b83881556e251e85b8d034523fd314647c1232df7c",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
-        "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt": "5da73a712deff99be672bae77233e1eff92d80bce095a61a10f725b831a0910b",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "421c3fc8b3101c208c2d90172fdda3cd0125bf7915b0932d7bfeed7e2f5d3be1"
+        "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt": "13ea2975f4a95d548cbeb2799bc777692492c9e801d910d03e4080f9a0d22cde",
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "adea2f972f69149ccce90cc5db187a5522637fe074cb7c49eee5f633e7dd4950"
       }
     },
     {
@@ -1851,7 +1851,7 @@
       "limit": "Native adapter/broker compiled; actual grant propagation, OEM picker/process-death/SAF/AX/IME matrix and complete editor feature set pending",
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
-        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "78173864c9e939e9e15cc4ec3ae5a3a518f8afedca2e7eba684ca3c418f2659d",
+        "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "276e9a3ea78f119b4e998c9d76d4fe443bf9e4d67f91675d8b25233a2729d228",
         "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
         "feature/editor/src/main/java/dev/fusion/editor/TextOffsets.kt": "88c98d493dfa60c2d070c4a5a213439b155c029b807fb06fd60762c033147a07",
         "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
@@ -3073,9 +3073,9 @@
         "feature/calc/src/main/kotlin/dev/fusion/calc/SpreadsheetGoalSeekBrentSolver.kt": "0453ce38dc31d376a8698e9d6aabcb86bf29d7ac04071e5c155ae0a56be93bc1",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
-        "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt": "72e2aaae512f8cb13dbdf9da18aa7aa9023560db3cccd5359903ec2684222218",
+        "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt": "5f49e6b2b8e97b268cd378bc3b736ef6619a765d37d762e6f0d20439a4ba50e2",
         "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt": "8b00634021e21515b0be8c02fbcf1ee52a299e4916caae22efeb1543139afaa7",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "421c3fc8b3101c208c2d90172fdda3cd0125bf7915b0932d7bfeed7e2f5d3be1"
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "adea2f972f69149ccce90cc5db187a5522637fe074cb7c49eee5f633e7dd4950"
       }
     },
     {
@@ -5049,7 +5049,7 @@
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt": "6d48cb3d597b69660c570678741b458f431b72b1378b74f2c79ead60ebcfc466",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt": "c9c714dc5cd64c813d3e937abe39b7cb386d5d2453be3d3bc7f66546a7625589",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxNumbering.kt": "7d52e5057d9095770a6b780d53a12e37216c97874e0664c9720efb2cae536c88",
-        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt": "01360d0ff94eff50e047b863bc34e8d3597785e2cd8ba28f95aa03a05a156f9b",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt": "352901aa944c9cd566e04151d461d51b5f8c1da97903648d8d82884156836234",
         "testing/src/r45/kotlin/dev/fusion/testing/R45Checks.kt": "845462a61b51507ed18e40cdc8bad62830ff4a8142648032fe5be29f881d6573",
         "tools/test_r45_tools.py": "d4fc74977bf7003abf0bf3db771a2bc5de1dfec607eece85fe006162e1f554a7",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/MultiSheetBook.kt": "b2d85a8cf423bd5dd41632fe64f11cd1020e34fe036a257fe85bdb764688393d",
@@ -5363,7 +5363,7 @@
         "format/image/src/main/java/dev/fusion/format/image/sandbox/PngWorkerService.kt": "afbe862f6762b116910fec9e1908322a9de61e319f0c818cafcf8654a885f411",
         "testing/src/r25/kotlin/dev/fusion/testing/PngChecks.kt": "4ff9f6fd9464dcc21faac9ef65796975ef8b7e92bb4ebef3c3faf6b8f6b1cca1",
         "tools/check_r25_png_reference.py": "d4efb3d6b0a28a5497ece91938c604eb2120895e28cdac73b548ff117036dd7b",
-        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "099611153b27ac2adb3f6c4b05f4877a95ccda9d34d96a5b46ad0d6d27634fc7",
+        "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "1955af2184c32f41120c5ae09590734b6b44af50fe5d1bc0e130657a1022cd82",
         "format/image/src/main/kotlin/dev/fusion/format/image/GifInfo.kt": "1a6182c48e4baf02454df528f428f88def539c3a6c43ec72985ff9793a5743f1",
         "testing/src/r30/kotlin/dev/fusion/testing/R30Checks.kt": "670b1c6090efe783070a618565cb060bcfd195232a6ac0b55b14d62e11e2b5fa",
         "tools/test_r30_tools.py": "be1fd7590594a33aad8116c1a104bf3d125d21c373738a757a82cdfa32ff2cec",

@@ -272,13 +272,13 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "8ef5d54300de00c8621ca88141019b2d27aae6fbd325728976e4dff2872e507e"
+      "sha256": "4fafd8f835d10ccb4c76f0a4f410e04f9d2a44004daa300363a1d9d6b914ac78"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "5da73a712deff99be672bae77233e1eff92d80bce095a61a10f725b831a0910b"
+      "sha256": "13ea2975f4a95d548cbeb2799bc777692492c9e801d910d03e4080f9a0d22cde"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -2462,7 +2462,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "78173864c9e939e9e15cc4ec3ae5a3a518f8afedca2e7eba684ca3c418f2659d"
+      "sha256": "276e9a3ea78f119b4e998c9d76d4fe443bf9e4d67f91675d8b25233a2729d228"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorSelectionContextMenuPlanner.kt",
@@ -3674,7 +3674,7 @@
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "72e2aaae512f8cb13dbdf9da18aa7aa9023560db3cccd5359903ec2684222218"
+      "sha256": "5f49e6b2b8e97b268cd378bc3b736ef6619a765d37d762e6f0d20439a4ba50e2"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt",
@@ -5708,7 +5708,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "01360d0ff94eff50e047b863bc34e8d3597785e2cd8ba28f95aa03a05a156f9b"
+      "sha256": "352901aa944c9cd566e04151d461d51b5f8c1da97903648d8d82884156836234"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
@@ -5919,6 +5919,12 @@
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "12a17fde15fdf48de3d28aa115f059174eed9447a31957e55b0b89ea612e4214"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredWriterDocx.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "1a8e70f0e9b018db4b3dd1015e67797bd352f6152d93a8a2e34f92b51c59fed4"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilterEvaluator.kt",

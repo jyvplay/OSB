@@ -854,6 +854,10 @@ class MainActivity : ComponentActivity() {
                         if (editorSourcesKnown())
                             officeExportModel.writer(doc, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
                     },
+                    onExportStructuredDocx = { doc ->
+                        if (editorSourcesKnown())
+                            officeExportModel.structuredWriter(doc, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
+                    },
                     onSaveCopy = { request -> saveCopy.launch(request) })
             }
 

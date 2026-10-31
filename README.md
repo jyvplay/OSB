@@ -17,11 +17,11 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R54 — experimental Office authoring, not Class A
+## Current R57 — experimental Office authoring, not Class A
 
-This branch adds a bounded plaintext-to-DOCX copy path and an experimental single-sheet editor with XLSX-copy export, plus a Markdown parser progress repair. The local sandbox has no Android SDK; a remote API 34 run passed 11 targeted Office/copy cases on `f85ae06`, including a Writer system-picker export. The [R55 continuation](android/docs/R55-RESULTS.md) and [R56 results](android/docs/R56-RESULTS.md) record spreadsheet correctness repairs, actual-device observations and precise verification limits; see also [R54 evidence](android/docs/R54-RESULTS.md) and [Studio instructions](android/docs/BUILD.md). Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
+This branch adds a bounded plaintext-to-DOCX copy path, an optional simple text-marker-to-formatted-DOCX conversion, and an experimental single-sheet editor with XLSX-copy export. The local sandbox has no Android SDK. Remote API 34 results and the exact status of later changes are recorded in the [R57 report](android/docs/R57-RESULTS.md), [R56 results](android/docs/R56-RESULTS.md), [R55 continuation](android/docs/R55-RESULTS.md) and [R54 evidence](android/docs/R54-RESULTS.md); see [Studio instructions](android/docs/BUILD.md). These narrow paths are not full Office compatibility or a rich editor. Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
 
-The following R53 section is historical and predates the current R54 work.
+The following R53 section is historical and predates the current Office work.
 
 ## Latest R53 — Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) + 7-OS Cascading Context Menus / 5-DPI Crisp `List`·`Grid`·`Columns` Logos / Interactive `Undo` Fan + 96 new kernels (+7 UI + 19 touched) across 50/50 modules (100%)
 
