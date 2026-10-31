@@ -117,7 +117,7 @@ object NativeVisualEvidence {
     }
     /** Dialogs occupy a separate window: use a real whole-display capture, only on the disposable AVD. */
     fun captureDialogDisplay(compose: ComposeContentTestRule, activity: Activity, name: String, tag: String) {
-        require(name.matches(Regex("r24c-[a-z-]{1,40}")))
+        require(NativeCaptureNames.dialog(name)) { "Unsupported dialog capture filename" }
         compose.waitForIdle()
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         check(InstrumentationRegistry.getArguments().getString("fusionDisposable") == "true" && android.os.Build.HARDWARE in setOf("ranchu", "goldfish")) {

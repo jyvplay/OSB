@@ -53,7 +53,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest,dev.fusion.shell.NativeVisualEvidenceDeviceTest,dev.fusion.shell.R58SheetDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest,dev.fusion.shell.NativeVisualEvidenceDeviceTest,dev.fusion.shell.R58SheetDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest,dev.fusion.shell.ShellSmokeTest#explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates
           -Pandroid.experimental.enableAdditionalTestOutput=true
       - name: Publish actual device cases
         if: always()
@@ -108,7 +108,7 @@ jobs:
       - name: Native frame metadata
         env:
           IMAGE: ${{ matrix.image }}
-        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(0,n,{n})'
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(0,n,{n},require_complete=True)'
       - name: Native frame chunks 1
         env:
           IMAGE: ${{ matrix.image }}

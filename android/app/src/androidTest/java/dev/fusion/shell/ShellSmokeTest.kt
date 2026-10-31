@@ -2,6 +2,7 @@ package dev.fusion.shell
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -37,7 +38,25 @@ class ShellSmokeTest {
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
         compose.onNodeWithTag("routine-script").performScrollTo().performTextInput("open calculator")
         compose.onNodeWithTag("routine-run").performScrollTo().performClick()
-        compose.waitUntil(10000) { compose.onAllNodesWithTag("calculator-input").fetchSemanticsNodes().isNotEmpty() }
+        try {
+            compose.waitUntil(10000) { compose.onAllNodesWithTag("calculator-input").fetchSemanticsNodes().isNotEmpty() }
+        } catch (failure: Throwable) {
+            // Read-only diagnostics after the original timeout: no retries, extra actions or longer wait.
+            val routineStatus = runCatching {
+                compose.onAllNodesWithTag("routine-status", useUnmergedTree = true).fetchSemanticsNodes().map {
+                    it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.joinToString { text -> text.text }
+                }
+            }.getOrElse { listOf("unavailable:${it.javaClass.simpleName}") }
+            var desktopStatus = "unavailable"
+            runCatching {
+                compose.activityRule.scenario.onActivity { activity ->
+                    val model = androidx.lifecycle.ViewModelProvider(activity)[DesktopSessionModel::class.java]
+                    val desk = model.desktop
+                    desktopStatus = "loading=${model.loading} blocked=${model.blocked} status=${model.status} workspace=${desk.workspace} active=${desk.activeId} windows=${desk.windows.map { "${it.module}:${it.workspace}:${it.minimized}" }}"
+                }
+            }
+            throw AssertionError("Calculator missing after local plan; routine=$routineStatus; desktop=$desktopStatus", failure)
+        }
         compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
     }
     @Test fun densityReviewCancelAndApplyChangeActualDesktopState() {

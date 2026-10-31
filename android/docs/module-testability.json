@@ -67,7 +67,11 @@
         "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt",
         "app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt",
-        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt"
+        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt",
+        "app/src/androidTest/java/dev/fusion/shell/NativeCaptureNames.kt",
+        "testing/src/r58capture/kotlin/dev/fusion/shell/R58CaptureNameChecks.kt",
+        "tools/run_r58_capture_names.py",
+        "tools/test_r24c_tools.py"
       ],
       "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r45_contracts.py; python3 tools/run_r46_contracts.py; python3 tools/run_r47_contracts.py; python3 tools/run_r48_contracts.py; python3 tools/run_r49_contracts.py; python3 tools/run_r50_contracts.py; python3 tools/run_r51_contracts.py; python3 tools/run_r52_contracts.py; python3 tools/run_r53_contracts.py; :app:pixel6Api34ProDebugAndroidTest",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
@@ -76,11 +80,11 @@
         "app/src/main/java/dev/fusion/shell/DesktopChrome.kt": "c198a3972d0593de3c0990dfcba7c595bd6e6478861b6188db9c76d4dde8ea07",
         "app/src/main/java/dev/fusion/shell/TabletopDesktop.kt": "38696deb14e4c05c4737e4db3a08ec0fd1c2484fda72418452a42432045ce180",
         "app/src/main/java/dev/fusion/shell/TabletopSessionModel.kt": "0e05eaa0aa49cca8cd8f1eff6e7f9932a1f87cea6780ad6337717b388ac50cc7",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "d5aef9874e549ff978eaac2d060dde5aee594294ac044b66402a698fa8bb8395",
         "app/src/androidTest/java/dev/fusion/shell/R24AppearanceDeviceTest.kt": "e1c119b9a218ba107b07ffcc3a6d8d6fad79a32377e7c92cae2ef26783b7b520",
         "app/src/androidTest/java/dev/fusion/shell/R24TaskInputDeviceTest.kt": "d44045b1535eb960302611f7dcf0c12c98ec74cb0b6885138e757d437d222dd9",
         "app/src/androidTest/java/dev/fusion/shell/R24TabletopDeviceTest.kt": "336245ad99fc542dfbd5e1c0a08a8cf762f8452c60a9d5374562fe7f74c74911",
-        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "62c92f3d2ae3d2bf67368483b3426acfeb3dc9a901af16651f4121274b98e235",
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt": "2195dc8ee7e1751778f9491e0c147c60caaffa72551c0d2ea60a8c6d7c79bc25",
         "app/src/androidTest/java/dev/fusion/shell/R25UiReadinessDeviceTest.kt": "15affb429fb63c26b3e2909813b32df8606018307a81fd5db2ff21332d3a8a73",
         "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt": "c1ae60ded0967dc08fd62ccaf644a25402158bd1154e47ff630419999d53202f",
         "app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt": "1955af2184c32f41120c5ae09590734b6b44af50fe5d1bc0e130657a1022cd82",
@@ -127,9 +131,13 @@
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
         "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt": "13ea2975f4a95d548cbeb2799bc777692492c9e801d910d03e4080f9a0d22cde",
         "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "4bd2328e1dccb65c0541b2dd6e6c4df13851417d363551e31469372c48436dc5",
-        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt": "3afa2f7b6c94fb8b68940c067740392cc54f8e557f25f3f7a29dc7f840b6efcc",
+        "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt": "a2fa3f0c065826e1d503c64d5c62e07f1a3117aeed94ba9f6b647edd4e5948a6",
         "app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt": "4ddd039ab35026dcc30098586659805803629daaa6a6c256202c2b198a201e02",
-        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "33459d4d7ab086e104b554c09bf9ce7e87e459809246af829acfbf63da11d5db"
+        "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "33459d4d7ab086e104b554c09bf9ce7e87e459809246af829acfbf63da11d5db",
+        "app/src/androidTest/java/dev/fusion/shell/NativeCaptureNames.kt": "db70bda3748b92255e1f34ccb9ac79673f149dc730e78b0c8c5e10646bfe3650",
+        "testing/src/r58capture/kotlin/dev/fusion/shell/R58CaptureNameChecks.kt": "32e20e7d89ec3da208574509b11ca2bb49f29838ac44f3bd0b090e2efff9b44f",
+        "tools/run_r58_capture_names.py": "ed85d7d4b8dc8d98c543aec22dc99df84c225f151ffc46c291e958d81141c6c1",
+        "tools/test_r24c_tools.py": "c4a3e6a1ee9b5703b15e55a24ec1174099b9495ea8ed9dfb8017c197ffdd21f0"
       }
     },
     {
@@ -1858,7 +1866,7 @@
       "sha256": {
         "feature/editor/src/main/java/dev/fusion/editor/EditorViewModel.kt": "9153c3ec3780349917e6c0f6ada0720b3e41c20112285479160b6a0029304f5a",
         "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt": "ab3b9fd23cd73ce077bb7be2c271264484a8888ab10b987f0ca00781c115b0cd",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "d5aef9874e549ff978eaac2d060dde5aee594294ac044b66402a698fa8bb8395",
         "feature/editor/src/main/java/dev/fusion/editor/TextOffsets.kt": "88c98d493dfa60c2d070c4a5a213439b155c029b807fb06fd60762c033147a07",
         "testing/src/r31/kotlin/dev/fusion/testing/R31Checks.kt": "19bd70df12985fec974e4aa36f959623b316f4fe6e13868259e3f4739f97c130",
         "tools/test_r31_tools.py": "abd47d3eda94dab59dbab4078beabc6fcb2ae5f3101cc51f647e9b04d8bb5d40",
@@ -2116,7 +2124,7 @@
       "limit": "Complete app/file/command index integration, cancellation/ranking and keyboard/performance tests",
       "sha256": {
         "feature/find/src/main/java/dev/fusion/find/Palette.kt": "bcf49f46a7a8c74c0245e903b9a48c62f54b2bad089e84313d7b035dd7d6fdd2",
-        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "7b77a3db73e2f050ab40bf33c416e13aeac2070e80cc14fd35a6d14ec3efc2fe",
+        "app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt": "d5aef9874e549ff978eaac2d060dde5aee594294ac044b66402a698fa8bb8395",
         "feature/find/src/main/kotlin/dev/fusion/find/FrecencyLedger.kt": "d4232d97ca253d108a19da2161cc533c74ab3dd1b391ea3cf0fcc24e3b2cf238",
         "testing/src/r28/kotlin/dev/fusion/testing/R28Checks.kt": "e0b9dac85ae9c68e9b393bf859436a0e3708879bf3dcd197cdf15b3449c36acb",
         "tools/test_r28_tools.py": "c05e87d4a7363461e0f3144aa2f3a603b8cb7a16dc393f51ee1da550754bf46a",

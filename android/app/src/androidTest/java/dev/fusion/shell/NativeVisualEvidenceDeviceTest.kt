@@ -13,6 +13,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -22,6 +23,15 @@ import org.junit.runner.RunWith
 @LargeTest
 class NativeVisualEvidenceDeviceTest {
     @get:Rule val compose = createComposeRule()
+
+    @Test fun dialogCaptureFilenameAllowlistRejectsTraversalAndUnknownPrefixes() {
+        listOf("r24c-structured", "r58-text-grid", "r58-service-review").forEach {
+            assertTrue("Expected safe dialog name: $it", NativeCaptureNames.dialog(it))
+        }
+        listOf("r58-../outside", "../r58-text-grid", "r59-text-grid", "r58-", "r58-" + "a".repeat(41), "r58-A").forEach {
+            assertFalse("Expected filename refusal: $it", NativeCaptureNames.dialog(it))
+        }
+    }
 
     @Test fun textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText() {
         compose.setContent { EvidenceFixture() }
