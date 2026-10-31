@@ -48,6 +48,16 @@ class AnnotationChecks(unittest.TestCase):
         self.assertLessEqual(len(decoded.encode()),3000)
         self.assertIn('actual tail',text)
 
+    def test_device_exception_excerpt_is_bounded_and_not_a_diagnosis(self):
+        with tempfile.TemporaryDirectory() as root:
+            path=Path(root)/'device.log'
+            path.write_text('com.android.ddmlib.TimeoutException: transport not ready\n' + 'noise\n'*60 + 'BUILD FAILED\n')
+            text=annotation(path,'device')
+            self.assertIn('com.android.ddmlib.TimeoutException',text)
+            self.assertIn('not a diagnosis',text)
+            self.assertIn('BUILD FAILED',text)
+            self.assertNotIn('\n',text)
+
     def test_phase_does_not_mislabel_unit_failures_as_assembly(self):
         with tempfile.TemporaryDirectory() as root:
             path=Path(root)/'unit-tests.log';path.write_text('Execution failed for task :tests')

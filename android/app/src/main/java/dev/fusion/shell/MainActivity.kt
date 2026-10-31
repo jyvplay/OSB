@@ -114,6 +114,8 @@ import dev.fusion.beam.BeamScreen
 import dev.fusion.browser.BrowserScreen
 import dev.fusion.calc.CalcScreen
 import dev.fusion.calc.CalculatorViewModel
+import dev.fusion.calc.SheetScreen
+import dev.fusion.calc.SheetViewModel
 import dev.fusion.capabilities.CapabilityProbe
 import dev.fusion.capture.CaptureScreen
 import dev.fusion.capture.ScreenRecordService
@@ -187,6 +189,9 @@ class MainActivity : ComponentActivity() {
     private val mapModel by lazy { ViewModelProvider(this)[dev.fusion.maps.MapViewModel::class.java] }
     private val calculatorModel by lazy { ViewModelProvider(this)[CalculatorViewModel::class.java] }
     private val editorModel by lazy { ViewModelProvider(this)[EditorViewModel::class.java] }
+    private val sheetModelDelegate = lazy { ViewModelProvider(this)[SheetViewModel::class.java] }
+    private val sheetModel by sheetModelDelegate
+    private val officeExportModel by lazy { ViewModelProvider(this)[OfficeExportViewModel::class.java] }
     private var closingEditorWindow by mutableStateOf<Long?>(null)
     private var closingNotesWindow by mutableStateOf<Long?>(null)
     private var pendingBackupPassword: CharArray? = null
@@ -218,6 +223,21 @@ class MainActivity : ComponentActivity() {
 
     private val saveCopy = registerForActivityResult(CopyDestinationContract()) { result ->
         editorModel.completeCopy(result)
+    }
+    private val saveOfficeCopy = registerForActivityResult(CopyDestinationContract()) { result ->
+        // A restoring/failed/busy editor may not yet expose every open source identity.
+        officeExportModel.complete(result, editorSourceAndCopyUris(), sourcesKnown = editorSourcesKnown())
+    }
+
+    private fun editorSourcesKnown(): Boolean {
+        val state = editorModel.state.value
+        return !state.loading && !state.recoveryBlocked && !state.busy && !state.toolsBusy && state.session.pendingCopy == null
+    }
+
+    private fun editorSourceAndCopyUris(): List<String> {
+        val session = editorModel.state.value.session
+        return (session.documents.mapNotNull { it.sourceUri } + session.copyReceipts.mapNotNull { it.destinationUri } +
+            listOfNotNull(session.pendingCopy?.destinationUri)).distinct()
     }
 
     private val captureNotificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -360,6 +380,7 @@ class MainActivity : ComponentActivity() {
         super.onStop()
         lifecycleScope.launch { editorModel.flush() }
         lifecycleScope.launch { calculatorModel.flush() }
+        if (sheetModelDelegate.isInitialized()) lifecycleScope.launch { sheetModel.flush() }
         lifecycleScope.launch { desktopModel.flush() }
         // A Presentation is owned by this Activity; tearing it down avoids a leaked window.
         displayListener?.let { getSystemService(DisplayManager::class.java).unregisterDisplayListener(it) }
@@ -826,7 +847,19 @@ class MainActivity : ComponentActivity() {
                 onMessage = { message = it }
             )
 
-            "editor" -> EditorScreen(editorModel) { request -> saveCopy.launch(request) }
+            "editor" -> {
+                val office by officeExportModel.state.collectAsState()
+                EditorScreen(editorModel, office.status, office.busy,
+                    onExportDocx = { doc ->
+                        if (editorSourcesKnown())
+                            officeExportModel.writer(doc, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
+                    },
+                    onExportStructuredDocx = { doc ->
+                        if (editorSourcesKnown())
+                            officeExportModel.structuredWriter(doc, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
+                    },
+                    onSaveCopy = { request -> saveCopy.launch(request) })
+            }
 
             "docs" -> DocsContent()
             "pdf", "pdf-preview" -> PdfScreen(this, pdfUri) { openPdf.launch(arrayOf("application/pdf")) }
@@ -886,6 +919,16 @@ class MainActivity : ComponentActivity() {
             "settings" -> SettingsContent()
             "apps" -> AppsContent()
             "calculator" -> CalcScreen(calculatorModel)
+            "spreadsheet" -> {
+                val office by officeExportModel.state.collectAsState()
+                val editor by editorModel.state.collectAsState()
+                val identitiesKnown = !editor.loading && !editor.recoveryBlocked && !editor.busy && !editor.toolsBusy && editor.session.pendingCopy == null
+                val status = if (!identitiesKnown) "XLSX export waits until editor recovery, operations and pending text copies finish; source identities must be available." else office.status
+                SheetScreen(sheetModel, office.busy || !identitiesKnown, status) { draft ->
+                    if (editorSourcesKnown())
+                        officeExportModel.sheet(draft, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
+                }
+            }
             "together" -> TogetherScreen()
             "lens" -> LensScreen()
             "messages" -> MessagesScreen(this)

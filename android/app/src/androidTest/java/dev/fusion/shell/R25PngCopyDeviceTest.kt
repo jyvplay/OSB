@@ -18,10 +18,13 @@ import androidx.test.uiautomator.Until
 import dev.fusion.format.image.PngMetadata
 import dev.fusion.format.image.sandbox.PngLease
 import dev.fusion.format.image.sandbox.PngWorkerService
+import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.nio.ByteBuffer
 import java.util.UUID
 import java.util.regex.Pattern
@@ -55,7 +58,16 @@ class R25PngCopyDeviceTest {
     }
     private fun button(name:String) = requireNotNull(device.wait(Until.findObject(By.res(context.packageName,name)),10000))
     private fun picker()=assertTrue(device.wait(Until.hasObject(By.pkg(Pattern.compile(".*documentsui"))),10000))
-    private fun app()=assertTrue(device.wait(Until.gone(By.pkg(Pattern.compile(".*documentsui"))),10000))
+    private fun app() {
+        // DocumentsUI disappearing is not sufficient: a third-party photo app can be
+        // foreground instead of returning the result to our activity.
+        if (!device.wait(Until.hasObject(By.res(context.packageName,"png_copy_choose")),15000)) {
+            val actions=device.findObjects(By.clickable(true)).take(18).map {
+                "${it.className} id=${it.resourceName} text=${it.text.orEmpty().take(60)} desc=${it.contentDescription.orEmpty().take(80)}"
+            }
+            throw AssertionError("Picker did not return to PNG activity; foreground=${device.currentPackageName}; actions=$actions")
+        }
+    }
     private fun seed(name:String,bytes:ByteArray):Uri {
         val uri=requireNotNull(context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME,name);put(MediaStore.MediaColumns.MIME_TYPE,"image/png")
@@ -65,21 +77,151 @@ class R25PngCopyDeviceTest {
         context.contentResolver.update(uri,ContentValues().apply{put(MediaStore.MediaColumns.IS_PENDING,0)},null,null)
         return uri
     }
-    private fun pick(name:String) {
-        button("png_copy_choose").click();picker()
-        // Image grid tiles can expose their real filename as accessibility description, not visible TextView text.
-        val end=SystemClock.elapsedRealtime()+10000
-        var file:androidx.test.uiautomator.UiObject2?=null
-        while(file==null && SystemClock.elapsedRealtime()<end) {
-            file=device.findObject(By.text(name)) ?: device.findObject(By.desc(Pattern.compile("(?s).*"+Pattern.quote(name)+".*")))
-            if(file==null)SystemClock.sleep(50)
+    private fun selectPickerRoot(label:String) {
+        // This is a user-visible root navigation in the actual system picker, not a
+        // substituted URI. Limit it to the disposable English-language emulator.
+        check(label in setOf("Recent","Downloads"))
+        val pkg=device.currentPackageName.orEmpty()
+        check(pkg.endsWith("documentsui")) {"Unexpected picker foreground: $pkg"}
+        requireNotNull(device.wait(Until.findObject(By.desc("Show roots")),10000)) {
+            "DocumentsUI root drawer unavailable in $pkg"
+        }.click()
+        val roots=requireNotNull(device.wait(Until.findObject(By.res(pkg,"container_roots")),10000)) {
+            "DocumentsUI root list unavailable in $pkg"
         }
+        val matches=roots.findObjects(By.text(label))
+        check(matches.size==1) {"Expected one $label root, got ${matches.size}; labels=${roots.findObjects(By.text(Pattern.compile(".+"))).map{it.text}}"}
+        matches.single().click()
+        check(device.wait(Until.hasObject(By.text(label)),10000)) {"DocumentsUI did not navigate to $label"}
+    }
+    private data class PickerGridItem(val grid:androidx.test.uiautomator.UiObject2, val item:androidx.test.uiautomator.UiObject2)
+    private fun containingGridItem(preview:androidx.test.uiautomator.UiObject2, fixture:String):PickerGridItem {
+        val packageName=preview.resourceName.orEmpty().substringBefore(":id/")
+        check(packageName.endsWith("documentsui")) {"Unexpected picker package $packageName"}
+        val lineage=ArrayList<String>()
+        var child=preview
+        var parent=child.parent
+        var depth=0
+        while(parent!=null && parent.resourceName!="$packageName:id/dir_list" && depth<8) {
+            lineage.add("${parent.className} id=${parent.resourceName} bounds=${parent.visibleBounds}")
+            child=parent;parent=child.parent;depth++
+        }
+        val grid=checkNotNull(parent) {"No DocumentsUI grid ancestor for $fixture; preview=${preview.visibleBounds}; ancestors=$lineage"}
+        check(grid.resourceName=="$packageName:id/dir_list" && child!=preview) {"Unexpected DocumentsUI item ancestry for $fixture; ancestors=$lineage"}
+        return PickerGridItem(grid,child)
+    }
+    private fun belongsToPickerItem(node:androidx.test.uiautomator.UiObject2, item:androidx.test.uiautomator.UiObject2):Boolean {
+        var current:androidx.test.uiautomator.UiObject2?=node
+        repeat(9) {
+            val visible=current ?: return false
+            if(visible==item) return true
+            current=visible.parent
+        }
+        return false
+    }
+    private fun pick(name:String, forceDownloads:Boolean=false) {
+        button("png_copy_choose").click();picker()
+        // Exercise a remembered non-fixture root explicitly in the recreation case.
+        if(forceDownloads) selectPickerRoot("Downloads")
+        // A filename may also occur in the accessibility description of the separate
+        // preview icon. Clicking that icon opens an external viewer, not the document.
+        var file:androidx.test.uiautomator.UiObject2?=null
+        var selector=""
+        var descriptionBounds:List<android.graphics.Rect> = emptyList()
+        fun awaitFilename(timeoutMs:Long) {
+            val end=SystemClock.elapsedRealtime()+timeoutMs
+            while(file==null && SystemClock.elapsedRealtime()<end) {
+                val textMatches=device.findObjects(By.text(name))
+                check(textMatches.size<=1) {"Ambiguous exact picker titles for $name"}
+                file=textMatches.singleOrNull()
+                if(file!=null) selector="text" else {
+                    val descriptions=device.findObjects(By.desc(Pattern.compile("(?s).*"+Pattern.quote(name)+".*")))
+                    val details=descriptions.map {"${it.className} id=${it.resourceName} bounds=${it.visibleBounds}"}
+                    check(descriptions.size<=8) {"Too many filename descriptions for $name: $details"}
+                    if(descriptions.size>1) {
+                        // The same document may expose its filename in multiple nested
+                        // accessibility nodes. Admit one unique preview only when every
+                        // matching node lies within that preview's direct grid item.
+                        val previews=descriptions.filter {it.resourceName.orEmpty().endsWith(":id/preview_icon")}
+                        check(previews.size==1) {"Ambiguous picker previews for $name: $details"}
+                        val candidate=previews.single()
+                        val item=containingGridItem(candidate,name).item
+                        val itemBounds=item.visibleBounds
+                        check(descriptions.all { val bounds=it.visibleBounds; belongsToPickerItem(it,item) && !bounds.isEmpty && itemBounds.contains(bounds) }) {
+                            "Filename descriptions span different picker items for $name; item=$itemBounds; matches=$details"
+                        }
+                        file=candidate
+                    } else file=descriptions.singleOrNull()
+                    if(file!=null) {
+                        selector="description"
+                        descriptionBounds=descriptions.map {it.visibleBounds}
+                    }
+                }
+                if(file==null)SystemClock.sleep(50)
+            }
+        }
+        awaitFilename(2000)
+        var navigation=if(forceDownloads) "downloads" else "initial"
+        if(file==null) {
+            // The full suite actually started in Downloads while our fixture was in
+            // Pictures. Recent is the route observed to list this freshly seeded image.
+            selectPickerRoot("Recent")
+            navigation=if(forceDownloads) "downloads-to-recent" else "recent"
+            awaitFilename(10000)
+        }
+        check(!forceDownloads || navigation=="downloads-to-recent") {"Fixture was unexpectedly visible in Downloads"}
         if(file==null) {
             val texts=device.findObjects(By.text(Pattern.compile(".+"))).take(15).map {it.text.take(100)}
             val descriptions=device.findObjects(By.desc(Pattern.compile(".+"))).take(20).map {it.contentDescription.take(130)}
             throw AssertionError("Image seed not identified in actual DocumentsUI: $name; foreground=${device.currentPackageName}; text=$texts; descriptions=$descriptions")
         }
-        file.click();app()
+        val matched=checkNotNull(file)
+        var target=matched
+        var strategy="filename-text"
+        var tap:android.graphics.Point?=null
+        var previewBounds:android.graphics.Rect?=null
+        var itemBounds:android.graphics.Rect?=null
+        var gridId:String?=null
+        if(matched.resourceName.orEmpty().endsWith(":id/preview_icon")) {
+            // The observed API 34 accessibility tree hides the title and has no item_root id.
+            // Walk from this uniquely matched preview to its direct child of dir_list; tap that
+            // item's lower body, outside the preview hotspot. This is a real native tap, never a
+            // direct picker-result injection; a different/unrecognizable tree fails closed.
+            val preview=matched.visibleBounds
+            val gridItem=containingGridItem(matched,name)
+            gridId=gridItem.grid.resourceName
+            target=gridItem.item
+            val item=target.visibleBounds
+            check(item.width()>=48 && item.height()>=48 && item.contains(preview) && !preview.isEmpty &&
+                descriptionBounds.isNotEmpty() && descriptionBounds.all {!it.isEmpty && item.contains(it)}) {
+                "Invalid picker item/description geometry: item=$item preview=$preview descriptions=$descriptionBounds"
+            }
+            val point=android.graphics.Point(item.centerX(),item.bottom-maxOf(2,item.height()/10))
+            check(item.contains(point.x,point.y) && !preview.contains(point.x,point.y)) {"Picker item body overlaps preview: item=$item preview=$preview tap=$point"}
+            tap=point;previewBounds=preview;itemBounds=item
+            strategy="preview-grid-item-body"
+        } else check(selector=="text") {"Ambiguous filename description is not an admitted selection target: ${matched.resourceName}"}
+        // Persist only disposable-fixture selector metadata, not user documents or image bytes.
+        require(name.matches(Regex("r25-(src|rec)-[a-f0-9]{8}\\.png")))
+        val instrumentation=InstrumentationRegistry.getInstrumentation()
+        val folder=InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let(::File)
+            ?: File(instrumentation.targetContext.getExternalFilesDir(null),"r25-native-captures")
+        check(folder.exists() || folder.mkdirs())
+        val observation=JSONObject()
+            .put("schema",1).put("origin","android-instrumentation").put("api",android.os.Build.VERSION.SDK_INT)
+            .put("fixture",name).put("foreground",device.currentPackageName.orEmpty().take(128))
+            .put("selector",selector).put("navigation",navigation).put("matched_id",matched.resourceName.orEmpty().take(128))
+            .put("matched_description",matched.contentDescription.orEmpty().take(160))
+            .put("strategy",strategy).put("target_id",target.resourceName.orEmpty().take(128))
+        fun bounds(rect:android.graphics.Rect)=JSONArray(listOf(rect.left,rect.top,rect.right,rect.bottom))
+        if(tap!=null) observation.put("tap",JSONArray(listOf(tap.x,tap.y)))
+            .put("item_bounds",bounds(requireNotNull(itemBounds))).put("preview_bounds",bounds(requireNotNull(previewBounds)))
+            .put("description_bounds",JSONArray(descriptionBounds.map(::bounds)))
+            .put("grid_id",requireNotNull(gridId)).put("target_class",target.className.orEmpty().take(128))
+        File(folder,"r25-picker-selection-${name.removeSuffix(".png")}.json").writeText(observation.toString())
+        val point=tap
+        if(point==null) target.click() else assertTrue("Native card-body tap was not injected",device.click(point.x,point.y))
+        app()
     }
     @Test fun isolatedCopyRejectsCorruptionThenPreservesActualDecodedPixels() {
         val input=fixture();val corrupt=input.copyOf();corrupt[corrupt.lastIndex]=(corrupt.last().toInt() xor 1).toByte()
@@ -128,7 +270,7 @@ class R25PngCopyDeviceTest {
             ActivityScenario.launch(PngCopyActivity::class.java).use {scenario->
                 button("png_copy_choose").click();picker();device.pressBack();app()
                 scenario.onActivity {assertEquals("EMPTY",it.observation().phase);assertFalse(it.findViewById<Button>(R.id.png_copy_save).isEnabled)}
-                pick(name);await(scenario,"READY");scenario.recreate()
+                pick(name,forceDownloads=true);await(scenario,"READY");scenario.recreate()
                 scenario.onActivity {assertEquals("EMPTY",it.observation().phase);assertFalse(it.findViewById<Button>(R.id.png_copy_save).isEnabled);assertNull(it.verifiedDocument())}
                 assertArrayEquals(source,context.contentResolver.openInputStream(original)!!.use{it.readBytes()})
             }

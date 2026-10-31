@@ -4,9 +4,10 @@ package dev.fusion.editor
 /**
  * Bidirectional Markdown <-> Structured Office Document / Slide Deck AST Bridge.
  *
- * Parses CommonMark/GFM headings (`#`..`######`), unordered/ordered bullet lists, pipe tables, and
- * prose paragraphs into a typed intermediate representation, and splits `#` / `##` sections into
- * presentation slide outlines or restores canonical Markdown losslessly.
+ * Parses a narrow Markdown subset: ATX-style headings (`#`..`######`), unordered lists,
+ * pipe tables and prose paragraphs into an intermediate representation. Conversion back to
+ * canonical Markdown is lossy (whitespace, original list markers and other syntax may change);
+ * this is not a full CommonMark/GFM parser or a faithful Office document conversion.
  */
 object MarkdownOfficeBridge {
     const val SCOPE =
@@ -76,6 +77,9 @@ object MarkdownOfficeBridge {
                 paraLines.add(l)
                 i++
             }
+            // A line beginning with '#' need not be a valid heading (for example "#tag").
+            // The paragraph loop stops at '#'; consume the unmatched line or this parser loops forever.
+            if (paraLines.isEmpty()) { paraLines.add(line); i++ }
             blocks.add(Block.Paragraph(paraLines.joinToString(" ")))
         }
         return blocks

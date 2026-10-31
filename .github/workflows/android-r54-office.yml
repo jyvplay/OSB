@@ -1,0 +1,135 @@
+name: R54 office authoring
+on:
+  pull_request:
+    paths: ['android/**', '.github/workflows/android-r54-office.yml']
+  push:
+    paths: ['android/**', '.github/workflows/android-r54-office.yml']
+  workflow_dispatch:
+concurrency:
+  group: r54-office-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  actions: read
+jobs:
+  office:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install the emulator's Linux host audio library
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libpulse0
+          ldconfig -p | grep -F 'libpulse.so.0'
+      - name: Install and check Android platform and managed-emulator components
+        run: bash tools/install_r54_sdk.sh
+      - name: Compile Android and run actual JVM contracts
+        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts :testing:r58Contracts
+      - name: Independent document readers and formula comparison (host-only, not bundled)
+        run: |
+          python3 -m pip install --user openpyxl==3.1.5 python-docx==1.2.0 formualizer==0.13.0
+          python3 tools/check_r54_reference.py --require-office-libraries
+          python3 tools/check_r55_reference.py --require-reference
+          python3 tools/check_r56_reference.py --require-reference
+          python3 tools/check_r57_reference.py
+          python3 tools/check_r58_reference.py
+          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference -v
+      - name: Enable KVM for the disposable managed emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run real API34 UI and provider checks
+        run: >
+          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
+          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest,dev.fusion.shell.NativeVisualEvidenceDeviceTest,dev.fusion.shell.R58SheetDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest,dev.fusion.shell.ShellSmokeTest#explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates
+          -Pandroid.experimental.enableAdditionalTestOutput=true
+      - name: Publish actual device cases
+        if: always()
+        run: python3 tools/report_device_results.py --mode cases
+      - name: Publish bounded device failure details
+        if: always()
+        run: python3 tools/report_device_results.py --mode failures
+      - name: Upload actual diagnostics, reports and native captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r54-office-evidence
+          if-no-files-found: ignore
+          path: |
+            android/assemble.log
+            android/device.log
+            android/device-results.json
+            android/sdk-setup.log
+            android/app/build/reports/**
+            android/app/build/outputs/androidTest-results/**
+            android/app/build/outputs/managed_device_android_test_additional_output/**
+            android/testing/build/r54/artifacts/**
+            android/testing/build/r55/artifacts/**
+            android/testing/build/r56/artifacts/**
+            android/testing/build/r57/artifacts/**
+            android/testing/build/r58/artifacts/**
+      - name: Upload evaluation APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r54-pro-debug-apk
+          path: android/app/build/outputs/apk/pro/debug/*.apk
+          if-no-files-found: error
+  frames:
+    name: Actual frame ${{ matrix.image }} (not all-page acceptance)
+    needs: office
+    if: always()
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png, r58-text-grid.png, r58-service-review.png]
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: r54-office-evidence
+          path: android/app/build/outputs/managed_device_android_test_additional_output/transport
+      - name: Native frame metadata
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(0,n,{n},require_complete=True)'
+      - name: Native frame chunks 1
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(1,n,{n})'
+      - name: Native frame chunks 2
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(2,n,{n})'
+      - name: Native frame chunks 3
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(3,n,{n})'
+      - name: Native frame chunks 4
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(4,n,{n})'
+      - name: Native frame chunks 5
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(5,n,{n})'
+      - name: Native frame chunks 6
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: python3 -c 'import os,sys; sys.path.insert(0,"tools"); import r24c_capture as c; n=os.environ["IMAGE"]; c.export(6,n,{n})'

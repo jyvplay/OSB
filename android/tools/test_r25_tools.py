@@ -72,12 +72,25 @@ class R25ToolTests(unittest.TestCase):
         self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['png-copy']))
         with self.assertRaises(ValueError): capture.export(0, 'r25-png-copy.png')
 
+    def test_office_capture_group_covers_every_audit_in_the_actual_workflow(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['r57-office'],
+                         {'r24c-structured.png', 'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png'})
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r57-office']))
+        with self.assertRaises(ValueError): capture.export(0, 'r24c-structured.png')
+
     def test_png_source_owner_is_existing_image_module_not_denominator_inflation(self):
         import module_audit
         included = module_audit.included_modules()
         self.assertIn(':format:image', included)
         self.assertNotIn(':format:png', included)
         self.assertTrue((ROOT/'format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt').is_file())
+
+    def test_r58_capture_group_includes_all_office_workflow_audits(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['r58-office'], capture.FRAME_GROUPS['r57-office'] |
+                         {'r58-text-grid.png', 'r58-service-review.png'})
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r58-office']))
 
     def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
         import hashlib

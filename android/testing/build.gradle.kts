@@ -1527,3 +1527,65 @@ tasks.register<JavaExec>("r53Contracts") {
     dependsOn(r53.classesTaskName); classpath = r53.runtimeClasspath; mainClass.set("dev.fusion.testing.R53Checks")
     args(rootProject.file("testing/build/r53/artifacts").absolutePath)
 }
+
+// R54: actual bounded office authoring and copy contracts. Android/provider gates are separate.
+val r54 by sourceSets.creating
+kotlin.sourceSets.named("r54") {
+    kotlin.srcDir("src/r54/kotlin")
+    kotlin.srcDir("../feature/editor/src/main/java")
+    kotlin.include("**/R54Checks.kt", "**/MarkdownOfficeBridge.kt")
+}
+dependencies {
+    add(r54.implementationConfigurationName, project(":format:ooxml"))
+    add(r54.implementationConfigurationName, project(":core:documents"))
+}
+tasks.register<JavaExec>("r54Contracts") {
+    dependsOn(r54.classesTaskName)
+    classpath = r54.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R54Checks")
+    args(rootProject.file("testing/build/r54/artifacts").absolutePath)
+}
+
+// R55: typed blank-reference behavior and a finite independent-comparison corpus.
+val r55 by sourceSets.creating
+kotlin.sourceSets.named("r55") { kotlin.srcDir("src/r55/kotlin") }
+dependencies { add(r55.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r55Contracts") {
+    dependsOn(r55.classesTaskName)
+    classpath = r55.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R55Checks")
+    args(rootProject.file("testing/build/r55/artifacts").absolutePath)
+}
+
+// R56: finite ROUND and typed authoring/cached-XLSX contracts; independent checks are separate.
+val r56 by sourceSets.creating
+kotlin.sourceSets.named("r56") { kotlin.srcDir("src/r56/kotlin") }
+dependencies { add(r56.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r56Contracts") {
+    dependsOn(r56.classesTaskName)
+    classpath = r56.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R56Checks")
+    args(rootProject.file("testing/build/r56/artifacts").absolutePath)
+}
+
+// R57: bounded opt-in Writer conversion. Independent reader and device tests remain separate.
+val r57 by sourceSets.creating
+kotlin.sourceSets.named("r57") { kotlin.srcDir("src/r57/kotlin") }
+dependencies { add(r57.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r57Contracts") {
+    dependsOn(r57.classesTaskName)
+    classpath = r57.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R57Checks")
+    args(rootProject.file("testing/build/r57/artifacts").absolutePath)
+}
+
+// R58: bounded, revision-bound text-grid paste; reader and Android checks are separate.
+val r58 by sourceSets.creating
+kotlin.sourceSets.named("r58") { kotlin.srcDir("src/r58/kotlin") }
+dependencies { add(r58.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r58Contracts") {
+    dependsOn(r58.classesTaskName)
+    classpath = r58.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R58Checks")
+    args(rootProject.file("testing/build/r58/artifacts").absolutePath)
+}

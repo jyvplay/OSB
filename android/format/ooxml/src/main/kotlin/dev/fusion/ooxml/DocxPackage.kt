@@ -144,7 +144,7 @@ object DocxPackage {
                     append("""<w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="monospace" w:hAnsi="monospace"/></w:rPr>""")
                     for ((idx, line) in b.lines.withIndex()) {
                         if (idx > 0) append("<w:br/>")
-                        append("""<w:t xml:space="preserve">${escapeXml(line)}</w:t>""")
+                        appendTextContent(line)
                     }
                     append("</w:r></w:p>")
                 }
@@ -155,7 +155,9 @@ object DocxPackage {
                     for (row in b.rows) {
                         append("<w:tr>")
                         for (cell in row) {
-                            append("""<w:tc><w:p><w:r><w:t xml:space="preserve">${escapeXml(cell)}</w:t></w:r></w:p></w:tc>""")
+                            append("<w:tc><w:p><w:r>")
+                            appendTextContent(cell)
+                            append("</w:r></w:p></w:tc>")
                         }
                         append("</w:tr>")
                     }
@@ -179,8 +181,22 @@ object DocxPackage {
                 if (r.code) append("""<w:rFonts w:ascii="monospace" w:hAnsi="monospace"/>""")
                 append("</w:rPr>")
             }
-            append("""<w:t xml:space="preserve">${escapeXml(r.text)}</w:t></w:r>""")
+            appendTextContent(r.text)
+            append("</w:r>")
         }
+    }
+
+    /** WordprocessingML represents tabs and soft line breaks as elements, not literal w:t whitespace. */
+    private fun StringBuilder.appendTextContent(text: String) {
+        var start = 0
+        for (index in text.indices) {
+            val character = text[index]
+            if (character != '\t' && character != '\n') continue
+            if (index > start) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start, index))}</w:t>""")
+            append(if (character == '\t') "<w:tab/>" else "<w:br/>")
+            start = index + 1
+        }
+        if (start < text.length) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start))}</w:t>""")
     }
 
     private fun parseDocumentBlocks(docBytes: ByteArray, numberingDefs: DocxNumbering.Definitions?): Document {
@@ -427,12 +443,18 @@ object DocxPackage {
     private fun stylesXml(): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:styles xmlns:w="$WORD_NS">""")
+        append("""<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>""")
+        val halfPointSizes = listOf(32, 28, 26, 24, 22, 20)
         for (lvl in 1..6) {
-            append("""<w:style w:type="paragraph" w:styleId="Heading$lvl"><w:name w:val="heading $lvl"/></w:style>""")
+            val size = halfPointSizes[lvl - 1]
+            append("""<w:style w:type="paragraph" w:styleId="Heading$lvl"><w:name w:val="heading $lvl"/>""")
+            append("""<w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/>""")
+            append("""<w:pPr><w:keepNext/><w:outlineLvl w:val="${lvl - 1}"/></w:pPr>""")
+            append("""<w:rPr><w:b/><w:bCs/><w:sz w:val="$size"/><w:szCs w:val="$size"/></w:rPr></w:style>""")
         }
-        append("""<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/></w:style>""")
-        append("""<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/></w:style>""")
-        append("""<w:style w:type="paragraph" w:styleId="CodeBlock"><w:name w:val="Code Block"/></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/><w:basedOn w:val="Normal"/></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/><w:basedOn w:val="Normal"/><w:pPr><w:ind w:left="720"/></w:pPr><w:rPr><w:i/></w:rPr></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="CodeBlock"><w:name w:val="Code Block"/><w:basedOn w:val="Normal"/></w:style>""")
         append("""</w:styles>""")
     }
 
@@ -479,6 +501,7 @@ object DocxPackage {
             '>' -> append("&gt;")
             '"' -> append("&quot;")
             '\'' -> append("&apos;")
+            '\r' -> append("&#13;") // XML parsers otherwise normalize a literal CR to LF.
             else -> append(c)
         }
     }

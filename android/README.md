@@ -1,4 +1,12 @@
-# R24 continuation — current native evaluation
+# R57 — current experimental Office authoring
+
+Open `android/` in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`; see [build instructions](docs/BUILD.md), [R58 results and limits](docs/R58-RESULTS.md), and [R57 results](docs/R57-RESULTS.md). The plain and optional simple-marker DOCX-copy paths and bounded spreadsheet/XLSX-copy path are experimental; consult revision-specific remote API 34 results rather than assuming a local Android run. These are not a complete rich editor or full Office compatibility. Use disposable data. **50/50 modules (100%) have a reviewed testable subset; 0/50 (0%) are full-spec accepted.** These are different measures.
+
+The older sections below are historical and retain their original branch names and counts.
+
+---
+
+# R24 continuation — historical native evaluation
 
 Use **`arena/a8ac5475-osb`** and open **`android/`** in Android Studio Rabbit1 with a maintained full JDK17
 and SDK `platforms;android-37.0`. Pins remain AGP9.1.1/Gradle9.3.1/Kotlin2.2.21; min34/compile37/target37.

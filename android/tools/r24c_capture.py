@@ -11,7 +11,15 @@ from png_capture import dimensions
 
 ROOT = Path(__file__).resolve().parents[1]
 NAMES = {'r24c-tabletop.png', 'r24c-silver.png', 'r24c-wall.png', 'r24c-atlas.png'}
-FRAME_GROUPS = {'r24': NAMES, 'png-copy': {'r25-png-copy.png'}}
+FRAME_GROUPS = {
+    'r24': NAMES,
+    'png-copy': {'r25-png-copy.png'},
+    # The Office workflow publishes all four images and audits in one run;
+    # collect() deliberately refuses unexpected audits, so include the full set.
+    'r57-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png'},
+    'r58-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png',
+                   'r58-text-grid.png', 'r58-service-review.png'},
+}
 
 
 def validate_audit(report):
@@ -74,7 +82,7 @@ def transport_chunks(name, data, names=NAMES):
     return [f'R24CPNG1 {name} {i+1}/{len(parts)} {hashlib.sha256(data).hexdigest()} {part}' for i, part in enumerate(parts)]
 
 
-def export(group, image=None, names=NAMES):
+def export(group, image=None, names=NAMES, require_complete=False):
     if image is None: raise ValueError('One selected image per real CI check-run is required')
     wanted = {image}
     if not wanted <= names: raise ValueError('Unknown native frame')
@@ -86,6 +94,16 @@ def export(group, image=None, names=NAMES):
         if file.name in found and found[file.name] != data:
             raise ValueError('Ambiguous native capture')
         found[file.name] = data
+    audit_files = [file for file in root.rglob('*.json') if file.name == image.removesuffix('.png') + '.json']
+    if require_complete:
+        # Opt-in for strict Office frame jobs; historical callers may still report absence explicitly.
+        if set(found) != wanted: raise ValueError('Required actual native image missing')
+        if len(audit_files) != 1: raise ValueError('Required native image audit missing or duplicated')
+        audit = json.loads(audit_files[0].read_text())
+        validate_audit(audit)
+        width, height = dimensions(found[image])
+        if (audit.get('preview_width'), audit.get('preview_height')) != (width, height):
+            raise ValueError('Native preview and audit dimensions differ')
     messages = []; index = []
     for name, data in sorted(found.items()):
         chunks = transport_chunks(name, data, names)
@@ -98,8 +116,7 @@ def export(group, image=None, names=NAMES):
         for message in messages[first:first + CHUNKS_PER_STEP]: print('::notice::' + message)
         return
     print('::notice::R24CCAPTUREINDEX1 ' + json.dumps(index, separators=(',', ':')))
-    for file in root.rglob('*.json'):
-        if file.name.removesuffix('.json') + '.png' not in wanted: continue
+    for file in audit_files:
         report = json.loads(file.read_text()); validate_audit(report)
         observed = {key: report[key] for key in ('schema', 'origin', 'api', 'density', 'font_scale', 'required_targets')}
         for key in ('native_image_width', 'native_image_height', 'preview_width', 'preview_height', 'preview_filter', 'capture_api'):

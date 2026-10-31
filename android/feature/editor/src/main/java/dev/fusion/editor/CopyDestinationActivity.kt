@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import dev.fusion.documents.CopyProtocol
 import dev.fusion.documents.TextBytes
 
-data class CopyPickerRequest(val requestId: String, val suggestedName: String)
+data class CopyPickerRequest(val requestId: String, val suggestedName: String, val mimeType: String = "text/plain")
 enum class CopyPickerOutcome { SELECTED, CANCELED, FAILED }
 data class CopyPickerResult(val requestId: String, val outcome: CopyPickerOutcome, val uri: Uri?)
 
@@ -26,8 +26,12 @@ class CopyDestinationContract : ActivityResultContract<CopyPickerRequest, CopyPi
     override fun createIntent(context: Context, input: CopyPickerRequest): Intent {
         require(CopyProtocol.validRequestId(input.requestId))
         require(input.suggestedName.isNotBlank() && TextBytes.encodedSize(input.suggestedName)<=1024)
+        require(input.mimeType in ALLOWED_MIMES)
         return Intent(context,CopyDestinationActivity::class.java)
-            .putExtra(REQUEST,input.requestId).putExtra(NAME,input.suggestedName)
+            .putExtra(REQUEST,input.requestId).putExtra(NAME,input.suggestedName).apply {
+                // Preserve the existing text-copy intent contract; a missing MIME means text/plain.
+                if (input.mimeType != "text/plain") putExtra(MIME,input.mimeType)
+            }
     }
     override fun parseResult(resultCode: Int, intent: Intent?): CopyPickerResult? {
         if(resultCode!=Activity.RESULT_OK || intent==null) return null // Never attribute an anonymous cancel to the current request.
@@ -40,6 +44,10 @@ class CopyDestinationContract : ActivityResultContract<CopyPickerRequest, CopyPi
         internal const val REQUEST="dev.fusion.editor.COPY_REQUEST"
         internal const val NAME="dev.fusion.editor.COPY_NAME"
         internal const val OUTCOME="dev.fusion.editor.COPY_OUTCOME"
+        internal const val MIME="dev.fusion.editor.COPY_MIME"
+        const val DOCX_MIME="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        const val XLSX_MIME="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        internal val ALLOWED_MIMES=setOf("text/plain", DOCX_MIME, XLSX_MIME)
     }
 }
 
@@ -71,7 +79,7 @@ class CopyDestinationActivity : ComponentActivity() {
                 Surface(Modifier.fillMaxSize()) {
                     Column(Modifier.fillMaxSize().systemBarsPadding().padding(24.dp),verticalArrangement=Arrangement.spacedBy(16.dp)) {
                         Text("Choose a new copy destination",style=MaterialTheme.typography.titleLarge)
-                        Text("Select a new file. Android's Create Document action may return an existing item. The editor refuses known aliases and nonempty/unreadable targets before opening output. Emptiness is not an atomic freshness guarantee; provider aliasing and concurrent changes are not verified.")
+                        Text("Select a new file. Android's Create Document action may return an existing item. The app refuses known aliases and nonempty/unreadable targets before opening output. Emptiness is not an atomic freshness guarantee; provider aliasing and concurrent changes are not verified.")
                         Text("If Android restored this screen without a usable picker, cancel and explicitly retry in the editor. An old result cannot authorize a newer attempt.")
                         Button(onClick={ finishResult(CopyPickerOutcome.CANCELED) }) { Text("Cancel this picker attempt") }
                     }
@@ -83,8 +91,11 @@ class CopyDestinationActivity : ComponentActivity() {
             try {
                 val name=intent.getStringExtra(CopyDestinationContract.NAME).orEmpty()
                 require(name.isNotBlank() && TextBytes.encodedSize(name)<=1024)
+                // Older editor requests carry no MIME extra after process recreation.
+                val mime=intent.getStringExtra(CopyDestinationContract.MIME) ?: "text/plain"
+                require(mime in CopyDestinationContract.ALLOWED_MIMES)
                 picker.launch(Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType("text/plain").putExtra(Intent.EXTRA_TITLE,name))
+                    .setType(mime).putExtra(Intent.EXTRA_TITLE,name))
             } catch(_: Exception) { finishResult(CopyPickerOutcome.FAILED) }
         }
     }

@@ -1,3 +1,48 @@
+# R54 — Android Studio and bounded Office evaluation
+
+Open **`OSB/android/`**, not the legacy root web project, in Android Studio Rabbit 1. Use a maintained full JDK 17, install SDK `platforms;android-37.0` and build-tools `36.0.0`, and let the pinned Gradle wrapper resolve the project. From `android/`, the intended debug build is:
+
+```sh
+./gradlew :app:assembleProDebug
+# With a disposable API 34+ emulator/device connected:
+./gradlew :app:installProDebug
+```
+
+The new Android code has **not been built or run locally in the current sandbox**. Check the exact CI result for this revision before treating these commands as a verified build. It is an experimental debug app, not an accepted release. In the app, open **Editor** → New → type text → **Export DOCX copy…**. The default export keeps markers literal. The disclosure also offers an explicitly optional **Format simple text markers instead…** path: limited headings, bullets, quotes, bold, italic and monospace are converted as described in the next confirmation; ambiguous inline markers stay literal. This is not a rich editor or full Markdown. Or open **Spreadsheet** → explicitly enable the experiment → select a cell, choose its type, enter a value/formula, **Apply cell**, then **Export XLSX copy…**. **Paste text grid…** lets you enter or paste a bounded tab-delimited rectangle, review its exact impact and apply it as one undo step; empty fields clear cells and every nonempty field stays text, including `=...`. It supports only the documented quoted-field grammar and does not import formatting or formulas. Android execution of this new flow must be checked in [R58](R58-RESULTS.md). Exports go to newly chosen files, not the original; use disposable data. The spreadsheet has one bounded sheet, limited formulas, no Office import/styles/charts, process-local unapplied input/undo, and unverified provider guarantees.
+
+SDK-free host checks (they do not run Android):
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r54_contracts.py
+# Install openpyxl==3.1.5 and python-docx==1.2.0 in a host Python environment for the independent-reader checks.
+python3 tools/check_r54_reference.py --require-office-libraries
+python3 tools/run_r55_contracts.py
+# Also install formualizer==0.13.0 on the host for the independent formula comparison.
+python3 tools/check_r55_reference.py --require-reference
+python3 tools/run_r56_contracts.py
+python3 tools/check_r56_reference.py --require-reference
+python3 tools/run_r57_contracts.py
+# Install python-docx==1.2.0 separately for this host-only reader.
+python3 tools/check_r57_reference.py
+PYTHONPATH=tools python3 -m unittest test_r57_reference -v
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+```
+
+For the authored destructive-reset instrumentation tests, use **only a disposable API 34 managed emulator** and explicitly opt in:
+
+```sh
+./gradlew :app:pixel6Api34ProDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
+  -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest \
+  -Pandroid.experimental.enableAdditionalTestOutput=true
+```
+
+The test includes a real DocumentsUI writer flow plus separate MediaStore tests with injected callbacks. Source/configuration alone is not a pass: [run 41006261319](https://github.com/jyvplay/OSB/actions/runs/41006261319) passed 11 targeted cases on `f85ae06`, and its two native frames were inspected. Later changes need their own run. [R54 outcomes and open gates](R54-RESULTS.md) · [R55 continuation and visual evidence](R55-RESULTS.md) · [R56 rounding and device continuation](R56-RESULTS.md) · [R57 Writer and device continuation](R57-RESULTS.md). Older instructions below are historical.
+
+---
+
 # R53 — Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) + 7-OS Cascading Context Menus / 5-DPI Crisp List·Grid·Columns Logos / Interactive Undo Fan + 96 new executed kernels (+7 UI + 19 touched) across 50/50 modules (100%); 42 contiguous R13–R53 CI tasks + live `:8765` workbench
 
 Current work branch **`arena/64550eba-osb`** (`2026-10-29`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.

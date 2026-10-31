@@ -151,7 +151,8 @@
       ":core:storage"
     ],
     ":feature:calc": [
-      ":core:storage"
+      ":core:storage",
+      ":format:ooxml"
     ],
     ":feature:settings": [
       ":core:capabilities",
@@ -271,7 +272,13 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "677cbebeed8416c5dba9639732a7c29717e8cfbacddce2584545d3a010285811"
+      "sha256": "4fafd8f835d10ccb4c76f0a4f410e04f9d2a44004daa300363a1d9d6b914ac78"
+    },
+    {
+      "path": "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt",
+      "module": ":app",
+      "package": "dev.fusion.shell",
+      "sha256": "13ea2975f4a95d548cbeb2799bc777692492c9e801d910d03e4080f9a0d22cde"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -698,6 +705,12 @@
       "module": ":core:documents",
       "package": "dev.fusion.documents",
       "sha256": "27a655cb8990694e99a7223e0186daf26637676ad6996493f689b36847c76a81"
+    },
+    {
+      "path": "core/documents/src/main/kotlin/dev/fusion/documents/FrozenExport.kt",
+      "module": ":core:documents",
+      "package": "dev.fusion.documents",
+      "sha256": "d3a418863bd9520169f2648ed0f88c6046259becb2cd8af783067e1df0d87e81"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/HyphenSoft.kt",
@@ -1273,7 +1286,7 @@
       "path": "core/model/src/main/kotlin/dev/fusion/model/PilotPolicy.kt",
       "module": ":core:model",
       "package": "dev.fusion.model",
-      "sha256": "14cd76a53441faa90fe68b67a489dda5c7490c9d8ebecc76b94abaed46f4ebde"
+      "sha256": "5b3e54d4f8fee0edd983fc136b96f8de30c930adb412093e1076ae2f88945e8b"
     },
     {
       "path": "core/model/src/main/kotlin/dev/fusion/model/Rfc8785JsonCanonicalizer.kt",
@@ -2425,7 +2438,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "8884fc36ec22597e07f5a99221fb81fe32453d79173b5967cfea87a5d8239bca"
+      "sha256": "5edb4af5ae8bacb899d2ffdc37bd4d5a34e9d995bd12ff8a59ef2e9998de42c6"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/DocumentCompareDiff.kt",
@@ -2449,7 +2462,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "78ccc4948fc5c86c994a51baf9a4ae10e7c64554cbcfabd50968c0030158a8e1"
+      "sha256": "ab3b9fd23cd73ce077bb7be2c271264484a8888ab10b987f0ca00781c115b0cd"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorSelectionContextMenuPlanner.kt",
@@ -2503,7 +2516,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/MarkdownOfficeBridge.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "0d1ece4de32ef9634e55c41b6a6794943f16a6a5642db5b0c6cab6ecdea28d36"
+      "sha256": "e75a8a92b165914df5f24dedd6f0505893486108cd4605766e83b2c65a195ee5"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/MultiCaretBlockEditor.kt",
@@ -3658,6 +3671,18 @@
       "sha256": "e5f747e23a265eee946c6db9141090f534b2f685faaff82299d1c0a3b801b521"
     },
     {
+      "path": "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt",
+      "module": ":feature:calc",
+      "package": "dev.fusion.calc",
+      "sha256": "bea77057c8fd2445daf1037530eb70ff7c1aaf513035dcdda24170aea6b7ebfc"
+    },
+    {
+      "path": "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt",
+      "module": ":feature:calc",
+      "package": "dev.fusion.calc",
+      "sha256": "4bc38618f8fb289cad0d9a62de1200a92d15a1363a2fdab371befaced68edbc2"
+    },
+    {
       "path": "feature/calc/src/main/java/dev/fusion/calc/UnitMatrixSolverWorkbench.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
@@ -3865,7 +3890,7 @@
       "path": "feature/media/src/main/java/dev/fusion/media/MediaHub.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
-      "sha256": "4fe8d871bd02fd96a50e8d93fcbc2500483840d0d28d8adbcbf9261decbc8f37"
+      "sha256": "470b71c2a77c37b0f66c06a7c68b2af509048651a4a46d192564d67e2511cd1c"
     },
     {
       "path": "feature/media/src/main/java/dev/fusion/media/MediaLibrary.kt",
@@ -5683,7 +5708,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "1dcf5a2f75fc537300a00a8e9cd77b0dc603687dde71a8783f0b9155b9b22694"
+      "sha256": "352901aa944c9cd566e04151d461d51b5f8c1da97903648d8d82884156836234"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
@@ -5707,13 +5732,13 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "be5b883b05bf81cbc3e4a2ba98b03dfb898df629075ae3be1b34947dbf3691be"
+      "sha256": "6d48cb3d597b69660c570678741b458f431b72b1378b74f2c79ead60ebcfc466"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "1ee4b8035c064b9a1503f04dcc009185f8c4d551ede0e5085dce22ae0331705d"
+      "sha256": "c9c714dc5cd64c813d3e937abe39b7cb386d5d2453be3d3bc7f66546a7625589"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
@@ -5744,6 +5769,18 @@
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "a9cf35da3fd9b09c938cf4c706efd991a585aadb939690e4fbaace6c7bf67f7c"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetDraft.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "48d85b88eb46446ff43bec36d19b91507904ba9b8502499cc1d054113ea02fe5"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetTextGrid.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "2b14b0ee93406775b8802c8c54488722e9ec3bee91ef5cb5d7c223fba8a4d025"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
@@ -5786,6 +5823,12 @@
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "4156e74f90c82591ebf1f5efea8ecf377b93b520972461167de8113fad20f589"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PlainWriterDocx.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "40f46bd3fe2d8c0518a30ddf7fe4260604792ee512a1378dde36a08b7743c37e"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PptxMasterLayoutAnimationEngine.kt",
@@ -5875,13 +5918,19 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SpillSheetEngine.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "25df08406d0a5b4d775c3910fd4c67ffaeefabde87785833b114171552bbc58e"
+      "sha256": "29f3ebe4731bf2d4b71611c07f4493ad76134c98cb8770f8e32aff9aec241c49"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredTableRefEngine.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "12a17fde15fdf48de3d28aa115f059174eed9447a31957e55b0b89ea612e4214"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredWriterDocx.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "1a8e70f0e9b018db4b3dd1015e67797bd352f6152d93a8a2e34f92b51c59fed4"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilterEvaluator.kt",

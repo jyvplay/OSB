@@ -36,10 +36,16 @@ class DisposableEmulatorRule : ExternalResource() {
             val pins = File(context.filesDir, "map-bookmarks-v1.bin" + suffix)
             check(!pins.exists() || pins.delete()) { "Map test reset failed" }
         }
-        for (name in listOf("tasks-v1.bin", "notes-recovery-v1.bin", "calculator-v1.bin", "desktop-v1.bin", "editor-session-v1.bin")) {
+        for (name in listOf("tasks-v1.bin", "notes-recovery-v1.bin", "calculator-v1.bin", "desktop-v1.bin", "editor-session-v1.bin", "sheet-draft-v1.bin")) {
             for (suffix in listOf("", ".bak", ".new")) {
                 val file = File(context.noBackupFilesDir, name + suffix)
-                check(!file.exists() || file.delete()) { "Draft reset failed: $name$suffix" }
+                val existed = file.exists()
+                val deleted = !existed || file.delete()
+                // A completed AtomicFile writer may remove .new between exists() and
+                // delete(). Demand actual absence either way; do not retry deletion or
+                // treat an existing file as a successful reset.
+                val remains = file.exists()
+                check(!remains) { "Draft reset failed: $name$suffix (existed=$existed, delete=$deleted, remains=$remains)" }
             }
         }
     }

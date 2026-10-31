@@ -73,6 +73,21 @@ FILES = [
     'feature/media/src/main/java/dev/fusion/media/MediaLibraryMultiViewPanel.kt',  # R53: Media Hub List / Grid / Columns multi-view panel
     'feature/files/src/main/java/dev/fusion/filesui/FilesDualPaneInspectorBar.kt',  # R53: Dual-pane synced List/Grid/Columns + cascading context-menu bar
     'feature/vault/src/main/java/dev/fusion/vault/VaultColumnsSecretBrowser.kt',  # R53: Encrypted Vault List / Grid / Columns secret browser
+    'feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt',  # R54: bounded sheet authoring UI
+    'feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt',  # R54: private draft/recalculation owner
+    'feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt',  # R54: allowlisted office copy MIME types
+    'app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt',  # R54: frozen output-only office copies
+    'app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt',  # R57: authored device/provider/UI tests
+    'app/src/androidTest/java/dev/fusion/shell/NativeCaptureNames.kt',  # R58: dialog filename allowlist
+    'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt',  # R57: actual dialog display capture
+    'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt',  # R57: positive and negative text-fit controls
+    'app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt',  # R58: actual grid, recovery and provider checks
+    'app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt',  # R58: one-shot local-plan diagnostic
+    'app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt',  # R58: actual IME and disclosure
+    'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
+    'app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt',  # R57: fail-closed cleanup
+    'app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt',  # R57: zero/one-cue assertions
+    'app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt',  # R56: actual picker-return diagnostic
 ]
 SYNTAX = re.compile(r'error: (expecting|syntax|mismatched input|unclosed|unresolved reference \S*$)')
 
