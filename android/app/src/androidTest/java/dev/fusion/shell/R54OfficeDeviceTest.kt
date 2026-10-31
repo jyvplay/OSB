@@ -172,7 +172,9 @@ class R54OfficeDeviceTest {
         compose.onNodeWithText("Export formatted DOCX copy?").assertIsDisplayed()
         compose.onNodeWithText("Not a rich editor or full Markdown", substring = true).assertExists()
         compose.onNodeWithTag("writer-structured-confirm").assertIsDisplayed()
+        // Preserve an actual diagnostic image even if the independent text-fit assertion fails.
         NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r24c-structured", "writer-structured-confirm")
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-disclosure")
         val vm = exportModel()
         compose.onNodeWithTag("writer-structured-confirm").performClick()
         val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())

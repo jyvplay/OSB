@@ -207,7 +207,7 @@ fun EditorScreen(
     }
     structuredDocxConfirmId?.let { id ->
         AlertDialog(onDismissRequest={ structuredDocxConfirmId=null }, title={ Text("Export formatted DOCX copy?") },
-            text={ Text("Not a rich editor or full Markdown. Each line becomes a paragraph: # through ###### followed by a space makes a heading; '- ' makes a bullet and '> ' a quote. Paired **bold**, *italic* and `code` format runs wherever they appear; nested, escaped, unmatched or ambiguous inline markers stay literal. Use plain export to keep all markers. CR/LF is normalized. Limits: 128 KiB UTF-8, 2,048 lines, 8,192 runs. Source and draft stay unchanged. Choose a new file; provider atomicity is not guaranteed.", Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) },
+            text={ Text("Not a rich editor or full Markdown. Draft stays unchanged; choose a new file. Provider identity and atomicity aren't guaranteed. One paragraph per line. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs anywhere. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. CR/LF normalizes. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState()).testTag("writer-structured-disclosure")) },
             confirmButton={ TextButton(onClick={
                 structuredDocxConfirmId=null
                 val current=model.state.value

@@ -41,6 +41,19 @@ object NativeVisualEvidence {
         assertEquals(1, layouts.size); assertEquals(1, layouts.single().lineCount)
         assertFalse("$tag has vertical text overflow", layouts.single().didOverflowHeight)
     }
+    /** At the tested font/viewport, require the entire laid-out disclosure to fit visibly. */
+    fun assertFullTextVisible(compose: ComposeContentTestRule, tag: String) {
+        val node = compose.onNodeWithTag(tag, useUnmergedTree = true).assertIsDisplayed()
+        val visible = node.fetchSemanticsNode().boundsInRoot
+        val layouts = mutableListOf<TextLayoutResult>()
+        node.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { assertTrue(it(layouts)) }
+        assertEquals(1, layouts.size)
+        val layout = layouts.single()
+        assertTrue("Disclosure must have a laid-out line", layout.lineCount > 0)
+        val fullHeight = maxOf(layout.size.height.toFloat(), layout.getLineBottom(layout.lineCount - 1))
+        assertTrue("$tag clipped: laid-out text $fullHeight px, visible ${visible.height} px", fullHeight <= visible.height + 1f)
+        assertFalse("$tag reports text height overflow", layout.didOverflowHeight)
+    }
     private fun committedWindow(activity: Activity): Bitmap {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val committed = CountDownLatch(1)

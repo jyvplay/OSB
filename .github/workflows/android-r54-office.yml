@@ -52,7 +52,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest,dev.fusion.shell.NativeVisualEvidenceDeviceTest
           -Pandroid.experimental.enableAdditionalTestOutput=true
       - name: Publish actual device cases
         if: always()

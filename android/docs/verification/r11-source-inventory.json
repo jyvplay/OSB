@@ -2462,7 +2462,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "276e9a3ea78f119b4e998c9d76d4fe443bf9e4d67f91675d8b25233a2729d228"
+      "sha256": "ab3b9fd23cd73ce077bb7be2c271264484a8888ab10b987f0ca00781c115b0cd"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorSelectionContextMenuPlanner.kt",

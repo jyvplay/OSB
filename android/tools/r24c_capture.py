@@ -11,7 +11,13 @@ from png_capture import dimensions
 
 ROOT = Path(__file__).resolve().parents[1]
 NAMES = {'r24c-tabletop.png', 'r24c-silver.png', 'r24c-wall.png', 'r24c-atlas.png'}
-FRAME_GROUPS = {'r24': NAMES, 'png-copy': {'r25-png-copy.png'}, 'r57-writer': {'r24c-structured.png'}}
+FRAME_GROUPS = {
+    'r24': NAMES,
+    'png-copy': {'r25-png-copy.png'},
+    # The Office workflow publishes all four images and audits in one run;
+    # collect() deliberately refuses unexpected audits, so include the full set.
+    'r57-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png'},
+}
 
 
 def validate_audit(report):
