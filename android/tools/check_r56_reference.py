@@ -10,6 +10,7 @@ from zipfile import ZipFile
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / 'testing/build/r56/artifacts'
 SCALES = (-14, -13, -3, -2, -1, 0, 1, 2, 3, 4, 12, 13, 14, 20)
+BIT_SCALES = (-400, -399, -325, -309, -308, -16, -13, -3, 0, 3, 13, 16, 308, 325, 399, 400)
 EDGES = {
     '=ROUND(1.005,2)': 1.01, '=ROUND(-1.005,2)': -1.01,
     '=ROUND(0.00000000000015,13)': 2e-13, '=ROUND(15000000000000,-13)': 2e13,
@@ -86,6 +87,55 @@ def compare_rows(lines, keys, reference=None):
     if seen != keys:
         raise ValueError(f'corpus incomplete: got {len(seen)}, expected {len(keys)}')
     return decimal_matches, reference_matches
+
+
+def compare_bits(lines, reference=None, count=1024, scales=BIT_SCALES):
+    """Check observed finite JVM bit values against decimal of each actual JVM literal.
+
+    A reference-engine disagreement is counted, not silently accepted as Excel behavior.
+    """
+    seen = set()
+    literals = set()
+    decimal_matches = exact = close = other = 0
+    for line in lines:
+        fields = line.split('\t')
+        if len(fields) != 4:
+            raise ValueError('malformed finite-bit observation')
+        literal, raw_scale, kind, raw = fields
+        try:
+            value, scale = float(literal), int(raw_scale)
+        except ValueError as exc:
+            raise ValueError('nonnumeric bit input') from exc
+        key = literal, scale
+        if not math.isfinite(value) or len(literal) > 32 or scale not in scales or key in seen:
+            raise ValueError('invalid or duplicate bit input')
+        seen.add(key)
+        literals.add(literal)
+        with localcontext() as context:
+            context.prec = 1000  # sufficient for a binary64 canonical literal at scales +/-400
+            want = float(Decimal(literal).quantize(Decimal(1).scaleb(-scale), rounding=ROUND_HALF_UP))
+        try:
+            actual = float(raw) if kind == 'N' else None
+        except ValueError as exc:
+            raise ValueError('nonnumeric bit result') from exc
+        if math.isfinite(want):
+            if kind != 'N' or not same_number(actual, want):
+                raise ValueError(f'decimal bit mismatch: {key}: {kind} {raw}, expected {want}')
+        elif kind != 'E' or raw != '#NUM!':
+            raise ValueError(f'bit overflow must be NUM: {key}: {kind} {raw}')
+        decimal_matches += 1
+        if reference is not None:
+            other_value = reference(f'=ROUND({literal},{scale})')
+            if kind == 'N' and same_number(actual, other_value):
+                exact += 1
+            elif (kind == 'N' and type(other_value) in (int, float) and math.isfinite(other_value) and
+                  math.isclose(actual, other_value, rel_tol=1e-14, abs_tol=0.0)):
+                close += 1
+            else:
+                other += 1
+    if len(literals) != count or len(seen) != count * len(scales):
+        raise ValueError(f'incomplete finite-bit corpus: {len(literals)} values, {len(seen)} rows')
+    return decimal_matches, exact, close, other
 
 
 def compare_edges(lines, expected, reference=None, nonfinite=frozenset()):
@@ -170,10 +220,14 @@ def main():
     reference = evaluate if formualizer is not None else None
     decimal_count, independent_count = compare_rows(
         (ARTIFACTS / 'round-corpus.tsv').read_text(encoding='utf-8').splitlines(), expected_keys(), reference)
+    bits_decimal, bits_exact, bits_close, bits_other = compare_bits(
+        (ARTIFACTS / 'round-bits.tsv').read_text(encoding='utf-8').splitlines(), reference)
     xlsx_count = check_xlsx(ARTIFACTS / 'round.xlsx', openpyxl)
     edges = (ARTIFACTS / 'round-edges.tsv').read_text(encoding='utf-8').splitlines()
     edge_matches, edge_nonfinite = compare_edges(edges, EDGES, reference, NONFINITE_REFERENCE)
-    print(f'Python decimal: {decimal_count}/{len(expected_keys())} exact typed binary64 matches')
+    print(f'Python decimal: {decimal_count}/{len(expected_keys())} decimal-grid and {bits_decimal}/16384 finite-bit matches')
+    if reference:
+        print(f'formualizer finite-bit differential: {bits_exact} exact, {bits_close} within 1e-14 relative, {bits_other} other differences')
     print(f'formualizer: {independent_count}/{len(expected_keys())} corpus matches; '
           f'{edge_matches} edge matches, {edge_nonfinite} documented nonfinite divergences' if reference else
           'formualizer unavailable: no independent formula-engine comparison')

@@ -27,18 +27,25 @@ def collect(root):
             raise ValueError('Invalid picker field')
         if not FIXTURE.fullmatch(row['fixture']) or path.name != 'r25-picker-selection-' + row['fixture'][:-4] + '.json':
             raise ValueError('Not a disposable fixture')
-        if row['selector'] not in ('text', 'description') or row['strategy'] not in ('filename-text', 'preview-sibling-title', 'preview-card-body'):
+        if row['selector'] not in ('text', 'description') or row['strategy'] not in ('filename-text', 'preview-sibling-title', 'preview-card-body', 'preview-grid-item-body'):
             raise ValueError('Unknown selector/strategy')
+        if 'navigation' in row and row['navigation'] not in ('initial', 'recent', 'downloads-to-recent'):
+            raise ValueError('Unknown picker root navigation')
         if row['strategy'] == 'preview-sibling-title' and (not row['matched_id'].endswith(':id/preview_icon') or
                                                            row['target_id'] != 'android:id/title'):
             raise ValueError('Preview strategy does not match observed resources')
         if row['strategy'] == 'filename-text' and (row['selector'] != 'text' or row['matched_id'] != row['target_id']):
             raise ValueError('Unverified description cannot be a filename target')
-        if row['strategy'] == 'preview-card-body':
+        if row['strategy'] in ('preview-card-body', 'preview-grid-item-body'):
+            prefix = row['matched_id'].removesuffix(':id/preview_icon')
             if (row['selector'] != 'description' or not row['matched_id'].endswith(':id/preview_icon') or
-                    row['target_id'] != row['matched_id'].removesuffix(':id/preview_icon') + ':id/item_root' or
                     row['fixture'] not in row['matched_description']):
-                raise ValueError('Card route is not associated with the observed fixture preview')
+                raise ValueError('Item route is not associated with the observed fixture preview')
+            if row['strategy'] == 'preview-card-body' and row['target_id'] != prefix + ':id/item_root':
+                raise ValueError('Card route target mismatch')
+            if row['strategy'] == 'preview-grid-item-body' and (row.get('grid_id') != prefix + ':id/dir_list' or
+                    type(row.get('target_class')) is not str or not 1 <= len(row['target_class']) <= 128):
+                raise ValueError('Grid item ancestry mismatch')
             item, preview, tap = (row.get('item_bounds'), row.get('preview_bounds'), row.get('tap'))
             if any(type(v) is not list or len(v) != n or any(type(x) is not int or not 0 <= x <= 32768 for x in v)
                    for v, n in ((item, 4), (preview, 4), (tap, 2))):
@@ -49,7 +56,10 @@ def collect(root):
             if not (ir-il >= 48 and ib-it >= 48 and il <= pl < pr <= ir and it <= pt < pb <= ib and
                     il <= x < ir and it <= y < ib and not (pl <= x < pr and pt <= y < pb)):
                 raise ValueError('Tap does not avoid the preview within its unique card')
-        keys = ('api', *KEYS, *(('item_bounds', 'preview_bounds', 'tap') if row['strategy'] == 'preview-card-body' else ()))
+        geometry = ('item_bounds', 'preview_bounds', 'tap') if row['strategy'] in ('preview-card-body', 'preview-grid-item-body') else ()
+        ancestry = ('grid_id', 'target_class') if row['strategy'] == 'preview-grid-item-body' else ()
+        navigation = ('navigation',) if 'navigation' in row else ()
+        keys = ('api', *KEYS, *geometry, *ancestry, *navigation)
         rows.append({key: row[key] for key in keys})
     return rows
 

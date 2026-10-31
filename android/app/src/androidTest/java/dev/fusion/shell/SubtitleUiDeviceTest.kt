@@ -14,11 +14,12 @@ class SubtitleUiDeviceTest {
     @Test fun actualTextInputSelectsLiteralCueWithoutPretendingToPlay() {
         val subtitle = SubRip.parse("1\n00:00:01,000 --> 00:00:02,000\n<b>literal</b>".toByteArray())
         compose.setContent { MaterialTheme { androidx.compose.foundation.layout.Column { SubtitleInspector(subtitle) } } }
-        compose.onNodeWithTag("subtitle-count").assertTextEquals("0 active cues; showing up to 8")
+        compose.onNodeWithTag("subtitle-count").assertTextEquals("0 active cues; showing up to 8 (0 collision-free WebVTT lane(s))")
         compose.onNodeWithTag("subtitle-position").performTextReplacement("1000")
+        compose.onNodeWithTag("subtitle-count").assertTextEquals("1 active cues; showing up to 8 (1 collision-free WebVTT lane(s))")
         compose.onNodeWithText("<b>literal</b>").assertIsDisplayed()
         compose.onNodeWithTag("subtitle-position").performTextReplacement("2000")
-        compose.onNodeWithTag("subtitle-count").assertTextEquals("0 active cues; showing up to 8")
+        compose.onNodeWithTag("subtitle-count").assertTextEquals("0 active cues; showing up to 8 (0 collision-free WebVTT lane(s))")
         compose.onNodeWithText("<b>literal</b>").assertDoesNotExist()
     }
 }

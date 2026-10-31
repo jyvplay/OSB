@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.Locale
+import java.util.Random
 
 /** Finite real JVM contracts and comparison corpus, not Excel or Android acceptance. */
 object R56Checks {
@@ -111,6 +112,31 @@ object R56Checks {
         }
         File(out, "round-corpus.tsv").writeText(rows.joinToString("\n", postfix = "\n"), Charsets.UTF_8)
         verify(rows.size == 401 * scales.size, "complete deterministic corpus")
-        println("R56 host contracts: $assertions assertions passed; ${rows.size} ROUND observations emitted, not yet independently compared")
+
+        // A second corpus samples finite IEEE-754 bit patterns, including extreme exponents.
+        // Its observed canonical decimal literals are compared by a separate Python oracle.
+        val bitScales = listOf(-400, -399, -325, -309, -308, -16, -13, -3, 0, 3, 13, 16, 308, 325, 399, 400)
+        val bitRows = ArrayList<String>()
+        val random = Random(560034L)
+        var values = 0
+        while (values < 1024) {
+            val x = java.lang.Double.longBitsToDouble(random.nextLong())
+            if (!x.isFinite()) continue
+            val literal = x.toString()
+            for (scale in bitScales) {
+                val result = eval("=ROUND($literal,$scale)")
+                val encoded = when (result) {
+                    is FormulaEval.CellValue.Num -> "N\t${result.value}"
+                    is FormulaEval.CellValue.Err -> "E\t${result.error.literal}"
+                    else -> error("Unexpected typed ROUND result $result")
+                }
+                verify(result is FormulaEval.CellValue.Num || result == FormulaEval.CellValue.Err(CellErr.Err.NUM), "finite bit input returns finite number or NUM")
+                bitRows.add("$literal\t$scale\t$encoded")
+            }
+            values++
+        }
+        File(out, "round-bits.tsv").writeText(bitRows.joinToString("\n", postfix = "\n"), Charsets.UTF_8)
+        verify(bitRows.size == 1024 * bitScales.size, "complete deterministic finite-bit corpus")
+        println("R56 host contracts: $assertions assertions passed; ${rows.size} decimal-grid and ${bitRows.size} finite-bit ROUND observations emitted, not yet independently compared")
     }
 }

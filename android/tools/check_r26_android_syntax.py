@@ -78,7 +78,9 @@ FILES = [
     'feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt',  # R54: allowlisted office copy MIME types
     'app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt',  # R54: frozen output-only office copies
     'app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt',  # R54: authored device/provider/UI tests
-    'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R55: real picker-return diagnostic
+    'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
+    'app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt',  # R57: fail-closed cleanup
+    'app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt',  # R57: zero/one-cue assertions
     'app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt',  # R56: actual picker-return diagnostic
 ]
 SYNTAX = re.compile(r'error: (expecting|syntax|mismatched input|unclosed|unresolved reference \S*$)')

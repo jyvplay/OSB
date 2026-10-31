@@ -56,6 +56,31 @@ class PickerSelectionReportTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             picker.collect(self.root)
 
+    def test_grid_item_ancestry_and_preview_geometry(self):
+        self.row.update(strategy='preview-grid-item-body', target_id='', target_class='android.widget.LinearLayout',
+                        grid_id='com.google.android.documentsui:id/dir_list',
+                        item_bounds=[64, 549, 366, 851], preview_bounds=[240, 549, 366, 675], tap=[215, 821])
+        self.write()
+        self.assertEqual(picker.collect(self.root)[0]['tap'], [215, 821])
+        for key, value in (('grid_id', 'other:id/dir_list'), ('target_class', ''),
+                           ('tap', [300, 600]), ('preview_bounds', [0, 0, 1000, 1000])):
+            old = self.row[key]
+            self.row[key] = value
+            self.write()
+            with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                picker.collect(self.root)
+            self.row[key] = old
+
+    def test_reports_bounded_root_navigation_without_inferring_success(self):
+        self.row['navigation'] = 'downloads-to-recent'
+        self.write()
+        self.assertEqual(picker.collect(self.root)[0]['navigation'], 'downloads-to-recent')
+        for value in ('downloads', 'injected-result', '', True, None):
+            self.row['navigation'] = value
+            self.write()
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                picker.collect(self.root)
+
     def test_refuses_unverified_description_as_selection(self):
         self.row.update(strategy='filename-text', target_id=self.row['matched_id'])
         self.write()

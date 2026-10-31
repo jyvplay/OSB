@@ -1,6 +1,6 @@
 """Adversarial tests for the independent R56 comparator, not the product evaluator."""
 import unittest
-from check_r56_reference import compare_edges, compare_rows, same_number
+from check_r56_reference import compare_bits, compare_edges, compare_rows, same_number
 
 
 class ReferenceAttacks(unittest.TestCase):
@@ -36,6 +36,16 @@ class ReferenceAttacks(unittest.TestCase):
         for rows in ([], [row], [row, row], [row, '1.005\t3\t1.005'], [row, 'bad']):
             with self.subTest(rows=rows), self.assertRaises(ValueError):
                 compare_rows(rows, keys)
+
+    def test_finite_bit_corpus_and_reference_divergences(self):
+        row = '1.005\t2\tN\t1.01'
+        self.assertEqual(compare_bits([row], lambda _: 1.01, count=1, scales=(2,)), (1, 1, 0, 0))
+        self.assertEqual(compare_bits([row], lambda _: 1.010000000000001, count=1, scales=(2,)), (1, 0, 1, 0))
+        self.assertEqual(compare_bits([row], lambda _: 1.0, count=1, scales=(2,)), (1, 0, 0, 1))
+        for rows in ([], [row, row], ['1.005\t2\tN\t1.0'], ['1.005\t2\tE\t#NUM!'],
+                     ['nan\t2\tN\t0'], ['1.005\t99\tN\t1.005']):
+            with self.subTest(rows=rows), self.assertRaises(ValueError):
+                compare_bits(rows, count=1, scales=(2,))
 
     def test_edge_records_reject_missing_duplicate_and_wrong_types(self):
         expected = {'=ROUND(1.005,2)': 1.01, '=ROUND(1.7e308,-308)': '#NUM!'}
