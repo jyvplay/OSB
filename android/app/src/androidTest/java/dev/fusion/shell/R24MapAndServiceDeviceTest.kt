@@ -77,11 +77,24 @@ class R24MapAndServiceDeviceTest {
     }
     @Test fun providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback() {
         open("media"); click("media-tab-services")
-        compose.onNodeWithTag("service-url").performScrollTo().performTextInput("https://youtu.be/abcdefghijk?si=private-marker")
+        compose.onNodeWithTag("service-url").performScrollTo().performClick().performTextInput("https://youtu.be/abcdefghijk?si=private-marker")
+        // The actual IME is part of this case, not an inferred or mocked precondition.
+        compose.waitUntil(10_000) {
+            var visible = false
+            compose.activityRule.scenario.onActivity { visible = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == true }
+            visible
+        }
         click("service-preview")
+        compose.waitUntil(10_000) {
+            var hidden = false
+            compose.activityRule.scenario.onActivity { hidden = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == false }
+            hidden
+        }
         compose.onNodeWithText("Open YouTube externally?").assertIsDisplayed()
         compose.onNodeWithText("https://www.youtube.com/watch?v=abcdefghijk").assertExists()
-        compose.onNodeWithTag("service-confirm-open").assertExists()
+        compose.onNodeWithTag("service-confirm-open").assertIsDisplayed()
+        compose.onNodeWithTag("service-cancel").assertIsDisplayed()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-service-review", "service-confirm-open")
         click("service-cancel")
         compose.onNodeWithTag("service-url").performScrollTo().performTextReplacement("https://youtube.com.evil.test/watch?v=abcdefghijk")
         click("service-preview")

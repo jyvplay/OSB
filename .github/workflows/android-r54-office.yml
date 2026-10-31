@@ -34,7 +34,7 @@ jobs:
       - name: Install and check Android platform and managed-emulator components
         run: bash tools/install_r54_sdk.sh
       - name: Compile Android and run actual JVM contracts
-        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts
+        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts :testing:r58Contracts
       - name: Independent document readers and formula comparison (host-only, not bundled)
         run: |
           python3 -m pip install --user openpyxl==3.1.5 python-docx==1.2.0 formualizer==0.13.0
@@ -42,7 +42,8 @@ jobs:
           python3 tools/check_r55_reference.py --require-reference
           python3 tools/check_r56_reference.py --require-reference
           python3 tools/check_r57_reference.py
-          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference -v
+          python3 tools/check_r58_reference.py
+          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference -v
       - name: Enable KVM for the disposable managed emulator
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -52,7 +53,7 @@ jobs:
         run: >
           bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest,dev.fusion.shell.NativeVisualEvidenceDeviceTest
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest,dev.fusion.shell.NativeVisualEvidenceDeviceTest,dev.fusion.shell.R58SheetDeviceTest,dev.fusion.shell.R24MapAndServiceDeviceTest
           -Pandroid.experimental.enableAdditionalTestOutput=true
       - name: Publish actual device cases
         if: always()
@@ -78,6 +79,7 @@ jobs:
             android/testing/build/r55/artifacts/**
             android/testing/build/r56/artifacts/**
             android/testing/build/r57/artifacts/**
+            android/testing/build/r58/artifacts/**
       - name: Upload evaluation APK
         if: success()
         uses: actions/upload-artifact@v4
@@ -93,7 +95,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png]
+        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png, r58-text-grid.png, r58-service-review.png]
     defaults:
       run:
         working-directory: android

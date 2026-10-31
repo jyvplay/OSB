@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dev.fusion.ooxml.OfficeSheetCodec
 import dev.fusion.ooxml.OfficeSheetDraft
+import dev.fusion.ooxml.OfficeSheetTextGrid
 import dev.fusion.storage.CheckedAtomicFile
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,8 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
         val selected: String = "A1",
         val inputKind: OfficeSheetDraft.Kind = OfficeSheetDraft.Kind.TEXT,
         val input: String = "",
+        val textGridPreview: OfficeSheetTextGrid.Preview? = null,
+        val textGridError: String = "",
     ) {
         val unapplied: Boolean get() {
             val cell = data.draft.cells[selected]
@@ -71,7 +74,7 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun ready(): Boolean = !state.value.loading && !state.value.busy && !state.value.recoveryBlocked
+    private fun ready(): Boolean = !state.value.loading && !state.value.busy && !state.value.recoveryBlocked && state.value.textGridPreview == null
 
     fun updateInput(input: String) {
         if (ready() && input.length <= OfficeSheetDraft.MAX_CELL_BYTES) mutable.value = state.value.copy(input = input)
@@ -120,6 +123,61 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
                 mutable.value = state.value.copy(busy = false, status = "Edit refused: ${e.message ?: e.javaClass.simpleName}. Previous sheet retained.")
             }
         }
+    }
+
+    /** Parse and recalculate off the UI thread. The review holds no raw input string. */
+    fun previewTextGrid(raw: String) {
+        if (!ready() || state.value.unapplied) return
+        val before = state.value.data.draft
+        val anchor = state.value.selected
+        mutable.value = state.value.copy(busy = true, textGridError = "", status = "Checking text grid…")
+        viewModelScope.launch {
+            try {
+                val plan = withContext(Dispatchers.Default) { OfficeSheetTextGrid.prepare(before, anchor, raw) }
+                val current = state.value
+                if (plan.isCurrent(current.data.draft, current.selected) && !current.unapplied) {
+                    mutable.value = current.copy(busy = false, textGridPreview = plan, status = "Review the text-grid changes before applying.")
+                } else {
+                    mutable.value = current.copy(busy = false, textGridError = "The selected cell or draft changed; preview again.")
+                }
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                mutable.value = state.value.copy(busy = false,
+                    textGridError = "Text grid refused: ${e.message ?: e.javaClass.simpleName}. Sheet unchanged.",
+                    status = "Text grid was not applied.")
+            }
+        }
+    }
+
+    /** Confirmation is one revision and one undo step; a stale preview is never applied. */
+    fun acceptTextGrid() {
+        val current = state.value
+        val plan = current.textGridPreview ?: return
+        if (current.loading || current.busy || current.recoveryBlocked || current.unapplied ||
+            !plan.isCurrent(current.data.draft, current.selected)) {
+            mutable.value = current.copy(textGridPreview = null, status = "Text-grid preview became stale; nothing applied.")
+            return
+        }
+        if (plan.changed == 0) {
+            mutable.value = current.copy(textGridPreview = null, status = "Text grid matches the existing cells; nothing changed.")
+            return
+        }
+        push(undo, plan.original.cells)
+        redo.clear()
+        val selectedCell = plan.calculated.draft.cells[current.selected]
+        mutable.value = current.copy(data = plan.calculated, textGridPreview = null,
+            inputKind = selectedCell?.kind ?: OfficeSheetDraft.Kind.TEXT, input = selectedCell?.input ?: "",
+            status = "Applied ${plan.changed} text-grid changes. Local recovery is pending; export is separate.",
+            checkpoint = "New changes have not yet been checkpointed.", undoDepth = undo.size, redoDepth = 0)
+        checkpoints.trySend(Unit)
+    }
+
+    fun cancelTextGridPreview() {
+        if (state.value.textGridPreview != null) mutable.value = state.value.copy(textGridPreview = null, status = "Text-grid preview cancelled; sheet unchanged.")
+    }
+
+    fun clearTextGridError() {
+        if (ready()) mutable.value = state.value.copy(textGridError = "")
     }
 
     fun undo() = history(undo, redo, "Undo")

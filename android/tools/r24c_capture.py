@@ -17,6 +17,8 @@ FRAME_GROUPS = {
     # The Office workflow publishes all four images and audits in one run;
     # collect() deliberately refuses unexpected audits, so include the full set.
     'r57-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png'},
+    'r58-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png',
+                   'r58-text-grid.png', 'r58-service-review.png'},
 }
 
 

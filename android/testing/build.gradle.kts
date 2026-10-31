@@ -1578,3 +1578,14 @@ tasks.register<JavaExec>("r57Contracts") {
     mainClass.set("dev.fusion.testing.R57Checks")
     args(rootProject.file("testing/build/r57/artifacts").absolutePath)
 }
+
+// R58: bounded, revision-bound text-grid paste; reader and Android checks are separate.
+val r58 by sourceSets.creating
+kotlin.sourceSets.named("r58") { kotlin.srcDir("src/r58/kotlin") }
+dependencies { add(r58.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r58Contracts") {
+    dependsOn(r58.classesTaskName)
+    classpath = r58.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R58Checks")
+    args(rootProject.file("testing/build/r58/artifacts").absolutePath)
+}

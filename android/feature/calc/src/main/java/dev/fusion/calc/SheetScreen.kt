@@ -34,10 +34,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
@@ -49,6 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.fusion.ooxml.OfficeSheetDraft
+import dev.fusion.ooxml.OfficeSheetTextGrid
 
 /** Bounded local authoring, deliberately separate from the blocked untrusted Office importer. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -61,7 +65,7 @@ fun SheetScreen(
 ) {
     val state by model.state.collectAsStateWithLifecycle()
     val draft = state.data.draft
-    val ready = !state.loading && !state.busy && !state.recoveryBlocked
+    val ready = !state.loading && !state.busy && !state.recoveryBlocked && state.textGridPreview == null
     val selected = state.selected
     val kind = state.inputKind
     val edit = state.input
@@ -71,6 +75,12 @@ fun SheetScreen(
     var confirmClear by rememberSaveable { mutableStateOf(false) }
     var confirmExportRevision by rememberSaveable { mutableStateOf<Long?>(null) }
     var uiMessage by rememberSaveable { mutableStateOf("") }
+    // Pasted raw text is deliberately not saveable or persisted outside the applied draft.
+    var showTextGridInput by remember { mutableStateOf(false) }
+    var textGridInput by remember { mutableStateOf("") }
+    LaunchedEffect(state.textGridPreview) {
+        if (state.textGridPreview != null) { showTextGridInput = false; textGridInput = "" }
+    }
     val original = draft.cells[selected]
     val unapplied = state.unapplied
 
@@ -97,9 +107,11 @@ fun SheetScreen(
                 enabled = ready, singleLine = true, label = { Text("Cell") })
             OutlinedButton(onClick = { selectCell(jump) }, enabled = ready, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-select")) { Text("Go") }
             OutlinedButton(onClick = model::undo, enabled = ready && !unapplied && state.undoDepth > 0, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-undo")) { Text("Undo") }
-            OutlinedButton(onClick = model::redo, enabled = ready && !unapplied && state.redoDepth > 0, modifier = Modifier.heightIn(min = 48.dp)) { Text("Redo") }
+            OutlinedButton(onClick = model::redo, enabled = ready && !unapplied && state.redoDepth > 0, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-redo")) { Text("Redo") }
             OutlinedButton(onClick = { confirmExportRevision = draft.revision }, enabled = ready && !unapplied && !exportBusy,
                 modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-export")) { Text("Export XLSX copy…") }
+            OutlinedButton(onClick = { model.clearTextGridError(); textGridInput = ""; showTextGridInput = true },
+                enabled = ready && !unapplied && !exportBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid")) { Text("Paste text grid…") }
         }
         Text("Selected $selected · displayed value: ${state.data.values[selected]?.displayText().orEmpty()}", modifier = Modifier.testTag("sheet-selected-value"))
         // Wrap the cell actions rather than hiding Clear off the right edge. The
@@ -157,6 +169,34 @@ fun SheetScreen(
                 }
             }
         }
+    }
+    if (showTextGridInput && state.textGridPreview == null) AlertDialog(
+        onDismissRequest = { if (!state.busy) { showTextGridInput = false; textGridInput = "" } },
+        title = { Text("Paste text grid at $selected") },
+        text = {
+            Column(Modifier.heightIn(max = 340.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Tabs separate columns; line endings separate rows. Use quotes around a whole field and double quotes inside it. Rows must be rectangular. Blank fields clear cells; other fields are text, never formulas. Up to 256 fields and 64 KiB. Review changes before applying.")
+                OutlinedTextField(textGridInput, { if (it.length <= OfficeSheetTextGrid.MAX_INPUT_BYTES) textGridInput = it },
+                    modifier = Modifier.fillMaxWidth().testTag("sheet-text-grid-input"), enabled = !state.busy,
+                    label = { Text("Enter or paste tab-delimited text") }, minLines = 3, maxLines = 7)
+                if (state.textGridError.isNotEmpty()) Text(state.textGridError,
+                    Modifier.testTag("sheet-text-grid-error").semantics { liveRegion = LiveRegionMode.Polite }, color = MaterialTheme.colorScheme.error)
+                if (state.busy) CircularProgressIndicator()
+            }
+        },
+        confirmButton = {
+            val focus = LocalFocusManager.current
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextButton(onClick = { focus.clearFocus(); keyboard?.hide(); model.previewTextGrid(textGridInput) },
+                enabled = !state.busy && textGridInput.isNotEmpty(), modifier = Modifier.testTag("sheet-text-grid-preview")) { Text("Review changes") }
+        },
+        dismissButton = { TextButton(onClick = { showTextGridInput = false; textGridInput = "" }, enabled = !state.busy) { Text("Cancel") } },
+    )
+    state.textGridPreview?.let { plan ->
+        AlertDialog(onDismissRequest = model::cancelTextGridPreview, title = { Text("Apply text grid?") },
+            text = { Text("${plan.rows} rows × ${plan.columns} columns from ${plan.anchor}: ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged. All nonempty fields are text. This changes the local draft as one undo step; it does not save an external file.") },
+            confirmButton = { TextButton(onClick = model::acceptTextGrid, modifier = Modifier.testTag("sheet-text-grid-apply")) { Text("Apply grid") } },
+            dismissButton = { TextButton(onClick = model::cancelTextGridPreview, modifier = Modifier.testTag("sheet-text-grid-cancel")) { Text("Cancel") } })
     }
     pendingSelection?.let { target ->
         AlertDialog(onDismissRequest = { pendingSelection = null }, title = { Text("Discard unapplied cell input?") },

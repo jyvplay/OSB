@@ -19,7 +19,7 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 
 ## Current R57 — experimental Office authoring, not Class A
 
-This branch adds a bounded plaintext-to-DOCX copy path, an optional simple text-marker-to-formatted-DOCX conversion, and an experimental single-sheet editor with XLSX-copy export. The local sandbox has no Android SDK. Remote API 34 results and the exact status of later changes are recorded in the [R57 report](android/docs/R57-RESULTS.md), [R56 results](android/docs/R56-RESULTS.md), [R55 continuation](android/docs/R55-RESULTS.md) and [R54 evidence](android/docs/R54-RESULTS.md); see [Studio instructions](android/docs/BUILD.md). These narrow paths are not full Office compatibility or a rich editor. Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
+This branch adds a bounded plaintext-to-DOCX copy path, an optional simple text-marker-to-formatted-DOCX conversion, and an experimental single-sheet editor with XLSX-copy export. The local sandbox has no Android SDK. Remote API 34 results and the exact status of later changes are recorded in the [R58 report](android/docs/R58-RESULTS.md), [R57 report](android/docs/R57-RESULTS.md), [R56 results](android/docs/R56-RESULTS.md), [R55 continuation](android/docs/R55-RESULTS.md) and [R54 evidence](android/docs/R54-RESULTS.md); see [Studio instructions](android/docs/BUILD.md). These narrow paths are not full Office compatibility or a rich editor. Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
 
 The following R53 section is historical and predates the current Office work.
 

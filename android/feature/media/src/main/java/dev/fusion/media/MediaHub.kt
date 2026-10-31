@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
@@ -74,6 +76,8 @@ private fun ServiceLinksScreen(context: Context) {
     var draft by remember { mutableStateOf("") }
     var candidate by remember { mutableStateOf<ServiceLink?>(null) }
     var status by remember { mutableStateOf("") }
+    val focus = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
     candidate?.let { link ->
         AlertDialog(onDismissRequest = { candidate = null }, title = { Text("Open ${link.service.title} externally?") }, text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -94,8 +98,15 @@ private fun ServiceLinksScreen(context: Context) {
         Text("Use a public video, track, album, playlist, episode or SoundCloud set link. Validation is offline; no connection occurs until you confirm the handoff.")
         OutlinedTextField(draft, { if (it.length <= 2048) draft = it }, label = { Text("HTTPS content link") }, modifier = Modifier.fillMaxWidth().testTag("service-url"), maxLines = 4)
         Button(onClick = {
-            try { candidate = ServiceLink.parse(draft.trim()); status = "Link validated locally." }
-            catch (e: Exception) { status = "Link refused: ${e.message?.take(160)}. No service contacted." }
+            try {
+                val parsed = ServiceLink.parse(draft.trim())
+                // Review has no input field. Clear focus and request keyboard dismissal before
+                // showing its disclosure; Android may still refuse the best-effort request.
+                focus.clearFocus()
+                keyboard?.hide()
+                candidate = parsed
+                status = "Link validated locally."
+            } catch (e: Exception) { status = "Link refused: ${e.message?.take(160)}. No service contacted." }
         }, modifier = Modifier.heightIn(min = 48.dp).testTag("service-preview")) { Text("Review link…") }
         Text(status, Modifier.testTag("service-status"))
         Text("Full embedded service playback remains unaccepted. Spotify's streaming/commercial restrictions and YouTube client-identification requirements cannot honestly be called open-source, anonymous and free for every use case.", style = MaterialTheme.typography.bodySmall)

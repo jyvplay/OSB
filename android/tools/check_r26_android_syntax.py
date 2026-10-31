@@ -80,6 +80,8 @@ FILES = [
     'app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt',  # R57: authored device/provider/UI tests
     'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt',  # R57: actual dialog display capture
     'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt',  # R57: positive and negative text-fit controls
+    'app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt',  # R58: actual grid, recovery and provider checks
+    'app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt',  # R58: actual IME and disclosure
     'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
     'app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt',  # R57: fail-closed cleanup
     'app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt',  # R57: zero/one-cue assertions

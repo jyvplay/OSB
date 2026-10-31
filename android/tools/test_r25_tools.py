@@ -86,6 +86,12 @@ class R25ToolTests(unittest.TestCase):
         self.assertNotIn(':format:png', included)
         self.assertTrue((ROOT/'format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt').is_file())
 
+    def test_r58_capture_group_includes_all_office_workflow_audits(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['r58-office'], capture.FRAME_GROUPS['r57-office'] |
+                         {'r58-text-grid.png', 'r58-service-review.png'})
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r58-office']))
+
     def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
         import hashlib
         receipt=json.loads((ROOT/'docs/research/r25-video-fixture.json').read_text())
