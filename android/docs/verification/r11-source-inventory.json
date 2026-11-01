@@ -3674,13 +3674,13 @@
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "a1ebeb56a1df61788c4f6a7dc2308ec56776de38aeba7dd85c08087fef1bb262"
+      "sha256": "f60f13439899141aca1f2fa7163c5723ae8b8ad7e8c69e13d74d0dbcb0b47d45"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "4bc38618f8fb289cad0d9a62de1200a92d15a1363a2fdab371befaced68edbc2"
+      "sha256": "973238de7fa5b6cd02dc19f3fbb6fe65693b72736fc4a903f5eda709c85eaa5a"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/UnitMatrixSolverWorkbench.kt",
@@ -5780,7 +5780,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetTextGrid.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "2b14b0ee93406775b8802c8c54488722e9ec3bee91ef5cb5d7c223fba8a4d025"
+      "sha256": "3a201f41ce891251c4acafc966530d7428fd9a22ea0cbfc4749bf560dff2e35a"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",

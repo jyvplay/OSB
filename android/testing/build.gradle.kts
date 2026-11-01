@@ -1589,3 +1589,25 @@ tasks.register<JavaExec>("r58Contracts") {
     mainClass.set("dev.fusion.testing.R58Checks")
     args(rootProject.file("testing/build/r58/artifacts").absolutePath)
 }
+
+// R59: explicit restricted numeric-grid mode; independent readers and Android checks are separate.
+val r59 by sourceSets.creating
+kotlin.sourceSets.named("r59") { kotlin.srcDir("src/r59/kotlin") }
+dependencies { add(r59.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r59Contracts") {
+    dependsOn(r59.classesTaskName)
+    classpath = r59.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R59Checks")
+    args(rootProject.file("testing/build/r59/artifacts").absolutePath)
+}
+
+// R59 Writer corpus: actual DOCX generation; python-docx and XML checks remain separate.
+val r59Writer by sourceSets.creating
+kotlin.sourceSets.named("r59Writer") { kotlin.srcDir("src/r59writer/kotlin") }
+dependencies { add(r59Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r59WriterContracts") {
+    dependsOn(r59Writer.classesTaskName)
+    classpath = r59Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R59WriterChecks")
+    args(rootProject.file("testing/build/r59writer/artifacts").absolutePath)
+}

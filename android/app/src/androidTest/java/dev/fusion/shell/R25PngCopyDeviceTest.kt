@@ -86,13 +86,58 @@ class R25PngCopyDeviceTest {
         requireNotNull(device.wait(Until.findObject(By.desc("Show roots")),10000)) {
             "DocumentsUI root drawer unavailable in $pkg"
         }.click()
-        val roots=requireNotNull(device.wait(Until.findObject(By.res(pkg,"container_roots")),10000)) {
+        requireNotNull(device.wait(Until.findObject(By.res(pkg,"container_roots")),10000)) {
             "DocumentsUI root list unavailable in $pkg"
         }
-        val matches=roots.findObjects(By.text(label))
-        check(matches.size==1) {"Expected one $label root, got ${matches.size}; labels=${roots.findObjects(By.text(Pattern.compile(".+"))).map{it.text}}"}
-        matches.single().click()
-        check(device.wait(Until.hasObject(By.text(label)),10000)) {"DocumentsUI did not navigate to $label"}
+        // The root list can appear during its opening animation. Observe the same
+        // accessible bounds, contained in the drawer, before the ONE root tap.
+        fun bounds(rect:android.graphics.Rect) = PickerRootStability.Bounds(rect.left,rect.top,rect.right,rect.bottom)
+        val gate=PickerRootStability()
+        val end=SystemClock.elapsedRealtime()+10000
+        var target:androidx.test.uiautomator.UiObject2?=null
+        var last="no root sample"
+        while(target==null && SystemClock.elapsedRealtime()<end) {
+            try {
+                val roots=device.findObject(By.res(pkg,"container_roots"))
+                val matches=roots?.findObjects(By.text(label)).orEmpty()
+                check(matches.size<=1) {"Ambiguous $label roots: ${matches.size}"}
+                val candidate=matches.singleOrNull()
+                val rootRect=roots?.visibleBounds?.let(::bounds)
+                val targetRect=candidate?.visibleBounds?.let(::bounds)
+                last="root=$rootRect target=$targetRect matches=${matches.size}"
+                if(gate.observe(SystemClock.elapsedRealtime(),rootRect,targetRect)) target=candidate
+            } catch (_:androidx.test.uiautomator.StaleObjectException) {
+                gate.observe(SystemClock.elapsedRealtime(),null,null)
+                last="stale root observation"
+            }
+            if(target==null) SystemClock.sleep(50)
+        }
+        requireNotNull(target) {"No stable, contained $label root in $pkg: $last"}.click()
+        check(device.wait(Until.gone(By.res(pkg,"container_roots")),10000)) {
+            "DocumentsUI drawer remained open after one $label tap: $last"
+        }
+        // The old global By.text(label) could see the label *inside the drawer*.
+        // Only a label under the directory toolbar/header/breadcrumb is a title.
+        fun isDirectoryTitle(node:androidx.test.uiautomator.UiObject2):Boolean {
+            var item:androidx.test.uiautomator.UiObject2?=node
+            repeat(10) {
+                val current=item ?: return false
+                if(current.resourceName in setOf("$pkg:id/toolbar","$pkg:id/horizontal_breadcrumb","$pkg:id/directory_header")) return true
+                item=current.parent
+            }
+            return false
+        }
+        val deadline=SystemClock.elapsedRealtime()+10000
+        var title=false
+        while(!title && SystemClock.elapsedRealtime()<deadline) {
+            try { title=device.findObjects(By.text(label)).any(::isDirectoryTitle) }
+            catch (_:androidx.test.uiautomator.StaleObjectException) { title=false }
+            if(!title) SystemClock.sleep(50)
+        }
+        check(title) {
+            val observed=device.findObjects(By.text(Pattern.compile(".+"))).take(18).map {"${it.text} id=${it.resourceName}"}
+            "DocumentsUI drawer closed but directory title $label was not observed; text=$observed"
+        }
     }
     private data class PickerGridItem(val grid:androidx.test.uiautomator.UiObject2, val item:androidx.test.uiautomator.UiObject2)
     private fun containingGridItem(preview:androidx.test.uiautomator.UiObject2, fixture:String):PickerGridItem {
