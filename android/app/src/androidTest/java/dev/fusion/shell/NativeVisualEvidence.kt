@@ -115,23 +115,34 @@ object NativeVisualEvidence {
             .put("preview_filter","bilinear downsample; original app-window PNG retained")
             .put("scope","One actual native page/frame, not all pages/states or beauty/AX acceptance").toString(2))
     }
+    /** Requires both unclipped and actually visible dimensions; a clipped target cannot borrow its hitbox. */
+    fun assertMinimumTarget(compose: ComposeContentTestRule, tag: String): JSONObject {
+        val node = compose.onNodeWithTag(tag).assertIsDisplayed()
+        val bounds = node.getUnclippedBoundsInRoot()
+        val visible = node.fetchSemanticsNode().boundsInRoot
+        val widthDp = (bounds.right - bounds.left).value
+        val heightDp = (bounds.bottom - bounds.top).value
+        val density = compose.density.density
+        val visibleWidthDp = visible.width / density
+        val visibleHeightDp = visible.height / density
+        assertTrue("$tag must be at least 48dp: full=${widthDp}x${heightDp}dp, visible=${visibleWidthDp}x${visibleHeightDp}dp",
+            widthDp >= 47.99f && heightDp >= 47.99f && visibleWidthDp >= 47.99f && visibleHeightDp >= 47.99f)
+        return JSONObject().put("tag", tag).put("width_dp", widthDp).put("height_dp", heightDp)
+            .put("visible_width_dp", visibleWidthDp).put("visible_height_dp", visibleHeightDp)
+    }
+
     /** Dialogs occupy a separate window: use a real whole-display capture, only on the disposable AVD. */
-    fun captureDialogDisplay(compose: ComposeContentTestRule, activity: Activity, name: String, tag: String) {
+    fun captureDialogDisplay(compose: ComposeContentTestRule, activity: Activity, name: String, tag: String, additionalTags: List<String> = emptyList()) {
         require(NativeCaptureNames.dialog(name)) { "Unsupported dialog capture filename" }
+        require(additionalTags.size <= 8 && (listOf(tag) + additionalTags).distinct().size == additionalTags.size + 1)
         compose.waitForIdle()
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         check(InstrumentationRegistry.getArguments().getString("fusionDisposable") == "true" && android.os.Build.HARDWARE in setOf("ranchu", "goldfish")) {
             "Whole-display capture is restricted to an explicitly opted-in disposable emulator"
         }
         val density = activity.resources.displayMetrics.density
-        val node = compose.onNodeWithTag(tag).assertIsDisplayed()
-        val bounds = node.getUnclippedBoundsInRoot()
-        val visible = node.fetchSemanticsNode().boundsInRoot
-        val widthDp = (bounds.right - bounds.left).value
-        val heightDp = (bounds.bottom - bounds.top).value
-        val visibleWidthDp = visible.width / density
-        val visibleHeightDp = visible.height / density
-        assertTrue(widthDp >= 47.99f && heightDp >= 47.99f && visibleWidthDp >= 47.99f && visibleHeightDp >= 47.99f)
+        val targets = JSONArray()
+        (listOf(tag) + additionalTags).forEach { targets.put(assertMinimumTarget(compose, it)) }
         val folder = InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let(::File)
             ?: File(instrumentation.targetContext.getExternalFilesDir(null), "r24c-native-captures")
         check(folder.exists() || folder.mkdirs())
@@ -148,11 +159,9 @@ object NativeVisualEvidence {
             Canvas(scaled).drawBitmap(raw, null, Rect(0, 0, width, height), Paint(Paint.FILTER_BITMAP_FLAG))
             File(folder, "$name.png").outputStream().use { assertTrue(scaled.compress(Bitmap.CompressFormat.PNG, 100, it)) }
         } finally { scaled.recycle(); raw.recycle() }
-        val target = JSONObject().put("tag", tag).put("width_dp", widthDp).put("height_dp", heightDp)
-            .put("visible_width_dp", visibleWidthDp).put("visible_height_dp", visibleHeightDp)
         audit.writeText(JSONObject().put("schema", 1).put("origin", "android-instrumentation")
             .put("api", android.os.Build.VERSION.SDK_INT).put("density", density)
-            .put("font_scale", activity.resources.configuration.fontScale).put("required_targets", JSONArray().put(target))
+            .put("font_scale", activity.resources.configuration.fontScale).put("required_targets", targets)
             .put("native_image_width", rawWidth).put("native_image_height", rawHeight)
             .put("preview_width", width).put("preview_height", height).put("preview_filter", "bilinear downsample; whole-display original retained")
             .put("capture_api", "UiDevice.takeScreenshot whole display, disposable AVD only; includes the separate dialog window")

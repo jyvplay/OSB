@@ -56,6 +56,8 @@ class R58SheetDeviceTest {
     private fun inputAndReview(raw: String) {
         click("sheet-text-grid")
         compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement(raw)
+        NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-preview")
+        NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-input-cancel")
         click("sheet-text-grid-preview")
         compose.waitUntil(15_000) { sheet().state.value.textGridPreview != null }
     }
@@ -97,7 +99,7 @@ class R58SheetDeviceTest {
         val sheetModel = sheet()
         compose.runOnUiThread { sheetModel.updateInput("must not replace pending input") }
         assertFalse(sheet().state.value.unapplied)
-        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-text-grid", "sheet-text-grid-apply")
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-text-grid", "sheet-text-grid-apply", listOf("sheet-text-grid-cancel"))
         click("sheet-text-grid-cancel")
         assertSame("Cancel must preserve original draft", before, sheet().state.value.data.draft)
         inputAndReview(raw)

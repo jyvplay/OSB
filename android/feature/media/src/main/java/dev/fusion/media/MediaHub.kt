@@ -90,8 +90,8 @@ private fun ServiceLinksScreen(context: Context) {
             runCatching { context.startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, Uri.parse(link.url)), "Open official ${link.service.title} player")) }
                 .onSuccess { status = "Handoff requested. Fusion cannot verify external playback." }
                 .onFailure { status = "No compatible external player/browser available." }
-        }, modifier = Modifier.testTag("service-confirm-open")) { Text("Open external player") } },
-            dismissButton = { TextButton(onClick = { candidate = null }, modifier = Modifier.testTag("service-cancel")) { Text("Cancel") } })
+        }, modifier = Modifier.heightIn(min = 48.dp).testTag("service-confirm-open")) { Text("Open external player") } },
+            dismissButton = { TextButton(onClick = { candidate = null }, modifier = Modifier.heightIn(min = 48.dp).testTag("service-cancel")) { Text("Cancel") } })
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("YouTube · Spotify · SoundCloud", style = MaterialTheme.typography.titleLarge)

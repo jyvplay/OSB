@@ -188,15 +188,16 @@ fun SheetScreen(
             val focus = LocalFocusManager.current
             val keyboard = LocalSoftwareKeyboardController.current
             TextButton(onClick = { focus.clearFocus(); keyboard?.hide(); model.previewTextGrid(textGridInput) },
-                enabled = !state.busy && textGridInput.isNotEmpty(), modifier = Modifier.testTag("sheet-text-grid-preview")) { Text("Review changes") }
+                enabled = !state.busy && textGridInput.isNotEmpty(), modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-preview")) { Text("Review changes") }
         },
-        dismissButton = { TextButton(onClick = { showTextGridInput = false; textGridInput = "" }, enabled = !state.busy) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = { showTextGridInput = false; textGridInput = "" }, enabled = !state.busy,
+            modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-input-cancel")) { Text("Cancel") } },
     )
     state.textGridPreview?.let { plan ->
         AlertDialog(onDismissRequest = model::cancelTextGridPreview, title = { Text("Apply text grid?") },
             text = { Text("${plan.rows} rows × ${plan.columns} columns from ${plan.anchor}: ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged. All nonempty fields are text. This changes the local draft as one undo step; it does not save an external file.") },
-            confirmButton = { TextButton(onClick = model::acceptTextGrid, modifier = Modifier.testTag("sheet-text-grid-apply")) { Text("Apply grid") } },
-            dismissButton = { TextButton(onClick = model::cancelTextGridPreview, modifier = Modifier.testTag("sheet-text-grid-cancel")) { Text("Cancel") } })
+            confirmButton = { TextButton(onClick = model::acceptTextGrid, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-apply")) { Text("Apply grid") } },
+            dismissButton = { TextButton(onClick = model::cancelTextGridPreview, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-cancel")) { Text("Cancel") } })
     }
     pendingSelection?.let { target ->
         AlertDialog(onDismissRequest = { pendingSelection = null }, title = { Text("Discard unapplied cell input?") },

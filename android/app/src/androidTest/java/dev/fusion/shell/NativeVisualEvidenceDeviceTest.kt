@@ -1,7 +1,9 @@
 package dev.fusion.shell
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -31,6 +33,20 @@ class NativeVisualEvidenceDeviceTest {
         listOf("r58-../outside", "../r58-text-grid", "r59-text-grid", "r58-", "r58-" + "a".repeat(41), "r58-A").forEach {
             assertFalse("Expected filename refusal: $it", NativeCaptureNames.dialog(it))
         }
+    }
+
+    @Test fun minimumTargetCheckerAcceptsFortyEightDpAndRejectsThirtyTwoDp() {
+        compose.setContent {
+            Column {
+                Box(Modifier.size(48.dp).testTag("target-good")) { }
+                Box(Modifier.size(32.dp).testTag("target-small")) { }
+            }
+        }
+        NativeVisualEvidence.assertMinimumTarget(compose, "target-good")
+        val error = runCatching { NativeVisualEvidence.assertMinimumTarget(compose, "target-small") }.exceptionOrNull()
+        assertTrue("A 32dp target must fail the geometry check, got $error", error is AssertionError)
+        val detail = error?.message.orEmpty()
+        assertTrue("Failure must include measured dimensions", detail.contains("target-small") && detail.contains("32"))
     }
 
     @Test fun textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText() {

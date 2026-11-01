@@ -94,7 +94,7 @@ class R24MapAndServiceDeviceTest {
         compose.onNodeWithText("https://www.youtube.com/watch?v=abcdefghijk").assertExists()
         compose.onNodeWithTag("service-confirm-open").assertIsDisplayed()
         compose.onNodeWithTag("service-cancel").assertIsDisplayed()
-        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-service-review", "service-confirm-open")
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-service-review", "service-confirm-open", listOf("service-cancel"))
         click("service-cancel")
         compose.onNodeWithTag("service-url").performScrollTo().performTextReplacement("https://youtube.com.evil.test/watch?v=abcdefghijk")
         click("service-preview")

@@ -72,7 +72,10 @@ object R58Checks {
         refuses("101 rows") { Paste.prepare(Sheet.empty(), "A1", "$rows\nx") }
         val maxGrid = (1..16).joinToString("\n") { (1..16).joinToString("\t") { "x" } }
         verify(Paste.prepare(Sheet.empty(), "A1", maxGrid).calculated.draft.cells.size == 256, "exact 256 populated cells")
-        refuses("257 fields") { Paste.prepare(Sheet.empty(), "A1", (1..257).joinToString("\n") { "x" }) }
+        // A 17×16 rectangle exceeds 256 fields without hitting the row/column limits first.
+        val overFieldLimit = (1..17).joinToString("\n") { (1..16).joinToString("\t") { "x" } }
+        val fieldError = runCatching { Paste.prepare(Sheet.empty(), "A1", overFieldLimit) }.exceptionOrNull()
+        verify(fieldError is IllegalArgumentException && fieldError.message == "Text grid exceeds 256 fields", "field budget, not row/column refusal")
         verify(Paste.prepare(Sheet.empty(), "A1", "x".repeat(4096)).calculated.draft.cells["A1"]?.input?.length == 4096, "exact cell byte boundary")
         refuses("cell over character limit") { Paste.prepare(Sheet.empty(), "A1", "x".repeat(4097)) }
         refuses("cell over UTF-8 byte limit") { Paste.prepare(Sheet.empty(), "A1", "é".repeat(2049)) }
