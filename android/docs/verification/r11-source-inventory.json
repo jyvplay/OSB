@@ -5750,7 +5750,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "e30dc377274335c9028551879702ed69b10ff0fb43d0928d224b1d37819a03b2"
+      "sha256": "599669619d26bb4137362fc121be3c932e6d56a7ae0d771252889ae1c5ed77e3"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/MergedCells.kt",

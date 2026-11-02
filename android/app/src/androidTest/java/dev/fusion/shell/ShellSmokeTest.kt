@@ -47,6 +47,14 @@ class ShellSmokeTest {
                     it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.joinToString { text -> text.text }
                 }
             }.getOrElse { listOf("unavailable:${it.javaClass.simpleName}") }
+            val routineInput = runCatching {
+                compose.onAllNodesWithTag("routine-script", useUnmergedTree = true).fetchSemanticsNodes().map {
+                    it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.EditableText)?.text
+                }
+            }.getOrElse { listOf("unavailable:${it.javaClass.simpleName}") }
+            val runEnabled = runCatching {
+                compose.onAllNodesWithTag("routine-run").fetchSemanticsNodes().map { isEnabled().matches(it) }
+            }.getOrElse { listOf(false) }
             var desktopStatus = "unavailable"
             runCatching {
                 compose.activityRule.scenario.onActivity { activity ->
@@ -55,7 +63,7 @@ class ShellSmokeTest {
                     desktopStatus = "loading=${model.loading} blocked=${model.blocked} status=${model.status} workspace=${desk.workspace} active=${desk.activeId} windows=${desk.windows.map { "${it.module}:${it.workspace}:${it.minimized}" }}"
                 }
             }
-            throw AssertionError("Calculator missing after local plan; routine=$routineStatus; desktop=$desktopStatus", failure)
+            throw AssertionError("Calculator missing after local plan; routine=$routineStatus input=$routineInput runEnabled=$runEnabled; desktop=$desktopStatus", failure)
         }
         compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
     }

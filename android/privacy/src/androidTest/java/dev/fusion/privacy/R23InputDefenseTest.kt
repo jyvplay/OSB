@@ -72,7 +72,13 @@ class R23InputDefenseTest {
         ActivityScenario.launch(TouchCodeActivity::class.java).use { s ->
             focused(s); click("touch_key_7")
             s.onActivity { a ->
-                val output = a.findViewById<TextView>(R.id.touch_code_output)
+                val output = a.findViewById<TextView>(R.id.touch_code_output) ?: run {
+                    // Failure-only observation. Never restart the pad or repeat the digit action.
+                    val labels = allViews(a.window.decorView).filterIsInstance<TextView>()
+                        .map { it.text.toString().take(180) }.take(8)
+                    throw AssertionError("Touch pad absent after one digit tap; focus=${a.hasWindowFocus()} " +
+                        "lifecycle=${s.state} restartVisible=${a.findViewById<View>(R.id.restart_workspace) != null} labels=$labels")
+                }
                 assertEquals("• (1/64)", output.text.toString())
                 assertNull(output.onCreateInputConnection(EditorInfo()))
                 assertFalse(output.onCheckIsTextEditor())
