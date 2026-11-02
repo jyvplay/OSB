@@ -272,13 +272,13 @@
       "path": "app/src/main/java/dev/fusion/shell/MainActivity.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "4fafd8f835d10ccb4c76f0a4f410e04f9d2a44004daa300363a1d9d6b914ac78"
+      "sha256": "cc4104d1723bc8a3234e01a8795e978377b0fcb747d30e4f3d052894ef957c56"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt",
       "module": ":app",
       "package": "dev.fusion.shell",
-      "sha256": "13ea2975f4a95d548cbeb2799bc777692492c9e801d910d03e4080f9a0d22cde"
+      "sha256": "feb8d24ebf0d8ea6c6765fdc554e8195395e48f203f459bfb09e97c6c0856402"
     },
     {
       "path": "app/src/main/java/dev/fusion/shell/PngCopyActivity.kt",
@@ -873,6 +873,12 @@
       "module": ":core:documents",
       "package": "dev.fusion.documents",
       "sha256": "f5f02a62a03fb242cae25f7aca1204839a8f27840a31e8f586cdf9ff1e0994a1"
+    },
+    {
+      "path": "core/documents/src/main/kotlin/dev/fusion/documents/WriterCopyConsent.kt",
+      "module": ":core:documents",
+      "package": "dev.fusion.documents",
+      "sha256": "72f931bcbe37d42486271a27f11436b01f98807070f426e511e3a2fac13eea30"
     },
     {
       "path": "core/documents/src/main/kotlin/dev/fusion/documents/WriterSectionColumnsPageLayout.kt",
@@ -2462,7 +2468,7 @@
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt",
       "module": ":feature:editor",
       "package": "dev.fusion.editor",
-      "sha256": "ab3b9fd23cd73ce077bb7be2c271264484a8888ab10b987f0ca00781c115b0cd"
+      "sha256": "1b0f97c1dc8742b6b9819553760f29d2a12648b17cd2c0d60e1cf656bbb5c86a"
     },
     {
       "path": "feature/editor/src/main/java/dev/fusion/editor/EditorSelectionContextMenuPlanner.kt",
@@ -3674,13 +3680,13 @@
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "f60f13439899141aca1f2fa7163c5723ae8b8ad7e8c69e13d74d0dbcb0b47d45"
+      "sha256": "93ab679a829eb7ef9c8bcc202115d1a8d8d025d9b7974ceef5a217e4f149d4ab"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt",
       "module": ":feature:calc",
       "package": "dev.fusion.calc",
-      "sha256": "973238de7fa5b6cd02dc19f3fbb6fe65693b72736fc4a903f5eda709c85eaa5a"
+      "sha256": "ec87c701e80fcdf248827f594e373c6cbd4199cc49475157597f55de04868e18"
     },
     {
       "path": "feature/calc/src/main/java/dev/fusion/calc/UnitMatrixSolverWorkbench.kt",
@@ -5780,7 +5786,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetTextGrid.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "3a201f41ce891251c4acafc966530d7428fd9a22ea0cbfc4749bf560dff2e35a"
+      "sha256": "c11786cb3e7d37937f0a01d6bea48f9e154c26970370a955976c0be8f049f3ff"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/Ooxml.kt",
@@ -5930,7 +5936,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredWriterDocx.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "1a8e70f0e9b018db4b3dd1015e67797bd352f6152d93a8a2e34f92b51c59fed4"
+      "sha256": "48825072e95e4a526eece4dc94372fa9c67d095f7ff793799b626570c6e54751"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilterEvaluator.kt",

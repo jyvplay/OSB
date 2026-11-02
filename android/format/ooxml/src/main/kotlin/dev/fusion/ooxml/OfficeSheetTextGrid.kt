@@ -11,6 +11,8 @@ import java.math.BigDecimal
  * record separator is ignored. Empty fields clear cells. The default mode keeps
  * all other fields as TEXT. Optional decimal mode converts only a restricted,
  * unquoted decimal grammar; no pasted input is ever interpreted as a formula.
+ * A separate opt-in transposes the already parsed rectangle before placement;
+ * original quotedness, source budgets and destination bounds still apply.
  */
 object OfficeSheetTextGrid {
     const val MAX_INPUT_BYTES = 64 * 1024
@@ -33,20 +35,27 @@ object OfficeSheetTextGrid {
         val numericFields: Int,
         val textFields: Int,
         val emptyFields: Int,
+        val transposed: Boolean,
     ) {
         val changed: Int get() = inserted + replaced + cleared
         fun isCurrent(draft: OfficeSheetDraft.Draft, selected: String): Boolean =
             draft === original && selected == anchor
     }
 
-    fun prepare(draft: OfficeSheetDraft.Draft, rawAnchor: String, raw: String, mode: Mode = Mode.TEXT_ONLY): Preview {
+    // Preserve the original public entry point and its non-transposing default.
+    fun prepare(draft: OfficeSheetDraft.Draft, rawAnchor: String, raw: String, mode: Mode = Mode.TEXT_ONLY): Preview =
+        prepare(draft, rawAnchor, raw, mode, transpose = false)
+
+    fun prepare(draft: OfficeSheetDraft.Draft, rawAnchor: String, raw: String, mode: Mode, transpose: Boolean): Preview {
         val anchor = OfficeSheetDraft.address(rawAnchor)
         require(raw.isNotEmpty()) { "Enter a text grid before previewing" }
         // For valid UTF-8, UTF-16 code units cannot exceed the number of bytes.
         require(raw.length <= MAX_INPUT_BYTES) { "Text grid exceeds 64 KiB" }
         OfficeSheetDraft.validateXml(raw)
         require(OfficeSheetDraft.utf8(raw).size <= MAX_INPUT_BYTES) { "Text grid exceeds 64 KiB UTF-8" }
-        val records = parse(raw)
+        val parsed = parse(raw)
+        // A bounded rectangular transpose retains each field's quotedness for the decimal policy.
+        val records = if (transpose) List(parsed.first().size) { x -> List(parsed.size) { y -> parsed[y][x] } } else parsed
         val rowCount = records.size
         val columnCount = records.first().size
         val startColumn = anchor[0] - 'A'
@@ -85,7 +94,7 @@ object OfficeSheetTextGrid {
             OfficeSheetDraft.restore(draft.revision + 1, cells)
         }
         return Preview(draft, anchor, calculated, rowCount, columnCount, inserted, replaced, cleared, unchanged,
-            mode, numericFields, textFields, emptyFields)
+            mode, numericFields, textFields, emptyFields, transpose)
     }
 
     /** Canonical decimal round-trip is not exact representation of a binary64 value. */

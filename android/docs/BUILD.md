@@ -1,3 +1,30 @@
+# R60 — current bounded Writer and spreadsheet checks
+
+Use the Android Studio/JDK/SDK instructions immediately below. For the extra Writer option, open **Editor → Export DOCX copy… → Format simple text markers instead…**, then scroll to the default-off numbered-line checkbox. It recognizes exactly `1. ` followed by at least one character, not arbitrary numbers or indented lists. All matched paragraphs share one DOCX list instance; separated groups may continue rather than restart. Plain export and the default formatted export keep numbered prefixes literal. The current draft and revision are rechecked when confirming; if changed, review again. See [R60](R60-RESULTS.md) for actual outcomes and gaps, not a full rich-editor or Office compatibility claim.
+
+Host-only reproduction (the tool cache is not bundled in the APK):
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+# POSIX shell; Java in this cache is an old disposable host JRE, not a Studio JDK.
+eval "$(python3 tools/bootstrap_host_tools.py env)"
+python3 -m pip install --target "$HOME/.cache/fusion-r60-readers" python-docx==1.2.0
+export PYTHONPATH="tools:$HOME/.cache/fusion-r60-readers:$PYTHONPATH"
+python3 tools/run_r60_writer.py
+python3 tools/check_r60_writer_reference.py
+python3 -m unittest test_r60_writer_reference -v
+python3 tools/run_r22_contracts.py
+# The comparison reads the pinned prior OSB revision from local Git history.
+python3 tools/run_r60_xlsx_differential.py
+python3 tools/run_r22_interop.py
+```
+
+For spreadsheet transposition, open **Spreadsheet → Paste text grid…** and select **Swap rows and columns**. The option is off on each new review. Parsing and source limits apply before the swap; the swapped rectangle must also fit A1–Z100. Quoted-number classification and blank clearing are preserved. Review the impact before the single undoable apply. Run `python3 tools/run_r60_sheet.py`, `python3 tools/check_r60_sheet_reference.py` and `python3 -m unittest test_r60_sheet_reference -v` for host checks.
+
+The corresponding Studio/CI JVM tasks are `./gradlew :testing:r60WriterContracts :testing:r60SheetContracts`; the real API34 tests are in `R54OfficeDeviceTest` and `R59SheetDeviceTest` and require explicit disposable-emulator consent. Host timing is not Android performance or Office rendering evidence. [R59](R59-RESULTS.md) retains earlier failures and repeat gates.
+
+---
+
 # R54 — Android Studio and bounded Office evaluation
 
 Open **`OSB/android/`**, not the legacy root web project, in Android Studio Rabbit 1. Use a maintained full JDK 17, install SDK `platforms;android-37.0` and build-tools `36.0.0`, and let the pinned Gradle wrapper resolve the project. From `android/`, the intended debug build is:
@@ -8,7 +35,7 @@ Open **`OSB/android/`**, not the legacy root web project, in Android Studio Rabb
 ./gradlew :app:installProDebug
 ```
 
-The new Android code has **not been built or run locally in the current sandbox**. Check the exact CI result for this revision before treating these commands as a verified build. It is an experimental debug app, not an accepted release. In the app, open **Editor** → New → type text → **Export DOCX copy…**. The default export keeps markers literal. The disclosure also offers an explicitly optional **Format simple text markers instead…** path: limited headings, bullets, quotes, bold, italic and monospace are converted as described in the next confirmation; ambiguous inline markers stay literal. This is not a rich editor or full Markdown. Or open **Spreadsheet** → explicitly enable the experiment → select a cell, choose its type, enter a value/formula, **Apply cell**, then **Export XLSX copy…**. **Paste text grid…** lets you enter or paste a bounded tab-delimited rectangle, review its exact impact and apply it as one undo step; empty fields clear cells and every nonempty field stays text, including `=...`. It supports only the documented quoted-field grammar and does not import formatting or formulas. Android execution of this new flow must be checked in [R58](R58-RESULTS.md). Exports go to newly chosen files, not the original; use disposable data. The spreadsheet has one bounded sheet, limited formulas, no Office import/styles/charts, process-local unapplied input/undo, and unverified provider guarantees.
+The new Android code has **not been built or run locally in the current sandbox**. Check the exact CI result for this revision before treating these commands as a verified build. It is an experimental debug app, not an accepted release. In the app, open **Editor** → New → type text → **Export DOCX copy…**. The default export keeps markers literal. The disclosure also offers an explicitly optional **Format simple text markers instead…** path: limited headings, bullets, quotes, bold, italic and monospace are converted as described in the next confirmation; ambiguous inline markers stay literal. This is not a rich editor or full Markdown. Or open **Spreadsheet** → explicitly enable the experiment → select a cell, choose its type, enter a value/formula, **Apply cell**, then **Export XLSX copy…**. **Paste text grid…** lets you enter or paste a bounded tab-delimited rectangle, review its exact impact and apply it as one undo step; empty fields clear cells and, by default, nonempty fields stay text. A separate opt-in interprets only restricted round-trip decimals; pasted `=...` never becomes a formula. It supports only the documented quoted-field grammar and does not import formatting or formulas. Android execution of this new flow must be checked in [R58](R58-RESULTS.md). Exports go to newly chosen files, not the original; use disposable data. The spreadsheet has one bounded sheet, limited formulas, no Office import/styles/charts, process-local unapplied input/undo, and unverified provider guarantees.
 
 SDK-free host checks (they do not run Android):
 

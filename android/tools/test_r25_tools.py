@@ -92,6 +92,17 @@ class R25ToolTests(unittest.TestCase):
                          {'r58-text-grid.png', 'r58-service-review.png'})
         self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r58-office']))
 
+    def test_r60_capture_group_and_office_workflow_include_both_new_frames(self):
+        import r24c_capture as capture
+        added = {'r60-writer-numbered.png', 'r60-sheet-transpose.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r60-office'], capture.FRAME_GROUPS['r59-office'] | added)
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r60-office']))
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
+            with self.assertRaises(ValueError):
+                capture.export(0, name)  # The unrelated legacy group cannot relabel these captures.
+
     def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
         import hashlib
         receipt=json.loads((ROOT/'docs/research/r25-video-fixture.json').read_text())

@@ -3,6 +3,7 @@ package dev.fusion.editor
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +28,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -44,6 +47,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
@@ -58,7 +62,7 @@ fun EditorScreen(
     officeExportStatus: String = "",
     officeExportBusy: Boolean = false,
     onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
-    onExportStructuredDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)? = null,
     onSaveCopy: (CopyPickerRequest) -> Unit,
 ) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -71,7 +75,9 @@ fun EditorScreen(
     LaunchedEffect(toolsOpen,active?.id) { if(!toolsOpen && active != null) editorFocus.requestFocus() }
     var copyConfirmId by remember { mutableStateOf<String?>(null) }
     var docxConfirmId by remember { mutableStateOf<String?>(null) }
-    var structuredDocxConfirmId by remember { mutableStateOf<String?>(null) }
+    var structuredDocxConsent by remember { mutableStateOf<dev.fusion.documents.WriterCopyConsent?>(null) }
+    var numberedLines by remember { mutableStateOf(false) }
+    var docxNotice by remember { mutableStateOf("") }
     var retryConfirm by remember { mutableStateOf(false) }
     var retryConfirmId by remember { mutableStateOf<String?>(null) }
     var abandoningCopy by remember { mutableStateOf(false) }
@@ -129,6 +135,7 @@ fun EditorScreen(
         if (state.loading || state.busy || state.toolsBusy) CircularProgressIndicator()
         Text(state.status, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         if (officeExportStatus.isNotEmpty()) Text(officeExportStatus, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        if (docxNotice.isNotEmpty()) Text(docxNotice, Modifier.semantics { liveRegion = LiveRegionMode.Polite }.testTag("writer-export-notice"))
         if (pendingCopy != null) {
             Text("Frozen copy: ${pendingCopy.name}. State: ${pendingCopy.stage}. Retry invalidates older results and keeps the original frozen payload. Inspect any partial destination first; no in-place replay or automatic deletion.")
             FlowRow(Modifier.fillMaxWidth()) {
@@ -194,8 +201,18 @@ fun EditorScreen(
         AlertDialog(onDismissRequest={ docxConfirmId=null }, title={ Text("Export plain text as DOCX?") },
             text={ Column(Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) {
                 Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.")
-                if (onExportStructuredDocx != null) TextButton(onClick={ docxConfirmId=null; structuredDocxConfirmId=id },
-                    modifier=Modifier.testTag("writer-structured-option")) { Text("Format simple text markers instead…") }
+                if (onExportStructuredDocx != null) TextButton(onClick={
+                    docxConfirmId=null
+                    numberedLines=false
+                    val current=model.state.value
+                    val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
+                    val buffer=current.buffers[id]
+                    if (doc!=null && buffer!=null && buffer.content==doc.content && !current.loading && !current.busy && !current.toolsBusy &&
+                        !current.recoveryBlocked && current.session.pendingCopy==null && !officeExportBusy) {
+                        docxNotice=""
+                        structuredDocxConsent=dev.fusion.documents.WriterCopyConsent(doc,buffer.revision)
+                    } else docxNotice="Draft or editor state changed. Review the export again."
+                }, modifier=Modifier.testTag("writer-structured-option")) { Text("Format simple text markers instead…") }
             } },
             confirmButton={ TextButton(onClick={
                 docxConfirmId=null
@@ -205,16 +222,30 @@ fun EditorScreen(
             }) { Text("Choose destination") } },
             dismissButton={ TextButton(onClick={ docxConfirmId=null }) { Text("Cancel") } })
     }
-    structuredDocxConfirmId?.let { id ->
-        AlertDialog(onDismissRequest={ structuredDocxConfirmId=null }, title={ Text("Export formatted DOCX copy?") },
-            text={ Text("Not a rich editor or full Markdown. Draft stays unchanged; choose a new file. Provider identity and atomicity aren't guaranteed. One paragraph per line. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs anywhere. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. CR/LF normalizes. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState()).testTag("writer-structured-disclosure")) },
+    structuredDocxConsent?.let { consent ->
+        AlertDialog(onDismissRequest={ structuredDocxConsent=null }, title={ Text("Export formatted DOCX copy?") },
+            text={ Column(Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) {
+                Text("Not a rich editor or full Markdown. Draft unchanged; choose a new file. Provider identity and atomicity aren't guaranteed. One paragraph per line; CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
+                Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=numberedLines, role=Role.Checkbox, onValueChange={ numberedLines=it })
+                    .testTag("writer-numbered-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=numberedLines, onCheckedChange=null)
+                    Text("Also format '1. ' lines with at least one following character as numbered items. They share one list; separated groups may continue. '2. ' and indented lines stay text.", Modifier.testTag("writer-numbered-disclosure"))
+                }
+            } },
             confirmButton={ TextButton(onClick={
-                structuredDocxConfirmId=null
+                structuredDocxConsent=null
                 val current=model.state.value
+                val id=consent.documentId
                 val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
-                if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportStructuredDocx?.invoke(doc)
+                val buffer=current.buffers[id]
+                if (doc!=null && buffer!=null && buffer.content==doc.content && consent.permits(doc,buffer.revision) &&
+                    !current.loading && !current.busy && !current.toolsBusy && !current.recoveryBlocked &&
+                    current.session.pendingCopy==null && !officeExportBusy) {
+                    docxNotice=""
+                    onExportStructuredDocx?.invoke(doc,numberedLines)
+                } else docxNotice="Draft or editor state changed. Review the export again."
             }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-confirm")) { Text("Choose destination") } },
-            dismissButton={ TextButton(onClick={ structuredDocxConfirmId=null }) { Text("Cancel") } })
+            dismissButton={ TextButton(onClick={ structuredDocxConsent=null }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-cancel")) { Text("Cancel") } })
     }
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",
         onDismiss={ copyConfirmId=null },onConfirm={ copyConfirmId=null; if (!officeExportBusy) model.prepareCopy(id,onSaveCopy) }) }

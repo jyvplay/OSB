@@ -34,7 +34,7 @@ jobs:
       - name: Install and check Android platform and managed-emulator components
         run: bash tools/install_r54_sdk.sh
       - name: Compile Android and run actual JVM contracts
-        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts :testing:r58Contracts :testing:r59Contracts :testing:r59WriterContracts
+        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts :testing:r58Contracts :testing:r59Contracts :testing:r59WriterContracts :testing:r60WriterContracts :testing:r60SheetContracts
       - name: Independent document readers and formula comparison (host-only, not bundled)
         run: |
           python3 -m pip install --user openpyxl==3.1.5 python-docx==1.2.0 formualizer==0.13.0
@@ -45,7 +45,9 @@ jobs:
           python3 tools/check_r58_reference.py
           python3 tools/check_r59_reference.py
           python3 tools/check_r59_writer_reference.py
-          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference test_r59_reference test_r59_writer_reference -v
+          python3 tools/check_r60_writer_reference.py
+          python3 tools/check_r60_sheet_reference.py
+          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference test_r59_reference test_r59_writer_reference test_r60_writer_reference test_r60_sheet_reference -v
       - name: Enable KVM for the disposable managed emulator
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -84,6 +86,8 @@ jobs:
             android/testing/build/r58/artifacts/**
             android/testing/build/r59/artifacts/**
             android/testing/build/r59writer/artifacts/**
+            android/testing/build/r60writer/artifacts/**
+            android/testing/build/r60sheet/artifacts/**
       - name: Upload evaluation APK
         if: success()
         uses: actions/upload-artifact@v4
@@ -99,7 +103,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png, r58-text-grid.png, r58-service-review.png, r59-typed-grid.png]
+        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png, r58-text-grid.png, r58-service-review.png, r59-typed-grid.png, r60-writer-numbered.png, r60-sheet-transpose.png]
     defaults:
       run:
         working-directory: android

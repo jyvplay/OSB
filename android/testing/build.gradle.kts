@@ -1611,3 +1611,28 @@ tasks.register<JavaExec>("r59WriterContracts") {
     mainClass.set("dev.fusion.testing.R59WriterChecks")
     args(rootProject.file("testing/build/r59writer/artifacts").absolutePath)
 }
+
+// R60: explicit numbered-line Writer opt-in and revision-bound consent; external reader and Android checks are separate.
+val r60Writer by sourceSets.creating
+kotlin.sourceSets.named("r60Writer") { kotlin.srcDir("src/r60writer/kotlin") }
+dependencies {
+    add(r60Writer.implementationConfigurationName, project(":format:ooxml"))
+    add(r60Writer.implementationConfigurationName, project(":core:documents"))
+}
+tasks.register<JavaExec>("r60WriterContracts") {
+    dependsOn(r60Writer.classesTaskName)
+    classpath = r60Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R60WriterChecks")
+    args(rootProject.file("testing/build/r60writer/artifacts").absolutePath)
+}
+
+// R60: bounded transposed grid preview; independent XLSX and API34 checks remain separate.
+val r60Sheet by sourceSets.creating
+kotlin.sourceSets.named("r60Sheet") { kotlin.srcDir("src/r60sheet/kotlin") }
+dependencies { add(r60Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r60SheetContracts") {
+    dependsOn(r60Sheet.classesTaskName)
+    classpath = r60Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R60SheetChecks")
+    args(rootProject.file("testing/build/r60sheet/artifacts").absolutePath)
+}

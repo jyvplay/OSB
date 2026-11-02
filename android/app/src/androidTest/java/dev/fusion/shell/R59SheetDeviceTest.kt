@@ -72,6 +72,69 @@ class R59SheetDeviceTest {
         finally { resolver.delete(uri, null, null) }
     }
 
+    @Test fun transposeOptInPreviewCancelApplyUndoAndProviderReadback() {
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        click("shelf-spreadsheet")
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("window-actions-spreadsheet").performClick()
+        compose.onNodeWithText("Maximize").performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B2")
+        click("sheet-select")
+        compose.waitUntil(15_000) { sheet().state.value.selected == "B2" }
+        val before = sheet().state.value.data.draft
+        fun review() {
+            click("sheet-text-grid")
+            compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement("12.5\t\"42\"\t=1+1\n0012\tword\t")
+            compose.onNodeWithTag("sheet-text-grid-decimals").performScrollTo().assertIsOff().performClick().assertIsOn()
+            val transpose = compose.onNodeWithTag("sheet-text-grid-transpose").performScrollTo()
+            NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-transpose")
+            transpose.assertIsOff().performClick().assertIsOn()
+            click("sheet-text-grid-preview")
+            compose.waitUntil(15_000) { sheet().state.value.textGridPreview != null }
+            compose.onNodeWithText("Rows and columns swapped. 3 rows × 2 columns", substring = true).assertIsDisplayed()
+            assertTrue(sheet().state.value.textGridPreview?.transposed == true)
+            assertSame(before, sheet().state.value.data.draft)
+        }
+        review()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r60-sheet-transpose", "sheet-text-grid-apply", listOf("sheet-text-grid-cancel"))
+        click("sheet-text-grid-cancel")
+        assertSame("Cancel leaves draft untouched", before, sheet().state.value.data.draft)
+        review() // Both options must have reset to off.
+        click("sheet-text-grid-apply")
+        compose.waitUntil(15_000) { sheet().state.value.data.draft.revision == before.revision + 1 }
+        val after = sheet().state.value.data.draft
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.NUMBER, "12.5"), after.cells["B2"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "0012"), after.cells["C2"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "42"), after.cells["B3"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "word"), after.cells["C3"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "=1+1"), after.cells["B4"])
+        assertNull(after.cells["C4"])
+        click("sheet-undo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == before.cells }
+        click("sheet-redo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == after.cells }
+        val redone = sheet().state.value.data.draft
+        destination { uri ->
+            val coordinator = export()
+            val request = AtomicReference<CopyPickerRequest>()
+            compose.runOnUiThread { coordinator.sheet(redone, emptyList()) { request.set(it) } }
+            compose.waitUntil(15_000) { request.get() != null || !coordinator.state.value.busy }
+            val issued = requireNotNull(request.get()) { coordinator.state.value.status }
+            compose.runOnUiThread { coordinator.complete(CopyPickerResult(issued.requestId, CopyPickerOutcome.SELECTED, uri), emptyList()) }
+            compose.waitUntil(30_000) { !coordinator.state.value.busy }
+            assertTrue(coordinator.state.value.status, coordinator.state.value.status.contains("byte-for-byte"))
+            val bytes = requireNotNull(context.contentResolver.openInputStream(uri)).use { it.readBytes() }
+            val inputs = FormulaXlsx.read(bytes).inputs
+            assertEquals(FormulaEval.CellInput.NumberLiteral(12.5), inputs["B2"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("0012"), inputs["C2"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("42"), inputs["B3"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("word"), inputs["C3"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("=1+1"), inputs["B4"])
+            assertNull(inputs["C4"])
+        }
+    }
+
     @Test fun optInReviewCancelApplyUndoAndProviderReadback() {
         compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         click("shelf-spreadsheet")

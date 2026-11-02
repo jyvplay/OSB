@@ -8,13 +8,19 @@ package dev.fusion.ooxml
  * Within each line, simple, nonempty, non-nested `**bold**`, `*italic*` and
  * backtick-delimited monospace spans are converted. If any inline delimiter on a
  * line is unmatched, nested, escaped or ambiguous, the ENTIRE inline text of that
- * line is kept literally; block-prefix conversion still applies. No other Markdown
- * syntax is interpreted. The source string is never modified.
+ * line is kept literally; block-prefix conversion still applies. An additional,
+ * separately opted-in mode recognizes only `1. ` followed by at least one code
+ * unit as a level-zero ordered item. All such items share one DOCX numbering
+ * instance, including separated groups; other numbered or nested lines stay text.
+ * No other Markdown syntax is interpreted. The source string is never modified.
  */
 object StructuredWriterDocx {
     const val MAX_RUNS = 8_192
 
-    fun write(text: String): ByteArray {
+    // Keep the original public method and its literal-numbered-line behavior unchanged.
+    fun write(text: String): ByteArray = write(text, numberedLines = false)
+
+    fun write(text: String, numberedLines: Boolean): ByteArray {
         // For valid XML text UTF-16 code units never outnumber UTF-8 bytes; this
         // early bound avoids a large temporary encoding allocation on rejected input.
         require(text.length <= PlainWriterDocx.MAX_TEXT_BYTES) { "DOCX export accepts at most 128 KiB of UTF-8 text" }
@@ -28,9 +34,11 @@ object StructuredWriterDocx {
             val heading = hashes in 1..6 && line.length > hashes + 1 && line[hashes] == ' '
             val bullet = line.startsWith("- ") && line.length > 2
             val quote = line.startsWith("> ") && line.length > 2
+            val numbered = numberedLines && line.startsWith("1. ") && line.length > 3
             val content = when {
                 heading -> line.substring(hashes + 1)
                 bullet || quote -> line.substring(2)
+                numbered -> line.substring(3)
                 else -> line
             }
             val runs = inlineRuns(content)
@@ -40,6 +48,7 @@ object StructuredWriterDocx {
                 heading -> DocxPackage.Block.Heading(hashes, runs)
                 bullet -> DocxPackage.Block.ListItem(ordered = false, runs = runs)
                 quote -> DocxPackage.Block.BlockQuote(runs)
+                numbered -> DocxPackage.Block.ListItem(ordered = true, runs = runs)
                 else -> DocxPackage.Block.Paragraph(runs)
             }
         }

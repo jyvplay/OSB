@@ -3,6 +3,6 @@ package dev.fusion.shell
 
 /** Filename allowlist only. It does not authorize a capture or establish that pixels exist. */
 internal object NativeCaptureNames {
-    private val dialog = Regex("(?:r24c|r58|r59)-[a-z-]{1,40}")
+    private val dialog = Regex("(?:(?:r24c|r58|r59)-[a-z-]{1,40}|r60-writer-numbered|r60-sheet-transpose)")
     fun dialog(name: String): Boolean = dialog.matches(name)
 }
