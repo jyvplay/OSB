@@ -76,9 +76,11 @@
         "app/src/androidTest/java/dev/fusion/shell/PickerRootStability.kt",
         "testing/src/r59picker/kotlin/dev/fusion/shell/R59PickerStabilityChecks.kt",
         "tools/run_r59_picker_stability.py",
-        "tools/test_r62_integration_contracts.py"
+        "tools/test_r62_integration_contracts.py",
+        "tools/r62_install_managed_sdk.py",
+        "tools/test_r62_install_managed_sdk.py"
       ],
-      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r45_contracts.py; python3 tools/run_r46_contracts.py; python3 tools/run_r47_contracts.py; python3 tools/run_r48_contracts.py; python3 tools/run_r49_contracts.py; python3 tools/run_r50_contracts.py; python3 tools/run_r51_contracts.py; python3 tools/run_r52_contracts.py; python3 tools/run_r53_contracts.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r59_picker_stability.py",
+      "command": ":app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r27_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r45_contracts.py; python3 tools/run_r46_contracts.py; python3 tools/run_r47_contracts.py; python3 tools/run_r48_contracts.py; python3 tools/run_r49_contracts.py; python3 tools/run_r50_contracts.py; python3 tools/run_r51_contracts.py; python3 tools/run_r52_contracts.py; python3 tools/run_r53_contracts.py; :app:pixel6Api34ProDebugAndroidTest; python3 tools/run_r59_picker_stability.py; PYTHONPATH=tools python3 -m unittest test_r62_install_managed_sdk",
       "limit": "complete H1/session/process integration, BlackTop, signed commerce, API37/16K, AX and device gates",
       "sha256": {
         "app/src/main/java/dev/fusion/shell/MainActivity.kt": "85870ed7aca1846118177c6c4871bbffb2322ef2e1b1071da0c6bc2ad2e628f9",
@@ -147,7 +149,9 @@
         "app/src/androidTest/java/dev/fusion/shell/PickerRootStability.kt": "ddd46109932de0fb27b1ab5f9afb506d9a7f324070b2a44617657aa9f803b7f5",
         "testing/src/r59picker/kotlin/dev/fusion/shell/R59PickerStabilityChecks.kt": "d62909fc449a4e070782374bfd19e67baa337513065f6cfef18cf1114f394893",
         "tools/run_r59_picker_stability.py": "a6a4953e3afc9a5889b637ab2fccea1b7c66e197bb8fc8d7d9a0fd9958b3e4b5",
-        "tools/test_r62_integration_contracts.py": "d6dc838b76197f5b94c19e44321c7c06244ce0492c2fe4a00fa62ae59c8fa336"
+        "tools/test_r62_integration_contracts.py": "d6dc838b76197f5b94c19e44321c7c06244ce0492c2fe4a00fa62ae59c8fa336",
+        "tools/r62_install_managed_sdk.py": "70c740f6d3241d35dac4056f3e57ec03a44fed52fff5ab671ba310c3a170c59b",
+        "tools/test_r62_install_managed_sdk.py": "8d1343804a673756bc3685f7c657539426fbfd6e93f33ecd3f8d3b2b300852c4"
       }
     },
     {

@@ -30,6 +30,8 @@ jobs:
         run: |
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-37.0' 'build-tools;36.0.0'
           python3 tools/bootstrap_r25_reference.py install
+      - name: Prepare disposable API34 SDK image (no device-test retry)
+        run: python3 tools/r62_install_managed_sdk.py
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
