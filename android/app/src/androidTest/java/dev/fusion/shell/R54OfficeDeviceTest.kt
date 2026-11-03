@@ -228,6 +228,32 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains(text, substring = true)
     }
 
+    @Test fun writerStrikeReviewIsOptInResettableAndCancelable() {
+        openModule("editor")
+        maximize("editor")
+        compose.waitUntil(10_000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("New").performScrollTo().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("editor-content").performScrollTo().performTextInput("1. before ~~gone~~ after")
+        hideIme()
+        fun openReview() {
+            compose.onNodeWithTag("writer-export-docx").performScrollTo().performClick()
+            compose.onNodeWithTag("writer-structured-option").performScrollTo().performClick()
+        }
+        openReview()
+        val strike = compose.onNodeWithTag("writer-strike-option").performScrollTo()
+        strike.assertIsOff().assertHasClickAction().performClick().assertIsOn()
+        NativeVisualEvidence.assertMinimumTarget(compose, "writer-strike-option")
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-strike-disclosure")
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r62-writer-strike", "writer-structured-confirm", listOf("writer-structured-cancel", "writer-strike-option"))
+        compose.onNodeWithTag("writer-structured-cancel").performClick()
+        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("1. before ~~gone~~ after")
+        assertEquals(OfficeExportViewModel.State(), exportModel().state.value)
+        openReview()
+        compose.onNodeWithTag("writer-strike-option").performScrollTo().assertIsOff()
+        compose.onNodeWithTag("writer-structured-cancel").performClick()
+    }
+
     @Test fun formattedWriterRejectsConsentAfterDraftRevisionChanges() {
         openModule("editor")
         maximize("editor")
@@ -367,6 +393,27 @@ class R54OfficeDeviceTest {
                 assertTrue(xml.contains("<w:b/>") && xml.contains(">2. literal<"))
                 val numbering = zipPart(destination, "word/numbering.xml")
                 assertTrue(numbering.contains("<w:numFmt w:val=\"decimal\"/>") && numbering.contains("<w:lvlText w:val=\"%1.\"/>"))
+                assertArrayEquals(source.toByteArray(Charsets.UTF_8), read(original))
+            }
+        }
+    }
+
+    @Test fun strikeWriterRealProviderReadbackKeepsSourceAndList() {
+        created("txt", "text/plain") { original ->
+            val source = "1. before ~~gone~~ after\n~literal~"
+            resolver.openOutputStream(original, "wt")!!.use { it.write(source.toByteArray(Charsets.UTF_8)) }
+            created("docx", CopyDestinationContract.DOCX_MIME) { destination ->
+                val vm = exportModel()
+                val doc = TextDocument(UUID.randomUUID().toString(), "writer.txt", original.toString(), source, TextBytes.digest(source))
+                val request = AtomicReference<CopyPickerRequest>()
+                compose.runOnUiThread { vm.structuredWriter(doc, listOf(original.toString()), numberedLines = true, strikeSpans = true) { request.set(it) } }
+                compose.waitUntil(15_000) { request.get() != null || !vm.state.value.busy }
+                val ready = requireNotNull(request.get()) { vm.state.value.status }
+                deliver(vm, ready, destination, listOf(original.toString()))
+                compose.waitUntil(15_000) { !vm.state.value.busy }
+                assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
+                val xml = zipPart(destination, "word/document.xml")
+                assertTrue(xml.contains("<w:strike/>") && xml.contains("<w:numId w:val=\"2\"/>") && xml.contains(">~literal~<"))
                 assertArrayEquals(source.toByteArray(Charsets.UTF_8), read(original))
             }
         }

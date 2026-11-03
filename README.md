@@ -17,9 +17,9 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
-## Current R61 — experimental Office authoring, not Class A
+## Current R62 — experimental Office authoring, not Class A
 
-This branch has bounded DOCX copies, an optional simple-marker conversion with a separately opt-in `1. ` numbered-line mode, and an experimental single-sheet editor with XLSX-copy export and reviewed text-grid paste. Independent default-off options transpose the grid, preserve cells under blank fields, or refuse changes to populated cells. The sandbox has no local Android SDK. Exact host and remote API34 results, earlier failures and open gates are in [R61](android/docs/R61-RESULTS.md), [R60](android/docs/R60-RESULTS.md) and [R59](android/docs/R59-RESULTS.md); see [Studio instructions](android/docs/BUILD.md). These narrow paths are not full Office compatibility or a rich editor. Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
+This branch has bounded DOCX copies, an optional simple-marker conversion with a separately opt-in `1. ` numbered-line mode, and an experimental single-sheet editor with XLSX-copy export and reviewed text-grid paste. Independent default-off options transpose the grid, preserve cells under blank fields, or refuse changes to populated cells. A new separately opt-in Writer strike conversion and reviewed range clear/literal-fill operations have finite host tests; exact-revision Android gates are tracked separately. The sandbox has no local Android SDK. Exact host and remote API34 results, earlier failures and open gates are in [R62](android/docs/R62-RESULTS.md), [R61](android/docs/R61-RESULTS.md), [R60](android/docs/R60-RESULTS.md) and [R59](android/docs/R59-RESULTS.md); see [Studio instructions](android/docs/BUILD.md). These narrow paths are not full Office compatibility or a rich editor. Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
 
 The following R53 section is historical and predates the current Office work.
 

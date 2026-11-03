@@ -12,7 +12,10 @@ package dev.fusion.ooxml
  * separately opted-in mode recognizes only `1. ` followed by at least one code
  * unit as a level-zero ordered item. All such items share one DOCX numbering
  * instance, including separated groups; other numbered or nested lines stay text.
- * No other Markdown syntax is interpreted. The source string is never modified.
+ * A separate, default-off option recognizes nonempty, nonnested `~~strike~~` spans
+ * whose first and last characters are not whitespace. Single tildes stay literal;
+ * ambiguous, escaped, nested, unmatched or three-plus delimiters keep the entire
+ * line's inline text literal. This is not a GFM parser. The source is never modified.
  */
 object StructuredWriterDocx {
     const val MAX_RUNS = 8_192
@@ -20,7 +23,9 @@ object StructuredWriterDocx {
     // Keep the original public method and its literal-numbered-line behavior unchanged.
     fun write(text: String): ByteArray = write(text, numberedLines = false)
 
-    fun write(text: String, numberedLines: Boolean): ByteArray {
+    fun write(text: String, numberedLines: Boolean): ByteArray = write(text, numberedLines, strikeSpans = false)
+
+    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean): ByteArray {
         // For valid XML text UTF-16 code units never outnumber UTF-8 bytes; this
         // early bound avoids a large temporary encoding allocation on rejected input.
         require(text.length <= PlainWriterDocx.MAX_TEXT_BYTES) { "DOCX export accepts at most 128 KiB of UTF-8 text" }
@@ -41,7 +46,7 @@ object StructuredWriterDocx {
                 numbered -> line.substring(3)
                 else -> line
             }
-            val runs = inlineRuns(content)
+            val runs = inlineRuns(content, strikeSpans)
             runCount += runs.size
             require(runCount <= MAX_RUNS) { "DOCX export accepts at most $MAX_RUNS text runs" }
             when {
@@ -57,25 +62,30 @@ object StructuredWriterDocx {
         return bytes
     }
 
-    private fun inlineRuns(text: String): List<DocxPackage.Run> {
+    private fun inlineRuns(text: String, strikeSpans: Boolean): List<DocxPackage.Run> {
         val runs = ArrayList<DocxPackage.Run>()
         var plainStart = 0
         var i = 0
         fun literal() = listOf(DocxPackage.Run(text))
+        fun markerAt(index: Int): Boolean = text[index] == '*' || text[index] == '`' ||
+            (strikeSpans && text[index] == '~' && index + 1 < text.length && text[index + 1] == '~')
         while (i < text.length) {
+            if (!markerAt(i)) { i++; continue }
             val marker = text[i]
-            if (marker != '*' && marker != '`') { i++; continue }
             if (i > 0 && text[i - 1] == '\\') return literal()
-            val width = if (marker == '*' && i + 1 < text.length && text[i + 1] == '*') 2 else 1
+            val width = if (marker == '~' || (marker == '*' && i + 1 < text.length && text[i + 1] == '*')) 2 else 1
+            if (marker == '~' && i + 2 < text.length && text[i + 2] == '~') return literal()
             val start = i + width
             var end = start
-            while (end < text.length && text[end] != '*' && text[end] != '`') end++
+            while (end < text.length && !markerAt(end)) end++
             if (end == start || end == text.length || text[end] != marker || text[end - 1] == '\\') return literal()
             var closeWidth = 1
             while (end + closeWidth < text.length && text[end + closeWidth] == marker) closeWidth++
             if (closeWidth != width) return literal()
+            if (marker == '~' && (text[start].isWhitespace() || text[end - 1].isWhitespace())) return literal()
             if (i > plainStart) runs.add(DocxPackage.Run(text.substring(plainStart, i)))
-            runs.add(DocxPackage.Run(text.substring(start, end), bold = width == 2, italic = marker == '*' && width == 1, code = marker == '`'))
+            runs.add(DocxPackage.Run(text.substring(start, end), bold = marker == '*' && width == 2,
+                italic = marker == '*' && width == 1, strike = marker == '~', code = marker == '`'))
             i = end + width
             plainStart = i
         }

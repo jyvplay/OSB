@@ -55,7 +55,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 /** PR-01 / FF-15 / FM-18. Real SAF I/O is owned by an Activity-scoped ViewModel. */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EditorScreen(
     model: EditorViewModel,
@@ -63,6 +62,29 @@ fun EditorScreen(
     officeExportBusy: Boolean = false,
     onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
     onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, onExportStructuredDocx, null, onSaveCopy)
+
+/** Extended entry point; the previous EditorScreen signature remains available unchanged. */
+@Composable
+fun EditorScreenWithStrike(
+    model: EditorViewModel,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocxWithStrike: ((dev.fusion.documents.TextDocument, Boolean, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, onExportStructuredDocxWithStrike, onSaveCopy)
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun EditorScreenContent(
+    model: EditorViewModel,
+    officeExportStatus: String,
+    officeExportBusy: Boolean,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)?,
+    onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)?,
+    onExportStructuredDocxWithStrike: ((dev.fusion.documents.TextDocument, Boolean, Boolean) -> Unit)?,
     onSaveCopy: (CopyPickerRequest) -> Unit,
 ) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -77,6 +99,7 @@ fun EditorScreen(
     var docxConfirmId by remember { mutableStateOf<String?>(null) }
     var structuredDocxConsent by remember { mutableStateOf<dev.fusion.documents.WriterCopyConsent?>(null) }
     var numberedLines by remember { mutableStateOf(false) }
+    var strikeSpans by remember { mutableStateOf(false) }
     var docxNotice by remember { mutableStateOf("") }
     var retryConfirm by remember { mutableStateOf(false) }
     var retryConfirmId by remember { mutableStateOf<String?>(null) }
@@ -201,9 +224,9 @@ fun EditorScreen(
         AlertDialog(onDismissRequest={ docxConfirmId=null }, title={ Text("Export plain text as DOCX?") },
             text={ Column(Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) {
                 Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.")
-                if (onExportStructuredDocx != null) TextButton(onClick={
+                if (onExportStructuredDocx != null || onExportStructuredDocxWithStrike != null) TextButton(onClick={
                     docxConfirmId=null
-                    numberedLines=false
+                    numberedLines=false; strikeSpans=false
                     val current=model.state.value
                     val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
                     val buffer=current.buffers[id]
@@ -231,6 +254,11 @@ fun EditorScreen(
                     Checkbox(checked=numberedLines, onCheckedChange=null)
                     Text("Also format '1. ' lines with at least one following character as numbered items. They share one list; separated groups may continue. '2. ' and indented lines stay text.", Modifier.testTag("writer-numbered-disclosure"))
                 }
+                if (onExportStructuredDocxWithStrike != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=strikeSpans, role=Role.Checkbox, onValueChange={ strikeSpans=it })
+                    .testTag("writer-strike-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=strikeSpans, onCheckedChange=null)
+                    Text("Also format ~~text~~ as strikethrough. Single tildes, spaces at the ends and ambiguous or nested markers stay literal; this is not full Markdown.", Modifier.testTag("writer-strike-disclosure"))
+                }
             } },
             confirmButton={ TextButton(onClick={
                 structuredDocxConsent=null
@@ -242,7 +270,8 @@ fun EditorScreen(
                     !current.loading && !current.busy && !current.toolsBusy && !current.recoveryBlocked &&
                     current.session.pendingCopy==null && !officeExportBusy) {
                     docxNotice=""
-                    onExportStructuredDocx?.invoke(doc,numberedLines)
+                    if (onExportStructuredDocxWithStrike != null) onExportStructuredDocxWithStrike(doc, numberedLines, strikeSpans)
+                    else onExportStructuredDocx?.invoke(doc, numberedLines)
                 } else docxNotice="Draft or editor state changed. Review the export again."
             }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-confirm")) { Text("Choose destination") } },
             dismissButton={ TextButton(onClick={ structuredDocxConsent=null }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-cancel")) { Text("Cancel") } })

@@ -26,6 +26,9 @@ FRAME_GROUPS = {
     'r61-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png',
                    'r58-text-grid.png', 'r58-service-review.png', 'r59-typed-grid.png', 'r60-writer-numbered.png',
                    'r60-sheet-transpose.png', 'r61-sheet-protection.png'},
+    'r62-office': {'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png', 'r24c-structured.png',
+                   'r58-text-grid.png', 'r58-service-review.png', 'r59-typed-grid.png', 'r60-writer-numbered.png',
+                   'r60-sheet-transpose.png', 'r61-sheet-protection.png', 'r62-writer-strike.png', 'r62-sheet-range.png'},
 }
 
 

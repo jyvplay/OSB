@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.fusion.ooxml.OfficeSheetDraft
 import dev.fusion.ooxml.OfficeSheetTextGrid
+import dev.fusion.ooxml.OfficeSheetRangeEdit
 
 /** Bounded local authoring, deliberately separate from the blocked untrusted Office importer. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -67,7 +68,7 @@ fun SheetScreen(
 ) {
     val state by model.state.collectAsStateWithLifecycle()
     val draft = state.data.draft
-    val ready = !state.loading && !state.busy && !state.recoveryBlocked && state.textGridPreview == null
+    val ready = !state.loading && !state.busy && !state.recoveryBlocked && state.textGridPreview == null && state.rangePreview == null
     val selected = state.selected
     val kind = state.inputKind
     val edit = state.input
@@ -84,6 +85,13 @@ fun SheetScreen(
     var transposeTextGrid by remember { mutableStateOf(false) }
     var skipBlankFields by remember { mutableStateOf(false) }
     var protectExistingCells by remember { mutableStateOf(false) }
+    var showRangeInput by remember { mutableStateOf(false) }
+    var rangeInput by remember { mutableStateOf("") }
+    var rangeOperation by remember { mutableStateOf(OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS) }
+    var rangeProtection by remember { mutableStateOf(true) }
+    LaunchedEffect(state.rangePreview) {
+        if (state.rangePreview != null) { showRangeInput = false; rangeInput = "" }
+    }
     LaunchedEffect(state.textGridPreview) {
         if (state.textGridPreview != null) { showTextGridInput = false; textGridInput = "" }
     }
@@ -121,6 +129,16 @@ fun SheetScreen(
                 skipBlankFields = false; protectExistingCells = false; showTextGridInput = true
             },
                 enabled = ready && !unapplied && !exportBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid")) { Text("Paste text grid…") }
+            OutlinedButton(onClick = {
+                model.clearRangeError(); rangeInput = selected; rangeProtection = true
+                rangeOperation = OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS; showRangeInput = true
+            }, enabled = ready && !unapplied && !exportBusy,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-clear")) { Text("Clear range…") }
+            OutlinedButton(onClick = {
+                model.clearRangeError(); rangeInput = selected; rangeProtection = true
+                rangeOperation = OfficeSheetRangeEdit.Operation.FILL_LITERAL; showRangeInput = true
+            }, enabled = ready && !unapplied && !exportBusy,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-fill")) { Text("Fill literal…") }
         }
         Text("Selected $selected · displayed value: ${state.data.values[selected]?.displayText().orEmpty()}", modifier = Modifier.testTag("sheet-selected-value"))
         // Wrap the cell actions rather than hiding Clear off the right edge. The
@@ -250,6 +268,55 @@ fun SheetScreen(
             },
             confirmButton = { TextButton(onClick = model::acceptTextGrid, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-apply")) { Text("Apply grid") } },
             dismissButton = { TextButton(onClick = model::cancelTextGridPreview, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-cancel")) { Text("Cancel") } })
+    }
+    if (showRangeInput && state.rangePreview == null) AlertDialog(
+        onDismissRequest = { if (!state.busy) { showRangeInput = false; rangeInput = "" } },
+        title = { Text(if (rangeOperation == OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS) "Clear cell range?" else "Fill from $selected?") },
+        text = {
+            Column(Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Enter one cell or a rectangle such as A1:C5. At most 256 positions within A1:Z100. Reversed corners are normalized.")
+                OutlinedTextField(rangeInput, { if (it.length <= 32) rangeInput = it },
+                    modifier = Modifier.fillMaxWidth().testTag("sheet-range-input"), enabled = !state.busy,
+                    label = { Text("Cell or range") }, singleLine = true)
+                if (rangeOperation == OfficeSheetRangeEdit.Operation.FILL_LITERAL) {
+                    Text("Copies the applied nonempty text, number or Boolean in $selected with its type. Formula sources are refused; no relative-reference adjustment or formatting is performed.")
+                    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                        value = rangeProtection, enabled = !state.busy, role = Role.Checkbox,
+                        onValueChange = { rangeProtection = it },
+                    ).testTag("sheet-range-protect"), verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(checked = rangeProtection, onCheckedChange = null, enabled = !state.busy)
+                        Text("Protect existing cells")
+                    }
+                    Text("On by default: a different populated value refuses the whole fill. Turning it off can replace values or formulas; the next screen reports counts.", style = MaterialTheme.typography.bodySmall)
+                } else Text("Clears values and formulas in the rectangle, not the cells outside it. This sheet does not support styles.")
+                if (state.rangeError.isNotEmpty()) Text(state.rangeError,
+                    Modifier.testTag("sheet-range-error").semantics { liveRegion = LiveRegionMode.Polite }, color = MaterialTheme.colorScheme.error)
+                if (state.busy) CircularProgressIndicator()
+            }
+        },
+        confirmButton = {
+            val focus = LocalFocusManager.current
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextButton(onClick = { focus.clearFocus(); keyboard?.hide(); model.previewRange(rangeInput, rangeOperation, rangeProtection) },
+                enabled = !state.busy && rangeInput.isNotBlank(), modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-preview")) { Text("Review changes") }
+        },
+        dismissButton = { TextButton(onClick = { showRangeInput = false; rangeInput = "" }, enabled = !state.busy,
+            modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-input-cancel")) { Text("Cancel") } },
+    )
+    state.rangePreview?.let { plan ->
+        AlertDialog(onDismissRequest = model::cancelRangePreview, title = { Text("Apply range changes?") },
+            text = {
+                val operation = if (plan.operation == OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS) "Clear contents"
+                    else "Fill with the applied ${plan.original.cells[plan.selected]?.kind?.name} value from ${plan.selected}"
+                val protection = if (plan.operation == OfficeSheetRangeEdit.Operation.FILL_LITERAL)
+                    if (plan.protectExisting) " Existing-cell protection is on." else " Existing-cell protection is off." else ""
+                val undo = if (plan.changed == 0) "Nothing will change and no undo step will be added."
+                    else "This changes the local draft as one undo step; it does not save an external file."
+                Text("$operation: ${plan.range} (${plan.positions} positions). ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged; ${plan.formulasRemoved} formulas removed.$protection $undo",
+                    Modifier.testTag("sheet-range-review-text"))
+            },
+            confirmButton = { TextButton(onClick = model::acceptRange, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-apply")) { Text("Apply range") } },
+            dismissButton = { TextButton(onClick = model::cancelRangePreview, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-cancel")) { Text("Cancel") } })
     }
     pendingSelection?.let { target ->
         AlertDialog(onDismissRequest = { pendingSelection = null }, title = { Text("Discard unapplied cell input?") },

@@ -22,6 +22,7 @@ import dev.fusion.ooxml.FormulaXlsx
 import dev.fusion.ooxml.OfficeSheetCodec
 import dev.fusion.ooxml.OfficeSheetDraft
 import dev.fusion.ooxml.OfficeSheetTextGrid
+import dev.fusion.ooxml.OfficeSheetRangeEdit
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Rule
@@ -151,6 +152,100 @@ class R59SheetDeviceTest {
             val inputs = FormulaXlsx.read(bytes).inputs
             assertEquals(FormulaEval.CellInput.TextLiteral("KEEP"), inputs["A1"])
             assertEquals(FormulaEval.CellInput.TextLiteral("new"), inputs["B1"])
+        }
+    }
+
+    @Test fun literalFillAndClearRangeAreReviewedProtectedUndoableAndExported() {
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        click("shelf-spreadsheet")
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("window-actions-spreadsheet").performClick()
+        compose.onNodeWithText("Maximize").performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("=1+1")
+        click("sheet-apply")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells["A1"]?.input == "=1+1" }
+        compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
+        click("sheet-select")
+        compose.waitUntil(15_000) { sheet().state.value.selected == "B1" }
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("other")
+        click("sheet-apply")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells["B1"]?.input == "other" }
+        compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("A1")
+        click("sheet-select")
+        compose.waitUntil(15_000) { sheet().state.value.selected == "A1" }
+        val before = sheet().state.value.data.draft
+        click("sheet-range-fill")
+        compose.onNodeWithTag("sheet-range-input").performScrollTo().performTextReplacement("A1:B1")
+        compose.onNodeWithTag("sheet-range-protect").performScrollTo().assertIsOn()
+        NativeVisualEvidence.assertMinimumTarget(compose, "sheet-range-protect")
+        click("sheet-range-preview")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.rangeError.isNotEmpty() }
+        compose.onNodeWithTag("sheet-range-error").performScrollTo().assertTextContains("Protected existing cell B1", substring = true)
+        assertSame(before, sheet().state.value.data.draft)
+        click("sheet-range-input-cancel")
+
+        fun reviewFill() {
+            click("sheet-range-fill")
+            compose.onNodeWithTag("sheet-range-input").performScrollTo().performTextReplacement("A1:B1")
+            compose.onNodeWithTag("sheet-range-protect").performScrollTo().assertIsOn().performClick().assertIsOff()
+            click("sheet-range-preview")
+            compose.waitUntil(15_000) { sheet().state.value.rangePreview != null }
+            val plan = requireNotNull(sheet().state.value.rangePreview)
+            assertEquals(OfficeSheetRangeEdit.Operation.FILL_LITERAL, plan.operation)
+            assertEquals(1, plan.replaced)
+            assertFalse(plan.protectExisting)
+            assertSame(before, sheet().state.value.data.draft)
+            compose.onNodeWithTag("sheet-range-review-text").assertTextContains("protection is off", substring = true)
+        }
+        reviewFill()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r62-sheet-range", "sheet-range-apply", listOf("sheet-range-cancel"))
+        NativeVisualEvidence.assertFullTextVisible(compose, "sheet-range-review-text")
+        click("sheet-range-cancel")
+        assertSame(before, sheet().state.value.data.draft)
+        reviewFill() // Protection must reset to on each time.
+        click("sheet-range-apply")
+        compose.waitUntil(15_000) { sheet().state.value.data.draft.revision == before.revision + 1 }
+        val filled = sheet().state.value.data.draft
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "=1+1"), filled.cells["B1"])
+        click("sheet-undo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == before.cells }
+        click("sheet-redo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == filled.cells }
+        click("sheet-range-clear")
+        compose.onNodeWithTag("sheet-range-input").performScrollTo().performTextReplacement("B1:A1")
+        click("sheet-range-preview")
+        compose.waitUntil(15_000) { sheet().state.value.rangePreview != null }
+        assertEquals("A1:B1", requireNotNull(sheet().state.value.rangePreview).range)
+        assertEquals(2, requireNotNull(sheet().state.value.rangePreview).cleared)
+        click("sheet-range-apply")
+        compose.waitUntil(15_000) { sheet().state.value.data.draft.cells["A1"] == null && sheet().state.value.data.draft.cells["B1"] == null }
+        click("sheet-undo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == filled.cells }
+        val beforeNoOp = sheet().state.value.data.draft
+        val depth = sheet().state.value.undoDepth
+        click("sheet-range-clear")
+        compose.onNodeWithTag("sheet-range-input").performScrollTo().performTextReplacement("Z100")
+        click("sheet-range-preview")
+        compose.waitUntil(15_000) { sheet().state.value.rangePreview != null }
+        assertEquals(0, requireNotNull(sheet().state.value.rangePreview).changed)
+        click("sheet-range-apply")
+        compose.waitUntil(15_000) { sheet().state.value.rangePreview == null }
+        assertSame(beforeNoOp, sheet().state.value.data.draft)
+        assertEquals(depth, sheet().state.value.undoDepth)
+        destination { uri ->
+            val coordinator = export()
+            val request = AtomicReference<CopyPickerRequest>()
+            compose.runOnUiThread { coordinator.sheet(sheet().state.value.data.draft, emptyList()) { request.set(it) } }
+            compose.waitUntil(15_000) { request.get() != null || !coordinator.state.value.busy }
+            val issued = requireNotNull(request.get()) { coordinator.state.value.status }
+            compose.runOnUiThread { coordinator.complete(CopyPickerResult(issued.requestId, CopyPickerOutcome.SELECTED, uri), emptyList()) }
+            compose.waitUntil(30_000) { !coordinator.state.value.busy }
+            assertTrue(coordinator.state.value.status, coordinator.state.value.status.contains("byte-for-byte"))
+            val bytes = requireNotNull(context.contentResolver.openInputStream(uri)).use { it.readBytes() }
+            val inputs = FormulaXlsx.read(bytes).inputs
+            assertEquals(FormulaEval.CellInput.TextLiteral("=1+1"), inputs["A1"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("=1+1"), inputs["B1"])
         }
     }
 

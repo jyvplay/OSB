@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dev.fusion.ooxml.OfficeSheetCodec
 import dev.fusion.ooxml.OfficeSheetDraft
 import dev.fusion.ooxml.OfficeSheetTextGrid
+import dev.fusion.ooxml.OfficeSheetRangeEdit
 import dev.fusion.storage.CheckedAtomicFile
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +38,8 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
         val input: String = "",
         val textGridPreview: OfficeSheetTextGrid.Preview? = null,
         val textGridError: String = "",
+        val rangePreview: OfficeSheetRangeEdit.Preview? = null,
+        val rangeError: String = "",
     ) {
         val unapplied: Boolean get() {
             val cell = data.draft.cells[selected]
@@ -74,7 +77,8 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun ready(): Boolean = !state.value.loading && !state.value.busy && !state.value.recoveryBlocked && state.value.textGridPreview == null
+    private fun ready(): Boolean = !state.value.loading && !state.value.busy && !state.value.recoveryBlocked &&
+        state.value.textGridPreview == null && state.value.rangePreview == null
 
     fun updateInput(input: String) {
         if (ready() && input.length <= OfficeSheetDraft.MAX_CELL_BYTES) mutable.value = state.value.copy(input = input)
@@ -186,6 +190,59 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
 
     fun clearTextGridError() {
         if (ready()) mutable.value = state.value.copy(textGridError = "")
+    }
+
+    /** Prepare a bounded rectangle without changing the current draft or persisting raw input. */
+    fun previewRange(raw: String, operation: OfficeSheetRangeEdit.Operation, protectExisting: Boolean = true) {
+        if (!ready() || state.value.unapplied) return
+        val before = state.value.data.draft
+        val selected = state.value.selected
+        mutable.value = state.value.copy(busy = true, rangeError = "", status = "Checking range…")
+        viewModelScope.launch {
+            try {
+                val plan = withContext(Dispatchers.Default) {
+                    OfficeSheetRangeEdit.prepare(before, selected, raw, operation, protectExisting)
+                }
+                val current = state.value
+                if (plan.isCurrent(current.data.draft, current.selected) && !current.unapplied) {
+                    mutable.value = current.copy(busy = false, rangePreview = plan, status = "Review the range changes before applying.")
+                } else mutable.value = current.copy(busy = false, rangeError = "The selected cell or draft changed; preview again.")
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                mutable.value = state.value.copy(busy = false, rangeError = "Range refused: ${e.message ?: e.javaClass.simpleName}. Sheet unchanged.",
+                    status = "Range was not applied.")
+            }
+        }
+    }
+
+    fun acceptRange() {
+        val current = state.value
+        val plan = current.rangePreview ?: return
+        if (current.loading || current.busy || current.recoveryBlocked || current.unapplied ||
+            !plan.isCurrent(current.data.draft, current.selected)) {
+            mutable.value = current.copy(rangePreview = null, status = "Range preview became stale; nothing applied.")
+            return
+        }
+        if (plan.changed == 0) {
+            mutable.value = current.copy(rangePreview = null, status = "Range already matches; nothing changed.")
+            return
+        }
+        push(undo, plan.original.cells)
+        redo.clear()
+        val selectedCell = plan.calculated.draft.cells[current.selected]
+        mutable.value = current.copy(data = plan.calculated, rangePreview = null,
+            inputKind = selectedCell?.kind ?: OfficeSheetDraft.Kind.TEXT, input = selectedCell?.input ?: "",
+            status = "Applied ${plan.changed} range changes. Local recovery is pending; export is separate.",
+            checkpoint = "New changes have not yet been checkpointed.", undoDepth = undo.size, redoDepth = 0)
+        checkpoints.trySend(Unit)
+    }
+
+    fun cancelRangePreview() {
+        if (state.value.rangePreview != null) mutable.value = state.value.copy(rangePreview = null, status = "Range preview cancelled; sheet unchanged.")
+    }
+
+    fun clearRangeError() {
+        if (ready()) mutable.value = state.value.copy(rangeError = "")
     }
 
     fun undo() = history(undo, redo, "Undo")

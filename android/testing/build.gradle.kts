@@ -1647,3 +1647,24 @@ tasks.register<JavaExec>("r61SheetContracts") {
     mainClass.set("dev.fusion.testing.R61SheetPolicyChecks")
     args(rootProject.file("testing/build/r61sheet/artifacts").absolutePath)
 }
+
+// R62: reviewed rectangular clear/fill and opt-in conservative Writer strike.
+val r62Sheet by sourceSets.creating
+kotlin.sourceSets.named("r62Sheet") { kotlin.srcDir("src/r62sheet/kotlin") }
+dependencies { add(r62Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r62RangeContracts") {
+    dependsOn(r62Sheet.classesTaskName)
+    classpath = r62Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R62RangeChecks")
+    args(rootProject.file("testing/build/r62sheet/artifacts").absolutePath)
+}
+
+val r62Writer by sourceSets.creating
+kotlin.sourceSets.named("r62Writer") { kotlin.srcDir("src/r62writer/kotlin") }
+dependencies { add(r62Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r62WriterContracts") {
+    dependsOn(r62Writer.classesTaskName)
+    classpath = r62Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R62WriterStrikeChecks")
+    args(rootProject.file("testing/build/r62writer/artifacts").absolutePath)
+}

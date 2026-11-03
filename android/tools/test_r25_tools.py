@@ -111,6 +111,15 @@ class R25ToolTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             capture.export(0, next(iter(added)))
 
+    def test_r62_capture_group_preserves_all_previous_and_new_frames(self):
+        import r24c_capture as capture
+        added = {'r62-writer-strike.png', 'r62-sheet-range.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r62-office'], capture.FRAME_GROUPS['r61-office'] | added)
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
+            with self.assertRaises(ValueError): capture.export(0, name)
+
     def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
         import hashlib
         receipt=json.loads((ROOT/'docs/research/r25-video-fixture.json').read_text())
