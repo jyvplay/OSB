@@ -58,6 +58,18 @@ class R62IntegrationContracts(unittest.TestCase):
         self.assertNotIn('performClick()', failure)
         self.assertNotIn('wait(Until', failure)
 
+    def test_sheet_failure_observer_calls_action_once_and_only_observes(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/SheetUiFailureEvidence.kt')
+        self.assertEqual(source.count('            action()'), 1)
+        self.assertIn('AssertionError(', source)
+        self.assertIn(', failure)', source)
+        self.assertNotIn('performClick', source)
+        self.assertNotIn('performText', source)
+        self.assertNotIn('Thread.sleep', source)
+        self.assertNotIn('state.value =', source)
+        for f in ('R54OfficeDeviceTest.kt', 'R59SheetDeviceTest.kt'):
+            self.assertIn('SheetUiFailureEvidence.once(', read('app/src/androidTest/java/dev/fusion/shell/' + f))
+
     def test_real_tests_are_listed_without_claiming_execution(self):
         office = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
         for name in ('r62RangeContracts', 'r62WriterContracts', 'check_r62_range_reference.py',

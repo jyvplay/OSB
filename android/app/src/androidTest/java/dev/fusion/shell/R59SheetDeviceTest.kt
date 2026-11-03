@@ -96,7 +96,9 @@ class R59SheetDeviceTest {
 
         fun review() {
             click("sheet-text-grid")
-            compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement("\tnew")
+            SheetUiFailureEvidence.once(compose.activityRule.scenario, "grid input after one reopen touch") {
+                compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement("\tnew")
+            }
             val skip = compose.onNodeWithTag("sheet-text-grid-skip-blanks").performScrollTo()
             NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-skip-blanks")
             skip.assertIsOff().performClick().assertIsOn()

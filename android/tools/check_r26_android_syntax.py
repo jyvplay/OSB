@@ -83,6 +83,7 @@ FILES = [
     'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt',  # R57: positive and negative text-fit controls
     'app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt',  # R58: actual grid, recovery and provider checks
     'app/src/androidTest/java/dev/fusion/shell/R59SheetDeviceTest.kt',  # R59: opt-in typed grid and provider checks
+    'app/src/androidTest/java/dev/fusion/shell/SheetUiFailureEvidence.kt',  # R62: failure-only sheet state observation
     'app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt',  # R58: one-shot local-plan diagnostic
     'app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt',  # R58: actual IME and disclosure
     'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics

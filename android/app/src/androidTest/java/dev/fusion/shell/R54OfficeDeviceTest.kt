@@ -77,7 +77,9 @@ class R54OfficeDeviceTest {
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 4", substring = true)).fetchSemanticsNodes().isNotEmpty() }
         // Wrapped Clear is reachable without horizontally scrolling the action row, even with IME state retained.
         compose.onNodeWithTag("sheet-clear").performScrollTo().assertIsDisplayed().assertIsEnabled()
-        compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
+        SheetUiFailureEvidence.once(compose.activityRule.scenario, "address B1") {
+            compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
+        }
         compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
         awaitSelectedCell("B1")
         chooseSheetKind("Formula")
@@ -94,7 +96,9 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("sheet-select").performScrollTo().performClick()
         compose.onNodeWithText("Discard unapplied cell input?").assertIsDisplayed()
         compose.onNodeWithText("Keep editing").performClick()
-        compose.onNodeWithTag("sheet-input").performScrollTo().assertTextContains("=A1*3")
+        SheetUiFailureEvidence.once(compose.activityRule.scenario, "retained input after Keep editing") {
+            compose.onNodeWithTag("sheet-input").performScrollTo().assertTextContains("=A1*3")
+        }
         compose.activityRule.scenario.recreate()
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
