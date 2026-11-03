@@ -168,9 +168,13 @@ class R59SheetDeviceTest {
         compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
         click("sheet-select")
         compose.waitUntil(15_000) { sheet().state.value.selected == "B1" }
-        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("other")
+        // Fill must count and protect a real formula even when the source is formula-looking TEXT.
+        click("sheet-kind")
+        compose.waitUntil(5_000) { compose.onAllNodesWithText("Formula").fetchSemanticsNodes().size == 1 }
+        compose.onNodeWithText("Formula").performClick()
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("=2+3")
         click("sheet-apply")
-        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells["B1"]?.input == "other" }
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells["B1"] == OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.FORMULA, "=2+3") }
         compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("A1")
         click("sheet-select")
         compose.waitUntil(15_000) { sheet().state.value.selected == "A1" }
@@ -194,9 +198,11 @@ class R59SheetDeviceTest {
             val plan = requireNotNull(sheet().state.value.rangePreview)
             assertEquals(OfficeSheetRangeEdit.Operation.FILL_LITERAL, plan.operation)
             assertEquals(1, plan.replaced)
+            assertEquals(1, plan.formulasRemoved)
             assertFalse(plan.protectExisting)
             assertSame(before, sheet().state.value.data.draft)
-            compose.onNodeWithTag("sheet-range-review-text").assertTextContains("protection is off", substring = true)
+            compose.onNodeWithTag("sheet-range-review-text").assertTextContains("1 formula removed", substring = true)
+                .assertTextContains("protection is off", substring = true)
         }
         reviewFill()
         NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r62-sheet-range", "sheet-range-apply", listOf("sheet-range-cancel"))

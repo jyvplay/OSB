@@ -25,6 +25,14 @@ class R62IntegrationContracts(unittest.TestCase):
         self.assertLess(block.index('consent.permits(doc,buffer.revision)'), block.index('onExportStructuredDocxWithStrike(doc, numberedLines, strikeSpans)'))
         self.assertIn('writer-strike-option', block)
 
+    def test_writer_safety_summary_is_outside_scrolling_options(self):
+        source = read('feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt')
+        dialog = source.split('structuredDocxConsent?.let { consent ->', 1)[1].split('confirmButton=', 1)[0]
+        self.assertLess(dialog.index('writer-structured-safety'), dialog.index('verticalScroll'))
+        self.assertLess(dialog.index('verticalScroll'), dialog.index('writer-strike-option'))
+        tests = read('app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt')
+        self.assertIn('assertFullTextVisible(compose, "writer-structured-safety")', tests)
+
     def test_range_requires_unchanged_snapshot_and_blocks_other_edits(self):
         model = read('feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt')
         ready = model.split('private fun ready(): Boolean', 1)[1].split('fun updateInput', 1)[0]
@@ -40,6 +48,15 @@ class R62IntegrationContracts(unittest.TestCase):
         model = read('feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt')
         section = model.split('fun acceptRange()', 1)[1].split('fun cancelRangePreview()', 1)[0]
         self.assertNotIn('onExport(', section)
+
+    def test_picker_failure_observer_is_bounded_and_never_retries(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt')
+        failure = source.split('if (!device.wait(Until.hasObject(documentsUi), 15_000)) {', 1)[1].split('throw AssertionError', 1)[0]
+        self.assertIn('android:id/alertTitle', failure)
+        self.assertIn('.take(120)', failure)
+        self.assertNotIn('.click()', failure)
+        self.assertNotIn('performClick()', failure)
+        self.assertNotIn('wait(Until', failure)
 
     def test_real_tests_are_listed_without_claiming_execution(self):
         office = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()

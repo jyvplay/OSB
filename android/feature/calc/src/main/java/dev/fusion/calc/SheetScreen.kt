@@ -312,7 +312,8 @@ fun SheetScreen(
                     if (plan.protectExisting) " Existing-cell protection is on." else " Existing-cell protection is off." else ""
                 val undo = if (plan.changed == 0) "Nothing will change and no undo step will be added."
                     else "This changes the local draft as one undo step; it does not save an external file."
-                Text("$operation: ${plan.range} (${plan.positions} positions). ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged; ${plan.formulasRemoved} formulas removed.$protection $undo",
+                val formulaWord = if (plan.formulasRemoved == 1) "formula" else "formulas"
+                Text("$operation: ${plan.range} (${plan.positions} positions). ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged; ${plan.formulasRemoved} $formulaWord removed.$protection $undo",
                     Modifier.testTag("sheet-range-review-text"))
             },
             confirmButton = { TextButton(onClick = model::acceptRange, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-apply")) { Text("Apply range") } },

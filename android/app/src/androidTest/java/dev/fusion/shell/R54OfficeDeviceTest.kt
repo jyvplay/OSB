@@ -147,7 +147,11 @@ class R54OfficeDeviceTest {
             val actions = device.findObjects(By.clickable(true)).take(15).map {
                 "${it.className} id=${it.resourceName} text=${it.text.orEmpty().take(60)} desc=${it.contentDescription.orEmpty().take(80)}"
             }
-            throw AssertionError("Writer picker not observed; foreground=${device.currentPackageName}; export=${vm.state.value}; actions=$actions")
+            // Read only the bounded system error-dialog title/message if present; never dismiss or retry.
+            val systemError = listOf("android:id/alertTitle", "android:id/message", "android:id/aerr_msg").mapNotNull { id ->
+                device.findObject(By.res(id))?.text?.take(120)?.let { "$id=$it" }
+            }
+            throw AssertionError("Writer picker not observed; foreground=${device.currentPackageName}; export=${vm.state.value}; actions=$actions; systemError=$systemError")
         }
         val filename = requireNotNull(device.wait(Until.findObject(By.clazz("android.widget.EditText")), 10_000))
         filename.text = "fusion-r54-${UUID.randomUUID()}.docx"
@@ -212,6 +216,7 @@ class R54OfficeDeviceTest {
         NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r60-writer-numbered", "writer-structured-confirm",
             listOf("writer-numbered-option", "writer-structured-cancel"))
         // Both notices must remain fully visible together after selecting the option.
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-safety")
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-disclosure")
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-numbered-disclosure")
         val vm = exportModel()
@@ -244,6 +249,8 @@ class R54OfficeDeviceTest {
         val strike = compose.onNodeWithTag("writer-strike-option").performScrollTo()
         strike.assertIsOff().assertHasClickAction().performClick().assertIsOn()
         NativeVisualEvidence.assertMinimumTarget(compose, "writer-strike-option")
+        // The safety summary and selected option must both fit after scrolling to strike.
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-safety")
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-strike-disclosure")
         NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r62-writer-strike", "writer-structured-confirm", listOf("writer-structured-cancel", "writer-strike-option"))
         compose.onNodeWithTag("writer-structured-cancel").performClick()

@@ -247,8 +247,11 @@ private fun EditorScreenContent(
     }
     structuredDocxConsent?.let { consent ->
         AlertDialog(onDismissRequest={ structuredDocxConsent=null }, title={ Text("Export formatted DOCX copy?") },
-            text={ Column(Modifier.heightIn(max=320.dp).verticalScroll(rememberScrollState())) {
-                Text("Not a rich editor or full Markdown. Draft unchanged; choose a new file. Provider identity and atomicity aren't guaranteed. One paragraph per line; CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
+            text={ Column {
+                // Keep the safety summary visible even while the optional format details scroll.
+                Text("Not a rich editor or full Markdown. Draft unchanged; choose a new file. Provider identity and atomicity aren't guaranteed.", Modifier.testTag("writer-structured-safety"))
+                Column(Modifier.heightIn(max=248.dp).verticalScroll(rememberScrollState())) {
+                Text("One paragraph per line; CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=numberedLines, role=Role.Checkbox, onValueChange={ numberedLines=it })
                     .testTag("writer-numbered-option"), verticalAlignment=Alignment.CenterVertically) {
                     Checkbox(checked=numberedLines, onCheckedChange=null)
@@ -258,6 +261,7 @@ private fun EditorScreenContent(
                     .testTag("writer-strike-option"), verticalAlignment=Alignment.CenterVertically) {
                     Checkbox(checked=strikeSpans, onCheckedChange=null)
                     Text("Also format ~~text~~ as strikethrough. Single tildes, spaces at the ends and ambiguous or nested markers stay literal; this is not full Markdown.", Modifier.testTag("writer-strike-disclosure"))
+                }
                 }
             } },
             confirmButton={ TextButton(onClick={
