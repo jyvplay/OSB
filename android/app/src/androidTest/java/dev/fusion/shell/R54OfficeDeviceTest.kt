@@ -211,6 +211,8 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("writer-numbered-option").performScrollTo().assertIsOff().performClick().assertIsOn()
         NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r60-writer-numbered", "writer-structured-confirm",
             listOf("writer-numbered-option", "writer-structured-cancel"))
+        // Both notices must remain fully visible together after selecting the option.
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-disclosure")
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-numbered-disclosure")
         val vm = exportModel()
         compose.onNodeWithTag("writer-structured-confirm").performClick()
@@ -244,8 +246,11 @@ class R54OfficeDeviceTest {
         }
         compose.waitForIdle()
         compose.onNodeWithTag("writer-structured-confirm").performClick()
-        compose.onNodeWithTag("writer-export-notice").performScrollTo().assertTextContains("Review the export again")
+        compose.onNodeWithTag("writer-export-notice").performScrollTo()
+            .assertTextEquals("Draft or editor state changed. Review the export again.")
         compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains("1. changed")
+        assertEquals(OfficeExportViewModel.State(), exportModel().state.value)
+        assertEquals(compose.activity.packageName, UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).currentPackageName)
     }
 
     private fun created(extension: String, mime: String, materialize: Boolean = true, body: (Uri) -> Unit) {

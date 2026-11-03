@@ -16,7 +16,11 @@ import android.view.ViewTreeObserver
 import java.io.Closeable
 
 /** Test-only observation of actual callbacks. Never fabricates an event, rearms, retries or permits a failed assertion. */
-internal class PrivacySignalTrace(private val activity: Activity) : Closeable {
+internal class PrivacySignalTrace(
+    private val activity: Activity,
+    private val reportName: String = "r24c-privacy-reveal-events.json",
+) : Closeable {
+    init { require(reportName in setOf("r24c-privacy-reveal-events.json", "r24c-privacy-screenoff-events.json")) }
     private val events = mutableListOf<String>()
     private fun record(event: String) { synchronized(events) { if (events.size < 64) events.add("${SystemClock.elapsedRealtime()}:$event") } }
     fun snapshot(): String = synchronized(events) { events.joinToString(";") }
@@ -64,6 +68,6 @@ internal class PrivacySignalTrace(private val activity: Activity) : Closeable {
         val report = org.json.JSONObject().put("origin", "android-instrumentation").put("api", android.os.Build.VERSION.SDK_INT)
             .put("events", org.json.JSONArray(copy)).put("event_limit_reached", copy.size == 64)
             .put("scope", "Actual test-only event observations; not retrospective cause, hardware authenticity, or an excuse to pass missing UI")
-        java.io.File(folder, "r24c-privacy-reveal-events.json").writeText(report.toString())
+        java.io.File(folder, reportName).writeText(report.toString())
     }
 }

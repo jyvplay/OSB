@@ -23,7 +23,7 @@ class R22XlsxUiDeviceTest {
   return requireNotNull(initialized.wait(Until.findObject(By.res(pkg,id)),10000))
  }
  private fun status(prefix:String) {assertTrue("Missing status $prefix",device.wait(Until.hasObject(By.res(pkg,"csv_status").textStartsWith(prefix)),15000))}
- private fun app(selection:String="picker") {
+ private fun app(selection:String="picker",targetName:String?=null) {
   val end=android.os.SystemClock.elapsedRealtime()+15000
   var returned=false
   while(android.os.SystemClock.elapsedRealtime()<end) {
@@ -34,13 +34,27 @@ class R22XlsxUiDeviceTest {
    val actions=device.findObjects(By.clickable(true)).take(15).map {
     "${it.className} id=${it.resourceName} text=${it.text.orEmpty().take(60)} desc=${it.contentDescription.orEmpty().take(80)}"
    }
-   throw AssertionError("$selection did not return to CSV activity; foreground=${device.currentPackageName}; actions=$actions")
+   // Failure-only observation of the exact filename and ancestor selection state. Do not
+   // tap Select, retry the file action, inject a URI or treat selection mode as a pass.
+   val targetState=runCatching {
+    targetName?.let { name -> device.findObjects(By.text(name)).take(3).map { match ->
+     val ancestry=mutableListOf<String>()
+     var node:UiObject2?=match
+     repeat(6) {
+      val current=node ?: return@repeat
+      ancestry.add("id=${current.resourceName} bounds=${current.visibleBounds} selected=${current.isSelected} checked=${current.isChecked}")
+      node=current.parent
+     }
+     ancestry
+    }}
+   }.getOrElse { listOf("unavailable: ${it.javaClass.simpleName}") }
+   throw AssertionError("$selection did not return to CSV activity; foreground=${device.currentPackageName}; targetState=$targetState; actions=$actions")
   }
  }
  private fun pickFile(name:String) {
   val file=requireNotNull(device.wait(Until.findObject(By.text(name)),10000))
   val observed="selected id=${file.resourceName} class=${file.className} desc=${file.contentDescription}"
-  file.click();app(observed)
+  file.click();app(observed,name)
  }
  @Test fun actualReadOnlyPickerImportProjectionAndNewCopyPreserveSource() {
   val resolver=context.contentResolver;val name="r22-source-${UUID.randomUUID()}.xlsx";val output="r22-copy-${UUID.randomUUID()}.xlsx"

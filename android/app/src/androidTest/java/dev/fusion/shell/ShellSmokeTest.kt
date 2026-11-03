@@ -352,7 +352,16 @@ class ShellSmokeTest {
         compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText("New").performClick()
         compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithTag("editor-content").performScrollTo().performClick().performTextInput((1..60).joinToString("\n") { "Long line $it" })
+        // Distinguish the failed semantics stage without retrying or moving the real actions.
+        fun stage(name:String, action:()->Unit) {
+            try { action() } catch (failure:IllegalArgumentException) {
+                throw IllegalArgumentException("Editor UI stage $name failed; no action retried: ${failure.message}",failure)
+            }
+        }
+        val editor=compose.onNodeWithTag("editor-content")
+        stage("scroll") { editor.performScrollTo() }
+        stage("click") { editor.performClick() }
+        stage("text input") { editor.performTextInput((1..60).joinToString("\n") { "Long line $it" }) }
         compose.waitUntil(10000) {
             var visible=false
             compose.activityRule.scenario.onActivity {
