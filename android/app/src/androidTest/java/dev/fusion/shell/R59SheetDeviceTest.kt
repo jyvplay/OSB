@@ -72,6 +72,88 @@ class R59SheetDeviceTest {
         finally { resolver.delete(uri, null, null) }
     }
 
+    @Test fun blankSkipAndExistingCellProtectionAreReviewedAndUndoable() {
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        click("shelf-spreadsheet")
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("window-actions-spreadsheet").performClick()
+        compose.onNodeWithText("Maximize").performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement("KEEP")
+        click("sheet-apply")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells["A1"]?.input == "KEEP" }
+        val before = sheet().state.value.data.draft
+        click("sheet-text-grid")
+        compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement("replace\tnew")
+        compose.onNodeWithTag("sheet-text-grid-protect-existing").performScrollTo().assertIsOff().performClick().assertIsOn()
+        NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-protect-existing")
+        click("sheet-text-grid-preview")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.textGridError.isNotEmpty() }
+        compose.onNodeWithTag("sheet-text-grid-error").performScrollTo().assertTextContains("Protected existing cell A1", substring = true)
+        assertSame("Conflict must not publish a partial grid", before, sheet().state.value.data.draft)
+        click("sheet-text-grid-input-cancel")
+
+        fun review() {
+            click("sheet-text-grid")
+            compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement("\tnew")
+            val skip = compose.onNodeWithTag("sheet-text-grid-skip-blanks").performScrollTo()
+            NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-skip-blanks")
+            skip.assertIsOff().performClick().assertIsOn()
+            val protect = compose.onNodeWithTag("sheet-text-grid-protect-existing").performScrollTo()
+            NativeVisualEvidence.assertMinimumTarget(compose, "sheet-text-grid-protect-existing")
+            protect.assertIsOff().performClick().assertIsOn()
+            click("sheet-text-grid-preview")
+            compose.waitUntil(15_000) { sheet().state.value.textGridPreview != null }
+            val preview = requireNotNull(sheet().state.value.textGridPreview)
+            assertTrue(preview.skipBlanks && preview.protectExisting)
+            assertEquals(1, preview.skippedFields)
+            assertSame(before, sheet().state.value.data.draft)
+            compose.onNodeWithText("1 blank field skipped", substring = true).assertIsDisplayed()
+        }
+        review()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r61-sheet-protection", "sheet-text-grid-apply", listOf("sheet-text-grid-cancel"))
+        NativeVisualEvidence.assertFullTextVisible(compose, "sheet-text-grid-review-text")
+        click("sheet-text-grid-cancel")
+        assertSame(before, sheet().state.value.data.draft)
+        review() // Each new review must reset both options.
+        click("sheet-text-grid-apply")
+        compose.waitUntil(15_000) { sheet().state.value.data.draft.revision == before.revision + 1 }
+        val after = sheet().state.value.data.draft
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "KEEP"), after.cells["A1"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "new"), after.cells["B1"])
+        click("sheet-undo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == before.cells }
+        click("sheet-redo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == after.cells }
+        val redone = sheet().state.value.data.draft
+        val depth = sheet().state.value.undoDepth
+        click("sheet-text-grid")
+        compose.onNodeWithTag("sheet-text-grid-input").performScrollTo().performTextReplacement("\"\"")
+        compose.onNodeWithTag("sheet-text-grid-skip-blanks").performScrollTo().assertIsOff().performClick().assertIsOn()
+        compose.onNodeWithTag("sheet-text-grid-protect-existing").performScrollTo().assertIsOff().performClick().assertIsOn()
+        click("sheet-text-grid-preview")
+        compose.waitUntil(15_000) { sheet().state.value.textGridPreview != null }
+        assertEquals(0, requireNotNull(sheet().state.value.textGridPreview).changed)
+        click("sheet-text-grid-apply")
+        compose.waitUntil(15_000) { sheet().state.value.textGridPreview == null }
+        assertSame("An all-skipped review is a no-op", redone, sheet().state.value.data.draft)
+        assertEquals(depth, sheet().state.value.undoDepth)
+        destination { uri ->
+            val coordinator = export()
+            val request = AtomicReference<CopyPickerRequest>()
+            compose.runOnUiThread { coordinator.sheet(sheet().state.value.data.draft, emptyList()) { request.set(it) } }
+            compose.waitUntil(15_000) { request.get() != null || !coordinator.state.value.busy }
+            val issued = requireNotNull(request.get()) { coordinator.state.value.status }
+            compose.runOnUiThread { coordinator.complete(CopyPickerResult(issued.requestId, CopyPickerOutcome.SELECTED, uri), emptyList()) }
+            compose.waitUntil(30_000) { !coordinator.state.value.busy }
+            assertTrue(coordinator.state.value.status, coordinator.state.value.status.contains("byte-for-byte"))
+            val bytes = requireNotNull(context.contentResolver.openInputStream(uri)).use { it.readBytes() }
+            val inputs = FormulaXlsx.read(bytes).inputs
+            assertEquals(FormulaEval.CellInput.TextLiteral("KEEP"), inputs["A1"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("new"), inputs["B1"])
+        }
+    }
+
     @Test fun transposeOptInPreviewCancelApplyUndoAndProviderReadback() {
         compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         click("shelf-spreadsheet")

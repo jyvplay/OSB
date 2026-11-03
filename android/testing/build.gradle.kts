@@ -1636,3 +1636,14 @@ tasks.register<JavaExec>("r60SheetContracts") {
     mainClass.set("dev.fusion.testing.R60SheetChecks")
     args(rootProject.file("testing/build/r60sheet/artifacts").absolutePath)
 }
+
+// R61: independently reviewed blank-skip and conflict protection, with host-reader/device gates separate.
+val r61Sheet by sourceSets.creating
+kotlin.sourceSets.named("r61Sheet") { kotlin.srcDir("src/r61sheet/kotlin") }
+dependencies { add(r61Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r61SheetContracts") {
+    dependsOn(r61Sheet.classesTaskName)
+    classpath = r61Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R61SheetPolicyChecks")
+    args(rootProject.file("testing/build/r61sheet/artifacts").absolutePath)
+}

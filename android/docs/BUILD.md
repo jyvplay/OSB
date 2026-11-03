@@ -21,7 +21,9 @@ python3 tools/run_r22_interop.py
 
 For spreadsheet transposition, open **Spreadsheet → Paste text grid…** and select **Swap rows and columns**. The option is off on each new review. Parsing and source limits apply before the swap; the swapped rectangle must also fit A1–Z100. Quoted-number classification and blank clearing are preserved. Review the impact before the single undoable apply. Run `python3 tools/run_r60_sheet.py`, `python3 tools/check_r60_sheet_reference.py` and `python3 -m unittest test_r60_sheet_reference -v` for host checks.
 
-The corresponding Studio/CI JVM tasks are `./gradlew :testing:r60WriterContracts :testing:r60SheetContracts`; the real API34 tests are in `R54OfficeDeviceTest` and `R59SheetDeviceTest` and require explicit disposable-emulator consent. Host timing is not Android performance or Office rendering evidence. [R59](R59-RESULTS.md) retains earlier failures and repeat gates.
+Text-grid review also offers separate default-off **Keep cells where the input is blank** and **Refuse changes to existing cells** options. Quoted and unquoted empty fields are skipped only when selected; whitespace is text. Protection refuses the entire operation if an existing cell's value or type would change, including clearing; identical cells and new cells are allowed. These controls reset on reopening and do not relax bounds or import formulas. For host checks run `python3 tools/run_r61_sheet.py`, `python3 tools/check_r61_sheet_reference.py` and `python3 -m unittest test_r61_sheet_reference -v`.
+
+The corresponding Studio/CI JVM tasks are `./gradlew :testing:r60WriterContracts :testing:r60SheetContracts :testing:r61SheetContracts`; the real API34 tests are in `R54OfficeDeviceTest` and `R59SheetDeviceTest` and require explicit disposable-emulator consent. Host timing is not Android performance or Office rendering evidence. [R59](R59-RESULTS.md) retains earlier failures and repeat gates.
 
 ---
 

@@ -40,6 +40,15 @@ class RepairGuardrails(unittest.TestCase):
         self.assertIn('assertEquals(" (0/64)",output.text.toString())', wake)
         self.assertNotIn('findViewById<Button>(R.id.restart_workspace).performClick()', wake)
 
+    def test_video_failure_records_bounded_actual_samples_without_replaying(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/R25LocalVideoDeviceTest.kt')
+        section = source.split('@Test fun actualMp4DecoderProducesOrderedChangingSurfacePixelsAndReleasesOnHome()', 1)[1]
+        self.assertEqual(section.count('play(s);'), 1)
+        self.assertIn('deadline=started+7500', section)
+        self.assertIn('firstSamples.size<4', section)
+        self.assertIn('recentSamples.size==12', section)
+        self.assertIn('listOf("red","green","blue"),seen)', section)
+
     def test_long_editor_stages_rethrow_not_retry(self):
         source = read('app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt')
         section = source.split('@Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont()', 1)[1].split('private fun withVisibleKeyboard', 1)[0]

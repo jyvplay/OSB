@@ -12,7 +12,9 @@ import java.math.BigDecimal
  * all other fields as TEXT. Optional decimal mode converts only a restricted,
  * unquoted decimal grammar; no pasted input is ever interpreted as a formula.
  * A separate opt-in transposes the already parsed rectangle before placement;
- * original quotedness, source budgets and destination bounds still apply.
+ * original quotedness, source budgets and destination bounds still apply. Two
+ * independent, default-off policies can skip zero-length fields and reject the
+ * whole operation if it would change any populated destination cell.
  */
 object OfficeSheetTextGrid {
     const val MAX_INPUT_BYTES = 64 * 1024
@@ -36,6 +38,9 @@ object OfficeSheetTextGrid {
         val textFields: Int,
         val emptyFields: Int,
         val transposed: Boolean,
+        val skipBlanks: Boolean,
+        val protectExisting: Boolean,
+        val skippedFields: Int,
     ) {
         val changed: Int get() = inserted + replaced + cleared
         fun isCurrent(draft: OfficeSheetDraft.Draft, selected: String): Boolean =
@@ -46,7 +51,18 @@ object OfficeSheetTextGrid {
     fun prepare(draft: OfficeSheetDraft.Draft, rawAnchor: String, raw: String, mode: Mode = Mode.TEXT_ONLY): Preview =
         prepare(draft, rawAnchor, raw, mode, transpose = false)
 
-    fun prepare(draft: OfficeSheetDraft.Draft, rawAnchor: String, raw: String, mode: Mode, transpose: Boolean): Preview {
+    fun prepare(draft: OfficeSheetDraft.Draft, rawAnchor: String, raw: String, mode: Mode, transpose: Boolean): Preview =
+        prepare(draft, rawAnchor, raw, mode, transpose, skipBlanks = false, protectExisting = false)
+
+    fun prepare(
+        draft: OfficeSheetDraft.Draft,
+        rawAnchor: String,
+        raw: String,
+        mode: Mode,
+        transpose: Boolean,
+        skipBlanks: Boolean,
+        protectExisting: Boolean,
+    ): Preview {
         val anchor = OfficeSheetDraft.address(rawAnchor)
         require(raw.isNotEmpty()) { "Enter a text grid before previewing" }
         // For valid UTF-8, UTF-16 code units cannot exceed the number of bytes.
@@ -71,15 +87,23 @@ object OfficeSheetTextGrid {
         var numericFields = 0
         var textFields = 0
         var emptyFields = 0
+        var skippedFields = 0
         for ((dy, record) in records.withIndex()) for ((dx, field) in record.withIndex()) {
             val ref = "${('A'.code + startColumn + dx).toChar()}${startRow + dy}"
             val old = cells[ref]
+            if (field.text.isEmpty()) {
+                emptyFields++
+                if (skipBlanks) { skippedFields++; continue }
+            }
             val next = when {
-                field.text.isEmpty() -> { emptyFields++; null }
+                field.text.isEmpty() -> null
                 mode == Mode.DECIMALS && !field.quoted && isRoundTripDecimal(field.text) -> {
                     numericFields++; OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.NUMBER, field.text)
                 }
                 else -> { textFields++; OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, field.text) }
+            }
+            require(!protectExisting || old == null || old == next) {
+                "Protected existing cell $ref would change; no grid applied"
             }
             when {
                 old == next -> unchanged++
@@ -94,7 +118,7 @@ object OfficeSheetTextGrid {
             OfficeSheetDraft.restore(draft.revision + 1, cells)
         }
         return Preview(draft, anchor, calculated, rowCount, columnCount, inserted, replaced, cleared, unchanged,
-            mode, numericFields, textFields, emptyFields, transpose)
+            mode, numericFields, textFields, emptyFields, transpose, skipBlanks, protectExisting, skippedFields)
     }
 
     /** Canonical decimal round-trip is not exact representation of a binary64 value. */

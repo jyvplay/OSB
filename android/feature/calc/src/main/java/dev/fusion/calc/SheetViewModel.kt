@@ -129,14 +129,19 @@ class SheetViewModel(application: Application) : AndroidViewModel(application) {
     fun previewTextGrid(raw: String, mode: OfficeSheetTextGrid.Mode = OfficeSheetTextGrid.Mode.TEXT_ONLY) =
         previewTextGrid(raw, mode, transpose = false)
 
-    fun previewTextGrid(raw: String, mode: OfficeSheetTextGrid.Mode, transpose: Boolean) {
+    fun previewTextGrid(raw: String, mode: OfficeSheetTextGrid.Mode, transpose: Boolean) =
+        previewTextGrid(raw, mode, transpose, skipBlanks = false, protectExisting = false)
+
+    fun previewTextGrid(raw: String, mode: OfficeSheetTextGrid.Mode, transpose: Boolean, skipBlanks: Boolean, protectExisting: Boolean) {
         if (!ready() || state.value.unapplied) return
         val before = state.value.data.draft
         val anchor = state.value.selected
         mutable.value = state.value.copy(busy = true, textGridError = "", status = "Checking text grid…")
         viewModelScope.launch {
             try {
-                val plan = withContext(Dispatchers.Default) { OfficeSheetTextGrid.prepare(before, anchor, raw, mode, transpose) }
+                val plan = withContext(Dispatchers.Default) {
+                    OfficeSheetTextGrid.prepare(before, anchor, raw, mode, transpose, skipBlanks, protectExisting)
+                }
                 val current = state.value
                 if (plan.isCurrent(current.data.draft, current.selected) && !current.unapplied) {
                     mutable.value = current.copy(busy = false, textGridPreview = plan, status = "Review the text-grid changes before applying.")

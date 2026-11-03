@@ -158,6 +158,9 @@ jobs:
         run: python3 tools/check_focus_regression.py
       - name: Run pro managed-device tests
         run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest -Pandroid.experimental.enableAdditionalTestOutput=true
+      - name: Failure-only host observations (not a root-cause diagnosis)
+        if: failure()
+        run: python3 tools/r61_emulator_observation.py
       - name: Actual UI preconditions (not current test acceptance)
         if: always()
         run: python3 tools/r25_ui_lab.py --require-observed

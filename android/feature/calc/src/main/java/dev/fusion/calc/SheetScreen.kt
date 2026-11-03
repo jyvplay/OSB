@@ -82,6 +82,8 @@ fun SheetScreen(
     var textGridInput by remember { mutableStateOf("") }
     var interpretDecimals by remember { mutableStateOf(false) }
     var transposeTextGrid by remember { mutableStateOf(false) }
+    var skipBlankFields by remember { mutableStateOf(false) }
+    var protectExistingCells by remember { mutableStateOf(false) }
     LaunchedEffect(state.textGridPreview) {
         if (state.textGridPreview != null) { showTextGridInput = false; textGridInput = "" }
     }
@@ -114,7 +116,10 @@ fun SheetScreen(
             OutlinedButton(onClick = model::redo, enabled = ready && !unapplied && state.redoDepth > 0, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-redo")) { Text("Redo") }
             OutlinedButton(onClick = { confirmExportRevision = draft.revision }, enabled = ready && !unapplied && !exportBusy,
                 modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-export")) { Text("Export XLSX copy…") }
-            OutlinedButton(onClick = { model.clearTextGridError(); textGridInput = ""; interpretDecimals = false; transposeTextGrid = false; showTextGridInput = true },
+            OutlinedButton(onClick = {
+                model.clearTextGridError(); textGridInput = ""; interpretDecimals = false; transposeTextGrid = false
+                skipBlankFields = false; protectExistingCells = false; showTextGridInput = true
+            },
                 enabled = ready && !unapplied && !exportBusy, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid")) { Text("Paste text grid…") }
         }
         Text("Selected $selected · displayed value: ${state.data.values[selected]?.displayText().orEmpty()}", modifier = Modifier.testTag("sheet-selected-value"))
@@ -179,7 +184,7 @@ fun SheetScreen(
         title = { Text("Paste text grid at $selected") },
         text = {
             Column(Modifier.heightIn(max = 340.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Tabs separate columns; line endings separate rows. Quote whole fields and double quotes inside them. Rows must be rectangular. Blank fields clear cells; formulas are never imported. Up to 256 fields and 64 KiB.")
+                Text("Tabs separate columns; line endings separate rows. Quote whole fields and double quotes inside them. Rows must be rectangular. By default blank fields clear cells; formulas are never imported. Up to 256 fields and 64 KiB.")
                 OutlinedTextField(textGridInput, { if (it.length <= OfficeSheetTextGrid.MAX_INPUT_BYTES) textGridInput = it },
                     modifier = Modifier.fillMaxWidth().testTag("sheet-text-grid-input"), enabled = !state.busy,
                     label = { Text("Enter or paste tab-delimited text") }, minLines = 3, maxLines = 7)
@@ -199,6 +204,22 @@ fun SheetScreen(
                     Text("Swap rows and columns")
                 }
                 Text("Both the input and the transposed result must fit the grid limits; quoted fields retain their text/number policy.", style = MaterialTheme.typography.bodySmall)
+                Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                    value = skipBlankFields, enabled = !state.busy, role = Role.Checkbox,
+                    onValueChange = { skipBlankFields = it },
+                ).testTag("sheet-text-grid-skip-blanks"), verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = skipBlankFields, onCheckedChange = null, enabled = !state.busy)
+                    Text("Keep cells where the input is blank")
+                }
+                Text("Quoted and unquoted empty fields are skipped; spaces are text. All source and destination bounds still apply.", style = MaterialTheme.typography.bodySmall)
+                Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                    value = protectExistingCells, enabled = !state.busy, role = Role.Checkbox,
+                    onValueChange = { protectExistingCells = it },
+                ).testTag("sheet-text-grid-protect-existing"), verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = protectExistingCells, onCheckedChange = null, enabled = !state.busy)
+                    Text("Refuse changes to existing cells")
+                }
+                Text("If a populated cell would be replaced or cleared, the whole grid is refused. An identical value and type, or insertion into an empty cell, is allowed.", style = MaterialTheme.typography.bodySmall)
                 if (state.textGridError.isNotEmpty()) Text(state.textGridError,
                     Modifier.testTag("sheet-text-grid-error").semantics { liveRegion = LiveRegionMode.Polite }, color = MaterialTheme.colorScheme.error)
                 if (state.busy) CircularProgressIndicator()
@@ -208,7 +229,8 @@ fun SheetScreen(
             val focus = LocalFocusManager.current
             val keyboard = LocalSoftwareKeyboardController.current
             TextButton(onClick = { focus.clearFocus(); keyboard?.hide(); model.previewTextGrid(textGridInput,
-                if (interpretDecimals) OfficeSheetTextGrid.Mode.DECIMALS else OfficeSheetTextGrid.Mode.TEXT_ONLY, transposeTextGrid) },
+                if (interpretDecimals) OfficeSheetTextGrid.Mode.DECIMALS else OfficeSheetTextGrid.Mode.TEXT_ONLY,
+                transposeTextGrid, skipBlankFields, protectExistingCells) },
                 enabled = !state.busy && textGridInput.isNotEmpty(), modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-preview")) { Text("Review changes") }
         },
         dismissButton = { TextButton(onClick = { showTextGridInput = false; textGridInput = "" }, enabled = !state.busy,
@@ -220,7 +242,11 @@ fun SheetScreen(
                 val types = if (plan.mode == OfficeSheetTextGrid.Mode.TEXT_ONLY) "All nonempty fields are text."
                 else "${plan.numericFields} numeric, ${plan.textFields} text and ${plan.emptyFields} blank fields in the grid. Numbers are approximate binary values."
                 val operation = if (plan.transposed) "Rows and columns swapped. " else ""
-                Text("$operation${plan.rows} rows × ${plan.columns} columns from ${plan.anchor}: ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged. $types This changes the local draft as one undo step; it does not save an external file.")
+                val blankUnit = if (plan.skippedFields == 1) "field" else "fields"
+                val policies = (if (plan.skipBlanks) "${plan.skippedFields} blank $blankUnit skipped. " else "") +
+                    (if (plan.protectExisting) "Existing-cell protection is on. " else "")
+                Text("$operation${plan.rows} rows × ${plan.columns} columns from ${plan.anchor}: ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged. $policies$types This changes the local draft as one undo step; it does not save an external file.",
+                    Modifier.testTag("sheet-text-grid-review-text"))
             },
             confirmButton = { TextButton(onClick = model::acceptTextGrid, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-apply")) { Text("Apply grid") } },
             dismissButton = { TextButton(onClick = model::cancelTextGridPreview, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-text-grid-cancel")) { Text("Cancel") } })

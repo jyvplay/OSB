@@ -86,6 +86,7 @@ FILES = [
     'app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt',  # R58: one-shot local-plan diagnostic
     'app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt',  # R58: actual IME and disclosure
     'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
+    'app/src/androidTest/java/dev/fusion/shell/R25LocalVideoDeviceTest.kt',  # R61: failure-only frame-clock observations
     'app/src/androidTest/java/dev/fusion/shell/PickerRootStability.kt',  # R59: pre-tap geometry gate
     'privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt',  # R59: failure-only privacy diagnostic
     'privacy/src/androidTest/java/dev/fusion/privacy/PrivacySignalTrace.kt',  # R61: distinct bounded test-only traces

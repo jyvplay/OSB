@@ -103,6 +103,14 @@ class R25ToolTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 capture.export(0, name)  # The unrelated legacy group cannot relabel these captures.
 
+    def test_r61_capture_group_contains_protection_frame(self):
+        import r24c_capture as capture
+        added = {'r61-sheet-protection.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r61-office'], capture.FRAME_GROUPS['r60-office'] | added)
+        self.assertIn(next(iter(added)), (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text())
+        with self.assertRaises(ValueError):
+            capture.export(0, next(iter(added)))
+
     def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
         import hashlib
         receipt=json.loads((ROOT/'docs/research/r25-video-fixture.json').read_text())
