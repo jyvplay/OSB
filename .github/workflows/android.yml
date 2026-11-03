@@ -27,8 +27,18 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Check source contracts and generated traceability
         run: |
-          python3 tools/check_project.py
-          PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_*.py' -v
+          if ! python3 tools/check_project.py > source-check.log 2>&1; then
+            cat source-check.log
+            python3 tools/ci_annotations.py source-check.log source-check
+            exit 1
+          fi
+          if ! PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_*.py' -v > source-python-tests.log 2>&1; then
+            cat source-python-tests.log
+            python3 tools/ci_annotations.py source-python-tests.log source-python-tests
+            exit 1
+          fi
+          cat source-check.log
+          tail -8 source-python-tests.log
       - name: Inspect runner SDK and install pinned platform
         run: |
           SDK_MANAGER="${ANDROID_HOME:?Runner did not expose ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
@@ -105,6 +115,8 @@ jobs:
             android/sdk-probe.json
             android/installed-sdk37.json
             android/main-apk-footprint.json
+            android/source-check.log
+            android/source-python-tests.log
             android/assemble.log
             android/unit-tests.log
             android/contracts.log

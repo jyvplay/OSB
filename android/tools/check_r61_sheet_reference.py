@@ -8,8 +8,6 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 from zipfile import ZipFile
 
-import openpyxl
-
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / 'testing/build/r61sheet/artifacts'
 NS = '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
@@ -25,6 +23,10 @@ def require(condition, message):
 
 
 def check(folder=ARTIFACTS):
+    try:
+        import openpyxl
+    except ImportError as exc:
+        raise RuntimeError('openpyxl==3.1.5 is required for the independent host reader') from exc
     folder = Path(folder)
     require(folder.is_dir() and not folder.is_symlink(), 'Missing/symlink artifact root')
     manifest = folder / 'cases.csv'

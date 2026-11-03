@@ -2,12 +2,13 @@ import csv
 import os
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 from zipfile import BadZipFile
 
-import openpyxl
 import check_r61_sheet_reference as reference
 
 
@@ -16,6 +17,8 @@ class PolicyReferenceTests(unittest.TestCase):
     def setUpClass(cls):
         if not (reference.ARTIFACTS / 'cases.csv').is_file():
             raise unittest.SkipTest('Run the actual R61 sheet contracts first')
+        global openpyxl
+        import openpyxl
 
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -107,6 +110,28 @@ class PolicyReferenceTests(unittest.TestCase):
 
 
 class PolicyBuildHygieneTests(unittest.TestCase):
+    def test_stdlib_discovery_skips_missing_artifacts_but_reader_requires_dependency(self):
+        with tempfile.TemporaryDirectory() as folder:
+            script = '''
+import sys, unittest
+from pathlib import Path
+import test_r61_sheet_reference as tests
+import check_r61_sheet_reference as reference
+reference.ARTIFACTS = Path(sys.argv[1]) / "missing"
+result = unittest.TextTestRunner().run(unittest.defaultTestLoader.loadTestsFromTestCase(tests.PolicyReferenceTests))
+assert result.wasSuccessful() and len(result.skipped) == 1
+try:
+    reference.check(reference.ARTIFACTS)
+except RuntimeError as exc:
+    assert "openpyxl" in str(exc)
+else:
+    raise AssertionError("The independent reader must not pass without openpyxl")
+'''
+            env = dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parent))
+            result = subprocess.run([sys.executable, '-S', '-c', script, folder], env=env,
+                                    capture_output=True, text=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_compiler_failure_does_not_leave_named_stale_outputs(self):
         import run_r61_sheet as runner
         with tempfile.TemporaryDirectory() as directory:

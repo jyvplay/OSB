@@ -49,6 +49,17 @@ class RepairGuardrails(unittest.TestCase):
         self.assertIn('recentSamples.size==12', section)
         self.assertIn('listOf("red","green","blue"),seen)', section)
 
+    def test_task_diagnostic_preserves_cases_and_installs_same_emulator_prerequisite(self):
+        workflow = (ROOT.parent / '.github/workflows/android-task-diagnostic.yml').read_text()
+        self.assertIn('apt-get install -y --no-install-recommends libpulse0', workflow)
+        self.assertIn("grep -F 'libpulse.so.0'", workflow)
+        self.assertEqual(workflow.count('bash tools/run_gradle_ci.sh device'), 1)
+        for case in ('R17TaskUiDeviceTest', 'R18TaskUiDeviceTest', 'R19TaskUiDeviceTest',
+                     'R20CountsUiDeviceTest', 'ShellSmokeTest#savedWikiBacklinksReadRealNoteFiles'):
+            self.assertIn(case, workflow)
+        self.assertIn('if: failure()\n        run: python3 tools/r61_emulator_observation.py', workflow)
+        self.assertNotIn('continue-on-error', workflow)
+
     def test_long_editor_stages_rethrow_not_retry(self):
         source = read('app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt')
         section = source.split('@Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont()', 1)[1].split('private fun withVisibleKeyboard', 1)[0]

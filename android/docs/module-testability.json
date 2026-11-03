@@ -3140,8 +3140,8 @@
         "testing/src/r61sheet/kotlin/dev/fusion/testing/R61LegacyGridProbe.kt": "4f3c98d555007cb1d7695b2351384d7d62493f43f19d6ce8ed6f872c4947d4ae",
         "tools/run_r61_sheet.py": "6c80cfdb2b7342e3de1cb939bd8f3c69aeda974512b8206543dbe6a7be51406d",
         "tools/run_r61_sheet_baseline.py": "8a53e93730b224a258d945ce8aa8d5c8a30f55a50a4fcfc1b388f130c3c9b9c7",
-        "tools/check_r61_sheet_reference.py": "dc2f48698e6d058db1cd4655005b5b1c7d8ac3f2ec88386a880a28c28d726e35",
-        "tools/test_r61_sheet_reference.py": "70d319e572dc3f8faade9126f7dce5cd4a7f24997aa3e3e7d6ac3c74f1c1eaea"
+        "tools/check_r61_sheet_reference.py": "a750e23bb325b75a628dac31829797ca58ff8c6e4be7e8f63e93a041e6883fc9",
+        "tools/test_r61_sheet_reference.py": "2af407f9b45eaf30c27c63e9421388fb29e1569f07431521be1310a1b31f4f88"
       }
     },
     {
@@ -5230,8 +5230,8 @@
         "testing/src/r61sheet/kotlin/dev/fusion/testing/R61LegacyGridProbe.kt": "4f3c98d555007cb1d7695b2351384d7d62493f43f19d6ce8ed6f872c4947d4ae",
         "tools/run_r61_sheet.py": "6c80cfdb2b7342e3de1cb939bd8f3c69aeda974512b8206543dbe6a7be51406d",
         "tools/run_r61_sheet_baseline.py": "8a53e93730b224a258d945ce8aa8d5c8a30f55a50a4fcfc1b388f130c3c9b9c7",
-        "tools/check_r61_sheet_reference.py": "dc2f48698e6d058db1cd4655005b5b1c7d8ac3f2ec88386a880a28c28d726e35",
-        "tools/test_r61_sheet_reference.py": "70d319e572dc3f8faade9126f7dce5cd4a7f24997aa3e3e7d6ac3c74f1c1eaea"
+        "tools/check_r61_sheet_reference.py": "a750e23bb325b75a628dac31829797ca58ff8c6e4be7e8f63e93a041e6883fc9",
+        "tools/test_r61_sheet_reference.py": "2af407f9b45eaf30c27c63e9421388fb29e1569f07431521be1310a1b31f4f88"
       }
     },
     {
