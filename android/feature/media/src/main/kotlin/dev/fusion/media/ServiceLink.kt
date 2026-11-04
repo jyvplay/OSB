@@ -49,6 +49,49 @@ class ServiceLink private constructor(val service: MediaService, val url: String
     }
 }
 
+/** A reviewed link belongs to one exact input; callers must use the latest returned state. */
+class ServiceLinkReview private constructor(
+    val draft: String,
+    val candidate: ServiceLink?,
+    val status: String,
+) {
+    companion object {
+        const val MAX_INPUT_UNITS = 2048
+        fun initial(): ServiceLinkReview = ServiceLinkReview("", null, "")
+    }
+
+    /** Reject an oversized edit without changing any state; a changed accepted edit expires review. */
+    fun edit(next: String): ServiceLinkReview {
+        if (next.length > MAX_INPUT_UNITS || next == draft) return this
+        return ServiceLinkReview(next, null, if (next.isEmpty()) "" else "Link changed; review again.")
+    }
+
+    /** Parse only; no external activity or network operation is performed here. */
+    fun prepare(): ServiceLinkReview = try {
+        ServiceLinkReview(draft, ServiceLink.parse(draft.trim()), "Link validated locally.")
+    } catch (e: Exception) {
+        refuse(e)
+    }
+
+    fun refuse(error: Exception): ServiceLinkReview =
+        ServiceLinkReview(draft, null, "Link refused: ${error.message?.take(160)}. No service contacted.")
+
+    fun cancel(expected: ServiceLink): ServiceLinkReview =
+        if (candidate === expected) ServiceLinkReview(draft, null, status) else this
+
+    /** Compute a consumed next state only for this state's candidate. Replace current state before side effects. */
+    fun consume(expected: ServiceLink): ServiceLinkReview? =
+        if (candidate === expected) ServiceLinkReview(draft, null, status) else null
+
+    fun expired(): ServiceLinkReview = if (candidate != null) this else
+        ServiceLinkReview(draft, null, "Review expired; review the current link again.")
+
+    fun handoffResult(started: Boolean): ServiceLinkReview = ServiceLinkReview(
+        draft, candidate,
+        if (started) "Handoff requested. Fusion cannot verify external playback." else "No compatible external player/browser available."
+    )
+}
+
 /** Callback epochs prevent a late prepare/completion from restarting a released player. */
 class PlaybackEpoch {
     enum class Phase { EMPTY, PREPARING, READY, PLAYING, PAUSED, ENDED, FAILED, CLOSED }

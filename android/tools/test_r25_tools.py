@@ -41,7 +41,7 @@ class R25ToolTests(unittest.TestCase):
             self.assertEqual(collect(tmp)['summary']['observations'], 0)
 
     def test_exact_named_native_contract_and_bad_receipt_mutations(self):
-        self.assertEqual(len(expected('full')), 148)
+        self.assertEqual(len(expected('full')), 149)
         self.assertEqual(len(expected('web')), 1)
         self.assertEqual(len(expected('media')), 3)
         self.assertEqual(len(expected('png')), 3)

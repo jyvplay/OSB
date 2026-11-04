@@ -3896,7 +3896,7 @@
       "path": "feature/media/src/main/java/dev/fusion/media/MediaHub.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
-      "sha256": "948fd2ae1f4fef3bcabe791e13a4ab22f1cff0487a89eeef662ff48185d8a838"
+      "sha256": "7dca4f35f41c1c8ae983b47d33a5e41b30edac1a63ca0cd1b50cc67741b8775e"
     },
     {
       "path": "feature/media/src/main/java/dev/fusion/media/MediaLibrary.kt",
@@ -4094,7 +4094,7 @@
       "path": "feature/media/src/main/kotlin/dev/fusion/media/ServiceLink.kt",
       "module": ":feature:media",
       "package": "dev.fusion.media",
-      "sha256": "34790206f32d101ab9e3967127def55fe2ffb6904f9eac9b0d0433b233605bc8"
+      "sha256": "792e507ddcfbbc092195396a8323f697e887fc1b7df0d2bf8b35918a6822cada"
     },
     {
       "path": "feature/media/src/main/kotlin/dev/fusion/media/StreamPolicy.kt",
