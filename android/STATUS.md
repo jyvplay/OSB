@@ -4,7 +4,9 @@ Spreadsheet formula fill and a separately opt-in Writer numbered-group restart r
 
 ---
 
-# Historical R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
+The following legacy headings are historical and retain their original labels for traceability.
+
+# Latest R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
 
 Branch `arena/64550eba-osb`, `2026-10-29`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
 50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`1,101` Kotlin `src/main` production files).

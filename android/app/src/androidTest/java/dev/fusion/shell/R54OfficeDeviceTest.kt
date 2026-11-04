@@ -298,7 +298,16 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("writer-structured-confirm").performClick()
         val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         val documentsUi = By.pkg(Pattern.compile(".*documentsui"))
-        assertTrue("Actual Create Document picker required", device.wait(Until.hasObject(documentsUi), 15_000))
+        if (!device.wait(Until.hasObject(documentsUi), 15_000)) {
+            // One late, bounded observation only: not the system ANR trace or a root-cause diagnosis.
+            val thread = android.os.Looper.getMainLooper().thread
+            val frames = runCatching { thread.stackTrace.take(24).joinToString(";") { "${it.className}.${it.methodName}:${it.lineNumber}" } }
+                .getOrElse { "unavailable" }
+            val errorDialog = runCatching { device.findObject(By.res("android:id/aerr_close")) != null }.getOrDefault(false)
+            throw AssertionError("Actual Create Document picker required; foreground=${device.currentPackageName}; " +
+                "exportBusy=${vm.state.value.busy}; systemErrorDialog=$errorDialog; " +
+                "lateMainThread=${thread.state}; lateFrames=$frames")
+        }
         device.pressBack()
         assertTrue(device.wait(Until.gone(documentsUi), 15_000))
         compose.waitUntil(30_000) { !vm.state.value.busy }

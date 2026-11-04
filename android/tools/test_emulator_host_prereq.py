@@ -10,6 +10,7 @@ TARGETS = {
     'android-r24c.yml': '- name: Install real compilation and emulator components',
     'android-r25-png.yml': '- name: Real isolated UID, native decoder and system-picker copy/readback',
     'android-r25-media.yml': '- name: Prepare disposable API34 SDK image (no device-test retry)',
+    'android-r25-web.yml': '- name: Prepare disposable API34 SDK image (no device-test retry)',
     'android.yml': '- name: Reproduce prior-source child-focus failure on real Android',
 }
 

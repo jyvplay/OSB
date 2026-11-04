@@ -20,7 +20,7 @@ internal class PrivacySignalTrace(
     private val activity: Activity,
     private val reportName: String = "r24c-privacy-reveal-events.json",
 ) : Closeable {
-    init { require(reportName in setOf("r24c-privacy-reveal-events.json", "r24c-privacy-screenoff-events.json")) }
+    init { require(reportName in setOf("r24c-privacy-reveal-events.json", "r24c-privacy-screenoff-events.json", "r63-privacy-touch-events.json")) }
     private val events = mutableListOf<String>()
     private fun record(event: String) { synchronized(events) { if (events.size < 64) events.add("${SystemClock.elapsedRealtime()}:$event") } }
     fun snapshot(): String = synchronized(events) { events.joinToString(";") }

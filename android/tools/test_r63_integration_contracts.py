@@ -51,6 +51,57 @@ class R63IntegrationContracts(unittest.TestCase):
         self.assertIn('<w:lvlOverride w:ilvl="0"><w:startOverride w:val="1"/>', package)
         self.assertIn('level == 0', package)
 
+    def test_current_status_retains_historical_traceability_labels(self):
+        status = read('STATUS.md')
+        self.assertTrue(status.startswith('# Current R63'))
+        self.assertIn('legacy headings are historical', status)
+        self.assertIn('# Latest R53', status)
+        self.assertIn('# Latest R52', status)
+        self.assertIn('0/50', status)
+
+    def test_restart_picker_failure_observer_is_late_bounded_and_read_only(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt')
+        section = source.split('@Test fun writerListRestartReviewIsOptInResettableAndReachesRealPicker()', 1)[1].split('@Test fun formattedWriterRejectsConsent', 1)[0]
+        self.assertEqual(section.count('device.wait(Until.hasObject(documentsUi), 15_000)'), 1)
+        failed = section.split('if (!device.wait(Until.hasObject(documentsUi), 15_000))', 1)[1].split('device.pressBack()', 1)[0]
+        self.assertIn('thread.stackTrace.take(24)', failed)
+        self.assertIn('not the system ANR trace', failed)
+        self.assertIn('throw AssertionError', failed)
+        self.assertNotIn('.click()', failed)
+        self.assertNotIn('pressBack()', failed)
+        self.assertNotIn('performClick()', failed)
+        self.assertNotIn('device.wait(', failed)
+
+    def test_touch_failure_observer_preserves_one_shot_assertions(self):
+        source = read('privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt')
+        trace = read('privacy/src/androidTest/java/dev/fusion/privacy/PrivacySignalTrace.kt')
+        section = source.split('@Test fun realTouchEntryHasNoInputConnectionAndHardwareKeysCannotMutateCode()', 1)[1].split('@Test fun fullAndPartialObscuration', 1)[0]
+        self.assertEqual(section.count('click("touch_key_7")'), 1)
+        self.assertEqual(section.count('click("touch_reveal")'), 1)
+        self.assertIn('assertEquals("72 (2/64)", output.text.toString())', section)
+        self.assertIn('assertNull(output.onCreateInputConnection(EditorInfo()))', section)
+        self.assertIn('performAccessibilityAction', section)
+        self.assertIn('r63-privacy-touch-events.json', section)
+        self.assertIn('r63-privacy-touch-events.json', trace)
+        self.assertIn('events.size < 64', trace)
+        self.assertIn('actualSignals=${trace.snapshot()}', section)
+        self.assertIn('failure !is AssertionError', section)
+        self.assertIn('original.addSuppressed(closeFailure)', section)
+        self.assertIn('if (original == null) throw closeFailure', section)
+        self.assertNotIn('restart_workspace).performClick()', section)
+        self.assertNotIn('Thread.sleep', section)
+
+    def test_webview_host_preparation_and_observation_do_not_retry_tests(self):
+        workflow = (ROOT.parent / '.github/workflows/android-r25-web.yml').read_text(encoding='utf-8')
+        prepared = workflow.index('python3 tools/r62_install_managed_sdk.py')
+        device = workflow.index('bash tools/run_gradle_ci.sh device')
+        observer = workflow.index('python3 tools/r61_emulator_observation.py')
+        self.assertLess(prepared, device)
+        self.assertLess(device, observer)
+        self.assertEqual(workflow.count('bash tools/run_gradle_ci.sh device'), 1)
+        self.assertIn('if: failure()', workflow[device:observer])
+        self.assertNotIn('continue-on-error', workflow)
+
     def test_candidate_device_cases_frames_and_readers_are_wired(self):
         workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text(encoding='utf-8')
         for item in ('r63FormulaFillContracts', 'r63WriterRestartContracts',

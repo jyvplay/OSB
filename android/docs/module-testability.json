@@ -140,7 +140,7 @@
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
         "app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt": "661889aada1258b74df3985f156771a88cd33ba28110e28b9b30594d67f31551",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "358f93b8f1659ac4cbdf6ee566bc17fe3764a467647fb46b671a093d726788d7",
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "ca4684a11f614c0c6a150a4625a1413813a44615630c9eb27c264ad7cb482943",
         "app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt": "d712c17d4bef068d52434d3694352f7179abb3475b7ccc002cacb5e9fd15a5b5",
         "app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt": "a0faa628ff9435c2c3369276560fe156e5a0ffc52eca0276bac4817ce37e428a",
         "app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt": "b0bd3f403be29997094bba3de1dc01a7c7105fec5f45febea2b7d5cef149b6ee",
@@ -157,7 +157,7 @@
         "tools/test_r62_install_managed_sdk.py": "4a084f4b6dd174afd0b14cb24a891f8f59664883b0d609a8c801b836e8d6718c",
         "app/src/androidTest/java/dev/fusion/shell/SheetUiFailureEvidence.kt": "a59700369d2c2b3c414d8d0ba0b1eef7f630d75372f77da3b86f1701cc24adf4",
         "app/src/androidTest/java/dev/fusion/shell/R25WebCapabilityDeviceTest.kt": "60627f4ed3428f1ee81c33d4fbce7c456423c7fa57c86346792210ec4fe2904c",
-        "tools/test_r63_integration_contracts.py": "b0618da4969030d44258bccd8f9369a99915da84f77326bdf85b3391b1d34b68"
+        "tools/test_r63_integration_contracts.py": "e73c51505ff552d4b85cc05cf7d7ef629d5bcc4021c52187dbb60bfce0762833"
       }
     },
     {
@@ -1993,7 +1993,7 @@
         "tools/check_r59_writer_reference.py": "f413cf388aa345fd7fda04a86aba79ca3b91b5d6c54ed5976ef8bbdbb5b5ce55",
         "tools/test_r59_writer_reference.py": "90887c92eb1767dc7e992f4aef7785993d930fef7f696392ed1a37db3498ee88",
         "testing/src/r60writer/kotlin/dev/fusion/testing/R60WriterChecks.kt": "242456be04965aebe7ae1c343ef7d37cc01b3863051aa1de95adc1ea1f1af908",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "358f93b8f1659ac4cbdf6ee566bc17fe3764a467647fb46b671a093d726788d7",
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "ca4684a11f614c0c6a150a4625a1413813a44615630c9eb27c264ad7cb482943",
         "testing/src/r62writer/kotlin/dev/fusion/testing/R62WriterStrikeChecks.kt": "af10320bc342079c8b8cda2ed19203fa536fed4b9c3e5c06093b9a6d6f422c90",
         "testing/src/r62writer/kotlin/dev/fusion/testing/R62WriterLegacyProbe.kt": "12ee13a5399311fd3461320f35823e5c74669c72599abc780a1175903034c317",
         "tools/run_r62_writer.py": "46bbfd217318e9b95c1dbf33e9afea580034471e20aa3dc522731ba2f7765573",
@@ -2001,7 +2001,7 @@
         "tools/check_r62_writer_reference.py": "fc3971b13552b5b74b49f9c5bcc0108fa99a90992267909585c5d4e87fd2f09a",
         "tools/test_r62_writer_reference.py": "68a44daab5359d503cda7c33034ff9227ca8a1a99b27ee84b9aa7c9508a204ba",
         "testing/src/r63writer/kotlin/dev/fusion/testing/R63WriterRestartChecks.kt": "b9f5fe59f9022a873e02bb49767cbb9d7ca44d9bff5257b32a4ff7b1b224ed5e",
-        "tools/test_r63_integration_contracts.py": "b0618da4969030d44258bccd8f9369a99915da84f77326bdf85b3391b1d34b68",
+        "tools/test_r63_integration_contracts.py": "e73c51505ff552d4b85cc05cf7d7ef629d5bcc4021c52187dbb60bfce0762833",
         "tools/test_r63_writer_reference.py": "88e3dc36c3f5df3f993a7f01bf3c45cccae96b11996c152982ae27d76391dcf2",
         "tools/check_r63_writer_reference.py": "f0a250272c1116a29e3c873d03b7e87480cf514e8737bfa75f1347d9385f4519"
       }
@@ -3169,7 +3169,7 @@
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
         "feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt": "0999082ee1e602953068af3d2189afa750e7b0fbca1ff1f6601fa4560bb04186",
         "feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt": "e5529eb0466b1a7433d113494449980504f46c0b46ef4edf05679fa582183cbe",
-        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "358f93b8f1659ac4cbdf6ee566bc17fe3764a467647fb46b671a093d726788d7",
+        "app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt": "ca4684a11f614c0c6a150a4625a1413813a44615630c9eb27c264ad7cb482943",
         "testing/src/r58/kotlin/dev/fusion/testing/R58Checks.kt": "ec80394301b28c0c93b29efbfdaec3dcb065bc4bc346d0814008ffbc74c096ba",
         "app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt": "a0faa628ff9435c2c3369276560fe156e5a0ffc52eca0276bac4817ce37e428a",
         "app/src/androidTest/java/dev/fusion/shell/R59SheetDeviceTest.kt": "50a1cc479bcd086fb5e066b3c167bccc774e6f2920f6a09ecc214bf80141106e",
@@ -3190,7 +3190,7 @@
         "tools/test_r62_range_reference.py": "4c9868209fb7086e12d704e40c93cf6251374cfcbf6ff6aa5bf75c74e3ce3d66",
         "testing/src/r63sheet/kotlin/dev/fusion/testing/R63FormulaFillChecks.kt": "d840c65a285ad58074210cb9c32164bc2f495844f301465f0b2472430f04a745",
         "tools/check_r63_formula_reference.py": "52f6dc4e4b0cd4e22ebac1cb977bf3a7a4d2f4f880181a31cc4b2163765ef569",
-        "tools/test_r63_integration_contracts.py": "b0618da4969030d44258bccd8f9369a99915da84f77326bdf85b3391b1d34b68",
+        "tools/test_r63_integration_contracts.py": "e73c51505ff552d4b85cc05cf7d7ef629d5bcc4021c52187dbb60bfce0762833",
         "tools/test_r63_formula_reference.py": "5ce9e400f3c8cdf851bb2d1f4da8896336028e92e7c16a8be454965c4b37200f"
       }
     },
@@ -5316,7 +5316,7 @@
         "testing/src/r63writer/kotlin/dev/fusion/testing/R63WriterRestartChecks.kt": "b9f5fe59f9022a873e02bb49767cbb9d7ca44d9bff5257b32a4ff7b1b224ed5e",
         "testing/src/r63sheet/kotlin/dev/fusion/testing/R63FormulaFillChecks.kt": "d840c65a285ad58074210cb9c32164bc2f495844f301465f0b2472430f04a745",
         "tools/check_r63_formula_reference.py": "52f6dc4e4b0cd4e22ebac1cb977bf3a7a4d2f4f880181a31cc4b2163765ef569",
-        "tools/test_r63_integration_contracts.py": "b0618da4969030d44258bccd8f9369a99915da84f77326bdf85b3391b1d34b68",
+        "tools/test_r63_integration_contracts.py": "e73c51505ff552d4b85cc05cf7d7ef629d5bcc4021c52187dbb60bfce0762833",
         "tools/test_r63_writer_reference.py": "88e3dc36c3f5df3f993a7f01bf3c45cccae96b11996c152982ae27d76391dcf2",
         "tools/test_r63_formula_reference.py": "5ce9e400f3c8cdf851bb2d1f4da8896336028e92e7c16a8be454965c4b37200f",
         "tools/check_r63_writer_reference.py": "f0a250272c1116a29e3c873d03b7e87480cf514e8737bfa75f1347d9385f4519"
@@ -6283,7 +6283,7 @@
         "testing/src/r63writer/kotlin/dev/fusion/testing/R63WriterRestartChecks.kt": "b9f5fe59f9022a873e02bb49767cbb9d7ca44d9bff5257b32a4ff7b1b224ed5e",
         "tools/test_r63_writer_reference.py": "88e3dc36c3f5df3f993a7f01bf3c45cccae96b11996c152982ae27d76391dcf2",
         "tools/check_r63_writer_reference.py": "f0a250272c1116a29e3c873d03b7e87480cf514e8737bfa75f1347d9385f4519",
-        "tools/test_r63_integration_contracts.py": "b0618da4969030d44258bccd8f9369a99915da84f77326bdf85b3391b1d34b68",
+        "tools/test_r63_integration_contracts.py": "e73c51505ff552d4b85cc05cf7d7ef629d5bcc4021c52187dbb60bfce0762833",
         "testing/src/r63sheet/kotlin/dev/fusion/testing/R63FormulaFillChecks.kt": "d840c65a285ad58074210cb9c32164bc2f495844f301465f0b2472430f04a745",
         "tools/test_r63_formula_reference.py": "5ce9e400f3c8cdf851bb2d1f4da8896336028e92e7c16a8be454965c4b37200f"
       }
@@ -6424,7 +6424,7 @@
         "privacy/src/main/res/values/ids.xml": "616fd6709a88a16f10f02c231df7f8546e645f2cbe52506fbab58bc01d571f78",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWorkspaceTest.kt": "13fcdaeb9c7fa5fe4a218b9a2cac8aec61c8b4288fee94452b7c0c145b759cb1",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyPlatformTest.kt": "b4838144c6595cb2960542fa1b0471b86f4f553b03d67bb03a0ae135efa70c1e",
-        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "2246566f103d4e8011eff478d33e65b5c3380815f0b1d6069dbdbf7d533202fb",
+        "privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt": "cbc2a88655a2c5fc801be03633419c5554a7124cd1b1d7c05255985a1e8c51ed",
         "privacy/src/androidTest/java/dev/fusion/privacy/R23MemoryBoundaryTest.kt": "a6b6c76057bf8e004fcbc240cc80b5a7b07f4ccd63ea2ed0d067b841f40766c2",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt": "921d219715c96631fe39791b283b27c9a3efad17c36fb71bbdbd1b7acc3fbb18",
         "privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt": "51182af47188581c852ec4483cf68e7a03b3cd1ffc66f6290699cd58d3fc85cc",
@@ -6525,7 +6525,7 @@
         "privacy/src/main/kotlin/dev/fusion/privacy/TorConfluxMultipathScheduler.kt": "8f1697ee84949292bd282b509f515dda0a98af6141b20a49adebfa3cc50045f0",
         "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
         "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
-        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacySignalTrace.kt": "782036ce65e3532c3de851cc06fe863c8edbc1dac9b6c438a7ed009ebdc6815a",
+        "privacy/src/androidTest/java/dev/fusion/privacy/PrivacySignalTrace.kt": "89208ce07ea0525e3015787f9de0c7e8bd8f93b6d4e298e83e16723611db0dbc",
         "privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWindowClassifier.kt": "d6e129e781175a88cb36f4b8bda19e3ab2373fdf7a78354a02ac1f656be3c5e3",
         "testing/src/r62privacy/kotlin/dev/fusion/testing/PrivacyWindowChecks.kt": "a13bb1f5422360c9b2aacae50ad3ae6aae0a5d7cf899cddc9370bc26c2bf8a16",
         "tools/run_r62_privacy_window.py": "ba3a9edc35ef7bbb242032f3db791e0dab3d5e875c171ef00f8164e30f6b20e1",
