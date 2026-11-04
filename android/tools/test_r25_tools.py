@@ -41,7 +41,7 @@ class R25ToolTests(unittest.TestCase):
             self.assertEqual(collect(tmp)['summary']['observations'], 0)
 
     def test_exact_named_native_contract_and_bad_receipt_mutations(self):
-        self.assertEqual(len(expected('full')), 149)
+        self.assertEqual(len(expected('full')), 152)
         self.assertEqual(len(expected('web')), 1)
         self.assertEqual(len(expected('media')), 3)
         self.assertEqual(len(expected('png')), 3)
@@ -110,6 +110,14 @@ class R25ToolTests(unittest.TestCase):
         self.assertIn(next(iter(added)), (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text())
         with self.assertRaises(ValueError):
             capture.export(0, next(iter(added)))
+
+    def test_r63_capture_group_adds_both_office_frames(self):
+        import r24c_capture as capture
+        added = {'r63-sheet-formula.png', 'r63-writer-restart.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r63-office'], capture.FRAME_GROUPS['r62-office'] | added)
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
 
     def test_r62_capture_group_preserves_all_previous_and_new_frames(self):
         import r24c_capture as capture

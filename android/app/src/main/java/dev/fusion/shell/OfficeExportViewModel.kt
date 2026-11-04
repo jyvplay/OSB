@@ -36,7 +36,7 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
     private val resolver get() = getApplication<Application>().contentResolver
 
     fun writer(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) =
-        writerCopy(doc, forbidden, formatted = false, numberedLines = false, strikeSpans = false, openPicker = openPicker)
+        writerCopy(doc, forbidden, formatted = false, numberedLines = false, strikeSpans = false, restartOrderedGroups = false, openPicker = openPicker)
 
     // Preserve the existing formatted-copy entry point and its default literal numbering.
     fun structuredWriter(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) =
@@ -46,14 +46,17 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
         structuredWriter(doc, forbidden, numberedLines, strikeSpans = false, openPicker = openPicker)
 
     fun structuredWriter(doc: TextDocument, forbidden: List<String>, numberedLines: Boolean, strikeSpans: Boolean, openPicker: (CopyPickerRequest) -> Unit) =
-        writerCopy(doc, forbidden, formatted = true, numberedLines = numberedLines, strikeSpans = strikeSpans, openPicker = openPicker)
+        structuredWriter(doc, forbidden, numberedLines, strikeSpans, restartOrderedGroups = false, openPicker = openPicker)
 
-    private fun writerCopy(doc: TextDocument, forbidden: List<String>, formatted: Boolean, numberedLines: Boolean, strikeSpans: Boolean, openPicker: (CopyPickerRequest) -> Unit) {
+    fun structuredWriter(doc: TextDocument, forbidden: List<String>, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, openPicker: (CopyPickerRequest) -> Unit) =
+        writerCopy(doc, forbidden, formatted = true, numberedLines = numberedLines, strikeSpans = strikeSpans, restartOrderedGroups = restartOrderedGroups, openPicker = openPicker)
+
+    private fun writerCopy(doc: TextDocument, forbidden: List<String>, formatted: Boolean, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, openPicker: (CopyPickerRequest) -> Unit) {
         val base = doc.name.substringBeforeLast('.', doc.name).map {
             if (it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' || it == '_') it else '_'
         }.joinToString("").take(64).trim('_').ifEmpty { "document" }
         prepare("$base-copy.docx", CopyDestinationContract.DOCX_MIME, forbidden, openPicker) {
-            if (formatted) StructuredWriterDocx.write(doc.content, numberedLines, strikeSpans) else PlainWriterDocx.write(doc.content)
+            if (formatted) StructuredWriterDocx.write(doc.content, numberedLines, strikeSpans, restartOrderedGroups) else PlainWriterDocx.write(doc.content)
         }
     }
 

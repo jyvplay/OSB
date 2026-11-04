@@ -90,14 +90,32 @@ object DocxPackage {
         }
     }
 
-    fun write(doc: Document): ByteArray {
+    /** Existing callers retain the original single numbered-instance bytes. */
+    fun write(doc: Document): ByteArray = write(doc, restartOrderedGroups = false)
+
+    /**
+     * Optional level-zero-only grouping for Writer-generated lists. Each later contiguous
+     * ordered group gets a new numId and a level-zero start override of one. This encodes
+     * a request, not a guarantee that every document consumer renders it identically.
+     */
+    fun write(doc: Document, restartOrderedGroups: Boolean): ByteArray {
+        var groups = 0
+        var previousOrdered = false
+        if (restartOrderedGroups) for (block in doc.blocks) {
+            val ordered = block is Block.ListItem && block.ordered
+            if (ordered) {
+                require((block as Block.ListItem).level == 0) { "Restart groups support only level-zero ordered lists" }
+                if (!previousOrdered) groups++
+            }
+            previousOrdered = ordered
+        }
         val parts = linkedMapOf(
             "[Content_Types].xml" to contentTypesXml(),
             "_rels/.rels" to rootRelsXml(),
             "word/_rels/document.xml.rels" to documentRelsXml(),
             "word/styles.xml" to stylesXml(),
-            "word/numbering.xml" to defaultNumberingXml(),
-            "word/document.xml" to buildDocumentXml(doc),
+            "word/numbering.xml" to defaultNumberingXml(groups),
+            "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups),
         )
         return storedZip(parts)
     }
@@ -114,10 +132,15 @@ object DocxPackage {
         return parseDocumentBlocks(docBytes, numberingDefs)
     }
 
-    private fun buildDocumentXml(doc: Document): String = buildString {
+    private fun buildDocumentXml(doc: Document, restartOrderedGroups: Boolean): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:document xmlns:w="$WORD_NS"><w:body>""")
+        var orderedGroup = 0
+        var previousOrdered = false
         for (b in doc.blocks) {
+            val ordered = b is Block.ListItem && b.ordered
+            if (ordered && !previousOrdered) orderedGroup++
+            previousOrdered = ordered
             when (b) {
                 is Block.Heading -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/></w:pPr>""")
@@ -130,7 +153,7 @@ object DocxPackage {
                     append("</w:p>")
                 }
                 is Block.ListItem -> {
-                    val numId = if (b.ordered) ORDERED_NUM_ID else BULLET_NUM_ID
+                    val numId = if (!b.ordered) BULLET_NUM_ID else if (restartOrderedGroups) ORDERED_NUM_ID + orderedGroup - 1 else ORDERED_NUM_ID
                     append("""<w:p><w:pPr><w:pStyle w:val="ListParagraph"/><w:numPr><w:ilvl w:val="${b.level}"/><w:numId w:val="$numId"/></w:numPr></w:pPr>""")
                     appendRuns(b.runs)
                     append("</w:p>")
@@ -458,7 +481,7 @@ object DocxPackage {
         append("""</w:styles>""")
     }
 
-    private fun defaultNumberingXml(): String = buildString {
+    private fun defaultNumberingXml(orderedGroups: Int): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:numbering xmlns:w="$WORD_NS">""")
         append("""<w:abstractNum w:abstractNumId="0">""")
@@ -474,6 +497,10 @@ object DocxPackage {
         append("""</w:abstractNum>""")
         append("""<w:num w:numId="$BULLET_NUM_ID"><w:abstractNumId w:val="0"/></w:num>""")
         append("""<w:num w:numId="$ORDERED_NUM_ID"><w:abstractNumId w:val="1"/></w:num>""")
+        if (orderedGroups > 1) for (group in 2..orderedGroups) {
+            val numId = ORDERED_NUM_ID + group - 1
+            append("""<w:num w:numId="$numId"><w:abstractNumId w:val="1"/><w:lvlOverride w:ilvl="0"><w:startOverride w:val="1"/></w:lvlOverride></w:num>""")
+        }
         append("""</w:numbering>""")
     }
 

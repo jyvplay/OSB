@@ -139,6 +139,11 @@ fun SheetScreen(
                 rangeOperation = OfficeSheetRangeEdit.Operation.FILL_LITERAL; showRangeInput = true
             }, enabled = ready && !unapplied && !exportBusy,
                 modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-fill")) { Text("Fill literal…") }
+            OutlinedButton(onClick = {
+                model.clearRangeError(); rangeInput = selected; rangeProtection = true
+                rangeOperation = OfficeSheetRangeEdit.Operation.FILL_FORMULA; showRangeInput = true
+            }, enabled = ready && !unapplied && !exportBusy,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-formula")) { Text("Fill formula…") }
         }
         Text("Selected $selected · displayed value: ${state.data.values[selected]?.displayText().orEmpty()}", modifier = Modifier.testTag("sheet-selected-value"))
         // Wrap the cell actions rather than hiding Clear off the right edge. The
@@ -278,8 +283,10 @@ fun SheetScreen(
                 OutlinedTextField(rangeInput, { if (it.length <= 32) rangeInput = it },
                     modifier = Modifier.fillMaxWidth().testTag("sheet-range-input"), enabled = !state.busy,
                     label = { Text("Cell or range") }, singleLine = true)
-                if (rangeOperation == OfficeSheetRangeEdit.Operation.FILL_LITERAL) {
-                    Text("Copies the applied nonempty text, number or Boolean in $selected with its type. Formula sources are refused; no relative-reference adjustment or formatting is performed.")
+                if (rangeOperation != OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS) {
+                    if (rangeOperation == OfficeSheetRangeEdit.Operation.FILL_LITERAL)
+                        Text("Copies the applied nonempty text, number or Boolean in $selected with its type. Formula sources are refused; no relative-reference adjustment or formatting is performed.")
+                    else Text("Copies the applied formula in $selected. Relative references move with each destination; dollar-anchored rows or columns stay fixed. If a reference leaves A1:Z100, a cycle results, or a draft limit is exceeded, the whole fill is refused. This is not full Excel compatibility.", Modifier.testTag("sheet-range-formula-disclosure"))
                     Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
                         value = rangeProtection, enabled = !state.busy, role = Role.Checkbox,
                         onValueChange = { rangeProtection = it },
@@ -306,14 +313,20 @@ fun SheetScreen(
     state.rangePreview?.let { plan ->
         AlertDialog(onDismissRequest = model::cancelRangePreview, title = { Text("Apply range changes?") },
             text = {
-                val operation = if (plan.operation == OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS) "Clear contents"
-                    else "Fill with the applied ${plan.original.cells[plan.selected]?.kind?.name} value from ${plan.selected}"
-                val protection = if (plan.operation == OfficeSheetRangeEdit.Operation.FILL_LITERAL)
+                val operation = when (plan.operation) {
+                    OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS -> "Clear contents"
+                    OfficeSheetRangeEdit.Operation.FILL_LITERAL -> "Fill with the applied ${plan.original.cells[plan.selected]?.kind?.name} value from ${plan.selected}"
+                    OfficeSheetRangeEdit.Operation.FILL_FORMULA -> "Fill adjusted formula from ${plan.selected}"
+                }
+                val protection = if (plan.operation != OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS)
                     if (plan.protectExisting) " Existing-cell protection is on." else " Existing-cell protection is off." else ""
                 val undo = if (plan.changed == 0) "Nothing will change and no undo step will be added."
                     else "This changes the local draft as one undo step; it does not save an external file."
                 val formulaWord = if (plan.formulasRemoved == 1) "formula" else "formulas"
-                Text("$operation: ${plan.range} (${plan.positions} positions). ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged; ${plan.formulasRemoved} $formulaWord removed.$protection $undo",
+                val formulaSummary = if (plan.operation == OfficeSheetRangeEdit.Operation.FILL_FORMULA)
+                    "${plan.formulasRemoved} old $formulaWord replaced; ${plan.formulasWritten} formulas written."
+                    else "${plan.formulasRemoved} $formulaWord removed."
+                Text("$operation: ${plan.range} (${plan.positions} positions). ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged; $formulaSummary$protection $undo",
                     Modifier.testTag("sheet-range-review-text"))
             },
             confirmButton = { TextButton(onClick = model::acceptRange, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-apply")) { Text("Apply range") } },

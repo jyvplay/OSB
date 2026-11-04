@@ -22,10 +22,15 @@ VIDEO_CASE = 'dev.fusion.shell.R25LocalVideoDeviceTest.actualMp4DecoderProducesO
 MEDIA_CASES = {VIDEO_CASE} | {name for name in retained('continuation') if '.R24LocalMediaDeviceTest.' in name}
 
 WEB_CASE = 'dev.fusion.shell.R25WebCapabilityDeviceTest.actualControlledWebViewReportsThreadedWasmPrerequisitesWithoutClaimingOffice'
+FORMULA_FILL_CASE = 'dev.fusion.shell.R59SheetDeviceTest.formulaFillAdjustsReferencesProtectsConflictsAndSupportsUndoAndExport'
+WRITER_RESTART_CASES = {
+    'dev.fusion.shell.R54OfficeDeviceTest.writerListRestartReviewIsOptInResettableAndReachesRealPicker',
+    'dev.fusion.shell.R54OfficeDeviceTest.writerListRestartProviderReadbackContainsIndependentOverrides',
+}
 
 def expected(suite):
     if suite == 'readiness': return READINESS
-    if suite == 'full': return retained('full') | {READINESS_CASE, VIDEO_CASE, WEB_CASE} | PNG_CASES
+    if suite == 'full': return retained('full') | {READINESS_CASE, VIDEO_CASE, WEB_CASE, FORMULA_FILL_CASE} | WRITER_RESTART_CASES | PNG_CASES
     if suite == 'png': return PNG_CASES
     if suite == 'media': return MEDIA_CASES
     if suite == 'web': return {WEB_CASE}

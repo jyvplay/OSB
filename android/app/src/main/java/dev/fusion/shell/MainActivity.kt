@@ -121,7 +121,7 @@ import dev.fusion.capture.CaptureScreen
 import dev.fusion.capture.ScreenRecordService
 import dev.fusion.cast.dlna.DlnaScreen
 import dev.fusion.continuity.ContinuityScreen
-import dev.fusion.editor.EditorScreenWithStrike
+import dev.fusion.editor.EditorScreenWithListRestart
 import dev.fusion.editor.CopyDestinationContract
 import dev.fusion.filesui.FilesScreen
 import dev.fusion.files.SafRepository
@@ -849,14 +849,14 @@ class MainActivity : ComponentActivity() {
 
             "editor" -> {
                 val office by officeExportModel.state.collectAsState()
-                EditorScreenWithStrike(editorModel, office.status, office.busy,
+                EditorScreenWithListRestart(editorModel, office.status, office.busy,
                     onExportDocx = { doc ->
                         if (editorSourcesKnown())
                             officeExportModel.writer(doc, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
                     },
-                    onExportStructuredDocxWithStrike = { doc, numberedLines, strikeSpans ->
+                    onExportStructuredDocxWithListRestart = { doc, numberedLines, strikeSpans, restartOrderedGroups ->
                         if (editorSourcesKnown())
-                            officeExportModel.structuredWriter(doc, editorSourceAndCopyUris(), numberedLines, strikeSpans) { saveOfficeCopy.launch(it) }
+                            officeExportModel.structuredWriter(doc, editorSourceAndCopyUris(), numberedLines, strikeSpans, restartOrderedGroups) { saveOfficeCopy.launch(it) }
                     },
                     onSaveCopy = { request -> saveCopy.launch(request) })
             }

@@ -265,6 +265,46 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("writer-structured-cancel").performClick()
     }
 
+    @Test fun writerListRestartReviewIsOptInResettableAndReachesRealPicker() {
+        openModule("editor")
+        maximize("editor")
+        compose.waitUntil(10_000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("New").performScrollTo().performClick()
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        val text = "1. first\n1. second\nplain\n1. third"
+        compose.onNodeWithTag("editor-content").performScrollTo().performTextInput(text)
+        hideIme()
+        fun openReview() {
+            compose.onNodeWithTag("writer-export-docx").performScrollTo().performClick()
+            compose.onNodeWithTag("writer-structured-option").performScrollTo().performClick()
+        }
+        openReview()
+        compose.onNodeWithTag("writer-number-restart-option").performScrollTo().assertIsOff().assertIsNotEnabled()
+        compose.onNodeWithTag("writer-numbered-option").performScrollTo().assertIsOff().performClick().assertIsOn()
+        compose.onNodeWithTag("writer-number-restart-option").performScrollTo().assertIsEnabled().assertIsOff().performClick().assertIsOn()
+        NativeVisualEvidence.assertMinimumTarget(compose, "writer-number-restart-option")
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-safety")
+        NativeVisualEvidence.assertFullTextVisible(compose, "writer-number-restart-disclosure")
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r63-writer-restart", "writer-structured-confirm",
+            listOf("writer-structured-cancel", "writer-number-restart-option"))
+        compose.onNodeWithTag("writer-numbered-option").performScrollTo().performClick().assertIsOff()
+        compose.onNodeWithTag("writer-number-restart-option").performScrollTo().assertIsOff().assertIsNotEnabled()
+        compose.onNodeWithTag("writer-structured-cancel").performClick()
+        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains(text, substring = true)
+        openReview()
+        compose.onNodeWithTag("writer-numbered-option").performScrollTo().assertIsOff().performClick().assertIsOn()
+        compose.onNodeWithTag("writer-number-restart-option").performScrollTo().assertIsOff().performClick().assertIsOn()
+        val vm = exportModel()
+        compose.onNodeWithTag("writer-structured-confirm").performClick()
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val documentsUi = By.pkg(Pattern.compile(".*documentsui"))
+        assertTrue("Actual Create Document picker required", device.wait(Until.hasObject(documentsUi), 15_000))
+        device.pressBack()
+        assertTrue(device.wait(Until.gone(documentsUi), 15_000))
+        compose.waitUntil(30_000) { !vm.state.value.busy }
+        compose.onNodeWithTag("editor-content").performScrollTo().assertTextContains(text, substring = true)
+    }
+
     @Test fun formattedWriterRejectsConsentAfterDraftRevisionChanges() {
         openModule("editor")
         maximize("editor")
@@ -404,6 +444,33 @@ class R54OfficeDeviceTest {
                 assertTrue(xml.contains("<w:b/>") && xml.contains(">2. literal<"))
                 val numbering = zipPart(destination, "word/numbering.xml")
                 assertTrue(numbering.contains("<w:numFmt w:val=\"decimal\"/>") && numbering.contains("<w:lvlText w:val=\"%1.\"/>"))
+                assertArrayEquals(source.toByteArray(Charsets.UTF_8), read(original))
+            }
+        }
+    }
+
+    @Test fun writerListRestartProviderReadbackContainsIndependentOverrides() {
+        created("txt", "text/plain") { original ->
+            val source = "1. first\n1. second\nplain\n1. third\n1. fourth\n2. literal"
+            resolver.openOutputStream(original, "wt")!!.use { it.write(source.toByteArray(Charsets.UTF_8)) }
+            created("docx", CopyDestinationContract.DOCX_MIME) { destination ->
+                val vm = exportModel()
+                val doc = TextDocument(UUID.randomUUID().toString(), "writer.txt", original.toString(), source, TextBytes.digest(source))
+                val request = AtomicReference<CopyPickerRequest>()
+                compose.runOnUiThread {
+                    vm.structuredWriter(doc, listOf(original.toString()), numberedLines = true, strikeSpans = false, restartOrderedGroups = true) { request.set(it) }
+                }
+                compose.waitUntil(15_000) { request.get() != null || !vm.state.value.busy }
+                val ready = requireNotNull(request.get()) { vm.state.value.status }
+                deliver(vm, ready, destination, listOf(original.toString()))
+                compose.waitUntil(15_000) { !vm.state.value.busy }
+                assertTrue(vm.state.value.status, vm.state.value.status.contains("byte-for-byte"))
+                val xml = zipPart(destination, "word/document.xml")
+                assertEquals(2, "<w:numId w:val=\"2\"/>".toRegex().findAll(xml).count())
+                assertEquals(2, "<w:numId w:val=\"3\"/>".toRegex().findAll(xml).count())
+                assertTrue(xml.contains(">2. literal<"))
+                val numbering = zipPart(destination, "word/numbering.xml")
+                assertTrue(numbering.contains("<w:num w:numId=\"3\"><w:abstractNumId w:val=\"1\"/><w:lvlOverride w:ilvl=\"0\"><w:startOverride w:val=\"1\"/></w:lvlOverride></w:num>"))
                 assertArrayEquals(source.toByteArray(Charsets.UTF_8), read(original))
             }
         }

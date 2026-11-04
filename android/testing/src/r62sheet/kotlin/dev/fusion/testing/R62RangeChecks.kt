@@ -73,7 +73,8 @@ object R62RangeChecks {
         val sources = listOf("A1", "B1", "B2", "C3", "D4", "F1")
         val rows = mutableListOf("id,selected,range,operation,protect,status,inserted,replaced,cleared,unchanged,formulas")
         var accepted = 0; var rejected = 0; var id = 0
-        for (operation in Range.Operation.entries) for (protect in listOf(false, true)) repeat(128) {
+        // Keep the original two-operation R62 corpus stable when newer operations are added.
+        for (operation in listOf(Range.Operation.CLEAR_CONTENTS, Range.Operation.FILL_LITERAL)) for (protect in listOf(false, true)) repeat(128) {
             val selected = sources[random.nextInt(sources.size)]
             val colA = 'A' + random.nextInt(5); val colB = 'A' + random.nextInt(5)
             val rowA = 1 + random.nextInt(5); val rowB = 1 + random.nextInt(5)

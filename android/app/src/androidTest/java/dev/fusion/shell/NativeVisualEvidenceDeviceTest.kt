@@ -27,7 +27,7 @@ class NativeVisualEvidenceDeviceTest {
     @get:Rule val compose = createComposeRule()
 
     @Test fun dialogCaptureFilenameAllowlistRejectsTraversalAndUnknownPrefixes() {
-        listOf("r24c-structured", "r58-text-grid", "r58-service-review", "r59-typed-grid", "r60-writer-numbered", "r60-sheet-transpose", "r61-sheet-protection", "r62-writer-strike", "r62-sheet-range").forEach {
+        listOf("r24c-structured", "r58-text-grid", "r58-service-review", "r59-typed-grid", "r60-writer-numbered", "r60-sheet-transpose", "r61-sheet-protection", "r62-writer-strike", "r62-sheet-range", "r63-sheet-formula", "r63-writer-restart").forEach {
             assertTrue("Expected safe dialog name: $it", NativeCaptureNames.dialog(it))
         }
         listOf("r58-../outside", "../r58-text-grid", "r60-text-grid", "r61-other", "r62-other", "r58-",  "r58-" + "a".repeat(41), "r58-A").forEach {

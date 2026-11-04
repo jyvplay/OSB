@@ -10,12 +10,14 @@ package dev.fusion.ooxml
  * line is unmatched, nested, escaped or ambiguous, the ENTIRE inline text of that
  * line is kept literally; block-prefix conversion still applies. An additional,
  * separately opted-in mode recognizes only `1. ` followed by at least one code
- * unit as a level-zero ordered item. All such items share one DOCX numbering
+ * unit as a level-zero ordered item. By default such items share one DOCX numbering
  * instance, including separated groups; other numbered or nested lines stay text.
  * A separate, default-off option recognizes nonempty, nonnested `~~strike~~` spans
  * whose first and last characters are not whitespace. Single tildes stay literal;
  * ambiguous, escaped, nested, unmatched or three-plus delimiters keep the entire
- * line's inline text literal. This is not a GFM parser. The source is never modified.
+ * line's inline text literal. A separate opt-in can request a new numbering instance
+ * with a start override after each non-numbered line; actual reader rendering is not
+ * guaranteed. This is not a GFM parser. The source is never modified.
  */
 object StructuredWriterDocx {
     const val MAX_RUNS = 8_192
@@ -25,7 +27,11 @@ object StructuredWriterDocx {
 
     fun write(text: String, numberedLines: Boolean): ByteArray = write(text, numberedLines, strikeSpans = false)
 
-    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean): ByteArray {
+    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean): ByteArray =
+        write(text, numberedLines, strikeSpans, restartOrderedGroups = false)
+
+    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean): ByteArray {
+        require(!restartOrderedGroups || numberedLines) { "Numbered lines must be enabled to request list restarts" }
         // For valid XML text UTF-16 code units never outnumber UTF-8 bytes; this
         // early bound avoids a large temporary encoding allocation on rejected input.
         require(text.length <= PlainWriterDocx.MAX_TEXT_BYTES) { "DOCX export accepts at most 128 KiB of UTF-8 text" }
@@ -57,7 +63,7 @@ object StructuredWriterDocx {
                 else -> DocxPackage.Block.Paragraph(runs)
             }
         }
-        val bytes = DocxPackage.write(DocxPackage.Document(blocks = blocks))
+        val bytes = DocxPackage.write(DocxPackage.Document(blocks = blocks), restartOrderedGroups)
         require(bytes.size <= PlainWriterDocx.MAX_OUTPUT_BYTES) { "DOCX copy exceeds the export budget" }
         return bytes
     }

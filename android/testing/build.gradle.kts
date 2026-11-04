@@ -1668,3 +1668,24 @@ tasks.register<JavaExec>("r62WriterContracts") {
     mainClass.set("dev.fusion.testing.R62WriterStrikeChecks")
     args(rootProject.file("testing/build/r62writer/artifacts").absolutePath)
 }
+
+// R63: bounded, reviewable formula-fill candidate; independent XLSX inspection is separate.
+val r63Sheet by sourceSets.creating
+kotlin.sourceSets.named("r63Sheet") { kotlin.srcDir("src/r63sheet/kotlin") }
+dependencies { add(r63Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r63FormulaFillContracts") {
+    dependsOn(r63Sheet.classesTaskName)
+    classpath = r63Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R63FormulaFillChecks")
+    args(rootProject.file("testing/build/r63sheet/artifacts").absolutePath)
+}
+
+val r63Writer by sourceSets.creating
+kotlin.sourceSets.named("r63Writer") { kotlin.srcDir("src/r63writer/kotlin") }
+dependencies { add(r63Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r63WriterRestartContracts") {
+    dependsOn(r63Writer.classesTaskName)
+    classpath = r63Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R63WriterRestartChecks")
+    args(rootProject.file("testing/build/r63writer/artifacts").absolutePath)
+}

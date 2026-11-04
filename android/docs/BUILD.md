@@ -1,4 +1,32 @@
-# R62 — current bounded Writer and spreadsheet checks
+# R63 — try the new bounded Office options
+
+Open **`OSB/android/`** in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`, build-tools `36.0.0`. From that directory `./gradlew :app:assembleProDebug` builds the debug flavor and `./gradlew :app:installProDebug` installs it on an attached device/emulator. This sandbox has not run Studio locally; consult [R63 results](R63-RESULTS.md) for exact CI evidence and use disposable data.
+
+For formula fill, enable the Spreadsheet experiment, select a populated cell of type **Formula**, apply it, then choose **Fill formula…**, enter an A1-style rectangle and review before applying. Relative row/column references follow the destination; `$` fixes its corresponding dimension. Protection is on by default. A translated reference outside A1:Z100, an existing-cell conflict, a cycle or any draft budget violation refuses the entire fill. It does not produce Excel `#REF!`, support external sheets or styles, or establish Excel recalculation parity. Undo/redo and export remain separate operations.
+
+For Writer, open **Editor → Export DOCX copy… → Format simple text markers instead…**. Enable numbered lines, then optionally enable **Request each separate group ... restart at 1**. It is disabled until numbering is enabled and resets off on a new review. A non-numbered line separates groups; only exact `1. ` prefixes qualify. The exported DOCX requests restart via new list instances and start overrides; actual Word/LibreOffice rendering is unverified. Previous default exports remain unchanged.
+
+Host-only checks from `android/`:
+
+```sh
+set -e
+python3 tools/bootstrap_host_tools.py install
+host_env="$(python3 tools/bootstrap_host_tools.py env)"
+eval "$host_env"
+python3 -m pip install --target "$HOME/.cache/fusion-r63-readers" python-docx==1.2.0
+export PYTHONPATH="tools:$HOME/.cache/fusion-r63-readers:$PYTHONPATH"
+python3 tools/run_r63_formula_fill.py
+python3 tools/check_r63_formula_reference.py
+python3 tools/run_r63_writer_restart.py
+python3 tools/check_r63_writer_reference.py
+python3 -m unittest test_r63_formula_reference test_r63_writer_reference -v
+```
+
+The corresponding Studio/CI tasks are `:testing:r63FormulaFillContracts` and `:testing:r63WriterRestartContracts`. Host checks are not Android execution or a full Office acceptance test.
+
+---
+
+# R62 — prior bounded Writer and spreadsheet checks
 
 Use the Android Studio/JDK/SDK instructions immediately below. For the extra Writer option, open **Editor → Export DOCX copy… → Format simple text markers instead…**, then scroll to the default-off numbered-line checkbox. It recognizes exactly `1. ` followed by at least one character, not arbitrary numbers or indented lists. All matched paragraphs share one DOCX list instance; separated groups may continue rather than restart. Plain export and the default formatted export keep numbered prefixes literal. The current draft and revision are rechecked when confirming; if changed, review again. See [R60](R60-RESULTS.md) for actual outcomes and gaps, not a full rich-editor or Office compatibility claim.
 

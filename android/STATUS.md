@@ -1,4 +1,10 @@
-# Latest R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
+# Current R63 — bounded Office candidates; full specification incomplete
+
+Spreadsheet formula fill and a separately opt-in Writer numbered-group restart request add **two host-testable feature slices**. Actual Kotlin, independent artifact readers, mutation attacks and pinned legacy comparisons passed for finite corpora; Android device tests and actual frame inspection are separate gates. See [R63 results and exact gaps](docs/R63-RESULTS.md), [R62 historical CI results](docs/R62-RESULTS.md) and [build instructions](docs/BUILD.md). **50/50 modules (100%) have a reviewed narrow executable subset; 0/50 (0%) are fully specification-accepted.** No Class A, Excel evaluation or Word-rendering claim is made. Use disposable data.
+
+---
+
+# Historical R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
 
 Branch `arena/64550eba-osb`, `2026-10-29`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
 50/50 declared `settings.gradle.kts` modules (100.00%) deepened in-round under `kotlinc -Werror` host-JVM execution (`1,101` Kotlin `src/main` production files).
