@@ -89,6 +89,8 @@ FILES = [
     'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
     'app/src/androidTest/java/dev/fusion/shell/R25LocalVideoDeviceTest.kt',  # R61: failure-only frame-clock observations
     'app/src/androidTest/java/dev/fusion/shell/PickerRootStability.kt',  # R59: pre-tap geometry gate
+    'privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt',  # R62: failure-only window observation
+    'privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWindowClassifier.kt',
     'privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt',  # R59: failure-only privacy diagnostic
     'privacy/src/androidTest/java/dev/fusion/privacy/PrivacySignalTrace.kt',  # R61: distinct bounded test-only traces
     'privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt',  # R61: failure-only wake diagnostics

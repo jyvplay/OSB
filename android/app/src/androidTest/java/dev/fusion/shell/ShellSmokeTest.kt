@@ -55,6 +55,19 @@ class ShellSmokeTest {
             val runEnabled = runCatching {
                 compose.onAllNodesWithTag("routine-run").fetchSemanticsNodes().map { isEnabled().matches(it) }
             }.getOrElse { listOf(false) }
+            val runBounds = runCatching {
+                val node = compose.onNodeWithTag("routine-run")
+                val clipped = node.fetchSemanticsNode().boundsInRoot
+                val full = node.getUnclippedBoundsInRoot()
+                "clippedPx=$clipped fullDp=$full density=${compose.density.density}"
+            }.getOrElse { "unavailable:${it.javaClass.simpleName}" }
+            var focusAndIme = "unavailable"
+            runCatching {
+                compose.activityRule.scenario.onActivity { activity ->
+                    val ime = activity.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime())
+                    focusAndIme = "activityFocused=${activity.hasWindowFocus()} imeVisible=$ime"
+                }
+            }
             var desktopStatus = "unavailable"
             runCatching {
                 compose.activityRule.scenario.onActivity { activity ->
@@ -63,7 +76,7 @@ class ShellSmokeTest {
                     desktopStatus = "loading=${model.loading} blocked=${model.blocked} status=${model.status} workspace=${desk.workspace} active=${desk.activeId} windows=${desk.windows.map { "${it.module}:${it.workspace}:${it.minimized}" }}"
                 }
             }
-            throw AssertionError("Calculator missing after local plan; routine=$routineStatus input=$routineInput runEnabled=$runEnabled; desktop=$desktopStatus", failure)
+            throw AssertionError("Calculator missing after local plan; routine=$routineStatus input=$routineInput runEnabled=$runEnabled bounds=$runBounds $focusAndIme; desktop=$desktopStatus", failure)
         }
         compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
     }

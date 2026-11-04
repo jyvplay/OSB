@@ -70,6 +70,17 @@ class R62IntegrationContracts(unittest.TestCase):
         for f in ('R54OfficeDeviceTest.kt', 'R59SheetDeviceTest.kt'):
             self.assertIn('SheetUiFailureEvidence.once(', read('app/src/androidTest/java/dev/fusion/shell/' + f))
 
+    def test_local_plan_failure_observer_never_retries_or_hides_ime(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt')
+        case = source.split('fun explicitLocalPlanOpensActualCalculatorAndPreservesModuleGates()', 1)[1].split('@Test fun densityReview', 1)[0]
+        self.assertEqual(case.count('onNodeWithTag("routine-run").performScrollTo().performClick()'), 1)
+        observation = case.split('catch (failure: Throwable)', 1)[1].split('throw AssertionError', 1)[0]
+        for expected in ('getUnclippedBoundsInRoot()', 'boundsInRoot', 'hasWindowFocus()', 'WindowInsets.Type.ime()'):
+            self.assertIn(expected, observation)
+        for forbidden in ('performClick()', 'performTouchInput', 'keyboard?.hide()', 'Thread.sleep', '.click()'):
+            self.assertNotIn(forbidden, observation)
+        self.assertIn(', failure)', case)
+
     def test_real_tests_are_listed_without_claiming_execution(self):
         office = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
         for name in ('r62RangeContracts', 'r62WriterContracts', 'check_r62_range_reference.py',
