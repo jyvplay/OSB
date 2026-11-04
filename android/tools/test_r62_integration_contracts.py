@@ -81,6 +81,18 @@ class R62IntegrationContracts(unittest.TestCase):
             self.assertNotIn(forbidden, observation)
         self.assertIn(', failure)', case)
 
+    def test_webview_failure_observer_keeps_deadline_and_never_reloads(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/R25WebCapabilityDeviceTest.kt')
+        self.assertEqual(source.count('device.wait(Until.findObject('), 1)
+        self.assertIn('textStartsWith("{")),15000)', source)
+        observation = source.split('val observation = if (node != null)', 1)[1].split('assertNotNull("Actual WebView report unavailable', 1)[0]
+        for kind in ('node-missing', 'still-waiting', 'report-error', 'json-present-only-after-wait', 'other-text'):
+            self.assertIn(kind, observation)
+        for forbidden in ('device.wait(', '.click(', 'pressBack(', 'loadUrl(', 'evaluateJavascript(', 'node.text='):
+            self.assertNotIn(forbidden, observation)
+        self.assertIn('foreground=$foreground', observation)
+        self.assertNotIn('$marker', observation)
+
     def test_real_tests_are_listed_without_claiming_execution(self):
         office = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
         for name in ('r62RangeContracts', 'r62WriterContracts', 'check_r62_range_reference.py',

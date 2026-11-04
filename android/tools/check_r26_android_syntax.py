@@ -88,6 +88,7 @@ FILES = [
     'app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt',  # R58: actual IME and disclosure
     'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
     'app/src/androidTest/java/dev/fusion/shell/R25LocalVideoDeviceTest.kt',  # R61: failure-only frame-clock observations
+    'app/src/androidTest/java/dev/fusion/shell/R25WebCapabilityDeviceTest.kt',  # R62: read-only failure classification
     'app/src/androidTest/java/dev/fusion/shell/PickerRootStability.kt',  # R59: pre-tap geometry gate
     'privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt',  # R62: failure-only window observation
     'privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWindowClassifier.kt',

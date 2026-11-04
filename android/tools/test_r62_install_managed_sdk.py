@@ -100,6 +100,11 @@ class ManagedSdkInstallTests(unittest.TestCase):
         self.assertLess(workflow.index('tools/r62_install_managed_sdk.py'),
                         workflow.index('tools/run_gradle_ci.sh device'))
         self.assertEqual(workflow.count('tools/run_gradle_ci.sh device'), 1)
+        self.assertLess(workflow.index('libpulse0'), workflow.index('tools/run_gradle_ci.sh device'))
+        self.assertEqual(workflow.count('tools/r61_emulator_observation.py'), 1)
+        observer = workflow.split('- name: Failure-only host observations', 1)[1].split('- name: Actual named outcomes', 1)[0]
+        self.assertIn('if: failure()', observer)
+        self.assertNotIn('run_gradle_ci.sh', observer)
         self.assertNotIn('continue-on-error', workflow)
 
     def test_real_subprocess_executes_fake_sdkmanager_only(self):
