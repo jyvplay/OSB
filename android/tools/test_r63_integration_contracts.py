@@ -59,6 +59,50 @@ class R63IntegrationContracts(unittest.TestCase):
         self.assertIn('# Latest R52', status)
         self.assertIn('0/50', status)
 
+    def test_focus_failure_has_bounded_late_observation_without_rearm(self):
+        source = read('privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt')
+        late = source.split('private fun lateMainThread()', 1)[1].split('/** Before launching', 1)[0]
+        self.assertIn('thread.stackTrace.take(12)', late)
+        self.assertIn('.take(160)', late)
+        self.assertIn('SystemClock.elapsedRealtime()', late)
+        self.assertIn('not a system ANR trace or cause', late)
+        self.assertNotIn('.text', late)
+        focus = source.split('fun <T:Activity> focus(', 1)[1]
+        self.assertIn('ready.await(10,TimeUnit.SECONDS)', focus)
+        self.assertIn('if (!gained) fail(', focus)
+        self.assertIn('lateMain=${lateMainThread()}', focus)
+        self.assertNotIn('restart_workspace', focus)
+        self.assertNotIn('pressBack()', focus)
+        self.assertNotIn('performClick()', focus)
+
+    def test_large_font_new_actions_are_one_shot_real_taps(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt')
+        section = source.split('@Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont()', 1)[1].split('private fun withVisibleKeyboard', 1)[0]
+        self.assertIn('By.text("New")', section)
+        self.assertIn('Exactly one visible New action required', section)
+        self.assertIn('node.isEnabled && !node.visibleBounds.isEmpty', section)
+        self.assertEqual(section.count('node.click()'), 1)
+        self.assertEqual(section.count('clickNewOnce()'), 3)  # one declaration + two distinct intended taps
+        self.assertIn('compose.onNodeWithText("New").assertIsDisplayed()', section)
+        self.assertIn('Long line 60', section)
+        action = section.split('fun clickNewOnce()', 1)[1].split('clickNewOnce()', 1)[0]
+        self.assertIn('Until.findObject(selector), 10_000', action)
+        self.assertLess(action.index('Exactly one visible'), action.index('node.click()'))
+        self.assertLess(action.index('New must be enabled and visible'), action.index('node.click()'))
+        self.assertNotIn('catch (', action)
+        self.assertNotIn('while (', action)
+
+    def test_sheet_clear_assertions_have_one_failure_only_observation(self):
+        source = read('app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt')
+        section = source.split('@Test fun sheetEditsRecalculatesKeepsUnappliedInputAndCapturesActualUi()', 1)[1].split('@Test fun writerExportDisclosureIsVisibleInRealEditor()', 1)[0]
+        self.assertIn('SheetUiFailureEvidence.once(compose.activityRule.scenario, "clear visible and enabled")', section)
+        self.assertEqual(section.count('onNodeWithTag("sheet-clear").performScrollTo().assertIsDisplayed().assertIsEnabled()'), 1)
+        evidence = read('app/src/androidTest/java/dev/fusion/shell/SheetUiFailureEvidence.kt')
+        self.assertEqual(evidence.count('action()'), 1)
+        self.assertIn('catch (failure: Throwable)', evidence)
+        self.assertIn('throw AssertionError(', evidence)
+        self.assertNotIn('performClick()', evidence)
+
     def test_restart_picker_failure_observer_is_late_bounded_and_read_only(self):
         source = read('app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt')
         section = source.split('@Test fun writerListRestartReviewIsOptInResettableAndReachesRealPicker()', 1)[1].split('@Test fun formattedWriterRejectsConsent', 1)[0]

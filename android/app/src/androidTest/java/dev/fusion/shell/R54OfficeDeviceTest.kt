@@ -76,7 +76,10 @@ class R54OfficeDeviceTest {
         compose.onNodeWithTag("sheet-apply").performScrollTo().performClick()
         compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-selected-value") and hasText("displayed value: 4", substring = true)).fetchSemanticsNodes().isNotEmpty() }
         // Wrapped Clear is reachable without horizontally scrolling the action row, even with IME state retained.
-        compose.onNodeWithTag("sheet-clear").performScrollTo().assertIsDisplayed().assertIsEnabled()
+        // Preserve this one assertion path; only on failure report the actual Sheet state, then rethrow.
+        SheetUiFailureEvidence.once(compose.activityRule.scenario, "clear visible and enabled") {
+            compose.onNodeWithTag("sheet-clear").performScrollTo().assertIsDisplayed().assertIsEnabled()
+        }
         SheetUiFailureEvidence.once(compose.activityRule.scenario, "address B1") {
             compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement("B1")
         }

@@ -50,6 +50,19 @@ internal object PrivacyDeviceReady {
             .put("reported_count", windows.size).put("truncated", windows.size > 8).put("windows", rows)
     }.getOrElse { JSONObject().put("outcome", "unavailable").put("error_kind", it.javaClass.simpleName) }
 
+    /** Failure-only late stack: class/method identifiers only, never UI text or a system ANR trace. */
+    private fun lateMainThread(): JSONObject = runCatching {
+        val thread = android.os.Looper.getMainLooper().thread
+        val frames = org.json.JSONArray()
+        for (frame in thread.stackTrace.take(12)) {
+            val name = "${frame.className}.${frame.methodName}".take(160)
+            frames.put(if (name.all { it.isLetterOrDigit() || it == '_' || it == '.' || it == '$' || it == '<' || it == '>' || it == '-' }) name else "unavailable")
+        }
+        JSONObject().put("elapsed_realtime_ms", android.os.SystemClock.elapsedRealtime())
+            .put("state", thread.state.name).put("frames", frames)
+            .put("scope", "Late observation after original timeout; not a system ANR trace or cause")
+    }.getOrElse { JSONObject().put("outcome", "unavailable").put("error_kind", it.javaClass.simpleName) }
+
     /** Before launching any tested UI: one real wake/dismiss of an UNSECURED emulator keyguard if needed.
      * Never dismiss arbitrary dialogs, change permissions, unlock credentials, retry a case or restart a workspace.
      */
@@ -105,7 +118,7 @@ internal object PrivacyDeviceReady {
         try {
             // Preserve the original10s focus deadline; the new precondition is staged BEFORE Activity launch.
             val gained = ready.await(10,TimeUnit.SECONDS)
-            if (!gained) fail("Actual window focus did not become $expected; lifecycle=${scenario.state}; posture=${posture()}; windows=${windowSummary()}")
+            if (!gained) fail("Actual window focus did not become $expected; lifecycle=${scenario.state}; posture=${posture()}; windows=${windowSummary()}; lateMain=${lateMainThread()}")
             InstrumentationRegistry.getInstrumentation().waitForIdleSync()
             var observed = !expected
             scenario.onActivity { observed = it.hasWindowFocus() }

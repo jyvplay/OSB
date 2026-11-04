@@ -362,8 +362,22 @@ class ShellSmokeTest {
     }
     @Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont() = withTwoHundredPercentFont { withVisibleKeyboard {
         openModule("editor")
-        compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithText("New").performClick()
+        // Read the real accessibility node and perform one real tap per distinct New action.
+        // This avoids the observed Compose test-thread semantics read at performClick; it
+        // does not replay an action or establish a cause for other thread failures.
+        val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val device = androidx.test.uiautomator.UiDevice.getInstance(instrumentation)
+        fun clickNewOnce() {
+            val selector = androidx.test.uiautomator.By.text("New")
+            org.junit.Assert.assertNotNull("Visible New action required", device.wait(androidx.test.uiautomator.Until.findObject(selector), 10_000))
+            val matches = device.findObjects(selector)
+            org.junit.Assert.assertEquals("Exactly one visible New action required", 1, matches.size)
+            val node = matches.single()
+            org.junit.Assert.assertTrue("New must be enabled and visible", node.isEnabled && !node.visibleBounds.isEmpty)
+            node.click()
+            instrumentation.waitForIdleSync()
+        }
+        clickNewOnce()
         compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
         // Distinguish the failed semantics stage without retrying or moving the real actions.
         fun stage(name:String, action:()->Unit) {
@@ -382,8 +396,7 @@ class ShellSmokeTest {
             }
             visible
         }
-        compose.waitUntil(10000) { runCatching { compose.onNodeWithText("New").assertIsDisplayed() }.isSuccess }
-        compose.onNodeWithText("New").assertIsDisplayed().performClick()
+        clickNewOnce()
         compose.waitUntil(10000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
         compose.onNodeWithText("New").assertIsDisplayed()
         compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()
