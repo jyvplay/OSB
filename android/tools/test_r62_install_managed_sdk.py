@@ -96,11 +96,20 @@ class ManagedSdkInstallTests(unittest.TestCase):
         build = (android / 'app/build.gradle.kts').read_text(encoding='utf-8')
         self.assertIn('apiLevel = 34', build)
         self.assertIn('systemImageSource = "google"', build)
-        self.assertEqual(workflow.count('tools/r62_install_managed_sdk.py'), 1)
-        self.assertLess(workflow.index('tools/r62_install_managed_sdk.py'),
-                        workflow.index('tools/run_gradle_ci.sh device'))
-        self.assertEqual(workflow.count('tools/run_gradle_ci.sh device'), 1)
-        self.assertLess(workflow.index('libpulse0'), workflow.index('tools/run_gradle_ci.sh device'))
+        self.assertEqual(workflow.count('run: python3 tools/r62_install_managed_sdk.py'), 1)
+        self.assertEqual(workflow.count('run: python3 tools/r64_video_avd.py'), 1)
+        self.assertLess(workflow.index('run: python3 tools/r62_install_managed_sdk.py'),
+                        workflow.index('run: python3 tools/r64_video_avd.py'))
+        self.assertLess(workflow.index('libpulse0'), workflow.index('run: python3 tools/r64_video_avd.py'))
+        import r64_video_avd as avd
+        runner = (android / 'tools/r64_video_avd.py').read_text(encoding='utf-8')
+        self.assertEqual(runner.count('subprocess.Popen(GRADLE_COMMAND,'), 1)
+        self.assertEqual(avd.GRADLE_COMMAND[:4], ('bash', 'tools/run_gradle_ci.sh', 'device', ':app:connectedProDebugAndroidTest'))
+        self.assertIn('-Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R25LocalVideoDeviceTest', avd.GRADLE_COMMAND)
+        self.assertLess(runner.index('wait_ready(lambda deadline:'), runner.index('return _one_gradle_invocation(env)'))
+        self.assertEqual(workflow.count('python3 tools/r64_media_case_gate.py'), 1)
+        self.assertEqual(workflow.count('python3 tools/r25_video_evidence.py'), 1)
+        self.assertLess(workflow.index('python3 tools/r64_media_case_gate.py'), workflow.index('python3 tools/r25_video_evidence.py'))
         self.assertEqual(workflow.count('tools/r61_emulator_observation.py'), 1)
         observer = workflow.split('- name: Failure-only host observations', 1)[1].split('- name: Actual named outcomes', 1)[0]
         self.assertIn('if: failure()', observer)

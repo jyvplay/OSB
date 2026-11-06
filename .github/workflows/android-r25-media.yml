@@ -1,7 +1,7 @@
 name: Android R25 actual local video decoding
 on:
   push:
-    paths: ['android/app/**', 'android/feature/media/**', 'android/tools/*r25*', '.github/workflows/android-r25-media.yml']
+    paths: ['android/app/**', 'android/feature/media/**', 'android/tools/*r25*', 'android/tools/*r64*', 'android/tools/r62_install_managed_sdk.py', 'android/tools/bounded_process.py', 'android/tools/report_device_results.py', '.github/workflows/android-r25-media.yml']
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,7 +12,7 @@ jobs:
   local-video:
     name: Focused actual platform R25 local video (not service streaming)
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 40
     defaults:
       run:
         working-directory: android
@@ -42,20 +42,18 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - name: Actual audio regression and changing decoded video Surface
-        run: >
-          bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest
-          -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
-          -Pandroid.experimental.enableAdditionalTestOutput=true
-          -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R24LocalMediaDeviceTest,dev.fusion.shell.R25LocalVideoDeviceTest
+      - name: Actual audio regression and changing decoded video Surface on a ready disposable AVD
+        run: python3 tools/r64_video_avd.py
       - name: Failure-only host observations (not a root-cause diagnosis)
         if: failure()
         run: python3 tools/r61_emulator_observation.py
       - name: Actual named outcomes
         if: always()
-        run: python3 tools/report_device_results.py
+        run: python3 tools/report_device_results.py --root app/build/outputs/androidTest-results/connected
+      - name: Require exactly the three original named passing cases
+        run: python3 tools/r64_media_case_gate.py --root app/build/outputs/androidTest-results/connected
       - name: Actual native Surface pixels, independently decoded and measured
-        run: PYTHONPATH="$HOME/.cache/fusion-r25-reference/python" python3 tools/r25_video_evidence.py
+        run: PYTHONPATH="$HOME/.cache/fusion-r25-reference/python" python3 tools/r25_video_evidence.py --root app/build/outputs/connected_android_test_additional_output
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -64,5 +62,7 @@ jobs:
             android/device.log
             android/device-results.json
             android/r25-video-result.json
-            android/app/build/outputs/androidTest-results/**
-            android/app/build/outputs/managed_device_android_test_additional_output/**
+            android/r64-avd-create.log
+            android/r64-emulator.log
+            android/app/build/outputs/androidTest-results/connected/**
+            android/app/build/outputs/connected_android_test_additional_output/**

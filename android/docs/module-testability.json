@@ -154,7 +154,7 @@
         "tools/run_r59_picker_stability.py": "a6a4953e3afc9a5889b637ab2fccea1b7c66e197bb8fc8d7d9a0fd9958b3e4b5",
         "tools/test_r62_integration_contracts.py": "c5e7814ffac32ae09465281de8eeeb7aa04b24c8aca98796f18bd660b14bf8ed",
         "tools/r62_install_managed_sdk.py": "70c740f6d3241d35dac4056f3e57ec03a44fed52fff5ab671ba310c3a170c59b",
-        "tools/test_r62_install_managed_sdk.py": "4a084f4b6dd174afd0b14cb24a891f8f59664883b0d609a8c801b836e8d6718c",
+        "tools/test_r62_install_managed_sdk.py": "98c517db4e6e3a08825f785099c9dac98b691935efffd8a59dd11e64b954b712",
         "app/src/androidTest/java/dev/fusion/shell/SheetUiFailureEvidence.kt": "a59700369d2c2b3c414d8d0ba0b1eef7f630d75372f77da3b86f1701cc24adf4",
         "app/src/androidTest/java/dev/fusion/shell/R25WebCapabilityDeviceTest.kt": "60627f4ed3428f1ee81c33d4fbce7c456423c7fa57c86346792210ec4fe2904c",
         "tools/test_r63_integration_contracts.py": "ca9029cdaaaea7ea8bc963ab989ad9a4db877436bdbf8d4049f992aa74136f81"
