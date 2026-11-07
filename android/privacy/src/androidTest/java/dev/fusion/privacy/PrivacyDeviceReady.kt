@@ -34,6 +34,35 @@ internal object PrivacyDeviceReady {
     }
     private fun isReady(state: JSONObject) = state.getBoolean("interactive") && !state.getBoolean("keyguard_locked") && !state.getBoolean("device_locked")
 
+    /** Failure-only, bounded observation; never emits raw titles or acts on a system window. */
+    private fun windowSummary(): JSONObject = runCatching {
+        val windows = InstrumentationRegistry.getInstrumentation().uiAutomation.windows
+        val rows = org.json.JSONArray()
+        for (window in windows.take(8)) {
+            val pkg = runCatching { window.root?.packageName?.toString() }.getOrNull()
+            val system = pkg == "android" || pkg == "com.android.systemui"
+            val title = if (system) runCatching { window.title }.getOrNull() else null
+            val kind = PrivacyWindowClassifier.classify(pkg, title)
+            rows.put(JSONObject().put("root_kind", kind.root).put("title_kind", kind.title)
+                .put("type", window.type).put("active", window.isActive).put("focused", window.isFocused))
+        }
+        JSONObject().put("outcome", if (windows.isEmpty()) "empty-or-unavailable" else "observed")
+            .put("reported_count", windows.size).put("truncated", windows.size > 8).put("windows", rows)
+    }.getOrElse { JSONObject().put("outcome", "unavailable").put("error_kind", it.javaClass.simpleName) }
+
+    /** Failure-only late stack: class/method identifiers only, never UI text or a system ANR trace. */
+    private fun lateMainThread(): JSONObject = runCatching {
+        val thread = android.os.Looper.getMainLooper().thread
+        val frames = org.json.JSONArray()
+        for (frame in thread.stackTrace.take(12)) {
+            val name = "${frame.className}.${frame.methodName}".take(160)
+            frames.put(if (name.all { it.isLetterOrDigit() || it == '_' || it == '.' || it == '$' || it == '<' || it == '>' || it == '-' }) name else "unavailable")
+        }
+        JSONObject().put("elapsed_realtime_ms", android.os.SystemClock.elapsedRealtime())
+            .put("state", thread.state.name).put("frames", frames)
+            .put("scope", "Late observation after original timeout; not a system ANR trace or cause")
+    }.getOrElse { JSONObject().put("outcome", "unavailable").put("error_kind", it.javaClass.simpleName) }
+
     /** Before launching any tested UI: one real wake/dismiss of an UNSECURED emulator keyguard if needed.
      * Never dismiss arbitrary dialogs, change permissions, unlock credentials, retry a case or restart a workspace.
      */
@@ -89,11 +118,11 @@ internal object PrivacyDeviceReady {
         try {
             // Preserve the original10s focus deadline; the new precondition is staged BEFORE Activity launch.
             val gained = ready.await(10,TimeUnit.SECONDS)
-            if (!gained) fail("Actual window focus did not become $expected; lifecycle=${scenario.state}; posture=${posture()}")
+            if (!gained) fail("Actual window focus did not become $expected; lifecycle=${scenario.state}; posture=${posture()}; windows=${windowSummary()}; lateMain=${lateMainThread()}")
             InstrumentationRegistry.getInstrumentation().waitForIdleSync()
             var observed = !expected
             scenario.onActivity { observed = it.hasWindowFocus() }
-            if (observed != expected) fail("Focus changed before action staging; posture=${posture()}")
+            if (observed != expected) fail("Focus changed before action staging; posture=${posture()}; windows=${windowSummary()}")
         } finally {scenario.onActivity {observer?.takeIf {it.isAlive}?.removeOnWindowFocusChangeListener(listener)}}
     }
 }

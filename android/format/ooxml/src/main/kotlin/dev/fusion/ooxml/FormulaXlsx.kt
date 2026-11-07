@@ -286,6 +286,7 @@ object FormulaXlsx {
             '>' -> append("&gt;")
             '"' -> append("&quot;")
             '\'' -> append("&apos;")
+            '\r' -> append("&#13;") // Preserve carriage returns across XML end-of-line normalization.
             else -> append(c)
         }
     }

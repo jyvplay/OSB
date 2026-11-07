@@ -3,6 +3,8 @@ package dev.fusion.privacy
 import android.content.Intent
 import android.widget.Button
 import android.widget.TextView
+import android.view.View
+import android.view.ViewGroup
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -29,21 +31,41 @@ class R24ScreenOffDeviceTest {
         ActivityScenario.launch(TouchCodeActivity::class.java).use {scenario->
             PrivacyDeviceReady.focus(scenario)
             lateinit var old:Button
-            scenario.onActivity {a->
-                old=a.findViewById<Button>(R.id.touch_key_1);old.performClick();a.findViewById<Button>(R.id.touch_reveal).performClick()
-                assertTrue(a.findViewById<TextView>(R.id.touch_code_output).text.contains("(1/64)"))
-            }
+            lateinit var trace:PrivacySignalTrace
+            scenario.onActivity { trace=PrivacySignalTrace(it, "r24c-privacy-screenoff-events.json") }
             try {
+                scenario.onActivity {a->
+                    old=a.findViewById<Button>(R.id.touch_key_1);old.performClick();a.findViewById<Button>(R.id.touch_reveal).performClick()
+                    assertTrue(a.findViewById<TextView>(R.id.touch_code_output).text.contains("(1/64)"))
+                    trace.mark("revealed-before-sleep")
+                }
                 device.sleep();instrumentation.waitForIdleSync()
                 assertFalse(device.isScreenOn)
                 device.wakeUp();device.pressMenu();instrumentation.waitForIdleSync()
                 PrivacyDeviceReady.focus(scenario)
                 scenario.onActivity {a->
-                    assertEquals(" (0/64)",a.findViewById<TextView>(R.id.touch_code_output).text.toString())
+                    trace.mark("focused-after-wake")
+                    val output=a.findViewById<TextView>(R.id.touch_code_output) ?: run {
+                        // Failure-only local observations; never restart the pad or repeat a user action.
+                        val labels=mutableListOf<String>()
+                        fun visit(view:View) {
+                            if(labels.size>=12) return
+                            if(view is TextView) labels.add(view.text.toString().take(260))
+                            if(view is ViewGroup) for(i in 0 until view.childCount) visit(view.getChildAt(i))
+                        }
+                        visit(a.window.decorView)
+                        throw AssertionError("Required pad missing after real wake; focus=${a.hasWindowFocus()}; " +
+                            "interactive=${a.getSystemService(android.os.PowerManager::class.java).isInteractive}; " +
+                            "restart=${a.findViewById<View>(R.id.restart_workspace)!=null}; visible=$labels; realSignals=${trace.snapshot()}")
+                    }
+                    assertEquals(" (0/64)",output.text.toString())
                     old.performClick()
                     assertEquals(" (0/64)",a.findViewById<TextView>(R.id.touch_code_output).text.toString())
                 }
-            } finally {if(!device.isScreenOn) device.wakeUp()}
+            } finally {
+                if(!device.isScreenOn) device.wakeUp()
+                scenario.onActivity { trace.close() }
+            }
         }
     }
     @Test fun ordinaryUidCannotSpoofProtectedScreenOffBroadcast() {

@@ -25,7 +25,28 @@ class R25WebCapabilityDeviceTest {
         context.startActivity(Intent(context,WebCapabilityProbeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         try {
             val node=device.wait(Until.findObject(By.res(context.packageName,"r25_web_capability_result").textStartsWith("{")),15000)
-            assertNotNull("Actual WebView report unavailable; no capability inference",node)
+            val observation = if (node != null) "not-needed" else runCatching {
+                // One read-only post-failure observation; never print page/user-agent text or reload.
+                val late = device.findObject(By.res(context.packageName, "r25_web_capability_result"))
+                val marker = late?.text
+                val state = when {
+                    late == null -> "node-missing"
+                    marker == null -> "text-unavailable"
+                    marker.startsWith("Waiting for actual controlled WebView page") -> "still-waiting"
+                    marker.startsWith("Observed WebView report failure:") -> "report-error"
+                    marker.startsWith("{") -> "json-present-only-after-wait"
+                    else -> "other-text"
+                }
+                val foreground = when (device.currentPackageName) {
+                    context.packageName -> "test-app"
+                    "android" -> "android-system"
+                    "com.android.systemui" -> "system-ui"
+                    null -> "unknown"
+                    else -> "other"
+                }
+                "status=$state foreground=$foreground"
+            }.getOrElse { "unavailable:${it.javaClass.simpleName}" }
+            assertNotNull("Actual WebView report unavailable; no capability inference; $observation",node)
             val actual=JSONObject(node.text)
             assertEquals("Actual renderer report: $actual","R25 native JS 42",actual.optString("canary"));assertEquals(34,actual.getInt("api"))
             assertNotEquals(Process.myPid(),actual.getInt("pid"));assertEquals(context.applicationInfo.uid,actual.getInt("uid"))

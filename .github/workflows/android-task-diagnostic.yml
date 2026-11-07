@@ -22,6 +22,11 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
+      - name: Install the emulator's Linux host audio library
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libpulse0
+          ldconfig -p | grep -F 'libpulse.so.0'
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -33,6 +38,9 @@ jobs:
           -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true
           -Pandroid.experimental.enableAdditionalTestOutput=true
           -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R17TaskUiDeviceTest,dev.fusion.shell.R18TaskUiDeviceTest,dev.fusion.shell.R19TaskUiDeviceTest,dev.fusion.shell.R20CountsUiDeviceTest,dev.fusion.shell.ShellSmokeTest#savedWikiBacklinksReadRealNoteFiles
+      - name: Failure-only host observations (not a root-cause diagnosis)
+        if: failure()
+        run: python3 tools/r61_emulator_observation.py
       - name: Actual UI preconditions
         if: always()
         run: python3 tools/r25_ui_lab.py --require-observed

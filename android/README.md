@@ -1,4 +1,18 @@
-# R24 continuation — current native evaluation
+# R64 — experimental Office candidates and video gate
+
+Open `android/` in Android Studio Rabbit 1, with JDK 17 and SDK `platforms;android-37.0`; see [build instructions](docs/BUILD.md) and [R64 evidence and limitations](docs/R64-RESULTS.md). Three new host-tested slices are authored: reviewed spreadsheet rectangle copy with protected destinations and relative formula relocation; a separately opt-in strict Writer pipe-table DOCX conversion; and a values-only UTF-8 CSV copy that refuses common risky text prefixes. These changes have not yet been Android-compiled or device/visually accepted at this candidate; consult the exact CI revision. CSV quoting is not a universal spreadsheet-injection guarantee, and Word, Excel and native desktop LibreOffice rendering and recalculation remain untested. Use disposable data. **50/50 modules (100%) have narrow runnable subsets; 0/50 (0%) are fully specification-accepted.**
+
+---
+
+# R63 — current experimental Office authoring
+
+Open `android/` in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`; see [build instructions](docs/BUILD.md), [R63 evidence and limits](docs/R63-RESULTS.md) and the earlier [R62 results](docs/R62-RESULTS.md). Writer offers plain DOCX and optional simple-marker conversion, including default-off numbering and strikethrough. An additional default-off option requests that separated groups of exact `1. ` lines restart; output contains explicit list-instance overrides, but Word rendering is not verified. The experimental one-sheet spreadsheet offers reviewed clear, literal fill and **formula fill**. Formula fill translates relative and `$`-anchored A1 references within A1:Z100, refuses invalid references or cycles atomically and protects existing cells by default; it is not full Excel fill or formula compatibility. Consult exact-revision CI before assuming Android execution. These are not a complete rich editor or full Office compatibility. Use disposable data. **50/50 modules (100%) have a reviewed testable subset; 0/50 (0%) are full-spec accepted.** These are different measures.
+
+The older sections below are historical and retain their original branch names and counts.
+
+---
+
+# R24 continuation — historical native evaluation
 
 Use **`arena/a8ac5475-osb`** and open **`android/`** in Android Studio Rabbit1 with a maintained full JDK17
 and SDK `platforms;android-37.0`. Pins remain AGP9.1.1/Gradle9.3.1/Kotlin2.2.21; min34/compile37/target37.

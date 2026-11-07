@@ -17,6 +17,12 @@ Historical: [prior R12 engineering and evidence](android/docs/R12-ENGINEERING.md
 [Current substantial testable subsets:50/50 (100%)](android/docs/MODULE-TESTABILITY.md).
 **0/50 specification-accepted modules (0%); all50 unfinished at full scope.**
 
+## Current R63 — experimental Office authoring, not Class A
+
+This branch has bounded DOCX copies, optional simple-marker conversion, and an experimental single-sheet editor with XLSX-copy export and reviewed text-grid and range operations. R63 adds two host-tested slices: formula fill with adjusted relative/absolute references, and a separately opt-in request to restart separated Writer numbered groups. These are bounded candidates; Android execution, real Office rendering and full compatibility require separate evidence. The sandbox has no local Android SDK. See [R63 evidence and open gates](android/docs/R63-RESULTS.md), [earlier R62 results](android/docs/R62-RESULTS.md), and [Studio instructions](android/docs/BUILD.md). Use disposable data. The **50/50 (100%) testable-subset census is not full feature completion**; **0/50 (0%) modules are full-spec accepted**.
+
+The following R53 section is historical and predates the current Office work.
+
 ## Latest R53 — Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) + 7-OS Cascading Context Menus / 5-DPI Crisp `List`·`Grid`·`Columns` Logos / Interactive `Undo` Fan + 96 new kernels (+7 UI + 19 touched) across 50/50 modules (100%)
 
 Branch **`arena/64550eba-osb`**, `2026-10-29`. Completes `R52` closure and executes **`R53`**, authoring **96 new pure-JVM production kernels + 7 new Jetpack Compose UI components + 19 touched production files (`FormulaEval.kt` `260 -> 300` fns, `SpillSheetEngine.kt` `42 -> 48` spill ops, `WasmSandbox.kt` W3C WebAssembly 3.0 Multi-Memory up to `8` linear memories + cross-memory `0xFC 0x0A memory.copy`, `RecallMethodEscalationRouter.kt` & `RecallSessionCoordinator.kt` `6` recording methods, plus 14 Jetpack Compose UI / Activity screens with `59/59` Android/Compose AST `PARSE OK`) across ALL 50/50 declared Gradle modules (`1,101` `src/main/**/*.kt` files)**:

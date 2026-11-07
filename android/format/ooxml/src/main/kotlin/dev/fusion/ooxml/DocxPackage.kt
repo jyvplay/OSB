@@ -90,14 +90,32 @@ object DocxPackage {
         }
     }
 
-    fun write(doc: Document): ByteArray {
+    /** Existing callers retain the original single numbered-instance bytes. */
+    fun write(doc: Document): ByteArray = write(doc, restartOrderedGroups = false)
+
+    /**
+     * Optional level-zero-only grouping for Writer-generated lists. Each later contiguous
+     * ordered group gets a new numId and a level-zero start override of one. This encodes
+     * a request, not a guarantee that every document consumer renders it identically.
+     */
+    fun write(doc: Document, restartOrderedGroups: Boolean): ByteArray {
+        var groups = 0
+        var previousOrdered = false
+        if (restartOrderedGroups) for (block in doc.blocks) {
+            val ordered = block is Block.ListItem && block.ordered
+            if (ordered) {
+                require((block as Block.ListItem).level == 0) { "Restart groups support only level-zero ordered lists" }
+                if (!previousOrdered) groups++
+            }
+            previousOrdered = ordered
+        }
         val parts = linkedMapOf(
             "[Content_Types].xml" to contentTypesXml(),
             "_rels/.rels" to rootRelsXml(),
             "word/_rels/document.xml.rels" to documentRelsXml(),
             "word/styles.xml" to stylesXml(),
-            "word/numbering.xml" to defaultNumberingXml(),
-            "word/document.xml" to buildDocumentXml(doc),
+            "word/numbering.xml" to defaultNumberingXml(groups),
+            "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups),
         )
         return storedZip(parts)
     }
@@ -114,10 +132,15 @@ object DocxPackage {
         return parseDocumentBlocks(docBytes, numberingDefs)
     }
 
-    private fun buildDocumentXml(doc: Document): String = buildString {
+    private fun buildDocumentXml(doc: Document, restartOrderedGroups: Boolean): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:document xmlns:w="$WORD_NS"><w:body>""")
+        var orderedGroup = 0
+        var previousOrdered = false
         for (b in doc.blocks) {
+            val ordered = b is Block.ListItem && b.ordered
+            if (ordered && !previousOrdered) orderedGroup++
+            previousOrdered = ordered
             when (b) {
                 is Block.Heading -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/></w:pPr>""")
@@ -130,7 +153,7 @@ object DocxPackage {
                     append("</w:p>")
                 }
                 is Block.ListItem -> {
-                    val numId = if (b.ordered) ORDERED_NUM_ID else BULLET_NUM_ID
+                    val numId = if (!b.ordered) BULLET_NUM_ID else if (restartOrderedGroups) ORDERED_NUM_ID + orderedGroup - 1 else ORDERED_NUM_ID
                     append("""<w:p><w:pPr><w:pStyle w:val="ListParagraph"/><w:numPr><w:ilvl w:val="${b.level}"/><w:numId w:val="$numId"/></w:numPr></w:pPr>""")
                     appendRuns(b.runs)
                     append("</w:p>")
@@ -144,7 +167,7 @@ object DocxPackage {
                     append("""<w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="monospace" w:hAnsi="monospace"/></w:rPr>""")
                     for ((idx, line) in b.lines.withIndex()) {
                         if (idx > 0) append("<w:br/>")
-                        append("""<w:t xml:space="preserve">${escapeXml(line)}</w:t>""")
+                        appendTextContent(line)
                     }
                     append("</w:r></w:p>")
                 }
@@ -155,7 +178,9 @@ object DocxPackage {
                     for (row in b.rows) {
                         append("<w:tr>")
                         for (cell in row) {
-                            append("""<w:tc><w:p><w:r><w:t xml:space="preserve">${escapeXml(cell)}</w:t></w:r></w:p></w:tc>""")
+                            append("<w:tc><w:p><w:r>")
+                            appendTextContent(cell)
+                            append("</w:r></w:p></w:tc>")
                         }
                         append("</w:tr>")
                     }
@@ -179,8 +204,22 @@ object DocxPackage {
                 if (r.code) append("""<w:rFonts w:ascii="monospace" w:hAnsi="monospace"/>""")
                 append("</w:rPr>")
             }
-            append("""<w:t xml:space="preserve">${escapeXml(r.text)}</w:t></w:r>""")
+            appendTextContent(r.text)
+            append("</w:r>")
         }
+    }
+
+    /** WordprocessingML represents tabs and soft line breaks as elements, not literal w:t whitespace. */
+    private fun StringBuilder.appendTextContent(text: String) {
+        var start = 0
+        for (index in text.indices) {
+            val character = text[index]
+            if (character != '\t' && character != '\n') continue
+            if (index > start) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start, index))}</w:t>""")
+            append(if (character == '\t') "<w:tab/>" else "<w:br/>")
+            start = index + 1
+        }
+        if (start < text.length) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start))}</w:t>""")
     }
 
     private fun parseDocumentBlocks(docBytes: ByteArray, numberingDefs: DocxNumbering.Definitions?): Document {
@@ -427,16 +466,22 @@ object DocxPackage {
     private fun stylesXml(): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:styles xmlns:w="$WORD_NS">""")
+        append("""<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>""")
+        val halfPointSizes = listOf(32, 28, 26, 24, 22, 20)
         for (lvl in 1..6) {
-            append("""<w:style w:type="paragraph" w:styleId="Heading$lvl"><w:name w:val="heading $lvl"/></w:style>""")
+            val size = halfPointSizes[lvl - 1]
+            append("""<w:style w:type="paragraph" w:styleId="Heading$lvl"><w:name w:val="heading $lvl"/>""")
+            append("""<w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/>""")
+            append("""<w:pPr><w:keepNext/><w:outlineLvl w:val="${lvl - 1}"/></w:pPr>""")
+            append("""<w:rPr><w:b/><w:bCs/><w:sz w:val="$size"/><w:szCs w:val="$size"/></w:rPr></w:style>""")
         }
-        append("""<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/></w:style>""")
-        append("""<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/></w:style>""")
-        append("""<w:style w:type="paragraph" w:styleId="CodeBlock"><w:name w:val="Code Block"/></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/><w:basedOn w:val="Normal"/></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/><w:basedOn w:val="Normal"/><w:pPr><w:ind w:left="720"/></w:pPr><w:rPr><w:i/></w:rPr></w:style>""")
+        append("""<w:style w:type="paragraph" w:styleId="CodeBlock"><w:name w:val="Code Block"/><w:basedOn w:val="Normal"/></w:style>""")
         append("""</w:styles>""")
     }
 
-    private fun defaultNumberingXml(): String = buildString {
+    private fun defaultNumberingXml(orderedGroups: Int): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<w:numbering xmlns:w="$WORD_NS">""")
         append("""<w:abstractNum w:abstractNumId="0">""")
@@ -452,6 +497,10 @@ object DocxPackage {
         append("""</w:abstractNum>""")
         append("""<w:num w:numId="$BULLET_NUM_ID"><w:abstractNumId w:val="0"/></w:num>""")
         append("""<w:num w:numId="$ORDERED_NUM_ID"><w:abstractNumId w:val="1"/></w:num>""")
+        if (orderedGroups > 1) for (group in 2..orderedGroups) {
+            val numId = ORDERED_NUM_ID + group - 1
+            append("""<w:num w:numId="$numId"><w:abstractNumId w:val="1"/><w:lvlOverride w:ilvl="0"><w:startOverride w:val="1"/></w:lvlOverride></w:num>""")
+        }
         append("""</w:numbering>""")
     }
 
@@ -479,6 +528,7 @@ object DocxPackage {
             '>' -> append("&gt;")
             '"' -> append("&quot;")
             '\'' -> append("&apos;")
+            '\r' -> append("&#13;") // XML parsers otherwise normalize a literal CR to LF.
             else -> append(c)
         }
     }

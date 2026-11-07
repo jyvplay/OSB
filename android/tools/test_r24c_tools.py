@@ -31,6 +31,46 @@ class ContinuationToolsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_audit(altered)
 
+    def test_strict_frame_export_refuses_missing_or_mismatched_evidence(self):
+        import contextlib
+        import io
+        from unittest.mock import patch
+        import r24c_capture as capture
+        from png_capture import dimensions
+        # Use an existing genuine image plus synthetic metadata to test the parser only;
+        # this is not a new Android execution or visual-verification receipt.
+        data = (land.ROOT / 'docs/verification/r24c-native-previews/third-failed-workflow/r24c-silver.png').read_bytes()
+        width, height = dimensions(data)
+        report = {'schema': 1, 'origin': 'android-instrumentation', 'api': 34, 'density': 2.625,
+                  'font_scale': 1, 'preview_width': width, 'preview_height': height,
+                  'required_targets': [{'tag': 'synthetic-test', 'width_dp': 48, 'height_dp': 48,
+                                        'visible_width_dp': 48, 'visible_height_dp': 48}]}
+        name = 'r24c-silver.png'
+        with tempfile.TemporaryDirectory() as directory, patch.object(capture, 'ROOT', Path(directory)):
+            root = Path(directory) / 'app/build/outputs/managed_device_android_test_additional_output/device'
+            root.mkdir(parents=True)
+            image = root / name
+            audit = root / 'r24c-silver.json'
+            def export():
+                with contextlib.redirect_stdout(io.StringIO()):
+                    capture.export(0, name, {name}, require_complete=True)
+            with self.assertRaisesRegex(ValueError, 'image missing'): export()
+            image.write_bytes(data)
+            with self.assertRaisesRegex(ValueError, 'audit missing or duplicated'): export()
+            audit.write_text(json.dumps(report)); export()
+            for kind in ('bounds', 'dimensions', 'origin'):
+                changed = copy.deepcopy(report)
+                if kind == 'bounds': changed['required_targets'][0]['visible_width_dp'] = 20
+                if kind == 'dimensions': changed['preview_width'] += 1
+                if kind == 'origin': changed['origin'] = 'reference-art'
+                audit.write_text(json.dumps(changed))
+                with self.assertRaises(ValueError): export()
+            audit.write_text(json.dumps(report))
+            other = root / 'duplicate'; other.mkdir(); (other / audit.name).write_text(json.dumps(report))
+            with self.assertRaisesRegex(ValueError, 'audit missing or duplicated'): export()
+            (other / audit.name).unlink(); image.write_bytes(b'not a PNG')
+            with self.assertRaises(ValueError): export()
+
     def test_actual_land_asset_receipt(self):
         record = json.loads(land.RECEIPT.read_text())
         data = land.ASSET.read_bytes()
@@ -85,8 +125,8 @@ class ContinuationToolsTests(unittest.TestCase):
         receipt = json.loads((land.ROOT / 'docs/verification/r24c-first-result.json').read_text())
         with self.assertRaises(ValueError):
             verify(receipt, receipt['candidate'], 'continuation')
-        self.assertEqual(9, len(NEW_CASES))
-        self.assertEqual(142, len(expected('full')))
+        self.assertEqual(10, len(NEW_CASES))
+        self.assertEqual(143, len(expected('full')))
         self.assertEqual(19, len(expected('privacy')))
 
     def test_receipt_must_retain_every_named_case_at_the_exact_source(self):
@@ -94,9 +134,9 @@ class ContinuationToolsTests(unittest.TestCase):
         # Deliberately synthetic parser input; never written as execution evidence.
         candidate = 'a' * 40
         baseline = {'candidate': candidate, 'conclusion': 'success', 'device_conclusion': 'success',
-                    'suite': 'continuation', 'platform_api': 34, 'counts': {'PASS': 9, 'FAIL': 0, 'SKIP': 0},
+                    'suite': 'continuation', 'platform_api': 34, 'counts': {'PASS': 10, 'FAIL': 0, 'SKIP': 0},
                     'cases': [{'case': name, 'result': 'PASS'} for name in sorted(NEW_CASES)]}
-        self.assertEqual(9, verify(baseline, candidate, 'continuation')['passed_cases'])
+        self.assertEqual(10, verify(baseline, candidate, 'continuation')['passed_cases'])
         for kind in ('missing', 'duplicate', 'skip', 'other-source', 'other-api', 'failed-workflow'):
             changed = copy.deepcopy(baseline)
             if kind == 'missing': changed['cases'].pop()

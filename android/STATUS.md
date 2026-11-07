@@ -1,3 +1,11 @@
+# Current R64 — three bounded Office candidates; full specification incomplete
+
+Spreadsheet rectangle copy, separately opt-in Writer pipe-table conversion, and values-only CSV export add **three host-testable feature slices**. Their production kernels, independent artifact readers and adversarial fixtures ran; Android compilation, real UI/provider cases, frame inspection and acceptance for this feature revision remain pending. The separately authorized video-infrastructure revision passed its focused three-case and independent native-pixel gate. See [R64 results](docs/R64-RESULTS.md), [R64 plan](docs/R64-PLAN.md), [R63 history](docs/R63-RESULTS.md) and [build instructions](docs/BUILD.md). **50/50 modules (100%) have a reviewed narrow executable subset; 0/50 (0%) are fully specification-accepted.** No Class A, Excel evaluation, universal CSV safety or Word-rendering claim is made. Use disposable data.
+
+---
+
+The following legacy headings are historical and retain their original labels for traceability.
+
 # Latest R53 Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) / 7-OS Cascading Context Menus & 5-DPI Crisp List·Grid·Columns Logos & Interactive Undo Fan / 300-fn Calc / Wasm 3.0 Multi-Memory / Tor Prop 329 Conflux & 30-vector shield status — full specification remains incomplete
 
 Branch `arena/64550eba-osb`, `2026-10-29`. **50/50 substantial code+runnable-test subsets (100.00%); 0/50 unestablished (0.00%).
