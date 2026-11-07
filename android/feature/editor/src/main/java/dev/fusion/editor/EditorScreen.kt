@@ -63,7 +63,7 @@ fun EditorScreen(
     onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
     onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)? = null,
     onSaveCopy: (CopyPickerRequest) -> Unit,
-) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, onExportStructuredDocx, null, null, onSaveCopy)
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, onExportStructuredDocx, null, null, null, onSaveCopy)
 
 /** Extended entry point; the previous EditorScreen signature remains available unchanged. */
 @Composable
@@ -74,7 +74,7 @@ fun EditorScreenWithStrike(
     onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
     onExportStructuredDocxWithStrike: ((dev.fusion.documents.TextDocument, Boolean, Boolean) -> Unit)? = null,
     onSaveCopy: (CopyPickerRequest) -> Unit,
-) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, onExportStructuredDocxWithStrike, null, onSaveCopy)
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, onExportStructuredDocxWithStrike, null, null, onSaveCopy)
 
 /** Extended opt-in list grouping; both earlier entry points remain available. */
 @Composable
@@ -85,7 +85,18 @@ fun EditorScreenWithListRestart(
     onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
     onExportStructuredDocxWithListRestart: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean) -> Unit)? = null,
     onSaveCopy: (CopyPickerRequest) -> Unit,
-) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, null, onExportStructuredDocxWithListRestart, onSaveCopy)
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, null, onExportStructuredDocxWithListRestart, null, onSaveCopy)
+
+/** Pipe-table conversion is separate and default-off; earlier entry points are unchanged. */
+@Composable
+fun EditorScreenWithPipeTables(
+    model: EditorViewModel,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocxWithPipeTables: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, null, null, onExportStructuredDocxWithPipeTables, onSaveCopy)
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -97,6 +108,7 @@ private fun EditorScreenContent(
     onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)?,
     onExportStructuredDocxWithStrike: ((dev.fusion.documents.TextDocument, Boolean, Boolean) -> Unit)?,
     onExportStructuredDocxWithListRestart: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean) -> Unit)?,
+    onExportStructuredDocxWithPipeTables: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean, Boolean) -> Unit)?,
     onSaveCopy: (CopyPickerRequest) -> Unit,
 ) {
     val state by model.state.collectAsStateWithLifecycle()
@@ -113,6 +125,7 @@ private fun EditorScreenContent(
     var numberedLines by remember { mutableStateOf(false) }
     var strikeSpans by remember { mutableStateOf(false) }
     var restartOrderedGroups by remember { mutableStateOf(false) }
+    var pipeTables by remember { mutableStateOf(false) }
     var docxNotice by remember { mutableStateOf("") }
     var retryConfirm by remember { mutableStateOf(false) }
     var retryConfirmId by remember { mutableStateOf<String?>(null) }
@@ -237,9 +250,9 @@ private fun EditorScreenContent(
         AlertDialog(onDismissRequest={ docxConfirmId=null }, title={ Text("Export plain text as DOCX?") },
             text={ Column(Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) {
                 Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.")
-                if (onExportStructuredDocx != null || onExportStructuredDocxWithStrike != null || onExportStructuredDocxWithListRestart != null) TextButton(onClick={
+                if (onExportStructuredDocx != null || onExportStructuredDocxWithStrike != null || onExportStructuredDocxWithListRestart != null || onExportStructuredDocxWithPipeTables != null) TextButton(onClick={
                     docxConfirmId=null
-                    numberedLines=false; strikeSpans=false; restartOrderedGroups=false
+                    numberedLines=false; strikeSpans=false; restartOrderedGroups=false; pipeTables=false
                     val current=model.state.value
                     val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
                     val buffer=current.buffers[id]
@@ -264,23 +277,29 @@ private fun EditorScreenContent(
                 // Keep the safety summary visible even while the optional format details scroll.
                 Text("Not a rich editor or full Markdown. Draft unchanged; choose a new file. Provider identity and atomicity aren't guaranteed.", Modifier.testTag("writer-structured-safety"))
                 Column(Modifier.heightIn(max=248.dp).verticalScroll(rememberScrollState())) {
-                Text("One paragraph per line; CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
+                Text("Normally one paragraph per line; optional pipe tables group lines. CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=numberedLines, role=Role.Checkbox, onValueChange={ numberedLines=it; if (!it) restartOrderedGroups=false })
                     .testTag("writer-numbered-option"), verticalAlignment=Alignment.CenterVertically) {
                     Checkbox(checked=numberedLines, onCheckedChange=null)
                     val numberingScope = if (restartOrderedGroups) "Separate groups request a restart." else "They share one list; separated groups may continue."
                     Text("Also format '1. ' lines with at least one following character as numbered items. $numberingScope '2. ' and indented lines stay text.", Modifier.testTag("writer-numbered-disclosure"))
                 }
-                if (onExportStructuredDocxWithStrike != null || onExportStructuredDocxWithListRestart != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=strikeSpans, role=Role.Checkbox, onValueChange={ strikeSpans=it })
+                if (onExportStructuredDocxWithStrike != null || onExportStructuredDocxWithListRestart != null || onExportStructuredDocxWithPipeTables != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=strikeSpans, role=Role.Checkbox, onValueChange={ strikeSpans=it })
                     .testTag("writer-strike-option"), verticalAlignment=Alignment.CenterVertically) {
                     Checkbox(checked=strikeSpans, onCheckedChange=null)
                     Text("Also format ~~text~~ as strikethrough. Single tildes, spaces at the ends and ambiguous or nested markers stay literal; this is not full Markdown.", Modifier.testTag("writer-strike-disclosure"))
                 }
-                if (onExportStructuredDocxWithListRestart != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(
+                if (onExportStructuredDocxWithListRestart != null || onExportStructuredDocxWithPipeTables != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(
                     value=restartOrderedGroups, enabled=numberedLines, role=Role.Checkbox, onValueChange={ restartOrderedGroups=it })
                     .testTag("writer-number-restart-option"), verticalAlignment=Alignment.CenterVertically) {
                     Checkbox(checked=restartOrderedGroups, onCheckedChange=null, enabled=numberedLines)
                     Text("Request each separate group of numbered lines to restart at 1. A non-numbered line separates groups; DOCX readers may render numbering differently.", Modifier.testTag("writer-number-restart-disclosure"))
+                }
+                if (onExportStructuredDocxWithPipeTables != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(
+                    value=pipeTables, role=Role.Checkbox, onValueChange={ pipeTables=it })
+                    .testTag("writer-pipe-table-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=pipeTables, onCheckedChange=null)
+                    Text("Also make strict |cell| blocks into tables: header, --- separator and at least one rectangular body row. Trim cell-edge spaces/tabs; keep markers literal. Escaped pipes and malformed blocks stay literal. Over 64 columns or 256 cells: refuse export. Not full Markdown.", Modifier.testTag("writer-pipe-table-disclosure"))
                 }
                 }
             } },
@@ -294,7 +313,8 @@ private fun EditorScreenContent(
                     !current.loading && !current.busy && !current.toolsBusy && !current.recoveryBlocked &&
                     current.session.pendingCopy==null && !officeExportBusy) {
                     docxNotice=""
-                    if (onExportStructuredDocxWithListRestart != null) onExportStructuredDocxWithListRestart(doc, numberedLines, strikeSpans, restartOrderedGroups)
+                    if (onExportStructuredDocxWithPipeTables != null) onExportStructuredDocxWithPipeTables(doc, numberedLines, strikeSpans, restartOrderedGroups, pipeTables)
+                    else if (onExportStructuredDocxWithListRestart != null) onExportStructuredDocxWithListRestart(doc, numberedLines, strikeSpans, restartOrderedGroups)
                     else if (onExportStructuredDocxWithStrike != null) onExportStructuredDocxWithStrike(doc, numberedLines, strikeSpans)
                     else onExportStructuredDocx?.invoke(doc, numberedLines)
                 } else docxNotice="Draft or editor state changed. Review the export again."

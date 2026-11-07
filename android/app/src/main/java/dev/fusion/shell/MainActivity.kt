@@ -114,14 +114,14 @@ import dev.fusion.beam.BeamScreen
 import dev.fusion.browser.BrowserScreen
 import dev.fusion.calc.CalcScreen
 import dev.fusion.calc.CalculatorViewModel
-import dev.fusion.calc.SheetScreen
+import dev.fusion.calc.SheetScreenWithCsv
 import dev.fusion.calc.SheetViewModel
 import dev.fusion.capabilities.CapabilityProbe
 import dev.fusion.capture.CaptureScreen
 import dev.fusion.capture.ScreenRecordService
 import dev.fusion.cast.dlna.DlnaScreen
 import dev.fusion.continuity.ContinuityScreen
-import dev.fusion.editor.EditorScreenWithListRestart
+import dev.fusion.editor.EditorScreenWithPipeTables
 import dev.fusion.editor.CopyDestinationContract
 import dev.fusion.filesui.FilesScreen
 import dev.fusion.files.SafRepository
@@ -849,14 +849,14 @@ class MainActivity : ComponentActivity() {
 
             "editor" -> {
                 val office by officeExportModel.state.collectAsState()
-                EditorScreenWithListRestart(editorModel, office.status, office.busy,
+                EditorScreenWithPipeTables(editorModel, office.status, office.busy,
                     onExportDocx = { doc ->
                         if (editorSourcesKnown())
                             officeExportModel.writer(doc, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
                     },
-                    onExportStructuredDocxWithListRestart = { doc, numberedLines, strikeSpans, restartOrderedGroups ->
+                    onExportStructuredDocxWithPipeTables = { doc, numberedLines, strikeSpans, restartOrderedGroups, pipeTables ->
                         if (editorSourcesKnown())
-                            officeExportModel.structuredWriter(doc, editorSourceAndCopyUris(), numberedLines, strikeSpans, restartOrderedGroups) { saveOfficeCopy.launch(it) }
+                            officeExportModel.structuredWriter(doc, editorSourceAndCopyUris(), numberedLines, strikeSpans, restartOrderedGroups, pipeTables) { saveOfficeCopy.launch(it) }
                     },
                     onSaveCopy = { request -> saveCopy.launch(request) })
             }
@@ -924,7 +924,11 @@ class MainActivity : ComponentActivity() {
                 val editor by editorModel.state.collectAsState()
                 val identitiesKnown = !editor.loading && !editor.recoveryBlocked && !editor.busy && !editor.toolsBusy && editor.session.pendingCopy == null
                 val status = if (!identitiesKnown) "XLSX export waits until editor recovery, operations and pending text copies finish; source identities must be available." else office.status
-                SheetScreen(sheetModel, office.busy || !identitiesKnown, status) { draft ->
+                SheetScreenWithCsv(sheetModel, office.busy || !identitiesKnown, status,
+                    onExportCsv = { draft ->
+                        if (editorSourcesKnown())
+                            officeExportModel.sheetCsv(draft, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
+                    }) { draft ->
                     if (editorSourcesKnown())
                         officeExportModel.sheet(draft, editorSourceAndCopyUris()) { saveOfficeCopy.launch(it) }
                 }

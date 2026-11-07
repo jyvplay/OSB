@@ -47,7 +47,8 @@ class CopyDestinationContract : ActivityResultContract<CopyPickerRequest, CopyPi
         internal const val MIME="dev.fusion.editor.COPY_MIME"
         const val DOCX_MIME="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         const val XLSX_MIME="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        internal val ALLOWED_MIMES=setOf("text/plain", DOCX_MIME, XLSX_MIME)
+        const val CSV_MIME="text/csv"
+        internal val ALLOWED_MIMES=setOf("text/plain", DOCX_MIME, XLSX_MIME, CSV_MIME)
     }
 }
 

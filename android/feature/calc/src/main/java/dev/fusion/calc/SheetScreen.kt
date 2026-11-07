@@ -58,17 +58,36 @@ import dev.fusion.ooxml.OfficeSheetTextGrid
 import dev.fusion.ooxml.OfficeSheetRangeEdit
 
 /** Bounded local authoring, deliberately separate from the blocked untrusted Office importer. */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SheetScreen(
     model: SheetViewModel,
     exportBusy: Boolean,
     exportStatus: String,
     onExport: (OfficeSheetDraft.Draft) -> Unit,
+) = SheetScreenContent(model, exportBusy, exportStatus, null, onExport)
+
+/** Additional values-only CSV output; the old XLSX-only entry point remains unchanged. */
+@Composable
+fun SheetScreenWithCsv(
+    model: SheetViewModel,
+    exportBusy: Boolean,
+    exportStatus: String,
+    onExportCsv: (OfficeSheetDraft.Draft) -> Unit,
+    onExport: (OfficeSheetDraft.Draft) -> Unit,
+) = SheetScreenContent(model, exportBusy, exportStatus, onExportCsv, onExport)
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun SheetScreenContent(
+    model: SheetViewModel,
+    exportBusy: Boolean,
+    exportStatus: String,
+    onExportCsv: ((OfficeSheetDraft.Draft) -> Unit)?,
+    onExport: (OfficeSheetDraft.Draft) -> Unit,
 ) {
     val state by model.state.collectAsStateWithLifecycle()
     val draft = state.data.draft
-    val ready = !state.loading && !state.busy && !state.recoveryBlocked && state.textGridPreview == null && state.rangePreview == null
+    val ready = !state.loading && !state.busy && !state.recoveryBlocked && state.textGridPreview == null && state.rangePreview == null && state.copyPreview == null
     val selected = state.selected
     val kind = state.inputKind
     val edit = state.input
@@ -77,6 +96,7 @@ fun SheetScreen(
     var pendingSelection by rememberSaveable { mutableStateOf<String?>(null) }
     var confirmClear by rememberSaveable { mutableStateOf(false) }
     var confirmExportRevision by rememberSaveable { mutableStateOf<Long?>(null) }
+    var confirmCsvRevision by rememberSaveable { mutableStateOf<Long?>(null) }
     var uiMessage by rememberSaveable { mutableStateOf("") }
     // Pasted raw text is deliberately not saveable or persisted outside the applied draft.
     var showTextGridInput by remember { mutableStateOf(false) }
@@ -89,6 +109,13 @@ fun SheetScreen(
     var rangeInput by remember { mutableStateOf("") }
     var rangeOperation by remember { mutableStateOf(OfficeSheetRangeEdit.Operation.CLEAR_CONTENTS) }
     var rangeProtection by remember { mutableStateOf(true) }
+    var showCopyInput by remember { mutableStateOf(false) }
+    var copySource by remember { mutableStateOf("") }
+    var copyProtection by remember { mutableStateOf(true) }
+    var copySkipMissing by remember { mutableStateOf(false) }
+    LaunchedEffect(state.copyPreview) {
+        if (state.copyPreview != null) { showCopyInput = false; copySource = "" }
+    }
     LaunchedEffect(state.rangePreview) {
         if (state.rangePreview != null) { showRangeInput = false; rangeInput = "" }
     }
@@ -124,6 +151,8 @@ fun SheetScreen(
             OutlinedButton(onClick = model::redo, enabled = ready && !unapplied && state.redoDepth > 0, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-redo")) { Text("Redo") }
             OutlinedButton(onClick = { confirmExportRevision = draft.revision }, enabled = ready && !unapplied && !exportBusy,
                 modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-export")) { Text("Export XLSX copy…") }
+            if (onExportCsv != null) OutlinedButton(onClick = { confirmCsvRevision = draft.revision }, enabled = ready && !unapplied && !exportBusy,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-export-csv")) { Text("Export CSV values…") }
             OutlinedButton(onClick = {
                 model.clearTextGridError(); textGridInput = ""; interpretDecimals = false; transposeTextGrid = false
                 skipBlankFields = false; protectExistingCells = false; showTextGridInput = true
@@ -144,6 +173,10 @@ fun SheetScreen(
                 rangeOperation = OfficeSheetRangeEdit.Operation.FILL_FORMULA; showRangeInput = true
             }, enabled = ready && !unapplied && !exportBusy,
                 modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-formula")) { Text("Fill formula…") }
+            OutlinedButton(onClick = {
+                model.clearCopyError(); copySource = selected; copyProtection = true; copySkipMissing = false; showCopyInput = true
+            }, enabled = ready && !unapplied && !exportBusy,
+                modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-copy-range")) { Text("Copy range…") }
         }
         Text("Selected $selected · displayed value: ${state.data.values[selected]?.displayText().orEmpty()}", modifier = Modifier.testTag("sheet-selected-value"))
         // Wrap the cell actions rather than hiding Clear off the right edge. The
@@ -332,6 +365,57 @@ fun SheetScreen(
             confirmButton = { TextButton(onClick = model::acceptRange, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-apply")) { Text("Apply range") } },
             dismissButton = { TextButton(onClick = model::cancelRangePreview, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-range-cancel")) { Text("Cancel") } })
     }
+    if (showCopyInput && state.copyPreview == null) AlertDialog(
+        onDismissRequest = { if (!state.busy) { showCopyInput = false; copySource = "" } },
+        title = { Text("Copy a range to $selected?") },
+        text = {
+            Column(Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Enter one source cell or rectangle in A1:Z100, up to 256 positions. $selected is the top-left destination. This is a local sheet operation, not the system clipboard.")
+                OutlinedTextField(copySource, { if (it.length <= 32) copySource = it },
+                    modifier = Modifier.fillMaxWidth().testTag("sheet-copy-source"), enabled = !state.busy,
+                    label = { Text("Source cell or range") }, singleLine = true)
+                Text("Copies applied text, numbers, booleans and supported formulas. Relative references move; dollar-anchored parts stay fixed. Out-of-range references, cycles or limits refuse the whole copy. No styles or Excel parity.")
+                Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                    value = copyProtection, enabled = !state.busy, role = Role.Checkbox, onValueChange = { copyProtection = it },
+                ).testTag("sheet-copy-protect"), verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = copyProtection, onCheckedChange = null, enabled = !state.busy)
+                    Text("Protect existing destination cells")
+                }
+                Text("On by default: replacing or clearing a different populated cell refuses the whole copy.", style = MaterialTheme.typography.bodySmall)
+                Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                    value = copySkipMissing, enabled = !state.busy, role = Role.Checkbox, onValueChange = { copySkipMissing = it },
+                ).testTag("sheet-copy-skip-missing"), verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = copySkipMissing, onCheckedChange = null, enabled = !state.busy)
+                    Text("Keep destinations for missing source cells")
+                }
+                Text("Off: missing source cells clear destinations. A stored empty-text cell is copied as text, not skipped. Overlapping ranges use the original values.", style = MaterialTheme.typography.bodySmall)
+                if (state.copyError.isNotEmpty()) Text(state.copyError,
+                    Modifier.testTag("sheet-copy-error").semantics { liveRegion = LiveRegionMode.Polite }, color = MaterialTheme.colorScheme.error)
+                if (state.busy) CircularProgressIndicator()
+            }
+        },
+        confirmButton = {
+            val focus = LocalFocusManager.current
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextButton(onClick = { focus.clearFocus(); keyboard?.hide(); model.previewCopy(copySource, copyProtection, copySkipMissing) },
+                enabled = !state.busy && copySource.isNotBlank(), modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-copy-preview")) { Text("Review changes") }
+        },
+        dismissButton = { TextButton(onClick = { showCopyInput = false; copySource = "" }, enabled = !state.busy,
+            modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-copy-input-cancel")) { Text("Cancel") } },
+    )
+    state.copyPreview?.let { plan ->
+        AlertDialog(onDismissRequest = model::cancelCopyPreview, title = { Text("Apply range copy?") },
+            text = {
+                val protect = if (plan.protectExisting) "on" else "off"
+                val missing = if (plan.skipMissing) "Missing sources are skipped." else "Missing sources clear destinations."
+                val undo = if (plan.changed == 0) "Nothing will change; no undo step is added."
+                    else "One local undo step; this does not save an external file."
+                Text("${plan.source} → ${plan.destination} (${plan.positions} positions): ${plan.inserted} new, ${plan.replaced} replaced, ${plan.cleared} cleared, ${plan.unchanged} unchanged, ${plan.skipped} skipped. ${plan.formulasRemoved} formulas removed; ${plan.formulasWritten} formulas written. Protection $protect. $missing $undo",
+                    Modifier.heightIn(max = 300.dp).verticalScroll(rememberScrollState()).testTag("sheet-copy-review-text"))
+            },
+            confirmButton = { TextButton(onClick = model::acceptCopy, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-copy-apply")) { Text("Apply copy") } },
+            dismissButton = { TextButton(onClick = model::cancelCopyPreview, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-copy-cancel")) { Text("Cancel") } })
+    }
     pendingSelection?.let { target ->
         AlertDialog(onDismissRequest = { pendingSelection = null }, title = { Text("Discard unapplied cell input?") },
             text = { Text("Only the already applied sheet is retained. Selecting $target discards the input currently in the editor.") },
@@ -342,6 +426,19 @@ fun SheetScreen(
         text = { Text("Removes this cell from the local draft; Undo is available until the app process ends.") },
         confirmButton = { TextButton(onClick = { confirmClear = false; model.clear(selected) }) { Text("Clear cell") } },
         dismissButton = { TextButton(onClick = { confirmClear = false }) { Text("Cancel") } })
+    confirmCsvRevision?.let { revision ->
+        AlertDialog(onDismissRequest = { confirmCsvRevision = null }, title = { Text("Export CSV values copy?") },
+            text = { Text("UTF-8 CSV from A1 to the last populated row and column. Formulas become calculated values; formulas, types and formatting are lost. Other apps may reinterpret fields. Common formula-like text is refused, but this is not a universal CSV-injection guarantee. Choose a new file; the draft stays unchanged. Provider writes may not be atomic.",
+                Modifier.heightIn(max = 300.dp).verticalScroll(rememberScrollState()).testTag("sheet-csv-disclosure")) },
+            confirmButton = { TextButton(onClick = {
+                confirmCsvRevision = null
+                val current = model.state.value
+                if (!current.loading && !current.busy && !current.recoveryBlocked && !current.unapplied &&
+                    current.data.draft.revision == revision && !exportBusy) onExportCsv?.invoke(current.data.draft)
+                else uiMessage = "The draft or export state changed; review it and request export again."
+            }, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-csv-confirm")) { Text("Choose destination") } },
+            dismissButton = { TextButton(onClick = { confirmCsvRevision = null }, modifier = Modifier.heightIn(min = 48.dp).testTag("sheet-csv-cancel")) { Text("Cancel") } })
+    }
     confirmExportRevision?.let { revision ->
         AlertDialog(onDismissRequest = { confirmExportRevision = null }, title = { Text("Export XLSX copy?") },
             text = { Text("Exports the applied cells and calculated values to a new single-sheet XLSX. No imported workbook, styles, charts, macros or external links are preserved. Formula support and numerical behavior are limited; verify results independently. The local draft remains unchanged. A provider may not offer atomic creation or durability.", Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState())) },

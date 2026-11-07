@@ -17,7 +17,10 @@ package dev.fusion.ooxml
  * ambiguous, escaped, nested, unmatched or three-plus delimiters keep the entire
  * line's inline text literal. A separate opt-in can request a new numbering instance
  * with a start override after each non-numbered line; actual reader rendering is not
- * guaranteed. This is not a GFM parser. The source is never modified.
+ * guaranteed. A separate default-off option converts only strict unescaped pipe
+ * blocks with an all-hyphen separator and at least one body row into actual tables.
+ * Cell-edge spaces/tabs are trimmed and cells are literal; malformed or unsupported
+ * blocks stay ordinary text. It is not a GFM parser. The source is never modified.
  */
 object StructuredWriterDocx {
     const val MAX_RUNS = 8_192
@@ -30,7 +33,10 @@ object StructuredWriterDocx {
     fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean): ByteArray =
         write(text, numberedLines, strikeSpans, restartOrderedGroups = false)
 
-    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean): ByteArray {
+    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean): ByteArray =
+        write(text, numberedLines, strikeSpans, restartOrderedGroups, pipeTables = false)
+
+    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, pipeTables: Boolean): ByteArray {
         require(!restartOrderedGroups || numberedLines) { "Numbered lines must be enabled to request list restarts" }
         // For valid XML text UTF-16 code units never outnumber UTF-8 bytes; this
         // early bound avoids a large temporary encoding allocation on rejected input.
@@ -40,7 +46,8 @@ object StructuredWriterDocx {
         val lines = text.replace("\r\n", "\n").replace('\r', '\n').split('\n')
         require(lines.size <= PlainWriterDocx.MAX_PARAGRAPHS) { "DOCX export accepts at most ${PlainWriterDocx.MAX_PARAGRAPHS} paragraphs" }
         var runCount = 0
-        val blocks = lines.map { line ->
+        val blocks = ArrayList<DocxPackage.Block>()
+        fun addLine(line: String) {
             val hashes = line.takeWhile { it == '#' }.length
             val heading = hashes in 1..6 && line.length > hashes + 1 && line[hashes] == ' '
             val bullet = line.startsWith("- ") && line.length > 2
@@ -55,17 +62,56 @@ object StructuredWriterDocx {
             val runs = inlineRuns(content, strikeSpans)
             runCount += runs.size
             require(runCount <= MAX_RUNS) { "DOCX export accepts at most $MAX_RUNS text runs" }
-            when {
+            blocks.add(when {
                 heading -> DocxPackage.Block.Heading(hashes, runs)
                 bullet -> DocxPackage.Block.ListItem(ordered = false, runs = runs)
                 quote -> DocxPackage.Block.BlockQuote(runs)
                 numbered -> DocxPackage.Block.ListItem(ordered = true, runs = runs)
                 else -> DocxPackage.Block.Paragraph(runs)
+            })
+        }
+        var index = 0
+        while (index < lines.size) {
+            if (!pipeTables || !lines[index].startsWith('|')) {
+                addLine(lines[index++])
+                continue
             }
+            // Treat a whole contiguous pipe-prefixed group as one candidate. A
+            // malformed first row cannot turn a later suffix into a partial table.
+            var end = index + 1
+            while (end < lines.size && lines[end].startsWith('|')) end++
+            val group = lines.subList(index, end)
+            val rows = pipeTable(group)
+            if (rows == null) {
+                // The user opted into this strict table grammar, not partial Markdown
+                // interpretation of a rejected group. Preserve every line literally.
+                runCount += group.size
+                require(runCount <= MAX_RUNS) { "DOCX export accepts at most $MAX_RUNS text runs" }
+                group.forEach { blocks.add(DocxPackage.Block.Paragraph(listOf(DocxPackage.Run(it)))) }
+            } else {
+                runCount += rows.sumOf { it.size }
+                require(runCount <= MAX_RUNS) { "DOCX export accepts at most $MAX_RUNS text runs" }
+                blocks.add(DocxPackage.Block.Table(rows))
+            }
+            index = end
         }
         val bytes = DocxPackage.write(DocxPackage.Document(blocks = blocks), restartOrderedGroups)
         require(bytes.size <= PlainWriterDocx.MAX_OUTPUT_BYTES) { "DOCX copy exceeds the export budget" }
         return bytes
+    }
+
+    private fun pipeTable(lines: List<String>): List<List<String>>? {
+        if (lines.size < 3) return null
+        val parsed = ArrayList<List<String>>(lines.size)
+        for (line in lines) {
+            if (line.length < 2 || line.last() != '|' || line.contains("\\|")) return null
+            parsed.add(line.substring(1, line.lastIndex).split('|').map { it.trim(' ', '\t') })
+        }
+        val columns = parsed.first().size
+        if (parsed.any { it.size != columns } || parsed[1].any { !it.matches(Regex("-{3,}")) }) return null
+        require(columns in 1..DocxPackage.MAX_TABLE_COLS) { "A pipe table accepts at most ${DocxPackage.MAX_TABLE_COLS} columns" }
+        require((parsed.size - 1) * columns <= 256) { "A pipe table accepts at most 256 header and body cells" }
+        return listOf(parsed.first()) + parsed.drop(2)
     }
 
     private fun inlineRuns(text: String, strikeSpans: Boolean): List<DocxPackage.Run> {

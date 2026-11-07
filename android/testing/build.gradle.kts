@@ -1689,3 +1689,34 @@ tasks.register<JavaExec>("r63WriterRestartContracts") {
     mainClass.set("dev.fusion.testing.R63WriterRestartChecks")
     args(rootProject.file("testing/build/r63writer/artifacts").absolutePath)
 }
+
+// R64: separate bounded transactions and exports. Readers and Android device checks are separate.
+val r64Sheet by sourceSets.creating
+kotlin.sourceSets.named("r64Sheet") { kotlin.srcDir("src/r64sheet/kotlin") }
+dependencies { add(r64Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r64SheetCopyContracts") {
+    dependsOn(r64Sheet.classesTaskName)
+    classpath = r64Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R64SheetCopyChecks")
+    args(rootProject.file("testing/build/r64sheet/artifacts").absolutePath)
+}
+
+val r64Writer by sourceSets.creating
+kotlin.sourceSets.named("r64Writer") { kotlin.srcDir("src/r64writer/kotlin") }
+dependencies { add(r64Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r64WriterTableContracts") {
+    dependsOn(r64Writer.classesTaskName)
+    classpath = r64Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R64WriterTableChecks")
+    args(rootProject.file("testing/build/r64writer/artifacts").absolutePath)
+}
+
+val r64Csv by sourceSets.creating
+kotlin.sourceSets.named("r64Csv") { kotlin.srcDir("src/r64csv/kotlin") }
+dependencies { add(r64Csv.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r64SheetCsvContracts") {
+    dependsOn(r64Csv.classesTaskName)
+    classpath = r64Csv.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R64SheetCsvChecks")
+    args(rootProject.file("testing/build/r64csv/artifacts").absolutePath)
+}

@@ -12,6 +12,10 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import dev.fusion.calc.SheetViewModel
 import dev.fusion.editor.CopyDestinationContract
 import dev.fusion.editor.CopyPickerOutcome
@@ -32,6 +36,7 @@ import org.junit.runner.RunWith
 import java.io.File
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
+import java.util.regex.Pattern
 
 /** Real consent, undo and MediaStore bytes on a disposable AVD; no system-picker or Office claim. */
 @RunWith(AndroidJUnit4::class)
@@ -61,11 +66,11 @@ class R59SheetDeviceTest {
         compose.onNodeWithText("1 numeric, 3 text and 0 blank fields", substring = true).assertExists()
         assertEquals(OfficeSheetTextGrid.Mode.DECIMALS, sheet().state.value.textGridPreview?.mode)
     }
-    private fun destination(body: (Uri) -> Unit) {
+    private fun destination(mime: String = CopyDestinationContract.XLSX_MIME, extension: String = "xlsx", body: (Uri) -> Unit) {
         val resolver = context.contentResolver
         val uri = requireNotNull(resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "fusion-r59-${UUID.randomUUID()}.xlsx")
-            put(MediaStore.MediaColumns.MIME_TYPE, CopyDestinationContract.XLSX_MIME)
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "fusion-r59-${UUID.randomUUID()}.$extension")
+            put(MediaStore.MediaColumns.MIME_TYPE, mime)
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/FusionR59")
             put(MediaStore.MediaColumns.IS_PENDING, 1)
         }))
@@ -255,6 +260,155 @@ class R59SheetDeviceTest {
             assertEquals(FormulaEval.CellInput.TextLiteral("=1+1"), inputs["A1"])
             assertEquals(FormulaEval.CellInput.TextLiteral("=1+1"), inputs["B1"])
         }
+    }
+
+    @Test fun rectangularCopyReviewsOverlapProtectionUndoAndProvider() {
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        click("shelf-spreadsheet")
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("window-actions-spreadsheet").performClick()
+        compose.onNodeWithText("Maximize").performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        fun select(address: String) {
+            compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement(address)
+            click("sheet-select")
+            compose.waitUntil(15_000) { sheet().state.value.selected == address }
+        }
+        fun set(address: String, text: String) {
+            select(address)
+            compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement(text)
+            click("sheet-apply")
+            compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells[address]?.input == text }
+        }
+        set("D3", "KEEP")
+        set("C2", "right")
+        select("B2")
+        click("sheet-kind")
+        compose.waitUntil(5_000) { compose.onAllNodesWithText("Formula").fetchSemanticsNodes().size == 1 }
+        compose.onNodeWithText("Formula").performClick()
+        val formula = "=A1+\$A\$1"
+        compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement(formula)
+        click("sheet-apply")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells["B2"]?.input == formula }
+        select("C2")
+        val before = sheet().state.value.data.draft
+        click("sheet-copy-range")
+        compose.onNodeWithTag("sheet-copy-source").performScrollTo().performTextReplacement("B2:C3")
+        compose.onNodeWithTag("sheet-copy-protect").performScrollTo().assertIsOn()
+        click("sheet-copy-preview")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.copyError.isNotEmpty() }
+        compose.onNodeWithTag("sheet-copy-error").performScrollTo().assertTextContains("Protected existing cell C2", substring = true)
+        assertSame(before, sheet().state.value.data.draft)
+        click("sheet-copy-input-cancel")
+        fun review() {
+            click("sheet-copy-range")
+            compose.onNodeWithTag("sheet-copy-source").performScrollTo().performTextReplacement("B2:C3")
+            compose.onNodeWithTag("sheet-copy-protect").performScrollTo().assertIsOn().performClick().assertIsOff()
+            compose.onNodeWithTag("sheet-copy-skip-missing").performScrollTo().assertIsOff().performClick().assertIsOn()
+            click("sheet-copy-preview")
+            compose.waitUntil(15_000) { sheet().state.value.copyPreview != null }
+            val plan = requireNotNull(sheet().state.value.copyPreview)
+            assertEquals(1, plan.inserted); assertEquals(1, plan.replaced); assertEquals(2, plan.skipped)
+            assertEquals(1, plan.formulasWritten); assertSame(before, sheet().state.value.data.draft)
+            compose.onNodeWithTag("sheet-copy-review-text").assertTextContains("2 skipped", substring = true)
+        }
+        review()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r64-sheet-copy", "sheet-copy-apply", listOf("sheet-copy-cancel"))
+        NativeVisualEvidence.assertFullTextVisible(compose, "sheet-copy-review-text")
+        click("sheet-copy-cancel")
+        assertSame(before, sheet().state.value.data.draft)
+        review()
+        click("sheet-copy-apply")
+        compose.waitUntil(15_000) { sheet().state.value.data.draft.revision == before.revision + 1 }
+        val after = sheet().state.value.data.draft
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.FORMULA, "=B1+\$A\$1"), after.cells["C2"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "right"), after.cells["D2"])
+        assertEquals(OfficeSheetDraft.Cell(OfficeSheetDraft.Kind.TEXT, "KEEP"), after.cells["D3"])
+        click("sheet-undo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == before.cells }
+        click("sheet-redo")
+        compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells == after.cells }
+        destination { uri ->
+            val coordinator = export(); val request = AtomicReference<CopyPickerRequest>()
+            compose.runOnUiThread { coordinator.sheet(sheet().state.value.data.draft, emptyList()) { request.set(it) } }
+            compose.waitUntil(15_000) { request.get() != null || !coordinator.state.value.busy }
+            val issued = requireNotNull(request.get()) { coordinator.state.value.status }
+            compose.runOnUiThread { coordinator.complete(CopyPickerResult(issued.requestId, CopyPickerOutcome.SELECTED, uri), emptyList()) }
+            compose.waitUntil(30_000) { !coordinator.state.value.busy }
+            assertTrue(coordinator.state.value.status, coordinator.state.value.status.contains("byte-for-byte"))
+            val bytes = requireNotNull(context.contentResolver.openInputStream(uri)).use { it.readBytes() }
+            val cells = FormulaXlsx.read(bytes).inputs
+            assertEquals(FormulaEval.CellInput.Formula("B1+\$A\$1"), cells["C2"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("right"), cells["D2"])
+            assertEquals(FormulaEval.CellInput.TextLiteral("KEEP"), cells["D3"])
+        }
+    }
+
+    @Test fun csvValuesDisclosureRealPickerProviderAndRiskRefusal() {
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("shelf-spreadsheet") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        click("shelf-spreadsheet")
+        compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
+        compose.onNodeWithTag("window-actions-spreadsheet").performClick()
+        compose.onNodeWithText("Maximize").performClick()
+        compose.waitUntil(15_000) { compose.onAllNodes(hasTestTag("sheet-input") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        fun select(address: String) {
+            compose.onNodeWithTag("sheet-address").performScrollTo().performTextReplacement(address)
+            click("sheet-select")
+            compose.waitUntil(15_000) { sheet().state.value.selected == address }
+        }
+        fun set(text: String) {
+            val address = sheet().state.value.selected
+            compose.onNodeWithTag("sheet-input").performScrollTo().performTextReplacement(text)
+            click("sheet-apply")
+            compose.waitUntil(15_000) { !sheet().state.value.busy && sheet().state.value.data.draft.cells[address]?.input == text }
+        }
+        fun kind(label: String) {
+            click("sheet-kind")
+            compose.waitUntil(5_000) { compose.onAllNodesWithText(label).fetchSemanticsNodes().size == 1 }
+            compose.onNodeWithText(label).performClick()
+        }
+        set("hello")
+        select("B1"); kind("Number"); set("-12.5")
+        select("C1"); kind("Formula"); set("=B1*2")
+        val draft = sheet().state.value.data.draft
+        compose.activityRule.scenario.onActivity { activity ->
+            (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager)
+                .hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
+        }
+        compose.waitForIdle()
+        click("sheet-export-csv")
+        compose.onNodeWithTag("sheet-csv-disclosure").assertTextContains("not a universal CSV-injection guarantee", substring = true)
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r64-sheet-csv", "sheet-csv-confirm", listOf("sheet-csv-cancel"))
+        NativeVisualEvidence.assertFullTextVisible(compose, "sheet-csv-disclosure")
+        click("sheet-csv-cancel")
+        assertSame(draft, sheet().state.value.data.draft)
+        click("sheet-export-csv"); click("sheet-csv-confirm")
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val documentsUi = By.pkg(Pattern.compile(".*documentsui"))
+        assertTrue("Actual CSV Create Document picker required", device.wait(Until.hasObject(documentsUi), 15_000))
+        device.pressBack()
+        assertTrue(device.wait(Until.gone(documentsUi), 15_000))
+        compose.waitUntil(30_000) { !export().state.value.busy }
+        assertSame(draft, sheet().state.value.data.draft)
+        destination(CopyDestinationContract.CSV_MIME, "csv") { uri ->
+            val coordinator = export(); val request = AtomicReference<CopyPickerRequest>()
+            compose.runOnUiThread { coordinator.sheetCsv(draft, emptyList()) { request.set(it) } }
+            compose.waitUntil(15_000) { request.get() != null || !coordinator.state.value.busy }
+            val issued = requireNotNull(request.get()) { coordinator.state.value.status }
+            assertEquals(CopyDestinationContract.CSV_MIME, issued.mimeType)
+            compose.runOnUiThread { coordinator.complete(CopyPickerResult(issued.requestId, CopyPickerOutcome.SELECTED, uri), emptyList()) }
+            compose.waitUntil(30_000) { !coordinator.state.value.busy }
+            assertTrue(coordinator.state.value.status, coordinator.state.value.status.contains("byte-for-byte"))
+            val bytes = requireNotNull(context.contentResolver.openInputStream(uri)).use { it.readBytes() }
+            assertEquals("\"hello\",\"-12.5\",\"-25\"\r\n", bytes.toString(Charsets.UTF_8))
+        }
+        select("A2"); set("=1+1") // TEXT stays text and must not enter the picker/export.
+        val risky = sheet().state.value.data.draft
+        val request = AtomicReference<CopyPickerRequest>()
+        compose.runOnUiThread { export().sheetCsv(risky, emptyList()) { request.set(it) } }
+        compose.waitUntil(15_000) { !export().state.value.busy && export().state.value.status.contains("CSV refused") }
+        assertNull(request.get())
+        assertSame(risky, sheet().state.value.data.draft)
     }
 
     @Test fun formulaFillAdjustsReferencesProtectsConflictsAndSupportsUndoAndExport() {

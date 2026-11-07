@@ -15,6 +15,7 @@ import dev.fusion.editor.CopyPickerOutcome
 import dev.fusion.editor.CopyPickerRequest
 import dev.fusion.editor.CopyPickerResult
 import dev.fusion.ooxml.OfficeSheetDraft
+import dev.fusion.ooxml.OfficeSheetCsv
 import dev.fusion.ooxml.PlainWriterDocx
 import dev.fusion.ooxml.StructuredWriterDocx
 import kotlinx.coroutines.CancellationException
@@ -36,7 +37,7 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
     private val resolver get() = getApplication<Application>().contentResolver
 
     fun writer(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) =
-        writerCopy(doc, forbidden, formatted = false, numberedLines = false, strikeSpans = false, restartOrderedGroups = false, openPicker = openPicker)
+        writerCopy(doc, forbidden, formatted = false, numberedLines = false, strikeSpans = false, restartOrderedGroups = false, pipeTables = false, openPicker = openPicker)
 
     // Preserve the existing formatted-copy entry point and its default literal numbering.
     fun structuredWriter(doc: TextDocument, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) =
@@ -49,20 +50,29 @@ class OfficeExportViewModel(application: Application) : AndroidViewModel(applica
         structuredWriter(doc, forbidden, numberedLines, strikeSpans, restartOrderedGroups = false, openPicker = openPicker)
 
     fun structuredWriter(doc: TextDocument, forbidden: List<String>, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, openPicker: (CopyPickerRequest) -> Unit) =
-        writerCopy(doc, forbidden, formatted = true, numberedLines = numberedLines, strikeSpans = strikeSpans, restartOrderedGroups = restartOrderedGroups, openPicker = openPicker)
+        structuredWriter(doc, forbidden, numberedLines, strikeSpans, restartOrderedGroups, pipeTables = false, openPicker = openPicker)
 
-    private fun writerCopy(doc: TextDocument, forbidden: List<String>, formatted: Boolean, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, openPicker: (CopyPickerRequest) -> Unit) {
+    fun structuredWriter(doc: TextDocument, forbidden: List<String>, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, pipeTables: Boolean, openPicker: (CopyPickerRequest) -> Unit) =
+        writerCopy(doc, forbidden, formatted = true, numberedLines = numberedLines, strikeSpans = strikeSpans, restartOrderedGroups = restartOrderedGroups, pipeTables = pipeTables, openPicker = openPicker)
+
+    private fun writerCopy(doc: TextDocument, forbidden: List<String>, formatted: Boolean, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, pipeTables: Boolean, openPicker: (CopyPickerRequest) -> Unit) {
         val base = doc.name.substringBeforeLast('.', doc.name).map {
             if (it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it == '-' || it == '_') it else '_'
         }.joinToString("").take(64).trim('_').ifEmpty { "document" }
         prepare("$base-copy.docx", CopyDestinationContract.DOCX_MIME, forbidden, openPicker) {
-            if (formatted) StructuredWriterDocx.write(doc.content, numberedLines, strikeSpans, restartOrderedGroups) else PlainWriterDocx.write(doc.content)
+            if (formatted) StructuredWriterDocx.write(doc.content, numberedLines, strikeSpans, restartOrderedGroups, pipeTables) else PlainWriterDocx.write(doc.content)
         }
     }
 
     fun sheet(draft: OfficeSheetDraft.Draft, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) {
         prepare("sheet-copy.xlsx", CopyDestinationContract.XLSX_MIME, forbidden, openPicker) {
             OfficeSheetDraft.xlsx(draft)
+        }
+    }
+
+    fun sheetCsv(draft: OfficeSheetDraft.Draft, forbidden: List<String>, openPicker: (CopyPickerRequest) -> Unit) {
+        prepare("sheet-values-copy.csv", CopyDestinationContract.CSV_MIME, forbidden, openPicker) {
+            OfficeSheetCsv.write(draft)
         }
     }
 

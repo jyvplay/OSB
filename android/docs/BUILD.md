@@ -1,3 +1,34 @@
+# R64 — bounded copy, table and values-only export candidates
+
+Open `OSB/android/` in Android Studio Rabbit 1 with JDK 17 and SDK `platforms;android-37.0`, then use `./gradlew :app:assembleProDebug`. The R64 feature candidate has not yet been built or run on Android; check its exact CI revision before depending on these controls. Use disposable data.
+
+- **Spreadsheet range copy:** apply your source cells, select the top-left destination, choose **Copy range…**, specify the source (for example `A1:B2`) and review counts. Existing destinations are protected by default. The separate missing-cell option preserves rather than clears those destinations. Overlap uses the original snapshot; relative formula references move, and cycles/out-of-grid references refuse the whole transaction. Apply is one local undo step, not an external save.
+- **Writer table:** in Editor choose **Export DOCX copy… → Format simple text markers instead…**, then opt into strict pipe tables. Each contiguous group must have outer pipes, a rectangular header, an all-hyphen `---` separator, and at least one body row. Cell-edge spaces/tabs are trimmed; cell markers remain text. Escaped pipes and malformed groups stay literal. More than 64 columns or 256 header/body cells refuses export. The option resets off; Word/LibreOffice rendering is not verified.
+- **CSV values:** choose **Export CSV values…**, review data loss and choose a new file. Formulas become local calculated values; types, formatting and formulas are lost. Common leading formula-like text is refused, not modified. Quotation and this refusal policy cannot guarantee safety across spreadsheet applications or after save/reopen. Export uses the existing frozen-copy, known-source refusal and byte-readback protocol, not an atomic provider transaction.
+
+Host-only reproduction from `android/` (the reference tools are not bundled in the APK):
+
+```sh
+host_env="$(python3 tools/bootstrap_host_tools.py env)"
+eval "$host_env"
+python3 -m pip install --target "$HOME/.cache/fusion-r64-readers" python-docx==1.2.0 formualizer==0.13.0
+export PYTHONPATH="tools:$HOME/.cache/fusion-r64-readers:${PYTHONPATH:-}"
+python3 tools/run_r64_sheet_copy.py
+python3 tools/check_r64_sheet_copy_reference.py
+python3 tools/check_r64_formula_caches.py
+python3 tools/run_r64_writer_tables.py
+python3 tools/check_r64_writer_reference.py
+python3 tools/run_r63_writer_restart.py  # produce the current legacy corpus for comparison
+python3 tools/run_r64_writer_baseline.py
+python3 tools/run_r64_sheet_csv.py
+python3 tools/check_r64_csv_reference.py
+python3 -m unittest test_r64_sheet_reference test_r64_formula_caches test_r64_writer_reference test_r64_csv_reference test_r64_office_case_gate test_r64_runners test_r64_integration_contracts -v
+```
+
+Corresponding JVM tasks are `:testing:r64SheetCopyContracts`, `:testing:r64WriterTableContracts`, and `:testing:r64SheetCsvContracts`. The four new device methods require an explicitly disposable API34 emulator. Their exact-name and actual-frame gates are separate from the host tests; neither a source file nor a syntax-only parse is an Android pass. See [R64 results](R64-RESULTS.md) for the four independent reversed-range reference refusals and current CI state.
+
+---
+
 # R63 — try the new bounded Office options
 
 Open **`OSB/android/`** in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`, build-tools `36.0.0`. From that directory `./gradlew :app:assembleProDebug` builds the debug flavor and `./gradlew :app:installProDebug` installs it on an attached device/emulator. This sandbox has not run Studio locally; consult [R63 results](R63-RESULTS.md) for exact CI evidence and use disposable data.

@@ -35,6 +35,8 @@ class CopyContractDeviceTest {
         assertEquals(CopyDestinationContract.DOCX_MIME,docx.getStringExtra("dev.fusion.editor.COPY_MIME"))
         val xlsx=contract.createIntent(context,CopyPickerRequest(id,"copy.xlsx",CopyDestinationContract.XLSX_MIME))
         assertEquals(CopyDestinationContract.XLSX_MIME,xlsx.getStringExtra("dev.fusion.editor.COPY_MIME"))
+        val csv=contract.createIntent(context,CopyPickerRequest(id,"copy.csv",CopyDestinationContract.CSV_MIME))
+        assertEquals("text/csv",csv.getStringExtra("dev.fusion.editor.COPY_MIME"))
         assertTrue(runCatching { contract.createIntent(context,CopyPickerRequest(id,"copy.bin","application/x-unknown")) }.isFailure)
     }
     @Test fun uncorrelatedResultNeverBecomesCurrentCancellation() {

@@ -1,6 +1,6 @@
-# Current R63 — bounded Office candidates; full specification incomplete
+# Current R64 — three bounded Office candidates; full specification incomplete
 
-Spreadsheet formula fill and a separately opt-in Writer numbered-group restart request add **two host-testable feature slices**. Actual Kotlin, independent artifact readers, mutation attacks and pinned legacy comparisons passed for finite corpora; Android device tests and actual frame inspection are separate gates. See [R63 results and exact gaps](docs/R63-RESULTS.md), [R62 historical CI results](docs/R62-RESULTS.md) and [build instructions](docs/BUILD.md). **50/50 modules (100%) have a reviewed narrow executable subset; 0/50 (0%) are fully specification-accepted.** No Class A, Excel evaluation or Word-rendering claim is made. Use disposable data.
+Spreadsheet rectangle copy, separately opt-in Writer pipe-table conversion, and values-only CSV export add **three host-testable feature slices**. Their production kernels, independent artifact readers and adversarial fixtures ran; Android compilation, real UI/provider cases, frame inspection and acceptance for this feature revision remain pending. The separately authorized video-infrastructure revision passed its focused three-case and independent native-pixel gate. See [R64 results](docs/R64-RESULTS.md), [R64 plan](docs/R64-PLAN.md), [R63 history](docs/R63-RESULTS.md) and [build instructions](docs/BUILD.md). **50/50 modules (100%) have a reviewed narrow executable subset; 0/50 (0%) are fully specification-accepted.** No Class A, Excel evaluation, universal CSV safety or Word-rendering claim is made. Use disposable data.
 
 ---
 

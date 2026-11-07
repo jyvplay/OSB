@@ -107,7 +107,7 @@ object OfficeSheetRangeEdit {
      * numeric exponents must be consumed as whole tokens before looking for references.
      * OfficeSheetDraft.restore validates the complete translated candidate afterwards.
      */
-    private fun relocateFormula(formula: String, from: String, to: String): String {
+    internal fun relocateFormula(formula: String, from: String, to: String): String {
         val dc = to[0] - from[0]
         val dr = to.substring(1).toInt() - from.substring(1).toInt()
         if (dc == 0 && dr == 0) return formula

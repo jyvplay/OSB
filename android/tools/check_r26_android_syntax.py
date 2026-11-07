@@ -78,6 +78,7 @@ FILES = [
     'feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt',  # R54: allowlisted office copy MIME types
     'app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt',  # R54: frozen output-only office copies
     'app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt',  # R57: authored device/provider/UI tests
+    'app/src/androidTest/java/dev/fusion/shell/CopyContractDeviceTest.kt',  # R64: CSV MIME is additive
     'app/src/androidTest/java/dev/fusion/shell/NativeCaptureNames.kt',  # R58: dialog filename allowlist
     'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt',  # R57: actual dialog display capture
     'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt',  # R57: positive and negative text-fit controls

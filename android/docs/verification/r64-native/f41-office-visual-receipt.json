@@ -1,0 +1,120 @@
+{
+  "candidate": "f41f473f364cbe69a76b77f842fa4738daed3571",
+  "run": 42154361340,
+  "whole_conclusion": "success",
+  "scope": "Actual prior-feature API34 device UI only; not new R64 Office-feature or physical/large-font/AX acceptance.",
+  "images": {
+    "f41-r63-sheet-formula.png": {
+      "source_name": "r63-sheet-formula.png",
+      "sha256": "67b5b6a184a83807a89ae37771688fb25d23745f07ec6942007e3b16b6fbafba",
+      "width": 360,
+      "height": 800,
+      "measurements": {
+        "schema": 1,
+        "origin": "android-instrumentation",
+        "api": 34,
+        "density": 2.625,
+        "font_scale": 1,
+        "required_targets": [
+          {
+            "tag": "sheet-range-apply",
+            "width_dp": 98.28572,
+            "height_dp": 48,
+            "visible_width_dp": 98.28571,
+            "visible_height_dp": 48
+          },
+          {
+            "tag": "sheet-range-cancel",
+            "width_dp": 67.428566,
+            "height_dp": 48,
+            "visible_width_dp": 67.42857,
+            "visible_height_dp": 48
+          }
+        ],
+        "native_image_width": 1080,
+        "native_image_height": 2400,
+        "preview_width": 360,
+        "preview_height": 800,
+        "preview_filter": "bilinear downsample; whole-display original retained",
+        "capture_api": "UiDevice.takeScreenshot whole display, disposable AVD only; includes the separate dialog window"
+      }
+    },
+    "f41-r63-writer-restart.png": {
+      "source_name": "r63-writer-restart.png",
+      "sha256": "a88a463165ce1c2a6963168c6d827a50e3e862ffd03d7ad561f7a7dcedd12df9",
+      "width": 360,
+      "height": 800,
+      "measurements": {
+        "schema": 1,
+        "origin": "android-instrumentation",
+        "api": 34,
+        "density": 2.625,
+        "font_scale": 1,
+        "required_targets": [
+          {
+            "tag": "writer-structured-confirm",
+            "width_dp": 144.7619,
+            "height_dp": 48,
+            "visible_width_dp": 144.7619,
+            "visible_height_dp": 48
+          },
+          {
+            "tag": "writer-structured-cancel",
+            "width_dp": 67.42857,
+            "height_dp": 48,
+            "visible_width_dp": 67.42857,
+            "visible_height_dp": 48
+          },
+          {
+            "tag": "writer-number-restart-option",
+            "width_dp": 272,
+            "height_dp": 100.95239,
+            "visible_width_dp": 272,
+            "visible_height_dp": 100.95238
+          }
+        ],
+        "native_image_width": 1080,
+        "native_image_height": 2400,
+        "preview_width": 360,
+        "preview_height": 800,
+        "preview_filter": "bilinear downsample; whole-display original retained",
+        "capture_api": "UiDevice.takeScreenshot whole display, disposable AVD only; includes the separate dialog window"
+      }
+    },
+    "f41-r62-sheet-range.png": {
+      "source_name": "r62-sheet-range.png",
+      "sha256": "3cc5aa00ec00829e5605fb4df60b46384660538fbd4215ab92f6dfc2f4589669",
+      "width": 360,
+      "height": 800,
+      "measurements": {
+        "schema": 1,
+        "origin": "android-instrumentation",
+        "api": 34,
+        "density": 2.625,
+        "font_scale": 1,
+        "required_targets": [
+          {
+            "tag": "sheet-range-apply",
+            "width_dp": 98.28572,
+            "height_dp": 48,
+            "visible_width_dp": 98.28571,
+            "visible_height_dp": 48
+          },
+          {
+            "tag": "sheet-range-cancel",
+            "width_dp": 67.428566,
+            "height_dp": 48,
+            "visible_width_dp": 67.42857,
+            "visible_height_dp": 48
+          }
+        ],
+        "native_image_width": 1080,
+        "native_image_height": 2400,
+        "preview_width": 360,
+        "preview_height": 800,
+        "preview_filter": "bilinear downsample; whole-display original retained",
+        "capture_api": "UiDevice.takeScreenshot whole display, disposable AVD only; includes the separate dialog window"
+      }
+    }
+  }
+}

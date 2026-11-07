@@ -53,7 +53,7 @@ class R63IntegrationContracts(unittest.TestCase):
 
     def test_current_status_retains_historical_traceability_labels(self):
         status = read('STATUS.md')
-        self.assertTrue(status.startswith('# Current R63'))
+        self.assertTrue(status.startswith('# Current R64'))
         self.assertIn('legacy headings are historical', status)
         self.assertIn('# Latest R53', status)
         self.assertIn('# Latest R52', status)

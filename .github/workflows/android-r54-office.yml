@@ -34,7 +34,7 @@ jobs:
       - name: Install and check Android platform and managed-emulator components
         run: bash tools/install_r54_sdk.sh
       - name: Compile Android and run actual JVM contracts
-        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts :testing:r58Contracts :testing:r59Contracts :testing:r59WriterContracts :testing:r60WriterContracts :testing:r60SheetContracts :testing:r61SheetContracts :testing:r62RangeContracts :testing:r62WriterContracts :testing:r63FormulaFillContracts :testing:r63WriterRestartContracts
+        run: bash tools/run_gradle_ci.sh assemble :app:assembleProDebug :app:assembleProDebugAndroidTest :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts :testing:r57Contracts :testing:r58Contracts :testing:r59Contracts :testing:r59WriterContracts :testing:r60WriterContracts :testing:r60SheetContracts :testing:r61SheetContracts :testing:r62RangeContracts :testing:r62WriterContracts :testing:r63FormulaFillContracts :testing:r63WriterRestartContracts :testing:r64SheetCopyContracts :testing:r64WriterTableContracts :testing:r64SheetCsvContracts
       - name: Independent document readers and formula comparison (host-only, not bundled)
         run: |
           python3 -m pip install --user openpyxl==3.1.5 python-docx==1.2.0 formualizer==0.13.0
@@ -52,7 +52,11 @@ jobs:
           python3 tools/check_r62_writer_reference.py
           python3 tools/check_r63_formula_reference.py
           python3 tools/check_r63_writer_reference.py
-          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference test_r59_reference test_r59_writer_reference test_r60_writer_reference test_r60_sheet_reference test_r61_sheet_reference test_r62_range_reference test_r62_writer_reference test_r63_formula_reference test_r63_writer_reference -v
+          python3 tools/check_r64_sheet_copy_reference.py
+          python3 tools/check_r64_formula_caches.py
+          python3 tools/check_r64_writer_reference.py
+          python3 tools/check_r64_csv_reference.py
+          PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference test_r59_reference test_r59_writer_reference test_r60_writer_reference test_r60_sheet_reference test_r61_sheet_reference test_r62_range_reference test_r62_writer_reference test_r63_formula_reference test_r63_writer_reference test_r64_sheet_reference test_r64_formula_caches test_r64_writer_reference test_r64_csv_reference test_r64_office_case_gate test_r64_runners test_r64_integration_contracts -v
       - name: Enable KVM for the disposable managed emulator
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -67,6 +71,9 @@ jobs:
       - name: Publish actual device cases
         if: always()
         run: python3 tools/report_device_results.py --mode cases
+      - name: Require all 37 named Office cases without duplicate or skip
+        if: always()
+        run: python3 tools/r64_office_case_gate.py
       - name: Publish bounded device failure details
         if: always()
         run: python3 tools/report_device_results.py --mode failures
@@ -98,6 +105,9 @@ jobs:
             android/testing/build/r62writer/artifacts/**
             android/testing/build/r63sheet/artifacts/**
             android/testing/build/r63writer/artifacts/**
+            android/testing/build/r64sheet/artifacts/**
+            android/testing/build/r64writer/artifacts/**
+            android/testing/build/r64csv/artifacts/**
       - name: Upload evaluation APK
         if: success()
         uses: actions/upload-artifact@v4
@@ -113,7 +123,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png, r58-text-grid.png, r58-service-review.png, r59-typed-grid.png, r60-writer-numbered.png, r60-sheet-transpose.png, r61-sheet-protection.png, r62-writer-strike.png, r62-sheet-range.png, r63-sheet-formula.png, r63-writer-restart.png]
+        image: [r24c-sheet.png, r24c-writer.png, r24c-round.png, r24c-structured.png, r58-text-grid.png, r58-service-review.png, r59-typed-grid.png, r60-writer-numbered.png, r60-sheet-transpose.png, r61-sheet-protection.png, r62-writer-strike.png, r62-sheet-range.png, r63-sheet-formula.png, r63-writer-restart.png, r64-sheet-copy.png, r64-sheet-csv.png, r64-writer-table.png]
     defaults:
       run:
         working-directory: android
