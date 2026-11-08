@@ -85,15 +85,18 @@ object LiteralXlsxImport {
         val ws=xml.getValue("xl/worksheets/sheet1.xml");require(ws.isName("worksheet"));ws.childrenOnly("sheetPr","dimension","sheetViews","sheetFormatPr","sheetData","pageMargins")
         require(ws.children.map {it.name}.distinct().size==ws.children.size)
         ws.children.filter {it.isName("sheetPr")}.forEach {it.childrenOnly("outlinePr","pageSetUpPr","tabColor")}
-        val data=ws.one("sheetData");data.childrenOnly("row");val cells=LinkedHashMap<Pair<Int,Int>,String>();var previousRow=0;var height=0;var width=0
+        // Coordinates are strictly increasing and bounded below, so a fixed direct-address table
+        // avoids allocating a Pair and map entry for each of up to 8,192 cells. Null means a gap;
+        // an explicitly empty cell is still recorded and extends the output rectangle.
+        val data=ws.one("sheetData");data.childrenOnly("row");val cells=arrayOfNulls<String>(CsvTable.MAX_ROWS*CsvTable.MAX_COLUMNS);var previousRow=0;var height=0;var width=0
         for(row in data.children) {
             row.attrs("r","spans");row.childrenOnly("c")
-            val raw=requireNotNull(row.attr("r"));require(raw.matches(rowIndex));val r=raw.toInt();require(r in previousRow+1..256);previousRow=r
+            val raw=requireNotNull(row.attr("r"));require(raw.matches(rowIndex));val r=raw.toInt();require(r in previousRow+1..CsvTable.MAX_ROWS);previousRow=r
             var previousColumn=0
             for(c in row.children) {
                 c.attrs("r","s","t");c.childrenOnly("v","is");require(c.attr("s")==null || c.attr("s")=="0")
                 val coordinate=cellCoordinate.matchEntire(requireNotNull(c.attr("r"))) ?: error("Cell reference refused")
-                require(coordinate.groupValues[2].toInt()==r);val col=coordinate.groupValues[1].fold(0) {v,ch->v*26+ch.code-'A'.code+1};require(col in previousColumn+1..32);previousColumn=col
+                require(coordinate.groupValues[2].toInt()==r);val col=coordinate.groupValues[1].fold(0) {v,ch->v*26+ch.code-'A'.code+1};require(col in previousColumn+1..CsvTable.MAX_COLUMNS);previousColumn=col
                 val kind=c.attr("t") ?: "n"
                 val value=if(kind=="inlineStr") {
                     require(c.children.size<=1 && c.children.all {it.isName("is")});c.children.singleOrNull()?.let(::string) ?: ""
@@ -108,10 +111,10 @@ object LiteralXlsxImport {
                         }
                     }
                 }
-                cells[r to col]=value;height=maxOf(height,r);width=maxOf(width,col)
+                cells[(r-1)*CsvTable.MAX_COLUMNS+col-1]=value;height=maxOf(height,r);width=maxOf(width,col)
             }
         }
-        return CsvTable.of(List(height) {r->List(width) {c->cells[(r+1) to (c+1)] ?: ""}})
+        return CsvTable.of(List(height) {r->List(width) {c->cells[r*CsvTable.MAX_COLUMNS+c] ?: ""}})
     }
 }
 /** Frozen request and data-only reply validation. Correlation does NOT authenticate child computation. */

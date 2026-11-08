@@ -24,8 +24,18 @@ def annotation(path, phase="Assembly"):
         if line.startswith(('e: ', 'error: ', '* What went wrong:', 'Execution failed for task')) or line.endswith(' FAILED'):
             errors.extend(lines[index:index+4] if line.endswith(' FAILED') else [line])
     # Reserve room for failure context even if compiler lines fill their budget.
+    # A managed-device run can fail at the UTP/controller layer after all *named*
+    # JUnit records passed; surface actual exception lines without deciding the cause.
     clip = lambda value, size: value.encode('utf-8')[:size].decode('utf-8', 'ignore')
-    excerpt = clip('\n'.join(errors), 1200) + '\nBuild tail (not a root-cause diagnosis):\n' + '\n'.join(lines[-35:]).encode('utf-8')[-1500:].decode('utf-8', 'ignore')
+    clues = []
+    if phase == 'device':
+        needles = ('Exception', 'Caused by:', 'FATAL', 'device disconnected', 'Device disconnected', 'Test execution failed')
+        for line in lines:
+            if any(needle in line for needle in needles) and line not in clues:
+                clues.append(line)
+                if len(clues) >= 12: break
+    detail = '\nObserved device/error lines (not a diagnosis):\n' + clip('\n'.join(clues), 600) if clues else ''
+    excerpt = clip('\n'.join(errors), 1000) + detail + '\nBuild tail (not a root-cause diagnosis):\n' + '\n'.join(lines[-35:]).encode('utf-8')[-1250:].decode('utf-8', 'ignore')
     value = clip(f'{phase[:80]} failed. Full output is in {Path(path).name[:120]}.\n' + excerpt, LIMIT)
     # Workflow command escaping: untrusted compiler paths/messages cannot create another command.
     return '::error::' + value.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')

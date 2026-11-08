@@ -1,3 +1,138 @@
+# R64 — bounded copy, table and values-only export candidates
+
+Open `OSB/android/` in Android Studio Rabbit 1 with JDK 17 and SDK `platforms;android-37.0`, then use `./gradlew :app:assembleProDebug`. The R64 feature candidate has not yet been built or run on Android; check its exact CI revision before depending on these controls. Use disposable data.
+
+- **Spreadsheet range copy:** apply your source cells, select the top-left destination, choose **Copy range…**, specify the source (for example `A1:B2`) and review counts. Existing destinations are protected by default. The separate missing-cell option preserves rather than clears those destinations. Overlap uses the original snapshot; relative formula references move, and cycles/out-of-grid references refuse the whole transaction. Apply is one local undo step, not an external save.
+- **Writer table:** in Editor choose **Export DOCX copy… → Format simple text markers instead…**, then opt into strict pipe tables. Each contiguous group must have outer pipes, a rectangular header, an all-hyphen `---` separator, and at least one body row. Cell-edge spaces/tabs are trimmed; cell markers remain text. Escaped pipes and malformed groups stay literal. More than 64 columns or 256 header/body cells refuses export. The option resets off; Word/LibreOffice rendering is not verified.
+- **CSV values:** choose **Export CSV values…**, review data loss and choose a new file. Formulas become local calculated values; types, formatting and formulas are lost. Common leading formula-like text is refused, not modified. Quotation and this refusal policy cannot guarantee safety across spreadsheet applications or after save/reopen. Export uses the existing frozen-copy, known-source refusal and byte-readback protocol, not an atomic provider transaction.
+
+Host-only reproduction from `android/` (the reference tools are not bundled in the APK):
+
+```sh
+host_env="$(python3 tools/bootstrap_host_tools.py env)"
+eval "$host_env"
+python3 -m pip install --target "$HOME/.cache/fusion-r64-readers" python-docx==1.2.0 formualizer==0.13.0
+export PYTHONPATH="tools:$HOME/.cache/fusion-r64-readers:${PYTHONPATH:-}"
+python3 tools/run_r64_sheet_copy.py
+python3 tools/check_r64_sheet_copy_reference.py
+python3 tools/check_r64_formula_caches.py
+python3 tools/run_r64_writer_tables.py
+python3 tools/check_r64_writer_reference.py
+python3 tools/run_r63_writer_restart.py  # produce the current legacy corpus for comparison
+python3 tools/run_r64_writer_baseline.py
+python3 tools/run_r64_sheet_csv.py
+python3 tools/check_r64_csv_reference.py
+python3 -m unittest test_r64_sheet_reference test_r64_formula_caches test_r64_writer_reference test_r64_csv_reference test_r64_office_case_gate test_r64_runners test_r64_integration_contracts -v
+```
+
+Corresponding JVM tasks are `:testing:r64SheetCopyContracts`, `:testing:r64WriterTableContracts`, and `:testing:r64SheetCsvContracts`. The four new device methods require an explicitly disposable API34 emulator. Their exact-name and actual-frame gates are separate from the host tests; neither a source file nor a syntax-only parse is an Android pass. See [R64 results](R64-RESULTS.md) for the four independent reversed-range reference refusals and current CI state.
+
+---
+
+# R63 — try the new bounded Office options
+
+Open **`OSB/android/`** in Android Studio Rabbit 1 with a maintained JDK 17 and SDK `platforms;android-37.0`, build-tools `36.0.0`. From that directory `./gradlew :app:assembleProDebug` builds the debug flavor and `./gradlew :app:installProDebug` installs it on an attached device/emulator. This sandbox has not run Studio locally; consult [R63 results](R63-RESULTS.md) for exact CI evidence and use disposable data.
+
+For formula fill, enable the Spreadsheet experiment, select a populated cell of type **Formula**, apply it, then choose **Fill formula…**, enter an A1-style rectangle and review before applying. Relative row/column references follow the destination; `$` fixes its corresponding dimension. Protection is on by default. A translated reference outside A1:Z100, an existing-cell conflict, a cycle or any draft budget violation refuses the entire fill. It does not produce Excel `#REF!`, support external sheets or styles, or establish Excel recalculation parity. Undo/redo and export remain separate operations.
+
+For Writer, open **Editor → Export DOCX copy… → Format simple text markers instead…**. Enable numbered lines, then optionally enable **Request each separate group ... restart at 1**. It is disabled until numbering is enabled and resets off on a new review. A non-numbered line separates groups; only exact `1. ` prefixes qualify. The exported DOCX requests restart via new list instances and start overrides; actual Word/LibreOffice rendering is unverified. Previous default exports remain unchanged.
+
+Host-only checks from `android/`:
+
+```sh
+set -e
+python3 tools/bootstrap_host_tools.py install
+host_env="$(python3 tools/bootstrap_host_tools.py env)"
+eval "$host_env"
+python3 -m pip install --target "$HOME/.cache/fusion-r63-readers" python-docx==1.2.0
+export PYTHONPATH="tools:$HOME/.cache/fusion-r63-readers:$PYTHONPATH"
+python3 tools/run_r63_formula_fill.py
+python3 tools/check_r63_formula_reference.py
+python3 tools/run_r63_writer_restart.py
+python3 tools/check_r63_writer_reference.py
+python3 -m unittest test_r63_formula_reference test_r63_writer_reference -v
+```
+
+The corresponding Studio/CI tasks are `:testing:r63FormulaFillContracts` and `:testing:r63WriterRestartContracts`. Host checks are not Android execution or a full Office acceptance test.
+
+---
+
+# R62 — prior bounded Writer and spreadsheet checks
+
+Use the Android Studio/JDK/SDK instructions immediately below. For the extra Writer option, open **Editor → Export DOCX copy… → Format simple text markers instead…**, then scroll to the default-off numbered-line checkbox. It recognizes exactly `1. ` followed by at least one character, not arbitrary numbers or indented lists. All matched paragraphs share one DOCX list instance; separated groups may continue rather than restart. Plain export and the default formatted export keep numbered prefixes literal. The current draft and revision are rechecked when confirming; if changed, review again. See [R60](R60-RESULTS.md) for actual outcomes and gaps, not a full rich-editor or Office compatibility claim.
+
+Host-only reproduction (the tool cache is not bundled in the APK):
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+# POSIX shell; Java in this cache is an old disposable host JRE, not a Studio JDK.
+eval "$(python3 tools/bootstrap_host_tools.py env)"
+python3 -m pip install --target "$HOME/.cache/fusion-r60-readers" python-docx==1.2.0
+export PYTHONPATH="tools:$HOME/.cache/fusion-r60-readers:$PYTHONPATH"
+python3 tools/run_r60_writer.py
+python3 tools/check_r60_writer_reference.py
+python3 -m unittest test_r60_writer_reference -v
+python3 tools/run_r22_contracts.py
+# The comparison reads the pinned prior OSB revision from local Git history.
+python3 tools/run_r60_xlsx_differential.py
+python3 tools/run_r22_interop.py
+```
+
+For spreadsheet transposition, open **Spreadsheet → Paste text grid…** and select **Swap rows and columns**. The option is off on each new review. Parsing and source limits apply before the swap; the swapped rectangle must also fit A1–Z100. Quoted-number classification and blank clearing are preserved. Review the impact before the single undoable apply. Run `python3 tools/run_r60_sheet.py`, `python3 tools/check_r60_sheet_reference.py` and `python3 -m unittest test_r60_sheet_reference -v` for host checks.
+
+Text-grid review also offers separate default-off **Keep cells where the input is blank** and **Refuse changes to existing cells** options. Quoted and unquoted empty fields are skipped only when selected; whitespace is text. Protection refuses the entire operation if an existing cell's value or type would change, including clearing; identical cells and new cells are allowed. These controls reset on reopening and do not relax bounds or import formulas. For host checks run `python3 tools/run_r61_sheet.py`, `python3 tools/check_r61_sheet_reference.py` and `python3 -m unittest test_r61_sheet_reference -v`.
+
+R62's separate default-off **~~text~~ strikethrough** option is in the formatted Writer review. Only simple nonnested double tildes with non-whitespace ends are converted; malformed, escaped, nested and triple markers stay literal for the entire line. On reopening the option resets to off. In Spreadsheet, **Clear range…** reviews an A1-style rectangle; **Fill literal…** copies the selected applied text, number or Boolean with its type into the rectangle. Formulas and empty sources are refused, protection is on by default and can be explicitly turned off, overwrites/formulas removed are counted, and cancel/no-op do not create an undo step. Both are limited to 256 positions, A1:Z100 and the sheet's existing cell/text budgets; they are not Excel formula fill or style operations. Host checks: `python3 tools/run_r62_writer.py`, `python3 tools/check_r62_writer_reference.py`, `python3 tools/run_r62_range.py`, `python3 tools/check_r62_range_reference.py`, and their corresponding `test_r62_*_reference` suites. See [R62](R62-RESULTS.md) for actual revision-specific results.
+
+The corresponding Studio/CI JVM tasks are `./gradlew :testing:r60WriterContracts :testing:r60SheetContracts :testing:r61SheetContracts :testing:r62WriterContracts :testing:r62RangeContracts`; the real API34 tests are in `R54OfficeDeviceTest` and `R59SheetDeviceTest` and require explicit disposable-emulator consent. Host timing is not Android performance or Office rendering evidence. [R59](R59-RESULTS.md) retains earlier failures and repeat gates.
+
+---
+
+# R54 — Android Studio and bounded Office evaluation
+
+Open **`OSB/android/`**, not the legacy root web project, in Android Studio Rabbit 1. Use a maintained full JDK 17, install SDK `platforms;android-37.0` and build-tools `36.0.0`, and let the pinned Gradle wrapper resolve the project. From `android/`, the intended debug build is:
+
+```sh
+./gradlew :app:assembleProDebug
+# With a disposable API 34+ emulator/device connected:
+./gradlew :app:installProDebug
+```
+
+The new Android code has **not been built or run locally in the current sandbox**. Check the exact CI result for this revision before treating these commands as a verified build. It is an experimental debug app, not an accepted release. In the app, open **Editor** → New → type text → **Export DOCX copy…**. The default export keeps markers literal. The disclosure also offers an explicitly optional **Format simple text markers instead…** path: limited headings, bullets, quotes, bold, italic and monospace are converted as described in the next confirmation; ambiguous inline markers stay literal. This is not a rich editor or full Markdown. Or open **Spreadsheet** → explicitly enable the experiment → select a cell, choose its type, enter a value/formula, **Apply cell**, then **Export XLSX copy…**. **Paste text grid…** lets you enter or paste a bounded tab-delimited rectangle, review its exact impact and apply it as one undo step; empty fields clear cells and, by default, nonempty fields stay text. A separate opt-in interprets only restricted round-trip decimals; pasted `=...` never becomes a formula. It supports only the documented quoted-field grammar and does not import formatting or formulas. Android execution of this new flow must be checked in [R58](R58-RESULTS.md). Exports go to newly chosen files, not the original; use disposable data. The spreadsheet has one bounded sheet, limited formulas, no Office import/styles/charts, process-local unapplied input/undo, and unverified provider guarantees.
+
+SDK-free host checks (they do not run Android):
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r54_contracts.py
+# Install openpyxl==3.1.5 and python-docx==1.2.0 in a host Python environment for the independent-reader checks.
+python3 tools/check_r54_reference.py --require-office-libraries
+python3 tools/run_r55_contracts.py
+# Also install formualizer==0.13.0 on the host for the independent formula comparison.
+python3 tools/check_r55_reference.py --require-reference
+python3 tools/run_r56_contracts.py
+python3 tools/check_r56_reference.py --require-reference
+python3 tools/run_r57_contracts.py
+# Install python-docx==1.2.0 separately for this host-only reader.
+python3 tools/check_r57_reference.py
+PYTHONPATH=tools python3 -m unittest test_r57_reference -v
+python3 tools/check_project.py
+python3 -m unittest discover -s tools -p 'test_*.py'
+```
+
+For the authored destructive-reset instrumentation tests, use **only a disposable API 34 managed emulator** and explicitly opt in:
+
+```sh
+./gradlew :app:pixel6Api34ProDebugAndroidTest \
+  -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true \
+  -Pandroid.testInstrumentationRunnerArguments.class=dev.fusion.shell.R54OfficeDeviceTest,dev.fusion.shell.CopyContractDeviceTest \
+  -Pandroid.experimental.enableAdditionalTestOutput=true
+```
+
+The test includes a real DocumentsUI writer flow plus separate MediaStore tests with injected callbacks. Source/configuration alone is not a pass: [run 41006261319](https://github.com/jyvplay/OSB/actions/runs/41006261319) passed 11 targeted cases on `f85ae06`, and its two native frames were inspected. Later changes need their own run. [R54 outcomes and open gates](R54-RESULTS.md) · [R55 continuation and visual evidence](R55-RESULTS.md) · [R56 rounding and device continuation](R56-RESULTS.md) · [R57 Writer and device continuation](R57-RESULTS.md). Older instructions below are historical.
+
+---
+
 # R53 — Recall 6-Method Browser Media Studio (`WebRTC RTP` + `ISO 28500 WARC/1.1`) + 7-OS Cascading Context Menus / 5-DPI Crisp List·Grid·Columns Logos / Interactive Undo Fan + 96 new executed kernels (+7 UI + 19 touched) across 50/50 modules (100%); 42 contiguous R13–R53 CI tasks + live `:8765` workbench
 
 Current work branch **`arena/64550eba-osb`** (`2026-10-29`). Open **`OSB/android`** in Android Studio Rabbit 1 (JDK 17 + `platforms;android-37`), or run the complete host CLI & live HTTP browser workbench without Android Studio below.

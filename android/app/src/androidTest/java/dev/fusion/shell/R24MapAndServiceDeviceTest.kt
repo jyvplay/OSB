@@ -77,14 +77,48 @@ class R24MapAndServiceDeviceTest {
     }
     @Test fun providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback() {
         open("media"); click("media-tab-services")
-        compose.onNodeWithTag("service-url").performScrollTo().performTextInput("https://youtu.be/abcdefghijk?si=private-marker")
+        compose.onNodeWithTag("service-url").performScrollTo().performClick().performTextInput("https://youtu.be/abcdefghijk?si=private-marker")
+        // The actual IME is part of this case, not an inferred or mocked precondition.
+        compose.waitUntil(10_000) {
+            var visible = false
+            compose.activityRule.scenario.onActivity { visible = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == true }
+            visible
+        }
         click("service-preview")
+        compose.waitUntil(10_000) {
+            var hidden = false
+            compose.activityRule.scenario.onActivity { hidden = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == false }
+            hidden
+        }
         compose.onNodeWithText("Open YouTube externally?").assertIsDisplayed()
         compose.onNodeWithText("https://www.youtube.com/watch?v=abcdefghijk").assertExists()
-        compose.onNodeWithTag("service-confirm-open").assertExists()
+        compose.onNodeWithTag("service-confirm-open").assertIsDisplayed()
+        compose.onNodeWithTag("service-cancel").assertIsDisplayed()
+        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-service-review", "service-confirm-open", listOf("service-cancel"))
         click("service-cancel")
+        compose.onNodeWithTag("service-status").assertTextContains("Link validated locally", substring = true)
         compose.onNodeWithTag("service-url").performScrollTo().performTextReplacement("https://youtube.com.evil.test/watch?v=abcdefghijk")
+        // Editing must invalidate the prior successful status before the new one-shot review.
+        compose.onNodeWithTag("service-status").assertTextContains("Link changed; review again.", substring = true)
+        compose.onAllNodesWithTag("service-confirm-open").assertCountEquals(0)
         click("service-preview")
+        compose.onNodeWithTag("service-status").assertTextContains("Link refused", substring = true)
+        compose.onAllNodesWithTag("service-confirm-open").assertCountEquals(0)
+    }
+
+    @Test fun serviceReviewRejectsOversizeTextAndKeepsStatusForIdenticalText() {
+        open("media"); click("media-tab-services")
+        val limit = "x".repeat(2048)
+        compose.onNodeWithTag("service-url").performScrollTo().performTextReplacement(limit)
+        compose.onNodeWithTag("service-status").assertTextContains("Link changed; review again.", substring = true)
+        click("service-preview")
+        compose.onNodeWithTag("service-status").assertTextContains("Link refused", substring = true)
+        // Identical UTF-16 text must not invalidate the result for that same text.
+        compose.onNodeWithTag("service-url").performScrollTo().performTextReplacement(limit)
+        compose.onNodeWithTag("service-status").assertTextContains("Link refused", substring = true)
+        // The next UTF-16 unit is not admitted, so neither the text nor its status may change.
+        compose.onNodeWithTag("service-url").performTextReplacement(limit + "x")
+        compose.onNodeWithTag("service-url").assertTextContains(limit, substring = true)
         compose.onNodeWithTag("service-status").assertTextContains("Link refused", substring = true)
         compose.onAllNodesWithTag("service-confirm-open").assertCountEquals(0)
     }

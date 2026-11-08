@@ -41,7 +41,7 @@ class R25ToolTests(unittest.TestCase):
             self.assertEqual(collect(tmp)['summary']['observations'], 0)
 
     def test_exact_named_native_contract_and_bad_receipt_mutations(self):
-        self.assertEqual(len(expected('full')), 148)
+        self.assertEqual(len(expected('full')), 156)
         self.assertEqual(len(expected('web')), 1)
         self.assertEqual(len(expected('media')), 3)
         self.assertEqual(len(expected('png')), 3)
@@ -72,12 +72,70 @@ class R25ToolTests(unittest.TestCase):
         self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['png-copy']))
         with self.assertRaises(ValueError): capture.export(0, 'r25-png-copy.png')
 
+    def test_office_capture_group_covers_every_audit_in_the_actual_workflow(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['r57-office'],
+                         {'r24c-structured.png', 'r24c-sheet.png', 'r24c-writer.png', 'r24c-round.png'})
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r57-office']))
+        with self.assertRaises(ValueError): capture.export(0, 'r24c-structured.png')
+
     def test_png_source_owner_is_existing_image_module_not_denominator_inflation(self):
         import module_audit
         included = module_audit.included_modules()
         self.assertIn(':format:image', included)
         self.assertNotIn(':format:png', included)
         self.assertTrue((ROOT/'format/image/src/main/kotlin/dev/fusion/format/image/PngMetadata.kt').is_file())
+
+    def test_r58_capture_group_includes_all_office_workflow_audits(self):
+        import r24c_capture as capture
+        self.assertEqual(capture.FRAME_GROUPS['r58-office'], capture.FRAME_GROUPS['r57-office'] |
+                         {'r58-text-grid.png', 'r58-service-review.png'})
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r58-office']))
+
+    def test_r60_capture_group_and_office_workflow_include_both_new_frames(self):
+        import r24c_capture as capture
+        added = {'r60-writer-numbered.png', 'r60-sheet-transpose.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r60-office'], capture.FRAME_GROUPS['r59-office'] | added)
+        self.assertTrue(capture.NAMES.isdisjoint(capture.FRAME_GROUPS['r60-office']))
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
+            with self.assertRaises(ValueError):
+                capture.export(0, name)  # The unrelated legacy group cannot relabel these captures.
+
+    def test_r61_capture_group_contains_protection_frame(self):
+        import r24c_capture as capture
+        added = {'r61-sheet-protection.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r61-office'], capture.FRAME_GROUPS['r60-office'] | added)
+        self.assertIn(next(iter(added)), (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text())
+        with self.assertRaises(ValueError):
+            capture.export(0, next(iter(added)))
+
+    def test_r63_capture_group_adds_both_office_frames(self):
+        import r24c_capture as capture
+        added = {'r63-sheet-formula.png', 'r63-writer-restart.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r63-office'], capture.FRAME_GROUPS['r62-office'] | added)
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
+
+    def test_r64_capture_group_keeps_existing_and_adds_three_real_frames(self):
+        import r24c_capture as capture
+        added = {'r64-sheet-copy.png', 'r64-sheet-csv.png', 'r64-writer-table.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r64-office'], capture.FRAME_GROUPS['r63-office'] | added)
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
+            with self.assertRaises(ValueError): capture.export(0, name)
+
+    def test_r62_capture_group_preserves_all_previous_and_new_frames(self):
+        import r24c_capture as capture
+        added = {'r62-writer-strike.png', 'r62-sheet-range.png'}
+        self.assertEqual(capture.FRAME_GROUPS['r62-office'], capture.FRAME_GROUPS['r61-office'] | added)
+        workflow = (ROOT.parent / '.github/workflows/android-r54-office.yml').read_text()
+        for name in added:
+            self.assertIn(name, workflow)
+            with self.assertRaises(ValueError): capture.export(0, name)
 
     def test_original_encoded_video_fixture_matches_its_actual_generation_receipt(self):
         import hashlib

@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
@@ -71,33 +73,50 @@ fun MediaScreen(context: Context, onView: (Uri, String) -> Unit) {
 
 @Composable
 private fun ServiceLinksScreen(context: Context) {
-    var draft by remember { mutableStateOf("") }
-    var candidate by remember { mutableStateOf<ServiceLink?>(null) }
-    var status by remember { mutableStateOf("") }
-    candidate?.let { link ->
-        AlertDialog(onDismissRequest = { candidate = null }, title = { Text("Open ${link.service.title} externally?") }, text = {
+    var review by remember { mutableStateOf(ServiceLinkReview.initial()) }
+    val focus = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    review.candidate?.let { link ->
+        AlertDialog(onDismissRequest = { review = review.cancel(link) }, title = { Text("Open ${link.service.title} externally?") }, text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(link.url)
                 Text("This leaves Fusion for an installed app or browser. The service receives your connection and may associate accounts/device identifiers. Tracking parameters were removed, but the content ID remains. It is not anonymous.")
                 Text("Service content, subscriptions, advertisements, DRM, regional availability and terms still apply. This is an official-player handoff, NOT built-in or universally free streaming. No provider SDK or player is bundled.")
             }
         }, confirmButton = { TextButton(onClick = {
-            candidate = null
-            runCatching { context.startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, Uri.parse(link.url)), "Open official ${link.service.title} player")) }
-                .onSuccess { status = "Handoff requested. Fusion cannot verify external playback." }
-                .onFailure { status = "No compatible external player/browser available." }
-        }, modifier = Modifier.testTag("service-confirm-open")) { Text("Open external player") } },
-            dismissButton = { TextButton(onClick = { candidate = null }, modifier = Modifier.testTag("service-cancel")) { Text("Cancel") } })
+            // Consume the exact current review before handing off; old callbacks cannot be replayed.
+            val consumed = review.consume(link)
+            if (consumed == null) {
+                review = review.expired()
+            } else {
+                review = consumed
+                runCatching { context.startActivity(Intent.createChooser(Intent(Intent.ACTION_VIEW, Uri.parse(link.url)), "Open official ${link.service.title} player")) }
+                    .onSuccess { if (review === consumed) review = consumed.handoffResult(true) }
+                    .onFailure { if (review === consumed) review = consumed.handoffResult(false) }
+            }
+        }, modifier = Modifier.heightIn(min = 48.dp).testTag("service-confirm-open")) { Text("Open external player") } },
+            dismissButton = { TextButton(onClick = { review = review.cancel(link) }, modifier = Modifier.heightIn(min = 48.dp).testTag("service-cancel")) { Text("Cancel") } })
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("YouTube · Spotify · SoundCloud", style = MaterialTheme.typography.titleLarge)
         Text("Use a public video, track, album, playlist, episode or SoundCloud set link. Validation is offline; no connection occurs until you confirm the handoff.")
-        OutlinedTextField(draft, { if (it.length <= 2048) draft = it }, label = { Text("HTTPS content link") }, modifier = Modifier.fillMaxWidth().testTag("service-url"), maxLines = 4)
+        OutlinedTextField(review.draft, { next -> review = review.edit(next) }, label = { Text("HTTPS content link") }, modifier = Modifier.fillMaxWidth().testTag("service-url"), maxLines = 4)
         Button(onClick = {
-            try { candidate = ServiceLink.parse(draft.trim()); status = "Link validated locally." }
-            catch (e: Exception) { status = "Link refused: ${e.message?.take(160)}. No service contacted." }
+            val before = review
+            try {
+                val prepared = before.prepare()
+                if (prepared.candidate != null) {
+                    // Review has no input field. Keyboard dismissal remains best effort.
+                    focus.clearFocus()
+                    keyboard?.hide()
+                }
+                // Never resurrect a review if focus/IME delivery changed the draft synchronously.
+                if (review === before) review = prepared
+            } catch (e: Exception) {
+                if (review === before) review = before.refuse(e)
+            }
         }, modifier = Modifier.heightIn(min = 48.dp).testTag("service-preview")) { Text("Review link…") }
-        Text(status, Modifier.testTag("service-status"))
+        Text(review.status, Modifier.testTag("service-status"))
         Text("Full embedded service playback remains unaccepted. Spotify's streaming/commercial restrictions and YouTube client-identification requirements cannot honestly be called open-source, anonymous and free for every use case.", style = MaterialTheme.typography.bodySmall)
     }
 }

@@ -73,6 +73,32 @@ FILES = [
     'feature/media/src/main/java/dev/fusion/media/MediaLibraryMultiViewPanel.kt',  # R53: Media Hub List / Grid / Columns multi-view panel
     'feature/files/src/main/java/dev/fusion/filesui/FilesDualPaneInspectorBar.kt',  # R53: Dual-pane synced List/Grid/Columns + cascading context-menu bar
     'feature/vault/src/main/java/dev/fusion/vault/VaultColumnsSecretBrowser.kt',  # R53: Encrypted Vault List / Grid / Columns secret browser
+    'feature/calc/src/main/java/dev/fusion/calc/SheetScreen.kt',  # R54: bounded sheet authoring UI
+    'feature/calc/src/main/java/dev/fusion/calc/SheetViewModel.kt',  # R54: private draft/recalculation owner
+    'feature/editor/src/main/java/dev/fusion/editor/CopyDestinationActivity.kt',  # R54: allowlisted office copy MIME types
+    'app/src/main/java/dev/fusion/shell/OfficeExportViewModel.kt',  # R54: frozen output-only office copies
+    'app/src/androidTest/java/dev/fusion/shell/R54OfficeDeviceTest.kt',  # R57: authored device/provider/UI tests
+    'app/src/androidTest/java/dev/fusion/shell/CopyContractDeviceTest.kt',  # R64: CSV MIME is additive
+    'app/src/androidTest/java/dev/fusion/shell/NativeCaptureNames.kt',  # R58: dialog filename allowlist
+    'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidence.kt',  # R57: actual dialog display capture
+    'app/src/androidTest/java/dev/fusion/shell/NativeVisualEvidenceDeviceTest.kt',  # R57: positive and negative text-fit controls
+    'app/src/androidTest/java/dev/fusion/shell/R58SheetDeviceTest.kt',  # R58: actual grid, recovery and provider checks
+    'app/src/androidTest/java/dev/fusion/shell/R59SheetDeviceTest.kt',  # R59: opt-in typed grid and provider checks
+    'app/src/androidTest/java/dev/fusion/shell/SheetUiFailureEvidence.kt',  # R62: failure-only sheet state observation
+    'app/src/androidTest/java/dev/fusion/shell/ShellSmokeTest.kt',  # R58: one-shot local-plan diagnostic
+    'app/src/androidTest/java/dev/fusion/shell/R24MapAndServiceDeviceTest.kt',  # R58: actual IME and disclosure
+    'app/src/androidTest/java/dev/fusion/shell/R25PngCopyDeviceTest.kt',  # R57: real picker-return and root diagnostics
+    'app/src/androidTest/java/dev/fusion/shell/R25LocalVideoDeviceTest.kt',  # R61: failure-only frame-clock observations
+    'app/src/androidTest/java/dev/fusion/shell/R25WebCapabilityDeviceTest.kt',  # R62: read-only failure classification
+    'app/src/androidTest/java/dev/fusion/shell/PickerRootStability.kt',  # R59: pre-tap geometry gate
+    'privacy/src/androidTest/java/dev/fusion/privacy/PrivacyDeviceReady.kt',  # R62: failure-only window observation
+    'privacy/src/androidTest/java/dev/fusion/privacy/PrivacyWindowClassifier.kt',
+    'privacy/src/androidTest/java/dev/fusion/privacy/R23InputDefenseTest.kt',  # R59: failure-only privacy diagnostic
+    'privacy/src/androidTest/java/dev/fusion/privacy/PrivacySignalTrace.kt',  # R61: distinct bounded test-only traces
+    'privacy/src/androidTest/java/dev/fusion/privacy/R24ScreenOffDeviceTest.kt',  # R61: failure-only wake diagnostics
+    'app/src/androidTest/java/dev/fusion/shell/DisposableEmulatorRule.kt',  # R57: fail-closed cleanup
+    'app/src/androidTest/java/dev/fusion/shell/SubtitleUiDeviceTest.kt',  # R57: zero/one-cue assertions
+    'app/src/androidTest/java/dev/fusion/shell/R22XlsxUiDeviceTest.kt',  # R56: actual picker-return diagnostic
 ]
 SYNTAX = re.compile(r'error: (expecting|syntax|mismatched input|unclosed|unresolved reference \S*$)')
 

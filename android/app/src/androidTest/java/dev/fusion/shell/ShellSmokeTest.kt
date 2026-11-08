@@ -2,6 +2,7 @@ package dev.fusion.shell
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -37,7 +38,46 @@ class ShellSmokeTest {
         compose.onNodeWithText("Enable for this session with test data").performScrollTo().performClick()
         compose.onNodeWithTag("routine-script").performScrollTo().performTextInput("open calculator")
         compose.onNodeWithTag("routine-run").performScrollTo().performClick()
-        compose.waitUntil(10000) { compose.onAllNodesWithTag("calculator-input").fetchSemanticsNodes().isNotEmpty() }
+        try {
+            compose.waitUntil(10000) { compose.onAllNodesWithTag("calculator-input").fetchSemanticsNodes().isNotEmpty() }
+        } catch (failure: Throwable) {
+            // Read-only diagnostics after the original timeout: no retries, extra actions or longer wait.
+            val routineStatus = runCatching {
+                compose.onAllNodesWithTag("routine-status", useUnmergedTree = true).fetchSemanticsNodes().map {
+                    it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.Text)?.joinToString { text -> text.text }
+                }
+            }.getOrElse { listOf("unavailable:${it.javaClass.simpleName}") }
+            val routineInput = runCatching {
+                compose.onAllNodesWithTag("routine-script", useUnmergedTree = true).fetchSemanticsNodes().map {
+                    it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.EditableText)?.text
+                }
+            }.getOrElse { listOf("unavailable:${it.javaClass.simpleName}") }
+            val runEnabled = runCatching {
+                compose.onAllNodesWithTag("routine-run").fetchSemanticsNodes().map { isEnabled().matches(it) }
+            }.getOrElse { listOf(false) }
+            val runBounds = runCatching {
+                val node = compose.onNodeWithTag("routine-run")
+                val clipped = node.fetchSemanticsNode().boundsInRoot
+                val full = node.getUnclippedBoundsInRoot()
+                "clippedPx=$clipped fullDp=$full density=${compose.density.density}"
+            }.getOrElse { "unavailable:${it.javaClass.simpleName}" }
+            var focusAndIme = "unavailable"
+            runCatching {
+                compose.activityRule.scenario.onActivity { activity ->
+                    val ime = activity.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime())
+                    focusAndIme = "activityFocused=${activity.hasWindowFocus()} imeVisible=$ime"
+                }
+            }
+            var desktopStatus = "unavailable"
+            runCatching {
+                compose.activityRule.scenario.onActivity { activity ->
+                    val model = androidx.lifecycle.ViewModelProvider(activity)[DesktopSessionModel::class.java]
+                    val desk = model.desktop
+                    desktopStatus = "loading=${model.loading} blocked=${model.blocked} status=${model.status} workspace=${desk.workspace} active=${desk.activeId} windows=${desk.windows.map { "${it.module}:${it.workspace}:${it.minimized}" }}"
+                }
+            }
+            throw AssertionError("Calculator missing after local plan; routine=$routineStatus input=$routineInput runEnabled=$runEnabled bounds=$runBounds $focusAndIme; desktop=$desktopStatus", failure)
+        }
         compose.onNodeWithTag("calculator-input").performScrollTo().assertIsDisplayed()
     }
     @Test fun densityReviewCancelAndApplyChangeActualDesktopState() {
@@ -322,10 +362,33 @@ class ShellSmokeTest {
     }
     @Test fun editorActionsRemainVisibleAfterLongInputAtTwoHundredPercentFont() = withTwoHundredPercentFont { withVisibleKeyboard {
         openModule("editor")
-        compose.waitUntil(10000) { compose.onAllNodes(hasText("New") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithText("New").performClick()
+        // Read the real accessibility node and perform one real tap per distinct New action.
+        // This avoids the observed Compose test-thread semantics read at performClick; it
+        // does not replay an action or establish a cause for other thread failures.
+        val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        val device = androidx.test.uiautomator.UiDevice.getInstance(instrumentation)
+        fun clickNewOnce() {
+            val selector = androidx.test.uiautomator.By.text("New")
+            org.junit.Assert.assertNotNull("Visible New action required", device.wait(androidx.test.uiautomator.Until.findObject(selector), 10_000))
+            val matches = device.findObjects(selector)
+            org.junit.Assert.assertEquals("Exactly one visible New action required", 1, matches.size)
+            val node = matches.single()
+            org.junit.Assert.assertTrue("New must be enabled and visible", node.isEnabled && !node.visibleBounds.isEmpty)
+            node.click()
+            instrumentation.waitForIdleSync()
+        }
+        clickNewOnce()
         compose.waitUntil(10000) { compose.onAllNodes(hasTestTag("editor-content") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithTag("editor-content").performScrollTo().performClick().performTextInput((1..60).joinToString("\n") { "Long line $it" })
+        // Distinguish the failed semantics stage without retrying or moving the real actions.
+        fun stage(name:String, action:()->Unit) {
+            try { action() } catch (failure:IllegalArgumentException) {
+                throw IllegalArgumentException("Editor UI stage $name failed; no action retried: ${failure.message}",failure)
+            }
+        }
+        val editor=compose.onNodeWithTag("editor-content")
+        stage("scroll") { editor.performScrollTo() }
+        stage("click") { editor.performClick() }
+        stage("text input") { editor.performTextInput((1..60).joinToString("\n") { "Long line $it" }) }
         compose.waitUntil(10000) {
             var visible=false
             compose.activityRule.scenario.onActivity {
@@ -333,8 +396,7 @@ class ShellSmokeTest {
             }
             visible
         }
-        compose.waitUntil(10000) { runCatching { compose.onNodeWithText("New").assertIsDisplayed() }.isSuccess }
-        compose.onNodeWithText("New").assertIsDisplayed().performClick()
+        clickNewOnce()
         compose.waitUntil(10000) { compose.onAllNodesWithTag("editor-tab").fetchSemanticsNodes().size==2 }
         compose.onNodeWithText("New").assertIsDisplayed()
         compose.onNodeWithText("Untitled.txt • Unsaved").performScrollTo().performClick()

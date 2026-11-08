@@ -267,7 +267,7 @@ object SpillSheetEngine {
         for ((k, v) in env) if (k != "__TMP__") mini[k] = valueToLiteralInput(v)
         val probeCell = "ZZ999"
         mini[probeCell] = FormulaEval.CellInput.Formula("=" + arg)
-        return FormulaEval.evaluateSheet(mini).values[probeCell] ?: FormulaEval.CellValue.Empty
+        return FormulaEval.evaluateSheetForSubexpression(mini).values[probeCell] ?: FormulaEval.CellValue.Empty
     }
 
     private fun readRange2D(spec: String, env: Map<String, FormulaEval.CellValue>): List<List<FormulaEval.CellValue>> {

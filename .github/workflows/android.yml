@@ -27,8 +27,18 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Check source contracts and generated traceability
         run: |
-          python3 tools/check_project.py
-          PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_*.py' -v
+          if ! python3 tools/check_project.py > source-check.log 2>&1; then
+            cat source-check.log
+            python3 tools/ci_annotations.py source-check.log source-check
+            exit 1
+          fi
+          if ! PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_*.py' -v > source-python-tests.log 2>&1; then
+            cat source-python-tests.log
+            python3 tools/ci_annotations.py source-python-tests.log source-python-tests
+            exit 1
+          fi
+          cat source-check.log
+          tail -8 source-python-tests.log
       - name: Inspect runner SDK and install pinned platform
         run: |
           SDK_MANAGER="${ANDROID_HOME:?Runner did not expose ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
@@ -74,7 +84,7 @@ jobs:
           :cast:dlna:testDebugUnitTest :cast:airplay:test :cast:castv2:test
           :feature:beam:testDebugUnitTest :feature:together:testDebugUnitTest :testing:test
       - name: Production Kotlin pilot contracts
-        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts :testing:r24cContracts :testing:r25PngContracts :testing:r26Contracts :testing:r27Contracts :testing:r28Contracts :testing:r29Contracts :testing:r30Contracts :testing:r31Contracts :testing:r32Contracts :testing:r33Contracts :testing:r34Contracts :testing:r35Contracts :testing:r36Contracts :testing:r37Contracts :testing:r38Contracts :testing:r39Contracts :testing:r40Contracts :testing:r41Contracts :testing:r42Contracts :testing:r43Contracts :testing:r44Contracts :testing:r45Contracts :testing:r46Contracts :testing:r47Contracts :testing:r48Contracts :testing:r49Contracts :testing:r50Contracts :testing:r51Contracts :testing:r52Contracts :testing:r53Contracts
+        run: bash tools/run_gradle_ci.sh contracts :testing:pilotContracts :testing:calculatorContracts :testing:editorContracts :testing:copyContracts :testing:notesContracts :testing:searchAndGateContracts :testing:windowRestoreContracts :testing:encryptedIndexContracts :testing:encodingDiffContracts :testing:ooxmlGuardContracts :testing:browserSessionContracts :testing:noteLinkContracts :testing:noteTrashContracts :testing:noteDraftContracts :testing:subsetContracts :testing:r13Contracts :testing:r14Contracts :testing:r15Contracts :testing:r16Contracts :testing:r17Contracts :testing:r18Contracts :testing:r19Contracts :testing:r20Contracts :testing:r21Contracts :testing:r22Contracts :testing:r23Contracts :testing:r24Contracts :testing:r24cContracts :testing:r25PngContracts :testing:r26Contracts :testing:r27Contracts :testing:r28Contracts :testing:r29Contracts :testing:r30Contracts :testing:r31Contracts :testing:r32Contracts :testing:r33Contracts :testing:r34Contracts :testing:r35Contracts :testing:r36Contracts :testing:r37Contracts :testing:r38Contracts :testing:r39Contracts :testing:r40Contracts :testing:r41Contracts :testing:r42Contracts :testing:r43Contracts :testing:r44Contracts :testing:r45Contracts :testing:r46Contracts :testing:r47Contracts :testing:r48Contracts :testing:r49Contracts :testing:r50Contracts :testing:r51Contracts :testing:r52Contracts :testing:r53Contracts :testing:r54Contracts :testing:r55Contracts :testing:r56Contracts
       - name: Run cross-language Python differential reference oracles on Gradle contract artifacts
         run: |
           python3 tools/check_r48_reference.py
@@ -83,6 +93,9 @@ jobs:
           python3 tools/check_r51_reference.py
           python3 tools/check_r52_reference.py
           python3 tools/check_r53_reference.py
+          python3 tools/check_r54_reference.py
+          python3 tools/check_r55_reference.py
+          python3 tools/check_r56_reference.py
           PYTHONPATH=tools python3 -m unittest discover -s tools -p 'test_r*.py' -v
       - name: Lint both manifests and Android sources
         run: bash tools/run_gradle_ci.sh lint :app:lintProDebug :app:lintPlayDebug
@@ -102,6 +115,8 @@ jobs:
             android/sdk-probe.json
             android/installed-sdk37.json
             android/main-apk-footprint.json
+            android/source-check.log
+            android/source-python-tests.log
             android/assemble.log
             android/unit-tests.log
             android/contracts.log
@@ -129,6 +144,11 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
+      - name: Install the emulator's Linux host audio library
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libpulse0
+          ldconfig -p | grep -F 'libpulse.so.0'
       - name: Install and inspect actual SDK37.0 compilation platform (not runtime37)
         run: |
           SDK_MANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
@@ -150,6 +170,9 @@ jobs:
         run: python3 tools/check_focus_regression.py
       - name: Run pro managed-device tests
         run: bash tools/run_gradle_ci.sh device :app:pixel6Api34ProDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.fusionDisposable=true -Pandroid.testInstrumentationRunnerArguments.notClass=dev.fusion.shell.VisualCaptureTest -Pandroid.experimental.enableAdditionalTestOutput=true
+      - name: Failure-only host observations (not a root-cause diagnosis)
+        if: failure()
+        run: python3 tools/r61_emulator_observation.py
       - name: Actual UI preconditions (not current test acceptance)
         if: always()
         run: python3 tools/r25_ui_lab.py --require-observed

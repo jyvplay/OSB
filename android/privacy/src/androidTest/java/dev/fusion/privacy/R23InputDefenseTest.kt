@@ -70,25 +70,59 @@ class R23InputDefenseTest {
 
     @Test fun realTouchEntryHasNoInputConnectionAndHardwareKeysCannotMutateCode() {
         ActivityScenario.launch(TouchCodeActivity::class.java).use { s ->
-            focused(s); click("touch_key_7")
-            s.onActivity { a ->
-                val output = a.findViewById<TextView>(R.id.touch_code_output)
-                assertEquals("• (1/64)", output.text.toString())
-                assertNull(output.onCreateInputConnection(EditorInfo()))
-                assertFalse(output.onCheckIsTextEditor())
-                assertTrue(allViews(a.window.decorView).none { it is EditText })
-                assertFalse(a.window.decorView.rootWindowInsets.isVisible(WindowInsets.Type.ime()))
-                for (key in listOf(KeyEvent.KEYCODE_0, KeyEvent.KEYCODE_A, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_TAB, KeyEvent.KEYCODE_DEL)) {
-                    assertTrue(a.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, key)))
-                    assertTrue(a.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, key)))
+            focused(s)
+            lateinit var trace: PrivacySignalTrace
+            s.onActivity { trace = PrivacySignalTrace(it, "r63-privacy-touch-events.json") }
+            var primary: Throwable? = null
+            try {
+                trace.mark("before-digit")
+                click("touch_key_7")
+                s.onActivity { a ->
+                    val output = a.findViewById<TextView>(R.id.touch_code_output) ?: run {
+                        // Failure-only observation. Never restart the pad or repeat the digit action.
+                        val labels = allViews(a.window.decorView).filterIsInstance<TextView>()
+                            .map { it.text.toString().take(180) }.take(8)
+                        throw AssertionError("Touch pad absent after one digit tap; focus=${a.hasWindowFocus()} " +
+                            "lifecycle=${s.state} restartVisible=${a.findViewById<View>(R.id.restart_workspace) != null} labels=$labels")
+                    }
+                    assertEquals("• (1/64)", output.text.toString())
+                    assertNull(output.onCreateInputConnection(EditorInfo()))
+                    assertFalse(output.onCheckIsTextEditor())
+                    assertTrue(allViews(a.window.decorView).none { it is EditText })
+                    assertFalse(a.window.decorView.rootWindowInsets.isVisible(WindowInsets.Type.ime()))
+                    for (key in listOf(KeyEvent.KEYCODE_0, KeyEvent.KEYCODE_A, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_TAB, KeyEvent.KEYCODE_DEL)) {
+                        assertTrue(a.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, key)))
+                        assertTrue(a.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, key)))
+                    }
+                    assertTrue(a.dispatchKeyShortcutEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_V, 0, KeyEvent.META_CTRL_ON)))
+                    assertEquals("• (1/64)", output.text.toString())
+                    // Concrete boundary: trusted accessibility activation is intentionally NOT genuine-touch authentication.
+                    assertTrue(a.findViewById<Button>(R.id.touch_key_2).performAccessibilityAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK, null))
+                    assertEquals("•• (2/64)", output.text.toString())
                 }
-                assertTrue(a.dispatchKeyShortcutEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_V, 0, KeyEvent.META_CTRL_ON)))
-                assertEquals("• (1/64)", output.text.toString())
-                // Concrete boundary: trusted accessibility activation is intentionally NOT genuine-touch authentication.
-                assertTrue(a.findViewById<Button>(R.id.touch_key_2).performAccessibilityAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK, null))
-                assertEquals("•• (2/64)", output.text.toString())
+                trace.mark("before-reveal")
+                click("touch_reveal")
+                s.onActivity { a ->
+                    val output = a.findViewById<TextView>(R.id.touch_code_output) ?: throw AssertionError(
+                        "Touch pad absent after one reveal tap; focus=${a.hasWindowFocus()} lifecycle=${s.state} " +
+                            "restartVisible=${a.findViewById<View>(R.id.restart_workspace) != null}")
+                    assertEquals("72 (2/64)", output.text.toString())
+                }
+                trace.mark("reveal-observed")
+            } catch (failure: Throwable) {
+                if (failure is Error && failure !is AssertionError) { primary = failure; throw failure }
+                // Real callback categories only, no code, view text, rearm or repeated actions.
+                val reported = AssertionError("One-shot touch input failed; actualSignals=${trace.snapshot()}", failure)
+                primary = reported
+                throw reported
+            } finally {
+                try { s.onActivity { trace.close() } }
+                catch (closeFailure: Throwable) {
+                    val original = primary
+                    if (original == null) throw closeFailure
+                    if (closeFailure !== original) original.addSuppressed(closeFailure)
+                }
             }
-            click("touch_reveal"); s.onActivity { assertEquals("72 (2/64)", it.findViewById<TextView>(R.id.touch_code_output).text.toString()) }
         }
     }
 

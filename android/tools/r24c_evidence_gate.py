@@ -18,7 +18,8 @@ NEW_CASES = {
     'networkUrlIsNotTreatedAsAPlayableLocalDocument']
 } | {'dev.fusion.shell.R24MapAndServiceDeviceTest.' + name for name in [
     'realOfflineAtlasSavesPlacePansMeasuresAndReloadsWithoutLocationPermission',
-    'providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback']}
+    'providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback',
+    'serviceReviewRejectsOversizeTextAndKeepsStatusForIdenticalText']}
 PRIVACY_CASE = 'dev.fusion.privacy.R24InputChangeDeviceTest.actualImeConfigurationChangeDiscardsAndRequiresExplicitEmptyRestart'
 
 

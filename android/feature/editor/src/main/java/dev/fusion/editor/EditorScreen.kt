@@ -3,6 +3,7 @@ package dev.fusion.editor
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +28,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -44,6 +47,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
@@ -51,9 +55,62 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 /** PR-01 / FF-15 / FM-18. Real SAF I/O is owned by an Activity-scoped ViewModel. */
+@Composable
+fun EditorScreen(
+    model: EditorViewModel,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, onExportStructuredDocx, null, null, null, onSaveCopy)
+
+/** Extended entry point; the previous EditorScreen signature remains available unchanged. */
+@Composable
+fun EditorScreenWithStrike(
+    model: EditorViewModel,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocxWithStrike: ((dev.fusion.documents.TextDocument, Boolean, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, onExportStructuredDocxWithStrike, null, null, onSaveCopy)
+
+/** Extended opt-in list grouping; both earlier entry points remain available. */
+@Composable
+fun EditorScreenWithListRestart(
+    model: EditorViewModel,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocxWithListRestart: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, null, onExportStructuredDocxWithListRestart, null, onSaveCopy)
+
+/** Pipe-table conversion is separate and default-off; earlier entry points are unchanged. */
+@Composable
+fun EditorScreenWithPipeTables(
+    model: EditorViewModel,
+    officeExportStatus: String = "",
+    officeExportBusy: Boolean = false,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)? = null,
+    onExportStructuredDocxWithPipeTables: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean, Boolean) -> Unit)? = null,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) = EditorScreenContent(model, officeExportStatus, officeExportBusy, onExportDocx, null, null, null, onExportStructuredDocxWithPipeTables, onSaveCopy)
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit) {
+private fun EditorScreenContent(
+    model: EditorViewModel,
+    officeExportStatus: String,
+    officeExportBusy: Boolean,
+    onExportDocx: ((dev.fusion.documents.TextDocument) -> Unit)?,
+    onExportStructuredDocx: ((dev.fusion.documents.TextDocument, Boolean) -> Unit)?,
+    onExportStructuredDocxWithStrike: ((dev.fusion.documents.TextDocument, Boolean, Boolean) -> Unit)?,
+    onExportStructuredDocxWithListRestart: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean) -> Unit)?,
+    onExportStructuredDocxWithPipeTables: ((dev.fusion.documents.TextDocument, Boolean, Boolean, Boolean, Boolean) -> Unit)?,
+    onSaveCopy: (CopyPickerRequest) -> Unit,
+) {
     val state by model.state.collectAsStateWithLifecycle()
     val session = state.session
     val pendingCopy = session.pendingCopy
@@ -63,6 +120,13 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
     val editorFocus = remember { FocusRequester() }
     LaunchedEffect(toolsOpen,active?.id) { if(!toolsOpen && active != null) editorFocus.requestFocus() }
     var copyConfirmId by remember { mutableStateOf<String?>(null) }
+    var docxConfirmId by remember { mutableStateOf<String?>(null) }
+    var structuredDocxConsent by remember { mutableStateOf<dev.fusion.documents.WriterCopyConsent?>(null) }
+    var numberedLines by remember { mutableStateOf(false) }
+    var strikeSpans by remember { mutableStateOf(false) }
+    var restartOrderedGroups by remember { mutableStateOf(false) }
+    var pipeTables by remember { mutableStateOf(false) }
+    var docxNotice by remember { mutableStateOf("") }
     var retryConfirm by remember { mutableStateOf(false) }
     var retryConfirmId by remember { mutableStateOf<String?>(null) }
     var abandoningCopy by remember { mutableStateOf(false) }
@@ -83,7 +147,7 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
                 Key.Z -> { model.undo(redo=event.isShiftPressed); true }
                 Key.Y -> { model.undo(redo=true); true }
                 Key.F, Key.H, Key.G -> if(active != null) { toolsOpen=true; true } else false
-                Key.S -> if(active != null && pendingCopy==null) { copyConfirmId=active.id; true } else false
+                Key.S -> if(active != null && pendingCopy==null && !officeExportBusy) { copyConfirmId=active.id; true } else false
                 Key.O -> { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")); true }
                 Key.N -> { model.newDocument(); true }
                 else -> false
@@ -94,8 +158,10 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         FlowRow(Modifier.weight(0.4f,fill=false).fillMaxWidth().verticalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement=Arrangement.spacedBy(4.dp)) {
             OutlinedButton(enabled = ready, onClick = model::newDocument) { Text("New") }
             OutlinedButton(enabled = ready, onClick = { pickerEncoding=openingEncoding; openDocument.launch(arrayOf("text/*", "application/json")) }) { Text("Open text") }
-            Button(enabled = ready && active != null && pendingCopy == null,
+            Button(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
                 onClick = { copyConfirmId=active?.id }) { Text("Save a Copy") }
+            if (onExportDocx != null) OutlinedButton(enabled = ready && active != null && pendingCopy == null && !officeExportBusy,
+                onClick = { docxConfirmId=active?.id }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-export-docx")) { Text("Export DOCX copy…") }
             OutlinedButton(enabled = ready && active != null && pendingCopy?.documentId != active?.id,
                 onClick = {
                     active?.let { if (dirty) closingId = it.id else model.closeDocument(it.id) }
@@ -117,6 +183,8 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
         if (state.loading || state.busy || state.toolsBusy) CircularProgressIndicator()
         Text(state.status, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        if (officeExportStatus.isNotEmpty()) Text(officeExportStatus, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        if (docxNotice.isNotEmpty()) Text(docxNotice, Modifier.semantics { liveRegion = LiveRegionMode.Polite }.testTag("writer-export-notice"))
         if (pendingCopy != null) {
             Text("Frozen copy: ${pendingCopy.name}. State: ${pendingCopy.stage}. Retry invalidates older results and keeps the original frozen payload. Inspect any partial destination first; no in-place replay or automatic deletion.")
             FlowRow(Modifier.fillMaxWidth()) {
@@ -178,10 +246,85 @@ fun EditorScreen(model: EditorViewModel, onSaveCopy: (CopyPickerRequest) -> Unit
         }
     }
     if(toolsOpen) EditorTools(model,onDismiss={ model.cancelTools(); toolsOpen=false })
+    docxConfirmId?.let { id ->
+        AlertDialog(onDismissRequest={ docxConfirmId=null }, title={ Text("Export plain text as DOCX?") },
+            text={ Column(Modifier.heightIn(max=240.dp).verticalScroll(rememberScrollState())) {
+                Text("Creates a new DOCX from the current text only: one paragraph per line; CR/LF line endings are normalized. No rich formatting, images, layout or DOCX import. Limit: 128 KiB UTF-8 and 2,048 paragraphs. Choose a new destination; provider identity and atomicity are not guaranteed. The source and editor draft remain unchanged.")
+                if (onExportStructuredDocx != null || onExportStructuredDocxWithStrike != null || onExportStructuredDocxWithListRestart != null || onExportStructuredDocxWithPipeTables != null) TextButton(onClick={
+                    docxConfirmId=null
+                    numberedLines=false; strikeSpans=false; restartOrderedGroups=false; pipeTables=false
+                    val current=model.state.value
+                    val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
+                    val buffer=current.buffers[id]
+                    if (doc!=null && buffer!=null && buffer.content==doc.content && !current.loading && !current.busy && !current.toolsBusy &&
+                        !current.recoveryBlocked && current.session.pendingCopy==null && !officeExportBusy) {
+                        docxNotice=""
+                        structuredDocxConsent=dev.fusion.documents.WriterCopyConsent(doc,buffer.revision)
+                    } else docxNotice="Draft or editor state changed. Review the export again."
+                }, modifier=Modifier.testTag("writer-structured-option")) { Text("Format simple text markers instead…") }
+            } },
+            confirmButton={ TextButton(onClick={
+                docxConfirmId=null
+                val current=model.state.value
+                val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
+                if (doc!=null && !current.loading && !current.busy && !current.recoveryBlocked && current.session.pendingCopy==null) onExportDocx?.invoke(doc)
+            }) { Text("Choose destination") } },
+            dismissButton={ TextButton(onClick={ docxConfirmId=null }) { Text("Cancel") } })
+    }
+    structuredDocxConsent?.let { consent ->
+        AlertDialog(onDismissRequest={ structuredDocxConsent=null }, title={ Text("Export formatted DOCX copy?") },
+            text={ Column {
+                // Keep the safety summary visible even while the optional format details scroll.
+                Text("Not a rich editor or full Markdown. Draft unchanged; choose a new file. Provider identity and atomicity aren't guaranteed.", Modifier.testTag("writer-structured-safety"))
+                Column(Modifier.heightIn(max=248.dp).verticalScroll(rememberScrollState())) {
+                Text("Normally one paragraph per line; optional pipe tables group lines. CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
+                Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=numberedLines, role=Role.Checkbox, onValueChange={ numberedLines=it; if (!it) restartOrderedGroups=false })
+                    .testTag("writer-numbered-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=numberedLines, onCheckedChange=null)
+                    val numberingScope = if (restartOrderedGroups) "Separate groups request a restart." else "They share one list; separated groups may continue."
+                    Text("Also format '1. ' lines with at least one following character as numbered items. $numberingScope '2. ' and indented lines stay text.", Modifier.testTag("writer-numbered-disclosure"))
+                }
+                if (onExportStructuredDocxWithStrike != null || onExportStructuredDocxWithListRestart != null || onExportStructuredDocxWithPipeTables != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=strikeSpans, role=Role.Checkbox, onValueChange={ strikeSpans=it })
+                    .testTag("writer-strike-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=strikeSpans, onCheckedChange=null)
+                    Text("Also format ~~text~~ as strikethrough. Single tildes, spaces at the ends and ambiguous or nested markers stay literal; this is not full Markdown.", Modifier.testTag("writer-strike-disclosure"))
+                }
+                if (onExportStructuredDocxWithListRestart != null || onExportStructuredDocxWithPipeTables != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(
+                    value=restartOrderedGroups, enabled=numberedLines, role=Role.Checkbox, onValueChange={ restartOrderedGroups=it })
+                    .testTag("writer-number-restart-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=restartOrderedGroups, onCheckedChange=null, enabled=numberedLines)
+                    Text("Request each separate group of numbered lines to restart at 1. A non-numbered line separates groups; DOCX readers may render numbering differently.", Modifier.testTag("writer-number-restart-disclosure"))
+                }
+                if (onExportStructuredDocxWithPipeTables != null) Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(
+                    value=pipeTables, role=Role.Checkbox, onValueChange={ pipeTables=it })
+                    .testTag("writer-pipe-table-option"), verticalAlignment=Alignment.CenterVertically) {
+                    Checkbox(checked=pipeTables, onCheckedChange=null)
+                    Text("Also make strict |cell| blocks into tables: header, --- separator and at least one rectangular body row. Trim cell-edge spaces/tabs; keep markers literal. Escaped pipes and malformed blocks stay literal. Over 64 columns or 256 cells: refuse export. Not full Markdown.", Modifier.testTag("writer-pipe-table-disclosure"))
+                }
+                }
+            } },
+            confirmButton={ TextButton(onClick={
+                structuredDocxConsent=null
+                val current=model.state.value
+                val id=consent.documentId
+                val doc=current.session.documents.find { it.id==id && current.session.selectedId==id }
+                val buffer=current.buffers[id]
+                if (doc!=null && buffer!=null && buffer.content==doc.content && consent.permits(doc,buffer.revision) &&
+                    !current.loading && !current.busy && !current.toolsBusy && !current.recoveryBlocked &&
+                    current.session.pendingCopy==null && !officeExportBusy) {
+                    docxNotice=""
+                    if (onExportStructuredDocxWithPipeTables != null) onExportStructuredDocxWithPipeTables(doc, numberedLines, strikeSpans, restartOrderedGroups, pipeTables)
+                    else if (onExportStructuredDocxWithListRestart != null) onExportStructuredDocxWithListRestart(doc, numberedLines, strikeSpans, restartOrderedGroups)
+                    else if (onExportStructuredDocxWithStrike != null) onExportStructuredDocxWithStrike(doc, numberedLines, strikeSpans)
+                    else onExportStructuredDocx?.invoke(doc, numberedLines)
+                } else docxNotice="Draft or editor state changed. Review the export again."
+            }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-confirm")) { Text("Choose destination") } },
+            dismissButton={ TextButton(onClick={ structuredDocxConsent=null }, modifier=Modifier.heightIn(min=48.dp).testTag("writer-structured-cancel")) { Text("Cancel") } })
+    }
     copyConfirmId?.let { id -> CopyAdmissionDialog("Save a Copy to a new file?",
-        onDismiss={ copyConfirmId=null },onConfirm={ copyConfirmId=null; model.prepareCopy(id,onSaveCopy) }) }
+        onDismiss={ copyConfirmId=null },onConfirm={ copyConfirmId=null; if (!officeExportBusy) model.prepareCopy(id,onSaveCopy) }) }
     if(retryConfirm) CopyAdmissionDialog("Retry the original frozen payload?",
-        onDismiss={ retryConfirm=false },onConfirm={ retryConfirm=false; model.retryCopy(retryConfirmId,onSaveCopy) })
+        onDismiss={ retryConfirm=false },onConfirm={ retryConfirm=false; if (!officeExportBusy) model.retryCopy(retryConfirmId,onSaveCopy) })
     if(abandoningCopy) AlertDialog(onDismissRequest={ abandoningCopy=false },title={ Text("Abandon this copy attempt?") },
         text={ Text("Keeps the current draft, but retires this frozen save payload. A late result for this attempt will not authorize a newer save. Any partial destination stays for you to inspect; it is not deleted.") },
         confirmButton={ TextButton(onClick={ model.cancelCopy(abandoningCopyId); abandoningCopy=false }) { Text("Abandon attempt") } },

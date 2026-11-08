@@ -27,7 +27,7 @@ object R24CChecks {
             catch (_: Exception) { println("CONFLICT_OR_BUSY"); kotlin.system.exitProcess(2) }
             return
         }
-        tabletop(); geometry(); appearance(); linksAndPlayback(); inputChanges(); viewportAdmission(); maps(args.firstOrNull())
+        tabletop(); geometry(); appearance(); linksAndPlayback(); serviceReviewFreshness(); inputChanges(); viewportAdmission(); maps(args.firstOrNull())
         println("R24C PASS: $checks assertions. Production geometry/codec/file races/map data/media policy/input latch; NOT native UI, audio output, hardware integrity or full-spec acceptance.")
     }
     private fun viewportAdmission() {
@@ -203,6 +203,61 @@ object R24CChecks {
         playback.close(); ok(!playback.prepared(a) && !playback.play(a) && !playback.ended(a) && !playback.fail(a))
         val b = playback.begin(); ok(!playback.prepared(a)); ok(playback.prepared(b)); ok(playback.phase == PlaybackEpoch.Phase.READY)
         playback.close(); ok(playback.phase == PlaybackEpoch.Phase.CLOSED)
+    }
+    private fun serviceReviewFreshness() {
+        val valid = listOf(
+            "https://www.youtube.com/watch?v=abcdefghijk",
+            "https://youtu.be/abcdefghijk?si=tracking",
+            "https://open.spotify.com/track/0123456789ABCDEFGHIJKL",
+            "https://soundcloud.com/artist/track?utm=tracking",
+        )
+        val replacements = listOf(
+            "https://youtube.com.evil.test/watch?v=abcdefghijk",
+            "https://youtube.com@evil.test/watch?v=abcdefghijk",
+            "https://youtu.be.evil.test/abcdefghijk",
+            "https://user@youtube.com/watch?v=abcdefghijk",
+            "https://youtube.com:443/watch?v=abcdefghijk",
+            "http://youtu.be/abcdefghijk",
+            "javascript:alert(1)", "", " ", "x".repeat(2048), "😀".repeat(1024)
+        )
+        for (url in valid) for (replacement in replacements) {
+            val initial = ServiceLinkReview.initial()
+            ok(initial.draft.isEmpty() && initial.candidate == null && initial.status.isEmpty())
+            val entered = initial.edit(url)
+            ok(entered.draft == url && entered.candidate == null && entered.status == "Link changed; review again.")
+            val first = entered.prepare(); val token = checkNotNull(first.candidate)
+            ok(first.status == "Link validated locally.")
+            ok(first.edit(url) === first) // Identical text is not a new draft.
+            ok(first.edit("x".repeat(2049)) === first) // Over-limit input is not admitted.
+            ok(first.consume(ServiceLink.parse(url)) == null) // Same URL is not the same review token.
+            val superseded = first.prepare(); val latest = checkNotNull(superseded.candidate)
+            ok(superseded.consume(token) == null && superseded.cancel(token) === superseded)
+            ok(superseded.consume(latest) != null)
+            val changed = first.edit(replacement)
+            ok(changed.draft == replacement && changed.candidate == null)
+            ok(changed.status == if (replacement.isEmpty()) "" else "Link changed; review again.")
+            ok(changed.consume(token) == null) // A stale callback cannot consume the changed state.
+            ok(first.consume(token) != null) // Immutable old snapshots remain usable: integration must consult current state.
+            val rejected = changed.prepare()
+            ok(rejected.candidate == null && rejected.status.startsWith("Link refused:"))
+            ok(rejected.consume(token) == null)
+            val again = rejected.edit(url).prepare(); val newer = checkNotNull(again.candidate)
+            ok(again.consume(token) == null && again.cancel(token) === again)
+            ok(again.expired() === again) // An old callback must not cancel a newer active review.
+            val consumed = checkNotNull(again.consume(newer))
+            ok(consumed.candidate == null && consumed.consume(newer) == null)
+            ok(consumed.handoffResult(true).status == "Handoff requested. Fusion cannot verify external playback.")
+            ok(consumed.handoffResult(false).status == "No compatible external player/browser available.")
+            ok(again.cancel(newer).consume(newer) == null)
+        }
+        val exactly = "😀".repeat(1024) // 2,048 UTF-16 code units, not 2,048 Unicode scalars.
+        ok(exactly.length == ServiceLinkReview.MAX_INPUT_UNITS)
+        val boundary = ServiceLinkReview.initial().edit(exactly).prepare()
+        ok(boundary.draft == exactly && boundary.status.startsWith("Link refused:"))
+        ok(boundary.edit(exactly) === boundary && boundary.edit(exactly + "x") === boundary)
+        val longError = boundary.refuse(IllegalArgumentException("z".repeat(500)))
+        ok(longError.status.contains("z".repeat(160)) && !longError.status.contains("z".repeat(161)))
+        ok(longError.candidate == null)
     }
     private fun inputChanges() {
         for (word in 0 until 65536) {

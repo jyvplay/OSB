@@ -11,6 +11,8 @@ import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sign
 import kotlin.math.sqrt
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -89,7 +91,14 @@ object FormulaEval {
         val dependencies: Map<String, Set<String>>,
     )
 
-    fun evaluateSheet(cells: Map<String, CellInput>): EvaluatedSheet {
+    fun evaluateSheet(cells: Map<String, CellInput>): EvaluatedSheet = evaluateSheet(cells, materializeFormulaResults = true)
+
+    // SpillSheetEngine uses a temporary cell to evaluate a subexpression, not an actual
+    // output cell. Preserve the intermediate Empty value in that private probe context.
+    internal fun evaluateSheetForSubexpression(cells: Map<String, CellInput>): EvaluatedSheet =
+        evaluateSheet(cells, materializeFormulaResults = false)
+
+    private fun evaluateSheet(cells: Map<String, CellInput>, materializeFormulaResults: Boolean): EvaluatedSheet {
         require(cells.size <= MAX_CELLS) { "sheet exceeds $MAX_CELLS populated cells" }
         val canonicalInputs = LinkedHashMap<String, CellInput>(cells.size)
         for ((rawRef, inp) in cells) {
@@ -122,7 +131,15 @@ object FormulaEval {
                 is CellInput.TextLiteral -> CellValue.Text(inp.value)
                 is CellInput.BoolLiteral -> CellValue.Bool(inp.value)
                 is CellInput.ErrorLiteral -> CellValue.Err(inp.error)
-                is CellInput.Formula -> evalExpr(parsedAsts[ref]!!, evaluated)
+                is CellInput.Formula -> {
+                    // An empty reference can remain empty *inside* an expression (for example,
+                    // a range aggregate ignores an empty source). Once a scalar formula result
+                    // is stored in a cell, however, Excel-style evaluation exposes that result as
+                    // numeric zero rather than an unoccupied cell. Do not conflate this with a
+                    // formula returning explicit empty text, which remains a counted text value.
+                    val result = evalExpr(parsedAsts[ref]!!, evaluated)
+                    if (materializeFormulaResults && result == CellValue.Empty) CellValue.Num(0.0) else result
+                }
             }
         }
         return EvaluatedSheet(evaluated, order, deps)
@@ -680,13 +697,16 @@ object FormulaEval {
                 if (x is CellValue.Err) return x
                 val d = evalScalarAsNum(evalExpr(args[1], env))
                 if (d is CellValue.Err) return d
-                val digits = (d as CellValue.Num).value.toInt().coerceIn(-12, 12)
-                val factor = 10.0.pow(digits)
+                val digits = (d as CellValue.Num).value
                 val v = (x as CellValue.Num).value
-                // Excel half-away-from-zero rounding
-                val scaled = v * factor
-                val rounded = if (scaled >= 0.0) floor(scaled + 0.5) else -floor(-scaled + 0.5)
-                val out = rounded / factor
+                // Round the canonical decimal representation of this finite binary64 value,
+                // halfway away from zero. Never clamp the requested digits to a different scale
+                // or multiply by 10^digits in binary, which can overflow or perturb decimal ties.
+                // Every finite double has fewer than 400 integer/fraction decimal positions in
+                // its canonical representation; avoid allocating an arbitrary requested scale.
+                if (digits >= 400.0) return CellValue.Num(normalizeNegZero(v))
+                if (digits <= -400.0) return CellValue.Num(0.0)
+                val out = BigDecimal.valueOf(v).setScale(digits.toInt(), RoundingMode.HALF_UP).toDouble()
                 if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
             }
             "MOD" -> {

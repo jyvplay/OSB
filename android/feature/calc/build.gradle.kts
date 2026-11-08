@@ -16,6 +16,7 @@ android {
 }
 dependencies {
     implementation(project(":core:storage"))
+    implementation(project(":format:ooxml"))
     implementation(libs.androidx.lifecycle.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.lifecycle.viewmodel.ktx)

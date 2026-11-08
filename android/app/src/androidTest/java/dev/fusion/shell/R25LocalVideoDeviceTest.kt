@@ -79,7 +79,9 @@ class R25LocalVideoDeviceTest {
                 assertTrue(ready.durationMs!! in 5900..6100);assertEquals(0,ready.positionMs)
                 SystemClock.sleep(250);assertEquals("No autoplay",0,observation(s).positionMs)
                 play(s);await(s){it.phase==PlaybackEpoch.Phase.PLAYING && (it.positionMs?:0)>0}
-                val seen=mutableListOf<String>();val samples=JSONArray();var lastPosition=-1;val deadline=SystemClock.elapsedRealtime()+7500
+                val seen=mutableListOf<String>();val samples=JSONArray();var lastPosition=-1
+                val started=SystemClock.elapsedRealtime();val deadline=started+7500
+                val firstSamples=mutableListOf<String>();val recentSamples=ArrayDeque<String>()
                 var last="No actual frame"
                 while(SystemClock.elapsedRealtime()<deadline && seen.size<3) {
                     val image=frame(s)
@@ -88,7 +90,10 @@ class R25LocalVideoDeviceTest {
                         for(y in 12 until 36) for(x in 16 until 48) {val c=image.getPixel(x,y);red+=Color.red(c);green+=Color.green(c);blue+=Color.blue(c);count++}
                         val r=(red/count).toInt();val g=(green/count).toInt();val b=(blue/count).toInt();val actual=observation(s)
                         val color=when {r>180 && g<80 && b<80->"red";g>80 && r<60 && b<60->"green";b>180 && r<80 && g<80->"blue";else->"other"}
-                        last="color=$color RGB=$r/$g/$b state=$actual"
+                        last="t=${SystemClock.elapsedRealtime()-started}ms color=$color RGB=$r/$g/$b state=$actual"
+                        if(firstSamples.size<4) firstSamples.add(last)
+                        if(recentSamples.size==12) recentSamples.removeFirst()
+                        recentSamples.addLast(last)
                         val expected=listOf("red","green","blue")[seen.size]
                         if(color==expected) {
                             assertEquals(PlaybackEpoch.Phase.PLAYING,actual.phase)
@@ -104,7 +109,7 @@ class R25LocalVideoDeviceTest {
                     } finally {image.recycle()}
                     if(seen.size<3)SystemClock.sleep(80)
                 }
-                assertEquals("Actual changing decoded pixels not observed: $last",listOf("red","green","blue"),seen)
+                assertEquals("Actual changing decoded pixels not observed: $last; first=$firstSamples; recent=$recentSamples",listOf("red","green","blue"),seen)
                 UiDevice.getInstance(instrumentation).pressHome()
                 await(s){it.phase==PlaybackEpoch.Phase.CLOSED && !it.hasPlayer}
                 val report=JSONObject().put("origin","android-instrumentation").put("api",android.os.Build.VERSION.SDK_INT)
