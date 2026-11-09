@@ -1612,6 +1612,18 @@ tasks.register<JavaExec>("r72OoxmlZipContracts") {
     args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
 }
 
+// R72: the shared bounded ZIP reader inside four core readers; real XLSX fixtures.
+val r72Core by sourceSets.creating
+kotlin.sourceSets.named("r72Core") { kotlin.srcDir("src/r72core/kotlin") }
+dependencies { add(r72Core.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r72CoreZipContracts") {
+    dependsOn(r72Core.classesTaskName)
+    classpath = r72Core.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72CoreZipProbe")
+    maxHeapSize = "512m"
+    args("read", rootProject.file("testing/build/r72core").absolutePath)
+}
+
 // R72: plain Writer boundary probe in a bounded heap, separate from the Android app.
 val r72Writer by sourceSets.creating
 kotlin.sourceSets.named("r72Writer") { kotlin.srcDir("src/r72writer/kotlin") }

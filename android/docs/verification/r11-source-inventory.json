@@ -5639,6 +5639,12 @@
       "sha256": "fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "e82c5028b88823020573d7be4e36e5730cb361e3be8140b917dbf66ea60536e9"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CalcChainDependencyGraph.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
@@ -5720,7 +5726,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "9f516d1dd859750da8796d51052fb567ca13fe4e9725a816b2e981882e68dfaf"
+      "sha256": "f523d1aac843037a8a756774b75ff917110d8a7c97343de14e46495da341ff5c"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxTableLayoutGridEngine.kt",
@@ -5768,7 +5774,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/MultiSheetBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "b2d85a8cf423bd5dd41632fe64f11cd1020e34fe036a257fe85bdb764688393d"
+      "sha256": "39ee8e0d4af0c5a63794d64ee78006e6640b0699a99e5a274bbf670a6582961f"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumFmtSections.kt",
@@ -5870,7 +5876,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PptxSlideDeck.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "612b2b515991507913196a346c1067537c2705598a74cdefeb9a96dfcd40ef74"
+      "sha256": "95b3e36fc7231e5aecb5d650c175e578135308380a5dfb6ff39089adee6c0994"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/R1C1FormulaTranslator.kt",
@@ -5978,7 +5984,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "647a5e101975be465f32d934faec554fa10cf3e7c1d79dbfaf9179a54f7a5c49"
+      "sha256": "5c892cf07d91d1f2e0a6b0f4f788c88795be170b2d028b30d3fac55960380c60"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/CropBox.kt",

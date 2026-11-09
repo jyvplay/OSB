@@ -26,6 +26,9 @@ object PptxSlideDeck {
     const val SLIDE_HEIGHT_EMU = 5_143_500L
     const val MAX_SLIDES = 256
     const val MAX_ARCHIVE_BYTES = 16 * 1024 * 1024
+    const val MAX_PART_BYTES = 8 * 1024 * 1024
+    const val MAX_EXPANDED_BYTES = 32L * 1024 * 1024
+    const val MAX_ENTRIES = 2_048
 
     data class SlideSpec(
         val title: String,
@@ -65,29 +68,30 @@ object PptxSlideDeck {
         require(bytes.isNotEmpty() && bytes.size <= MAX_ARCHIVE_BYTES) {
             "pptx archive size ${bytes.size} outside 1..$MAX_ARCHIVE_BYTES"
         }
+        val parts = BoundedZip.read(
+            bytes = bytes,
+            archiveBytes = MAX_ARCHIVE_BYTES,
+            partBytes = MAX_PART_BYTES,
+            expandedBytes = MAX_EXPANDED_BYTES,
+            entries = MAX_ENTRIES,
+            describe = "PPTX",
+        ) { name ->
+            require(!name.contains("..") && !name.startsWith("/")) { "unsafe ZIP entry path: $name" }
+            require(!name.endsWith(".bin", ignoreCase = true)) { "VBA/OLE binary part refused in .pptx: $name" }
+        }
         val entries = LinkedHashMap<String, String>()
-        var totalExpanded = 0L
-        ZipInputStream(ByteArrayInputStream(bytes)).use { zis ->
-            while (true) {
-                val e = zis.nextEntry ?: break
-                val name = e.name
-                require(!name.contains("..") && !name.startsWith("/")) { "unsafe ZIP entry path: $name" }
-                require(!name.endsWith(".bin", ignoreCase = true)) { "VBA/OLE binary part refused in .pptx: $name" }
-                val buf = zis.readBytes()
-                totalExpanded += buf.size
-                require(totalExpanded <= MAX_ARCHIVE_BYTES * 2L) { "pptx zip expansion limit exceeded" }
-                if (name.endsWith(".xml") || name.endsWith(".rels")) {
-                    val xml = buf.toString(Charsets.UTF_8)
-                    require(!xml.contains("<!DOCTYPE", ignoreCase = true) && !xml.contains("<!ENTITY", ignoreCase = true)) {
-                        "XXE DOCTYPE/ENTITY refused in $name"
-                    }
-                    if (name.endsWith(".rels")) {
-                        require(!Regex("TargetMode\\s*=\\s*[\"']External[\"']", RegexOption.IGNORE_CASE).containsMatchIn(xml)) {
-                            "external tracking relationship refused in $name"
-                        }
-                    }
-                    entries[name] = xml
+        for ((name, part) in parts) {
+            if (name.endsWith(".xml") || name.endsWith(".rels")) {
+                val xml = part.toString(Charsets.UTF_8)
+                require(!xml.contains("<!DOCTYPE", ignoreCase = true) && !xml.contains("<!ENTITY", ignoreCase = true)) {
+                    "XXE DOCTYPE/ENTITY refused in $name"
                 }
+                if (name.endsWith(".rels")) {
+                    require(!Regex("TargetMode\\s*=\\s*[\"']External[\"']", RegexOption.IGNORE_CASE).containsMatchIn(xml)) {
+                        "external tracking relationship refused in $name"
+                    }
+                }
+                entries[name] = xml
             }
         }
         require("ppt/presentation.xml" in entries) { "missing ppt/presentation.xml" }
@@ -290,19 +294,22 @@ object PptxSlideDeck {
     fun inspectSlideMediaTimings(pptxBytes: ByteArray): DeckTimingInspection {
         val parsed = readDeck(pptxBytes)
         val timed = ArrayList<SlideMediaTimingSpec>()
-        ZipInputStream(ByteArrayInputStream(pptxBytes)).use { zis ->
-            while (true) {
-                val e = zis.nextEntry ?: break
-                val m = Regex("^ppt/slides/slide(\\d+)\\.xml$").matchEntire(e.name)
-                if (m != null) {
-                    val slideNo = m.groupValues[1].toInt()
-                    val xml = zis.readBytes().toString(Charsets.UTF_8)
-                    val adv = Regex("""<p:transition[^>]*advTm="(\d+)"""").find(xml)?.groupValues?.get(1)?.toLongOrNull()
-                    val ctn = Regex("""<p:cTn[^>]*dur="(\d+)"[^>]*mediaLabel="([^"]*)"""").find(xml)
-                    if (adv != null && ctn != null) {
-                        timed.add(SlideMediaTimingSpec(slideNo, unescXml(ctn.groupValues[2]), ctn.groupValues[1].toLong(), adv))
-                    }
-                }
+        val slides = BoundedZip.read(
+            bytes = pptxBytes,
+            archiveBytes = MAX_ARCHIVE_BYTES,
+            partBytes = MAX_PART_BYTES,
+            expandedBytes = MAX_EXPANDED_BYTES,
+            entries = MAX_ENTRIES,
+            describe = "PPTX",
+        )
+        for ((name, part) in slides) {
+            val m = Regex("^ppt/slides/slide(\\d+)\\.xml$").matchEntire(name) ?: continue
+            val slideNo = m.groupValues[1].toInt()
+            val xml = part.toString(Charsets.UTF_8)
+            val adv = Regex("""<p:transition[^>]*advTm="(\d+)"""").find(xml)?.groupValues?.get(1)?.toLongOrNull()
+            val ctn = Regex("""<p:cTn[^>]*dur="(\d+)"[^>]*mediaLabel="([^"]*)"""").find(xml)
+            if (adv != null && ctn != null) {
+                timed.add(SlideMediaTimingSpec(slideNo, unescXml(ctn.groupValues[2]), ctn.groupValues[1].toLong(), adv))
             }
         }
         timed.sortBy { it.slideNumber }

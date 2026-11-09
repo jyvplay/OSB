@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 JARS: list[tuple[str, list[str], list[str]]] = [
     ("r51_office_formats.jar", [], [
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/ColLetters.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetRange.kt",

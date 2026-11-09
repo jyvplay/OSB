@@ -579,33 +579,15 @@ object MultiSheetBook {
         }
     }
 
-    private fun readZip(bytes: ByteArray): Map<String, ByteArray> {
-        val out = LinkedHashMap<String, ByteArray>()
-        var expanded = 0L
-        ZipInputStream(ByteArrayInputStream(bytes)).use { zis ->
-            val buf = ByteArray(8192)
-            var e: ZipEntry? = zis.nextEntry
-            var count = 0
-            while (e != null) {
-                count++
-                require(count <= 128) { "too many zip entries" }
-                val name = e.name
-                require(!name.contains("..") && !name.startsWith("/")) { "unsafe zip entry $name" }
-                if (!e.isDirectory) {
-                    val baos = ByteArrayOutputStream()
-                    while (true) {
-                        val n = zis.read(buf)
-                        if (n < 0) break
-                        expanded += n
-                        require(expanded <= MAX_ZIP_BYTES) { "zip expansion cap exceeded" }
-                        baos.write(buf, 0, n)
-                    }
-                    out[name] = baos.toByteArray()
-                }
-                e = zis.nextEntry
-            }
-        }
-        return out
+    private fun readZip(bytes: ByteArray): Map<String, ByteArray> = BoundedZip.read(
+        bytes = bytes,
+        archiveBytes = MAX_ZIP_BYTES,
+        partBytes = MAX_ZIP_BYTES,
+        expandedBytes = MAX_ZIP_BYTES.toLong(),
+        entries = 128,
+        describe = "XLSX",
+    ) { name ->
+        require(!name.contains("..") && !name.startsWith("/")) { "unsafe zip entry $name" }
     }
 
     private fun storedZip(parts: Map<String, String>): ByteArray {

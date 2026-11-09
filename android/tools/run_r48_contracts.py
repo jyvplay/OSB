@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 JARS = [
     ("r48_office.jar", [], [
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/ColLetters.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetRange.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CellErr.kt",

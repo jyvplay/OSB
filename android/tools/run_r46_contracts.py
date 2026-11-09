@@ -35,6 +35,7 @@ KERNELS: tuple[KernelSpec, ...] = (
         ":format:ooxml",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/MultiSheetBook.kt",
         (
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/ColLetters.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetRange.kt",
