@@ -1,6 +1,6 @@
 # R73 — essentials formula batch, `TEXT()` renderer, wildcard criteria
 
-Status: **host-verified only**. No Excel, LibreOffice, Word, Android device, emulator or provider executed anything in this round. Nothing here is Class A evidence by itself.
+Status: **host- and CI-lane-verified**. The JVM contracts run under the real Android/Gradle toolchain in the office lane (both app flavors assemble), and the oracle plus third-engine comparisons pass there. No Excel, LibreOffice, Word, device, emulator or provider executed anything for this slice, so nothing here is Class A evidence by itself.
 
 ## 0. What changed in production code
 
@@ -94,6 +94,8 @@ Open interface: whether these formulas and formats produce Excel-identical resul
 | Full host discovery | **1,668 tests, 0 failures, 0 errors**, 15 pre-existing optional-dependency skips |
 | `module_testability.py --check` | 50/50 narrow subsets (100 %), 0/50 full-spec (0 %) |
 | `native_source_audit.py --check` | 231 requirements, 36 obligations |
+| CI office lane (run 42568404564, step 9): `assemble` + `:app:assembleProDebug` + `:app:assembleProDebugAndroidTest` + `:testing:r73FormulaContracts` | **success** — the new source set and the updated `kotlin.include` lists compile under the real AGP/Gradle toolchain and the probe runs there |
+| CI office lane (step 14): oracle `verify` + formualizer differential | **success** |
 
 ## H. Defects found and repaired during this round
 
@@ -115,6 +117,6 @@ After each repair the oracle corpus, the third-engine differential, the guard te
 
 ## J. Honest stopping point
 
-Stopped before: Android compilation of the new source set, any device/emulator run, visual inspection, Excel or LibreOffice recalculation, locale and currency behaviour, fraction/accounting formats, `RANDARRAY`, `SEQUENCE` overflow limits, `AGGREGATE` functions 12–19 (LARGE/SMALL/PERCENTILE/QUARTILE), `FORMULATEXT` (the evaluator does not retain source text), and provider/durability behaviour. `FILTER` with no matches returns `#N/A` because `#CALC!` is outside this kernel's declared error vocabulary; that deviation is deliberate and recorded here.
+Stopped before: any device or emulator run of the new code, visual inspection, Excel or LibreOffice recalculation, locale and currency behaviour, fraction/accounting formats, `RANDARRAY`, `SEQUENCE` overflow limits, `AGGREGATE` functions 12–19 (LARGE/SMALL/PERCENTILE/QUARTILE), `FORMULATEXT` (the evaluator does not retain source text), and provider/durability behaviour. `FILTER` with no matches returns `#N/A` because `#CALC!` is outside this kernel's declared error vocabulary; that deviation is deliberate and recorded here.
 
 Next highest-information test: run `:testing:r73FormulaContracts` plus the oracle/third-engine comparisons inside the CI office lane on this exact revision, then replace the third engine with an actual Excel-or-LibreOffice recalculation of the same 311 formulas — that is the only artifact that can promote any of this from "two independent implementations agree" to "matches the reference implementation".
