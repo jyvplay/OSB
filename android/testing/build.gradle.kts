@@ -797,7 +797,7 @@ kotlin.sourceSets.named("r46") {
     kotlin.srcDir("../feature/notes/src/main/kotlin")
     kotlin.include(
         "**/BoundedXml.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt",
-        "**/FormulaEval.kt", "**/MultiSheetBook.kt", "**/SheetPivot.kt", "**/CondFormat.kt",
+        "**/BoundedZip.kt", "**/FormulaEval.kt", "**/MultiSheetBook.kt", "**/SheetPivot.kt", "**/CondFormat.kt",
         "**/PdfPageWriter.kt", "**/DocOutlineRender.kt", "**/TrackRevisions.kt",
         "**/CitationBib.kt", "**/OdsSheetExtract.kt", "**/WasmSandbox.kt", "**/QuotaBudget.kt",
         "**/WalFrame.kt", "**/PipeChain.kt", "**/SemVerRange.kt", "**/SchemaMigrate.kt",
@@ -970,7 +970,7 @@ kotlin.sourceSets.named("r47") {
     kotlin.srcDir("../benchmark/src/main/java")
     kotlin.include(
         "**/BoundedXml.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt",
-        "**/DocxRichDocument.kt", "**/XlsxStyledBook.kt", "**/PdfOutlineBookmarks.kt", "**/OdtRichWriter.kt",
+        "**/BoundedZip.kt", "**/DocxRichDocument.kt", "**/XlsxStyledBook.kt", "**/PdfOutlineBookmarks.kt", "**/OdtRichWriter.kt",
         "**/LatexMathSvg.kt", "**/DocumentDiffMerge.kt", "**/SvgChartPlot.kt", "**/WikiLinkGraph.kt",
         "**/HtmlSanitizer.kt", "**/WasiPreview1Host.kt", "**/AdblockFilterEngine.kt", "**/JsonPatchRfc6902.kt",
         "**/ArgvSpecParser.kt", "**/HdrLatencyHist.kt", "**/BTreePageIndex.kt", "**/ZipSafeExtract.kt",
@@ -1050,7 +1050,7 @@ kotlin.sourceSets.named("r48") {
     kotlin.srcDir("../baselineprofile/src/main/kotlin")
     kotlin.include(
         "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt",
-        "**/SpillSheetEngine.kt", "**/PptxSlideDeck.kt", "**/PivotCubeSummary.kt", "**/XlsxDataValidationXml.kt",
+        "**/BoundedZip.kt", "**/SpillSheetEngine.kt", "**/PptxSlideDeck.kt", "**/PivotCubeSummary.kt", "**/XlsxDataValidationXml.kt",
         "**/Epub3Package.kt", "**/RtfCleanConverter.kt", "**/OpenSearchSuggestionJson.kt",
         "**/PdfAcroFormWriter.kt", "**/PdfPageLabelsAndOutline.kt", "**/OdsSpreadsheetXml.kt",
         "**/ReadabilityMetrics.kt", "**/MarkdownOfficeBridge.kt", "**/FinancialScheduleSolver.kt",
@@ -1223,7 +1223,7 @@ kotlin.sourceSets.named("r50") {
     kotlin.srcDir("../format/psd/src/main/java")
     kotlin.srcDir("../privacy/src/main/java")
     kotlin.include(
-        "**/BoundedXml.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt", "**/SpillSheetEngine.kt", "**/MultiSheetBook.kt", "**/WasmSandbox.kt",
+        "**/BoundedZip.kt", "**/BoundedXml.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt", "**/SpillSheetEngine.kt", "**/MultiSheetBook.kt", "**/WasmSandbox.kt",
         "**/PivotCacheXmlExporter.kt", "**/ConditionalDataBarScaleEngine.kt", "**/OpenTypeKerningTableLayout.kt", "**/MasterSlideTransitionDeck.kt",
         "**/OutlineTocCrossRefEngine.kt", "**/MermaidFlowchartSvgLayout.kt", "**/NewFileTemplateCatalog.kt", "**/Mat2RecursiveMetadataScrubber.kt",
         "**/ThumbnailMetadataIndexer.kt", "**/OklchPaletteContrastPicker.kt", "**/PsdBlendAdjustmentCompositor.kt", "**/PdfIncrementalSaveRedactor.kt",
@@ -1308,7 +1308,7 @@ kotlin.sourceSets.named("r51") {
     kotlin.srcDir("../privacy/src/main/kotlin")
     kotlin.include(
         "**/BoundedXml.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt",
-        "**/FormulaEval.kt", "**/SpillSheetEngine.kt", "**/DocxRichDocument.kt", "**/OdtRichWriter.kt", "**/WasmSandbox.kt",
+        "**/BoundedZip.kt", "**/FormulaEval.kt", "**/SpillSheetEngine.kt", "**/DocxRichDocument.kt", "**/OdtRichWriter.kt", "**/WasmSandbox.kt",
         "**/StructuredTableRefEngine.kt", "**/R1C1FormulaTranslator.kt", "**/CalcChainDependencyGraph.kt", "**/PptxMasterLayoutAnimationEngine.kt",
         "**/GoalSeekSimplexSolver.kt", "**/PivotSlicerCrossFilterEngine.kt", "**/WidowOrphanGalleyPaginator.kt", "**/CitationBibliographyFormatter.kt",
         "**/OpenTypeKerningLineJustifier.kt", "**/SpreadsheetNumberMaskFormatter.kt", "**/PdfUa1TaggedStructureWriter.kt", "**/PdfLinearizedHintValidator.kt",
@@ -1406,7 +1406,7 @@ kotlin.sourceSets.named("r52") {
         "**/HumanByteSizeCodec.kt", "**/DatastoreSchemaMigrationChain.kt", "**/PredictiveBackOverlayStack.kt", "**/LocalFrameJankHistogram.kt",
         "**/SegmentedLruStorageQuotaGovernor.kt", "**/SqliteWalFrameIntegrityVerifier.kt", "**/WcagTargetSpacingFocusAuditor.kt", "**/BoundedXml.kt",
         "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt",
-        "**/SpillSheetEngine.kt", "**/PptxSlideDeck.kt", "**/OoxmlSparklineEngine.kt", "**/DocxContentControlBinder.kt",
+        "**/BoundedZip.kt", "**/SpillSheetEngine.kt", "**/PptxSlideDeck.kt", "**/OoxmlSparklineEngine.kt", "**/DocxContentControlBinder.kt",
         "**/XlsxAutoFilterEvaluator.kt", "**/SlideShapeSnapDistributor.kt", "**/OdfMasterPageHeaderFooterEngine.kt", "**/OdfTrackedChangesRedlineEngine.kt",
         "**/LokCommandStateSynchronizer.kt", "**/PdfBookmarkOutlineWriter.kt", "**/PdfAcroFormFieldFiller.kt", "**/PdfBookletImpositionPlanner.kt",
         "**/IsoHeifAvifContainerProbe.kt", "**/Epub33PackageManifestBuilder.kt", "**/TextureAtlasShelfPacker.kt", "**/PsdSeparableBlendCompositor.kt",
@@ -1577,6 +1577,69 @@ tasks.register<JavaExec>("r57Contracts") {
     classpath = r57.runtimeClasspath
     mainClass.set("dev.fusion.testing.R57Checks")
     args(rootProject.file("testing/build/r57/artifacts").absolutePath)
+}
+
+// R72: real Office readers over independently constructed ZIP boundaries; no Android claim.
+val r72Zip by sourceSets.creating
+kotlin.sourceSets.named("r72Zip") { kotlin.srcDir("src/r72zip/kotlin") }
+dependencies { add(r72Zip.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r72OfficeZipSeed") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OfficeZipProbe")
+    args("seed", rootProject.file("testing/build/r72zip").absolutePath)
+    doFirst { rootProject.file("testing/build/r72zip").mkdirs() }
+}
+tasks.register<JavaExec>("r72OfficeZipContracts") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OfficeZipProbe")
+    maxHeapSize = "256m"
+    args("read", rootProject.file("testing/build/r72zip").absolutePath)
+}
+tasks.register<JavaExec>("r72OoxmlZipSeed") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OoxmlZipProbe")
+    args("seed", rootProject.file("testing/build/r72ooxml").absolutePath)
+    doFirst { rootProject.file("testing/build/r72ooxml").mkdirs() }
+}
+tasks.register<JavaExec>("r72OoxmlZipContracts") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OoxmlZipProbe")
+    maxHeapSize = "512m"
+    args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
+}
+
+// R72: the shared bounded ZIP reader inside four core readers; real XLSX fixtures.
+val r72Core by sourceSets.creating
+kotlin.sourceSets.named("r72Core") { kotlin.srcDir("src/r72core/kotlin") }
+dependencies { add(r72Core.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r72CoreZipContracts") {
+    dependsOn(r72Core.classesTaskName)
+    classpath = r72Core.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72CoreZipProbe")
+    maxHeapSize = "512m"
+    args("read", rootProject.file("testing/build/r72core").absolutePath)
+}
+
+// R72: plain Writer boundary probe in a bounded heap, separate from the Android app.
+val r72Writer by sourceSets.creating
+kotlin.sourceSets.named("r72Writer") { kotlin.srcDir("src/r72writer/kotlin") }
+dependencies { add(r72Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r72WriterBoundaries") {
+    dependsOn(r72Writer.classesTaskName)
+    classpath = r72Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72WriterResourceProbe")
+    args("boundaries")
+}
+tasks.register<JavaExec>("r72WriterResource") {
+    dependsOn(r72Writer.classesTaskName)
+    classpath = r72Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72WriterResourceProbe")
+    maxHeapSize = "80m"
+    args("oversized", (25 * 1024 * 1024).toString())
 }
 
 // R58: bounded, revision-bound text-grid paste; reader and Android checks are separate.

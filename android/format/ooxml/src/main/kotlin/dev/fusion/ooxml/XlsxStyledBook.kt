@@ -25,6 +25,10 @@ object XlsxStyledBook {
     const val SCOPE =
         "Styled ECMA-376 SpreadsheetML .xlsx writer + reader (xl/styles.xml numFmts/fonts/fills/borders, frozen panes, definedNames, column widths, formula cells); pivotCaches and VBA vbaProject.bin out of scope."
 
+    const val MAX_ARCHIVE_BYTES = 16 * 1024 * 1024
+    const val MAX_PART_BYTES = 8 * 1024 * 1024
+    const val MAX_EXPANDED_BYTES = 32L * 1024 * 1024
+    const val MAX_ENTRIES = 2_048
     const val MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     const val REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     const val PKG_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
@@ -125,14 +129,16 @@ object XlsxStyledBook {
     }
 
     fun read(bytes: ByteArray): WorkbookSpec {
-        val entries = linkedMapOf<String, ByteArray>()
-        ZipInputStream(ByteArrayInputStream(bytes), StandardCharsets.UTF_8).use { zis ->
-            while (true) {
-                val entry = zis.nextEntry ?: break
-                require(!entry.name.contains("..") && !entry.name.endsWith("vbaProject.bin", ignoreCase = true)) {
-                    "Refusing unsafe/macro XLSX entry: ${entry.name}"
-                }
-                entries[entry.name] = zis.readBytes()
+        val entries = BoundedZip.read(
+            bytes = bytes,
+            archiveBytes = MAX_ARCHIVE_BYTES,
+            partBytes = MAX_PART_BYTES,
+            expandedBytes = MAX_EXPANDED_BYTES,
+            entries = MAX_ENTRIES,
+            describe = "XLSX",
+        ) { name ->
+            require(!name.contains("..") && !name.endsWith("vbaProject.bin", ignoreCase = true)) {
+                "Refusing unsafe/macro XLSX entry: $name"
             }
         }
         val styles = entries["xl/styles.xml"]?.let { parseStyles(BoundedXml.parse(it)) } ?: listOf(CellStyle())

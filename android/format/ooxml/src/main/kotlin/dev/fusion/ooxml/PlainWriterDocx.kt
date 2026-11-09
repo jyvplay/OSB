@@ -12,6 +12,10 @@ object PlainWriterDocx {
     const val MAX_OUTPUT_BYTES = 2 * 1024 * 1024
 
     fun write(text: String): ByteArray {
+        // Valid UTF-8 needs at least one byte per UTF-16 code unit, so a longer
+        // string cannot meet the byte budget: refuse before XML validation or
+        // encoding allocates work for input that must be rejected anyway.
+        require(text.length <= MAX_TEXT_BYTES) { "DOCX export accepts at most 128 KiB of UTF-8 text" }
         OfficeSheetDraft.validateXml(text)
         require(OfficeSheetDraft.utf8(text).size <= MAX_TEXT_BYTES) { "DOCX export accepts at most 128 KiB of UTF-8 text" }
         val normalized = text.replace("\r\n", "\n").replace('\r', '\n')

@@ -152,28 +152,17 @@ object DocxRichDocument {
 
     fun read(bytes: ByteArray): RichDoc {
         require(bytes.size <= MAX_ZIP_BYTES) { "DOCX exceeds MAX_ZIP_BYTES ($MAX_ZIP_BYTES)" }
-        val entries = linkedMapOf<String, ByteArray>()
-        var totalOut = 0
-        ZipInputStream(ByteArrayInputStream(bytes), StandardCharsets.UTF_8).use { zis ->
-            while (true) {
-                val entry = zis.nextEntry ?: break
-                val name = entry.name
-                require(!name.contains("..") && !name.startsWith("/")) { "Unsafe DOCX entry path: $name" }
-                require(!name.endsWith("vbaProject.bin", ignoreCase = true)) {
-                    "Refusing macro-enabled Word package entry: $name"
-                }
-                val buf = ByteArrayOutputStream()
-                val tmp = ByteArray(4096)
-                while (true) {
-                    val n = zis.read(tmp)
-                    if (n < 0) break
-                    totalOut += n
-                    require(buf.size() + n <= MAX_PART_BYTES && totalOut <= MAX_ZIP_BYTES) {
-                        "DOCX XML decompression exceeds bounded cap"
-                    }
-                    buf.write(tmp, 0, n)
-                }
-                entries[name] = buf.toByteArray()
+        val entries = BoundedZip.read(
+            bytes = bytes,
+            archiveBytes = MAX_ZIP_BYTES,
+            partBytes = MAX_PART_BYTES,
+            expandedBytes = MAX_ZIP_BYTES.toLong(),
+            entries = 1_024,
+            describe = "DOCX",
+        ) { name ->
+            require(!name.contains("..") && !name.startsWith("/")) { "Unsafe DOCX entry path: $name" }
+            require(!name.endsWith("vbaProject.bin", ignoreCase = true)) {
+                "Refusing macro-enabled Word package entry: $name"
             }
         }
 
@@ -619,14 +608,14 @@ object DocxRichDocument {
     }
 
     fun inspectSectionsAndBookmarks(docxBytes: ByteArray): MultiSectionInspection {
-        val entries = LinkedHashMap<String, ByteArray>()
-        ZipInputStream(ByteArrayInputStream(docxBytes), StandardCharsets.UTF_8).use { zis ->
-            var e = zis.nextEntry
-            while (e != null) {
-                entries[e.name] = zis.readBytes()
-                e = zis.nextEntry
-            }
-        }
+        val entries = BoundedZip.read(
+            bytes = docxBytes,
+            archiveBytes = MAX_ZIP_BYTES,
+            partBytes = MAX_PART_BYTES,
+            expandedBytes = MAX_ZIP_BYTES.toLong(),
+            entries = 1_024,
+            describe = "DOCX",
+        )
         val docRoot = BoundedXml.parse(entries["word/document.xml"] ?: error("Missing word/document.xml"))
         val body = docRoot.firstChild("body") ?: error("Missing w:body")
         val sectNodes = ArrayList<BoundedXml.Node>()

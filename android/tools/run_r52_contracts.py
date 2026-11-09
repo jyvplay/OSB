@@ -68,6 +68,7 @@ JARS: list[tuple[str, list[str], list[str]]] = [
         "feature/accessibility/src/main/kotlin/dev/fusion/a11y/WcagTargetSpacingFocusAuditor.kt",
     ]),
     ("r52_office_formats.jar", [], [
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/ColLetters.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetRange.kt",
