@@ -6,11 +6,11 @@ Status: **host-verified only**. No Excel, LibreOffice, Word, Android device, emu
 
 | Artifact | Size | Role |
 |---|---|---|
-| `format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt` | +549 lines | 37 new pure-function arms in `evalEssential`, dispatched before the legacy chain; wildcard text criteria inside `matchesCriteria`; `NORM.INV` refinement; `DAYS360` NASD/European end-of-month rules |
+| `format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt` | +900 lines | 39 new pure-function arms in `evalEssential` (37 essentials + `ISREF`/`AGGREGATE`), 4 dynamic-array functions (`SORT`/`SORTBY`/`UNIQUE`/`FILTER`) with elementwise operator broadcast for array arguments, wildcard text criteria in `matchesCriteria`, `NORM.INV` refinement, `DAYS360` NASD/European end-of-month rules |
 | `format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumberFormatRender.kt` | 556 lines (new) | ECMA-376 number/text/date/scientific renderer: section selection, colour/condition/elapsed-time bracket handling, digit and grouping layout, scaling commas, percent, `E+`/`E-`, date/time tokens, literals/escapes/padding |
 | `format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumFmtSections.kt` | unchanged | structure-only splitter the renderer consumes |
 
-New functions (37): ROUNDUP, ROUNDDOWN, TRUNC, LOG, PRODUCT, REPT, REPLACE, SEARCH, VALUE, TEXT, TIME, HOUR, MINUTE, SECOND, DATEVALUE, DAYS, DAYS360, YEARFRAC, WEEKNUM, ISNA, ISNONTEXT, ISEVEN, ISODD, NA, ERROR.TYPE, TYPE, COUNTBLANK, STDEV.S, STDEV.P, VAR.S, VAR.P, NORM.INV, BINOM.INV, MODE.SNGL, MAXIFS, MINIFS, LOOKUP. `ESSENTIAL_NAMES` is the single source of truth for the set; a guard test fails if a name lacks an arm or the set drifts.
+New scalar functions (39): ROUNDUP, ROUNDDOWN, TRUNC, LOG, PRODUCT, REPT, REPLACE, SEARCH, VALUE, TEXT, TIME, HOUR, MINUTE, SECOND, DATEVALUE, DAYS, DAYS360, YEARFRAC, WEEKNUM, ISNA, ISNONTEXT, ISEVEN, ISODD, NA, ERROR.TYPE, TYPE, COUNTBLANK, STDEV.S, STDEV.P, VAR.S, VAR.P, NORM.INV, BINOM.INV, MODE.SNGL, MAXIFS, MINIFS, LOOKUP, ISREF, AGGREGATE. New dynamic-array functions (4): SORT, SORTBY, UNIQUE, FILTER, dispatched through `tryEvalDynamicGridCall` so their full spilled grid is compared, with `A1:A6>20`-style masks evaluated elementwise. `ESSENTIAL_NAMES` is the single source of truth for the scalar set; a guard test fails if a name lacks an arm or the set drifts.
 
 ## A. Formal model
 
@@ -87,11 +87,11 @@ Open interface: whether these formulas and formats produce Excel-identical resul
 | Check | Result |
 |---|---|
 | `kotlinc -Werror` over archive+ooxml+probe | exit 0 |
-| Oracle corpus | **311 cases, 0 mismatches** |
-| Third engine | **213 compared, 9 declared differences, 98 not representable, 0 unexpected** |
-| Wiring/negative-control tests | **10 passed** |
+| Oracle corpus | **347 cases, 0 mismatches** (including whole spilled grids for the 4 array functions) |
+| Third engine | **228 compared, 12 declared differences, 119 not representable, 0 unexpected** |
+| Wiring/negative-control tests | **11 passed** |
 | R46 / R47 / R48 / R55 | 885 / 2,393 / 3,861 / 1,054 (unchanged) |
-| Full host discovery | **1,667 tests, 0 failures, 0 errors**, 15 pre-existing optional-dependency skips |
+| Full host discovery | **1,668 tests, 0 failures, 0 errors**, 15 pre-existing optional-dependency skips |
 | `module_testability.py --check` | 50/50 narrow subsets (100 %), 0/50 full-spec (0 %) |
 | `native_source_audit.py --check` | 231 requirements, 36 obligations |
 
@@ -105,6 +105,9 @@ Open interface: whether these formulas and formats produce Excel-identical resul
 6. `DAYS360` ignored both end-of-month rules; `YEARFRAC` basis 0 and 4 inherited the error.
 7. `NORM.INV` carried a ~1e-9 error from Acklam's approximation; one Halley step against the regularized incomplete gamma cuts it to double precision.
 8. Oracle-side: sign placement for single- and two-section formats, and unescaped quotes in generated `TEXT` formulas.
+9. `SORT` accepted a sort index beyond the array width because rows and columns were conflated.
+10. `FILTER` refused an inline mask such as `C1:C6>25`; dynamic-array arguments now evaluate operators elementwise with scalar broadcast.
+11. `AGGREGATE` functions 8 and 10 were checked against a third engine that swaps STDEV.S with STDEV.P; the engine follows Microsoft's table (8 = STDEV.S, 10 = VAR.P) and the difference is declared.
 
 ## I. Repairs re-run all gates
 
@@ -112,6 +115,6 @@ After each repair the oracle corpus, the third-engine differential, the guard te
 
 ## J. Honest stopping point
 
-Stopped before: Android compilation of the new source set, any device/emulator run, visual inspection, Excel or LibreOffice recalculation, locale and currency behaviour, fraction/accounting formats, `SORT`/`SORTBY`/`UNIQUE`/`FILTER`/`RANDARRAY`, `AGGREGATE`, `FORMULATEXT`, `ISREF`, and provider/durability behaviour.
+Stopped before: Android compilation of the new source set, any device/emulator run, visual inspection, Excel or LibreOffice recalculation, locale and currency behaviour, fraction/accounting formats, `RANDARRAY`, `SEQUENCE` overflow limits, `AGGREGATE` functions 12–19 (LARGE/SMALL/PERCENTILE/QUARTILE), `FORMULATEXT` (the evaluator does not retain source text), and provider/durability behaviour. `FILTER` with no matches returns `#N/A` because `#CALC!` is outside this kernel's declared error vocabulary; that deviation is deliberate and recorded here.
 
 Next highest-information test: run `:testing:r73FormulaContracts` plus the oracle/third-engine comparisons inside the CI office lane on this exact revision, then replace the third engine with an actual Excel-or-LibreOffice recalculation of the same 311 formulas — that is the only artifact that can promote any of this from "two independent implementations agree" to "matches the reference implementation".

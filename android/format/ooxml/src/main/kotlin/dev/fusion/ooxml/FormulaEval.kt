@@ -1424,9 +1424,35 @@ object FormulaEval {
 
     private fun tryEvalDynamicGridExpr(e: Expr, env: Map<String, CellValue>): List<List<CellValue>>? = when (e) {
         is Expr.RangeRef, is Expr.ArrayLit -> exprTo2DGrid(e, env)
+        is Expr.Binary -> broadcastGrid(e, env)
         is Expr.Call -> tryEvalDynamicGridCall(e, env)
         is Expr.Invoke -> evalInvokeGrid(e.callee, e.args, env)
         else -> null
+    }
+
+    /**
+     * Elementwise operator application for dynamic-array arguments, e.g. the include mask of
+     * FILTER(A1:A6, A1:A6 > 20). Scalars broadcast against a single row or column; mismatched
+     * shapes yield a single #VALUE! cell rather than a silent truncation.
+     */
+    private fun broadcastGrid(e: Expr.Binary, env: Map<String, CellValue>): List<List<CellValue>>? {
+        val left = tryEvalDynamicGridExpr(e.left, env) ?: listOf(listOf(evalExpr(e.left, env)))
+        val right = tryEvalDynamicGridExpr(e.right, env) ?: listOf(listOf(evalExpr(e.right, env)))
+        if (left.isEmpty() || right.isEmpty() || left[0].isEmpty() || right[0].isEmpty()) {
+            return listOf(listOf(CellValue.Err(CellErr.Err.VALUE)))
+        }
+        val rowsCompatible = left.size == 1 || right.size == 1 || left.size == right.size
+        val colsCompatible = left[0].size == 1 || right[0].size == 1 || left[0].size == right[0].size
+        if (!rowsCompatible || !colsCompatible) return listOf(listOf(CellValue.Err(CellErr.Err.VALUE)))
+        val rows = maxOf(left.size, right.size)
+        val cols = maxOf(left[0].size, right[0].size)
+        return List(rows) { r ->
+            List(cols) { c ->
+                val l = left[if (left.size == 1) 0 else r][if (left[0].size == 1) 0 else c]
+                val rr = right[if (right.size == 1) 0 else r][if (right[0].size == 1) 0 else c]
+                evalBinary(e.op, l, rr)
+            }
+        }
     }
 
     private fun tryEvalDynamicGridCall(call: Expr.Call, env: Map<String, CellValue>): List<List<CellValue>>? {
@@ -1441,6 +1467,7 @@ object FormulaEval {
             "OUTERPRODUCT", "CUMSUM", "DIFFARRAY", "MOVINGAVERAGE", "ZSCOREGRID", "DIAGONAL" -> evalR52Grid(name, call.args, env)
             "HANKEL", "TOEPLITZ", "VANDERMONDE", "KRONECKER", "CONVOLVE1D", "PARETOGRID" -> evalR53Grid(name, call.args, env)
             "SEQUENCE", "TRANSPOSE" -> evalEmbeddedSequenceOrTranspose(name, call.args, env)
+            "SORT", "SORTBY", "UNIQUE", "FILTER" -> evalR73Grid(name, call.args, env)
             else -> {
                 val lexicalClosure = runtimeState.get().richScopes[normalizeVarName(call.name)]
                 if (lexicalClosure is RichBinding.Closure) invokeClosureGrid(lexicalClosure, call.args, env)
@@ -3720,7 +3747,7 @@ object FormulaEval {
         "TIME", "HOUR", "MINUTE", "SECOND", "DATEVALUE", "DAYS", "DAYS360", "YEARFRAC", "WEEKNUM",
         "ISNA", "ISNONTEXT", "ISEVEN", "ISODD", "NA", "ERROR.TYPE", "TYPE", "COUNTBLANK",
         "STDEV.S", "STDEV.P", "VAR.S", "VAR.P", "NORM.INV", "BINOM.INV", "MODE.SNGL",
-        "MAXIFS", "MINIFS", "LOOKUP",
+        "MAXIFS", "MINIFS", "LOOKUP", "ISREF", "AGGREGATE",
     )
 
     // ---- R73 essentials: arithmetic, text, date, information, statistics, criteria, lookup ----
@@ -4096,6 +4123,60 @@ object FormulaEval {
             }
             CellValue.Num(best ?: 0.0)
         }
+        "ISREF" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val ref = args[0]
+            val singleCellRange = ref is Expr.RangeRef && ref.range.top == ref.range.bottom
+            CellValue.Bool(ref is Expr.CellRef || singleCellRange || ref is Expr.SymbolRef)
+        }
+        "AGGREGATE" -> {
+            // Function numbers 1..11 with options 0..7. Hidden-row and nested-subtotal options are
+            // recorded but cannot change a single-sheet, visibility-free environment.
+            if (args.size < 3) return CellValue.Err(CellErr.Err.VALUE)
+            val fnV = evalScalarAsNum(evalExpr(args[0], env)); if (fnV is CellValue.Err) return fnV
+            val optV = evalScalarAsNum(evalExpr(args[1], env)); if (optV is CellValue.Err) return optV
+            val fn = (fnV as CellValue.Num).value.toInt()
+            val option = (optV as CellValue.Num).value.toInt()
+            if (fn !in 1..11) return CellValue.Err(CellErr.Err.VALUE)
+            if (option !in 0..7) return CellValue.Err(CellErr.Err.VALUE)
+            val ignoreErrors = option % 2 == 0
+            val values = ArrayList<Double>()
+            for (index in 2 until args.size) {
+                val values2D = exprTo2DGrid(args[index], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                for (row in values2D) for (cell in row) {
+                    when (cell) {
+                        is CellValue.Num -> values.add(cell.value)
+                        is CellValue.Err -> if (!ignoreErrors) return cell
+                        is CellValue.Text, CellValue.Empty, is CellValue.Bool -> Unit
+                    }
+                }
+            }
+            val result = when (fn) {
+                1 -> if (values.isEmpty()) return CellValue.Err(CellErr.Err.DIV0) else values.sum() / values.size
+                2 -> values.size.toDouble()
+                3 -> values.size.toDouble()
+                4 -> if (values.isEmpty()) 0.0 else values.max()
+                5 -> if (values.isEmpty()) 0.0 else values.min()
+                6 -> values.fold(1.0) { acc, v -> acc * v }
+                7, 8 -> {
+                    if (values.size < 2) return CellValue.Err(CellErr.Err.DIV0)
+                    val mean = values.sum() / values.size
+                    val squares = values.sumOf { (it - mean) * (it - mean) }
+                    val variance = squares / (values.size - 1)
+                    if (fn == 8) kotlin.math.sqrt(variance) else variance
+                }
+                9 -> values.sum()
+                10, 11 -> {
+                    if (values.size < 2) return CellValue.Err(CellErr.Err.DIV0)
+                    val mean = values.sum() / values.size
+                    val squares = values.sumOf { (it - mean) * (it - mean) }
+                    val variance = squares / values.size
+                    if (fn == 11) kotlin.math.sqrt(variance) else variance
+                }
+                else -> return CellValue.Err(CellErr.Err.VALUE)
+            }
+            CellValue.Num(normalizeNegZero(result))
+        }
         "LOOKUP" -> {
             if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
             val needle = evalExpr(args[0], env); if (needle is CellValue.Err) return needle
@@ -4278,6 +4359,149 @@ object FormulaEval {
         val offset = (jan1.dayOfWeek.value - firstDay.value + 7) % 7
         val dayOfYear = date.dayOfYear
         return (dayOfYear + offset - 1) / 7 + 1
+    }
+
+    /** R73 dynamic-array batch: SORT/SORTBY/UNIQUE/FILTER with explicit, documented limits. */
+    private fun evalR73Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>>? {
+        fun fail(kind: CellErr.Err) = listOf(listOf(CellValue.Err(kind)))
+        fun gridOf(index: Int): List<List<CellValue>>? =
+            if (index >= args.size || args[index] == Expr.OmittedArg) null
+            else tryEvalDynamicGridExpr(args[index], env)
+        fun numberArg(index: Int, fallback: Double): Any {
+            if (index >= args.size || args[index] == Expr.OmittedArg) return fallback
+            val v = evalScalarAsNum(evalExpr(args[index], env))
+            return if (v is CellValue.Err) v else (v as CellValue.Num).value
+        }
+        fun boolArg(index: Int, fallback: Boolean): Any {
+            if (index >= args.size || args[index] == Expr.OmittedArg) return fallback
+            val v = evalAsBool(evalExpr(args[index], env))
+            return if (v is CellValue.Err) v else (v as CellValue.Bool).value
+        }
+
+        return when (name) {
+            "SORT" -> {
+                val source = gridOf(0) ?: return fail(CellErr.Err.VALUE)
+                if (source.isEmpty() || source[0].isEmpty()) return fail(CellErr.Err.VALUE)
+                val indexValue = numberArg(1, 1.0); if (indexValue is CellValue.Err) return listOf(listOf(indexValue))
+                val orderValue = numberArg(2, 1.0); if (orderValue is CellValue.Err) return listOf(listOf(orderValue))
+                val byColValue = boolArg(3, false); if (byColValue is CellValue.Err) return listOf(listOf(byColValue))
+                val sortIndex = (indexValue as Double).toInt()
+                val order = (orderValue as Double).toInt()
+                if (order != 1 && order != -1) return fail(CellErr.Err.VALUE)
+                val byCol = byColValue as Boolean
+                // SORT by row indexes columns; SORT by column indexes rows.
+                val limit = if (byCol) source.size else source[0].size
+                if (sortIndex < 1 || sortIndex > limit) return fail(CellErr.Err.VALUE)
+                if (byCol) {
+                    val columns = source[0].indices.map { c -> source.map { row -> row[c] } }
+                    val ordered = sortRows(columns, sortIndex - 1, order)
+                    val height = ordered.size
+                    return List(source.size) { r -> List(height) { c -> ordered[c][r] } }
+                }
+                sortRows(source, sortIndex - 1, order)
+            }
+            "SORTBY" -> {
+                val source = gridOf(0) ?: return fail(CellErr.Err.VALUE)
+                if (source.isEmpty()) return fail(CellErr.Err.VALUE)
+                if (args.size < 3) return fail(CellErr.Err.VALUE)
+                val keys = ArrayList<Pair<List<CellValue>, Int>>()
+                var index = 1
+                while (index < args.size) {
+                    val keyGrid = gridOf(index) ?: return fail(CellErr.Err.VALUE)
+                    val key = flattenSingleVector(keyGrid) ?: return fail(CellErr.Err.VALUE)
+                    if (key.size != source.size) return fail(CellErr.Err.VALUE)
+                    val orderValue = numberArg(index + 1, 1.0)
+                    if (orderValue is CellValue.Err) return listOf(listOf(orderValue))
+                    // A trailing order argument is only consumed when it is a plain 1/-1 literal position.
+                    val hasOrder = index + 1 < args.size && args[index + 1] != Expr.OmittedArg
+                    val order = if (hasOrder) (orderValue as Double).toInt() else 1
+                    if (order != 1 && order != -1) return fail(CellErr.Err.VALUE)
+                    keys.add(key to order)
+                    index += if (hasOrder) 2 else 1
+                }
+                val rows = source.indices.toMutableList()
+                rows.sortWith { a, b ->
+                    for ((key, order) in keys) {
+                        val cmp = compareSpreadsheetValues(key[a], key[b])
+                        if (cmp != 0) return@sortWith cmp * order
+                    }
+                    0
+                }
+                rows.map { source[it] }
+            }
+            "UNIQUE" -> {
+                val source = gridOf(0) ?: return fail(CellErr.Err.VALUE)
+                if (source.isEmpty()) return fail(CellErr.Err.VALUE)
+                val byColValue = boolArg(1, false); if (byColValue is CellValue.Err) return listOf(listOf(byColValue))
+                val exactlyOnceValue = boolArg(2, false); if (exactlyOnceValue is CellValue.Err) return listOf(listOf(exactlyOnceValue))
+                val byCol = byColValue as Boolean
+                val exactlyOnce = exactlyOnceValue as Boolean
+                val units = if (byCol) source[0].indices.map { c -> source.map { row -> row[c] } }
+                            else source.map { it.toList() }
+                val seen = LinkedHashMap<String, Pair<List<CellValue>, Int>>()
+                for (unit in units) {
+                    val key = unit.joinToString("\u0000") { cellKey(it) }
+                    val existing = seen[key]
+                    seen[key] = if (existing == null) unit to 1 else existing.first to existing.second + 1
+                }
+                val kept = seen.values.filter { !exactlyOnce || it.second == 1 }.map { it.first }
+                if (kept.isEmpty()) return fail(CellErr.Err.NA)
+                if (byCol) {
+                    val height = kept.size
+                    return List(source.size) { r -> List(height) { c -> kept[c][r] } }
+                }
+                kept
+            }
+            "FILTER" -> {
+                val source = gridOf(0) ?: return fail(CellErr.Err.VALUE)
+                if (source.isEmpty() || source[0].isEmpty()) return fail(CellErr.Err.VALUE)
+                val includeGrid = gridOf(1) ?: return fail(CellErr.Err.VALUE)
+                val include = includeGrid.flatten()
+                val byRow = includeGrid.size == source.size && includeGrid.all { it.size == 1 }
+                val byColumn = includeGrid.size == 1 && includeGrid[0].size == source[0].size
+                if (!byRow && !byColumn) return fail(CellErr.Err.VALUE)
+                val keep = BooleanArray(include.size) { i ->
+                    when (val flag = include[i]) {
+                        is CellValue.Bool -> flag.value
+                        is CellValue.Num -> flag.value != 0.0
+                        else -> false
+                    }
+                }
+                include.firstOrNull { it is CellValue.Err }?.let { return listOf(listOf(it)) }
+                val selected = if (byRow) source.filterIndexed { r, _ -> keep[r] }
+                               else {
+                                   val columns = source[0].indices.filter { c -> keep[c] }
+                                   if (columns.isEmpty()) emptyList() else source.map { row -> columns.map { row[it] } }
+                               }
+                if (selected.isEmpty()) {
+                    // #CALC! is outside this kernel's error vocabulary, so an empty result without
+                    // an if_empty argument returns #N/A; see docs/R73-RESULTS.md.
+                    val empty = if (args.size >= 3 && args[2] != Expr.OmittedArg) evalExpr(args[2], env)
+                                else CellValue.Err(CellErr.Err.NA)
+                    return listOf(listOf(empty))
+                }
+                selected
+            }
+            else -> null
+        }
+    }
+
+    private fun sortRows(rows: List<List<CellValue>>, keyIndex: Int, order: Int): List<List<CellValue>> {
+        val indexed = rows.indices.toMutableList()
+        indexed.sortWith { a, b ->
+            val cmp = compareSpreadsheetValues(rows[a].getOrElse(keyIndex) { CellValue.Empty },
+                rows[b].getOrElse(keyIndex) { CellValue.Empty })
+            if (cmp != 0) cmp * order else 0
+        }
+        return indexed.map { rows[it] }
+    }
+
+    private fun cellKey(value: CellValue): String = when (value) {
+        CellValue.Empty -> "e"
+        is CellValue.Num -> "n:" + value.value
+        is CellValue.Text -> "t:" + value.value.lowercase()
+        is CellValue.Bool -> "b:" + value.value
+        is CellValue.Err -> "x:" + value.error.literal
     }
 
     private fun evalDateFunction(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {

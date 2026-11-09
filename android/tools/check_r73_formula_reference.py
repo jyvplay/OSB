@@ -36,6 +36,7 @@ SKIP_ID_PREFIXES = (
     'value-', 'text-case-', 'text-x-', 'text-nested', 'text-text-value', 'text-at-format',
     'datevalue-', 'time-', 'weeknum-', 'weeknum-x-', 'days-fractional',
     'norm-inv-x', 'composition-text',
+    'grid-',  # dynamic-array results: formualizer reports only the top-left cell
 )
 DECLARED_DIFFERENCES = {
     # formualizer 0.13.0 limitations confirmed by direct probe on 2026-10-29:
@@ -49,6 +50,9 @@ DECLARED_DIFFERENCES = {
     'text-bad-format',       # TEXT refuses unimplemented fraction formats with #VALUE!
     'lookup-shape-mismatch', # LOOKUP requires equal-shape vectors and yields #N/A otherwise
     'yearfrac-multi',        # basis 1 across years uses the average-year denominator
+    'agg-stdev',             # AGGREGATE function 8 is STDEV.S; formualizer returns the population value
+    'agg-varp',              # AGGREGATE function 10 is VAR.P; formualizer returns the sample value
+    'isref-range-multi',     # ISREF over a multi-cell range is FALSE in SpreadsheetML
 }
 
 
@@ -77,7 +81,8 @@ def normalize(value) -> tuple[str, str] | None:
         if kind == 'Error':
             literals = {'Div': '#DIV/0!', 'Value': '#VALUE!', 'Num': '#NUM!', 'Name': '#NAME?',
                         'Ref': '#REF!', 'NA': '#N/A', 'Na': '#N/A', 'Null': '#NULL!'}
-            return ('E', literals.get(value.get('kind', ''), '#?'))
+            literal = literals.get(value.get('kind', ''))
+            return None if literal is None else ('E', literal)
         if kind in ('Text', 'Boolean', 'Number'):
             inner = value.get('value')
             return normalize(inner)
@@ -90,8 +95,10 @@ def observations(path: Path) -> dict[str, str]:
     for line in path.read_text(encoding='utf-8').splitlines():
         if not line:
             continue
-        case_id, _, value = line.partition('|')
-        seen[case_id] = value
+        fields = line.split('|')
+        if len(fields) != 3:
+            raise ValueError('malformed observation ' + line)
+        seen[fields[0]] = fields[1]
     return seen
 
 

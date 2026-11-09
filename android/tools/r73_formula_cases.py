@@ -843,6 +843,82 @@ def formula_cases():
     add('composition-maxmin', '=MAXIFS(C1:C6,D1:D6,"b")-MINIFS(C1:C6,D1:D6,"b")', n(10.0))
     add('propagation-log-text', '=1+LOG("a",2)', e('#VALUE!'))
     add('propagation-days-text', '=DAYS("x",E1)', e('#VALUE!'))
+
+    # ---- dynamic arrays and aggregation: SORT/SORTBY/UNIQUE/FILTER/AGGREGATE/ISREF ----
+    def num_cell(value: float) -> tuple[str, float]:
+        return ('N', float(value))
+
+    def text_cell(value: str) -> tuple[str, str]:
+        return ('T', value)
+
+    def grid_value(rows_of_cells) -> tuple[str, str]:
+        encoded = ';'.join(','.join(encode_cell(cell) for cell in row) for row in rows_of_cells)
+        return ('G', encoded)
+
+    def encode_cell(cell) -> str:
+        kind = cell[0]
+        if kind == 'N':
+            return 'N:' + repr(float(cell[1]))
+        if kind == 'T':
+            return 'T:' + cell[1].replace('\\', '\\\\').replace(',', '\\,').replace(';', '\\;')
+        if kind == 'B':
+            return 'B:' + ('true' if cell[1] else 'false')
+        if kind == 'E':
+            return 'E:' + cell[1]
+        return 'BLANK'
+
+    def add_grid(case_id: str, formula: str, rows_of_cells):
+        out.append((case_id, formula, grid_value(rows_of_cells), 0.0))
+
+    b_column = [NUMBERS[f'B{i}'] for i in range(1, 7)]
+    c_column = [NUMBERS[f'C{i}'] for i in range(1, 7)]
+    d_column = [TEXTS[f'D{i}'] for i in range(1, 6)]
+
+    def sort_units(units, key_index, order):
+        return sorted(units, key=lambda unit: unit[key_index] if isinstance(unit[key_index], float) else unit[key_index].lower()) if order == 1 else \
+               sorted(units, key=lambda unit: unit[key_index] if isinstance(unit[key_index], float) else unit[key_index].lower(), reverse=True)
+
+    add_grid('grid-sort-numbers', '=SORT(B1:B6)', [[num_cell(u[0])] for u in sort_units([[v] for v in b_column], 0, 1)])
+    add_grid('grid-sort-numbers-desc', '=SORT(B1:B6,1,-1)', [[num_cell(u[0])] for u in sort_units([[v] for v in b_column], 0, -1)])
+    add_grid('grid-sort-text', '=SORT(D1:D5)', [[text_cell(u[0])] for u in sort_units([[v] for v in d_column], 0, 1)])
+    add_grid('grid-sort-desc-text', '=SORT(D1:D5,1,-1)', [[text_cell(u[0])] for u in sort_units([[v] for v in d_column], 0, -1)])
+    add_grid('grid-sort-by-col', '=SORT(B1:B3,1,1,TRUE)', [[num_cell(u[0])] for u in sort_units([[v] for v in b_column[:3]], 0, 1)])
+    add('grid-sort-index-zero', '=SORT(B1:B6,0)', e('#VALUE!'))
+    add('grid-sort-bad-order', '=SORT(B1:B6,1,2)', e('#VALUE!'))
+    add('grid-sort-index-past', '=SORT(B1:B3,2)', e('#VALUE!'))
+    pairs = list(zip(b_column, c_column))
+    add_grid('grid-sortby-desc', '=SORTBY(B1:B6,C1:C6,-1)',
+             [[num_cell(pair[0])] for pair in sorted(pairs, key=lambda pair: pair[1], reverse=True)])
+    add_grid('grid-sortby-asc', '=SORTBY(B1:B6,C1:C6,1)',
+             [[num_cell(pair[0])] for pair in sorted(pairs, key=lambda pair: pair[1])])
+    add('grid-sortby-shape', '=SORTBY(B1:B6,C1:C5)', e('#VALUE!'))
+    unique_b = list(dict.fromkeys(b_column))
+    add_grid('grid-unique-numbers', '=UNIQUE(B1:B6)', [[num_cell(v)] for v in unique_b])
+    add_grid('grid-unique-text', '=UNIQUE(D1:D5)', [[text_cell(v)] for v in dict.fromkeys(d_column)])
+    once = [v for v in dict.fromkeys(d_column) if d_column.count(v) == 1]
+    add_grid('grid-unique-once', '=UNIQUE(D1:D5,FALSE,TRUE)', [[text_cell(v)] for v in once])
+    add_grid('grid-unique-once-one', '=UNIQUE(B1:B6,FALSE,TRUE)', [[num_cell(v)] for v in b_column if b_column.count(v) == 1])
+    add('grid-unique-none-once', '=UNIQUE(B2:B6,FALSE,TRUE)', e('#N/A'))
+    add_grid('grid-filter-gt', '=FILTER(C1:C6,C1:C6>25)', [[num_cell(v)] for v in c_column if v > 25])
+    add('grid-filtilter-empty', '=FILTER(C1:C6,C1:C6>100)', e('#N/A'))
+    add('grid-filter-default', '=FILTER(C1:C6,C1:C6>100,"none")', t('none'))
+    add('grid-filter-shape', '=FILTER(C1:C6,B1:B3)', e('#VALUE!'))
+    add('agg-sum', '=AGGREGATE(9,0,B1:B6)', n(sum(b_column)))
+    add('agg-average', '=AGGREGATE(1,0,B1:B6)', n(sum(b_column) / len(b_column)))
+    add('agg-max', '=AGGREGATE(4,0,B1:B6)', n(max(b_column)))
+    add('agg-min', '=AGGREGATE(5,0,B1:B6)', n(min(b_column)))
+    add('agg-count', '=AGGREGATE(2,0,B1:B6)', n(float(len(b_column))))
+    add('agg-product', '=AGGREGATE(6,0,B1:B6)', n(float(__import__('math').prod(b_column))))
+    add('agg-stdev', '=AGGREGATE(8,0,B1:B6)', n(statistics.stdev(b_column)), 1e-12)
+    add('agg-varp', '=AGGREGATE(10,0,B1:B6)', n(statistics.pvariance(b_column)), 1e-12)
+    add('agg-ignore-text-blank', '=AGGREGATE(9,0,A1:A6)', n(NUMBERS['A1'] + NUMBERS['A2']))
+    add('agg-bad-function', '=AGGREGATE(12,0,B1:B6)', e('#VALUE!'))
+    add('agg-bad-option', '=AGGREGATE(9,9,B1:B6)', e('#VALUE!'))
+    add('isref-cell', '=ISREF(B1)', b(True))
+    add('isref-range-single', '=ISREF(B1:B1)', b(True))
+    add('isref-range-multi', '=ISREF(B1:B2)', b(False))
+    add('isref-literal', '=ISREF(5)', b(False))
+    add('isref-text', '=ISREF("B1")', b(False))
     return out
 
 
@@ -884,17 +960,22 @@ def observations(path: Path) -> dict[str, str]:
     for line in path.read_text(encoding='utf-8').splitlines():
         if not line:
             continue
-        case_id, _, value = line.partition('|')
-        if not value:
+        fields = line.split('|')
+        if len(fields) != 3 or not fields[1] or not fields[2]:
             raise ValueError('malformed observation ' + line)
+        case_id, scalar, grid = fields
         if case_id in seen:
             raise ValueError('duplicate observation ' + case_id)
-        seen[case_id] = value
+        seen[case_id] = (scalar, grid)
     return seen
 
 
-def matches(observed: str, expected: dict[str, str]) -> bool:
+def matches(observed, expected: dict[str, str]) -> bool:
     kind, value = expected['kind'], expected['value']
+    if kind == 'G':
+        scalar, grid = observed
+        return grid == value
+    observed = observed[0]
     tol = float(expected['tolerance'])
     if kind == 'R':
         return observed.startswith('R:') and value in observed
@@ -930,7 +1011,7 @@ def verify(directory: Path) -> int:
     mismatches = [(case['id'], seen[case['id']], expected[case['id']])
                   for case in cases if not matches(seen[case['id']], expected[case['id']])]
     for case_id, actual, want in mismatches[:40]:
-        print(f'MISMATCH {case_id}: got {actual} want {want["kind"]}:{want["value"]}')
+        print(f'MISMATCH {case_id}: got {actual[0]} grid={actual[1]} want {want["kind"]}:{want["value"]}')
     if mismatches:
         print(f'{len(mismatches)} mismatches out of {len(cases)} cases')
         return 1

@@ -25,7 +25,7 @@ ESSENTIALS = {
     'TEXT', 'TIME', 'HOUR', 'MINUTE', 'SECOND', 'DATEVALUE', 'DAYS', 'DAYS360', 'YEARFRAC',
     'WEEKNUM', 'ISNA', 'ISNONTEXT', 'ISEVEN', 'ISODD', 'NA', 'ERROR.TYPE', 'TYPE',
     'COUNTBLANK', 'STDEV.S', 'STDEV.P', 'VAR.S', 'VAR.P', 'NORM.INV', 'BINOM.INV',
-    'MODE.SNGL', 'MAXIFS', 'MINIFS', 'LOOKUP',
+    'MODE.SNGL', 'MAXIFS', 'MINIFS', 'LOOKUP', 'ISREF', 'AGGREGATE',
 }
 
 
@@ -58,6 +58,16 @@ class WiringChecks(unittest.TestCase):
                 missing.append(path.name)
         self.assertEqual(missing, [], 'runners must add NumberFormatRender.kt and NumFmtSections.kt')
 
+    def test_dynamic_array_batch_is_wired_and_broadcasts(self):
+        source = FORMULA.read_text(encoding='utf-8')
+        self.assertIn('"SORT", "SORTBY", "UNIQUE", "FILTER" -> evalR73Grid(name, call.args, env)', source)
+        self.assertIn('private fun evalR73Grid(', source)
+        self.assertIn('is Expr.Binary -> broadcastGrid(e, call.args, env)'.replace(', call.args, env', ', env'), source)
+        self.assertIn('private fun broadcastGrid(', source)
+        self.assertIn('evalBinary(e.op, l, rr)', source)
+        # SORT indexes columns when sorting rows and rows when sorting by column.
+        self.assertIn('val limit = if (byCol) source.size else source[0].size', source)
+
     def test_renderer_is_used_by_the_text_function(self):
         source = FORMULA.read_text(encoding='utf-8')
         self.assertIn('NumberFormatRender.renderNumber', source)
@@ -77,7 +87,7 @@ class WiringChecks(unittest.TestCase):
 class CorpusChecks(unittest.TestCase):
     def test_cases_are_unique_and_well_formed(self):
         cases = r73_formula_cases.formula_cases()
-        self.assertGreaterEqual(len(cases), 300)
+        self.assertGreaterEqual(len(cases), 340)
         ids = [case[0] for case in cases]
         self.assertEqual(len(ids), len(set(ids)), 'duplicate case ids hide mismatches')
         for case_id, formula, *_ in cases:
@@ -103,8 +113,11 @@ class CorpusChecks(unittest.TestCase):
             def write(spoiled: str | None) -> None:
                 lines = []
                 for row in rows:
-                    value = 'n:999.0' if row[0] == spoiled else f'{row[1]}:{row[2]}'
-                    lines.append(f'{row[0]}|{value}')
+                    if row[0] == spoiled:
+                        value = 'n:999.0'
+                    else:
+                        value = row[2] if row[1] == 'G' else f'{row[1]}:{row[2]}'
+                    lines.append(f'{row[0]}|{value}|{value}')
                 candidate.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
             write(None)

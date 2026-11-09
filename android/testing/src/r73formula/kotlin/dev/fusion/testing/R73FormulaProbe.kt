@@ -24,18 +24,36 @@ object R73FormulaProbe {
             val id = fields[0]
             val formula = fields[1]
             count++
-            val value = try {
+            var scalar = ""
+            var gridText = ""
+            try {
                 val grid = FormulaEval.evaluateFormulaAsGrid(formula, env)
-                if (grid.size == 1 && grid[0].size == 1) encode(grid[0][0]) else "MULTI:" + grid.size + "x" + grid[0].size
+                scalar = if (grid.size == 1 && grid[0].size == 1) encode(grid[0][0])
+                         else "MULTI:" + grid.size + "x" + grid[0].size
+                gridText = encodeGrid(grid)
             } catch (e: IllegalArgumentException) {
-                "R:" + e.message
+                scalar = "R:" + e.message
+                gridText = "R"
             } catch (e: IllegalStateException) {
-                "R:" + e.message
+                scalar = "R:" + e.message
+                gridText = "R"
             }
-            report.append(id).append('|').append(value).append('\n')
+            report.append(id).append('|').append(scalar).append('|').append(gridText).append('\n')
         }
         File(directory, "candidate.txt").writeText(report.toString())
         println("R73 formula probe executed $count actual formulas; host-only")
+    }
+
+    private fun encodeGrid(grid: List<List<FormulaEval.CellValue>>): String =
+        grid.joinToString(";") { row -> row.joinToString(",") { escape(encode(it)) } }
+
+    private fun escape(text: String): String {
+        val out = StringBuilder()
+        for (ch in text) {
+            if (ch == '\\' || ch == ',' || ch == ';') out.append('\\')
+            out.append(ch)
+        }
+        return out.toString()
     }
 
     private fun encode(value: FormulaEval.CellValue): String = when (value) {
