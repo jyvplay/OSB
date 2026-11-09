@@ -43,10 +43,6 @@ jobs:
         run: python3 tools/r72_ooxml_zip_cases.py build testing/build/r72ooxml
       - name: Run the production import extractor over those fixtures
         run: bash tools/run_gradle_ci.sh contracts :testing:r72OoxmlZipContracts
-      - name: Prepare real workbooks for the shared bounded ZIP reader
-        run: python3 tools/r72_core_zip_cases.py build testing/build/r72core
-      - name: Run four core readers over those workbooks
-        run: bash tools/run_gradle_ci.sh contracts :testing:r72CoreZipContracts
       - name: Independent document readers and formula comparison (host-only, not bundled)
         run: |
           python3 -m pip install --user openpyxl==3.1.5 python-docx==1.2.0 formualizer==0.13.0
@@ -70,8 +66,13 @@ jobs:
           python3 tools/check_r64_csv_reference.py
           python3 tools/check_r72_office_zip_reference.py testing/build/r72zip
           python3 tools/r72_ooxml_zip_cases.py verify testing/build/r72ooxml
-          python3 tools/r72_core_zip_cases.py verify testing/build/r72core
           PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference test_r59_reference test_r59_writer_reference test_r60_writer_reference test_r60_sheet_reference test_r61_sheet_reference test_r62_range_reference test_r62_writer_reference test_r63_formula_reference test_r63_writer_reference test_r64_sheet_reference test_r64_formula_caches test_r64_writer_reference test_r64_csv_reference test_r64_office_case_gate test_r64_runners test_r64_integration_contracts test_r72_office_zip test_r72_ooxml_zip test_r72_writer_guard test_r72_core_zip -v
+      - name: Prepare real workbooks for the shared bounded ZIP reader
+        run: python3 tools/r72_core_zip_cases.py build testing/build/r72core
+      - name: Run four core readers over those workbooks
+        run: bash tools/run_gradle_ci.sh contracts :testing:r72CoreZipContracts
+      - name: Compare those readers against the pinned outcomes
+        run: python3 tools/r72_core_zip_cases.py verify testing/build/r72core
       - name: Enable KVM for the disposable managed emulator
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules

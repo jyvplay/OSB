@@ -8,6 +8,12 @@ from unittest import mock
 
 import r72_core_zip_cases as cases
 
+try:
+    import openpyxl  # noqa: F401
+    HAS_OPENPYXL = True
+except ImportError:  # The CI discovery step runs before the reference libraries are installed.
+    HAS_OPENPYXL = False
+
 ROOT = Path(__file__).resolve().parents[1]
 OOXML = ROOT / 'format/ooxml/src/main/kotlin/dev/fusion/ooxml'
 READERS = ('MultiSheetBook', 'XlsxStyledBook', 'PptxSlideDeck', 'DocxRichDocument')
@@ -59,6 +65,7 @@ class CoreZipGuards(unittest.TestCase):
                       (OOXML / 'XlsxStyledBook.kt').read_text(encoding='utf-8'))
         self.assertIn('const val MAX_ENTRIES = 2_048', (OOXML / 'PptxSlideDeck.kt').read_text(encoding='utf-8'))
 
+    @unittest.skipUnless(HAS_OPENPYXL, 'openpyxl seeds the fixtures; the CI reader step installs it')
     def test_fixtures_are_real_and_tamper_visible(self):
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
