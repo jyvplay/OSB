@@ -5714,7 +5714,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "a6569d1e6bd76ae05988be511f331699e6d340f8f14701f252c45fb88e8a6c7a"
+      "sha256": "deb9f1bd63084b20845e962cae764f01a9fde80831f9c2e397507469cc2f1709"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
@@ -5744,7 +5744,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "c9c714dc5cd64c813d3e937abe39b7cb386d5d2453be3d3bc7f66546a7625589"
+      "sha256": "242e0efda46ce59db2f9ef355fa1ca1bf0686e262efcf73d4e0ae97402b5588d"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt",
@@ -5852,7 +5852,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PlainWriterDocx.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "40f46bd3fe2d8c0518a30ddf7fe4260604792ee512a1378dde36a08b7743c37e"
+      "sha256": "5938d1218a869ef3daf3af1d09be340355ae180ab61d8a3787b16d7ae46337ea"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PptxMasterLayoutAnimationEngine.kt",

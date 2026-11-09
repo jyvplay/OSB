@@ -293,6 +293,7 @@ object FormulaXlsx {
 
     private fun readZipParts(zipBytes: ByteArray): Map<String, ByteArray> {
         val out = LinkedHashMap<String, ByteArray>()
+        val names = HashSet<String>()
         var totalExpanded = 0L
         ZipInputStream(ByteArrayInputStream(zipBytes)).use { zis ->
             var entries = 0
@@ -305,22 +306,26 @@ object FormulaXlsx {
                 require(name.isNotEmpty() && !name.startsWith("/") && '\\' !in name && ".." !in name.split('/')) {
                     "unsafe ZIP entry '$name'"
                 }
-                require(name !in out) { "duplicate ZIP entry '$name'" }
-                if (!entry.isDirectory) {
-                    val baos = ByteArrayOutputStream()
-                    var partBytes = 0
-                    while (true) {
-                        val n = zis.read(buf)
-                        if (n < 0) break
-                        partBytes += n
-                        totalExpanded += n
-                        require(partBytes <= MAX_PART_BYTES && totalExpanded <= MAX_ZIP_BYTES) {
-                            "expanded ZIP budget exceeded on '$name'"
-                        }
-                        baos.write(buf, 0, n)
+                require(names.add(name)) { "duplicate ZIP entry '$name'" }
+                val payload = if (entry.isDirectory) null else ByteArrayOutputStream()
+                var partBytes = 0L
+                while (true) {
+                    // A directory entry may still carry compressed data, and
+                    // closeEntry() discards the rest without passing it through
+                    // these counters. Read every entry through the same budget.
+                    val want = minOf(buf.size.toLong(), MAX_PART_BYTES - partBytes + 1L,
+                        MAX_ZIP_BYTES - totalExpanded + 1L).toInt()
+                    val n = zis.read(buf, 0, want)
+                    if (n < 0) break
+                    require(n > 0) { "ZIP decoder made no progress" }
+                    partBytes += n
+                    totalExpanded += n
+                    require(partBytes <= MAX_PART_BYTES && totalExpanded <= MAX_ZIP_BYTES) {
+                        "expanded ZIP budget exceeded on '$name'"
                     }
-                    out[name] = baos.toByteArray()
+                    payload?.write(buf, 0, n)
                 }
+                if (payload != null) out[name] = payload.toByteArray()
                 zis.closeEntry()
                 entry = zis.nextEntry
             }

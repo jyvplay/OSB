@@ -1579,6 +1579,57 @@ tasks.register<JavaExec>("r57Contracts") {
     args(rootProject.file("testing/build/r57/artifacts").absolutePath)
 }
 
+// R72: real Office readers over independently constructed ZIP boundaries; no Android claim.
+val r72Zip by sourceSets.creating
+kotlin.sourceSets.named("r72Zip") { kotlin.srcDir("src/r72zip/kotlin") }
+dependencies { add(r72Zip.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r72OfficeZipSeed") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OfficeZipProbe")
+    args("seed", rootProject.file("testing/build/r72zip").absolutePath)
+    doFirst { rootProject.file("testing/build/r72zip").mkdirs() }
+}
+tasks.register<JavaExec>("r72OfficeZipContracts") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OfficeZipProbe")
+    maxHeapSize = "256m"
+    args("read", rootProject.file("testing/build/r72zip").absolutePath)
+}
+tasks.register<JavaExec>("r72OoxmlZipSeed") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OoxmlZipProbe")
+    args("seed", rootProject.file("testing/build/r72ooxml").absolutePath)
+    doFirst { rootProject.file("testing/build/r72ooxml").mkdirs() }
+}
+tasks.register<JavaExec>("r72OoxmlZipContracts") {
+    dependsOn(r72Zip.classesTaskName)
+    classpath = r72Zip.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72OoxmlZipProbe")
+    maxHeapSize = "512m"
+    args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
+}
+
+// R72: plain Writer boundary probe in a bounded heap, separate from the Android app.
+val r72Writer by sourceSets.creating
+kotlin.sourceSets.named("r72Writer") { kotlin.srcDir("src/r72writer/kotlin") }
+dependencies { add(r72Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r72WriterBoundaries") {
+    dependsOn(r72Writer.classesTaskName)
+    classpath = r72Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72WriterResourceProbe")
+    args("boundaries")
+}
+tasks.register<JavaExec>("r72WriterResource") {
+    dependsOn(r72Writer.classesTaskName)
+    classpath = r72Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R72WriterResourceProbe")
+    maxHeapSize = "80m"
+    args("oversized", (25 * 1024 * 1024).toString())
+}
+
 // R58: bounded, revision-bound text-grid paste; reader and Android checks are separate.
 val r58 by sourceSets.creating
 kotlin.sourceSets.named("r58") { kotlin.srcDir("src/r58/kotlin") }
