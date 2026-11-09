@@ -558,6 +558,7 @@ object FormulaEval {
             "volatile or dynamic-reference function '$name' is refused in deterministic scope"
         }
         return when (name) {
+            in ESSENTIAL_NAMES -> evalEssential(name, args, env)
             "SUM" -> {
                 val res = collectNumericAggregate(args, env)
                 res.fold(
@@ -3491,6 +3492,21 @@ object FormulaEval {
     }
 
     /** Peter J. Acklam inverse standard normal CDF rational approximation (max relative error < 1.15e-9). */
+    /**
+     * Acklam's rational approximation refined by one Halley step against the erf-based CDF,
+     * which takes the error from ~1e-9 to full double precision for 1e-300 < p < 1 - 1e-16.
+     */
+    private fun normSInvPolished(p: Double): Double {
+        val x = normSInvAcklam(p)
+        // Phi via the regularized lower incomplete gamma: P(1/2, x^2/2).
+        val tail = 0.5 * regGammaLowerP(0.5, x * x / 2.0)
+        val cdf = if (x >= 0.0) 0.5 + tail else 0.5 - tail
+        val e = cdf - p
+        val u = e * kotlin.math.sqrt(2.0 * Math.PI) * kotlin.math.exp(x * x / 2.0)
+        val refined = x - u / (1.0 + x * u / 2.0)
+        return if (refined.isFinite()) refined else x
+    }
+
     private fun normSInvAcklam(p: Double): Double {
         val a1 = -39.69683028665376; val a2 = 220.9460984245205; val a3 = -275.9285104469687
         val a4 = 138.3577518672690; val a5 = -30.66479806614716; val a6 = 2.506628277459239
@@ -3697,6 +3713,572 @@ object FormulaEval {
 
     private fun localDateToSerial(d: LocalDate): Double =
         ChronoUnit.DAYS.between(EXCEL_EPOCH, d).toDouble()
+
+    private val ESSENTIAL_NAMES = setOf(
+        "ROUNDUP", "ROUNDDOWN", "TRUNC", "LOG", "PRODUCT",
+        "REPT", "REPLACE", "SEARCH", "VALUE", "TEXT",
+        "TIME", "HOUR", "MINUTE", "SECOND", "DATEVALUE", "DAYS", "DAYS360", "YEARFRAC", "WEEKNUM",
+        "ISNA", "ISNONTEXT", "ISEVEN", "ISODD", "NA", "ERROR.TYPE", "TYPE", "COUNTBLANK",
+        "STDEV.S", "STDEV.P", "VAR.S", "VAR.P", "NORM.INV", "BINOM.INV", "MODE.SNGL",
+        "MAXIFS", "MINIFS", "LOOKUP",
+    )
+
+    // ---- R73 essentials: arithmetic, text, date, information, statistics, criteria, lookup ----
+
+    private fun evalEssential(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        return when (name) {
+        "ROUNDUP", "ROUNDDOWN", "TRUNC" -> {
+            if (args.size !in 1..2) return CellValue.Err(CellErr.Err.VALUE)
+            val xv = evalScalarAsNum(evalExpr(args[0], env)); if (xv is CellValue.Err) return xv
+            val digits = if (args.size == 2) {
+                val nv = evalScalarAsNum(evalExpr(args[1], env)); if (nv is CellValue.Err) return nv
+                (nv as CellValue.Num).value.toInt()
+            } else 0
+            if (digits !in -100..100) return CellValue.Err(CellErr.Err.NUM)
+            val mode = if (name == "ROUNDUP") java.math.RoundingMode.UP else java.math.RoundingMode.DOWN
+            val rounded = try {
+                BigDecimal((xv as CellValue.Num).value).round(java.math.MathContext(15)).setScale(digits, mode)
+            } catch (e: ArithmeticException) {
+                return CellValue.Err(CellErr.Err.NUM)
+            }
+            val out = rounded.toDouble()
+            if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
+        }
+        "LOG" -> {
+            if (args.size !in 1..2) return CellValue.Err(CellErr.Err.VALUE)
+            val xv = evalScalarAsNum(evalExpr(args[0], env)); if (xv is CellValue.Err) return xv
+            val x = (xv as CellValue.Num).value
+            if (x <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+            val base = if (args.size == 2) {
+                val bv = evalScalarAsNum(evalExpr(args[1], env)); if (bv is CellValue.Err) return bv
+                (bv as CellValue.Num).value
+            } else 10.0
+            if (base <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+            if (base == 1.0) return CellValue.Err(CellErr.Err.DIV0)
+            val res = ln(x) / ln(base)
+            if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
+        }
+        "PRODUCT" -> {
+            if (args.isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+            val res = collectNumericAggregate(args, env)
+            res.fold(
+                onSuccess = { nums ->
+                    if (nums.isEmpty()) CellValue.Num(0.0)
+                    else {
+                        val p = nums.fold(1.0) { acc, v -> acc * v }
+                        if (!p.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(p))
+                    }
+                },
+                onFailure = { CellValue.Err((it as CellErrorSignal).err) },
+            )
+        }
+        "REPT" -> {
+            if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+            val tv = evalAsString(evalExpr(args[0], env)); if (tv is CellValue.Err) return tv
+            val nv = evalScalarAsNum(evalExpr(args[1], env)); if (nv is CellValue.Err) return nv
+            val text = (tv as CellValue.Text).value
+            val times = (nv as CellValue.Num).value.toInt()
+            if (times < 0) return CellValue.Err(CellErr.Err.VALUE)
+            if (text.isEmpty() || times == 0) return CellValue.Text("")
+            if (text.length.toLong() * times > MAX_TEXT_OUTPUT) return CellValue.Err(CellErr.Err.VALUE)
+            CellValue.Text(text.repeat(times))
+        }
+        "REPLACE" -> {
+            if (args.size != 4) return CellValue.Err(CellErr.Err.VALUE)
+            val old = evalAsString(evalExpr(args[0], env)); if (old is CellValue.Err) return old
+            val sv = evalScalarAsNum(evalExpr(args[1], env)); if (sv is CellValue.Err) return sv
+            val cv = evalScalarAsNum(evalExpr(args[2], env)); if (cv is CellValue.Err) return cv
+            val new = evalAsString(evalExpr(args[3], env)); if (new is CellValue.Err) return new
+            val text = (old as CellValue.Text).value
+            val start = (sv as CellValue.Num).value.toInt()
+            val count = (cv as CellValue.Num).value.toInt()
+            if (start < 1 || count < 0) return CellValue.Err(CellErr.Err.VALUE)
+            val from = (start - 1).coerceAtMost(text.length)
+            val to = (from + count).coerceAtMost(text.length)
+            CellValue.Text(text.substring(0, from) + (new as CellValue.Text).value + text.substring(to))
+        }
+        "SEARCH" -> {
+            if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+            val needle = evalAsString(evalExpr(args[0], env)); if (needle is CellValue.Err) return needle
+            val haystack = evalAsString(evalExpr(args[1], env)); if (haystack is CellValue.Err) return haystack
+            val start = if (args.size == 3) {
+                val sv = evalScalarAsNum(evalExpr(args[2], env)); if (sv is CellValue.Err) return sv
+                (sv as CellValue.Num).value.toInt()
+            } else 1
+            val within = (haystack as CellValue.Text).value
+            if (start < 1 || start > within.length + 1) return CellValue.Err(CellErr.Err.VALUE)
+            val pattern = (needle as CellValue.Text).value
+            if (pattern.isEmpty()) return CellValue.Num(start.toDouble())
+            val regex = try {
+                Regex(wildcardToRegex(pattern), RegexOption.IGNORE_CASE)
+            } catch (e: IllegalArgumentException) {
+                return CellValue.Err(CellErr.Err.VALUE)
+            }
+            val match = regex.find(within, start - 1) ?: return CellValue.Err(CellErr.Err.VALUE)
+            CellValue.Num((match.range.first + 1).toDouble())
+        }
+        "VALUE" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            when (val v = evalExpr(args[0], env)) {
+                is CellValue.Err -> v
+                is CellValue.Num -> v
+                CellValue.Empty -> CellValue.Num(0.0)
+                is CellValue.Bool -> CellValue.Err(CellErr.Err.VALUE)
+                is CellValue.Text -> parseValueText(v.value)?.let { CellValue.Num(normalizeNegZero(it)) }
+                    ?: CellValue.Err(CellErr.Err.VALUE)
+            }
+        }
+        "TEXT" -> {
+            if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+            val v = evalExpr(args[0], env); if (v is CellValue.Err) return v
+            val fv = evalAsString(evalExpr(args[1], env)); if (fv is CellValue.Err) return fv
+            val format = (fv as CellValue.Text).value
+            try {
+                when (v) {
+                    is CellValue.Num -> CellValue.Text(NumberFormatRender.renderNumber(v.value, format))
+                    is CellValue.Text -> CellValue.Text(NumberFormatRender.renderText(v.value, format))
+                    CellValue.Empty -> CellValue.Text(NumberFormatRender.renderNumber(0.0, format))
+                    is CellValue.Bool -> CellValue.Text(if (v.value) "TRUE" else "FALSE")
+                    is CellValue.Err -> v
+                }
+            } catch (e: IllegalArgumentException) {
+                CellValue.Err(CellErr.Err.VALUE)
+            }
+        }
+        "TIME" -> {
+            if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+            val parts = args.map { arg ->
+                val v = evalScalarAsNum(evalExpr(arg, env))
+                if (v is CellValue.Err) return v
+                (v as CellValue.Num).value
+            }
+            if (parts.any { it < 0.0 }) return CellValue.Err(CellErr.Err.NUM)
+            val seconds = parts[0] * 3_600.0 + parts[1] * 60.0 + parts[2]
+            if (!seconds.isFinite()) return CellValue.Err(CellErr.Err.NUM)
+            CellValue.Num(normalizeNegZero((seconds % 86_400.0) / 86_400.0))
+        }
+        "HOUR", "MINUTE", "SECOND" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val sv = evalScalarAsNum(evalExpr(args[0], env)); if (sv is CellValue.Err) return sv
+            val serial = (sv as CellValue.Num).value
+            if (serial < 0.0) return CellValue.Err(CellErr.Err.NUM)
+            val secondsOfDay = (kotlin.math.round((serial - floor(serial)) * 86_400.0).toLong()) % 86_400L
+            val part = when (name) {
+                "HOUR" -> secondsOfDay / 3_600L
+                "MINUTE" -> (secondsOfDay % 3_600L) / 60L
+                else -> secondsOfDay % 60L
+            }
+            CellValue.Num(part.toDouble())
+        }
+        "DATEVALUE" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val tv = evalAsString(evalExpr(args[0], env)); if (tv is CellValue.Err) return tv
+            val date = parseDateText((tv as CellValue.Text).value) ?: return CellValue.Err(CellErr.Err.VALUE)
+            val serial = localDateToSerial(date)
+            if (serial < 61.0) CellValue.Err(CellErr.Err.VALUE) else CellValue.Num(serial)
+        }
+        "DAYS" -> {
+            if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+            val ev = evalScalarAsNum(evalExpr(args[0], env)); if (ev is CellValue.Err) return ev
+            val sv = evalScalarAsNum(evalExpr(args[1], env)); if (sv is CellValue.Err) return sv
+            val end = floor((ev as CellValue.Num).value)
+            val start = floor((sv as CellValue.Num).value)
+            CellValue.Num(end - start)
+        }
+        "DAYS360" -> {
+            if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+            val s1 = evalScalarAsNum(evalExpr(args[0], env)); if (s1 is CellValue.Err) return s1
+            val s2 = evalScalarAsNum(evalExpr(args[1], env)); if (s2 is CellValue.Err) return s2
+            val european = if (args.size == 3) {
+                val mv = evalAsBool(evalExpr(args[2], env)); if (mv is CellValue.Err) return mv
+                (mv as CellValue.Bool).value
+            } else false
+            val d1 = serialToLocalDate((s1 as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+            val d2 = serialToLocalDate((s2 as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+            CellValue.Num(days360(d1, d2, european).toDouble())
+        }
+        "YEARFRAC" -> {
+            if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+            val s1 = evalScalarAsNum(evalExpr(args[0], env)); if (s1 is CellValue.Err) return s1
+            val s2 = evalScalarAsNum(evalExpr(args[1], env)); if (s2 is CellValue.Err) return s2
+            val basis = if (args.size == 3) {
+                val bv = evalScalarAsNum(evalExpr(args[2], env)); if (bv is CellValue.Err) return bv
+                (bv as CellValue.Num).value.toInt()
+            } else 0
+            val d1 = serialToLocalDate((s1 as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+            val d2 = serialToLocalDate((s2 as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+            if (basis !in 0..4) return CellValue.Err(CellErr.Err.NUM)
+            val value = yearFrac(d1, d2, basis) ?: return CellValue.Err(CellErr.Err.NUM)
+            CellValue.Num(normalizeNegZero(value))
+        }
+        "WEEKNUM" -> {
+            if (args.size !in 1..2) return CellValue.Err(CellErr.Err.VALUE)
+            val sv = evalScalarAsNum(evalExpr(args[0], env)); if (sv is CellValue.Err) return sv
+            val type = if (args.size == 2) {
+                val tv = evalScalarAsNum(evalExpr(args[1], env)); if (tv is CellValue.Err) return tv
+                (tv as CellValue.Num).value.toInt()
+            } else 1
+            val date = serialToLocalDate((sv as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+            val week = weekNumber(date, type) ?: return CellValue.Err(CellErr.Err.NUM)
+            CellValue.Num(week.toDouble())
+        }
+        "ISNA" -> {
+            if (args.size != 1) CellValue.Err(CellErr.Err.VALUE)
+            else {
+                val v = evalExpr(args[0], env)
+                CellValue.Bool(v is CellValue.Err && v.error == CellErr.Err.NA)
+            }
+        }
+        "ISNONTEXT" -> {
+            if (args.size != 1) CellValue.Err(CellErr.Err.VALUE)
+            else CellValue.Bool(evalExpr(args[0], env) !is CellValue.Text)
+        }
+        "ISEVEN", "ISODD" -> {
+            if (args.size != 1) CellValue.Err(CellErr.Err.VALUE)
+            else {
+                val v = evalScalarAsNum(evalExpr(args[0], env)); if (v is CellValue.Err) v
+                else {
+                    val n = (v as CellValue.Num).value.toLong()
+                    CellValue.Bool(if (name == "ISEVEN") n % 2L == 0L else n % 2L != 0L)
+                }
+            }
+        }
+        "NA" -> {
+            if (args.isNotEmpty()) CellValue.Err(CellErr.Err.VALUE) else CellValue.Err(CellErr.Err.NA)
+        }
+        "ERROR.TYPE" -> {
+            if (args.size != 1) CellValue.Err(CellErr.Err.VALUE)
+            else {
+                val v = evalExpr(args[0], env)
+                if (v is CellValue.Err) {
+                    val code = when (v.error) {
+                        CellErr.Err.NULL -> 1; CellErr.Err.DIV0 -> 2; CellErr.Err.VALUE -> 3
+                        CellErr.Err.REF -> 4; CellErr.Err.NAME -> 5; CellErr.Err.NUM -> 6
+                        CellErr.Err.NA -> 7
+                    }
+                    CellValue.Num(code.toDouble())
+                } else CellValue.Err(CellErr.Err.NA)
+            }
+        }
+        "TYPE" -> {
+            if (args.size != 1) CellValue.Err(CellErr.Err.VALUE)
+            else {
+                val node = args[0]
+                if (node is Expr.RangeRef || node is Expr.ArrayLit) CellValue.Num(64.0)
+                else when (val v = evalExpr(node, env)) {
+                    CellValue.Empty, is CellValue.Num -> CellValue.Num(1.0)
+                    is CellValue.Text -> CellValue.Num(2.0)
+                    is CellValue.Bool -> CellValue.Num(4.0)
+                    is CellValue.Err -> CellValue.Num(16.0)
+                }
+            }
+        }
+        "COUNTBLANK" -> {
+            if (args.isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+            var blanks = 0L
+            for (arg in args) {
+                val grid = exprTo2DGrid(arg, env)
+                if (grid != null) {
+                    for (row in grid) for (cell in row) if (isBlankCell(cell)) blanks++
+                } else {
+                    val v = evalExpr(arg, env); if (v is CellValue.Err) return v
+                    if (isBlankCell(v)) blanks++
+                }
+            }
+            CellValue.Num(blanks.toDouble())
+        }
+        "STDEV.S", "STDEV.P", "VAR.S", "VAR.P" -> {
+            val res = collectNumericAggregate(args, env)
+            res.fold(
+                onSuccess = { nums ->
+                    val sample = name.endsWith(".S")
+                    val n = nums.size
+                    if (n == 0 || (sample && n < 2)) CellValue.Err(CellErr.Err.DIV0)
+                    else {
+                        val mean = nums.sum() / n
+                        val sq = nums.sumOf { (it - mean) * (it - mean) }
+                        val variance = sq / (if (sample) n - 1 else n)
+                        val out = if (name.startsWith("VAR")) variance else sqrt(variance)
+                        if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
+                    }
+                },
+                onFailure = { CellValue.Err((it as CellErrorSignal).err) },
+            )
+        }
+        "NORM.INV" -> {
+            if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+            val pv = evalScalarAsNum(evalExpr(args[0], env)); if (pv is CellValue.Err) return pv
+            val mv = evalScalarAsNum(evalExpr(args[1], env)); if (mv is CellValue.Err) return mv
+            val sv = evalScalarAsNum(evalExpr(args[2], env)); if (sv is CellValue.Err) return sv
+            val p = (pv as CellValue.Num).value
+            val mean = (mv as CellValue.Num).value
+            val sd = (sv as CellValue.Num).value
+            if (p <= 0.0 || p >= 1.0 || sd <= 0.0) CellValue.Err(CellErr.Err.NUM)
+            else CellValue.Num(normalizeNegZero(mean + sd * normSInvPolished(p)))
+        }
+        "BINOM.INV" -> {
+            if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+            val nv = evalScalarAsNum(evalExpr(args[0], env)); if (nv is CellValue.Err) return nv
+            val pv = evalScalarAsNum(evalExpr(args[1], env)); if (pv is CellValue.Err) return pv
+            val av = evalScalarAsNum(evalExpr(args[2], env)); if (av is CellValue.Err) return av
+            val trials = (nv as CellValue.Num).value.toInt()
+            val p = (pv as CellValue.Num).value
+            val alpha = (av as CellValue.Num).value
+            if (trials < 0 || trials > 1_000_000 || p < 0.0 || p > 1.0 || alpha < 0.0 || alpha > 1.0) {
+                CellValue.Err(CellErr.Err.NUM)
+            } else {
+                val lnN = lnGammaLanczos(trials + 1.0)
+                var cumulative = 0.0
+                var answer = trials
+                for (k in 0..trials) {
+                    val lnPmf = lnN - lnGammaLanczos(k + 1.0) - lnGammaLanczos(trials - k + 1.0) +
+                        if (p == 0.0) (if (k == 0) 0.0 else Double.NEGATIVE_INFINITY)
+                        else if (p == 1.0) (if (k == trials) 0.0 else Double.NEGATIVE_INFINITY)
+                        else k * ln(p) + (trials - k) * ln(1.0 - p)
+                    cumulative += exp(lnPmf)
+                    if (cumulative >= alpha) { answer = k; break }
+                }
+                CellValue.Num(answer.toDouble())
+            }
+        }
+        "MODE.SNGL" -> {
+            val nums = ArrayList<Double>()
+            for (arg in args) {
+                val grid = exprTo2DGrid(arg, env)
+                if (grid != null) {
+                    for (row in grid) for (cell in row) if (cell is CellValue.Num) nums.add(cell.value)
+                } else {
+                    val v = evalExpr(arg, env); if (v is CellValue.Err) return v
+                    if (v is CellValue.Num) nums.add(v.value)
+                }
+            }
+            if (nums.isEmpty()) return CellValue.Err(CellErr.Err.NA)
+            val counts = LinkedHashMap<Double, Int>()
+            for (value in nums) counts[value] = (counts[value] ?: 0) + 1
+            var bestValue: Double? = null
+            var bestCount = 1
+            for ((value, count) in counts) {
+                if (count > bestCount) { bestValue = value; bestCount = count }
+            }
+            if (bestValue == null) CellValue.Err(CellErr.Err.NA)
+            else CellValue.Num(normalizeNegZero(bestValue!!))
+        }
+        "MAXIFS", "MINIFS" -> {
+            if (args.size < 3 || (args.size - 1) % 2 != 0) return CellValue.Err(CellErr.Err.VALUE)
+            val target = exprToRange(args[0]) ?: return CellValue.Err(CellErr.Err.VALUE)
+            val pairs = ArrayList<Pair<SheetRange.Range, CellValue>>()
+            var i = 1
+            while (i < args.size) {
+                val range = exprToRange(args[i]) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val crit = evalExpr(args[i + 1], env); if (crit is CellValue.Err) return crit
+                pairs.add(range to crit)
+                i += 2
+            }
+            if (pairs.any { it.first.width != target.width || it.first.height != target.height }) {
+                return CellValue.Err(CellErr.Err.VALUE)
+            }
+            var best: Double? = null
+            for (dr in 0 until target.height) {
+                for (dc in 0 until target.width) {
+                    var allMatch = true
+                    for ((range, crit) in pairs) {
+                        val cv = env[SheetRange.Cell(range.top.col + dc, range.top.row + dr).toA1()] ?: CellValue.Empty
+                        if (!matchesCriteria(cv, crit)) { allMatch = false; break }
+                    }
+                    if (!allMatch) continue
+                    val tv = env[SheetRange.Cell(target.top.col + dc, target.top.row + dr).toA1()] ?: CellValue.Empty
+                    if (tv is CellValue.Err) return tv
+                    if (tv is CellValue.Num) {
+                        best = if (best == null) tv.value
+                        else if (name == "MAXIFS") maxOf(best!!, tv.value) else minOf(best!!, tv.value)
+                    }
+                }
+            }
+            CellValue.Num(best ?: 0.0)
+        }
+        "LOOKUP" -> {
+            if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+            val needle = evalExpr(args[0], env); if (needle is CellValue.Err) return needle
+            val lookupGrid = exprTo2DGrid(args[1], env) ?: return CellValue.Err(CellErr.Err.NA)
+            val lookup = flattenSingleVector(lookupGrid) ?: return CellValue.Err(CellErr.Err.NA)
+            val result = if (args.size == 3) {
+                val grid = exprTo2DGrid(args[2], env) ?: return CellValue.Err(CellErr.Err.NA)
+                flattenSingleVector(grid) ?: return CellValue.Err(CellErr.Err.NA)
+            } else lookup
+            if (lookup.size != result.size) return CellValue.Err(CellErr.Err.NA)
+            var chosen = -1
+            for (idx in lookup.indices) {
+                if (compareSpreadsheetValues(lookup[idx], needle) <= 0) chosen = idx else break
+            }
+            if (chosen < 0) CellValue.Err(CellErr.Err.NA) else result[chosen]
+        }
+        else -> CellValue.Err(CellErr.Err.NAME)
+        }
+    }
+
+    private const val MAX_TEXT_OUTPUT = 32_767
+
+    private fun isBlankCell(v: CellValue): Boolean =
+        v == CellValue.Empty || (v is CellValue.Text && v.value.isEmpty())
+
+    private fun flattenSingleVector(grid: List<List<CellValue>>): List<CellValue>? = when {
+        grid.size == 1 -> grid[0]
+        grid.isNotEmpty() && grid.all { it.size == 1 } -> grid.map { it[0] }
+        else -> null
+    }
+
+    private fun wildcardToRegex(pattern: String): String {
+        val out = StringBuilder()
+        var i = 0
+        while (i < pattern.length) {
+            val c = pattern[i]
+            when (c) {
+                '~' -> {
+                    i++
+                    if (i >= pattern.length) throw IllegalArgumentException("dangling tilde escape")
+                    out.append(Regex.escape(pattern[i].toString()))
+                }
+                '*' -> out.append(".*")
+                '?' -> out.append('.')
+                else -> out.append(Regex.escape(c.toString()))
+            }
+            i++
+        }
+        return out.toString()
+    }
+
+    private fun parseValueText(raw: String): Double? {
+        var text = raw.trim()
+        if (text.isEmpty()) return null
+        var negative = false
+        if (text.length >= 2 && text.startsWith("(") && text.endsWith(")")) {
+            negative = true
+            text = text.substring(1, text.length - 1).trim()
+        }
+        var percent = 0
+        while (text.endsWith("%")) { percent++; text = text.dropLast(1).trim() }
+        text = text.removePrefix("$").removePrefix("€").removePrefix("£").removePrefix("¥").trim()
+        if (text.startsWith("-")) { negative = !negative; text = text.drop(1).trim() }
+        if (text.startsWith("+")) text = text.drop(1).trim()
+        if (text.isEmpty()) return null
+        val grouped = Regex("^\\d{1,3}(,\\d{3})+(\\.\\d+)?$")
+        val plain = if (grouped.matches(text)) text.replace(",", "") else text
+        val parsed = plain.toDoubleOrNull()?.takeIf { it.isFinite() }
+        val base = if (parsed != null) parsed else {
+            val date = parseDateText(raw) ?: return null
+            localDateToSerial(date).takeIf { it >= 61.0 } ?: return null
+        }
+        var value = base
+        repeat(percent) { value /= 100.0 }
+        return if (negative) -value else value
+    }
+
+    private fun parseDateText(raw: String): LocalDate? {
+        val text = raw.trim()
+        if (text.isEmpty()) return null
+        val iso = Regex("^(\\d{4})-(\\d{1,2})-(\\d{1,2})$").matchEntire(text)
+        if (iso != null) {
+            return buildDate(iso.groupValues[1].toInt(), iso.groupValues[2].toInt(), iso.groupValues[3].toInt())
+        }
+        val slash = Regex("^(\\d{1,2})/(\\d{1,2})/(\\d{2,4})$").matchEntire(text)
+        if (slash != null) {
+            return buildDate(expandYear(slash.groupValues[3].toInt()), slash.groupValues[1].toInt(), slash.groupValues[2].toInt())
+        }
+        val dashed = Regex("^(\\d{1,2})-([A-Za-z]{3,9})-(\\d{2,4})$").matchEntire(text)
+        if (dashed != null) {
+            val month = monthNumber(dashed.groupValues[2]) ?: return null
+            return buildDate(expandYear(dashed.groupValues[3].toInt()), month, dashed.groupValues[1].toInt())
+        }
+        val named = Regex("^([A-Za-z]{3,9})\\s+(\\d{1,2}),?\\s+(\\d{4})$").matchEntire(text)
+        if (named != null) {
+            val month = monthNumber(named.groupValues[1]) ?: return null
+            return buildDate(named.groupValues[3].toInt(), month, named.groupValues[2].toInt())
+        }
+        return null
+    }
+
+    private fun expandYear(year: Int): Int = when {
+        year >= 100 -> year
+        year <= 29 -> 2000 + year
+        else -> 1900 + year
+    }
+
+    private fun monthNumber(name: String): Int? {
+        val full = listOf(
+            "january", "february", "march", "april", "may", "june",
+            "july", "august", "september", "october", "november", "december",
+        )
+        val lower = name.lowercase()
+        val index = full.indexOfFirst { it == lower || it.startsWith(lower) }
+        return if (index >= 0) index + 1 else null
+    }
+
+    private fun buildDate(year: Int, month: Int, day: Int): LocalDate? = try {
+        LocalDate.of(year, month, day)
+    } catch (e: java.time.DateTimeException) {
+        null
+    }
+
+    private fun days360(start: LocalDate, end: LocalDate, european: Boolean): Long {
+        var effectiveEnd = end
+        var d1 = start.dayOfMonth
+        var d2 = end.dayOfMonth
+        if (european) {
+            d1 = minOf(d1, 30); d2 = minOf(d2, 30)
+        } else {
+            if (start.dayOfMonth == start.lengthOfMonth()) d1 = 30
+            val endLast = end.dayOfMonth == end.lengthOfMonth()
+            if (endLast && d1 < 30) {
+                effectiveEnd = if (end.monthValue == 12) LocalDate.of(end.year + 1, 1, 1) else end.plusMonths(1).withDayOfMonth(1)
+                d2 = 1
+            } else if (endLast || d2 == 31) {
+                d2 = 30
+            }
+        }
+        val months = (effectiveEnd.year - start.year) * 360L + (effectiveEnd.monthValue - start.monthValue) * 30L
+        return months + (d2 - d1)
+    }
+
+    private fun yearFrac(start: LocalDate, end: LocalDate, basis: Int): Double? {
+        if (end.isBefore(start)) return null
+        val actualDays = ChronoUnit.DAYS.between(start, end).toDouble()
+        return when (basis) {
+            0 -> days360(start, end, european = false) / 360.0
+            4 -> days360(start, end, european = true) / 360.0
+            2 -> actualDays / 360.0
+            3 -> actualDays / 365.0
+            else -> {
+                if (start.year == end.year) {
+                    val yearDays = if (java.time.Year.isLeap(start.year.toLong())) 366.0 else 365.0
+                    actualDays / yearDays
+                } else {
+                    val spanStart = LocalDate.of(start.year, 1, 1)
+                    val spanEnd = LocalDate.of(end.year + 1, 1, 1)
+                    val years = (end.year - start.year + 1).toDouble()
+                    val average = ChronoUnit.DAYS.between(spanStart, spanEnd) / years
+                    actualDays / average
+                }
+            }
+        }
+    }
+
+    private fun weekNumber(date: LocalDate, type: Int): Int? {
+        if (type == 21) return date.get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear())
+        val firstDay = when (type) {
+            1, 17 -> java.time.DayOfWeek.SUNDAY
+            2, 11 -> java.time.DayOfWeek.MONDAY
+            12 -> java.time.DayOfWeek.TUESDAY
+            13 -> java.time.DayOfWeek.WEDNESDAY
+            14 -> java.time.DayOfWeek.THURSDAY
+            15 -> java.time.DayOfWeek.FRIDAY
+            16 -> java.time.DayOfWeek.SATURDAY
+            else -> return null
+        }
+        val jan1 = LocalDate.of(date.year, 1, 1)
+        val offset = (jan1.dayOfWeek.value - firstDay.value + 7) % 7
+        val dayOfYear = date.dayOfYear
+        return (dayOfYear + offset - 1) / 7 + 1
+    }
 
     private fun evalDateFunction(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
         return when (name) {
@@ -4125,6 +4707,16 @@ object FormulaEval {
         }
         if (op in setOf(">", ">=", "<", "<=") && rhsNum != null) return false
         val cellStr = if (cell == CellValue.Empty) "" else cell.displayText()
+        // Text criteria use spreadsheet wildcards; escaped tildes match literally.
+        if ((op == "=" || op == "<>") && (rhsText.contains('*') || rhsText.contains('?'))) {
+            val regex = try {
+                Regex(wildcardToRegex(rhsText), RegexOption.IGNORE_CASE)
+            } catch (e: IllegalArgumentException) {
+                return false
+            }
+            val hit = regex.matches(cellStr)
+            return if (op == "=") hit else !hit
+        }
         val cmpStr = cellStr.lowercase().compareTo(rhsText.lowercase())
         return when (op) {
             "=" -> cmpStr == 0

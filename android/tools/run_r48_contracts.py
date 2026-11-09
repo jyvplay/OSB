@@ -18,6 +18,8 @@ JARS = [
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SheetRange.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/CellErr.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumberFormatRender.kt",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumFmtSections.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SpillSheetEngine.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PptxSlideDeck.kt",
         "format/ooxml/src/main/kotlin/dev/fusion/ooxml/PivotCubeSummary.kt",

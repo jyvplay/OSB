@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import bootstrap_host_tools
 
 BASELINE = 'e89d1a21416b6f6c6d9fd5a01acf4d0d6a6b628c'
-NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'FormulaXlsx',
+NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'FormulaXlsx',
          'DocxNumbering', 'DocxPackage', 'OfficeSheetDraft', 'PlainWriterDocx', 'StructuredWriterDocx')
 
 

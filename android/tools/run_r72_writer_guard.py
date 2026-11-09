@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import bootstrap_host_tools
 
 BASE = 'aacae2396ca3af6363e973999a2115132efa272c'
-NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'FormulaXlsx',
+NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'FormulaXlsx',
          'DocxNumbering', 'DocxPackage', 'OfficeSheetDraft', 'PlainWriterDocx', 'StructuredWriterDocx')
 PROBE = ROOT / 'testing/src/r72writer/kotlin/dev/fusion/testing/R72WriterResourceProbe.kt'
 SIZE = 25 * 1024 * 1024

@@ -18,7 +18,7 @@ def main():
     ooxml = ROOT / 'format/ooxml/src/main/kotlin/dev/fusion/ooxml'
     docs = ROOT / 'core/documents/src/main/kotlin/dev/fusion/documents'
     source = [ooxml / (name + '.kt') for name in [
-        'BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'SpillSheetEngine',
+        'BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'SpillSheetEngine',
         'FormulaXlsx', 'DocxNumbering', 'DocxPackage', 'OfficeSheetDraft', 'PlainWriterDocx',
     ]] + [docs / (name + '.kt') for name in [
         'TextDocument', 'TextEncoding', 'SessionCodec', 'CopyProtocol', 'VerifiedCopy', 'FrozenExport',

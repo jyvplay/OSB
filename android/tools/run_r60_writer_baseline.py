@@ -27,7 +27,7 @@ def main():
                             cwd=ROOT, capture_output=True, check=True)
     old.write_bytes(result.stdout)
     ooxml = ROOT / 'format/ooxml/src/main/kotlin/dev/fusion/ooxml'
-    names = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'FormulaXlsx',
+    names = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'FormulaXlsx',
              'DocxNumbering', 'DocxPackage', 'OfficeSheetDraft', 'PlainWriterDocx')
     sources = [ooxml / (name + '.kt') for name in names] + [old, ROOT / 'testing/src/r60writer/kotlin/dev/fusion/testing/R60WriterLegacyProbe.kt']
     jar = out / 'legacy.jar'
