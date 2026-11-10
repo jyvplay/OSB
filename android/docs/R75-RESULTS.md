@@ -119,4 +119,8 @@ Writer still lacks: floating pictures/wrapping, cropping/rotation, SVG/EMF, head
 
 Module census unchanged in kind: **50/50 modules (100.00 %) meet the bounded substantial-testable-subset standard; 0/50 (0.00 %) are fully specification-accepted.** Writer and Sheet are **not Class A**: two of the four mandatory gates for that (real Word/LibreOffice/Excel execution and a device run) cannot be satisfied in this sandbox.
 
+## K. Observed CI (this commit)
+
+Run `42776312124` on `47f4914`: 27 checks passed, 1 failed, 1 skipped. The "Compile Android and run actual JVM contracts" step — which now also executes `:testing:r75WriterImageContracts`, `:testing:r75SheetFractionContracts`, `check_r75_writer_images.py --require-python-docx`, `check_r75_sheet_fractions.py` and both control suites — **passed in CI**, and the traceability/JVM job passed in 9m36s. The two failures are the long-standing device-only gates, step 19 (real API34 UI and provider checks) and step 21 (all 37 named Office cases), unchanged from run `42767212348` on `bad9618`. Those require a working managed emulator/device, which is exactly the gate this round cannot close; nothing in the R75 slices is implicated by them.
+
 Next highest-information test: open `images.docx`, `mixed.docx` and `links-and-images.docx` in Word or LibreOffice and check that both pictures display at their stated sizes with readable alt text, then recalculate `TEXT(1.25,"# ?/?")` and `TEXT(0.0625,"# ??/??")` in Excel or LibreOffice and compare with the oracle's `1 1/4` and `" 1/16"`.
