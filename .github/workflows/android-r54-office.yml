@@ -70,7 +70,7 @@ jobs:
           python3 tools/r72_ooxml_zip_cases.py verify testing/build/r72ooxml
           python3 tools/r73_formula_cases.py verify testing/build/r73formula
           python3 tools/check_r73_formula_reference.py testing/build/r73formula --require-reference
-          python3 tools/check_r74_writer_links.py testing/build/r74writer/artifacts
+          python3 tools/check_r74_writer_links.py testing/build/r74writer/artifacts --require-python-docx
           PYTHONPATH=tools python3 -m unittest test_r56_reference test_r57_reference test_r58_reference test_r59_reference test_r59_writer_reference test_r60_writer_reference test_r60_sheet_reference test_r61_sheet_reference test_r62_range_reference test_r62_writer_reference test_r63_formula_reference test_r63_writer_reference test_r64_sheet_reference test_r64_formula_caches test_r64_writer_reference test_r64_csv_reference test_r64_office_case_gate test_r64_runners test_r64_integration_contracts test_r72_office_zip test_r72_ooxml_zip test_r72_writer_guard test_r72_core_zip test_r73_formula_contract test_r74_writer_links -v
       - name: Prepare real workbooks for the shared bounded ZIP reader
         run: python3 tools/r72_core_zip_cases.py build testing/build/r72core

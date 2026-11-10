@@ -23,7 +23,7 @@ class WriterReferenceTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.directory = Path(self.temp.name)
-        for name in ('structured.docx', 'literal.docx', 'plain.docx'):
+        for name in ('structured.docx', 'literal.docx', 'plain.docx', 'link.docx'):
             shutil.copyfile(self.original / name, self.directory / name)
 
     def tearDown(self):
@@ -40,7 +40,7 @@ class WriterReferenceTests(unittest.TestCase):
                 result.writestr(name, data)
 
     def test_actual_output_is_checked(self):
-        self.assertGreaterEqual(reference.inspect(self.directory), 34)
+        self.assertGreaterEqual(reference.inspect(self.directory), 35)
 
     def test_missing_output_cannot_count_as_success(self):
         (self.directory / 'structured.docx').unlink()

@@ -10,7 +10,7 @@ Host-JVM round. No Android build, no emulator, no Word/LibreOffice, no visual ca
 | `format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredWriterDocx.kt` | `PAGE_BREAK_MARKER = "[[pagebreak]]"` (a line that is exactly the marker becomes a page break), inline `[label](http://…|https://…|mailto:…)` link segmentation with `[[pagebreak]]`/unsafe-scheme literals preserved verbatim |
 | `format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt` | R73 payload restored on top of the remote head: `FORMULATEXT`, `ISFORMULA`, `AGGREGATE` 12–19, `TEXT()` renderer consumption (see `R73-RESULTS.md`) |
 | `testing/src/r74writer/kotlin/dev/fusion/testing/R74WriterLinkChecks.kt` | 18 host assertions producing `links.docx` and `blocks.docx` |
-| `tools/check_r74_writer_links.py` | independent verifier: re-reads both packages with `python-docx` 1.2.0 and with raw OPC XML, 16 checks |
+| `tools/check_r74_writer_links.py` | independent verifier: re-reads both packages with `python-docx` 1.2.0 **and** with raw OPC XML — 20 checks when python-docx is importable, 14 raw-OPC checks when it is not (the raw checks never skip) |
 | `tools/test_r74_writer_links.py` | 7 negative-control tests that build tampered packages by hand |
 | `tools/run_r74_writer_links.py` | one command: `kotlinc -Werror` compile, JVM run, verifier |
 | `.github/workflows/android-r54-office.yml` | office lane runs the contract task, the verifier and the negative controls (not yet observed green — see J) |
@@ -84,19 +84,19 @@ Frontier restated: Writer now produces **bold/italic/strike/headings/lists/table
 |---|---|
 | `kotlinc -Werror` over archive+ooxml+probe | exit 0 |
 | `R74WriterLinkChecks` (host JVM) | **`R74_WRITER_LINKS_OK assertions=18`**, two DOCX packages |
-| `check_r74_writer_links.py` (python-docx 1.2.0 + raw OPC XML) | **16 independent checks passed** |
+| `check_r74_writer_links.py` (python-docx 1.2.0 + raw OPC XML) | **20 independent checks passed**; without python-docx, **14 raw-OPC checks** still pass and the differential is named as skipped |
 | `test_r74_writer_links.py` negative controls | **7 tests, OK** (missing target, missing page break, live `javascript:` target, lost literal text, duplicate relationship, macro part, untampered pass) |
 | R73 oracle re-run | **371 formulas / 371 actual / 371 matched**, 0 mismatches |
 | R73 third engine (formualizer 0.13.0) | **236 compared, 16 declared differences, 135 not representable, 0 unexpected** |
 | R73 wiring guards | **11 tests, OK** (after syncing `ESSENTIALS` with the production surface: 39 → 41 names) |
-| Legacy Writer lanes | R59 400 assertions/200 DOCX; R60 675/256; R62 1,434/256; R63 2,246/192; R64 tables 814/192 |
+| Legacy Writer lanes | R57 **548** assertions + **35** independent python-docx/ZIP checks; R59 400/200 DOCX; R60 675/256; R62 1,434/256; R63 2,246/192; R64 tables 814/192 |
 | Pinned legacy byte baselines | R60 **128**; R62 **128**; R63 **257**; R63-range **370**; R64 **193** artifacts byte-identical |
 | R61 sheet baseline | 64 grids / 128 cases byte-identical |
 | R72 Writer guard | passed |
 | R45 / R46 / R47 / R48 / R55 | 508 / 885 / 2,393 / 3,861 (68 kernels, 50/50 modules) / 1,054 |
 | Census | **50/50 narrow testable subsets (100.00 %)**, **0/50 full-spec accepted (0.00 %)** |
 | Source audit | 231 requirements, 36 obligations |
-| Full host discovery (`python3 -m unittest discover -s tools -t tools -p 'test_*.py'`) | **1,773 tests, OK**, 5 pre-existing optional-dependency skips |
+| Full host discovery with readers installed (`python3 -m unittest discover -s tools -t tools -p 'test_*.py'`) | **1,797 tests, OK**, 5 pre-existing optional-dependency skips |
 | `module_testability.py --check`, `native_source_audit.py --check`, `test_module_testability` (7), `test_native_source_audit` (13) | green after regenerating both reports |
 
 ## H. Defects found and repaired during this round
@@ -106,7 +106,10 @@ Frontier restated: Writer now produces **bold/italic/strike/headings/lists/table
 3. **Unconditional `xmlns:r` (regression introduced by this round and repaired in it).** The first version declared the relationship namespace on every document, which changed the bytes of all link-free documents and broke six pinned legacy baselines. Repaired by interpolating the declaration only when links exist. This is recorded because it is exactly the kind of "harmless" edit that a weaker gate would have shipped.
 4. **`ESSENTIALS` guard drifted from production.** `test_r73_formula_contract.py` still listed 39 essentials while `FormulaEval.ESSENTIAL_NAMES` had grown to 41 (`FORMULATEXT`, `ISFORMULA`); the guard failed honestly and was synced rather than deleted.
 5. **Stale census/audit hashes** after three production files changed; both reports were regenerated and their `--check` modes now pass.
-6. **Baseline runners died on a shallow clone.** `git fetch --unshallow` restored history, and the runners that pin files absent at their base commit now skip those paths via `git cat-file -e` instead of crashing.
+6. **The verifier failed open when `python-docx` was absent.** `check_r74_writer_links.py` printed "python-docx unavailable" and returned **0** without checking anything, which is exactly backwards: a missing dependency must not turn a verifier into a rubber stamp. The raw OPC checks (relationships, targets, element counts, page break, literal text, macro part) now always run — the literal check was moved into the raw path — and the python-docx differential is skipped only with an explicit `NOT run` line. The office lane passes `--require-python-docx`, so a missing dependency fails there instead of degrading. Found by the `android.yml` python-tests job, not by the host runs that had the dependency.
+7. **R74 changed a contract that R57 pinned.** `[link](https://example.invalid)` was one of R57's "unsupported syntax stays literal" lines and now round-trips as a hyperlink. Rather than delete the guard, the literal case uses a refused scheme (`ftp://`) — still literal, same intent — and R57 gained a positive assertion plus a `link.docx` artifact that the independent python reference reads back as `("site", "https://example.invalid")`.
+8. **`run_r72_office_zip.py` pinned a file that did not exist yet.** Its pinned commit predates `NumberFormatRender.kt`, so the runner died on `git show`; it now skips absent pinned paths like the other baseline runners.
+9. **Baseline runners died on a shallow clone.** `git fetch --unshallow` restored history, and the runners that pin files absent at their base commit now skip those paths via `git cat-file -e` instead of crashing.
 
 ## I. Repairs re-run all gates
 
@@ -115,5 +118,12 @@ After each repair the full set in section G was re-executed. The patch-specific 
 ## J. Honest stopping point
 
 Not run, not implied: any Gradle/AGP build of the new source set, any Android or emulator execution, any Word/LibreOffice open, any visual inspection, any `.docx` produced by a second word processor. The CI office lane wiring added in this round has **not** been observed green: the last observed office run on `a362ae6` (`42569424797`) **failed** at steps 19 and 21. Writer still lacks fields, bookmarks/anchors, images, headers/footers, sections, comments and track changes. The formula kernel still lacks `RANDARRAY`, spill limits for `SEQUENCE`, locale/currency/fraction formats, and any Excel or LibreOffice recalculation.
+
+**CI status of this revision.** The merge commit `1bb15e3` was pushed and both workflows were observed **red**, then root-caused from the check-run annotations (the job logs themselves are not fetchable from this sandbox):
+
+- `office` failed at step 9 with `IllegalStateException: literal fallback 6` in `:testing:r57Contracts` — defect 7 above. Step 19 (`Run real API34 UI and provider checks`) and step 21 (`Require all 37 named Office cases`) were already failing on `a362ae6` and are device/emulator gates, not host gates.
+- `Traceability, assemble both flavors, JVM tests` failed in `source-python-tests` on `test_r74_writer_links` — defect 6 above.
+
+Both are repaired in the follow-up commit that carries this paragraph, but **that commit's CI has not been observed**. Nothing here is a CI pass claim.
 
 Next highest-information test: open `links.docx` and `blocks.docx` in an actual Word or LibreOffice, and check that the three links are clickable, the refused `javascript:` target is not, and the page break paginates — that is the only artifact that can promote this from "two independent readers agree on the package" to "a real word processor renders it".

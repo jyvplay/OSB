@@ -61,11 +61,14 @@ def inspect(directory):
         for level in range(1, 7):
             outline = headings[f'Heading{level}'].find(f'{WORD}pPr/{WORD}outlineLvl')
             require(outline is not None and outline.attrib[WORD + 'val'] == str(level - 1), f'Heading {level} outline level differs')
-    literal_expected = ['#tag', '####### not a heading', '# ', '- ', '> ', '| a | b |', '[link](https://example.invalid)',
+    literal_expected = ['#tag', '####### not a heading', '# ', '- ', '> ', '| a | b |', '[link](ftp://example.invalid)',
                         '**unmatched', '*one **nested** end*', '***ambiguous***', '\\*escaped*', '`code **nested**`', 'x *not closed']
     literal = Document(directory / 'literal.docx')
     require([p.text for p in literal.paragraphs] == literal_expected, 'ambiguous/unsupported input was altered')
     require(all(p.style.name == 'Normal' for p in literal.paragraphs), 'literal lines became styled blocks')
+    link = Document(directory / 'link.docx')
+    found_links = [(l.text, l.address) for p in link.paragraphs for l in p.hyperlinks]
+    require(found_links == [('site', 'https://example.invalid')], 'supported link was not written as a hyperlink: ' + repr(found_links))
     plain = Document(directory / 'plain.docx')
     require([p.text for p in plain.paragraphs] == ['# Heading & <title>', '## Second', '- item **bold** and *italic*',
                                                    '> quote `code`', '  plain\t🙂  ', '', 'last', ''], 'plain export changed text')

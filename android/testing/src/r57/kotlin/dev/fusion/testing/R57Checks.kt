@@ -44,7 +44,7 @@ object R57Checks {
         verify(content(items[4]) == "  plain\t\uD83D\uDE42  ", "tabs, whitespace and supplementary Unicode")
         verify(content(items[5]).isEmpty() && content(items[6]) == "last" && content(items[7]).isEmpty(), "empty and trailing paragraphs")
 
-        val literalLines = listOf("#tag", "####### not a heading", "# ", "- ", "> ", "| a | b |", "[link](https://example.invalid)",
+        val literalLines = listOf("#tag", "####### not a heading", "# ", "- ", "> ", "| a | b |", "[link](ftp://example.invalid)",
             "**unmatched", "*one **nested** end*", "***ambiguous***", "\\*escaped*", "`code **nested**`", "x *not closed")
         val literal = literalLines.joinToString("\n")
         File(out, "literal.docx").writeBytes(StructuredWriterDocx.write(literal))
@@ -53,6 +53,13 @@ object R57Checks {
         literalLines.forEachIndexed { index, line ->
             verify(literalBlocks[index] is DocxPackage.Block.Paragraph && content(literalBlocks[index]) == line, "literal fallback $index")
         }
+        // R74 turns a supported Markdown link into a real hyperlink run; a refused scheme stays literal.
+        // The literal case above therefore uses ftp:// (refused) instead of https:// (now supported).
+        val linkLine = "[site](https://example.invalid)"
+        val linked = blocks(linkLine).single() as DocxPackage.Block.Paragraph
+        verify(linked.runs.size == 1 && linked.runs[0].text == "site" &&
+            linked.runs[0].href == "https://example.invalid", "supported link becomes a hyperlink run")
+        File(out, "link.docx").writeBytes(StructuredWriterDocx.write(linkLine))
         val fallback = blocks("# heading *not closed").single() as DocxPackage.Block.Heading
         verify(content(fallback) == "heading *not closed", "block prefix survives inline fallback")
         val adjacent = blocks("A **bold** B *italic* C `code` D").single() as DocxPackage.Block.Paragraph
