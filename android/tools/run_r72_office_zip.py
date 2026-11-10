@@ -54,6 +54,10 @@ def main():
         for name in SOURCES:
             rel = f'android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/{name}.kt'
             target = pinned_dir / f'{name}.kt'
+            if subprocess.run(['git', 'cat-file', '-e', f'{BASE}:{rel}'], cwd=REPO,
+                              capture_output=True).returncode != 0:
+                # Added after the pinned commit; the older sources do not reference it.
+                continue
             target.write_bytes(subprocess.check_output(['git', 'show', f'{BASE}:{rel}'], cwd=REPO))
             sources.append(target)
         pinned_jar = compile_and_seed(env, pinned_dir, sources)

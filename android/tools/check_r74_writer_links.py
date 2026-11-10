@@ -45,22 +45,28 @@ def read_docx(path: Path) -> tuple[zipfile.ZipFile, str, str]:
     return archive, document, rels
 
 
-def check_links(artifacts: Path) -> int:
-    import docx  # python-docx, an independent OPC/WordprocessingML reader
-
+def check_links(artifacts: Path, docx) -> int:
     checks = 0
     archive, document, rels = read_docx(artifacts / "links.docx")
-    parsed = docx.Document(str(artifacts / "links.docx"))
-    found = [(link.text, link.address) for paragraph in parsed.paragraphs for link in paragraph.hyperlinks]
-    if found != EXPECTED_LINKS:
-        fail("python-docx hyperlinks differ: " + repr(found))
-    checks += 1
-
-    body_text = "\n".join(paragraph.text for paragraph in parsed.paragraphs)
+    # Raw-XML literal check first: it must hold whether or not python-docx is installed, so the
+    # negative controls keep their teeth in a dependency-free environment.
     for fragment in LITERAL_FRAGMENTS:
-        if fragment not in body_text:
+        if fragment not in document:
             fail("literal text lost: " + fragment)
         checks += 1
+    if docx is not None:
+        # python-docx is an independent OPC/WordprocessingML reader, not Word layout.
+        parsed = docx.Document(str(artifacts / "links.docx"))
+        found = [(link.text, link.address) for paragraph in parsed.paragraphs for link in paragraph.hyperlinks]
+        if found != EXPECTED_LINKS:
+            fail("python-docx hyperlinks differ: " + repr(found))
+        checks += 1
+
+        body_text = "\n".join(paragraph.text for paragraph in parsed.paragraphs)
+        for fragment in LITERAL_FRAGMENTS:
+            if fragment not in body_text:
+                fail("literal text lost: " + fragment)
+            checks += 1
 
     # A rejected scheme may appear as *literal visible text*, but never as a relationship
     # target or a hyperlink attribute: that is the difference between text and a live link.
@@ -96,16 +102,15 @@ def check_links(artifacts: Path) -> int:
     return checks
 
 
-def check_blocks(artifacts: Path) -> int:
-    import docx
-
+def check_blocks(artifacts: Path, docx) -> int:
     checks = 0
     archive, document, rels = read_docx(artifacts / "blocks.docx")
-    parsed = docx.Document(str(artifacts / "blocks.docx"))
-    addresses = [link.address for paragraph in parsed.paragraphs for link in paragraph.hyperlinks]
-    if addresses != ["https://example.org/same", "https://example.org/same", "mailto:x@example.org"]:
-        fail("block-api link order differs: " + repr(addresses))
-    checks += 1
+    if docx is not None:
+        parsed = docx.Document(str(artifacts / "blocks.docx"))
+        addresses = [link.address for paragraph in parsed.paragraphs for link in paragraph.hyperlinks]
+        if addresses != ["https://example.org/same", "https://example.org/same", "mailto:x@example.org"]:
+            fail("block-api link order differs: " + repr(addresses))
+        checks += 1
     shared = re.findall(r'Target="https://example\.org/same" TargetMode="External"', rels)
     if len(shared) != 1:
         fail("a repeated target must reuse one relationship, found " + str(len(shared)))
@@ -126,20 +131,29 @@ def check_blocks(artifacts: Path) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
+    parser.add_argument("--require-python-docx", action="store_true",
+                        help="refuse to run without python-docx instead of degrading to raw OPC XML")
     args = parser.parse_args()
     try:
-        import docx  # noqa: F401
+        import docx
     except ImportError:
-        print("python-docx unavailable: R74 Writer differential was NOT run.")
-        return 0
+        docx = None
+    if docx is None and args.require_python_docx:
+        print("R74 WRITER FAIL: python-docx is required here and is not importable.")
+        return 1
+    if docx is None:
+        # Fail-closed: the raw OPC checks below still run and still reject every tampered package.
+        # Only the python-docx differential is skipped, and it is named as skipped, never implied.
+        print("python-docx unavailable: the python-docx differential is NOT run; raw OPC XML checks only.")
     try:
-        checks = check_links(args.directory) + check_blocks(args.directory)
+        checks = check_links(args.directory, docx) + check_blocks(args.directory, docx)
     except SystemExit:
         raise
     except Exception as error:  # a malformed package must fail cleanly, not crash the lane
         print(f"R74 WRITER FAIL: {type(error).__name__}: {error}")
         return 1
-    print(f"R74 writer links: {checks} independent checks passed (python-docx + raw OPC XML). "
+    reader = "python-docx + raw OPC XML" if docx is not None else "raw OPC XML only, python-docx absent"
+    print(f"R74 writer links: {checks} independent checks passed ({reader}). "
           "Not Word rendering or Android evidence.")
     return 0
 

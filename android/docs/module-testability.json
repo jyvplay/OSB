@@ -5428,7 +5428,7 @@
         "tools/test_r73_formula_contract.py": "83b5c969e9b20441f1febd68ce0532f3e483e702066ef2121eee44af4d2b4f9f",
         "tools/run_r73_formula.py": "9efc3c62bb151559dfc6e3de68c66fe869058fbd6493f4f56f056478fe14adc8",
         "tools/run_r74_writer_links.py": "c30d212a6a23e6700e9e62aa373801f5ee5263e352c6a6bf9eed1ebbf9d13ba6",
-        "tools/check_r74_writer_links.py": "f8865f0b69f5708abcb462e431fbdcac965e72a6bf19e8b7d88413b9134f36d7",
+        "tools/check_r74_writer_links.py": "94aca4866a922819632f3a16e8584bc689e00402fd8c6fbcb6cd42b770a87af4",
         "tools/test_r74_writer_links.py": "1d6b049ddff82ebc95a7de2dda634c4d5074f205f984762130283179a29fabb8",
         "testing/src/r74writer/kotlin/dev/fusion/testing/R74WriterLinkChecks.kt": "74391b640633a36a273561801d39b253fc52d1e5610ca77e92b6085e3dd7d690"
       }
