@@ -14,9 +14,12 @@ import java.time.LocalDate
  *
  * Declared narrowings (every refusal is explicit, never a silent approximation):
  * - Conditions in `[...]` sections are refused; color names are accepted and ignored.
- * - Fractions (`# ?/?`), fill (`*c`), and `?` digit placeholders keep their documented
- *   meaning only where stated below; `?` pads with a space, `*c` is dropped, and a `/`
- *   inside a digit block is refused instead of guessed.
+ * - Fractions are rendered for three shapes: mixed (`# ?/?`, `0 ??/??`), improper (`?/?`) and
+ *   fixed denominator (`# ?/16`, `?/8`). The numerator/denominator pair is the *nearest* fraction
+ *   under the placeholder-derived denominator bound, ties going to the smaller denominator; an
+ *   exact one carries into the whole part. Padding follows Excel: `?` pads with a space, `0` with
+ *   zeros, `#` shows nothing. Trailing padding is not trimmed (Excel keeps it).
+ * - Fill (`*c`) is dropped and `?` keeps its documented meaning below.
  * - Text sections support a single `@` placeholder plus quoted/escaped literals.
  * - Elapsed-time brackets `[h] [m] [s]` are supported for whole units only.
  * - Serial dates use the 1900 date system inside `1900-03-01..9999-12-31`, the same
@@ -25,9 +28,10 @@ import java.time.LocalDate
  */
 object NumberFormatRender {
     const val SCOPE =
-        "Number/date/text rendering for one format section set: placeholders 0 #, grouping, " +
+        "Number/date/text rendering for one format section set: placeholders 0 # ?, grouping, " +
             "decimal scaling, percent, scientific, quoted/escaped literals, date and time tokens, " +
-            "elapsed whole units. Conditions, fraction formats and fill characters are refused."
+            "elapsed whole units, and fraction formats (mixed, improper and fixed-denominator). " +
+            "Conditions and fill characters are refused."
 
     const val MAX_FORMAT_CHARS = 128
     const val MAX_OUTPUT_CHARS = 4_096
@@ -445,7 +449,7 @@ object NumberFormatRender {
                     exponent = section[i + 1]
                     i += 2
                 }
-                c == '/' -> throw IllegalArgumentException("fraction formats are refused")
+                c == '/' -> throw IllegalArgumentException("fraction section reached the digit parser")
                 c == '@' -> throw IllegalArgumentException("text placeholder in numeric format")
                 else -> { emitLiteral(c.toString()); i++ }
             }
@@ -461,6 +465,7 @@ object NumberFormatRender {
     }
 
     private fun renderDigits(value: Double, section: String, autoSign: Boolean): String {
+        if (hasFractionSlash(section)) return renderFraction(value, section, autoSign)
         val pattern = parseDigitPattern(section)
         var scaled = value
         repeat(pattern.percents) { scaled *= 100.0 }
@@ -478,6 +483,219 @@ object NumberFormatRender {
         )
         builder.append(pattern.suffix)
         return builder.toString()
+    }
+
+    /** True when the section carries a top-level `/` outside quotes and brackets. */
+    private fun hasFractionSlash(section: String): Boolean {
+        var i = 0
+        var inQuote = false
+        while (i < section.length) {
+            when (val c = section[i]) {
+                '"' -> inQuote = !inQuote
+                '\\' -> i++
+                '[' -> { if (!inQuote) { val end = section.indexOf(']', i); if (end > i) { i = end } } }
+                '/' -> if (!inQuote) return true
+            }
+            i++
+        }
+        return false
+    }
+
+    private class FractionPattern(
+        val prefix: String,
+        val integerPlaceholders: String,
+        val separator: String,
+        val numerator: String,
+        val denominator: String,
+        val fixedDenominator: Int?,
+        val suffix: String,
+        val percents: Int,
+        val scale: Int,
+    )
+
+    /**
+     * Splits a fraction section into its segments. Placeholder runs are kept as strings so the
+     * renderer can honour `0`/`#`/`?` padding independently for whole part, numerator and
+     * denominator; the run immediately before `/` is the numerator, everything before it is the
+     * whole-number part, and the literal between them is the separator.
+     */
+    private fun parseFractionPattern(section: String): FractionPattern {
+        val segments = ArrayList<Pair<Boolean, String>>() // true = placeholder run
+        val prefix = StringBuilder()
+        val suffix = StringBuilder()
+        var percents = 0
+        var scale = 0
+        var afterSlash = false
+        var denominatorDigits = StringBuilder()
+        var denominatorPlaceholders: StringBuilder? = null
+        var done = false
+        var i = 0
+
+        fun appendPlaceholder(c: Char) {
+            val last = segments.lastOrNull()
+            if (last != null && last.first && !afterSlash) {
+                segments[segments.size - 1] = true to last.second + c
+            } else {
+                segments.add(true to c.toString())
+            }
+        }
+        fun appendLiteral(text: String) {
+            if (done || afterSlash) { suffix.append(text); return }
+            val last = segments.lastOrNull()
+            if (last != null && !last.first) {
+                segments[segments.size - 1] = false to last.second + text
+            } else {
+                segments.add(false to text)
+            }
+        }
+
+        while (i < section.length) {
+            val c = section[i]
+            when {
+                c == '"' -> {
+                    val end = section.indexOf('"', i + 1)
+                    require(end > i) { "unterminated quoted literal" }
+                    if (afterSlash) suffix.append(section.substring(i + 1, end)) else appendLiteral(section.substring(i + 1, end))
+                    i = end + 1
+                }
+                c == '\\' -> {
+                    require(i + 1 < section.length) { "dangling escape" }
+                    if (afterSlash) suffix.append(section[i + 1]) else appendLiteral(section[i + 1].toString())
+                    i += 2
+                }
+                c == '_' -> { require(i + 1 < section.length) { "dangling pad" }; if (afterSlash) suffix.append(' ') else appendLiteral(" "); i += 2 }
+                c == '*' -> i += 2
+                c == '[' -> {
+                    val end = section.indexOf(']', i)
+                    require(end > i) { "unterminated bracket" }
+                    i = end + 1
+                }
+                c == '%' -> { percents++; if (afterSlash) suffix.append('%') else appendLiteral("%"); i++ }
+                c == ',' -> {
+                    // Scaling commas only make sense on the whole part; grouping is not supported
+                    // together with a fraction and is refused rather than silently dropped.
+                    var commas = 0
+                    var j = i
+                    while (j < section.length && section[j] == ',') { commas++; j++ }
+                    val nextIsPlaceholder = j < section.length && section[j] in "0#?"
+                    require(!nextIsPlaceholder) { "grouping is not supported in a fraction format" }
+                    scale += commas
+                    require(scale <= MAX_SCALE) { "too many scaling commas" }
+                    i = j
+                }
+                c == '/' -> {
+                    require(!afterSlash) { "repeated fraction slash" }
+                    require(segments.isNotEmpty() && segments.last().first) { "fraction needs a numerator" }
+                    afterSlash = true
+                    i++
+                }
+                c == '0' || c == '#' || c == '?' -> {
+                    if (afterSlash) {
+                        val existing = denominatorPlaceholders
+                        require(denominatorDigits.isEmpty()) { "denominator mixes digits and placeholders" }
+                        denominatorPlaceholders = (existing ?: StringBuilder()).append(c)
+                    } else {
+                        appendPlaceholder(c)
+                    }
+                    i++
+                }
+                c.isDigit() -> {
+                    require(afterSlash) { "literal digit outside the denominator in a fraction format" }
+                    require(denominatorPlaceholders == null) { "denominator mixes digits and placeholders" }
+                    denominatorDigits.append(c)
+                    i++
+                }
+                c == '.' -> throw IllegalArgumentException("fraction formats cannot carry decimal places")
+                c == 'E' || c == 'e' -> throw IllegalArgumentException("fraction formats cannot be scientific")
+                else -> { if (afterSlash) suffix.append(c) else appendLiteral(c.toString()); i++ }
+            }
+        }
+
+        require(segments.isNotEmpty()) { "fraction format has no placeholders" }
+        require(segments.last().first) { "fraction format must end with a placeholder run" }
+        val numerator = segments.removeAt(segments.size - 1).second
+        var separator = ""
+        if (segments.isNotEmpty() && !segments.last().first) separator = segments.removeAt(segments.size - 1).second
+        val integer = if (segments.isNotEmpty() && segments.last().first) segments.removeAt(segments.size - 1).second else ""
+        for ((_, text) in segments) prefix.append(text)
+        val denomPlaceholders = denominatorPlaceholders?.toString()
+        val fixed = if (denominatorDigits.isNotEmpty()) denominatorDigits.toString().toIntOrNull() else null
+        require(fixed != null || denomPlaceholders != null) { "fraction needs a denominator" }
+        if (fixed != null) require(fixed in 1..9_999) { "fixed denominator outside 1..9999" }
+        if (denomPlaceholders != null) require(denomPlaceholders.length in 1..4) { "denominator placeholders outside 1..4" }
+        require(numerator.length in 1..4) { "numerator placeholders outside 1..4" }
+        return FractionPattern(prefix.toString(), integer, separator, numerator, denomPlaceholders ?: "", fixed,
+            suffix.toString(), percents, scale)
+    }
+
+    private fun renderFraction(value: Double, section: String, autoSign: Boolean): String {
+        val pattern = parseFractionPattern(section)
+        var scaled = value
+        repeat(pattern.percents) { scaled *= 100.0 }
+        repeat(pattern.scale) { scaled /= 1_000.0 }
+        require(scaled.isFinite()) { "scaled value overflowed" }
+        val negative = scaled < 0.0
+        val magnitude = kotlin.math.abs(scaled)
+        val hasInteger = pattern.integerPlaceholders.isNotEmpty()
+        var whole = if (hasInteger) kotlin.math.floor(magnitude) else 0.0
+        val fractional = if (hasInteger) magnitude - whole else magnitude
+        val bound = pattern.fixedDenominator ?: maxDenominator(pattern.denominator)
+        require(bound in 1..9_999) { "denominator bound outside 1..9999" }
+
+        var bestP = 0L
+        var bestQ = 1L
+        var bestError = Double.MAX_VALUE
+        val candidates = if (pattern.fixedDenominator != null) listOf(pattern.fixedDenominator) else (1..bound).toList()
+        for (q in candidates) {
+            val p = Math.round(fractional * q)
+            val error = kotlin.math.abs(fractional - p.toDouble() / q)
+            // Strictly closer wins, so a tie keeps the smaller denominator (the earlier candidate).
+            if (error < bestError - 1e-15) { bestError = error; bestP = p.toLong(); bestQ = q.toLong() }
+            if (error <= 1e-15) break
+        }
+        if (hasInteger && bestP == bestQ) { whole += 1.0; bestP = 0 }
+
+        val intText = when {
+            !hasInteger -> ""
+            whole == 0.0 && '0' !in pattern.integerPlaceholders -> ""
+            else -> pad(whole.toLong().toString(), pattern.integerPlaceholders, zeroPad = true)
+        }
+        val fractionShown = bestP != 0L || !hasInteger
+        val body = when {
+            !fractionShown -> intText
+            intText.isEmpty() -> pad(bestP.toString(), pattern.numerator, zeroPad = true) + "/" +
+                pad(bestQ.toString(), pattern.denominator, zeroPad = true)
+            else -> intText + pattern.separator + pad(bestP.toString(), pattern.numerator, zeroPad = true) + "/" +
+                pad(bestQ.toString(), pattern.denominator, zeroPad = true)
+        }
+        val core = if (body.isEmpty()) "0" else body
+        return buildString {
+            if (negative && autoSign) append('-')
+            append(pattern.prefix)
+            append(core)
+            append(pattern.suffix)
+        }
+    }
+
+    /** `??` allows denominators below 100, `???` below 1000; an empty spec means one placeholder. */
+    private fun maxDenominator(placeholders: String): Int {
+        val digits = placeholders.length.coerceAtLeast(1)
+        var bound = 1
+        repeat(digits) { bound *= 10 }
+        return bound - 1
+    }
+
+    /** Excel padding: `0` fills with zeros, `?` fills with spaces, `#` never pads. */
+    private fun pad(text: String, placeholders: String, zeroPad: Boolean): String {
+        val width = placeholders.length
+        if (text.length >= width) return text
+        val filler = when {
+            '0' in placeholders -> '0'
+            '?' in placeholders && (zeroPad || text == "0") -> ' '
+            '?' in placeholders -> ' '
+            else -> return text
+        }
+        return text.padStart(width, filler)
     }
 
     private fun renderFixed(rounded: BigDecimal, pattern: DigitPattern): String {

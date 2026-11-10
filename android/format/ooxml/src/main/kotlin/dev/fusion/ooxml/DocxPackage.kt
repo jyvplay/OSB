@@ -33,6 +33,16 @@ object DocxPackage {
     const val MAX_ZIP_BYTES = 16 * 1024 * 1024
     const val MAX_HYPERLINKS = 512
     const val MAX_HREF_CHARS = 2_048
+    const val MAX_IMAGES = 64
+    const val MAX_IMAGE_BYTES = 512 * 1024
+    const val MAX_IMAGE_EDGE_PX = 4_096
+    const val MAX_IMAGE_EMU = 40_000_000
+    private const val EMU_PER_PIXEL = 9_525 // 96 dpi, the WordprocessingML convention
+    const val WP_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+    const val DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+    const val PICTURE_NS = "http://schemas.openxmlformats.org/drawingml/2006/picture"
+    private const val IMAGE_REL_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+    private const val PICTURE_URI = "http://schemas.openxmlformats.org/drawingml/2006/picture"
     const val MAX_PART_BYTES = 1024 * 1024
     private const val BULLET_NUM_ID = 1
     private const val ORDERED_NUM_ID = 2
@@ -49,6 +59,119 @@ object DocxPackage {
         init {
             validateXmlChars(text)
             if (href != null) validateHref(href)
+        }
+    }
+
+    /** Formats this writer can embed. Detection is by magic bytes, never by caller assertion alone. */
+    enum class ImageFormat(val extension: String, val contentType: String) {
+        PNG("png", "image/png"),
+        JPEG("jpeg", "image/jpeg"),
+    }
+
+    /**
+     * A caller-supplied raster image. The writer never opens a file, a URL or a content provider:
+     * bytes arrive from the caller, so the access model stays "pure function over in-memory data".
+     * Equality is content-based, which is what makes round-trip comparison meaningful.
+     */
+    class Image private constructor(
+        val bytes: ByteArray,
+        val format: ImageFormat,
+        val widthPx: Int,
+        val heightPx: Int,
+    ) {
+        init {
+            require(bytes.isNotEmpty()) { "image bytes must not be empty" }
+            require(bytes.size <= MAX_IMAGE_BYTES) { "image exceeds $MAX_IMAGE_BYTES bytes" }
+            require(widthPx in 1..MAX_IMAGE_EDGE_PX && heightPx in 1..MAX_IMAGE_EDGE_PX) {
+                "image edge ${widthPx}x$heightPx outside 1..$MAX_IMAGE_EDGE_PX"
+            }
+            require(detect(bytes) == format) { "declared format ${format.extension} does not match the magic bytes" }
+            val measured = measure(bytes)
+                ?: throw IllegalArgumentException("image header is truncated or unsupported")
+            require(measured.first == widthPx && measured.second == heightPx) {
+                "declared ${widthPx}x$heightPx does not match the header ${measured.first}x${measured.second}"
+            }
+        }
+
+        val widthEmu: Int get() = widthPx * EMU_PER_PIXEL
+        val heightEmu: Int get() = heightPx * EMU_PER_PIXEL
+
+        override fun equals(other: Any?): Boolean =
+            other is Image && format == other.format && widthPx == other.widthPx &&
+                heightPx == other.heightPx && bytes.contentEquals(other.bytes)
+
+        override fun hashCode(): Int {
+            var h = format.hashCode()
+            h = 31 * h + widthPx
+            h = 31 * h + heightPx
+            h = 31 * h + bytes.contentHashCode()
+            return h
+        }
+
+        override fun toString(): String = "Image(${format.extension}, ${widthPx}x$heightPx, ${bytes.size}B)"
+
+        companion object {
+            /** Detects the container from its signature; returns null for anything else. */
+            fun detect(bytes: ByteArray): ImageFormat? = when {
+                bytes.size >= 8 && bytes[0] == 0x89.toByte() && bytes[1] == 0x50.toByte() &&
+                    bytes[2] == 0x4E.toByte() && bytes[3] == 0x47.toByte() &&
+                    bytes[4] == 0x0D.toByte() && bytes[5] == 0x0A.toByte() &&
+                    bytes[6] == 0x1A.toByte() && bytes[7] == 0x0A.toByte() -> ImageFormat.PNG
+                bytes.size >= 3 && bytes[0] == 0xFF.toByte() && bytes[1] == 0xD8.toByte() &&
+                    bytes[2] == 0xFF.toByte() -> ImageFormat.JPEG
+                else -> null
+            }
+
+            /** Reads the intrinsic pixel size from the PNG IHDR or a JPEG start-of-frame marker. */
+            fun measure(bytes: ByteArray): Pair<Int, Int>? = when (detect(bytes)) {
+                ImageFormat.PNG -> pngSize(bytes)
+                ImageFormat.JPEG -> jpegSize(bytes)
+                null -> null
+            }
+
+            fun of(bytes: ByteArray): Image {
+                val format = detect(bytes) ?: throw IllegalArgumentException("unsupported image container")
+                val (w, h) = measure(bytes) ?: throw IllegalArgumentException("image header is truncated")
+                return Image(bytes, format, w, h)
+            }
+
+            /** Accepts exactly one PNG chunk layout: signature, IHDR with sane fields, and a length-bounded stream. */
+            private fun pngSize(bytes: ByteArray): Pair<Int, Int>? {
+                if (bytes.size < 24) return null
+                if (bytes[12] != 'I'.code.toByte() || bytes[13] != 'H'.code.toByte() ||
+                    bytes[14] != 'D'.code.toByte() || bytes[15] != 'R'.code.toByte()) return null
+                val width = readInt(bytes, 16)
+                val height = readInt(bytes, 20)
+                if (width <= 0 || height <= 0) return null
+                return width to height
+            }
+
+            /** Scans JPEG markers for a start-of-frame; the scan stops at SOS or at the end of the buffer. */
+            private fun jpegSize(bytes: ByteArray): Pair<Int, Int>? {
+                var i = 2
+                while (i + 9 < bytes.size) {
+                    if (bytes[i] != 0xFF.toByte()) return null
+                    val marker = bytes[i + 1].toInt() and 0xFF
+                    if (marker == 0xD8 || marker == 0x01 || marker in 0xD0..0xD7) { i += 2; continue }
+                    if (marker == 0xD9 || marker == 0xDA) return null // end of image or start of scan
+                    val length = ((bytes[i + 2].toInt() and 0xFF) shl 8) or (bytes[i + 3].toInt() and 0xFF)
+                    if (length < 2 || i + 2 + length > bytes.size) return null
+                    val isFrame = marker in 0xC0..0xCF && marker != 0xC4 && marker != 0xC8 && marker != 0xCC
+                    if (isFrame) {
+                        if (length < 7) return null
+                        val height = ((bytes[i + 5].toInt() and 0xFF) shl 8) or (bytes[i + 6].toInt() and 0xFF)
+                        val width = ((bytes[i + 7].toInt() and 0xFF) shl 8) or (bytes[i + 8].toInt() and 0xFF)
+                        if (width <= 0 || height <= 0) return null
+                        return width to height
+                    }
+                    i += 2 + length
+                }
+                return null
+            }
+
+            private fun readInt(bytes: ByteArray, at: Int): Int =
+                ((bytes[at].toInt() and 0xFF) shl 24) or ((bytes[at + 1].toInt() and 0xFF) shl 16) or
+                    ((bytes[at + 2].toInt() and 0xFF) shl 8) or (bytes[at + 3].toInt() and 0xFF)
         }
     }
 
@@ -69,6 +192,22 @@ object DocxPackage {
         }
 
         data object PageBreak : Block
+
+        /** A block-level inline picture. Alt text is mandatory: a document that cannot describe an
+         *  image must not silently omit the description. */
+        data class Picture(
+            val image: Image,
+            val alt: String,
+            val widthEmu: Int = image.widthEmu,
+            val heightEmu: Int = image.heightEmu,
+        ) : Block {
+            init {
+                require(alt.length <= 1_024) { "alt text exceeds 1024 characters" }
+                require(widthEmu in 1..MAX_IMAGE_EMU && heightEmu in 1..MAX_IMAGE_EMU) {
+                    "picture extent ${widthEmu}x$heightEmu EMU outside 1..$MAX_IMAGE_EMU"
+                }
+            }
+        }
 
         data class BlockQuote(val runs: List<Run>) : Block
 
@@ -125,15 +264,31 @@ object DocxPackage {
             }
         }
         val hrefIds = hyperlinks.withIndex().associate { (index, href) -> href to "rId${index + 3}" }
+        val images = LinkedHashSet<Image>()
+        for (block in doc.blocks) {
+            if (block !is Block.Picture) continue
+            if (!images.contains(block.image)) {
+                require(images.size < MAX_IMAGES) { "document exceeds $MAX_IMAGES distinct images" }
+                images.add(block.image)
+            }
+        }
+        val imageParts = LinkedHashMap<Image, String>()
+        val imageIds = LinkedHashMap<Image, String>()
+        images.forEachIndexed { index, image ->
+            imageParts[image] = "media/image${index + 1}.${image.format.extension}"
+            imageIds[image] = "rId${3 + hrefIds.size + index}"
+        }
         val parts = linkedMapOf(
-            "[Content_Types].xml" to contentTypesXml(),
-            "_rels/.rels" to rootRelsXml(),
-            "word/_rels/document.xml.rels" to documentRelsXml(hrefIds),
-            "word/styles.xml" to stylesXml(),
-            "word/numbering.xml" to defaultNumberingXml(groups),
-            "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups, hrefIds),
+            "[Content_Types].xml" to contentTypesXml(images.map { it.format }).toByteArray(StandardCharsets.UTF_8),
+            "_rels/.rels" to rootRelsXml().toByteArray(StandardCharsets.UTF_8),
+            "word/_rels/document.xml.rels" to documentRelsXml(hrefIds, imageParts, imageIds).toByteArray(StandardCharsets.UTF_8),
+            "word/styles.xml" to stylesXml().toByteArray(StandardCharsets.UTF_8),
+            "word/numbering.xml" to defaultNumberingXml(groups).toByteArray(StandardCharsets.UTF_8),
+            "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups, hrefIds, imageParts, imageIds)
+                .toByteArray(StandardCharsets.UTF_8),
         )
-        return storedZip(parts)
+        for ((image, target) in imageParts) parts["word/$target"] = image.bytes
+        return storedZipBytes(parts)
     }
 
     fun read(docxBytes: ByteArray): Document {
@@ -145,15 +300,24 @@ object DocxPackage {
         val docBytes = parts["word/document.xml"]
             ?: throw IllegalArgumentException("missing word/document.xml")
         val numberingDefs = parts["word/numbering.xml"]?.let(DocxNumbering::parseXmlBytes)
-        return parseDocumentBlocks(docBytes, numberingDefs, parts["word/_rels/document.xml.rels"])
+        return parseDocumentBlocks(docBytes, numberingDefs, parts["word/_rels/document.xml.rels"], parts)
     }
 
-    private fun buildDocumentXml(doc: Document, restartOrderedGroups: Boolean, hrefIds: Map<String, String> = emptyMap()): String = buildString {
+    private fun buildDocumentXml(
+        doc: Document,
+        restartOrderedGroups: Boolean,
+        hrefIds: Map<String, String> = emptyMap(),
+        imageParts: Map<Image, String> = emptyMap(),
+        imageIds: Map<Image, String> = emptyMap(),
+    ): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
-        // The relationship namespace is declared only when the document actually carries links,
-        // so a link-free document stays byte-identical to the pinned legacy writer.
-        val relNs = if (hrefIds.isEmpty()) "" else """ xmlns:r="$REL_NS""""
-        append("""<w:document xmlns:w="$WORD_NS"$relNs><w:body>""")
+        // Relationship-bearing namespaces are declared only when the document actually uses them,
+        // so a document without links or pictures stays byte-identical to the pinned legacy writer.
+        val relNs = if (hrefIds.isEmpty() && imageParts.isEmpty()) "" else """ xmlns:r="$REL_NS""""
+        val drawingNs = if (imageParts.isEmpty()) "" else
+            """ xmlns:wp="$WP_NS" xmlns:a="$DRAWING_NS" xmlns:pic="$PICTURE_NS""""
+        append("""<w:document xmlns:w="$WORD_NS"$relNs$drawingNs><w:body>""")
+        var drawingId = 0
         var orderedGroup = 0
         var previousOrdered = false
         for (b in doc.blocks) {
@@ -185,6 +349,12 @@ object DocxPackage {
                 is Block.PageBreak -> {
                     append("""<w:p><w:r><w:br w:type="page"/></w:r></w:p>""")
                 }
+                is Block.Picture -> {
+                    drawingId++
+                    val target = imageParts[b.image] ?: error("picture part missing")
+                    val id = imageIds[b.image] ?: error("picture relationship missing")
+                    appendPicture(b, drawingId, target, id)
+                }
                 is Block.CodeBlock -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="monospace" w:hAnsi="monospace"/></w:rPr>""")
                     for ((idx, line) in b.lines.withIndex()) {
@@ -211,6 +381,27 @@ object DocxPackage {
             }
         }
         append("<w:sectPr/></w:body></w:document>")
+    }
+
+    /**
+     * Emits one inline picture. The shape is the minimal DrawingML that Word, LibreOffice and
+     * python-docx all agree on: wp:inline -> wp:extent + wp:docPr + a:graphic/pic:pic.
+     */
+    private fun StringBuilder.appendPicture(block: Block.Picture, index: Int, target: String, relId: String) {
+        val name = target.substringAfterLast('/')
+        val alt = escapeXml(block.alt)
+        append("""<w:p><w:r><w:drawing>""")
+        append("""<wp:inline distT="0" distB="0" distL="0" distR="0">""")
+        append("""<wp:extent cx="${block.widthEmu}" cy="${block.heightEmu}"/>""")
+        append("""<wp:effectExtent l="0" t="0" r="0" b="0"/>""")
+        append("""<wp:docPr id="$index" name="Picture $index" descr="$alt"/>""")
+        append("""<wp:cNvGraphicFramePr><a:graphicFrameLocks noChangeAspect="1"/></wp:cNvGraphicFramePr>""")
+        append("""<a:graphic><a:graphicData uri="$PICTURE_URI"><pic:pic>""")
+        append("""<pic:nvPicPr><pic:cNvPr id="$index" name="$name" descr="$alt"/><pic:cNvPicPr/></pic:nvPicPr>""")
+        append("""<pic:blipFill><a:blip r:embed="$relId"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>""")
+        append("""<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${block.widthEmu}" cy="${block.heightEmu}"/></a:xfrm>""")
+        append("""<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr>""")
+        append("""</pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>""")
     }
 
     private fun StringBuilder.appendRuns(runs: List<Run>, hrefIds: Map<String, String> = emptyMap()) {
@@ -264,20 +455,32 @@ object DocxPackage {
         if (start < text.length) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start))}</w:t>""")
     }
 
-    private fun parseDocumentBlocks(docBytes: ByteArray, numberingDefs: DocxNumbering.Definitions?,
-                                    relsBytes: ByteArray? = null): Document {
+    private fun parseDocumentBlocks(
+        docBytes: ByteArray,
+        numberingDefs: DocxNumbering.Definitions?,
+        relsBytes: ByteArray? = null,
+        parts: Map<String, ByteArray> = emptyMap(),
+    ): Document {
         val root = BoundedXml.parse(docBytes)
         require(root.name.local == "document") { "expected <w:document>, got <${root.name.local}>" }
         val body = root.children.firstOrNull { it.name.local == "body" }
             ?: throw IllegalArgumentException("missing <w:body>")
         val blocks = ArrayList<Block>()
         val linkTargets = parseLinkTargets(relsBytes)
+        val imageTargets = parseImageTargets(relsBytes)
+        var pictures = 0
 
         for (node in body.children) {
             when (node.name.local) {
                 "p" -> {
                     require(blocks.size < MAX_BLOCKS) { "document exceeds $MAX_BLOCKS blocks" }
-                    blocks.add(parseParagraph(node, numberingDefs, linkTargets))
+                    val picture = parsePicture(node, imageTargets, parts)
+                    if (picture != null) {
+                        require(++pictures <= MAX_IMAGES) { "document exceeds $MAX_IMAGES pictures" }
+                        blocks.add(picture)
+                    } else {
+                        blocks.add(parseParagraph(node, numberingDefs, linkTargets))
+                    }
                 }
                 "tbl" -> {
                     require(blocks.size < MAX_BLOCKS) { "document exceeds $MAX_BLOCKS blocks" }
@@ -286,6 +489,69 @@ object DocxPackage {
             }
         }
         return Document(blocks = blocks)
+    }
+
+    private fun parseImageTargets(relsBytes: ByteArray?): Map<String, String> {
+        if (relsBytes == null) return emptyMap()
+        val root = BoundedXml.parse(relsBytes)
+        val targets = LinkedHashMap<String, String>()
+        for (node in root.children) {
+            if (node.name.local != "Relationship") continue
+            val type = node.attr("Type", "") ?: continue
+            if (!type.endsWith("/image")) continue
+            val id = node.attr("Id", "") ?: continue
+            val target = node.attr("Target", "") ?: continue
+            targets[id] = target
+        }
+        return targets
+    }
+
+    /** One picture per paragraph. A paragraph mixing text and a drawing keeps the text fallback. */
+    private fun parsePicture(pNode: BoundedXml.Node, imageTargets: Map<String, String>,
+                             parts: Map<String, ByteArray>): Block.Picture? {
+        for (child in pNode.children) {
+            if (child.name.local == "pPr") continue
+            if (child.name.local != "r") return null // text anywhere in the paragraph wins
+            val drawing = child.children.firstOrNull { it.name.local == "drawing" } ?: return null
+            val inline = drawing.children.firstOrNull { it.name.local == "inline" }
+                ?: throw IllegalArgumentException("floating pictures (wp:anchor) are not supported")
+            val extent = inline.children.firstOrNull { it.name.local == "extent" && it.name.ns == WP_NS }
+                ?: throw IllegalArgumentException("picture is missing wp:extent")
+            // cx/cy and descr are unqualified attributes in WordprocessingML; accept the namespaced
+            // spelling too so a package produced by another writer still reads.
+            val cx = (extent.attr("cx") ?: extent.attr("cx", WP_NS))?.toIntOrNull()
+                ?: throw IllegalArgumentException("wp:extent cx")
+            val cy = (extent.attr("cy") ?: extent.attr("cy", WP_NS))?.toIntOrNull()
+                ?: throw IllegalArgumentException("wp:extent cy")
+            val docPr = inline.children.firstOrNull { it.name.local == "docPr" }
+            val alt = docPr?.attr("descr") ?: docPr?.attr("descr", WP_NS) ?: ""
+            val blip = findFirst(inline) { it.name.local == "blip" }
+                ?: throw IllegalArgumentException("picture is missing a:blip")
+            val relId = blip.attr("embed", REL_NS)
+                ?: throw IllegalArgumentException("picture is missing r:embed")
+            val target = imageTargets[relId]
+                ?: throw IllegalArgumentException("picture relationship $relId is not declared")
+            require(!target.startsWith("/") && ".." !in target.split('/') && ':' !in target) {
+                "picture target escapes the package: $target"
+            }
+            val partName = if (target.startsWith("word/")) target else "word/$target"
+            val data = parts[partName]
+                ?: throw IllegalArgumentException("picture part $partName is missing")
+            require(data.size <= MAX_IMAGE_BYTES) { "picture exceeds $MAX_IMAGE_BYTES bytes" }
+            val image = Image.of(data)
+            val declared = partName.substringAfterLast('.').lowercase()
+            require(declared == image.format.extension) {
+                "picture part $partName does not match its ${image.format.extension} magic bytes"
+            }
+            return Block.Picture(image, alt, cx, cy)
+        }
+        return null
+    }
+
+    private fun findFirst(node: BoundedXml.Node, predicate: (BoundedXml.Node) -> Boolean): BoundedXml.Node? {
+        if (predicate(node)) return node
+        for (child in node.children) findFirst(child, predicate)?.let { return it }
+        return null
     }
 
     private fun parseLinkTargets(relsBytes: ByteArray?): Map<String, String> {
@@ -484,13 +750,15 @@ object DocxPackage {
         return out
     }
 
-    private fun storedZip(entries: Map<String, String>): ByteArray {
+    private fun storedZip(entries: Map<String, String>): ByteArray =
+        storedZipBytes(entries.mapValues { (_, content) -> content.toByteArray(StandardCharsets.UTF_8) })
+
+    private fun storedZipBytes(entries: Map<String, ByteArray>): ByteArray {
         val body = ByteArrayOutputStream()
         val cd = ByteArrayOutputStream()
         var count = 0
-        for ((name, content) in entries) {
+        for ((name, data) in entries) {
             val nameBytes = name.toByteArray(StandardCharsets.UTF_8)
-            val data = content.toByteArray(StandardCharsets.UTF_8)
             val crc = CRC32().apply { update(data) }.value.toInt()
             val offset = body.size()
             body.write(leHeader(30) {
@@ -523,11 +791,14 @@ object DocxPackage {
     private fun leHeader(size: Int, fill: ByteBuffer.() -> Unit): ByteArray =
         ByteBuffer.allocate(size).order(ByteOrder.LITTLE_ENDIAN).apply(fill).array()
 
-    private fun contentTypesXml(): String =
+    private fun contentTypesXml(imageFormats: List<ImageFormat> = emptyList()): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">""" +
             """<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>""" +
             """<Default Extension="xml" ContentType="application/xml"/>""" +
+            imageFormats.distinct().joinToString("") { format ->
+                """<Default Extension="${format.extension}" ContentType="${format.contentType}"/>"""
+            } +
             """<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>""" +
             """<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>""" +
             """<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>""" +
@@ -539,13 +810,21 @@ object DocxPackage {
             """<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>""" +
             """</Relationships>"""
 
-    private fun documentRelsXml(hrefIds: Map<String, String> = emptyMap()): String =
+    private fun documentRelsXml(
+        hrefIds: Map<String, String> = emptyMap(),
+        imageParts: Map<Image, String> = emptyMap(),
+        imageIds: Map<Image, String> = emptyMap(),
+    ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">""" +
             """<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>""" +
             """<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>""" +
             hrefIds.entries.joinToString("") { (href, id) ->
                 """<Relationship Id="$id" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="${escapeXml(href)}" TargetMode="External"/>"""
+            } +
+            imageParts.entries.joinToString("") { (image, target) ->
+                val id = imageIds[image] ?: error("picture relationship missing")
+                """<Relationship Id="$id" Type="$IMAGE_REL_TYPE" Target="${escapeXml(target)}"/>"""
             } +
             """</Relationships>"""
 
@@ -621,7 +900,7 @@ object DocxPackage {
         is Block.Paragraph -> block.runs
         is Block.ListItem -> block.runs
         is Block.BlockQuote -> block.runs
-        is Block.CodeBlock, is Block.Table, Block.PageBreak -> emptyList()
+        is Block.CodeBlock, is Block.Table, is Block.Picture, Block.PageBreak -> emptyList()
     }
 
     private fun escapeXml(s: String): String = buildString(s.length) {

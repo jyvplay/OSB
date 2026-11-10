@@ -1612,6 +1612,27 @@ tasks.register<JavaExec>("r72OoxmlZipContracts") {
     args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
 }
 
+// R75: Fraction number formats through the production renderer; an exhaustive oracle is separate.
+tasks.register<JavaExec>("r75SheetFractionContracts") {
+    dependsOn(r75Writer.classesTaskName)
+    classpath = r75Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R75SheetFractionChecks")
+    args(rootProject.file("testing/build/r75fractions/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r75fractions/artifacts").mkdirs() }
+}
+
+// R75: Writer inline pictures (caller-supplied bytes) and their round trip; independent verification is separate.
+val r75Writer by sourceSets.creating
+kotlin.sourceSets.named("r75Writer") { kotlin.srcDir("src/r75writer/kotlin") }
+dependencies { add(r75Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r75WriterImageContracts") {
+    dependsOn(r75Writer.classesTaskName)
+    classpath = r75Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R75WriterImageChecks")
+    args(rootProject.file("testing/build/r75writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r75writer/artifacts").mkdirs() }
+}
+
 // R74: Writer hyperlinks, page breaks and their round trip; independent OPC verification is separate.
 val r74Writer by sourceSets.creating
 kotlin.sourceSets.named("r74Writer") { kotlin.srcDir("src/r74writer/kotlin") }
