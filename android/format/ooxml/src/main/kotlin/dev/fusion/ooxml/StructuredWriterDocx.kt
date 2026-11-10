@@ -24,6 +24,9 @@ package dev.fusion.ooxml
  */
 object StructuredWriterDocx {
     const val MAX_RUNS = 8_192
+    /** A line containing exactly this marker becomes a page break (WordprocessingML <w:br w:type="page"/>). */
+    const val PAGE_BREAK_MARKER = "[[pagebreak]]"
+    private val LINK_TARGETS = listOf("http://", "https://", "mailto:")
 
     // Keep the original public method and its literal-numbered-line behavior unchanged.
     fun write(text: String): ByteArray = write(text, numberedLines = false)
@@ -48,6 +51,10 @@ object StructuredWriterDocx {
         var runCount = 0
         val blocks = ArrayList<DocxPackage.Block>()
         fun addLine(line: String) {
+            if (line == PAGE_BREAK_MARKER) {
+                blocks.add(DocxPackage.Block.PageBreak)
+                return
+            }
             val hashes = line.takeWhile { it == '#' }.length
             val heading = hashes in 1..6 && line.length > hashes + 1 && line[hashes] == ' '
             val bullet = line.startsWith("- ") && line.length > 2
@@ -114,7 +121,50 @@ object StructuredWriterDocx {
         return listOf(parsed.first()) + parsed.drop(2)
     }
 
+    /**
+     * Splits a line into literal chunks and validated external links. A `[` that is escaped,
+     * unterminated, or followed by a non-http(s)/mailto target stays literal text, so the
+     * Markdown-ish writer never silently drops brackets it does not understand.
+     */
+    private fun linkSegments(text: String): List<Pair<String, String?>> {
+        val segments = ArrayList<Pair<String, String?>>()
+        var plainStart = 0
+        var i = 0
+        while (i < text.length) {
+            if (text[i] != '[' || (i > 0 && text[i - 1] == '\\')) { i++; continue }
+            val labelEnd = text.indexOf(']', i + 1)
+            if (labelEnd <= i + 1 || labelEnd + 1 >= text.length || text[labelEnd + 1] != '(') { i++; continue }
+            val targetEnd = text.indexOf(')', labelEnd + 2)
+            if (targetEnd <= labelEnd + 2) { i++; continue }
+            val label = text.substring(i + 1, labelEnd)
+            val target = text.substring(labelEnd + 2, targetEnd)
+            if (label.contains('[') || target.any { it.isWhitespace() }) { i++; continue }
+            if (LINK_TARGETS.none { target.startsWith(it, ignoreCase = true) }) { i++; continue }
+            if (target.length > DocxPackage.MAX_HREF_CHARS) { i++; continue }
+            if (i > plainStart) segments.add(text.substring(plainStart, i) to null)
+            segments.add(label to target)
+            i = targetEnd + 1
+            plainStart = i
+        }
+        if (plainStart < text.length) segments.add(text.substring(plainStart) to null)
+        return segments
+    }
+
     private fun inlineRuns(text: String, strikeSpans: Boolean): List<DocxPackage.Run> {
+        val segments = linkSegments(text)
+        if (segments.none { it.second != null }) return inlineMarkup(text, strikeSpans)
+        val runs = ArrayList<DocxPackage.Run>()
+        for ((chunk, href) in segments) {
+            if (href != null) {
+                if (chunk.isNotEmpty()) runs.add(DocxPackage.Run(chunk, href = href))
+            } else {
+                runs.addAll(inlineMarkup(chunk, strikeSpans).filter { it.text.isNotEmpty() })
+            }
+        }
+        return runs.ifEmpty { listOf(DocxPackage.Run("")) }
+    }
+
+    private fun inlineMarkup(text: String, strikeSpans: Boolean): List<DocxPackage.Run> {
         val runs = ArrayList<DocxPackage.Run>()
         var plainStart = 0
         var i = 0

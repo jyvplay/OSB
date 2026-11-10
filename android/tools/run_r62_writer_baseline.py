@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import bootstrap_host_tools
 
 BASELINE = 'e89d1a21416b6f6c6d9fd5a01acf4d0d6a6b628c'
-NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'FormulaXlsx',
+NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'FormulaXlsx',
          'DocxNumbering', 'DocxPackage', 'OfficeSheetDraft', 'PlainWriterDocx', 'StructuredWriterDocx')
 
 
@@ -24,6 +24,10 @@ def main():
         sources = []
         for name in NAMES:
             rel = f'android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/{name}.kt'
+            if subprocess.run(['git', 'cat-file', '-e', f'{BASELINE}:{rel}'], cwd=REPO,
+                              capture_output=True).returncode != 0:
+                # Paths added after the pinned commit (e.g. new production files) are absent-at-base.
+                continue
             data = subprocess.check_output(['git', 'show', f'{BASELINE}:{rel}'], cwd=REPO)
             path = folder / (name + '.kt'); path.write_bytes(data); sources.append(path)
         probe = ROOT / 'testing/src/r62writer/kotlin/dev/fusion/testing/R62WriterLegacyProbe.kt'

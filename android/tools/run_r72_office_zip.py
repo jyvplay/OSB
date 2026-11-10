@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import bootstrap_host_tools
 
 BASE = 'aacae2396ca3af6363e973999a2115132efa272c'
-SOURCES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'FormulaXlsx',
+SOURCES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'FormulaXlsx',
            'DocxNumbering', 'DocxPackage')
 PROBE = 'testing/src/r72zip/kotlin/dev/fusion/testing/R72OfficeZipProbe.kt'
 FIXTURES = 'tools/r72_office_zip_cases.py'

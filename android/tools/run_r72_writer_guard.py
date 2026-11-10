@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / 'tools'))
 import bootstrap_host_tools
 
 BASE = 'aacae2396ca3af6363e973999a2115132efa272c'
-NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'FormulaXlsx',
+NAMES = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections', 'FormulaXlsx',
          'DocxNumbering', 'DocxPackage', 'OfficeSheetDraft', 'PlainWriterDocx', 'StructuredWriterDocx')
 PROBE = ROOT / 'testing/src/r72writer/kotlin/dev/fusion/testing/R72WriterResourceProbe.kt'
 SIZE = 25 * 1024 * 1024
@@ -39,6 +39,10 @@ def main():
         for name in NAMES:
             rel = f'android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/{name}.kt'
             target = folder / f'pinned-{name}.kt'
+            if subprocess.run(['git', 'cat-file', '-e', f'{BASE}:{rel}'], cwd=REPO,
+                              capture_output=True).returncode != 0:
+                # Files added after the pinned commit cannot exist in it.
+                continue
             target.write_bytes(subprocess.check_output(['git', 'show', f'{BASE}:{rel}'], cwd=REPO))
             pinned_sources.append(target)
         candidate_sources = [ROOT / 'format/ooxml/src/main/kotlin/dev/fusion/ooxml' / (n + '.kt') for n in NAMES]

@@ -12,7 +12,7 @@ import bootstrap_host_tools
 def main():
     env = bootstrap_host_tools.environment(Path.home() / '.cache/fusion-host-r23')
     source_dir = ROOT / 'format/ooxml/src/main/kotlin/dev/fusion/ooxml'
-    names = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval',
+    names = ('BoundedXml', 'ColLetters', 'SheetRange', 'CellErr', 'FormulaEval', 'NumberFormatRender', 'NumFmtSections',
              'SpillSheetEngine', 'FormulaXlsx', 'BoundedZip', 'MultiSheetBook', 'OfficeSheetDraft')
     sources = [source_dir / (name + '.kt') for name in names]
     sources.append(ROOT / 'testing/src/r55/kotlin/dev/fusion/testing/R55Checks.kt')

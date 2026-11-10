@@ -27,9 +27,12 @@ object DocxPackage {
         "Bounded WordprocessingML .docx writer + structural BoundedXml reader (headings 1..6, styled runs, 9-level bullet/ordered lists, quotes, code blocks, rectangular tables); VBA macros refused; drawings/comments/track-changes/footnotes out of scope."
 
     const val WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    const val REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     const val MAX_BLOCKS = 4_096
     const val MAX_TABLE_COLS = 64
     const val MAX_ZIP_BYTES = 16 * 1024 * 1024
+    const val MAX_HYPERLINKS = 512
+    const val MAX_HREF_CHARS = 2_048
     const val MAX_PART_BYTES = 1024 * 1024
     private const val BULLET_NUM_ID = 1
     private const val ORDERED_NUM_ID = 2
@@ -41,9 +44,11 @@ object DocxPackage {
         val underline: Boolean = false,
         val strike: Boolean = false,
         val code: Boolean = false,
+        val href: String? = null,
     ) {
         init {
             validateXmlChars(text)
+            if (href != null) validateHref(href)
         }
     }
 
@@ -62,6 +67,8 @@ object DocxPackage {
                 require(level in 0..8) { "list level $level outside 0..8" }
             }
         }
+
+        data object PageBreak : Block
 
         data class BlockQuote(val runs: List<Run>) : Block
 
@@ -109,13 +116,22 @@ object DocxPackage {
             }
             previousOrdered = ordered
         }
+        val hyperlinks = LinkedHashSet<String>()
+        for (block in doc.blocks) {
+            for (run in runsOf(block)) {
+                val href = run.href ?: continue
+                hyperlinks.add(href)
+                require(hyperlinks.size <= MAX_HYPERLINKS) { "document exceeds $MAX_HYPERLINKS hyperlinks" }
+            }
+        }
+        val hrefIds = hyperlinks.withIndex().associate { (index, href) -> href to "rId${index + 3}" }
         val parts = linkedMapOf(
             "[Content_Types].xml" to contentTypesXml(),
             "_rels/.rels" to rootRelsXml(),
-            "word/_rels/document.xml.rels" to documentRelsXml(),
+            "word/_rels/document.xml.rels" to documentRelsXml(hrefIds),
             "word/styles.xml" to stylesXml(),
             "word/numbering.xml" to defaultNumberingXml(groups),
-            "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups),
+            "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups, hrefIds),
         )
         return storedZip(parts)
     }
@@ -129,12 +145,15 @@ object DocxPackage {
         val docBytes = parts["word/document.xml"]
             ?: throw IllegalArgumentException("missing word/document.xml")
         val numberingDefs = parts["word/numbering.xml"]?.let(DocxNumbering::parseXmlBytes)
-        return parseDocumentBlocks(docBytes, numberingDefs)
+        return parseDocumentBlocks(docBytes, numberingDefs, parts["word/_rels/document.xml.rels"])
     }
 
-    private fun buildDocumentXml(doc: Document, restartOrderedGroups: Boolean): String = buildString {
+    private fun buildDocumentXml(doc: Document, restartOrderedGroups: Boolean, hrefIds: Map<String, String> = emptyMap()): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
-        append("""<w:document xmlns:w="$WORD_NS"><w:body>""")
+        // The relationship namespace is declared only when the document actually carries links,
+        // so a link-free document stays byte-identical to the pinned legacy writer.
+        val relNs = if (hrefIds.isEmpty()) "" else """ xmlns:r="$REL_NS""""
+        append("""<w:document xmlns:w="$WORD_NS"$relNs><w:body>""")
         var orderedGroup = 0
         var previousOrdered = false
         for (b in doc.blocks) {
@@ -144,24 +163,27 @@ object DocxPackage {
             when (b) {
                 is Block.Heading -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/></w:pPr>""")
-                    appendRuns(b.runs)
+                    appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
                 is Block.Paragraph -> {
                     append("<w:p>")
-                    appendRuns(b.runs)
+                    appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
                 is Block.ListItem -> {
                     val numId = if (!b.ordered) BULLET_NUM_ID else if (restartOrderedGroups) ORDERED_NUM_ID + orderedGroup - 1 else ORDERED_NUM_ID
                     append("""<w:p><w:pPr><w:pStyle w:val="ListParagraph"/><w:numPr><w:ilvl w:val="${b.level}"/><w:numId w:val="$numId"/></w:numPr></w:pPr>""")
-                    appendRuns(b.runs)
+                    appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
                 is Block.BlockQuote -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Quote"/></w:pPr>""")
-                    appendRuns(b.runs)
+                    appendRuns(b.runs, hrefIds)
                     append("</w:p>")
+                }
+                is Block.PageBreak -> {
+                    append("""<w:p><w:r><w:br w:type="page"/></w:r></w:p>""")
                 }
                 is Block.CodeBlock -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="CodeBlock"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="monospace" w:hAnsi="monospace"/></w:rPr>""")
@@ -191,7 +213,27 @@ object DocxPackage {
         append("<w:sectPr/></w:body></w:document>")
     }
 
-    private fun StringBuilder.appendRuns(runs: List<Run>) {
+    private fun StringBuilder.appendRuns(runs: List<Run>, hrefIds: Map<String, String> = emptyMap()) {
+        var index = 0
+        while (index < runs.size) {
+            val run = runs[index]
+            val href = run.href
+            if (href != null) {
+                var end = index
+                while (end < runs.size && runs[end].href == href) end++
+                val id = hrefIds[href] ?: error("hyperlink relationship missing for $href")
+                append("""<w:hyperlink r:id="$id" w:history="1">""")
+                appendPlainRuns(runs.subList(index, end))
+                append("</w:hyperlink>")
+                index = end
+            } else {
+                appendPlainRuns(listOf(run))
+                index++
+            }
+        }
+    }
+
+    private fun StringBuilder.appendPlainRuns(runs: List<Run>) {
         for (r in runs) {
             if (r.text.isEmpty()) continue
             append("<w:r>")
@@ -222,18 +264,20 @@ object DocxPackage {
         if (start < text.length) append("""<w:t xml:space="preserve">${escapeXml(text.substring(start))}</w:t>""")
     }
 
-    private fun parseDocumentBlocks(docBytes: ByteArray, numberingDefs: DocxNumbering.Definitions?): Document {
+    private fun parseDocumentBlocks(docBytes: ByteArray, numberingDefs: DocxNumbering.Definitions?,
+                                    relsBytes: ByteArray? = null): Document {
         val root = BoundedXml.parse(docBytes)
         require(root.name.local == "document") { "expected <w:document>, got <${root.name.local}>" }
         val body = root.children.firstOrNull { it.name.local == "body" }
             ?: throw IllegalArgumentException("missing <w:body>")
         val blocks = ArrayList<Block>()
+        val linkTargets = parseLinkTargets(relsBytes)
 
         for (node in body.children) {
             when (node.name.local) {
                 "p" -> {
                     require(blocks.size < MAX_BLOCKS) { "document exceeds $MAX_BLOCKS blocks" }
-                    blocks.add(parseParagraph(node, numberingDefs))
+                    blocks.add(parseParagraph(node, numberingDefs, linkTargets))
                 }
                 "tbl" -> {
                     require(blocks.size < MAX_BLOCKS) { "document exceeds $MAX_BLOCKS blocks" }
@@ -244,7 +288,30 @@ object DocxPackage {
         return Document(blocks = blocks)
     }
 
-    private fun parseParagraph(pNode: BoundedXml.Node, numberingDefs: DocxNumbering.Definitions?): Block {
+    private fun parseLinkTargets(relsBytes: ByteArray?): Map<String, String> {
+        if (relsBytes == null) return emptyMap()
+        val root = BoundedXml.parse(relsBytes)
+        val targets = LinkedHashMap<String, String>()
+        for (node in root.children) {
+            if (node.name.local != "Relationship") continue
+            val type = node.attr("Type", "") ?: continue
+            if (!type.endsWith("/hyperlink")) continue
+            val id = node.attr("Id", "") ?: continue
+            val target = node.attr("Target", "") ?: continue
+            if (targets.size >= MAX_HYPERLINKS) break
+            targets[id] = target
+        }
+        return targets
+    }
+
+    private fun hasPageBreak(pNode: BoundedXml.Node): Boolean =
+        pNode.children.any { child ->
+            child.name.local == "r" && child.children.any { runChild ->
+                runChild.name.local == "br" && (wAttr(runChild, "type") ?: "") == "page"
+            }
+        }
+
+    private fun parseParagraph(pNode: BoundedXml.Node, numberingDefs: DocxNumbering.Definitions?, linkTargets: Map<String, String> = emptyMap()): Block {
         var pStyle: String? = null
         var numId: Int? = null
         var ilvl = 0
@@ -268,12 +335,23 @@ object DocxPackage {
                     }
                 }
                 "r" -> parseRun(child)?.let(runs::add)
+                "hyperlink" -> {
+                    val id = child.attr("id", REL_NS)
+                    val target = id?.let { linkTargets[it] }
+                    for (inner in child.children) {
+                        if (inner.name.local != "r") continue
+                        val run = parseRun(inner) ?: continue
+                        runs.add(if (target == null) run else run.copy(href = target))
+                    }
+                }
             }
         }
 
         val style = pStyle ?: ""
         val headingLvl = style.removePrefix("Heading").toIntOrNull()
+        val textOnly = runs.all { it.text.isBlank() }
         return when {
+            textOnly && pStyle == null && numId == null && hasPageBreak(pNode) -> Block.PageBreak
             headingLvl != null && headingLvl in 1..6 -> Block.Heading(headingLvl, runs.ifEmpty { listOf(Run("")) })
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
@@ -461,11 +539,14 @@ object DocxPackage {
             """<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>""" +
             """</Relationships>"""
 
-    private fun documentRelsXml(): String =
+    private fun documentRelsXml(hrefIds: Map<String, String> = emptyMap()): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">""" +
             """<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>""" +
             """<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>""" +
+            hrefIds.entries.joinToString("") { (href, id) ->
+                """<Relationship Id="$id" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="${escapeXml(href)}" TargetMode="External"/>"""
+            } +
             """</Relationships>"""
 
     private fun stylesXml(): String = buildString {
@@ -524,6 +605,23 @@ object DocxPackage {
             require(ok) { "XML 1.0 illegal control char U+${cp.toString(16).uppercase()}" }
             i++
         }
+    }
+
+    private fun validateHref(href: String) {
+        require(href.length <= MAX_HREF_CHARS) { "hyperlink target exceeds $MAX_HREF_CHARS characters" }
+        require(href.none { it.code < 0x20 || it.code == 0x7F }) { "hyperlink target contains a control character" }
+        val lower = href.lowercase()
+        require(lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("mailto:")) {
+            "hyperlink scheme must be http, https or mailto"
+        }
+    }
+
+    private fun runsOf(block: Block): List<Run> = when (block) {
+        is Block.Heading -> block.runs
+        is Block.Paragraph -> block.runs
+        is Block.ListItem -> block.runs
+        is Block.BlockQuote -> block.runs
+        is Block.CodeBlock, is Block.Table, Block.PageBreak -> emptyList()
     }
 
     private fun escapeXml(s: String): String = buildString(s.length) {
