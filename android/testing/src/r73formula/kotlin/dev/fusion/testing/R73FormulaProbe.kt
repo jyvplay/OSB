@@ -27,6 +27,16 @@ object R73FormulaProbe {
             var scalar = ""
             var gridText = ""
             try {
+                if (id.startsWith("sheet-")) {
+                    // Sheet-level cases need the formula sources, which only evaluateSheet retains.
+                    val cells = sheetInputs() + ("Z99" to FormulaEval.CellInput.Formula(formula))
+                    val result = FormulaEval.evaluateSheet(cells)
+                    val value = result.values["Z99"] ?: FormulaEval.CellValue.Empty
+                    scalar = encode(value)
+                    gridText = escape(encode(value))
+                    report.append(id).append('|').append(scalar).append('|').append(gridText).append('\n')
+                    continue
+                }
                 val grid = FormulaEval.evaluateFormulaAsGrid(formula, env)
                 scalar = if (grid.size == 1 && grid[0].size == 1) encode(grid[0][0])
                          else "MULTI:" + grid.size + "x" + grid[0].size
@@ -62,6 +72,25 @@ object R73FormulaProbe {
         is FormulaEval.CellValue.Text -> "T:" + value.value
         is FormulaEval.CellValue.Bool -> "B:" + value.value
         is FormulaEval.CellValue.Err -> "E:" + value.error.literal
+    }
+
+    /**
+     * A small real sheet used by the sheet-level cases: numbers, text and two formula cells,
+     * including one that is not a formula, so FORMULATEXT and ISFORMULA have both outcomes.
+     */
+    private fun sheetInputs(): Map<String, FormulaEval.CellInput> = buildMap {
+        for ((ref, cell) in environment()) put(ref, toInput(cell))
+        put("B7", FormulaEval.CellInput.Formula("SUM(B1:B6)"))
+        put("B8", FormulaEval.CellInput.Formula("TEXT(A1,\"0.0\")"))
+        put("C7", FormulaEval.CellInput.TextLiteral("plain"))
+    }
+
+    private fun toInput(value: FormulaEval.CellValue): FormulaEval.CellInput = when (value) {
+        FormulaEval.CellValue.Empty -> FormulaEval.CellInput.Blank
+        is FormulaEval.CellValue.Num -> FormulaEval.CellInput.NumberLiteral(value.value)
+        is FormulaEval.CellValue.Text -> FormulaEval.CellInput.TextLiteral(value.value)
+        is FormulaEval.CellValue.Bool -> FormulaEval.CellInput.BoolLiteral(value.value)
+        is FormulaEval.CellValue.Err -> FormulaEval.CellInput.ErrorLiteral(value.error)
     }
 
     /** The fixed evaluation environment is duplicated verbatim in the Python oracle. */

@@ -24,7 +24,12 @@ def main():
         paths = [f'android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/{name}.kt' for name in NAMES]
         paths.append('android/testing/src/r63writer/kotlin/dev/fusion/testing/R63WriterRestartChecks.kt')
         source_files = []
+        skipped: list[str] = []
         for path in paths:
+            if subprocess.run(['git', 'cat-file', '-e', f'{BASE}:{path}'], cwd=ROOT.parent,
+                              capture_output=True).returncode != 0:
+                skipped.append(path)
+                continue
             data = subprocess.check_output(['git', 'show', f'{BASE}:{path}'], cwd=ROOT.parent)
             dest = folder / Path(path).name
             dest.write_bytes(data)

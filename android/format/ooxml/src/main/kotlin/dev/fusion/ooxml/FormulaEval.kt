@@ -121,6 +121,14 @@ object FormulaEval {
             }
         }
 
+        val formulaTexts = LinkedHashMap<String, String>()
+        for ((ref, inp) in canonicalInputs) {
+            if (inp is CellInput.Formula) formulaTexts[ref] = "=" + inp.body
+        }
+        val state = runtimeState.get()
+        val priorFormulaTexts = state.formulaTexts
+        state.formulaTexts = formulaTexts
+        try {
         val order = topoSort(canonicalInputs.keys, deps)
         val evaluated = LinkedHashMap<String, CellValue>(canonicalInputs.size)
         for (ref in order) {
@@ -143,6 +151,9 @@ object FormulaEval {
             }
         }
         return EvaluatedSheet(evaluated, order, deps)
+        } finally {
+            state.formulaTexts = priorFormulaTexts
+        }
     }
 
     /**
@@ -219,6 +230,7 @@ object FormulaEval {
     private class EvalRuntimeState {
         var richScopes: Map<String, RichBinding> = emptyMap()
         var lambdaDepth: Int = 0
+        var formulaTexts: Map<String, String> = emptyMap()
     }
 
     private val runtimeState = ThreadLocal.withInitial { EvalRuntimeState() }
@@ -3747,7 +3759,7 @@ object FormulaEval {
         "TIME", "HOUR", "MINUTE", "SECOND", "DATEVALUE", "DAYS", "DAYS360", "YEARFRAC", "WEEKNUM",
         "ISNA", "ISNONTEXT", "ISEVEN", "ISODD", "NA", "ERROR.TYPE", "TYPE", "COUNTBLANK",
         "STDEV.S", "STDEV.P", "VAR.S", "VAR.P", "NORM.INV", "BINOM.INV", "MODE.SNGL",
-        "MAXIFS", "MINIFS", "LOOKUP", "ISREF", "AGGREGATE",
+        "MAXIFS", "MINIFS", "LOOKUP", "ISREF", "AGGREGATE", "FORMULATEXT", "ISFORMULA",
     )
 
     // ---- R73 essentials: arithmetic, text, date, information, statistics, criteria, lookup ----
@@ -4137,11 +4149,15 @@ object FormulaEval {
             val optV = evalScalarAsNum(evalExpr(args[1], env)); if (optV is CellValue.Err) return optV
             val fn = (fnV as CellValue.Num).value.toInt()
             val option = (optV as CellValue.Num).value.toInt()
-            if (fn !in 1..11) return CellValue.Err(CellErr.Err.VALUE)
+            if (fn !in 1..19) return CellValue.Err(CellErr.Err.VALUE)
             if (option !in 0..7) return CellValue.Err(CellErr.Err.VALUE)
             val ignoreErrors = option % 2 == 0
+            // Functions 14..19 take a trailing k argument; 1..13 do not.
+            val dataEnd = if (fn in 14..19) args.size - 1 else args.size
+            if (fn in 14..19 && args.size < 4) return CellValue.Err(CellErr.Err.VALUE)
+            if (fn in 12..13 && args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
             val values = ArrayList<Double>()
-            for (index in 2 until args.size) {
+            for (index in 2 until dataEnd) {
                 val values2D = exprTo2DGrid(args[index], env) ?: return CellValue.Err(CellErr.Err.VALUE)
                 for (row in values2D) for (cell in row) {
                     when (cell) {
@@ -4173,9 +4189,82 @@ object FormulaEval {
                     val variance = squares / values.size
                     if (fn == 11) kotlin.math.sqrt(variance) else variance
                 }
+                12 -> {
+                    if (values.isEmpty()) return CellValue.Err(CellErr.Err.NUM)
+                    val sorted = values.sorted()
+                    val mid = sorted.size / 2
+                    if (sorted.size % 2 == 1) sorted[mid] else (sorted[mid - 1] + sorted[mid]) / 2.0
+                }
+                13 -> {
+                    if (values.isEmpty()) return CellValue.Err(CellErr.Err.NA)
+                    val counts = LinkedHashMap<Double, Int>()
+                    for (v in values) counts[v] = (counts[v] ?: 0) + 1
+                    var best: Double? = null
+                    var bestCount = 1
+                    for ((v, c) in counts) if (c > bestCount) { best = v; bestCount = c }
+                    best ?: return CellValue.Err(CellErr.Err.NA)
+                }
+                14, 15, 16, 17, 18, 19 -> {
+                    val kRaw = evalScalarAsNum(evalExpr(args[args.size - 1], env))
+                    if (kRaw is CellValue.Err) return kRaw
+                    val kArg = (kRaw as CellValue.Num).value
+                    if (values.isEmpty()) return CellValue.Err(CellErr.Err.NUM)
+                    val sorted = values.sorted()
+                    when (fn) {
+                        14, 15 -> {
+                            val rank = kArg.toInt()
+                            if (rank.toDouble() != kArg || rank < 1 || rank > sorted.size) {
+                                return CellValue.Err(CellErr.Err.NUM)
+                            }
+                            if (fn == 14) sorted[sorted.size - rank] else sorted[rank - 1]
+                        }
+                        else -> {
+                            val fraction = when (fn) {
+                                16, 18 -> kArg
+                                17 -> {
+                                    val q = kArg.toInt()
+                                    if (q.toDouble() != kArg || q !in 0..4) return CellValue.Err(CellErr.Err.NUM)
+                                    q / 4.0
+                                }
+                                else -> {
+                                    val q = kArg.toInt()
+                                    if (q.toDouble() != kArg || q !in 1..3) return CellValue.Err(CellErr.Err.NUM)
+                                    q / 4.0
+                                }
+                            }
+                            if (fn == 16 || fn == 17) {
+                                if (fraction < 0.0 || fraction > 1.0) return CellValue.Err(CellErr.Err.NUM)
+                                val pos = fraction * (sorted.size - 1)
+                                val lo = floor(pos).toInt().coerceIn(0, sorted.lastIndex)
+                                val hi = ceil(pos).toInt().coerceIn(0, sorted.lastIndex)
+                                sorted[lo] + (pos - lo) * (sorted[hi] - sorted[lo])
+                            } else {
+                                // Exclusive percentiles rank over n+1 positions and reject ranks outside 1..n.
+                                val h = fraction * (sorted.size + 1)
+                                if (h < 1.0 || h > sorted.size) return CellValue.Err(CellErr.Err.NUM)
+                                val j = floor(h).toInt()
+                                val frac = h - j
+                                if (frac == 0.0) sorted[j - 1]
+                                else sorted[j - 1] + frac * (sorted[minOf(j, sorted.lastIndex)] - sorted[j - 1])
+                            }
+                        }
+                    }
+                }
                 else -> return CellValue.Err(CellErr.Err.VALUE)
             }
             CellValue.Num(normalizeNegZero(result))
+        }
+        "FORMULATEXT", "ISFORMULA" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val target = when (val ref = args[0]) {
+                is Expr.CellRef -> ref.a1
+                is Expr.RangeRef -> if (ref.range.top == ref.range.bottom) ref.range.top.toA1()
+                    else return CellValue.Err(CellErr.Err.VALUE)
+                else -> return CellValue.Err(CellErr.Err.VALUE)
+            }
+            val text = runtimeState.get().formulaTexts[canonicalCellRef(target)]
+            if (name == "ISFORMULA") CellValue.Bool(text != null)
+            else if (text == null) CellValue.Err(CellErr.Err.NA) else CellValue.Text(text)
         }
         "LOOKUP" -> {
             if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)

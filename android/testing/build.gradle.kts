@@ -1612,6 +1612,18 @@ tasks.register<JavaExec>("r72OoxmlZipContracts") {
     args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
 }
 
+// R74: Writer hyperlinks, page breaks and their round trip; independent OPC verification is separate.
+val r74Writer by sourceSets.creating
+kotlin.sourceSets.named("r74Writer") { kotlin.srcDir("src/r74writer/kotlin") }
+dependencies { add(r74Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r74WriterLinkContracts") {
+    dependsOn(r74Writer.classesTaskName)
+    classpath = r74Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R74WriterLinkChecks")
+    args(rootProject.file("testing/build/r74writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r74writer/artifacts").mkdirs() }
+}
+
 // R73: essentials formulas and TEXT() rendering against an independent host oracle; no Android claim.
 val r73Formula by sourceSets.creating
 kotlin.sourceSets.named("r73Formula") { kotlin.srcDir("src/r73formula/kotlin") }

@@ -53,6 +53,10 @@ DECLARED_DIFFERENCES = {
     'agg-stdev',             # AGGREGATE function 8 is STDEV.S; formualizer returns the population value
     'agg-varp',              # AGGREGATE function 10 is VAR.P; formualizer returns the sample value
     'isref-range-multi',     # ISREF over a multi-cell range is FALSE in SpreadsheetML
+    'sheet-formulatext-sum',    # formualizer 0.13.0 has no FORMULATEXT (returns #N/A)
+    'sheet-formulatext-text',   # idem
+    'sheet-formulatext-literal',# idem
+    'sheet-isformula-formula',  # formualizer ISFORMULA reports FALSE for a formula cell
 }
 
 

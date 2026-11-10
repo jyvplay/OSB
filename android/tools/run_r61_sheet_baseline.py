@@ -25,6 +25,10 @@ def main():
         sources = []
         for name in NAMES:
             rel = f'android/format/ooxml/src/main/kotlin/dev/fusion/ooxml/{name}.kt'
+            if subprocess.run(['git', 'cat-file', '-e', f'{BASELINE}:{rel}'], cwd=REPO,
+                              capture_output=True).returncode != 0:
+                # Paths added after the pinned commit (e.g. new production files) are absent-at-base.
+                continue
             data = subprocess.check_output(['git', 'show', f'{BASELINE}:{rel}'], cwd=REPO)
             file = folder / f'{name}.kt'; file.write_bytes(data); sources.append(file)
         rel = 'android/testing/src/r60sheet/kotlin/dev/fusion/testing/R60SheetChecks.kt'

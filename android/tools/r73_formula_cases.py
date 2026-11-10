@@ -912,13 +912,62 @@ def formula_cases():
     add('agg-stdev', '=AGGREGATE(8,0,B1:B6)', n(statistics.stdev(b_column)), 1e-12)
     add('agg-varp', '=AGGREGATE(10,0,B1:B6)', n(statistics.pvariance(b_column)), 1e-12)
     add('agg-ignore-text-blank', '=AGGREGATE(9,0,A1:A6)', n(NUMBERS['A1'] + NUMBERS['A2']))
-    add('agg-bad-function', '=AGGREGATE(12,0,B1:B6)', e('#VALUE!'))
+    add('agg-bad-function', '=AGGREGATE(20,0,B1:B6)', e('#VALUE!'))
     add('agg-bad-option', '=AGGREGATE(9,9,B1:B6)', e('#VALUE!'))
     add('isref-cell', '=ISREF(B1)', b(True))
     add('isref-range-single', '=ISREF(B1:B1)', b(True))
     add('isref-range-multi', '=ISREF(B1:B2)', b(False))
     add('isref-literal', '=ISREF(5)', b(False))
     add('isref-text', '=ISREF("B1")', b(False))
+
+    # ---- AGGREGATE functions 12..19 and the sheet-level formula-source functions ----
+    import math as _math
+
+    def _sorted(values):
+        return sorted(values)
+
+    def _percentile_inc(values, fraction):
+        ordered = _sorted(values)
+        pos = fraction * (len(ordered) - 1)
+        lo = int(_math.floor(pos))
+        hi = int(_math.ceil(pos))
+        return ordered[lo] + (pos - lo) * (ordered[hi] - ordered[lo])
+
+    def _percentile_exc(values, fraction):
+        ordered = _sorted(values)
+        h = fraction * (len(ordered) + 1)
+        j = int(_math.floor(h))
+        frac = h - j
+        if frac == 0:
+            return ordered[j - 1]
+        return ordered[j - 1] + frac * (ordered[min(j, len(ordered) - 1)] - ordered[j - 1])
+
+    add('agg-median', '=AGGREGATE(12,0,B1:B6)', n(statistics.median(b_column)))
+    add('agg-mode', '=AGGREGATE(13,0,B1:B6)', n(3.0))
+    add('agg-large', '=AGGREGATE(14,0,B1:B6,2)', n(sorted(b_column, reverse=True)[1]))
+    add('agg-small', '=AGGREGATE(15,0,B1:B6,2)', n(sorted(b_column)[1]))
+    add('agg-large-out-of-range', '=AGGREGATE(14,0,B1:B6,9)', e('#NUM!'))
+    add('agg-small-zero', '=AGGREGATE(15,0,B1:B6,0)', e('#NUM!'))
+    add('agg-large-fraction', '=AGGREGATE(14,0,B1:B6,1.5)', e('#NUM!'))
+    add('agg-percentile-inc', '=AGGREGATE(16,0,C1:C6,0.25)', n(_percentile_inc(c_column, 0.25)))
+    add('agg-percentile-inc-mid', '=AGGREGATE(16,0,C1:C6,0.1)', n(_percentile_inc(c_column, 0.1)), 1e-12)
+    add('agg-quartile-inc', '=AGGREGATE(17,0,C1:C6,3)', n(_percentile_inc(c_column, 0.75)), 1e-12)
+    add('agg-quartile-inc-bad', '=AGGREGATE(17,0,C1:C6,5)', e('#NUM!'))
+    add('agg-percentile-exc', '=AGGREGATE(18,0,C1:C6,0.25)', n(_percentile_exc(c_column, 0.25)), 1e-12)
+    add('agg-percentile-exc-edge', '=AGGREGATE(18,0,C1:C6,0.01)', e('#NUM!'))
+    add('agg-quartile-exc', '=AGGREGATE(19,0,C1:C6,2)', n(_percentile_exc(c_column, 0.5)), 1e-12)
+    add('agg-quartile-exc-edge', '=AGGREGATE(19,0,C1:C6,4)', e('#NUM!'))
+    add('agg-median-ignores-text', '=AGGREGATE(12,0,A1:A6)', n(0.5))
+    add('agg-median-mode-arity', '=AGGREGATE(12,0,B1:B6,2)', e('#VALUE!'))
+
+    # Sheet-level cases run inside a real evaluateSheet call so formula sources exist.
+    add('sheet-formulatext-sum', '=FORMULATEXT(B7)', t('=SUM(B1:B6)'))
+    add('sheet-formulatext-text', '=FORMULATEXT(B8)', t('=TEXT(A1,"0.0")'))
+    add('sheet-formulatext-plain', '=FORMULATEXT(C7)', e('#N/A'))
+    add('sheet-formulatext-literal', '=FORMULATEXT(5)', e('#VALUE!'))
+    add('sheet-isformula-formula', '=ISFORMULA(B7)', b(True))
+    add('sheet-isformula-plain', '=ISFORMULA(C7)', b(False))
+    add('sheet-isformula-number', '=ISFORMULA(B1)', b(False))
     return out
 
 
