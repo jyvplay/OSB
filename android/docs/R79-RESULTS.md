@@ -89,6 +89,7 @@ The producer writes both the package and the intent table, so the strongest atta
 - R60 baseline: 675 assertions, 256 packages, pinned `ab4840b…`, **128 byte-identical**. R62 baseline: **128 byte-identical**.
 - R74 writer links: 20 checks. R75 writer images: ImageMagick decoded the embedded media.
 - R76 formats: 245 rows, 239 replayed, 231 identical, 8 adjudicated. R77 conditions: 60/60 re-derived, 7/7 `ssf` controls, 4/4 pinned.
+- CI run `43170203117`, job `office`: step 9 `Compile Android and run actual JVM contracts` and step 14 `Independent document readers and formula comparison` both **succeed** — the eight-package writer lane, its 24 controls and every R73–R77 lane ran on a clean machine; the job fails only at steps 19 and 21, the device-only gates that fail on every round.
 - Full `tools` suite: **1743 tests OK** (22 skipped). Census: **50/50 (100.00 %) substantial testable subset, 0/50 (0.00 %) fully accepted**.
 
 ## I. Repairs and regressions vs the previous turn
@@ -101,6 +102,6 @@ One defect was introduced by this round's first draft and fixed before any gate 
 
 **Still not Class A.** Writer needs a word processor to open the package; Spreadsheet needs Excel to recalculate; the app needs a device. R79 adds one real capability with two-reader verification, which is what a minimal-diff round can honestly deliver.
 
-Gates not run: CI on this commit at the time of writing (below), any device, Word/LibreOffice/Excel, any browser render.
+Gates not run: any device, Word/LibreOffice/Excel, any browser render. CI on this commit **did** run (see H).
 
 **Next highest-information test:** open `testing/build/r76writer/artifacts/even-odd.docx` in Word or LibreOffice and report page 1, 2 and 3 headers and footers. That one observation decides whether the even/odd wiring is honoured, which no host reader can answer.
