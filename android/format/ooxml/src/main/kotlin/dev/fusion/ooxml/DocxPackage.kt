@@ -44,6 +44,20 @@ object DocxPackage {
     private const val IMAGE_REL_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
     private const val PICTURE_URI = "http://schemas.openxmlformats.org/drawingml/2006/picture"
     const val MAX_PART_BYTES = 1024 * 1024
+    const val MAX_HEADER_FOOTER_CHARS = 1_024
+    const val A4_WIDTH_TWIPS = 11_906
+    const val A4_HEIGHT_TWIPS = 16_838
+    const val MIN_PAGE_TWIPS = 5_760
+    const val MAX_PAGE_TWIPS = 31_680
+    const val MIN_CONTENT_TWIPS = 720
+    private const val HEADER_REL_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"
+    private const val FOOTER_REL_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"
+    private const val HEADER_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"
+    private const val FOOTER_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"
+    private const val HEADER_PART = "word/header1.xml"
+    private const val FOOTER_PART = "word/footer1.xml"
+    private const val HEADER_REL_ID = "rIdHdr1"
+    private const val FOOTER_REL_ID = "rIdFtr1"
     private const val BULLET_NUM_ID = 1
     private const val ORDERED_NUM_ID = 2
 
@@ -229,7 +243,111 @@ object DocxPackage {
         }
     }
 
-    data class Document(val title: String = "", val blocks: List<Block>) {
+    /** Page geometry in twentieths of a point (twips), the unit WordprocessingML requires. */
+    data class PageSetup(
+        val widthTwips: Int = A4_WIDTH_TWIPS,
+        val heightTwips: Int = A4_HEIGHT_TWIPS,
+        val orientation: Orientation = Orientation.PORTRAIT,
+        val marginTopTwips: Int = 1_440,
+        val marginRightTwips: Int = 1_440,
+        val marginBottomTwips: Int = 1_440,
+        val marginLeftTwips: Int = 1_440,
+        val headerTwips: Int = 708,
+        val footerTwips: Int = 708,
+    ) {
+        enum class Orientation { PORTRAIT, LANDSCAPE }
+
+        init {
+            require(widthTwips in MIN_PAGE_TWIPS..MAX_PAGE_TWIPS) { "page width $widthTwips outside $MIN_PAGE_TWIPS..$MAX_PAGE_TWIPS twips" }
+            require(heightTwips in MIN_PAGE_TWIPS..MAX_PAGE_TWIPS) { "page height $heightTwips outside $MIN_PAGE_TWIPS..$MAX_PAGE_TWIPS twips" }
+            listOf(marginTopTwips, marginRightTwips, marginBottomTwips, marginLeftTwips).forEach {
+                require(it in 0..MAX_PAGE_TWIPS) { "margin $it outside 0..$MAX_PAGE_TWIPS twips" }
+            }
+            require(headerTwips in 0..MAX_PAGE_TWIPS && footerTwips in 0..MAX_PAGE_TWIPS) {
+                "header/footer distance outside 0..$MAX_PAGE_TWIPS twips"
+            }
+            require(widthTwips - marginLeftTwips - marginRightTwips >= MIN_CONTENT_TWIPS) {
+                "margins leave less than $MIN_CONTENT_TWIPS twips of text width"
+            }
+            require(heightTwips - marginTopTwips - marginBottomTwips >= MIN_CONTENT_TWIPS) {
+                "margins leave less than $MIN_CONTENT_TWIPS twips of text height"
+            }
+            require(
+                (orientation == Orientation.LANDSCAPE && widthTwips > heightTwips) ||
+                    (orientation == Orientation.PORTRAIT && heightTwips >= widthTwips),
+            ) { "orientation $orientation contradicts ${widthTwips}x$heightTwips twips" }
+        }
+
+        fun landscape(): PageSetup = copy(
+            widthTwips = maxOf(widthTwips, heightTwips),
+            heightTwips = minOf(widthTwips, heightTwips),
+            orientation = Orientation.LANDSCAPE,
+        )
+
+        fun portrait(): PageSetup = copy(
+            widthTwips = minOf(widthTwips, heightTwips),
+            heightTwips = maxOf(widthTwips, heightTwips),
+            orientation = Orientation.PORTRAIT,
+        )
+
+        companion object {
+            fun a4(): PageSetup = PageSetup()
+
+            fun letter(): PageSetup = PageSetup(widthTwips = 12_240, heightTwips = 15_840)
+
+            fun withMargins(
+                page: PageSetup = a4(),
+                top: Int = 1_440,
+                right: Int = 1_440,
+                bottom: Int = 1_440,
+                left: Int = 1_440,
+            ): PageSetup = page.copy(
+                marginTopTwips = top, marginRightTwips = right,
+                marginBottomTwips = bottom, marginLeftTwips = left,
+            )
+        }
+    }
+
+    /**
+     * Section layout: one page geometry plus an optional running header and footer.
+     *
+     * Header and footer text may carry the field tokens `{PAGE}` and `{NUMPAGES}`; each becomes a
+     * `w:fldSimple` whose cached result is `1`, which is what a consumer shows before it
+     * recalculates. This writer never evaluates page numbers itself: pagination belongs to the
+     * consumer, and pretending otherwise would be a false claim.
+     */
+    data class Layout(
+        val pageSetup: PageSetup = PageSetup(),
+        val header: String? = null,
+        val footer: String? = null,
+    ) {
+        init {
+            for ((name, text) in listOf("header" to header, "footer" to footer)) {
+                if (text == null) continue
+                validateXmlChars(text)
+                require(text.length <= MAX_HEADER_FOOTER_CHARS) {
+                    "$name text ${text.length} exceeds $MAX_HEADER_FOOTER_CHARS characters"
+                }
+                require(text.isNotBlank()) { "$name text must not be blank; omit it instead" }
+                var index = text.indexOf('{')
+                while (index >= 0) {
+                    require(
+                        text.startsWith("{PAGE}", index) || text.startsWith("{NUMPAGES}", index),
+                    ) { "unknown field token at character $index; only {PAGE} and {NUMPAGES} are defined" }
+                    index = text.indexOf('{', index + 1)
+                }
+                require('}' !in text.replace("{PAGE}", "").replace("{NUMPAGES}", "")) {
+                    "$name text contains an unmatched }"
+                }
+            }
+        }
+    }
+
+    data class Document(
+        val title: String = "",
+        val blocks: List<Block>,
+        val layout: Layout? = null,
+    ) {
         init {
             validateXmlChars(title)
             require(blocks.size <= MAX_BLOCKS) { "document blocks ${blocks.size} exceed $MAX_BLOCKS" }
@@ -278,18 +396,131 @@ object DocxPackage {
             imageParts[image] = "media/image${index + 1}.${image.format.extension}"
             imageIds[image] = "rId${3 + hrefIds.size + index}"
         }
+        val layout = doc.layout
+        val headerRelId = if (layout?.header != null) HEADER_REL_ID else null
+        val footerRelId = if (layout?.footer != null) FOOTER_REL_ID else null
         val parts = linkedMapOf(
-            "[Content_Types].xml" to contentTypesXml(images.map { it.format }).toByteArray(StandardCharsets.UTF_8),
+            "[Content_Types].xml" to contentTypesXml(images.map { it.format }, headerRelId != null, footerRelId != null)
+                .toByteArray(StandardCharsets.UTF_8),
             "_rels/.rels" to rootRelsXml().toByteArray(StandardCharsets.UTF_8),
-            "word/_rels/document.xml.rels" to documentRelsXml(hrefIds, imageParts, imageIds).toByteArray(StandardCharsets.UTF_8),
+            "word/_rels/document.xml.rels" to documentRelsXml(hrefIds, imageParts, imageIds, headerRelId, footerRelId)
+                .toByteArray(StandardCharsets.UTF_8),
             "word/styles.xml" to stylesXml().toByteArray(StandardCharsets.UTF_8),
             "word/numbering.xml" to defaultNumberingXml(groups).toByteArray(StandardCharsets.UTF_8),
             "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups, hrefIds, imageParts, imageIds)
                 .toByteArray(StandardCharsets.UTF_8),
         )
         for ((image, target) in imageParts) parts["word/$target"] = image.bytes
+        if (layout?.header != null) parts[HEADER_PART] = headerFooterXml("hdr", layout.header).toByteArray(StandardCharsets.UTF_8)
+        if (layout?.footer != null) parts[FOOTER_PART] = headerFooterXml("ftr", layout.footer).toByteArray(StandardCharsets.UTF_8)
         return storedZipBytes(parts)
     }
+
+    /**
+     * Reads back the section layout this writer emits: page geometry plus the running header and
+     * footer text with the `{PAGE}`/`{NUMPAGES}` field tokens restored. Returns null for a document
+     * whose section properties carry no page geometry (the legacy `<w:sectPr/>`).
+     */
+    fun readLayout(docxBytes: ByteArray): Layout? {
+        require(docxBytes.size <= MAX_ZIP_BYTES) { "docx exceeds $MAX_ZIP_BYTES bytes" }
+        val parts = readZipParts(docxBytes)
+        val document = parts["word/document.xml"]?.toString(StandardCharsets.UTF_8) ?: return null
+        val start = document.lastIndexOf("<w:sectPr")
+        if (start < 0) return null
+        val block = elementAt(document, start) ?: return null
+        val pageSize = attributesOf(block, "w:pgSz") ?: return null
+        val width = pageSize["w:w"]?.toIntOrNull() ?: return null
+        val height = pageSize["w:h"]?.toIntOrNull() ?: return null
+        val margins = attributesOf(block, "w:pgMar") ?: emptyMap()
+        val page = PageSetup(
+            widthTwips = width,
+            heightTwips = height,
+            orientation = if (pageSize["w:orient"] == "landscape") {
+                PageSetup.Orientation.LANDSCAPE
+            } else {
+                PageSetup.Orientation.PORTRAIT
+            },
+            marginTopTwips = margins["w:top"]?.toIntOrNull() ?: 1_440,
+            marginRightTwips = margins["w:right"]?.toIntOrNull() ?: 1_440,
+            marginBottomTwips = margins["w:bottom"]?.toIntOrNull() ?: 1_440,
+            marginLeftTwips = margins["w:left"]?.toIntOrNull() ?: 1_440,
+            headerTwips = margins["w:header"]?.toIntOrNull() ?: 708,
+            footerTwips = margins["w:footer"]?.toIntOrNull() ?: 708,
+        )
+        val rels = parts["word/_rels/document.xml.rels"]?.toString(StandardCharsets.UTF_8)
+        return Layout(
+            page,
+            referenceText(block, "w:headerReference", rels, parts),
+            referenceText(block, "w:footerReference", rels, parts),
+        )
+    }
+
+    private fun elementAt(xml: String, start: Int): String? {
+        val close = xml.indexOf('>', start)
+        if (close < 0) return null
+        if (xml[close - 1] == '/') return xml.substring(start, close + 1)
+        val end = xml.indexOf("</w:sectPr>", close)
+        if (end < 0) return null
+        return xml.substring(start, end)
+    }
+
+    private val ATTRIBUTE = Regex("([A-Za-z0-9_]+:[A-Za-z0-9_]+)=\"([^\"]*)\"")
+
+    private fun attributesOf(block: String, tag: String): Map<String, String>? {
+        val at = block.indexOf("<$tag")
+        if (at < 0) return null
+        val close = block.indexOf('>', at)
+        if (close < 0) return null
+        return ATTRIBUTE.findAll(block.substring(at + tag.length + 1, close))
+            .associate { it.groupValues[1] to it.groupValues[2] }
+    }
+
+    private fun referenceText(
+        sectPr: String,
+        tag: String,
+        rels: String?,
+        parts: Map<String, ByteArray>,
+    ): String? {
+        val at = sectPr.indexOf("<$tag")
+        if (at < 0) return null
+        val close = sectPr.indexOf('>', at)
+        if (close < 0) return null
+        // group 1 is the attribute name, group 2 its value: taking group 1 here returned "r:id".
+        val relId = ATTRIBUTE.findAll(sectPr.substring(at, close))
+            .firstOrNull { it.groupValues[1] == "r:id" }?.groupValues?.get(2) ?: return null
+        val target = rels?.let {
+            Regex("<Relationship Id=\"${Regex.escape(relId)}\"" + "[^>]*Target=\"([^\"]+)\"")
+                .find(it)?.groupValues?.get(1)
+        } ?: return null
+        val part = parts["word/${target.removePrefix("/word/")}"] ?: return null
+        return fieldText(part.toString(StandardCharsets.UTF_8))
+    }
+
+    private fun fieldText(xml: String): String {
+        var text = xml
+            // The token is wrapped in a w:t element so the text extraction below keeps it: a bare
+            // "{PAGE}" would sit outside every w:t and be dropped.
+            .replace(
+                Regex("<w:fldSimple w:instr=\" PAGE \".*?</w:fldSimple>", RegexOption.DOT_MATCHES_ALL),
+                "<w:t>{PAGE}</w:t>",
+            )
+            .replace(
+                Regex("<w:fldSimple w:instr=\" NUMPAGES \".*?</w:fldSimple>", RegexOption.DOT_MATCHES_ALL),
+                "<w:t>{NUMPAGES}</w:t>",
+            )
+            .replace("<w:br/>", "\n")
+            .replace("<w:tab/>", "\t")
+        text = Regex("<w:t[^>]*>(.*?)</w:t>", RegexOption.DOT_MATCHES_ALL).findAll(text)
+            .joinToString("") { unescapeXml(it.groupValues[1]) }
+        return text
+    }
+
+    private fun unescapeXml(text: String): String = text
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&quot;", "\"")
+        .replace("&apos;", "'")
+        .replace("&amp;", "&")
 
     fun read(docxBytes: ByteArray): Document {
         require(docxBytes.size <= MAX_ZIP_BYTES) { "docx exceeds $MAX_ZIP_BYTES bytes" }
@@ -313,7 +544,9 @@ object DocxPackage {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         // Relationship-bearing namespaces are declared only when the document actually uses them,
         // so a document without links or pictures stays byte-identical to the pinned legacy writer.
-        val relNs = if (hrefIds.isEmpty() && imageParts.isEmpty()) "" else """ xmlns:r="$REL_NS""""
+        val needsRelNs = hrefIds.isNotEmpty() || imageParts.isNotEmpty() ||
+            doc.layout?.header != null || doc.layout?.footer != null
+        val relNs = if (!needsRelNs) "" else """ xmlns:r="$REL_NS""""
         val drawingNs = if (imageParts.isEmpty()) "" else
             """ xmlns:wp="$WP_NS" xmlns:a="$DRAWING_NS" xmlns:pic="$PICTURE_NS""""
         append("""<w:document xmlns:w="$WORD_NS"$relNs$drawingNs><w:body>""")
@@ -380,7 +613,68 @@ object DocxPackage {
                 }
             }
         }
-        append("<w:sectPr/></w:body></w:document>")
+        appendSectPr(doc.layout, headerRelId = if (doc.layout?.header != null) HEADER_REL_ID else null,
+            footerRelId = if (doc.layout?.footer != null) FOOTER_REL_ID else null)
+        append("</w:body></w:document>")
+    }
+
+    /**
+     * Emits the section properties. A document without a [Layout] keeps the byte-identical
+     * `<w:sectPr/>` the pinned legacy writer produced.
+     */
+    private fun StringBuilder.appendSectPr(layout: Layout?, headerRelId: String?, footerRelId: String?) {
+        if (layout == null) {
+            append("<w:sectPr/>")
+            return
+        }
+        append("<w:sectPr>")
+        if (headerRelId != null) append("""<w:headerReference w:type="default" r:id="$headerRelId"/>""")
+        if (footerRelId != null) append("""<w:footerReference w:type="default" r:id="$footerRelId"/>""")
+        val page = layout.pageSetup
+        append("""<w:pgSz w:w="${page.widthTwips}" w:h="${page.heightTwips}"""")
+        if (page.orientation == PageSetup.Orientation.LANDSCAPE) append(""" w:orient="landscape"""")
+        append("/>")
+        append(
+            """<w:pgMar w:top="${page.marginTopTwips}" w:right="${page.marginRightTwips}" """ +
+                """w:bottom="${page.marginBottomTwips}" w:left="${page.marginLeftTwips}" """ +
+                """w:header="${page.headerTwips}" w:footer="${page.footerTwips}" w:gutter="0"/>""",
+        )
+        append("</w:sectPr>")
+    }
+
+    /**
+     * A header (`hdr`) or footer (`ftr`) part. `{PAGE}` and `{NUMPAGES}` become `w:fldSimple`
+     * fields with a cached `1`; every other character stays literal text.
+     */
+    private fun headerFooterXml(kind: String, text: String): String = buildString {
+        append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
+        append("""<w:$kind xmlns:w="$WORD_NS"><w:p>""")
+        var index = 0
+        val literal = StringBuilder()
+        fun flush() {
+            if (literal.isEmpty()) return
+            append("<w:r>")
+            appendTextContent(literal.toString())
+            append("</w:r>")
+            literal.setLength(0)
+        }
+        while (index < text.length) {
+            when {
+                text.startsWith("{PAGE}", index) -> {
+                    flush()
+                    append("""<w:fldSimple w:instr=" PAGE "><w:r><w:t>1</w:t></w:r></w:fldSimple>""")
+                    index += "{PAGE}".length
+                }
+                text.startsWith("{NUMPAGES}", index) -> {
+                    flush()
+                    append("""<w:fldSimple w:instr=" NUMPAGES "><w:r><w:t>1</w:t></w:r></w:fldSimple>""")
+                    index += "{NUMPAGES}".length
+                }
+                else -> { literal.append(text[index]); index++ }
+            }
+        }
+        flush()
+        append("</w:p></w:$kind>")
     }
 
     /**
@@ -791,7 +1085,11 @@ object DocxPackage {
     private fun leHeader(size: Int, fill: ByteBuffer.() -> Unit): ByteArray =
         ByteBuffer.allocate(size).order(ByteOrder.LITTLE_ENDIAN).apply(fill).array()
 
-    private fun contentTypesXml(imageFormats: List<ImageFormat> = emptyList()): String =
+    private fun contentTypesXml(
+        imageFormats: List<ImageFormat> = emptyList(),
+        hasHeader: Boolean = false,
+        hasFooter: Boolean = false,
+    ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">""" +
             """<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>""" +
@@ -802,6 +1100,8 @@ object DocxPackage {
             """<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>""" +
             """<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>""" +
             """<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>""" +
+            (if (hasHeader) """<Override PartName="/$HEADER_PART" ContentType="$HEADER_CONTENT_TYPE"/>""" else "") +
+            (if (hasFooter) """<Override PartName="/$FOOTER_PART" ContentType="$FOOTER_CONTENT_TYPE"/>""" else "") +
             """</Types>"""
 
     private fun rootRelsXml(): String =
@@ -814,6 +1114,8 @@ object DocxPackage {
         hrefIds: Map<String, String> = emptyMap(),
         imageParts: Map<Image, String> = emptyMap(),
         imageIds: Map<Image, String> = emptyMap(),
+        headerRelId: String? = null,
+        footerRelId: String? = null,
     ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">""" +
@@ -826,6 +1128,12 @@ object DocxPackage {
                 val id = imageIds[image] ?: error("picture relationship missing")
                 """<Relationship Id="$id" Type="$IMAGE_REL_TYPE" Target="${escapeXml(target)}"/>"""
             } +
+            (if (headerRelId != null) {
+                """<Relationship Id="$headerRelId" Type="$HEADER_REL_TYPE" Target="header1.xml"/>"""
+            } else "") +
+            (if (footerRelId != null) {
+                """<Relationship Id="$footerRelId" Type="$FOOTER_REL_TYPE" Target="footer1.xml"/>"""
+            } else "") +
             """</Relationships>"""
 
     private fun stylesXml(): String = buildString {

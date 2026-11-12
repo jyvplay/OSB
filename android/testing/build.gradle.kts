@@ -1612,6 +1612,30 @@ tasks.register<JavaExec>("r72OoxmlZipContracts") {
     args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
 }
 
+// R76: Writer section layout (page geometry, headers/footers, PAGE fields); python-docx verifies separately.
+val r76Writer by sourceSets.creating
+kotlin.sourceSets.named("r76Writer") { kotlin.srcDir("src/r76writer/kotlin") }
+dependencies { add(r76Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r76WriterLayoutContracts") {
+    dependsOn(r76Writer.classesTaskName)
+    classpath = r76Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R76WriterLayoutChecks")
+    args(rootProject.file("testing/build/r76writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r76writer/artifacts").mkdirs() }
+}
+
+// R76: Number/date/text format rendering against an independent implementation; comparison is separate.
+val r76Sheet by sourceSets.creating
+kotlin.sourceSets.named("r76Sheet") { kotlin.srcDir("src/r76sheet/kotlin") }
+dependencies { add(r76Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r76SheetFormatContracts") {
+    dependsOn(r76Sheet.classesTaskName)
+    classpath = r76Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R76SheetFormatChecks")
+    args(rootProject.file("testing/build/r76formats/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r76formats/artifacts").mkdirs() }
+}
+
 // R75: Fraction number formats through the production renderer; an exhaustive oracle is separate.
 tasks.register<JavaExec>("r75SheetFractionContracts") {
     dependsOn(r75Writer.classesTaskName)

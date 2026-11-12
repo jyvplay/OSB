@@ -1,0 +1,5 @@
+# Node / Vite build products are reproducible artifacts, not sources.
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store

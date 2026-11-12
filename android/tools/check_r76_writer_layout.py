@@ -1,0 +1,230 @@
+#!/usr/bin/env python3
+"""Independent verification for the R76 Writer section-layout packages.
+
+The production writer (`DocxPackage` with a `Layout`) emits real `.docx` files. This verifier
+opens them twice:
+
+1. **python-docx 1.2** — an independent implementation that reads `w:sectPr` into its section API
+   (page width/height in EMU, orientation, margins) and exposes header/footer parts. Its numbers
+   are compared with the intent table the Kotlin probe wrote.
+2. **raw OPC** — the ZIP is inspected directly: content-type overrides must exist for every
+   header/footer part, every reference must resolve to exactly one relationship, every target must
+   be a part in the package, the field instructions must be the two defined ones, and the page
+   geometry must be integral twips inside the supported window.
+
+Host-only. python-docx is a reader, not Word: agreement here is evidence about the package
+structure, never about pagination or layout rendering.
+"""
+from __future__ import annotations
+
+import argparse
+import posixpath
+import re
+import sys
+import zipfile
+from pathlib import Path
+from xml.etree import ElementTree
+
+W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+R = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}'
+EMU_PER_TWIP = 635
+HEADER_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/header'
+FOOTER_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer'
+HEADER_CT = 'application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml'
+FOOTER_CT = 'application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml'
+
+
+class Fail(Exception):
+    pass
+
+
+def require(ok: bool, message: str) -> None:
+    if not ok:
+        raise Fail(message)
+
+
+def intent_table(path: Path) -> dict[str, dict]:
+    require(path.is_file(), f'missing intent table {path}')
+    table = {}
+    for index, line in enumerate(path.read_text(encoding='utf-8').splitlines(), start=1):
+        fields = line.split('\t')
+        require(len(fields) == 12, f'intent line {index} has {len(fields)} fields, expected 12')
+        name = fields[0]
+        table[name] = {
+            'width': int(fields[1]), 'height': int(fields[2]), 'orientation': fields[3],
+            'top': int(fields[4]), 'right': int(fields[5]), 'bottom': int(fields[6]), 'left': int(fields[7]),
+            'header_distance': int(fields[8]), 'footer_distance': int(fields[9]),
+            'header': fields[10], 'footer': fields[11],
+        }
+    require(table, 'intent table is empty')
+    return table
+
+
+def part_names(archive: zipfile.ZipFile) -> set[str]:
+    return {name for name in archive.namelist() if not name.endswith('/')}
+
+
+def check_package(path: Path, intent: dict) -> dict:
+    with zipfile.ZipFile(path) as archive:
+        names = part_names(archive)
+        document = archive.read('word/document.xml').decode('utf-8')
+        rels = archive.read('word/_rels/document.xml.rels').decode('utf-8')
+        types = archive.read('[Content_Types].xml').decode('utf-8')
+        root = ElementTree.fromstring(document)
+        body = root.find(f'{W}body')
+        require(body is not None, 'document has no body')
+        sect = body.find(f'{W}sectPr')
+        require(sect is not None, 'document has no sectPr')
+        page = sect.find(f'{W}pgSz')
+        margins = sect.find(f'{W}pgMar')
+        require(page is not None and margins is not None, 'sectPr lacks pgSz or pgMar')
+
+        width, height = int(page.get(f'{W}w')), int(page.get(f'{W}h'))
+        orient = page.get(f'{W}orient', 'portrait')
+        require((width, height) == (intent['width'], intent['height']),
+                f'{path.name}: pgSz {width}x{height} != intent {intent["width"]}x{intent["height"]}')
+        require(orient == ('landscape' if intent['orientation'] == 'LANDSCAPE' else 'portrait'),
+                f'{path.name}: orient {orient!r} contradicts intent {intent["orientation"]}')
+        for key, attribute in (('top', 'top'), ('right', 'right'), ('bottom', 'bottom'), ('left', 'left'),
+                               ('header_distance', 'header'), ('footer_distance', 'footer')):
+            require(int(margins.get(f'{W}{attribute}')) == intent[key],
+                    f'{path.name}: margin {attribute} {margins.get(f"{W}{attribute}")} != {intent[key]}')
+
+        # --- relationships -------------------------------------------------------------------
+        rel_root = ElementTree.fromstring(rels)
+        by_id = {}
+        for relationship in rel_root:
+            rel_id = relationship.get('Id')
+            require(rel_id not in by_id, f'{path.name}: duplicate relationship id {rel_id}')
+            by_id[rel_id] = relationship
+            target = relationship.get('Target')
+            require(target is not None, f'{path.name}: relationship {rel_id} has no target')
+            if relationship.get('TargetMode') == 'External':
+                continue
+            resolved = posixpath.normpath(posixpath.join('word', target))
+            require(resolved in names, f'{path.name}: relationship {rel_id} targets missing part {resolved}')
+
+        # --- header/footer references ----------------------------------------------------------
+        found = {'header': None, 'footer': None}
+        for kind, tag, rel_type, content_type in (
+            ('header', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
+            ('footer', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
+        ):
+            reference = sect.find(tag)
+            if intent[kind] == '':
+                require(reference is None, f'{path.name}: unexpected {kind} reference')
+                continue
+            require(reference is not None, f'{path.name}: missing {kind} reference')
+            rel_id = reference.get(f'{R}id')
+            require(rel_id in by_id, f'{path.name}: {kind} reference {rel_id} does not resolve')
+            relationship = by_id[rel_id]
+            require(relationship.get('Type') == rel_type,
+                    f'{path.name}: {rel_id} is {relationship.get("Type")}, expected {rel_type}')
+            target = posixpath.normpath(posixpath.join('word', relationship.get('Target')))
+            require(f'PartName="/{target}"' in types and content_type in types,
+                    f'{path.name}: no content-type override for {target}')
+            payload = archive.read(target).decode('utf-8')
+            require(payload.startswith('<?xml'), f'{path.name}: {target} is not an XML part')
+            fields = re.findall(r'w:instr="([^"]*)"', payload)
+            for instruction in fields:
+                require(instruction.strip() in {'PAGE', 'NUMPAGES'},
+                        f'{path.name}: unsupported field instruction {instruction!r}')
+            tokens = re.findall(r'\{([A-Z]+)\}', intent[kind])
+            require(sorted(field.strip() for field in fields) == sorted(tokens),
+                    f'{path.name}: {kind} declares {tokens} but emits {fields}')
+            # Reconstruct the running text exactly as a consumer would: each field becomes its
+            # token, each w:tab/w:br its control character, then unescape and concatenate w:t.
+            rebuilt = re.sub(r'<w:fldSimple w:instr=" PAGE ".*?</w:fldSimple>', '<w:t>{PAGE}</w:t>',
+                             payload, flags=re.S)
+            rebuilt = re.sub(r'<w:fldSimple w:instr=" NUMPAGES ".*?</w:fldSimple>',
+                             '<w:t>{NUMPAGES}</w:t>', rebuilt, flags=re.S)
+            rebuilt = rebuilt.replace('<w:tab/>', '\t').replace('<w:br/>', '\n')
+            text = ''.join(re.findall(r'<w:t[^>]*>(.*?)</w:t>', rebuilt, flags=re.S))
+            for entity, char in (('&lt;', '<'), ('&gt;', '>'), ('&quot;', '"'), ('&apos;', "'"), ('&amp;', '&')):
+                text = text.replace(entity, char)
+            require(text == intent[kind],
+                    f'{path.name}: {kind} text {text!r} != declared {intent[kind]!r}')
+            found[kind] = payload
+    return found
+
+
+def check_with_python_docx(path: Path, intent: dict) -> None:
+    import docx  # imported lazily so the raw-OPC checks can run without it
+
+    document = docx.Document(str(path))
+    require(document.sections, f'{path.name}: python-docx found no section')
+    section = document.sections[0]
+    require(int(section.page_width) == intent['width'] * EMU_PER_TWIP,
+            f'{path.name}: python-docx page_width {section.page_width} != '
+            f'{intent["width"] * EMU_PER_TWIP} EMU')
+    require(int(section.page_height) == intent['height'] * EMU_PER_TWIP,
+            f'{path.name}: python-docx page_height {section.page_height} != '
+            f'{intent["height"] * EMU_PER_TWIP} EMU')
+    require(int(section.top_margin) == intent['top'] * EMU_PER_TWIP, f'{path.name}: top margin')
+    require(int(section.left_margin) == intent['left'] * EMU_PER_TWIP, f'{path.name}: left margin')
+    require(int(section.bottom_margin) == intent['bottom'] * EMU_PER_TWIP, f'{path.name}: bottom margin')
+    require(int(section.right_margin) == intent['right'] * EMU_PER_TWIP, f'{path.name}: right margin')
+    require(int(section.header_distance) == intent['header_distance'] * EMU_PER_TWIP,
+            f'{path.name}: header distance')
+    require(int(section.footer_distance) == intent['footer_distance'] * EMU_PER_TWIP,
+            f'{path.name}: footer distance')
+    landscape = 'LANDSCAPE' in str(section.orientation)
+    require(landscape == (intent['orientation'] == 'LANDSCAPE'),
+            f'{path.name}: python-docx orientation {section.orientation} contradicts intent')
+    if intent['header']:
+        require(section.header is not None and not section.header.is_linked_to_previous,
+                f'{path.name}: python-docx does not see a header for the section')
+    if intent['footer']:
+        require(section.footer is not None and not section.footer.is_linked_to_previous,
+                f'{path.name}: python-docx does not see a footer for the section')
+
+
+def verify(directory: Path) -> dict:
+    intent = intent_table(directory / 'layout.tsv')
+    checked = 0
+    for name, expected in intent.items():
+        path = directory / f'{name}.docx'
+        require(path.is_file(), f'missing package {path}')
+        check_package(path, expected)
+        check_with_python_docx(path, expected)
+        checked += 1
+    extra = {path.stem for path in directory.glob('*.docx')} - set(intent) - {'legacy'}
+    require(not extra, f'unexpected packages without a declared intent: {sorted(extra)}')
+    legacy = directory / 'legacy.docx'
+    require(legacy.is_file(), 'missing legacy.docx')
+    with zipfile.ZipFile(legacy) as archive:
+        document = archive.read('word/document.xml').decode('utf-8')
+        require('<w:sectPr/>' in document, 'the legacy document no longer carries an empty sectPr')
+        require('header1.xml' not in archive.namelist() and 'footer1.xml' not in archive.namelist(),
+                'the legacy document gained a header or footer part')
+    return {'documents': checked + 1, 'layout_documents': checked}
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('artifacts', type=Path)
+    parser.add_argument('--require-python-docx', action='store_true',
+                        help='fail instead of downgrading when python-docx is unavailable')
+    args = parser.parse_args(argv)
+    try:
+        import docx  # noqa: F401
+    except Exception as error:
+        if args.require_python_docx:
+            print(f'R76 WRITER LAYOUT CHECK FAILED: python-docx unavailable: {error}', file=sys.stderr)
+            return 1
+        print(f'python-docx unavailable ({error}); raw OPC checks only.', file=sys.stderr)
+    try:
+        report = verify(args.artifacts)
+    except Fail as error:
+        print(f'R76 WRITER LAYOUT CHECK FAILED: {error}', file=sys.stderr)
+        return 1
+    print(
+        f"R76 writer layout: {report['documents']} packages ({report['layout_documents']} with page "
+        "geometry) verified with python-docx 1.2 and raw OPC inspection; the legacy package keeps "
+        "its empty sectPr. Not Word rendering or Android evidence."
+    )
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
