@@ -104,6 +104,47 @@ object R76WriterLayoutChecks {
         }
         check(DocxPackage.read(mixedBytes).blocks == mixed.blocks) { "mixed document body round trip" }
 
+        // --- newspaper columns, a page-number restart and a continuous section ------------------
+        // A continuous section cannot restart page numbering (a continuous section continues the
+        // same page run), so the restart lives on an odd-page section and continuity is its own
+        // document. Both invariants are refused below when they are asked for.
+        val columnsLayout = DocxPackage.Layout(
+            pageSetup = DocxPackage.PageSetup.a4(),
+            header = "Columned - {PAGE}",
+            columns = 3,
+            columnSpaceTwips = 360,
+            pageNumberStart = 5,
+            sectionType = DocxPackage.Layout.SectionType.ODD_PAGE,
+        )
+        val columnsBytes = write(out, "columns-restart-odd", columnsLayout)
+        check(DocxPackage.readLayout(columnsBytes) == columnsLayout) {
+            "columns layout round trip: ${DocxPackage.readLayout(columnsBytes)}"
+        }
+        val columnsText = String(columnsBytes)
+        check(columnsText.contains("""<w:cols w:num="3" w:space="360"/>""")) { "three columns are emitted" }
+        check(columnsText.contains("""<w:pgNumType w:start="5"/>""")) { "page-number restart is emitted" }
+        check(columnsText.contains("""<w:type w:val="oddPage"/>""")) { "odd-page section type is emitted" }
+        // CT_SectPr orders its children: type before pgSz, pgNumType before cols.
+        check(columnsText.indexOf("<w:type ") < columnsText.indexOf("<w:pgSz ")) { "type precedes pgSz" }
+        check(columnsText.indexOf("<w:pgNumType ") < columnsText.indexOf("<w:cols ")) { "pgNumType precedes cols" }
+        // A layout that asks for nothing new must not grow any of these elements.
+        check("<w:cols " !in a4Text && "<w:type " !in a4Text && "<w:pgNumType " !in a4Text) {
+            "a plain A4 footer layout emits no column, type or restart element"
+        }
+
+        val continuousLayout = DocxPackage.Layout(
+            pageSetup = DocxPackage.PageSetup.letter(),
+            columns = 2,
+            sectionType = DocxPackage.Layout.SectionType.CONTINUOUS,
+        )
+        val continuousBytes = write(out, "continuous-columns", continuousLayout)
+        check(DocxPackage.readLayout(continuousBytes) == continuousLayout) {
+            "continuous layout round trip: ${DocxPackage.readLayout(continuousBytes)}"
+        }
+        check(String(continuousBytes).contains("""<w:cols w:num="2" w:space="720"/>""")) {
+            "two columns keep the default 720 twip gutter"
+        }
+
         // --- validation refusals ---------------------------------------------------------------
         refuses("page width below the minimum") {
             DocxPackage.PageSetup(widthTwips = 1_000)
@@ -135,6 +176,28 @@ object R76WriterLayoutChecks {
         refuses("header longer than the bound") {
             DocxPackage.Layout(header = "x".repeat(DocxPackage.MAX_HEADER_FOOTER_CHARS + 1))
         }
+        refuses("zero columns") {
+            DocxPackage.Layout(columns = 0)
+        }
+        refuses("more columns than Word defines") {
+            DocxPackage.Layout(columns = 46)
+        }
+        refuses("negative column spacing") {
+            DocxPackage.Layout(columns = 2, columnSpaceTwips = -1)
+        }
+        refuses("page number start below one") {
+            DocxPackage.Layout(pageNumberStart = 0)
+        }
+        refuses("page number start above the bound") {
+            DocxPackage.Layout(pageNumberStart = 1_000_001)
+        }
+        refuses("continuous section that restarts numbering") {
+            DocxPackage.Layout(
+                pageNumberStart = 3,
+                sectionType = DocxPackage.Layout.SectionType.CONTINUOUS,
+            )
+        }
+
 
         // --- observation table for the independent reader --------------------------------------
         fun record(name: String, layout: DocxPackage.Layout) {
@@ -153,12 +216,18 @@ object R76WriterLayoutChecks {
                     page.footerTwips.toString(),
                     layout.header ?: "",
                     layout.footer ?: "",
+                    layout.columns.toString(),
+                    layout.columnSpaceTwips.toString(),
+                    layout.pageNumberStart?.toString() ?: "",
+                    layout.sectionType.value,
                 ).joinToString("\t"),
             )
         }
         record("a4-footer", a4Footer)
         record("letter-landscape", letterLayout)
         record("mixed-layout", mixed.layout!!)
+        record("columns-restart-odd", columnsLayout)
+        record("continuous-columns", continuousLayout)
         File(out, "layout.tsv").writeText(rows.joinToString("\n", postfix = "\n"))
 
         println("R76_WRITER_LAYOUT_OK assertions=$assertions documents=${out.listFiles()?.count { it.name.endsWith(".docx") }} artifacts=${out.absolutePath}")

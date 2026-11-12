@@ -45,7 +45,8 @@ class LayoutControlTests(unittest.TestCase):
             self.skipTest('R76 writer layout artifacts are absent; run tools/run_r76_writer_layout.py')
         self.directory = Path(tempfile.mkdtemp(prefix='r76-layout-'))
         self.addCleanup(shutil.rmtree, self.directory, ignore_errors=True)
-        for name in ('a4-footer', 'letter-landscape', 'mixed-layout', 'legacy'):
+        for name in ('a4-footer', 'letter-landscape', 'mixed-layout', 'columns-restart-odd',
+                     'continuous-columns', 'legacy'):
             shutil.copy(ARTIFACTS / f'{name}.docx', self.directory / f'{name}.docx')
         shutil.copy(ARTIFACTS / 'layout.tsv', self.directory / 'layout.tsv')
 
@@ -58,7 +59,7 @@ class LayoutControlTests(unittest.TestCase):
         self.assertIn(fragment.lower(), str(caught.exception).lower(), str(caught.exception))
 
     def test_undisturbed_packages_pass(self):
-        self.assertEqual(self.verify()['layout_documents'], 3)
+        self.assertEqual(self.verify()['layout_documents'], 5)
 
     def test_missing_footer_part_is_rejected(self):
         rewrite(REFERENCE, self.directory / 'a4-footer.docx',
@@ -136,6 +137,30 @@ class LayoutControlTests(unittest.TestCase):
     def test_missing_intent_table_is_rejected(self):
         (self.directory / 'layout.tsv').unlink()
         self.expect_failure('intent table')
+
+    def test_extra_column_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'w:num="3"', b'w:num="4"', 1)
+        rewrite(ARTIFACTS / 'columns-restart-odd.docx', self.directory / 'columns-restart-odd.docx', transform)
+        self.expect_failure('w:cols')
+
+    def test_page_number_restart_removed_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return re.sub(rb'<w:pgNumType[^/]*/>', b'', payload)
+        rewrite(ARTIFACTS / 'columns-restart-odd.docx', self.directory / 'columns-restart-odd.docx', transform)
+        self.expect_failure('pgnumtype')
+
+    def test_section_type_on_a_next_page_section_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'<w:pgSz ', b'<w:type w:val="continuous"/><w:pgSz ', 1)
+        rewrite(REFERENCE, self.directory / 'a4-footer.docx', transform)
+        self.expect_failure('nextpage section must not carry w:type')
 
     def test_declared_footer_without_text_is_rejected(self):
         rows = [line.split('\t') for line in (self.directory / 'layout.tsv').read_text().splitlines()]

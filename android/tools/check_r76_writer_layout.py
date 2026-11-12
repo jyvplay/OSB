@@ -48,13 +48,16 @@ def intent_table(path: Path) -> dict[str, dict]:
     table = {}
     for index, line in enumerate(path.read_text(encoding='utf-8').splitlines(), start=1):
         fields = line.split('\t')
-        require(len(fields) == 12, f'intent line {index} has {len(fields)} fields, expected 12')
+        require(len(fields) == 16, f'intent line {index} has {len(fields)} fields, expected 16')
         name = fields[0]
         table[name] = {
             'width': int(fields[1]), 'height': int(fields[2]), 'orientation': fields[3],
             'top': int(fields[4]), 'right': int(fields[5]), 'bottom': int(fields[6]), 'left': int(fields[7]),
             'header_distance': int(fields[8]), 'footer_distance': int(fields[9]),
             'header': fields[10], 'footer': fields[11],
+            'columns': int(fields[12]), 'column_space': int(fields[13]),
+            'page_number_start': int(fields[14]) if fields[14] else None,
+            'section_type': fields[15],
         }
     require(table, 'intent table is empty')
     return table
@@ -89,6 +92,43 @@ def check_package(path: Path, intent: dict) -> dict:
                                ('header_distance', 'header'), ('footer_distance', 'footer')):
             require(int(margins.get(f'{W}{attribute}')) == intent[key],
                     f'{path.name}: margin {attribute} {margins.get(f"{W}{attribute}")} != {intent[key]}')
+
+        # --- section type, columns and page-number restart -------------------------------------
+        section_type = sect.find(f'{W}type')
+        declared_type = intent['section_type']
+        if declared_type == 'nextPage':
+            if section_type is not None:
+                raise Fail(f'{path.name}: a nextPage section must not carry w:type '
+                           f'(found {section_type.get(f"{W}val")!r})')
+        else:
+            require(section_type is not None, f'{path.name}: missing w:type for a {declared_type} section')
+            require(section_type.get(f'{W}val') == declared_type,
+                    f'{path.name}: w:type {section_type.get(f"{W}val")!r} != declared {declared_type!r}')
+        columns = sect.find(f'{W}cols')
+        if intent['columns'] <= 1:
+            if columns is not None:
+                raise Fail(f'{path.name}: a one-column section must not carry w:cols (found {columns.attrib})')
+        else:
+            require(columns is not None, f'{path.name}: missing w:cols for {intent["columns"]} columns')
+            require(columns.get(f'{W}num') == str(intent['columns']),
+                    f'{path.name}: w:cols/@num {columns.get(f"{W}num")} != {intent["columns"]}')
+            require(columns.get(f'{W}space') == str(intent['column_space']),
+                    f'{path.name}: w:cols/@space {columns.get(f"{W}space")} != {intent["column_space"]}')
+        numbering = sect.find(f'{W}pgNumType')
+        if intent['page_number_start'] is None:
+            if numbering is not None:
+                raise Fail(f'{path.name}: unexpected w:pgNumType (found {numbering.attrib})')
+        else:
+            require(numbering is not None, f'{path.name}: missing w:pgNumType')
+            require(numbering.get(f'{W}start') == str(intent['page_number_start']),
+                    f'{path.name}: w:pgNumType/@start {numbering.get(f"{W}start")} != {intent["page_number_start"]}')
+        # Schema order for the children this writer emits (CT_SectPr).
+        order = [child.tag for child in sect]
+        expected_order = [f'{W}headerReference', f'{W}footerReference', f'{W}type', f'{W}pgSz',
+                          f'{W}pgMar', f'{W}pgNumType', f'{W}cols']
+        positions = [expected_order.index(tag) for tag in order if tag in expected_order]
+        require(positions == sorted(positions),
+                f'{path.name}: sectPr children out of CT_SectPr order: {[tag.split("}")[-1] for tag in order]}')
 
         # --- relationships -------------------------------------------------------------------
         rel_root = ElementTree.fromstring(rels)
@@ -171,6 +211,13 @@ def check_with_python_docx(path: Path, intent: dict) -> None:
     landscape = 'LANDSCAPE' in str(section.orientation)
     require(landscape == (intent['orientation'] == 'LANDSCAPE'),
             f'{path.name}: python-docx orientation {section.orientation} contradicts intent')
+    # python-docx reads w:type through its own enumeration; agreeing with it is a second reader's
+    # opinion on the section break, not a Word render.
+    start_type = str(section.start_type).split('.')[-1].split(' ')[0].lower()
+    mapped = {'new_page': 'nextPage', 'continuous': 'continuous',
+              'even_page': 'evenPage', 'odd_page': 'oddPage'}.get(start_type, start_type)
+    require(mapped == intent['section_type'],
+            f'{path.name}: python-docx start_type {section.start_type} != declared {intent["section_type"]}')
     if intent['header']:
         require(section.header is not None and not section.header.is_linked_to_previous,
                 f'{path.name}: python-docx does not see a header for the section')

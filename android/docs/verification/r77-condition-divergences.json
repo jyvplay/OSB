@@ -1,0 +1,99 @@
+{
+  "schema": "r77-condition-divergences/1",
+  "candidate": "dev.fusion.ooxml.NumberFormatRender",
+  "scope": "Conditional number-format sections, as exercised by testing/src/r77sheet. Every conditional observation is re-derived here; the external reference cannot adjudicate them and that limitation is pinned by re-executed observations rather than asserted.",
+  "semantics": {
+    "selection": "Up to two bracket conditions per format. Sections are tested in source order and the first satisfied condition wins; when none is satisfied the trailing section that carries no condition is used. A condition may not follow an unconditional section, two conditions may not share a section, and a format whose every section carries a condition and matches none is refused.",
+    "sign": "A section never gains an automatic minus sign; only a single-section, unconditional format auto-signs a negative value. `#,##0;#,##0` therefore hides the sign of negatives, and `#,##0;-#,##0` is the way to show it.",
+    "annotations": "Colours (`[Red]`, `[Color10]`) and locale/currency annotations (`[$-409]`, `[$\u20ac-407]`) are removed as annotations; the currency symbol survives as a literal. Elapsed `[h]`/`[m]`/`[s]` tokens are not conditions.",
+    "boundaries": "Condition thresholds are decimal literals; scientific notation, empty thresholds and unknown annotations are refused rather than parsed leniently."
+  },
+  "sources": [
+    "ECMA-376 Part 1 \u00a718.8.31 (number format section grammar, sections separated by `;`, annotations in brackets).",
+    "Microsoft, \"Review guidelines for customizing a number format\" (sections for positive/negative/zero/text; a comma after digit placeholders scales by 1,000).",
+    "https://exceljet.net/articles/custom-number-formats (conditions `[>100]`/`[<=100]` override the positive/negative/zero structure; at most two conditions).",
+    "https://trumpexcel.com/change-negative-to-positive-in-excel/ (`#,##0;#,##0` displays negatives without a minus sign because the second section has none).",
+    "https://learn.microsoft.com/en-us/answers/questions/5450120/cant-display-right-a-negative-number-in-a-custom-f (the fix for a misplaced sign is to write it into the negative section: `\"=\" 0.00%;\"=\"-0.00%`).",
+    "https://www.excelforum.com/excel-general/985348-hide-the-minus-sign-in-a-negative-number.html (format `0;0;0` suppresses the minus)."
+  ],
+  "reference": {
+    "name": "ssf",
+    "version": "0.2.2",
+    "license": "Apache-2.0",
+    "note": "Python port of SheetJS ssf, installed from PyPI into an isolated cache; no code is vendored. It is used here only for the unconditional control formats.",
+    "limitation": "The reference does not evaluate bracket conditions: it formats the value with a section chosen by sign, so every conditional row is outside its competence. This file pins four observations that demonstrate the limitation, and tools/check_r77_sheet_conditions.py re-executes them on every run."
+  },
+  "reference_pinned_observations": [
+    {
+      "format": "[>100]0.00",
+      "value": 50.0,
+      "reference": "50.00",
+      "ours": "refused",
+      "why": "The condition is false and the format has no unconditional fallback; the reference ignores the condition entirely."
+    },
+    {
+      "format": "[>100]0.00;-0.00",
+      "value": -5.0,
+      "reference": "--5.00",
+      "ours": "-5.00",
+      "why": "The reference keeps its sign-based selection and then adds a minus in front of the section's own literal."
+    },
+    {
+      "format": "[>=1000]#,##0;[<0]0.00;0.0",
+      "value": -3.5,
+      "reference": "3.50",
+      "ours": "3.50",
+      "why": "Coincides here, but by a different route: the reference never evaluated `[<0]`, so agreement on this row is not evidence about conditions."
+    },
+    {
+      "format": "[Red][<100]0;0",
+      "value": 150.0,
+      "reference": "150",
+      "ours": "150",
+      "why": "Both sections render 150 for the reference because the condition is invisible to it; the row cannot distinguish the two implementations."
+    }
+  ],
+  "refused_shapes": [
+    {
+      "format": "[>100]General",
+      "value": 0.5,
+      "reason": "The single section is conditioned and does not match; there is no fallback to select."
+    },
+    {
+      "format": "[>100]0.00;[<0]0.00",
+      "value": 1.0,
+      "reason": "Every section is conditioned and none matches."
+    },
+    {
+      "format": "[>100][<200]0.0;0",
+      "value": 1.0,
+      "reason": "Two conditions in one section are not defined by the grammar we implement."
+    },
+    {
+      "format": "[>1e3]0.0;0",
+      "value": 1.0,
+      "reason": "Scientific-notation thresholds are not decimal literals."
+    },
+    {
+      "format": "[>=]0.0;0",
+      "value": 1.0,
+      "reason": "Empty threshold."
+    },
+    {
+      "format": "[abc]0.0",
+      "value": 1.0,
+      "reason": "Unknown annotation (not a colour, locale, elapsed token or condition)."
+    },
+    {
+      "format": "0.0;[>100]0.0",
+      "value": 1.0,
+      "reason": "A condition follows an unconditional section, so the unconditional section would shadow it."
+    },
+    {
+      "format": "[>100]0.0;[<0]0.0;[=0]0.0;@",
+      "value": 1.0,
+      "reason": "Three conditions are declared; Excel defines at most two."
+    }
+  ],
+  "residual_risk": "No spreadsheet application ran. The selection and sign rules are derived from ECMA-376 and from public Excel behaviour, and the reference cannot check them, so conditional formatting of real cells is specification-derived rather than verified."
+}

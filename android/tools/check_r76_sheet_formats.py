@@ -117,7 +117,7 @@ def round_half_up(x: float) -> int:
     return int(Decimal(repr(x)).quantize(Decimal('1'), rounding=ROUND_HALF_UP))
 
 
-REFUSAL_FORMATS = {'[>100]General', '[>=1000]#,##0;[<1000]0', '00:00', '0:00', 'ss.0000', '[hx]:mm'}
+REFUSAL_FORMATS = {'00:00', '0:00', 'ss.0000', '[hx]:mm'}
 
 
 class NoRule(Exception):

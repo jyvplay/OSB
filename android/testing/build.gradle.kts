@@ -1612,6 +1612,18 @@ tasks.register<JavaExec>("r72OoxmlZipContracts") {
     args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
 }
 
+// R77: Spreadsheet number-format conditions; an independent re-derivation verifies them.
+val r77Sheet by sourceSets.creating
+kotlin.sourceSets.named("r77Sheet") { kotlin.srcDir("src/r77sheet/kotlin") }
+dependencies { add(r77Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r77SheetConditionContracts") {
+    dependsOn(r77Sheet.classesTaskName)
+    classpath = r77Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R77SheetConditionChecks")
+    args(rootProject.file("testing/build/r77conditions/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r77conditions/artifacts").mkdirs() }
+}
+
 // R76: Writer section layout (page geometry, headers/footers, PAGE fields); python-docx verifies separately.
 val r76Writer by sourceSets.creating
 kotlin.sourceSets.named("r76Writer") { kotlin.srcDir("src/r76writer/kotlin") }

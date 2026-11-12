@@ -88,8 +88,11 @@ object R76SheetFormatChecks {
             }
         }
 
-        // --- refusals: conditions, ambiguous numeric colons, unsupported elapsed tokens ---
-        for (f in listOf("[>100]General", "[>=1000]#,##0;[<1000]0", "00:00", "0:00", "ss.0000", "[hx]:mm")) {
+        // --- refusals: ambiguous numeric colons and unsupported elapsed tokens -----------------
+        // Bracket conditions are no longer refused: R77 implements them and owns their corpus
+        // (testing/src/r77sheet). A conditional format whose sections cannot be ordered by the
+        // documented grammar is still refused, which the R77 lane asserts.
+        for (f in listOf("00:00", "0:00", "ss.0000", "[hx]:mm")) {
             add("refusal", f, 0.5)
         }
         for (v in listOf(-1.0, 2958466.0)) add("refusal", "yyyy-mm-dd", v)
@@ -179,8 +182,6 @@ object R76SheetFormatChecks {
         renders(0.0, "A/P", "A")
 
         // ---- refusals stay refusals (a silent approximation would be worse than a failure) ----
-        refuses(0.5, "[>100]General")
-        refuses(0.5, "[>=1000]#,##0;[<1000]0")
         refuses(0.5, "00:00")
         refuses(0.5, "0:00")
         refuses(0.5, "ss.0000")

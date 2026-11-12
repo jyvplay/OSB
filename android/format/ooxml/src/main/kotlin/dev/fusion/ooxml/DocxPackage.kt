@@ -58,6 +58,10 @@ object DocxPackage {
     private const val FOOTER_PART = "word/footer1.xml"
     private const val HEADER_REL_ID = "rIdHdr1"
     private const val FOOTER_REL_ID = "rIdFtr1"
+    /** Word defines at most 45 newspaper columns; column spacing is a twip measure. */
+    private const val MAX_COLUMNS = 45
+    private const val MAX_PAGE_NUMBER_START = 1_000_000
+    private const val DEFAULT_COLUMN_SPACE_TWIPS = 720
     private const val BULLET_NUM_ID = 1
     private const val ORDERED_NUM_ID = 2
 
@@ -320,8 +324,33 @@ object DocxPackage {
         val pageSetup: PageSetup = PageSetup(),
         val header: String? = null,
         val footer: String? = null,
+        val columns: Int = 1,
+        val columnSpaceTwips: Int = DEFAULT_COLUMN_SPACE_TWIPS,
+        val pageNumberStart: Int? = null,
+        val sectionType: SectionType = SectionType.NEXT_PAGE,
     ) {
+        /**
+         * `w:type` of the section. `nextPage` is Word's default and is therefore omitted from the
+         * XML, so a layout that asks for nothing else keeps emitting the same bytes as before.
+         */
+        enum class SectionType(val value: String) {
+            NEXT_PAGE("nextPage"),
+            CONTINUOUS("continuous"),
+            EVEN_PAGE("evenPage"),
+            ODD_PAGE("oddPage"),
+        }
+
         init {
+            require(columns in 1..MAX_COLUMNS) { "columns $columns outside 1..$MAX_COLUMNS" }
+            require(columnSpaceTwips in 0..MAX_PAGE_TWIPS) {
+                "column spacing $columnSpaceTwips outside 0..$MAX_PAGE_TWIPS twips"
+            }
+            require(pageNumberStart == null || pageNumberStart in 1..MAX_PAGE_NUMBER_START) {
+                "page number start $pageNumberStart outside 1..$MAX_PAGE_NUMBER_START"
+            }
+            require(pageNumberStart == null || sectionType != SectionType.CONTINUOUS) {
+                "a continuous section cannot restart page numbering"
+            }
             for ((name, text) in listOf("header" to header, "footer" to footer)) {
                 if (text == null) continue
                 validateXmlChars(text)
@@ -448,10 +477,21 @@ object DocxPackage {
             footerTwips = margins["w:footer"]?.toIntOrNull() ?: 708,
         )
         val rels = parts["word/_rels/document.xml.rels"]?.toString(StandardCharsets.UTF_8)
+        val typeName = attributesOf(block, "w:type")?.get("w:val")
+        val sectionType = when (typeName) {
+            null -> Layout.SectionType.NEXT_PAGE
+            else -> Layout.SectionType.entries.firstOrNull { it.value == typeName }
+                ?: throw IllegalArgumentException("unknown section type '$typeName'")
+        }
+        val columns = attributesOf(block, "w:cols")
         return Layout(
             page,
             referenceText(block, "w:headerReference", rels, parts),
             referenceText(block, "w:footerReference", rels, parts),
+            columns = columns?.get("w:num")?.toIntOrNull() ?: 1,
+            columnSpaceTwips = columns?.get("w:space")?.toIntOrNull() ?: DEFAULT_COLUMN_SPACE_TWIPS,
+            pageNumberStart = attributesOf(block, "w:pgNumType")?.get("w:start")?.toIntOrNull(),
+            sectionType = sectionType,
         )
     }
 
@@ -630,6 +670,11 @@ object DocxPackage {
         append("<w:sectPr>")
         if (headerRelId != null) append("""<w:headerReference w:type="default" r:id="$headerRelId"/>""")
         if (footerRelId != null) append("""<w:footerReference w:type="default" r:id="$footerRelId"/>""")
+        // CT_SectPr orders its children: references, type, pgSz, pgMar, pgNumType, cols. A lenient
+        // reader accepts any order; a schema-validating one does not, so the order is enforced here.
+        if (layout.sectionType != Layout.SectionType.NEXT_PAGE) {
+            append("""<w:type w:val="${layout.sectionType.value}"/>""")
+        }
         val page = layout.pageSetup
         append("""<w:pgSz w:w="${page.widthTwips}" w:h="${page.heightTwips}"""")
         if (page.orientation == PageSetup.Orientation.LANDSCAPE) append(""" w:orient="landscape"""")
@@ -639,6 +684,12 @@ object DocxPackage {
                 """w:bottom="${page.marginBottomTwips}" w:left="${page.marginLeftTwips}" """ +
                 """w:header="${page.headerTwips}" w:footer="${page.footerTwips}" w:gutter="0"/>""",
         )
+        if (layout.pageNumberStart != null) {
+            append("""<w:pgNumType w:start="${layout.pageNumberStart}"/>""")
+        }
+        if (layout.columns > 1) {
+            append("""<w:cols w:num="${layout.columns}" w:space="${layout.columnSpaceTwips}"/>""")
+        }
         append("</w:sectPr>")
     }
 

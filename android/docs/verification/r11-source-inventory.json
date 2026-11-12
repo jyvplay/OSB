@@ -5720,7 +5720,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "04ffb489fa29766793c4eb2bc5d1f70237adad0df6f9cf17b4f346c623be0492"
+      "sha256": "2a002789ef1b9f24798c42961b831e1dad5b34a136a6bdda99a899d4c0034c79"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
@@ -5786,7 +5786,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumberFormatRender.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "f2d0b76ec144109bfcda0d8ba7d731fbd93cba905e85aa6c9c64d7aebdae3f3c"
+      "sha256": "35e7431b9d834630eaee3427e3ae3e8a3e1df50ecc1e2b1a3f94bc27704cefbe"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetCsv.kt",

@@ -52,8 +52,10 @@ object NumberFormatRender {
     fun renderNumber(value: Double, format: String): String {
         require(format.isNotEmpty() && format.length <= MAX_FORMAT_CHARS) { "format length outside 1..$MAX_FORMAT_CHARS" }
         require(value.isFinite()) { "non-finite number" }
-        val sections = NumFmtSections.split(format).map { stripAnnotations(it) }
-        val chosen = chooseSection(sections.size, value)
+        val rawSections = NumFmtSections.split(format)
+        val conditions = rawSections.map { parseCondition(it) }
+        val sections = rawSections.map { stripAnnotations(it) }
+        val chosen = chooseSection(sections, conditions, value)
         val section = sections[chosen].ifBlank { "General" }
         val out = when {
             section.equals("General", ignoreCase = true) -> general(value)
@@ -86,12 +88,88 @@ object NumberFormatRender {
 
     /** True when the chosen section for [value] carries date/time tokens. */
     fun usesDateTokens(format: String, value: Double = 1.0): Boolean {
-        val sections = NumFmtSections.split(format).map { stripAnnotations(it) }
-        val section = sections[chooseSection(sections.size, value)]
+        val rawSections = NumFmtSections.split(format)
+        val conditions = rawSections.map { parseCondition(it) }
+        val sections = rawSections.map { stripAnnotations(it) }
+        val section = sections[chooseSection(sections, conditions, value)]
         return !section.equals("General", ignoreCase = true) && isDateFormat(section)
     }
 
-    private fun chooseSection(count: Int, value: Double): Int = when {
+    /**
+     * A numeric condition written as an annotation, e.g. `[>100]`, `[<=0]`, `[<>5]`.
+     *
+     * ECMA-376 Part 1 section 18.8.31 and Excel's own documentation define at most two
+     * conditions per format; when any section carries a condition the positive/negative/zero
+     * structure is overridden and sections are tested in order. Everything below is delivered
+     * from those two statements and nothing else: a format whose sections cannot be ordered
+     * that way is refused rather than guessed.
+     */
+    private data class Condition(val operator: String, val threshold: Double) {
+        fun holds(value: Double): Boolean = when (operator) {
+            "<" -> value < threshold
+            "<=" -> value <= threshold
+            ">" -> value > threshold
+            ">=" -> value >= threshold
+            "=" -> value == threshold
+            "<>" -> value != threshold
+            else -> false
+        }
+    }
+
+    private val CONDITION = Regex("""(<=|>=|<>|=|<|>)\s*(-?(?:\d+(?:\.\d*)?|\.\d+))""")
+
+    /** Reads the leading bracket run of a section; at most one numeric condition is defined. */
+    private fun parseCondition(section: String): Condition? {
+        var index = 0
+        var found: Condition? = null
+        while (index < section.length && section[index] == '[') {
+            val end = section.indexOf(']', index)
+            require(end > index) { "unterminated bracket in format" }
+            val inner = section.substring(index + 1, end).trim()
+            val match = CONDITION.matchEntire(inner)
+            if (match != null) {
+                require(found == null) { "two conditions in one format section" }
+                found = Condition(match.groupValues[1], match.groupValues[2].toDouble())
+            }
+            index = end + 1
+        }
+        return found
+    }
+
+    /**
+     * Chooses the section for [value].
+     *
+     * Without conditions the classic rules apply: one section serves every value, two sections
+     * split on the sign, three or more use positive/negative/zero (and a fourth is text).
+     *
+     * With conditions, the first section whose condition holds wins; if none holds the format's
+     * trailing unconditional section is used. A format that conditions every section and matches
+     * none is refused: Excel's behaviour there is not documented well enough for us to model it,
+     * and a silent guess is worse than a refusal.
+     */
+    private fun chooseSection(sections: List<String>, conditions: List<Condition?>, value: Double): Int {
+        if (conditions.none { it != null }) return classicSection(sections.size, value)
+        var sawUnconditional = false
+        var declared = 0
+        for (condition in conditions) {
+            if (condition == null) {
+                sawUnconditional = true
+            } else {
+                require(!sawUnconditional) { "a condition cannot follow an unconditional section" }
+                declared++
+            }
+        }
+        require(declared <= 2) { "at most two conditions are defined; found $declared" }
+        for (index in sections.indices) {
+            val condition = conditions[index]
+            if (condition != null && condition.holds(value)) return index
+        }
+        val fallback = sections.indices.lastOrNull { conditions[it] == null }
+        require(fallback != null) { "no condition matched and every section carries one" }
+        return fallback
+    }
+
+    private fun classicSection(count: Int, value: Double): Int = when {
         count <= 1 -> 0
         count == 2 -> if (value < 0.0) 1 else 0
         else -> when {
@@ -108,7 +186,9 @@ object NumberFormatRender {
      *   symbol as a quoted literal, or nothing when the symbol is empty. The LCID is accepted and
      *   ignored: this renderer emits the invariant en-US presentation, never a locale overlay;
      * - elapsed-time tokens `[h]`, `[mm]`, `[ss]` are preserved for [renderDate];
-     * - anything else (Excel conditions such as `[>100]`) is refused, never approximated.
+     * - numeric conditions `[>100]` are removed here and interpreted by [parseCondition]; the
+     *   section text that remains is the template rendered when the condition holds;
+     * - anything else is refused, never approximated.
      */
     private fun stripAnnotations(section: String): String {
         val out = StringBuilder()
@@ -139,7 +219,8 @@ object NumberFormatRender {
                         inner.all { it.lowercaseChar() in "hms" } && inner.lowercase().toSet().size == 1 ->
                             out.append(section, i, end + 1)
                         inner.startsWith("$") -> out.append(currencyLiteral(inner))
-                        else -> throw IllegalArgumentException("unsupported conditional format [$inner]")
+                        CONDITION.matches(inner.trim()) -> Unit
+                        else -> throw IllegalArgumentException("unsupported annotation [$inner]")
                     }
                     i = end + 1
                 }
