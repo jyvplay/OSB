@@ -21,6 +21,7 @@ The working tree arrived holding the full R75/R76 content while `HEAD` sat on th
 | `tools/check_r76_writer_layout.py` | Now verifies `w:type`, `w:cols`, `w:pgNumType`, CT_SectPr child order, and python-docx's own `section.start_type`. |
 | `tools/test_r77_sheet_conditions.py`, `tools/test_r76_writer_layout.py` | 15 and 16 negative controls. |
 | `docs/verification/r77-condition-divergences.json` | Declared semantics with sources, four pinned `ssf` observations, eight refused shapes, and the residual risk. |
+| `.github/workflows/android-r54-office.yml`, `testing/build.gradle.kts` | `:testing:r77SheetConditionContracts`, the R77 verifier and its control suite. **Observed in CI** (run `43147966121`, job `office`): step 9 `Compile Android and run actual JVM contracts` and step 14 `Independent document readers and formula comparison` both succeed, so the new Gradle task, the verifier and all 15 controls executed green on a clean machine; the job fails only at steps 19 and 21, the device-only gates that failed identically before this round. |
 
 Two production defects were found by *running* gates rather than reading code, and both are fixed: `Layout`'s first draft allowed `CONTINUOUS` + page-number restart (contradictory, and the probe refused to build the document), and the verifier's `w:type` message evaluated `section_type.get(...)` eagerly, so a *passing* check crashed on a `None` element — a gate that cannot pass is as bad as one that cannot fail.
 
@@ -119,6 +120,6 @@ For the Writer, the branches were: (a) new parts for a first-page header, (b) at
 
 No, and the honest reason is short: every remaining Class A criterion in `docs/FULL-SPEC-REVIEW.md` needs an observer we do not have — Word or LibreOffice opening the `.docx` (pagination, section breaks, column balance, header rendering), Excel opening the `.xlsx` (format application, recalculation), and an Android device executing the app. R77 adds two capabilities and their verification, and it adds the *demonstration* that the outside reference cannot check the harder one. Claiming Class A here would be exactly the false claim the spec forbids.
 
-Gates that did not run: Gradle/AGP compile of `:testing:r77SheetConditionContracts`, the CI workflow (wired, unobserved this round), any Android device, Word/LibreOffice/Excel, any browser render.
+Gates that did not run: any Android device, Word/LibreOffice/Excel, any browser render. The new Gradle task, the R77 verifier and its 15 controls **did** run in CI (run `43147966121`, job `office`, steps 9 and 14 success).
 
 **Next highest-information test**, in order: (1) open `testing/build/r76writer/artifacts/columns-restart-odd.docx` in Word/LibreOffice and report the column count, gutter, page-number start and section break; (2) type `[>100]0.00;-0.00` with 100 and −5, and `[Red][<0]-0.00;[Green][>=0]+0.00` with 0, into Excel and report the four cells. Two human observations would convert the largest "believed correct" claims of the last three rounds into evidence.
