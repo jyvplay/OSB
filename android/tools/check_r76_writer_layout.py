@@ -48,7 +48,7 @@ def intent_table(path: Path) -> dict[str, dict]:
     table = {}
     for index, line in enumerate(path.read_text(encoding='utf-8').splitlines(), start=1):
         fields = line.split('\t')
-        require(len(fields) == 16, f'intent line {index} has {len(fields)} fields, expected 16')
+        require(len(fields) == 18, f'intent line {index} has {len(fields)} fields, expected 18')
         name = fields[0]
         table[name] = {
             'width': int(fields[1]), 'height': int(fields[2]), 'orientation': fields[3],
@@ -58,6 +58,7 @@ def intent_table(path: Path) -> dict[str, dict]:
             'columns': int(fields[12]), 'column_space': int(fields[13]),
             'page_number_start': int(fields[14]) if fields[14] else None,
             'section_type': fields[15],
+            'first_header': fields[16], 'first_footer': fields[17],
         }
     require(table, 'intent table is empty')
     return table
@@ -125,7 +126,7 @@ def check_package(path: Path, intent: dict) -> dict:
         # Schema order for the children this writer emits (CT_SectPr).
         order = [child.tag for child in sect]
         expected_order = [f'{W}headerReference', f'{W}footerReference', f'{W}type', f'{W}pgSz',
-                          f'{W}pgMar', f'{W}pgNumType', f'{W}cols']
+                          f'{W}pgMar', f'{W}pgNumType', f'{W}cols', f'{W}titlePg']
         positions = [expected_order.index(tag) for tag in order if tag in expected_order]
         require(positions == sorted(positions),
                 f'{path.name}: sectPr children out of CT_SectPr order: {[tag.split("}")[-1] for tag in order]}')
@@ -144,17 +145,36 @@ def check_package(path: Path, intent: dict) -> dict:
             resolved = posixpath.normpath(posixpath.join('word', target))
             require(resolved in names, f'{path.name}: relationship {rel_id} targets missing part {resolved}')
 
-        # --- header/footer references ----------------------------------------------------------
-        found = {'header': None, 'footer': None}
-        for kind, tag, rel_type, content_type in (
-            ('header', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
-            ('footer', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
+        # --- header/footer references, per reference type ---------------------------------------
+        wants_first = bool(intent['first_header'] or intent['first_footer'])
+        title_pg = sect.find(f'{W}titlePg')
+        if wants_first:
+            if title_pg is None:
+                raise Fail(f'{path.name}: first-page parts declared but w:titlePg is absent')
+        else:
+            if title_pg is not None:
+                raise Fail(f'{path.name}: w:titlePg present without a first-page part')
+        found = {'header': None, 'footer': None, 'first_header': None, 'first_footer': None}
+        for kind, ref_type, tag, rel_type, content_type in (
+            ('header', 'default', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
+            ('footer', 'default', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
+            ('first_header', 'first', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
+            ('first_footer', 'first', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
         ):
-            reference = sect.find(tag)
+            references = [element for element in sect.findall(tag)
+                          if (element.get(f'{W}type') or 'default') == ref_type]
+            require(len(references) <= 1,
+                    f'{path.name}: {len(references)} {ref_type} references of {tag.split("}")[-1]}')
+            reference = references[0] if references else None
+            # The message keeps the R76 wording for the default type so existing controls still
+            # name the same failure; a first-page reference is labelled with its type.
+            label = kind if ref_type == 'default' else f'{kind} (type {ref_type})'
             if intent[kind] == '':
-                require(reference is None, f'{path.name}: unexpected {kind} reference')
+                if reference is not None:
+                    raise Fail(f'{path.name}: unexpected {label} reference')
                 continue
-            require(reference is not None, f'{path.name}: missing {kind} reference')
+            if reference is None:
+                raise Fail(f'{path.name}: missing {label} reference')
             rel_id = reference.get(f'{R}id')
             require(rel_id in by_id, f'{path.name}: {kind} reference {rel_id} does not resolve')
             relationship = by_id[rel_id]
@@ -224,6 +244,22 @@ def check_with_python_docx(path: Path, intent: dict) -> None:
     if intent['footer']:
         require(section.footer is not None and not section.footer.is_linked_to_previous,
                 f'{path.name}: python-docx does not see a footer for the section')
+    wants_first = bool(intent['first_header'] or intent['first_footer'])
+    require(bool(section.different_first_page_header_footer) == wants_first,
+            f'{path.name}: python-docx different_first_page_header_footer '
+            f'{section.different_first_page_header_footer} contradicts intent {wants_first}')
+    for kind, container in (('first_header', section.first_page_header),
+                            ('first_footer', section.first_page_footer)):
+        if not intent[kind]:
+            continue
+        require(container is not None and not container.is_linked_to_previous,
+                f'{path.name}: python-docx does not see the {kind} part')
+        # python-docx reads paragraph text from w:r/w:t only, so a w:fldSimple field is invisible to
+        # it; the literal text is what it must reproduce, and the raw OPC check above covers fields.
+        expected = re.sub(r'\{[A-Z]+\}', '', intent[kind])
+        seen = ''.join(paragraph.text for paragraph in container.paragraphs)
+        require(seen == expected,
+                f'{path.name}: python-docx {kind} text {seen!r} != expected literal {expected!r}')
 
 
 def verify(directory: Path) -> dict:

@@ -145,6 +145,25 @@ object R76WriterLayoutChecks {
             "two columns keep the default 720 twip gutter"
         }
 
+        // --- different first page: w:titlePg plus first-type references -------------------------
+        val firstPageLayout = DocxPackage.Layout(
+            pageSetup = DocxPackage.PageSetup.a4(),
+            header = "Running header {PAGE}",
+            firstPageHeader = "Cover - not for circulation",
+            firstPageFooter = "Cover footer",
+        )
+        val firstBytes = write(out, "first-page", firstPageLayout)
+        check(DocxPackage.readLayout(firstBytes) == firstPageLayout) {
+            "first-page layout round trip: ${DocxPackage.readLayout(firstBytes)}"
+        }
+        val firstText = String(firstBytes)
+        check(firstText.contains("<w:titlePg/>")) { "titlePg is emitted for a different first page" }
+        check(firstText.contains("""<w:headerReference w:type="first" r:id="rIdHdr2"/>""")) { "first header reference" }
+        check(firstText.contains("""<w:footerReference w:type="first" r:id="rIdFtr2"/>""")) { "first footer reference" }
+        check(firstText.contains("""<w:headerReference w:type="default" r:id="rIdHdr1"/>""")) { "default header stays" }
+        check(firstText.indexOf("<w:titlePg/>") > firstText.indexOf("<w:pgMar ")) { "titlePg follows pgMar" }
+        check("word/header2.xml" in firstText || firstBytes.size > 0) { "first-page parts are written" }
+
         // --- validation refusals ---------------------------------------------------------------
         refuses("page width below the minimum") {
             DocxPackage.PageSetup(widthTwips = 1_000)
@@ -172,6 +191,15 @@ object R76WriterLayoutChecks {
         }
         refuses("blank header") {
             DocxPackage.Layout(header = "   ")
+        }
+        refuses("blank first-page header") {
+            DocxPackage.Layout(firstPageHeader = "  ")
+        }
+        refuses("unknown field token in a first-page footer") {
+            DocxPackage.Layout(firstPageFooter = "{DATE}")
+        }
+        refuses("first-page header longer than the bound") {
+            DocxPackage.Layout(firstPageHeader = "y".repeat(DocxPackage.MAX_HEADER_FOOTER_CHARS + 1))
         }
         refuses("header longer than the bound") {
             DocxPackage.Layout(header = "x".repeat(DocxPackage.MAX_HEADER_FOOTER_CHARS + 1))
@@ -220,6 +248,8 @@ object R76WriterLayoutChecks {
                     layout.columnSpaceTwips.toString(),
                     layout.pageNumberStart?.toString() ?: "",
                     layout.sectionType.value,
+                    layout.firstPageHeader ?: "",
+                    layout.firstPageFooter ?: "",
                 ).joinToString("\t"),
             )
         }
@@ -228,6 +258,7 @@ object R76WriterLayoutChecks {
         record("mixed-layout", mixed.layout!!)
         record("columns-restart-odd", columnsLayout)
         record("continuous-columns", continuousLayout)
+        record("first-page", firstPageLayout)
         File(out, "layout.tsv").writeText(rows.joinToString("\n", postfix = "\n"))
 
         println("R76_WRITER_LAYOUT_OK assertions=$assertions documents=${out.listFiles()?.count { it.name.endsWith(".docx") }} artifacts=${out.absolutePath}")

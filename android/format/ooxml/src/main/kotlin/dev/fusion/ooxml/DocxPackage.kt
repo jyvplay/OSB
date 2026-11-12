@@ -56,8 +56,12 @@ object DocxPackage {
     private const val FOOTER_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"
     private const val HEADER_PART = "word/header1.xml"
     private const val FOOTER_PART = "word/footer1.xml"
+    private const val HEADER_FIRST_PART = "word/header2.xml"
+    private const val FOOTER_FIRST_PART = "word/footer2.xml"
     private const val HEADER_REL_ID = "rIdHdr1"
     private const val FOOTER_REL_ID = "rIdFtr1"
+    private const val HEADER_FIRST_REL_ID = "rIdHdr2"
+    private const val FOOTER_FIRST_REL_ID = "rIdFtr2"
     /** Word defines at most 45 newspaper columns; column spacing is a twip measure. */
     private const val MAX_COLUMNS = 45
     private const val MAX_PAGE_NUMBER_START = 1_000_000
@@ -328,6 +332,13 @@ object DocxPackage {
         val columnSpaceTwips: Int = DEFAULT_COLUMN_SPACE_TWIPS,
         val pageNumberStart: Int? = null,
         val sectionType: SectionType = SectionType.NEXT_PAGE,
+        /**
+         * Different first page: `w:titlePg` plus `w:headerReference`/`w:footerReference` of type
+         * `first`. A section that supplies either one therefore carries a first-page part; a
+         * section that supplies neither emits neither, so every earlier layout keeps its bytes.
+         */
+        val firstPageHeader: String? = null,
+        val firstPageFooter: String? = null,
     ) {
         /**
          * `w:type` of the section. `nextPage` is Word's default and is therefore omitted from the
@@ -351,7 +362,12 @@ object DocxPackage {
             require(pageNumberStart == null || sectionType != SectionType.CONTINUOUS) {
                 "a continuous section cannot restart page numbering"
             }
-            for ((name, text) in listOf("header" to header, "footer" to footer)) {
+            for ((name, text) in listOf(
+                "header" to header,
+                "footer" to footer,
+                "first-page header" to firstPageHeader,
+                "first-page footer" to firstPageFooter,
+            )) {
                 if (text == null) continue
                 validateXmlChars(text)
                 require(text.length <= MAX_HEADER_FOOTER_CHARS) {
@@ -428,12 +444,19 @@ object DocxPackage {
         val layout = doc.layout
         val headerRelId = if (layout?.header != null) HEADER_REL_ID else null
         val footerRelId = if (layout?.footer != null) FOOTER_REL_ID else null
+        val headerFirstRelId = if (layout?.firstPageHeader != null) HEADER_FIRST_REL_ID else null
+        val footerFirstRelId = if (layout?.firstPageFooter != null) FOOTER_FIRST_REL_ID else null
         val parts = linkedMapOf(
-            "[Content_Types].xml" to contentTypesXml(images.map { it.format }, headerRelId != null, footerRelId != null)
-                .toByteArray(StandardCharsets.UTF_8),
+            "[Content_Types].xml" to contentTypesXml(
+                images.map { it.format }, headerRelId != null, footerRelId != null,
+                headerFirstRelId != null, footerFirstRelId != null,
+            ).toByteArray(StandardCharsets.UTF_8),
             "_rels/.rels" to rootRelsXml().toByteArray(StandardCharsets.UTF_8),
-            "word/_rels/document.xml.rels" to documentRelsXml(hrefIds, imageParts, imageIds, headerRelId, footerRelId)
-                .toByteArray(StandardCharsets.UTF_8),
+            "word/_rels/document.xml.rels" to documentRelsXml(
+                hrefIds, imageParts, imageIds = imageIds, headerRelId = headerRelId,
+                footerRelId = footerRelId, headerFirstRelId = headerFirstRelId,
+                footerFirstRelId = footerFirstRelId,
+            ).toByteArray(StandardCharsets.UTF_8),
             "word/styles.xml" to stylesXml().toByteArray(StandardCharsets.UTF_8),
             "word/numbering.xml" to defaultNumberingXml(groups).toByteArray(StandardCharsets.UTF_8),
             "word/document.xml" to buildDocumentXml(doc, restartOrderedGroups, hrefIds, imageParts, imageIds)
@@ -442,6 +465,12 @@ object DocxPackage {
         for ((image, target) in imageParts) parts["word/$target"] = image.bytes
         if (layout?.header != null) parts[HEADER_PART] = headerFooterXml("hdr", layout.header).toByteArray(StandardCharsets.UTF_8)
         if (layout?.footer != null) parts[FOOTER_PART] = headerFooterXml("ftr", layout.footer).toByteArray(StandardCharsets.UTF_8)
+        if (layout?.firstPageHeader != null) {
+            parts[HEADER_FIRST_PART] = headerFooterXml("hdr", layout.firstPageHeader).toByteArray(StandardCharsets.UTF_8)
+        }
+        if (layout?.firstPageFooter != null) {
+            parts[FOOTER_FIRST_PART] = headerFooterXml("ftr", layout.firstPageFooter).toByteArray(StandardCharsets.UTF_8)
+        }
         return storedZipBytes(parts)
     }
 
@@ -492,6 +521,8 @@ object DocxPackage {
             columnSpaceTwips = columns?.get("w:space")?.toIntOrNull() ?: DEFAULT_COLUMN_SPACE_TWIPS,
             pageNumberStart = attributesOf(block, "w:pgNumType")?.get("w:start")?.toIntOrNull(),
             sectionType = sectionType,
+            firstPageHeader = referenceText(block, "w:headerReference", rels, parts, type = "first"),
+            firstPageFooter = referenceText(block, "w:footerReference", rels, parts, type = "first"),
         )
     }
 
@@ -515,19 +546,30 @@ object DocxPackage {
             .associate { it.groupValues[1] to it.groupValues[2] }
     }
 
+    /**
+     * Text of the reference of [type] (`default` or `first`). A section may carry one reference of
+     * each type, so the lookup filters on `w:type` instead of taking the first match of the tag.
+     */
     private fun referenceText(
         sectPr: String,
         tag: String,
         rels: String?,
         parts: Map<String, ByteArray>,
+        type: String = "default",
     ): String? {
         val at = sectPr.indexOf("<$tag")
         if (at < 0) return null
-        val close = sectPr.indexOf('>', at)
+        var close = sectPr.indexOf('>', at)
         if (close < 0) return null
-        // group 1 is the attribute name, group 2 its value: taking group 1 here returned "r:id".
-        val relId = ATTRIBUTE.findAll(sectPr.substring(at, close))
-            .firstOrNull { it.groupValues[1] == "r:id" }?.groupValues?.get(2) ?: return null
+        var attributes = ATTRIBUTE.findAll(sectPr.substring(at, close)).associate { it.groupValues[1] to it.groupValues[2] }
+        while ((attributes["w:type"] ?: "default") != type) {
+            val next = sectPr.indexOf("<$tag", close)
+            if (next < 0) return null
+            close = sectPr.indexOf('>', next)
+            if (close < 0) return null
+            attributes = ATTRIBUTE.findAll(sectPr.substring(next, close)).associate { it.groupValues[1] to it.groupValues[2] }
+        }
+        val relId = attributes["r:id"] ?: return null
         val target = rels?.let {
             Regex("<Relationship Id=\"${Regex.escape(relId)}\"" + "[^>]*Target=\"([^\"]+)\"")
                 .find(it)?.groupValues?.get(1)
@@ -653,8 +695,13 @@ object DocxPackage {
                 }
             }
         }
-        appendSectPr(doc.layout, headerRelId = if (doc.layout?.header != null) HEADER_REL_ID else null,
-            footerRelId = if (doc.layout?.footer != null) FOOTER_REL_ID else null)
+        appendSectPr(
+            doc.layout,
+            headerRelId = if (doc.layout?.header != null) HEADER_REL_ID else null,
+            footerRelId = if (doc.layout?.footer != null) FOOTER_REL_ID else null,
+            headerFirstRelId = if (doc.layout?.firstPageHeader != null) HEADER_FIRST_REL_ID else null,
+            footerFirstRelId = if (doc.layout?.firstPageFooter != null) FOOTER_FIRST_REL_ID else null,
+        )
         append("</w:body></w:document>")
     }
 
@@ -662,14 +709,22 @@ object DocxPackage {
      * Emits the section properties. A document without a [Layout] keeps the byte-identical
      * `<w:sectPr/>` the pinned legacy writer produced.
      */
-    private fun StringBuilder.appendSectPr(layout: Layout?, headerRelId: String?, footerRelId: String?) {
+    private fun StringBuilder.appendSectPr(
+        layout: Layout?,
+        headerRelId: String?,
+        footerRelId: String?,
+        headerFirstRelId: String? = null,
+        footerFirstRelId: String? = null,
+    ) {
         if (layout == null) {
             append("<w:sectPr/>")
             return
         }
         append("<w:sectPr>")
         if (headerRelId != null) append("""<w:headerReference w:type="default" r:id="$headerRelId"/>""")
+        if (headerFirstRelId != null) append("""<w:headerReference w:type="first" r:id="$headerFirstRelId"/>""")
         if (footerRelId != null) append("""<w:footerReference w:type="default" r:id="$footerRelId"/>""")
+        if (footerFirstRelId != null) append("""<w:footerReference w:type="first" r:id="$footerFirstRelId"/>""")
         // CT_SectPr orders its children: references, type, pgSz, pgMar, pgNumType, cols. A lenient
         // reader accepts any order; a schema-validating one does not, so the order is enforced here.
         if (layout.sectionType != Layout.SectionType.NEXT_PAGE) {
@@ -690,6 +745,8 @@ object DocxPackage {
         if (layout.columns > 1) {
             append("""<w:cols w:num="${layout.columns}" w:space="${layout.columnSpaceTwips}"/>""")
         }
+        // `w:titlePg` follows `w:cols` in CT_SectPr and exists only when a first-page part does.
+        if (layout.firstPageHeader != null || layout.firstPageFooter != null) append("<w:titlePg/>")
         append("</w:sectPr>")
     }
 
@@ -1140,6 +1197,8 @@ object DocxPackage {
         imageFormats: List<ImageFormat> = emptyList(),
         hasHeader: Boolean = false,
         hasFooter: Boolean = false,
+        hasFirstHeader: Boolean = false,
+        hasFirstFooter: Boolean = false,
     ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">""" +
@@ -1153,6 +1212,8 @@ object DocxPackage {
             """<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>""" +
             (if (hasHeader) """<Override PartName="/$HEADER_PART" ContentType="$HEADER_CONTENT_TYPE"/>""" else "") +
             (if (hasFooter) """<Override PartName="/$FOOTER_PART" ContentType="$FOOTER_CONTENT_TYPE"/>""" else "") +
+            (if (hasFirstHeader) """<Override PartName="/$HEADER_FIRST_PART" ContentType="$HEADER_CONTENT_TYPE"/>""" else "") +
+            (if (hasFirstFooter) """<Override PartName="/$FOOTER_FIRST_PART" ContentType="$FOOTER_CONTENT_TYPE"/>""" else "") +
             """</Types>"""
 
     private fun rootRelsXml(): String =
@@ -1167,6 +1228,8 @@ object DocxPackage {
         imageIds: Map<Image, String> = emptyMap(),
         headerRelId: String? = null,
         footerRelId: String? = null,
+        headerFirstRelId: String? = null,
+        footerFirstRelId: String? = null,
     ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">""" +
@@ -1184,6 +1247,12 @@ object DocxPackage {
             } else "") +
             (if (footerRelId != null) {
                 """<Relationship Id="$footerRelId" Type="$FOOTER_REL_TYPE" Target="footer1.xml"/>"""
+            } else "") +
+            (if (headerFirstRelId != null) {
+                """<Relationship Id="$headerFirstRelId" Type="$HEADER_REL_TYPE" Target="header2.xml"/>"""
+            } else "") +
+            (if (footerFirstRelId != null) {
+                """<Relationship Id="$footerFirstRelId" Type="$FOOTER_REL_TYPE" Target="footer2.xml"/>"""
             } else "") +
             """</Relationships>"""
 

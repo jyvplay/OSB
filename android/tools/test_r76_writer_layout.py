@@ -46,7 +46,7 @@ class LayoutControlTests(unittest.TestCase):
         self.directory = Path(tempfile.mkdtemp(prefix='r76-layout-'))
         self.addCleanup(shutil.rmtree, self.directory, ignore_errors=True)
         for name in ('a4-footer', 'letter-landscape', 'mixed-layout', 'columns-restart-odd',
-                     'continuous-columns', 'legacy'):
+                     'continuous-columns', 'first-page', 'legacy'):
             shutil.copy(ARTIFACTS / f'{name}.docx', self.directory / f'{name}.docx')
         shutil.copy(ARTIFACTS / 'layout.tsv', self.directory / 'layout.tsv')
 
@@ -59,7 +59,7 @@ class LayoutControlTests(unittest.TestCase):
         self.assertIn(fragment.lower(), str(caught.exception).lower(), str(caught.exception))
 
     def test_undisturbed_packages_pass(self):
-        self.assertEqual(self.verify()['layout_documents'], 5)
+        self.assertEqual(self.verify()['layout_documents'], 6)
 
     def test_missing_footer_part_is_rejected(self):
         rewrite(REFERENCE, self.directory / 'a4-footer.docx',
@@ -161,6 +161,35 @@ class LayoutControlTests(unittest.TestCase):
             return payload.replace(b'<w:pgSz ', b'<w:type w:val="continuous"/><w:pgSz ', 1)
         rewrite(REFERENCE, self.directory / 'a4-footer.docx', transform)
         self.expect_failure('nextpage section must not carry w:type')
+
+    def test_title_page_element_removed_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'<w:titlePg/>', b'', 1)
+        rewrite(ARTIFACTS / 'first-page.docx', self.directory / 'first-page.docx', transform)
+        self.expect_failure('titlepg is absent')
+
+    def test_first_reference_downgraded_to_default_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'w:type="first"', b'w:type="default"', 1)
+        rewrite(ARTIFACTS / 'first-page.docx', self.directory / 'first-page.docx', transform)
+        self.expect_failure('references of headerReference')
+
+    def test_changed_first_page_text_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/header2.xml':
+                return payload
+            return payload.replace(b'Cover - not for circulation', b'Cover - for circulation', 1)
+        rewrite(ARTIFACTS / 'first-page.docx', self.directory / 'first-page.docx', transform)
+        self.expect_failure('first_header text')
+
+    def test_missing_first_page_part_is_rejected(self):
+        rewrite(ARTIFACTS / 'first-page.docx', self.directory / 'first-page.docx',
+                lambda name, payload: None if name == 'word/footer2.xml' else payload)
+        self.expect_failure('missing part')
 
     def test_declared_footer_without_text_is_rejected(self):
         rows = [line.split('\t') for line in (self.directory / 'layout.tsv').read_text().splitlines()]
