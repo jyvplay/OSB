@@ -58,10 +58,18 @@ object DocxPackage {
     private const val FOOTER_PART = "word/footer1.xml"
     private const val HEADER_FIRST_PART = "word/header2.xml"
     private const val FOOTER_FIRST_PART = "word/footer2.xml"
+    private const val HEADER_EVEN_PART = "word/header3.xml"
+    private const val FOOTER_EVEN_PART = "word/footer3.xml"
+    private const val SETTINGS_PART = "word/settings.xml"
+    private const val SETTINGS_REL_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings"
+    private const val SETTINGS_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"
+    private const val SETTINGS_REL_ID = "rIdSet1"
     private const val HEADER_REL_ID = "rIdHdr1"
     private const val FOOTER_REL_ID = "rIdFtr1"
     private const val HEADER_FIRST_REL_ID = "rIdHdr2"
     private const val FOOTER_FIRST_REL_ID = "rIdFtr2"
+    private const val HEADER_EVEN_REL_ID = "rIdHdr3"
+    private const val FOOTER_EVEN_REL_ID = "rIdFtr3"
     /** Word defines at most 45 newspaper columns; column spacing is a twip measure. */
     private const val MAX_COLUMNS = 45
     private const val MAX_PAGE_NUMBER_START = 1_000_000
@@ -339,6 +347,14 @@ object DocxPackage {
          */
         val firstPageHeader: String? = null,
         val firstPageFooter: String? = null,
+        /**
+         * Even-page header/footer. Word only honours these when the document settings carry
+         * `w:evenAndOddHeaders`, so declaring either one also writes `word/settings.xml` with that
+         * element, its relationship and its content-type override. A layout that declares neither
+         * writes no settings part, keeping every earlier package byte-identical.
+         */
+        val evenPageHeader: String? = null,
+        val evenPageFooter: String? = null,
     ) {
         /**
          * `w:type` of the section. `nextPage` is Word's default and is therefore omitted from the
@@ -367,6 +383,8 @@ object DocxPackage {
                 "footer" to footer,
                 "first-page header" to firstPageHeader,
                 "first-page footer" to firstPageFooter,
+                "even-page header" to evenPageHeader,
+                "even-page footer" to evenPageFooter,
             )) {
                 if (text == null) continue
                 validateXmlChars(text)
@@ -446,16 +464,23 @@ object DocxPackage {
         val footerRelId = if (layout?.footer != null) FOOTER_REL_ID else null
         val headerFirstRelId = if (layout?.firstPageHeader != null) HEADER_FIRST_REL_ID else null
         val footerFirstRelId = if (layout?.firstPageFooter != null) FOOTER_FIRST_REL_ID else null
+        val headerEvenRelId = if (layout?.evenPageHeader != null) HEADER_EVEN_REL_ID else null
+        val footerEvenRelId = if (layout?.evenPageFooter != null) FOOTER_EVEN_REL_ID else null
+        val settingsRelId = if (headerEvenRelId != null || footerEvenRelId != null) SETTINGS_REL_ID else null
         val parts = linkedMapOf(
             "[Content_Types].xml" to contentTypesXml(
                 images.map { it.format }, headerRelId != null, footerRelId != null,
                 headerFirstRelId != null, footerFirstRelId != null,
+                headerEvenRelId != null, footerEvenRelId != null, settingsRelId != null,
             ).toByteArray(StandardCharsets.UTF_8),
             "_rels/.rels" to rootRelsXml().toByteArray(StandardCharsets.UTF_8),
             "word/_rels/document.xml.rels" to documentRelsXml(
                 hrefIds, imageParts, imageIds = imageIds, headerRelId = headerRelId,
                 footerRelId = footerRelId, headerFirstRelId = headerFirstRelId,
                 footerFirstRelId = footerFirstRelId,
+                headerEvenRelId = headerEvenRelId,
+                footerEvenRelId = footerEvenRelId,
+                settingsRelId = settingsRelId,
             ).toByteArray(StandardCharsets.UTF_8),
             "word/styles.xml" to stylesXml().toByteArray(StandardCharsets.UTF_8),
             "word/numbering.xml" to defaultNumberingXml(groups).toByteArray(StandardCharsets.UTF_8),
@@ -471,6 +496,13 @@ object DocxPackage {
         if (layout?.firstPageFooter != null) {
             parts[FOOTER_FIRST_PART] = headerFooterXml("ftr", layout.firstPageFooter).toByteArray(StandardCharsets.UTF_8)
         }
+        if (layout?.evenPageHeader != null) {
+            parts[HEADER_EVEN_PART] = headerFooterXml("hdr", layout.evenPageHeader).toByteArray(StandardCharsets.UTF_8)
+        }
+        if (layout?.evenPageFooter != null) {
+            parts[FOOTER_EVEN_PART] = headerFooterXml("ftr", layout.evenPageFooter).toByteArray(StandardCharsets.UTF_8)
+        }
+        if (settingsRelId != null) parts[SETTINGS_PART] = settingsXml().toByteArray(StandardCharsets.UTF_8)
         return storedZipBytes(parts)
     }
 
@@ -523,6 +555,8 @@ object DocxPackage {
             sectionType = sectionType,
             firstPageHeader = referenceText(block, "w:headerReference", rels, parts, type = "first"),
             firstPageFooter = referenceText(block, "w:footerReference", rels, parts, type = "first"),
+            evenPageHeader = referenceText(block, "w:headerReference", rels, parts, type = "even"),
+            evenPageFooter = referenceText(block, "w:footerReference", rels, parts, type = "even"),
         )
     }
 
@@ -701,6 +735,8 @@ object DocxPackage {
             footerRelId = if (doc.layout?.footer != null) FOOTER_REL_ID else null,
             headerFirstRelId = if (doc.layout?.firstPageHeader != null) HEADER_FIRST_REL_ID else null,
             footerFirstRelId = if (doc.layout?.firstPageFooter != null) FOOTER_FIRST_REL_ID else null,
+            headerEvenRelId = if (doc.layout?.evenPageHeader != null) HEADER_EVEN_REL_ID else null,
+            footerEvenRelId = if (doc.layout?.evenPageFooter != null) FOOTER_EVEN_REL_ID else null,
         )
         append("</w:body></w:document>")
     }
@@ -715,6 +751,8 @@ object DocxPackage {
         footerRelId: String?,
         headerFirstRelId: String? = null,
         footerFirstRelId: String? = null,
+        headerEvenRelId: String? = null,
+        footerEvenRelId: String? = null,
     ) {
         if (layout == null) {
             append("<w:sectPr/>")
@@ -723,8 +761,10 @@ object DocxPackage {
         append("<w:sectPr>")
         if (headerRelId != null) append("""<w:headerReference w:type="default" r:id="$headerRelId"/>""")
         if (headerFirstRelId != null) append("""<w:headerReference w:type="first" r:id="$headerFirstRelId"/>""")
+        if (headerEvenRelId != null) append("""<w:headerReference w:type="even" r:id="$headerEvenRelId"/>""")
         if (footerRelId != null) append("""<w:footerReference w:type="default" r:id="$footerRelId"/>""")
         if (footerFirstRelId != null) append("""<w:footerReference w:type="first" r:id="$footerFirstRelId"/>""")
+        if (footerEvenRelId != null) append("""<w:footerReference w:type="even" r:id="$footerEvenRelId"/>""")
         // CT_SectPr orders its children: references, type, pgSz, pgMar, pgNumType, cols. A lenient
         // reader accepts any order; a schema-validating one does not, so the order is enforced here.
         if (layout.sectionType != Layout.SectionType.NEXT_PAGE) {
@@ -1199,6 +1239,9 @@ object DocxPackage {
         hasFooter: Boolean = false,
         hasFirstHeader: Boolean = false,
         hasFirstFooter: Boolean = false,
+        hasEvenHeader: Boolean = false,
+        hasEvenFooter: Boolean = false,
+        hasSettings: Boolean = false,
     ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">""" +
@@ -1214,6 +1257,9 @@ object DocxPackage {
             (if (hasFooter) """<Override PartName="/$FOOTER_PART" ContentType="$FOOTER_CONTENT_TYPE"/>""" else "") +
             (if (hasFirstHeader) """<Override PartName="/$HEADER_FIRST_PART" ContentType="$HEADER_CONTENT_TYPE"/>""" else "") +
             (if (hasFirstFooter) """<Override PartName="/$FOOTER_FIRST_PART" ContentType="$FOOTER_CONTENT_TYPE"/>""" else "") +
+            (if (hasEvenHeader) """<Override PartName="/$HEADER_EVEN_PART" ContentType="$HEADER_CONTENT_TYPE"/>""" else "") +
+            (if (hasEvenFooter) """<Override PartName="/$FOOTER_EVEN_PART" ContentType="$FOOTER_CONTENT_TYPE"/>""" else "") +
+            (if (hasSettings) """<Override PartName="/$SETTINGS_PART" ContentType="$SETTINGS_CONTENT_TYPE"/>""" else "") +
             """</Types>"""
 
     private fun rootRelsXml(): String =
@@ -1230,6 +1276,9 @@ object DocxPackage {
         footerRelId: String? = null,
         headerFirstRelId: String? = null,
         footerFirstRelId: String? = null,
+        headerEvenRelId: String? = null,
+        footerEvenRelId: String? = null,
+        settingsRelId: String? = null,
     ): String =
         """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
             """<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">""" +
@@ -1254,7 +1303,25 @@ object DocxPackage {
             (if (footerFirstRelId != null) {
                 """<Relationship Id="$footerFirstRelId" Type="$FOOTER_REL_TYPE" Target="footer2.xml"/>"""
             } else "") +
+            (if (headerEvenRelId != null) {
+                """<Relationship Id="$headerEvenRelId" Type="$HEADER_REL_TYPE" Target="header3.xml"/>"""
+            } else "") +
+            (if (footerEvenRelId != null) {
+                """<Relationship Id="$footerEvenRelId" Type="$FOOTER_REL_TYPE" Target="footer3.xml"/>"""
+            } else "") +
+            (if (settingsRelId != null) {
+                """<Relationship Id="$settingsRelId" Type="$SETTINGS_REL_TYPE" Target="settings.xml"/>"""
+            } else "") +
             """</Relationships>"""
+
+    /**
+     * `word/settings.xml` with the single element this writer needs. Word ignores an `even`
+     * header/footer reference unless `w:evenAndOddHeaders` is set, so the part exists exactly when
+     * an even-page header or footer does.
+     */
+    private fun settingsXml(): String =
+        """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""" +
+            """<w:settings xmlns:w="$WORD_NS"><w:evenAndOddHeaders/></w:settings>"""
 
     private fun stylesXml(): String = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")

@@ -164,6 +164,27 @@ object R76WriterLayoutChecks {
         check(firstText.indexOf("<w:titlePg/>") > firstText.indexOf("<w:pgMar ")) { "titlePg follows pgMar" }
         check("word/header2.xml" in firstText || firstBytes.size > 0) { "first-page parts are written" }
 
+        // --- even-page header and footer: requires the evenAndOddHeaders setting -----------------
+        val evenOddLayout = DocxPackage.Layout(
+            pageSetup = DocxPackage.PageSetup.a4(),
+            header = "Running {PAGE}",
+            footer = "{NUMPAGES} pages",
+            evenPageHeader = "Even page header",
+            evenPageFooter = "Even page footer",
+        )
+        val evenBytes = write(out, "even-odd", evenOddLayout)
+        check(DocxPackage.readLayout(evenBytes) == evenOddLayout) {
+            "even/odd layout round trip: ${DocxPackage.readLayout(evenBytes)}"
+        }
+        val evenText = String(evenBytes, Charsets.ISO_8859_1)
+        check(evenText.contains("""<w:headerReference w:type="even" r:id="rIdHdr3"/>""")) { "even header reference" }
+        check(evenText.contains("""<w:footerReference w:type="even" r:id="rIdFtr3"/>""")) { "even footer reference" }
+        check("word/settings.xml" in evenText) { "even/odd headers require the settings part" }
+        // A layout without even-page parts must not gain a settings part.
+        check("word/settings.xml" !in String(firstBytes, Charsets.ISO_8859_1)) {
+            "no settings part without even-page parts"
+        }
+
         // --- validation refusals ---------------------------------------------------------------
         refuses("page width below the minimum") {
             DocxPackage.PageSetup(widthTwips = 1_000)
@@ -197,6 +218,12 @@ object R76WriterLayoutChecks {
         }
         refuses("unknown field token in a first-page footer") {
             DocxPackage.Layout(firstPageFooter = "{DATE}")
+        }
+        refuses("blank even-page footer") {
+            DocxPackage.Layout(evenPageFooter = " ")
+        }
+        refuses("unknown field token in an even-page header") {
+            DocxPackage.Layout(evenPageHeader = "{DATE}")
         }
         refuses("first-page header longer than the bound") {
             DocxPackage.Layout(firstPageHeader = "y".repeat(DocxPackage.MAX_HEADER_FOOTER_CHARS + 1))
@@ -250,6 +277,8 @@ object R76WriterLayoutChecks {
                     layout.sectionType.value,
                     layout.firstPageHeader ?: "",
                     layout.firstPageFooter ?: "",
+                    layout.evenPageHeader ?: "",
+                    layout.evenPageFooter ?: "",
                 ).joinToString("\t"),
             )
         }
@@ -259,6 +288,7 @@ object R76WriterLayoutChecks {
         record("columns-restart-odd", columnsLayout)
         record("continuous-columns", continuousLayout)
         record("first-page", firstPageLayout)
+        record("even-odd", evenOddLayout)
         File(out, "layout.tsv").writeText(rows.joinToString("\n", postfix = "\n"))
 
         println("R76_WRITER_LAYOUT_OK assertions=$assertions documents=${out.listFiles()?.count { it.name.endsWith(".docx") }} artifacts=${out.absolutePath}")

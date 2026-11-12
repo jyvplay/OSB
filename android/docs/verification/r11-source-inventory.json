@@ -5720,7 +5720,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "be4c6ac5a149f27014acf9adf72ce6bbe9336fdcd411e90538d382bdda67f73e"
+      "sha256": "7a0decaa17f40da89d4d90cd3cfa7f59486776821657e6ee7e7dbcb0d34087d8"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",

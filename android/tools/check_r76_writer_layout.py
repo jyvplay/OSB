@@ -32,6 +32,9 @@ HEADER_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationshi
 FOOTER_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer'
 HEADER_CT = 'application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml'
 FOOTER_CT = 'application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml'
+SETTINGS_TYPE = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings'
+SETTINGS_CT = 'application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml'
+SETTINGS_PART = 'word/settings.xml'
 
 
 class Fail(Exception):
@@ -48,7 +51,7 @@ def intent_table(path: Path) -> dict[str, dict]:
     table = {}
     for index, line in enumerate(path.read_text(encoding='utf-8').splitlines(), start=1):
         fields = line.split('\t')
-        require(len(fields) == 18, f'intent line {index} has {len(fields)} fields, expected 18')
+        require(len(fields) == 20, f'intent line {index} has {len(fields)} fields, expected 20')
         name = fields[0]
         table[name] = {
             'width': int(fields[1]), 'height': int(fields[2]), 'orientation': fields[3],
@@ -59,6 +62,7 @@ def intent_table(path: Path) -> dict[str, dict]:
             'page_number_start': int(fields[14]) if fields[14] else None,
             'section_type': fields[15],
             'first_header': fields[16], 'first_footer': fields[17],
+            'even_header': fields[18], 'even_footer': fields[19],
         }
     require(table, 'intent table is empty')
     return table
@@ -154,12 +158,15 @@ def check_package(path: Path, intent: dict) -> dict:
         else:
             if title_pg is not None:
                 raise Fail(f'{path.name}: w:titlePg present without a first-page part')
-        found = {'header': None, 'footer': None, 'first_header': None, 'first_footer': None}
+        found = {'header': None, 'footer': None, 'first_header': None, 'first_footer': None,
+                 'even_header': None, 'even_footer': None}
         for kind, ref_type, tag, rel_type, content_type in (
             ('header', 'default', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
             ('footer', 'default', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
             ('first_header', 'first', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
             ('first_footer', 'first', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
+            ('even_header', 'even', f'{W}headerReference', HEADER_TYPE, HEADER_CT),
+            ('even_footer', 'even', f'{W}footerReference', FOOTER_TYPE, FOOTER_CT),
         ):
             references = [element for element in sect.findall(tag)
                           if (element.get(f'{W}type') or 'default') == ref_type]
@@ -205,6 +212,25 @@ def check_package(path: Path, intent: dict) -> dict:
             require(text == intent[kind],
                     f'{path.name}: {kind} text {text!r} != declared {intent[kind]!r}')
             found[kind] = payload
+
+        # --- even/odd headers need the document setting, or Word ignores the parts ---------------
+        wants_even = bool(intent['even_header'] or intent['even_footer'])
+        if SETTINGS_PART in names:
+            if not wants_even:
+                raise Fail(f'{path.name}: unexpected {SETTINGS_PART} without an even-page part')
+            require(f'PartName="/{SETTINGS_PART}"' in types and SETTINGS_CT in types,
+                    f'{path.name}: no content-type override for {SETTINGS_PART}')
+            settings_rel = [element for element in rel_root
+                            if element.get('Type') == SETTINGS_TYPE]
+            require(len(settings_rel) == 1,
+                    f'{path.name}: {len(settings_rel)} settings relationships, expected 1')
+            require(posixpath.normpath(posixpath.join('word', settings_rel[0].get('Target'))) == SETTINGS_PART,
+                    f'{path.name}: settings relationship targets {settings_rel[0].get("Target")}')
+            settings = ElementTree.fromstring(archive.read(SETTINGS_PART).decode('utf-8'))
+            require(settings.find(f'{W}evenAndOddHeaders') is not None,
+                    f'{path.name}: {SETTINGS_PART} lacks w:evenAndOddHeaders')
+        elif wants_even:
+            raise Fail(f'{path.name}: even-page parts declared but {SETTINGS_PART} is absent')
     return found
 
 
@@ -249,7 +275,9 @@ def check_with_python_docx(path: Path, intent: dict) -> None:
             f'{path.name}: python-docx different_first_page_header_footer '
             f'{section.different_first_page_header_footer} contradicts intent {wants_first}')
     for kind, container in (('first_header', section.first_page_header),
-                            ('first_footer', section.first_page_footer)):
+                            ('first_footer', section.first_page_footer),
+                            ('even_header', section.even_page_header),
+                            ('even_footer', section.even_page_footer)):
         if not intent[kind]:
             continue
         require(container is not None and not container.is_linked_to_previous,

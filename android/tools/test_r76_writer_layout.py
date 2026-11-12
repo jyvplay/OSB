@@ -46,7 +46,7 @@ class LayoutControlTests(unittest.TestCase):
         self.directory = Path(tempfile.mkdtemp(prefix='r76-layout-'))
         self.addCleanup(shutil.rmtree, self.directory, ignore_errors=True)
         for name in ('a4-footer', 'letter-landscape', 'mixed-layout', 'columns-restart-odd',
-                     'continuous-columns', 'first-page', 'legacy'):
+                     'continuous-columns', 'first-page', 'even-odd', 'legacy'):
             shutil.copy(ARTIFACTS / f'{name}.docx', self.directory / f'{name}.docx')
         shutil.copy(ARTIFACTS / 'layout.tsv', self.directory / 'layout.tsv')
 
@@ -59,7 +59,7 @@ class LayoutControlTests(unittest.TestCase):
         self.assertIn(fragment.lower(), str(caught.exception).lower(), str(caught.exception))
 
     def test_undisturbed_packages_pass(self):
-        self.assertEqual(self.verify()['layout_documents'], 6)
+        self.assertEqual(self.verify()['layout_documents'], 7)
 
     def test_missing_footer_part_is_rejected(self):
         rewrite(REFERENCE, self.directory / 'a4-footer.docx',
@@ -190,6 +190,35 @@ class LayoutControlTests(unittest.TestCase):
         rewrite(ARTIFACTS / 'first-page.docx', self.directory / 'first-page.docx',
                 lambda name, payload: None if name == 'word/footer2.xml' else payload)
         self.expect_failure('missing part')
+
+    def test_missing_settings_part_is_rejected(self):
+        rewrite(ARTIFACTS / 'even-odd.docx', self.directory / 'even-odd.docx',
+                lambda name, payload: None if name == 'word/settings.xml' else payload)
+        self.expect_failure('targets missing part')
+
+    def test_settings_without_even_and_odd_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/settings.xml':
+                return payload
+            return payload.replace(b'<w:evenAndOddHeaders/>', b'', 1)
+        rewrite(ARTIFACTS / 'even-odd.docx', self.directory / 'even-odd.docx', transform)
+        self.expect_failure('w:evenandoddheaders')
+
+    def test_even_reference_downgraded_to_default_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'w:type="even"', b'w:type="default"', 1)
+        rewrite(ARTIFACTS / 'even-odd.docx', self.directory / 'even-odd.docx', transform)
+        self.expect_failure('references of headerReference')
+
+    def test_changed_even_page_text_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/header3.xml':
+                return payload
+            return payload.replace(b'Even page header', b'Even page heading', 1)
+        rewrite(ARTIFACTS / 'even-odd.docx', self.directory / 'even-odd.docx', transform)
+        self.expect_failure('even_header text')
 
     def test_declared_footer_without_text_is_rejected(self):
         rows = [line.split('\t') for line in (self.directory / 'layout.tsv').read_text().splitlines()]
