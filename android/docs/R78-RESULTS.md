@@ -91,6 +91,7 @@ The strongest attack is a verifier that accepts the bytes because the *producer*
 - `run_r73_formula.py`: 371/371 matched; differential 0 unexpected.
 - `run_r74_writer_links.py`: 20 independent checks; `run_r75_writer_images.py`: ImageMagick decoded the embedded media.
 - `run_r76_sheet_formats.py`: 245 observations, 239 replayed, 231 identical, 8 adjudicated. `run_r77_sheet_conditions.py`: 60/60 re-derived, 7/7 controls match `ssf`, 4/4 pinned observations reproduce.
+- CI run `43161901992`, job `office`: step 9 `Compile Android and run actual JVM contracts` and step 14 `Independent document readers and formula comparison` both **succeed** (the seven-package writer lane, the 20 controls and all R73–R77 lanes ran on a clean machine); the job fails only at steps 19 and 21, the device-only gates that fail identically on every round.
 - Full `tools` suite: **1739 tests OK** (22 skipped). Census: **50/50 (100.00 %) substantial testable subset, 0/50 (0.00 %) fully accepted**.
 
 ## I. Repairs and regressions vs the previous turn
@@ -108,6 +109,6 @@ Two defects were introduced *by this round's own first draft* and fixed before a
 
 **Not Class A, and not close.** The Writer still has no observer that renders; the Spreadsheet has no observer that recalculates; the app has no device. R78 adds one real capability and its verification, which is what a minimal-diff round can honestly deliver.
 
-Gates not run: Gradle/AGP build of the (unchanged) task list, CI on this commit, any device, Word/LibreOffice/Excel, any browser render.
+Gates not run: any device, Word/LibreOffice/Excel, any browser render.
 
 **Next highest-information test:** open `testing/build/r76writer/artifacts/first-page.docx` in Word or LibreOffice and report what page 1 shows versus page 2 (different first page, header text, footer text, page number on the first page). That single observation decides the largest open question in the Writer lane.
