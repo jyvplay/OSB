@@ -16,7 +16,7 @@ Host-JVM round on branch `arena/15d3f8f5-osb` (base `9965ba1`). Nothing in this 
 | `tools/check_r76_writer_layout.py` | python-docx 1.2 **and** raw OPC inspection (Overrides, relationship resolution, field instructions, exact header/footer text); refuses to exit 0 without `--require-python-docx`. |
 | `tools/test_r76_sheet_formats.py`, `tools/test_r76_writer_layout.py` | 15 and 13 negative controls that attack the verifiers themselves. |
 | `tools/run_r76_sheet_formats.py`, `tools/run_r76_writer_layout.py` | Compile → run → verify in one command; artifact directories are per-round. |
-| `.github/workflows/android-r54-office.yml`, `testing/build.gradle.kts` | `:testing:r76SheetFormatContracts`, `:testing:r76WriterLayoutContracts`, both verifiers, both control suites (not yet observed in CI). |
+| `.github/workflows/android-r54-office.yml`, `testing/build.gradle.kts` | `:testing:r76SheetFormatContracts`, `:testing:r76WriterLayoutContracts`, both verifiers, both control suites. **Observed in CI** (run `43139396041`, job `office`): step 9 `Compile Android and run actual JVM contracts` and step 14 `Independent document readers and formula comparison (host-only, not bundled)` both succeed; the job fails only at steps 19 and 21, the device-only UI/provider and named-Office-case gates that also failed before R76. |
 
 Two R76 readback defects were found **by running the probe rather than by reading the code**, and both are fixed: `readLayout`'s `sectPr` lookup read regex `groupValues[1]` (the attribute *name*, always `"r:id"`) so header/footer always read back as `null`; and `fieldText()` replaced `w:fldSimple` with a bare `{PAGE}` outside any `w:t`, so text extraction silently dropped the token (`"Page  of "`). Section H records the attacks that now pin both.
 
@@ -119,13 +119,13 @@ Both repairs were verified against the **legacy** path as well: `run_r60_writer.
 
 ## J. Honest stopping point and the next highest-information test
 
-Gates that **did not** run and are therefore not claimed: Gradle/AGP build of the two new tasks, the CI workflow (wired, unobserved), any Android device or emulator, Word/LibreOffice/Excel, any network surface, the office-interop lanes that need a device.
+Gates that **did not** run and are therefore not claimed: any Android device or emulator, Word/LibreOffice/Excel, any network surface, the office-interop lanes that need a device, and a browser render of the web bundle. The two new Gradle tasks and both verifiers **did** run in CI (run `43139396041`, job `office`, steps 9 and 14 success); that job still fails at steps 19 and 21, which are the device-only gates and failed identically before this round.
 
 The next highest-information test, in order:
 
 0. **The clearest next observation** is (1) below, but note that neither the web bundle nor `dist/index.html` was rendered in a browser this round — the only claim is that the build and the type check succeed.
 1. **Open `testing/build/r76writer/artifacts/letter-landscape.docx` and `a4-footer.docx` in Word or LibreOffice** and report the page size, orientation, margins and the header/footer text that the application shows. That single observation converts the largest remaining "believed correct" claim into evidence, and it is cheap for a human with a desktop.
 2. **Open `testing/build/r76formats/artifacts/formats.tsv` observations in Excel** for the eight adjudicated differences — specifically `h:mm AM/PM` at `0.999999` and `"pre "@`. Two cells settle both.
-3. Run the wired CI workflow and confirm `:testing:r76WriterLayoutContracts` and `:testing:r76SheetFormatContracts` execute there (currently only host-verified).
+3. Make steps 19 and 21 pass — they need a real device plus the 37 named Office cases, and they are the only reason the `office` job is red.
 
 Until (1) and (2) exist, the correct statement is: **the Writer layout and the number-format language are verified against independent re-implementations on the host, and against nothing that renders or is Excel.**
