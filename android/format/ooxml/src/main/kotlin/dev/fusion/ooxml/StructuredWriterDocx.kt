@@ -39,7 +39,23 @@ object StructuredWriterDocx {
     fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean): ByteArray =
         write(text, numberedLines, strikeSpans, restartOrderedGroups, pipeTables = false)
 
-    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, pipeTables: Boolean): ByteArray {
+    fun write(text: String, numberedLines: Boolean, strikeSpans: Boolean, restartOrderedGroups: Boolean, pipeTables: Boolean): ByteArray =
+        write(text, numberedLines, strikeSpans, restartOrderedGroups, pipeTables, images = emptyMap())
+
+    /**
+     * The same conversion with caller-supplied image bytes. A line that is exactly `![alt](key)`
+     * becomes an inline picture whose bytes are `images[key]`; the writer itself never reads a file,
+     * a URL or a provider, so the access model stays "pure function over data the caller already has".
+     * When `images` is empty the syntax stays literal, which is what keeps legacy output byte-identical.
+     */
+    fun write(
+        text: String,
+        numberedLines: Boolean,
+        strikeSpans: Boolean,
+        restartOrderedGroups: Boolean,
+        pipeTables: Boolean,
+        images: Map<String, ByteArray>,
+    ): ByteArray {
         require(!restartOrderedGroups || numberedLines) { "Numbered lines must be enabled to request list restarts" }
         // For valid XML text UTF-16 code units never outnumber UTF-8 bytes; this
         // early bound avoids a large temporary encoding allocation on rejected input.
@@ -54,6 +70,13 @@ object StructuredWriterDocx {
             if (line == PAGE_BREAK_MARKER) {
                 blocks.add(DocxPackage.Block.PageBreak)
                 return
+            }
+            if (images.isNotEmpty()) {
+                val picture = imageLine(line, images)
+                if (picture != null) {
+                    blocks.add(picture)
+                    return
+                }
             }
             val hashes = line.takeWhile { it == '#' }.length
             val heading = hashes in 1..6 && line.length > hashes + 1 && line[hashes] == ' '
@@ -148,6 +171,22 @@ object StructuredWriterDocx {
         }
         if (plainStart < text.length) segments.add(text.substring(plainStart) to null)
         return segments
+    }
+
+    /**
+     * Exact grammar: `![alt](key)` with no surrounding text, alt of at most 1024 characters and no
+     * brackets, key matching a caller-supplied entry. Anything else stays literal text.
+     */
+    private fun imageLine(line: String, images: Map<String, ByteArray>): DocxPackage.Block.Picture? {
+        if (!line.startsWith("![") || !line.endsWith(")")) return null
+        val split = line.indexOf("](")
+        if (split < 2) return null
+        val alt = line.substring(2, split)
+        val key = line.substring(split + 2, line.length - 1)
+        if (key.isEmpty() || key.any { it == '(' || it == ')' || it == ']' }) return null
+        if (alt.any { it == '[' || it == ']' }) return null
+        val bytes = images[key] ?: return null
+        return DocxPackage.Block.Picture(DocxPackage.Image.of(bytes), alt)
     }
 
     private fun inlineRuns(text: String, strikeSpans: Boolean): List<DocxPackage.Run> {

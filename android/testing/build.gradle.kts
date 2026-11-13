@@ -1612,6 +1612,63 @@ tasks.register<JavaExec>("r72OoxmlZipContracts") {
     args("read", rootProject.file("testing/build/r72ooxml").absolutePath)
 }
 
+// R77: Spreadsheet number-format conditions; an independent re-derivation verifies them.
+val r77Sheet by sourceSets.creating
+kotlin.sourceSets.named("r77Sheet") { kotlin.srcDir("src/r77sheet/kotlin") }
+dependencies { add(r77Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r77SheetConditionContracts") {
+    dependsOn(r77Sheet.classesTaskName)
+    classpath = r77Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R77SheetConditionChecks")
+    args(rootProject.file("testing/build/r77conditions/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r77conditions/artifacts").mkdirs() }
+}
+
+// R76: Writer section layout (page geometry, headers/footers, PAGE fields); python-docx verifies separately.
+val r76Writer by sourceSets.creating
+kotlin.sourceSets.named("r76Writer") { kotlin.srcDir("src/r76writer/kotlin") }
+dependencies { add(r76Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r76WriterLayoutContracts") {
+    dependsOn(r76Writer.classesTaskName)
+    classpath = r76Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R76WriterLayoutChecks")
+    args(rootProject.file("testing/build/r76writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r76writer/artifacts").mkdirs() }
+}
+
+// R76: Number/date/text format rendering against an independent implementation; comparison is separate.
+val r76Sheet by sourceSets.creating
+kotlin.sourceSets.named("r76Sheet") { kotlin.srcDir("src/r76sheet/kotlin") }
+dependencies { add(r76Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r76SheetFormatContracts") {
+    dependsOn(r76Sheet.classesTaskName)
+    classpath = r76Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R76SheetFormatChecks")
+    args(rootProject.file("testing/build/r76formats/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r76formats/artifacts").mkdirs() }
+}
+
+// R75: Fraction number formats through the production renderer; an exhaustive oracle is separate.
+tasks.register<JavaExec>("r75SheetFractionContracts") {
+    dependsOn(r75Writer.classesTaskName)
+    classpath = r75Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R75SheetFractionChecks")
+    args(rootProject.file("testing/build/r75fractions/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r75fractions/artifacts").mkdirs() }
+}
+
+// R75: Writer inline pictures (caller-supplied bytes) and their round trip; independent verification is separate.
+val r75Writer by sourceSets.creating
+kotlin.sourceSets.named("r75Writer") { kotlin.srcDir("src/r75writer/kotlin") }
+dependencies { add(r75Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r75WriterImageContracts") {
+    dependsOn(r75Writer.classesTaskName)
+    classpath = r75Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R75WriterImageChecks")
+    args(rootProject.file("testing/build/r75writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r75writer/artifacts").mkdirs() }
+}
+
 // R74: Writer hyperlinks, page breaks and their round trip; independent OPC verification is separate.
 val r74Writer by sourceSets.creating
 kotlin.sourceSets.named("r74Writer") { kotlin.srcDir("src/r74writer/kotlin") }

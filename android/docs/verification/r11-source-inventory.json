@@ -5720,7 +5720,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "a477c516c73abee708d11559b296e40aa9e41c42d8e4596d331ea3dff303e95d"
+      "sha256": "e9a41cb9031990c3ce92a58e54a17e433817b3ba81c073ff80c8330fdff32453"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
@@ -5786,7 +5786,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumberFormatRender.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "825b1be099679dced9f003a80d32f66fb492cd52444bcab8191a5386fce523dd"
+      "sha256": "35e7431b9d834630eaee3427e3ae3e8a3e1df50ecc1e2b1a3f94bc27704cefbe"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/OfficeSheetCsv.kt",
@@ -5966,7 +5966,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredWriterDocx.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "0380e18f17d947e5022f8c37dd13cf08067257a0031ba5794f443394054ce385"
+      "sha256": "5145dffda8069c340384e973832f34265b03e9e51cb0f4868f320ea01e220dda"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilterEvaluator.kt",

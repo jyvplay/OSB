@@ -100,6 +100,10 @@ def strip_colour(section: str) -> str:
     while section.startswith('['):
         end = section.index(']')
         inner = section[1:end]
+        # An elapsed-time token is part of the format, not an annotation: `[h]:mm` is a duration.
+        if len(set(inner.lower())) == 1 and inner.lower() in ('h', 'm', 's') * 1 and inner.isalpha() \
+                and inner.lower() in {'h', 'm', 's', 'hh', 'mm', 'ss', 'hhh', 'mmm', 'sss'}:
+            break
         if not inner.isalpha():
             raise ValueError('condition')
         section = section[end + 1:]

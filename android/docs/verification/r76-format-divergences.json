@@ -1,0 +1,77 @@
+{
+  "schema": "r76-format-divergences/1",
+  "candidate": "dev.fusion.ooxml.NumberFormatRender",
+  "reference": {
+    "name": "ssf",
+    "version": "0.2.2",
+    "license": "Apache-2.0",
+    "upstream": "https://github.com/SheetJS/ssf",
+    "note": "Independent Python port of SheetJS's number-format engine. Installed from PyPI into an isolated cache; no code is vendored into this repository."
+  },
+  "scope": "Every difference between the candidate and the reference for the 247-observation corpus must be listed here with a reason and a source. An undeclared difference fails the gate; so does an entry that no longer corresponds to an observed difference.",
+  "divergences": [
+    {
+      "id": "literal-around-text-placeholder",
+      "formats": [
+        "\"pre \"@",
+        "@\" post\""
+      ],
+      "reason": "The candidate emits the section literals that surround the @ placeholder, so 1 with \"pre \"@ renders \"pre 1\". The reference drops the literals and returns the bare value text. ECMA-376 Part 1 \u00a718.8.31 defines a format section as literals interleaved with placeholders, which is the rule the candidate follows.",
+      "reference": "ECMA-376 Part 1 \u00a718.8.31 (number format section grammar); Microsoft, \"Review guidelines for customizing a number format\" (the @ text placeholder).",
+      "verified_against_excel": false,
+      "residual_risk": "Excel itself was not available in this environment, so this remains a declared divergence rather than a verified match."
+    },
+    {
+      "id": "midnight-carry-12h",
+      "formats": [
+        "h:mm AM/PM",
+        "A/P"
+      ],
+      "reason": "For a value that rounds to exactly midnight (0.999999 of a day), the candidate reports 12:00 AM and A; the reference reports 12:00 PM and P. Midnight is the start of the AM half of the day, so 12:00 PM is not a representable clock reading for it; the candidate keeps the carried value and the AM indicator.",
+      "reference": "Microsoft, \"Number format codes\": with AM/PM the hour uses the 12-hour clock and A/AM marks midnight to noon.",
+      "verified_against_excel": false,
+      "residual_risk": "No spreadsheet application ran; the argument is from the definition of the 12-hour clock, not from an observed Excel cell."
+    }
+  ],
+  "refused_by_candidate": [
+    {
+      "format": "00:00",
+      "reason": "A colon between digit placeholders is ambiguous (hours:minutes, minutes:seconds or a literal); the candidate refuses instead of guessing."
+    },
+    {
+      "format": "0:00",
+      "reason": "Same ambiguous numeric colon."
+    },
+    {
+      "format": "ss.0000",
+      "reason": "More than three fractional-second digits are outside the supported precision."
+    },
+    {
+      "format": "[hx]:mm",
+      "reason": "Only elapsed [h], [m] and [s] brackets are defined; a mixed token is malformed."
+    },
+    {
+      "format": "yyyy-mm-dd",
+      "value_kind": "serial < 0 or > 2958465",
+      "reason": "Outside the supported 1900 date window."
+    }
+  ],
+  "reference_limitations": [
+    "ssf is a port, not Excel: it is evidence of independent agreement, not of spreadsheet parity.",
+    "Fraction formats (R75) are excluded here: their padding differs between implementations and they are covered by their own exhaustive oracle.",
+    "The reference does not model `*` fill or `_(` width the way Excel measures them; the corpus therefore keeps both to the values where the two agree."
+  ],
+  "superseded": [
+    {
+      "id": "conditions-implemented-in-r77",
+      "formats": [
+        "[>100]General",
+        "[>=1000]#,##0;[<1000]0",
+        "[>100]0.00;-0.00"
+      ],
+      "reason": "R76 refused every bracket condition. R77 implements the documented selection rule (first satisfied condition, else the trailing unconditional section) and its own corpus, verifier and controls live in testing/src/r77sheet and tools/check_r77_sheet_conditions.py. The observations were removed from this corpus so that this file keeps describing exactly one population.",
+      "verified_against_excel": false,
+      "residual_risk": "The condition corpus is specification-derived: ssf does not evaluate bracket conditions, so no independent implementation checks them."
+    }
+  ]
+}
