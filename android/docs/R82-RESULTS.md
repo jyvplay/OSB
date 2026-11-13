@@ -226,6 +226,13 @@ toolchain plus both reader caches were reinstalled from their pinned versions.
 | Full `tools` suite | **1801 tests OK (22 skipped)** |
 | Census | **50/50 = 100.00 %** substantial testable subset, **0/50 = 0.00 %** fully accepted |
 | Source audit | 231 requirements, 36 obligations, all native packages owned |
+- CI on `abb09a1` (run `43371061672`): step 9 *Compile Android and run actual JVM contracts* **success** —
+  the only Gradle/Android execution that has ever compiled the new `:testing:r82WriterAlignContracts` and
+  `:testing:r82SheetAlignContracts` source sets — step 14 *Independent document readers and formula
+  comparison* **success** (this includes the two new checkers and the 26 new controls), step 19 *Run real
+  API34 UI and provider checks* **failure**, step 21 *Require all 37 named Office cases without duplicate or
+  skip* **failure**. The two failures are the same device-only steps that have failed on every round here;
+  they are recorded as observations, not as passes.
 
 **Visual inspection: not performed, and not substituted.** No renderer, no display, no device. The
 repository's only real captures belong to earlier revisions and cannot be regenerated for this commit, so
