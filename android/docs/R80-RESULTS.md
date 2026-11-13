@@ -89,6 +89,7 @@ The strongest attacker writes the XML and the intent table consistently but wron
 - R60 baseline **128 byte-identical**; R62 baseline **128 byte-identical**; R74 writer links 20 checks; R75 media decoded by ImageMagick.
 - R76 formats: 245 rows, 239 replayed, 231 identical, 8 adjudicated. R77 conditions: 60/60 re-derived, 7/7 `ssf`, 4/4 pinned.
 - Full `tools` suite: **1747 tests OK** (22 skipped). Census: **50/50 (100.00 %) substantial testable subset, 0/50 (0.00 %) fully accepted**.
+- CI on `499192f` (run `43358042382`): step 9 *Compile Android and run actual JVM contracts* **success**, step 14 *Independent document readers and formula comparison* **success**, step 19 *Run real API34 UI and provider checks* **failure**, step 21 *Require all 37 named Office cases* **failure** — the two device-only steps, unchanged from every prior round.
 
 ## I. Repairs and regressions vs the previous turn
 
