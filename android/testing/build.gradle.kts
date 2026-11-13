@@ -1624,6 +1624,30 @@ tasks.register<JavaExec>("r77SheetConditionContracts") {
     doFirst { rootProject.file("testing/build/r77conditions/artifacts").mkdirs() }
 }
 
+// R81: Writer table geometry (column widths, fixed layout, repeated header row); python-docx verifies separately.
+val r81Writer by sourceSets.creating
+kotlin.sourceSets.named("r81Writer") { kotlin.srcDir("src/r81writer/kotlin") }
+dependencies { add(r81Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r81WriterTableContracts") {
+    dependsOn(r81Writer.classesTaskName)
+    classpath = r81Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R81WriterTableChecks")
+    args(rootProject.file("testing/build/r81writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r81writer/artifacts").mkdirs() }
+}
+
+// R81: Spreadsheet row heights (ht/customHeight, height-only rows); openpyxl verifies separately.
+val r81Sheet by sourceSets.creating
+kotlin.sourceSets.named("r81Sheet") { kotlin.srcDir("src/r81sheet/kotlin") }
+dependencies { add(r81Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r81SheetRowContracts") {
+    dependsOn(r81Sheet.classesTaskName)
+    classpath = r81Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R81SheetRowChecks")
+    args(rootProject.file("testing/build/r81sheet/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r81sheet/artifacts").mkdirs() }
+}
+
 // R76: Writer section layout (page geometry, headers/footers, PAGE fields); python-docx verifies separately.
 val r76Writer by sourceSets.creating
 kotlin.sourceSets.named("r76Writer") { kotlin.srcDir("src/r76writer/kotlin") }

@@ -75,6 +75,10 @@ object DocxPackage {
     private const val MAX_PAGE_NUMBER_START = 1_000_000
     private const val MAX_LINE_COUNT_BY = 1_000
     private const val MAX_LINE_START = 1_000_000
+    /** Word's ST_TblWidth window is 0..31680 twips; a column below 240 twips is unusable. */
+    private const val MIN_TABLE_COL_TWIPS = 240
+    private const val MAX_TABLE_COL_TWIPS = 31_680
+    private const val MAX_TABLE_TOTAL_TWIPS = 31_680
     private const val DEFAULT_COLUMN_SPACE_TWIPS = 720
     private const val BULLET_NUM_ID = 1
     private const val ORDERED_NUM_ID = 2
@@ -250,13 +254,31 @@ object DocxPackage {
             }
         }
 
-        data class Table(val rows: List<List<String>>) : Block {
+        data class Table(
+            val rows: List<List<String>>,
+            val columnWidthsTwips: List<Int>? = null,
+            val repeatHeaderRow: Boolean = false,
+        ) : Block {
             init {
                 require(rows.isNotEmpty() && rows[0].isNotEmpty()) { "table must be non-empty" }
                 val cols = rows[0].size
                 require(cols <= MAX_TABLE_COLS) { "table columns $cols exceed $MAX_TABLE_COLS" }
                 require(rows.all { it.size == cols }) { "table rows must be rectangular ($cols columns)" }
                 rows.flatten().forEach(::validateXmlChars)
+                columnWidthsTwips?.let { widths ->
+                    require(widths.size == cols) {
+                        "table column widths ${widths.size} do not match $cols columns"
+                    }
+                    widths.forEach { width ->
+                        require(width in MIN_TABLE_COL_TWIPS..MAX_TABLE_COL_TWIPS) {
+                            "table column width $width outside $MIN_TABLE_COL_TWIPS..$MAX_TABLE_COL_TWIPS twips"
+                        }
+                    }
+                    val total = widths.sum()
+                    require(total <= MAX_TABLE_TOTAL_TWIPS) {
+                        "table width $total exceeds $MAX_TABLE_TOTAL_TWIPS twips"
+                    }
+                }
             }
         }
     }
@@ -758,11 +780,18 @@ object DocxPackage {
                     append("</w:r></w:p>")
                 }
                 is Block.Table -> {
-                    append("<w:tbl><w:tblPr/><w:tblGrid>")
-                    repeat(b.rows[0].size) { append("<w:gridCol/>") }
+                    val widths = b.columnWidthsTwips
+                    if (widths == null) {
+                        append("<w:tbl><w:tblPr/><w:tblGrid>")
+                        repeat(b.rows[0].size) { append("<w:gridCol/>") }
+                    } else {
+                        append("<w:tbl><w:tblPr><w:tblW w:w=\"${widths.sum()}\" w:type=\"dxa\"/>")
+                        append("<w:tblLayout w:type=\"fixed\"/></w:tblPr><w:tblGrid>")
+                        for (width in widths) append("<w:gridCol w:w=\"$width\"/>")
+                    }
                     append("</w:tblGrid>")
-                    for (row in b.rows) {
-                        append("<w:tr>")
+                    for ((rowIndex, row) in b.rows.withIndex()) {
+                        append(if (b.repeatHeaderRow && rowIndex == 0) "<w:tr><w:trPr><w:tblHeader/></w:trPr>" else "<w:tr>")
                         for (cell in row) {
                             append("<w:tc><w:p><w:r>")
                             appendTextContent(cell)
@@ -1187,7 +1216,18 @@ object DocxPackage {
         if (rows.isEmpty()) return null
         val width = rows.maxOf { it.size }
         val normalized = rows.map { r -> if (r.size == width) r else r + List(width - r.size) { "" } }
-        return Block.Table(normalized)
+        // Import stays lenient: geometry is captured only when the table is fully specified, and a
+        // foreign table with partial widths imports as an auto-fit table instead of failing.
+        val gridWidths = tblNode.children.firstOrNull { it.name.local == "tblGrid" }
+            ?.children?.filter { it.name.local == "gridCol" }
+            ?.map { wAttr(it, "w")?.toIntOrNull() }
+        val columnWidths = gridWidths
+            ?.takeIf { it.size == width && it.all { cell -> cell != null } }
+            ?.map { it!! }
+        val headerRow = tblNode.children.firstOrNull { it.name.local == "tr" }?.children
+            ?.firstOrNull { it.name.local == "trPr" }?.children
+            ?.any { it.name.local == "tblHeader" } == true
+        return Block.Table(normalized, columnWidths, headerRow)
     }
 
     private fun wAttr(node: BoundedXml.Node, local: String): String? =
