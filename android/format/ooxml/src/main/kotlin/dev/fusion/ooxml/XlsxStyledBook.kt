@@ -42,7 +42,14 @@ object XlsxStyledBook {
         val fillRgb: String? = null,
         val thinBorder: Boolean = false,
         val numberFormat: String? = null,
+        val horizontal: HAlign? = null,
+        val vertical: VAlign? = null,
     ) {
+        /** ECMA-376 `horizontal` tokens this writer emits; other schema tokens are import-only. */
+        enum class HAlign(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right") }
+
+        /** ECMA-376 `vertical` tokens this writer emits. */
+        enum class VAlign(val token: String) { TOP("top"), CENTER("center"), BOTTOM("bottom") }
         init {
             fontRgb?.let { require(HEX6.matches(it)) { "fontRgb must be 6-hex RGB: $it" } }
             fillRgb?.let { require(HEX6.matches(it)) { "fillRgb must be 6-hex RGB: $it" } }
@@ -194,6 +201,19 @@ object XlsxStyledBook {
         }.orEmpty()
 
         return root.firstChild("cellXfs")?.children?.filter { it.localName == "xf" }?.map { xf ->
+            val align = xf.firstChild("alignment")
+            val horizontal = when (align?.attr("horizontal")) {
+                "left", "start" -> CellStyle.HAlign.LEFT
+                "center", "centerContinuous" -> CellStyle.HAlign.CENTER
+                "right", "end" -> CellStyle.HAlign.RIGHT
+                else -> null
+            }
+            val vertical = when (align?.attr("vertical")) {
+                "top" -> CellStyle.VAlign.TOP
+                "center" -> CellStyle.VAlign.CENTER
+                "bottom" -> CellStyle.VAlign.BOTTOM
+                else -> null
+            }
             val fIdx = xf.attr("fontId")?.toIntOrNull() ?: 0
             val flIdx = xf.attr("fillId")?.toIntOrNull() ?: 0
             val bIdx = xf.attr("borderId")?.toIntOrNull() ?: 0
@@ -206,6 +226,8 @@ object XlsxStyledBook {
                 fillRgb = fills.getOrNull(flIdx),
                 thinBorder = borders.getOrNull(bIdx) ?: false,
                 numberFormat = numFmts[nfId],
+                horizontal = horizontal,
+                vertical = vertical,
             )
         }.orEmpty().ifEmpty { listOf(CellStyle()) }
     }
@@ -253,7 +275,14 @@ object XlsxStyledBook {
         private val xfs = mutableListOf(Quad(0, 0, 0, 0))
         private val styleToXf = linkedMapOf(CellStyle() to 0)
 
-        private data class Quad(val numFmtId: Int, val fontId: Int, val fillId: Int, val borderId: Int)
+        private data class Quad(
+            val numFmtId: Int,
+            val fontId: Int,
+            val fillId: Int,
+            val borderId: Int,
+            val horizontal: CellStyle.HAlign? = null,
+            val vertical: CellStyle.VAlign? = null,
+        )
 
         fun intern(style: CellStyle): Int = styleToXf.getOrPut(style) {
             val nfId = if (style.numberFormat == null) 0 else {
@@ -280,7 +309,7 @@ object XlsxStyledBook {
                 borders.add(style.thinBorder)
             }
             val xfIdx = xfs.size
-            xfs.add(Quad(nfId, fontId, fillId, borderId))
+            xfs.add(Quad(nfId, fontId, fillId, borderId, style.horizontal, style.vertical))
             xfIdx
         }
 
@@ -330,7 +359,15 @@ object XlsxStyledBook {
                 if (q.fontId != 0) append(""" applyFont="1"""")
                 if (q.fillId != 0) append(""" applyFill="1"""")
                 if (q.borderId != 0) append(""" applyBorder="1"""")
-                append("/>")
+                if (q.horizontal == null && q.vertical == null) {
+                    append("/>")
+                    continue
+                }
+                append(""" applyAlignment="1">""")
+                append("<alignment")
+                q.horizontal?.let { append(""" horizontal="${it.token}"""") }
+                q.vertical?.let { append(""" vertical="${it.token}"""") }
+                append("/></xf>")
             }
             append("</cellXfs></styleSheet>")
         }.toByteArray(StandardCharsets.UTF_8)

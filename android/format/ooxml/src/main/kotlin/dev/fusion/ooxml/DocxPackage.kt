@@ -211,15 +211,22 @@ object DocxPackage {
         }
     }
 
+    /** Paragraph alignment; `w:jc`'s `both` is Word's name for justified text. */
+    enum class Align(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right"), JUSTIFY("both") }
+
     sealed interface Block {
-        data class Heading(val level: Int, val runs: List<Run>) : Block {
+        data class Heading(
+            val level: Int,
+            val runs: List<Run>,
+            val alignment: Align? = null,
+        ) : Block {
             init {
                 require(level in 1..6) { "heading level $level outside 1..6" }
                 require(runs.isNotEmpty()) { "heading runs must not be empty" }
             }
         }
 
-        data class Paragraph(val runs: List<Run>) : Block
+        data class Paragraph(val runs: List<Run>, val alignment: Align? = null) : Block
 
         data class ListItem(val ordered: Boolean, val level: Int = 0, val runs: List<Run>) : Block {
             init {
@@ -742,12 +749,20 @@ object DocxPackage {
             previousOrdered = ordered
             when (b) {
                 is Block.Heading -> {
-                    append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/></w:pPr>""")
+                    append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/>""")
+                    // w:jc follows both pStyle and numPr in CT_PPr, so appending it here is
+                    // schema-ordered for the two property elements this writer emits.
+                    b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
+                    append("</w:pPr>")
                     appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
                 is Block.Paragraph -> {
-                    append("<w:p>")
+                    if (b.alignment == null) {
+                        append("<w:p>")
+                    } else {
+                        append("""<w:p><w:pPr><w:jc w:val="${b.alignment.token}"/></w:pPr>""")
+                    }
                     appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
@@ -1108,6 +1123,7 @@ object DocxPackage {
         var pStyle: String? = null
         var numId: Int? = null
         var ilvl = 0
+        var alignment: Align? = null
         val runs = ArrayList<Run>()
 
         for (child in pNode.children) {
@@ -1116,6 +1132,13 @@ object DocxPackage {
                     for (pr in child.children) {
                         when (pr.name.local) {
                             "pStyle" -> pStyle = wAttr(pr, "val")
+                            "jc" -> alignment = when (wAttr(pr, "val")) {
+                                "left", "start" -> Align.LEFT
+                                "center" -> Align.CENTER
+                                "right", "end" -> Align.RIGHT
+                                "both", "justify" -> Align.JUSTIFY
+                                else -> null
+                            }
                             "numPr" -> {
                                 for (np in pr.children) {
                                     when (np.name.local) {
@@ -1145,11 +1168,11 @@ object DocxPackage {
         val textOnly = runs.all { it.text.isBlank() }
         return when {
             textOnly && pStyle == null && numId == null && hasPageBreak(pNode) -> Block.PageBreak
-            headingLvl != null && headingLvl in 1..6 -> Block.Heading(headingLvl, runs.ifEmpty { listOf(Run("")) })
+            headingLvl != null && headingLvl in 1..6 -> Block.Heading(headingLvl, runs.ifEmpty { listOf(Run("")) }, alignment)
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
             numId != null && numId != 0 -> Block.ListItem(isOrderedNum(numberingDefs, numId!!, ilvl), ilvl, runs)
-            else -> Block.Paragraph(runs)
+            else -> Block.Paragraph(runs, alignment)
         }
     }
 
