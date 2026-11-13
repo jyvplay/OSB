@@ -51,7 +51,7 @@ def intent_table(path: Path) -> dict[str, dict]:
     table = {}
     for index, line in enumerate(path.read_text(encoding='utf-8').splitlines(), start=1):
         fields = line.split('\t')
-        require(len(fields) == 20, f'intent line {index} has {len(fields)} fields, expected 20')
+        require(len(fields) == 24, f'intent line {index} has {len(fields)} fields, expected 24')
         name = fields[0]
         table[name] = {
             'width': int(fields[1]), 'height': int(fields[2]), 'orientation': fields[3],
@@ -63,6 +63,9 @@ def intent_table(path: Path) -> dict[str, dict]:
             'section_type': fields[15],
             'first_header': fields[16], 'first_footer': fields[17],
             'even_header': fields[18], 'even_footer': fields[19],
+            'line_count_by': int(fields[20]) if fields[20] else None,
+            'line_start': int(fields[21]) if fields[21] else None,
+            'line_restart': fields[22], 'v_align': fields[23],
         }
     require(table, 'intent table is empty')
     return table
@@ -127,10 +130,42 @@ def check_package(path: Path, intent: dict) -> dict:
             require(numbering is not None, f'{path.name}: missing w:pgNumType')
             require(numbering.get(f'{W}start') == str(intent['page_number_start']),
                     f'{path.name}: w:pgNumType/@start {numbering.get(f"{W}start")} != {intent["page_number_start"]}')
+        numbering_lines = sect.find(f'{W}lnNumType')
+        if intent['line_count_by'] is None:
+            if numbering_lines is not None:
+                raise Fail(f'{path.name}: unexpected w:lnNumType (found {numbering_lines.attrib})')
+        else:
+            require(numbering_lines is not None, f'{path.name}: missing w:lnNumType')
+            require(numbering_lines.get(f'{W}countBy') == str(intent['line_count_by']),
+                    f'{path.name}: w:lnNumType/@countBy {numbering_lines.get(f"{W}countBy")} '
+                    f'!= {intent["line_count_by"]}')
+            require(numbering_lines.get(f'{W}start') == str(intent['line_start']),
+                    f'{path.name}: w:lnNumType/@start {numbering_lines.get(f"{W}start")} '
+                    f'!= {intent["line_start"]}')
+            declared_restart = intent['line_restart'] or 'newPage'
+            if declared_restart == 'newPage':
+                require(numbering_lines.get(f'{W}restart') is None,
+                        f'{path.name}: the default restart must be omitted, found '
+                        f'{numbering_lines.get(f"{W}restart")!r}')
+            else:
+                require(numbering_lines.get(f'{W}restart') == declared_restart,
+                        f'{path.name}: w:lnNumType/@restart {numbering_lines.get(f"{W}restart")!r} '
+                        f'!= {declared_restart!r}')
+        v_align = sect.find(f'{W}vAlign')
+        if intent['v_align'] == 'top':
+            if v_align is not None:
+                raise Fail(f'{path.name}: the default vertical alignment must be omitted '
+                           f'(found {v_align.get(f"{W}val")!r})')
+        else:
+            require(v_align is not None, f'{path.name}: missing w:vAlign')
+            require(v_align.get(f'{W}val') == intent['v_align'],
+                    f'{path.name}: w:vAlign/@val {v_align.get(f"{W}val")!r} != {intent["v_align"]!r}')
+
         # Schema order for the children this writer emits (CT_SectPr).
         order = [child.tag for child in sect]
         expected_order = [f'{W}headerReference', f'{W}footerReference', f'{W}type', f'{W}pgSz',
-                          f'{W}pgMar', f'{W}pgNumType', f'{W}cols', f'{W}titlePg']
+                          f'{W}pgMar', f'{W}lnNumType', f'{W}pgNumType', f'{W}cols', f'{W}vAlign',
+                          f'{W}titlePg']
         positions = [expected_order.index(tag) for tag in order if tag in expected_order]
         require(positions == sorted(positions),
                 f'{path.name}: sectPr children out of CT_SectPr order: {[tag.split("}")[-1] for tag in order]}')

@@ -73,6 +73,8 @@ object DocxPackage {
     /** Word defines at most 45 newspaper columns; column spacing is a twip measure. */
     private const val MAX_COLUMNS = 45
     private const val MAX_PAGE_NUMBER_START = 1_000_000
+    private const val MAX_LINE_COUNT_BY = 1_000
+    private const val MAX_LINE_START = 1_000_000
     private const val DEFAULT_COLUMN_SPACE_TWIPS = 720
     private const val BULLET_NUM_ID = 1
     private const val ORDERED_NUM_ID = 2
@@ -355,7 +357,37 @@ object DocxPackage {
          */
         val evenPageHeader: String? = null,
         val evenPageFooter: String? = null,
+        /** `w:lnNumType`: line numbering for this section. Absent means no line numbers. */
+        val lineNumbering: LineNumbering? = null,
+        /** `w:vAlign`: vertical alignment of the text body. Word's default is `top`, so `TOP`
+         *  emits nothing and every earlier layout keeps its bytes. */
+        val verticalAlignment: VerticalAlignment = VerticalAlignment.TOP,
     ) {
+        /** `w:lnNumType` (`w:countBy`, `w:start`, `w:restart`). */
+        data class LineNumbering(
+            val countBy: Int = 1,
+            val start: Int = 1,
+            val restart: Restart = Restart.NEW_PAGE,
+        ) {
+            enum class Restart(val value: String) {
+                NEW_PAGE("newPage"),
+                CONTINUOUS("continuous"),
+                NEW_SECTION("newSection"),
+            }
+
+            init {
+                require(countBy in 1..MAX_LINE_COUNT_BY) { "line countBy $countBy outside 1..$MAX_LINE_COUNT_BY" }
+                require(start in 1..MAX_LINE_START) { "line start $start outside 1..$MAX_LINE_START" }
+            }
+        }
+
+        /** `w:vAlign` values defined by ECMA-376 section 17.6.22. */
+        enum class VerticalAlignment(val value: String) {
+            TOP("top"),
+            CENTER("center"),
+            BOTH("both"),
+            BOTTOM("bottom"),
+        }
         /**
          * `w:type` of the section. `nextPage` is Word's default and is therefore omitted from the
          * XML, so a layout that asks for nothing else keeps emitting the same bytes as before.
@@ -557,6 +589,19 @@ object DocxPackage {
             firstPageFooter = referenceText(block, "w:footerReference", rels, parts, type = "first"),
             evenPageHeader = referenceText(block, "w:headerReference", rels, parts, type = "even"),
             evenPageFooter = referenceText(block, "w:footerReference", rels, parts, type = "even"),
+            lineNumbering = attributesOf(block, "w:lnNumType")?.let { attributes ->
+                Layout.LineNumbering(
+                    countBy = attributes["w:countBy"]?.toIntOrNull() ?: 1,
+                    start = attributes["w:start"]?.toIntOrNull() ?: 1,
+                    restart = Layout.LineNumbering.Restart.entries
+                        .firstOrNull { it.value == (attributes["w:restart"] ?: "newPage") }
+                        ?: throw IllegalArgumentException("unknown line-number restart '${attributes["w:restart"]}'"),
+                )
+            },
+            verticalAlignment = attributesOf(block, "w:vAlign")?.get("w:val")?.let { value ->
+                Layout.VerticalAlignment.entries.firstOrNull { it.value == value }
+                    ?: throw IllegalArgumentException("unknown vertical alignment '$value'")
+            } ?: Layout.VerticalAlignment.TOP,
         )
     }
 
@@ -779,11 +824,22 @@ object DocxPackage {
                 """w:bottom="${page.marginBottomTwips}" w:left="${page.marginLeftTwips}" """ +
                 """w:header="${page.headerTwips}" w:footer="${page.footerTwips}" w:gutter="0"/>""",
         )
+        // CT_SectPr order: lnNumType precedes pgNumType and cols; vAlign follows cols.
+        layout.lineNumbering?.let { numbering ->
+            append("""<w:lnNumType w:countBy="${numbering.countBy}" w:start="${numbering.start}"""")
+            if (numbering.restart != Layout.LineNumbering.Restart.NEW_PAGE) {
+                append(""" w:restart="${numbering.restart.value}"""")
+            }
+            append("/>")
+        }
         if (layout.pageNumberStart != null) {
             append("""<w:pgNumType w:start="${layout.pageNumberStart}"/>""")
         }
         if (layout.columns > 1) {
             append("""<w:cols w:num="${layout.columns}" w:space="${layout.columnSpaceTwips}"/>""")
+        }
+        if (layout.verticalAlignment != Layout.VerticalAlignment.TOP) {
+            append("""<w:vAlign w:val="${layout.verticalAlignment.value}"/>""")
         }
         // `w:titlePg` follows `w:cols` in CT_SectPr and exists only when a first-page part does.
         if (layout.firstPageHeader != null || layout.firstPageFooter != null) append("<w:titlePg/>")

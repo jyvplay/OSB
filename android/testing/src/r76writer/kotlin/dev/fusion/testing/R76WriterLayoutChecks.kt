@@ -185,6 +185,39 @@ object R76WriterLayoutChecks {
             "no settings part without even-page parts"
         }
 
+        // --- line numbering and vertical alignment (no extra parts, no extra relationships) ------
+        val numberedLayout = DocxPackage.Layout(
+            pageSetup = DocxPackage.PageSetup.a4(),
+            header = "Numbered {PAGE}",
+            lineNumbering = DocxPackage.Layout.LineNumbering(
+                countBy = 5,
+                start = 3,
+                restart = DocxPackage.Layout.LineNumbering.Restart.CONTINUOUS,
+            ),
+            verticalAlignment = DocxPackage.Layout.VerticalAlignment.CENTER,
+        )
+        val numberedBytes = write(out, "line-numbers", numberedLayout)
+        check(DocxPackage.readLayout(numberedBytes) == numberedLayout) {
+            "numbered layout round trip: ${DocxPackage.readLayout(numberedBytes)}"
+        }
+        val numberedText = String(numberedBytes)
+        check(numberedText.contains("""<w:lnNumType w:countBy="5" w:start="3" w:restart="continuous"/>""")) {
+            "line numbering is emitted with its restart"
+        }
+        check(numberedText.contains("""<w:vAlign w:val="center"/>""")) { "vertical alignment is emitted" }
+        check(numberedText.indexOf("<w:lnNumType ") > numberedText.indexOf("<w:pgMar ")) { "lnNumType follows pgMar" }
+        check(numberedText.indexOf("<w:vAlign ") > numberedText.indexOf("<w:lnNumType ")) { "vAlign follows lnNumType" }
+        // A layout that asks for neither element must not grow one.
+        check("<w:lnNumType " !in a4Text && "<w:vAlign " !in a4Text) {
+            "a plain A4 footer layout emits no line numbering or vertical alignment"
+        }
+        // Word's default restart is newPage, so it must not be written explicitly.
+        val defaultRestart = DocxPackage.Layout(lineNumbering = DocxPackage.Layout.LineNumbering())
+        val defaultRestartText = String(DocxPackage.write(DocxPackage.Document(blocks = body(), layout = defaultRestart)))
+        check("""<w:lnNumType w:countBy="1" w:start="1"/>""" in defaultRestartText) {
+            "the default restart is omitted"
+        }
+
         // --- validation refusals ---------------------------------------------------------------
         refuses("page width below the minimum") {
             DocxPackage.PageSetup(widthTwips = 1_000)
@@ -218,6 +251,15 @@ object R76WriterLayoutChecks {
         }
         refuses("unknown field token in a first-page footer") {
             DocxPackage.Layout(firstPageFooter = "{DATE}")
+        }
+        refuses("line countBy below one") {
+            DocxPackage.Layout(lineNumbering = DocxPackage.Layout.LineNumbering(countBy = 0))
+        }
+        refuses("line countBy above the bound") {
+            DocxPackage.Layout(lineNumbering = DocxPackage.Layout.LineNumbering(countBy = 1_001))
+        }
+        refuses("line start below one") {
+            DocxPackage.Layout(lineNumbering = DocxPackage.Layout.LineNumbering(start = 0))
         }
         refuses("blank even-page footer") {
             DocxPackage.Layout(evenPageFooter = " ")
@@ -279,6 +321,10 @@ object R76WriterLayoutChecks {
                     layout.firstPageFooter ?: "",
                     layout.evenPageHeader ?: "",
                     layout.evenPageFooter ?: "",
+                    layout.lineNumbering?.countBy?.toString() ?: "",
+                    layout.lineNumbering?.start?.toString() ?: "",
+                    layout.lineNumbering?.restart?.value ?: "",
+                    layout.verticalAlignment.value,
                 ).joinToString("\t"),
             )
         }
@@ -289,6 +335,7 @@ object R76WriterLayoutChecks {
         record("continuous-columns", continuousLayout)
         record("first-page", firstPageLayout)
         record("even-odd", evenOddLayout)
+        record("line-numbers", numberedLayout)
         File(out, "layout.tsv").writeText(rows.joinToString("\n", postfix = "\n"))
 
         println("R76_WRITER_LAYOUT_OK assertions=$assertions documents=${out.listFiles()?.count { it.name.endsWith(".docx") }} artifacts=${out.absolutePath}")

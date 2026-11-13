@@ -46,7 +46,7 @@ class LayoutControlTests(unittest.TestCase):
         self.directory = Path(tempfile.mkdtemp(prefix='r76-layout-'))
         self.addCleanup(shutil.rmtree, self.directory, ignore_errors=True)
         for name in ('a4-footer', 'letter-landscape', 'mixed-layout', 'columns-restart-odd',
-                     'continuous-columns', 'first-page', 'even-odd', 'legacy'):
+                     'continuous-columns', 'first-page', 'even-odd', 'line-numbers', 'legacy'):
             shutil.copy(ARTIFACTS / f'{name}.docx', self.directory / f'{name}.docx')
         shutil.copy(ARTIFACTS / 'layout.tsv', self.directory / 'layout.tsv')
 
@@ -59,7 +59,7 @@ class LayoutControlTests(unittest.TestCase):
         self.assertIn(fragment.lower(), str(caught.exception).lower(), str(caught.exception))
 
     def test_undisturbed_packages_pass(self):
-        self.assertEqual(self.verify()['layout_documents'], 7)
+        self.assertEqual(self.verify()['layout_documents'], 8)
 
     def test_missing_footer_part_is_rejected(self):
         rewrite(REFERENCE, self.directory / 'a4-footer.docx',
@@ -219,6 +219,47 @@ class LayoutControlTests(unittest.TestCase):
             return payload.replace(b'Even page header', b'Even page heading', 1)
         rewrite(ARTIFACTS / 'even-odd.docx', self.directory / 'even-odd.docx', transform)
         self.expect_failure('even_header text')
+
+    def test_line_numbering_removed_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return re.sub(rb'<w:lnNumType[^/]*/>', b'', payload)
+        rewrite(ARTIFACTS / 'line-numbers.docx', self.directory / 'line-numbers.docx', transform)
+        self.expect_failure('missing w:lnnumtype')
+
+    def test_changed_line_count_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'w:countBy="5"', b'w:countBy="4"', 1)
+        rewrite(ARTIFACTS / 'line-numbers.docx', self.directory / 'line-numbers.docx', transform)
+        self.expect_failure('countby')
+
+    def test_explicit_default_restart_is_rejected(self):
+        # The intent declares the default (newPage) while the XML writes it explicitly: Word treats
+        # the attribute as redundant, and a writer that emits it grows every package that uses the
+        # default, so the verifier rejects the explicit form.
+        rows = [line.split('\t') for line in (self.directory / 'layout.tsv').read_text().splitlines()]
+        for row in rows:
+            if row[0] == 'line-numbers':
+                row[22] = 'newPage'
+        write_intent(self.directory, rows)
+
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'w:restart="continuous"', b'w:restart="newPage"', 1)
+        rewrite(ARTIFACTS / 'line-numbers.docx', self.directory / 'line-numbers.docx', transform)
+        self.expect_failure('default restart must be omitted')
+
+    def test_vertical_alignment_removed_is_rejected(self):
+        def transform(name, payload):
+            if name != 'word/document.xml':
+                return payload
+            return payload.replace(b'<w:vAlign w:val="center"/>', b'', 1)
+        rewrite(ARTIFACTS / 'line-numbers.docx', self.directory / 'line-numbers.docx', transform)
+        self.expect_failure('missing w:valign')
 
     def test_declared_footer_without_text_is_rejected(self):
         rows = [line.split('\t') for line in (self.directory / 'layout.tsv').read_text().splitlines()]
