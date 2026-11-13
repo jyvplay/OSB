@@ -223,6 +223,12 @@ uncommitted work to recover, and this document says so instead of inventing a re
 | Full `tools` suite | **1775 tests OK (22 skipped)** |
 | Census | **50/50 = 100.00 %** substantial testable subset, **0/50 = 0.00 %** fully accepted |
 | Source audit | 231 requirements, 36 obligations, all native packages owned |
+- CI on `8a68396` (run `43363690711`): step 9 *Compile Android and run actual JVM contracts* **success**
+  (this is the only Gradle/Android compile that ever ran the new `:testing:r81WriterTableContracts` and
+  `:testing:r81SheetRowContracts` tasks), step 14 *Independent document readers and formula comparison*
+  **success**, step 19 *Run real API34 UI and provider checks* **failure**, step 21 *Require all 37 named
+  Office cases without duplicate or skip* **failure**. The two failures are the same device-only steps that
+  have failed on every round in this environment; they are observations, not passes.
 
 **Downgraded claims, explicitly.** (1) `w:tblHeader` has no independent-reader check — python-docx has no
 API for it, so it is structural only. (2) openpyxl's `customHeight` is derived from `ht`, so the
