@@ -30,6 +30,8 @@ object XlsxStyledBook {
     const val MAX_EXPANDED_BYTES = 32L * 1024 * 1024
     const val MAX_ENTRIES = 2_048
     const val MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+    /** Excel's own row-height ceiling in points; `ht` beyond it is not a legal measure. */
+    const val MAX_ROW_HEIGHT_POINTS = 409.0
     const val REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     const val PKG_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
@@ -40,7 +42,14 @@ object XlsxStyledBook {
         val fillRgb: String? = null,
         val thinBorder: Boolean = false,
         val numberFormat: String? = null,
+        val horizontal: HAlign? = null,
+        val vertical: VAlign? = null,
     ) {
+        /** ECMA-376 `horizontal` tokens this writer emits; other schema tokens are import-only. */
+        enum class HAlign(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right") }
+
+        /** ECMA-376 `vertical` tokens this writer emits. */
+        enum class VAlign(val token: String) { TOP("top"), CENTER("center"), BOTTOM("bottom") }
         init {
             fontRgb?.let { require(HEX6.matches(it)) { "fontRgb must be 6-hex RGB: $it" } }
             fillRgb?.let { require(HEX6.matches(it)) { "fillRgb must be 6-hex RGB: $it" } }
@@ -73,10 +82,17 @@ object XlsxStyledBook {
         val freezeRows: Int = 0,
         val freezeCols: Int = 0,
         val columnWidths: Map<Int, Double> = emptyMap(),
+        val rowHeights: Map<Int, Double> = emptyMap(),
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
             require(freezeRows >= 0 && freezeCols >= 0) { "Negative freeze pane split" }
+            rowHeights.forEach { (row, height) ->
+                require(row in 1..1_048_576) { "Row height index $row outside 1..1048576" }
+                require(height > 0.0 && height <= MAX_ROW_HEIGHT_POINTS) {
+                    "Row height $height outside 0..$MAX_ROW_HEIGHT_POINTS points"
+                }
+            }
         }
     }
 
@@ -185,6 +201,19 @@ object XlsxStyledBook {
         }.orEmpty()
 
         return root.firstChild("cellXfs")?.children?.filter { it.localName == "xf" }?.map { xf ->
+            val align = xf.firstChild("alignment")
+            val horizontal = when (align?.attr("horizontal")) {
+                "left", "start" -> CellStyle.HAlign.LEFT
+                "center", "centerContinuous" -> CellStyle.HAlign.CENTER
+                "right", "end" -> CellStyle.HAlign.RIGHT
+                else -> null
+            }
+            val vertical = when (align?.attr("vertical")) {
+                "top" -> CellStyle.VAlign.TOP
+                "center" -> CellStyle.VAlign.CENTER
+                "bottom" -> CellStyle.VAlign.BOTTOM
+                else -> null
+            }
             val fIdx = xf.attr("fontId")?.toIntOrNull() ?: 0
             val flIdx = xf.attr("fillId")?.toIntOrNull() ?: 0
             val bIdx = xf.attr("borderId")?.toIntOrNull() ?: 0
@@ -197,6 +226,8 @@ object XlsxStyledBook {
                 fillRgb = fills.getOrNull(flIdx),
                 thinBorder = borders.getOrNull(bIdx) ?: false,
                 numberFormat = numFmts[nfId],
+                horizontal = horizontal,
+                vertical = vertical,
             )
         }.orEmpty().ifEmpty { listOf(CellStyle()) }
     }
@@ -212,7 +243,11 @@ object XlsxStyledBook {
             if (min != null && w != null) colWidths[min] = w
         }
         val cells = mutableListOf<StyledCell>()
+        val rowHeights = linkedMapOf<Int, Double>()
         for (row in root.firstChild("sheetData")?.children?.filter { it.localName == "row" }.orEmpty()) {
+            val rowNumber = row.attr("r")?.toIntOrNull()
+            val height = row.attr("ht")?.toDoubleOrNull()
+            if (rowNumber != null && height != null && height > 0.0) rowHeights[rowNumber] = height
             for (c in row.children.filter { it.localName == "c" }) {
                 val ref = c.attr("r") ?: continue
                 val sIdx = c.attr("s")?.toIntOrNull() ?: 0
@@ -229,7 +264,7 @@ object XlsxStyledBook {
                 cells.add(StyledCell(ref, sv, style))
             }
         }
-        return StyledSheet(name, cells, freezeRows, freezeCols, colWidths)
+        return StyledSheet(name, cells, freezeRows, freezeCols, colWidths, rowHeights)
     }
 
     private class StyleRegistry {
@@ -240,7 +275,14 @@ object XlsxStyledBook {
         private val xfs = mutableListOf(Quad(0, 0, 0, 0))
         private val styleToXf = linkedMapOf(CellStyle() to 0)
 
-        private data class Quad(val numFmtId: Int, val fontId: Int, val fillId: Int, val borderId: Int)
+        private data class Quad(
+            val numFmtId: Int,
+            val fontId: Int,
+            val fillId: Int,
+            val borderId: Int,
+            val horizontal: CellStyle.HAlign? = null,
+            val vertical: CellStyle.VAlign? = null,
+        )
 
         fun intern(style: CellStyle): Int = styleToXf.getOrPut(style) {
             val nfId = if (style.numberFormat == null) 0 else {
@@ -267,7 +309,7 @@ object XlsxStyledBook {
                 borders.add(style.thinBorder)
             }
             val xfIdx = xfs.size
-            xfs.add(Quad(nfId, fontId, fillId, borderId))
+            xfs.add(Quad(nfId, fontId, fillId, borderId, style.horizontal, style.vertical))
             xfIdx
         }
 
@@ -317,7 +359,15 @@ object XlsxStyledBook {
                 if (q.fontId != 0) append(""" applyFont="1"""")
                 if (q.fillId != 0) append(""" applyFill="1"""")
                 if (q.borderId != 0) append(""" applyBorder="1"""")
-                append("/>")
+                if (q.horizontal == null && q.vertical == null) {
+                    append("/>")
+                    continue
+                }
+                append(""" applyAlignment="1">""")
+                append("<alignment")
+                q.horizontal?.let { append(""" horizontal="${it.token}"""") }
+                q.vertical?.let { append(""" vertical="${it.token}"""") }
+                append("/></xf>")
             }
             append("</cellXfs></styleSheet>")
         }.toByteArray(StandardCharsets.UTF_8)
@@ -390,8 +440,11 @@ object XlsxStyledBook {
         }
         append("<sheetData>")
         val byRow = sheet.cells.groupBy { parseRef(it.ref).second }.toSortedMap()
-        for ((rowNum, rowCells) in byRow) {
-            append("""<row r="$rowNum">""")
+        for (rowNum in (byRow.keys + sheet.rowHeights.keys).toSortedSet()) {
+            val rowCells = byRow[rowNum].orEmpty()
+            val height = sheet.rowHeights[rowNum]
+            val heightAttr = if (height == null) "" else " ht=\"$height\" customHeight=\"1\""
+            append("""<row r="$rowNum"$heightAttr>""")
             for (cell in rowCells.sortedBy { parseRef(it.ref).first }) {
                 val xfIdx = styles.intern(cell.style)
                 val sAttr = if (xfIdx > 0) """ s="$xfIdx"""" else ""
