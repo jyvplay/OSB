@@ -1672,6 +1672,30 @@ tasks.register<JavaExec>("r83SheetHiddenContracts") {
     doFirst { rootProject.file("testing/build/r83sheet/artifacts").mkdirs() }
 }
 
+// R84: Writer paragraph indentation and keep-with-next/keep-together; python-docx verifies separately.
+val r84Writer by sourceSets.creating
+kotlin.sourceSets.named("r84Writer") { kotlin.srcDir("src/r84writer/kotlin") }
+dependencies { add(r84Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r84WriterIndentContracts") {
+    dependsOn(r84Writer.classesTaskName)
+    classpath = r84Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R84WriterIndentChecks")
+    args(rootProject.file("testing/build/r84writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r84writer/artifacts").mkdirs() }
+}
+
+// R84: Workbook sheet visibility (state="hidden"/"veryHidden" plus bookViews activeTab); openpyxl verifies separately.
+val r84Sheet by sourceSets.creating
+kotlin.sourceSets.named("r84Sheet") { kotlin.srcDir("src/r84sheet/kotlin") }
+dependencies { add(r84Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r84SheetVisibilityContracts") {
+    dependsOn(r84Sheet.classesTaskName)
+    classpath = r84Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R84SheetVisibilityChecks")
+    args(rootProject.file("testing/build/r84sheet/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
+}
+
 // R81: Writer table geometry (column widths, fixed layout, repeated header row); python-docx verifies separately.
 val r81Writer by sourceSets.creating
 kotlin.sourceSets.named("r81Writer") { kotlin.srcDir("src/r81writer/kotlin") }

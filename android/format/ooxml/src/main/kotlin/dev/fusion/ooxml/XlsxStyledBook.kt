@@ -76,6 +76,12 @@ object XlsxStyledBook {
         }
     }
 
+    /**
+     * CT_SheetState. `visible` is the schema default and is therefore never written, which keeps every
+     * workbook that does not hide a sheet byte-identical to the pre-R84 output.
+     */
+    enum class Visibility(val token: String) { VISIBLE("visible"), HIDDEN("hidden"), VERY_HIDDEN("veryHidden") }
+
     data class StyledSheet(
         val name: String,
         val cells: List<StyledCell>,
@@ -85,6 +91,7 @@ object XlsxStyledBook {
         val rowHeights: Map<Int, Double> = emptyMap(),
         val hiddenRows: Set<Int> = emptySet(),
         val hiddenColumns: Set<Int> = emptySet(),
+        val visibility: Visibility = Visibility.VISIBLE,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -110,6 +117,11 @@ object XlsxStyledBook {
     ) {
         init {
             require(sheets.isNotEmpty()) { "Workbook requires at least one sheet" }
+            // Excel (and openpyxl's own writer) refuses a workbook with no visible sheet: the tab strip
+            // would be empty and the file could not be reopened into a usable state.
+            require(sheets.any { it.visibility == Visibility.VISIBLE }) {
+                "A workbook must keep at least one visible sheet"
+            }
         }
     }
 
@@ -179,7 +191,13 @@ object XlsxStyledBook {
             val name = sEl.attr("name") ?: "Sheet${idx + 1}"
             val shBytes = entries["xl/worksheets/sheet${idx + 1}.xml"]
                 ?: error("Missing xl/worksheets/sheet${idx + 1}.xml")
-            parseSheet(name, BoundedXml.parse(shBytes), styles)
+            val visibility = when (sEl.attr("state")) {
+                null, "visible" -> Visibility.VISIBLE
+                "hidden" -> Visibility.HIDDEN
+                "veryHidden" -> Visibility.VERY_HIDDEN
+                else -> Visibility.VISIBLE
+            }
+            parseSheet(name, BoundedXml.parse(shBytes), styles, visibility)
         }
         return WorkbookSpec(sheets = sheets, definedNames = defined)
     }
@@ -240,7 +258,12 @@ object XlsxStyledBook {
         }.orEmpty().ifEmpty { listOf(CellStyle()) }
     }
 
-    private fun parseSheet(name: String, root: BoundedXml.Node, styles: List<CellStyle>): StyledSheet {
+    private fun parseSheet(
+        name: String,
+        root: BoundedXml.Node,
+        styles: List<CellStyle>,
+        visibility: Visibility = Visibility.VISIBLE,
+    ): StyledSheet {
         val pane = root.firstChild("sheetViews")?.firstChild("sheetView")?.firstChild("pane")
         val freezeRows = pane?.attr("ySplit")?.toIntOrNull() ?: 0
         val freezeCols = pane?.attr("xSplit")?.toIntOrNull() ?: 0
@@ -278,6 +301,7 @@ object XlsxStyledBook {
         }
         return StyledSheet(
             name, cells, freezeRows, freezeCols, colWidths, rowHeights, hiddenRows, hiddenColumns,
+            visibility,
         )
     }
 
@@ -414,9 +438,19 @@ object XlsxStyledBook {
 
     private fun buildWorkbookXml(spec: WorkbookSpec): ByteArray = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
-        append("""<workbook xmlns="$MAIN_NS" xmlns:r="$REL_NS"><sheets>""")
+        append("""<workbook xmlns="$MAIN_NS" xmlns:r="$REL_NS">""")
+        if (spec.sheets.any { it.visibility != Visibility.VISIBLE }) {
+            // A workbook whose active tab is hidden is repaired on open, and the default active tab is the
+            // first sheet. Naming the first visible sheet keeps the file well formed; a workbook that
+            // hides nothing writes no bookViews at all, so its bytes stay identical to the pre-R84 output.
+            val activeTab = spec.sheets.indexOfFirst { it.visibility == Visibility.VISIBLE }
+            append("""<bookViews><workbookView activeTab="$activeTab"/></bookViews>""")
+        }
+        append("<sheets>")
         spec.sheets.forEachIndexed { idx, s ->
-            append("""<sheet name="${esc(s.name)}" sheetId="${idx + 1}" r:id="rSheet${idx + 1}"/>""")
+            val state = if (s.visibility == Visibility.VISIBLE) "" else
+                """ state="${s.visibility.token}""""
+            append("""<sheet name="${esc(s.name)}" sheetId="${idx + 1}"$state r:id="rSheet${idx + 1}"/>""")
         }
         append("</sheets>")
         if (spec.definedNames.isNotEmpty()) {
