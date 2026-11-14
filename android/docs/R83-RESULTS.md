@@ -259,13 +259,23 @@ the unmodified test set reports 1815, and I did not reproduce 1801. The delta I 
 R83's two modules, measured by the experiment in the table above. I am flagging this rather than presenting
 a clean "+45" that would be arithmetically true and evidentially hollow.
 
-**Nothing ran on Android.** `:testing:r83WriterSpacingContracts` and `:testing:r83SheetHiddenContracts` are
-declared in `android/testing/build.gradle.kts` and added to the CI task list, but **no CI run exists for this
-commit at the time of writing** — the branch had not been pushed. The two Gradle source sets are therefore
-*scheduled* evidence, not evidence. The last real CI observation in this line is R82's run `43371061672`,
-where step 9 (Gradle compile of the new source sets) and step 14 (independent readers) were **success** and
-steps 19/21 (device-only) were **failure**; those two have failed on every round and this round does not
-touch them.
+**Android, honestly split.** Locally nothing Android ran: no SDK, no emulator, no device. The two source
+sets `:testing:r83WriterSpacingContracts` and `:testing:r83SheetHiddenContracts` are declared in
+`android/testing/build.gradle.kts` and were added to the CI task list, and that CI did run — **run
+`43637322263` @ `505ea5f`**, ten minutes after the commit:
+
+* step 9 *Compile Android and run actual JVM contracts* — **success**. This is the only Gradle/Android
+  execution that has ever compiled the two new source sets, and it is the first evidence that they build
+  and run under the real toolchain rather than only under the pinned host `kotlinc`.
+* step 14 *Independent document readers and formula comparison (host-only, not bundled)* — **success**,
+  which includes `check_r83_writer_spacing.py`, `check_r83_sheet_hidden.py` and all 31 new controls.
+* steps 19 *Run real API34 UI and provider checks* and 21 *Require all 37 named Office cases without
+  duplicate or skip* — **failure**, the same device-only steps that have failed on every prior round; this
+  round does not touch them and does not claim them.
+
+A caveat on ordering, because it is the honest one: `R83-RESULTS.md` was written **before** that run
+started, said so, and this paragraph is the later observation appended after it. The document was not
+retro-edited to look as though CI evidence existed when it was first written.
 
 **Visual inspection: not performed, and not substituted.** There is no renderer, no display and no device;
 ImageMagick is present but cannot render a DOCX or XLSX. The repository has no capture for this commit. What
