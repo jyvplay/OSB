@@ -75,6 +75,8 @@ object DocxPackage {
     private const val MAX_PAGE_NUMBER_START = 1_000_000
     private const val MAX_LINE_COUNT_BY = 1_000
     private const val MAX_LINE_START = 1_000_000
+    /** Word's ST_TwipsMeasure window this writer accepts for paragraph spacing. */
+    private const val MAX_PARAGRAPH_SPACING_TWIPS = 31_680
     /** Word's ST_TblWidth window is 0..31680 twips; a column below 240 twips is unusable. */
     private const val MIN_TABLE_COL_TWIPS = 240
     private const val MAX_TABLE_COL_TWIPS = 31_680
@@ -214,19 +216,39 @@ object DocxPackage {
     /** Paragraph alignment; `w:jc`'s `both` is Word's name for justified text. */
     enum class Align(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right"), JUSTIFY("both") }
 
+    private fun validateSpacing(before: Int?, after: Int?) {
+        for (value in listOfNotNull(before, after)) {
+            require(value in 0..MAX_PARAGRAPH_SPACING_TWIPS) {
+                "paragraph spacing $value outside 0..$MAX_PARAGRAPH_SPACING_TWIPS twips"
+            }
+        }
+    }
+
     sealed interface Block {
         data class Heading(
             val level: Int,
             val runs: List<Run>,
             val alignment: Align? = null,
+            val spaceBeforeTwips: Int? = null,
+            val spaceAfterTwips: Int? = null,
         ) : Block {
             init {
                 require(level in 1..6) { "heading level $level outside 1..6" }
                 require(runs.isNotEmpty()) { "heading runs must not be empty" }
+                validateSpacing(spaceBeforeTwips, spaceAfterTwips)
             }
         }
 
-        data class Paragraph(val runs: List<Run>, val alignment: Align? = null) : Block
+        data class Paragraph(
+            val runs: List<Run>,
+            val alignment: Align? = null,
+            val spaceBeforeTwips: Int? = null,
+            val spaceAfterTwips: Int? = null,
+        ) : Block {
+            init {
+                validateSpacing(spaceBeforeTwips, spaceAfterTwips)
+            }
+        }
 
         data class ListItem(val ordered: Boolean, val level: Int = 0, val runs: List<Run>) : Block {
             init {
@@ -750,18 +772,21 @@ object DocxPackage {
             when (b) {
                 is Block.Heading -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/>""")
-                    // w:jc follows both pStyle and numPr in CT_PPr, so appending it here is
-                    // schema-ordered for the two property elements this writer emits.
+                    // CT_PPr sequence order: pStyle, numPr, spacing, jc.
+                    appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
                     b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
                     append("</w:pPr>")
                     appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
                 is Block.Paragraph -> {
-                    if (b.alignment == null) {
+                    if (b.alignment == null && b.spaceBeforeTwips == null && b.spaceAfterTwips == null) {
                         append("<w:p>")
                     } else {
-                        append("""<w:p><w:pPr><w:jc w:val="${b.alignment.token}"/></w:pPr>""")
+                        append("<w:p><w:pPr>")
+                        appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
+                        b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
+                        append("</w:pPr>")
                     }
                     appendRuns(b.runs, hrefIds)
                     append("</w:p>")
@@ -966,6 +991,18 @@ object DocxPackage {
         }
     }
 
+    /**
+     * `w:spacing` is a CT_PPrBase child that follows `w:numPr` and precedes `w:jc`, so it is written
+     * before any alignment the caller declares.
+     */
+    private fun StringBuilder.appendSpacing(before: Int?, after: Int?) {
+        if (before == null && after == null) return
+        append("<w:spacing")
+        if (before != null) append(""" w:before="$before"""")
+        if (after != null) append(""" w:after="$after"""")
+        append("/>")
+    }
+
     private fun StringBuilder.appendPlainRuns(runs: List<Run>) {
         for (r in runs) {
             if (r.text.isEmpty()) continue
@@ -1124,6 +1161,8 @@ object DocxPackage {
         var numId: Int? = null
         var ilvl = 0
         var alignment: Align? = null
+        var spaceBefore: Int? = null
+        var spaceAfter: Int? = null
         val runs = ArrayList<Run>()
 
         for (child in pNode.children) {
@@ -1132,6 +1171,10 @@ object DocxPackage {
                     for (pr in child.children) {
                         when (pr.name.local) {
                             "pStyle" -> pStyle = wAttr(pr, "val")
+                            "spacing" -> {
+                                spaceBefore = wAttr(pr, "before")?.toIntOrNull()
+                                spaceAfter = wAttr(pr, "after")?.toIntOrNull()
+                            }
                             "jc" -> alignment = when (wAttr(pr, "val")) {
                                 "left", "start" -> Align.LEFT
                                 "center" -> Align.CENTER
@@ -1168,11 +1211,12 @@ object DocxPackage {
         val textOnly = runs.all { it.text.isBlank() }
         return when {
             textOnly && pStyle == null && numId == null && hasPageBreak(pNode) -> Block.PageBreak
-            headingLvl != null && headingLvl in 1..6 -> Block.Heading(headingLvl, runs.ifEmpty { listOf(Run("")) }, alignment)
+            headingLvl != null && headingLvl in 1..6 ->
+                Block.Heading(headingLvl, runs.ifEmpty { listOf(Run("")) }, alignment, spaceBefore, spaceAfter)
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
             numId != null && numId != 0 -> Block.ListItem(isOrderedNum(numberingDefs, numId!!, ilvl), ilvl, runs)
-            else -> Block.Paragraph(runs, alignment)
+            else -> Block.Paragraph(runs, alignment, spaceBefore, spaceAfter)
         }
     }
 
