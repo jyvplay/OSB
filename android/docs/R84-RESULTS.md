@@ -273,6 +273,24 @@ Restore first, reported as it was: `git status --porcelain` on this branch print
 task list; CI is the only Android executor here, it runs only after a push, and its result is therefore a
 separate observation appended below rather than a local claim.
 
+### CI observation (appended after the push; this is the observation, not a local claim)
+
+PR #19, head `16ed908`, workflows `R54 office authoring` (runs `43647795187` push, `43647779593` PR) and
+`Android native` (`43647795195`). **Android native: `success`** — traceability, both flavor assemblies and the
+JVM tests, which include the two new contract source sets. **Office: `failure`**, with this step breakdown in
+the `office` job: steps 1–18 `success` (step 9 is *Compile Android and run actual JVM contracts*, steps 10–17
+are the pre-existing ZIP/reader/import-budget lanes), step 19 *Run real API34 UI and provider checks*
+`failure`, step 21 *Require all 37 named Office cases without duplicate or skip* `failure`; all **17** per-frame
+`Actual frame …` capture jobs `success`.
+
+That failure predates this round and is not attributable to it: run `43638894847` on **`main` at `ffcd4de`**
+and run `43638888176` on the R83 branch fail on **exactly the same two steps** (19 and 21). Nothing in R84
+touches Android UI, providers or the emulator harness — the diff is one OOXML writer pair plus JVM-only test
+source sets. The failure text could not be retrieved from this sandbox: `gh run view --log` returned
+`EOF` from `results-receiver.actions.githubusercontent.com` (outside the permitted egress) and artifact
+downloads are on the same host, so this section reports the step-level outcome and the pre-existing
+signature, and **does not quote an error message it never saw**.
+
 **Visual inspection: not performed, and not substituted.** There is no renderer, no display and no device in
 this environment; ImageMagick cannot render DOCX or XLSX, and this repository's desktop page is a static
 landing page, not an Office viewer, so building a viewer here would be a different component (and out of
@@ -318,13 +336,15 @@ specification. Both unchanged, and that is the correct outcome: R84 added two mo
 behaviours, not an acceptance. Feature-level testable state grew by two lanes (12 packages, 6 workbooks, 82
 assertions, 40 controls), six Python tools and two Gradle source sets.
 
-**Merge.** This turn's work is committed on `arena/4638a58d-osb` and merged as a new pull request at the end
-of the turn, as instructed. The merge is a repository operation, not verification.
+**Merge.** This turn's work is committed on `arena/4638a58d-osb` as **PR #19** and squash-merged at the end of
+the turn, as instructed. The merge is a repository operation, not verification; in particular it does not
+turn the office workflow's pre-existing step-19/21 failure (§H) into a pass, and it does not make anything
+here Class A.
 
 **Stopping rule reached honestly.** Two production features, two probes, six tools, 40 controls, two Gradle
-source sets, a regression sweep of fifteen prior lanes, three rewritten reports and nine adversarial passes
-is one round's budget. Further host-side XML work would lower the marginal information: the remaining risks
-are pagination, style inheritance and tab-strip behaviour, none of which any reader available here can touch.
+source sets, a regression sweep of 18 re-run lanes (four of them byte/case baselines) plus three reference
+oracles, the census/audit refresh, and nine adversarial passes is one round's budget. Further host-side XML
+work would lower the marginal information: the remaining risks are pagination, style inheritance and tab-strip behaviour, none of which any reader available here can touch.
 
 **Next highest-information test** (outside this sandbox): open
 `testing/build/r84writer/artifacts/hanging.docx` in Word — is the first line outdented by 12 pt with the body
