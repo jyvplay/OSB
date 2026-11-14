@@ -77,6 +77,8 @@ object DocxPackage {
     private const val MAX_LINE_START = 1_000_000
     /** Word's ST_TwipsMeasure window this writer accepts for paragraph spacing. */
     private const val MAX_PARAGRAPH_SPACING_TWIPS = 31_680
+    /** Word's ST_SignedTwipsMeasure window this writer accepts for paragraph indents. */
+    private const val MAX_INDENT_TWIPS = 31_680
     /** Word's ST_TblWidth window is 0..31680 twips; a column below 240 twips is unusable. */
     private const val MIN_TABLE_COL_TWIPS = 240
     private const val MAX_TABLE_COL_TWIPS = 31_680
@@ -224,6 +226,14 @@ object DocxPackage {
         }
     }
 
+    private fun validateIndent(left: Int?, right: Int?, firstLine: Int?) {
+        for (value in listOfNotNull(left, right, firstLine)) {
+            require(value in -MAX_INDENT_TWIPS..MAX_INDENT_TWIPS) {
+                "paragraph indent $value outside -$MAX_INDENT_TWIPS..$MAX_INDENT_TWIPS twips"
+            }
+        }
+    }
+
     sealed interface Block {
         data class Heading(
             val level: Int,
@@ -231,11 +241,17 @@ object DocxPackage {
             val alignment: Align? = null,
             val spaceBeforeTwips: Int? = null,
             val spaceAfterTwips: Int? = null,
+            val indentLeftTwips: Int? = null,
+            val indentRightTwips: Int? = null,
+            val firstLineTwips: Int? = null,
+            val keepWithNext: Boolean? = null,
+            val keepTogether: Boolean? = null,
         ) : Block {
             init {
                 require(level in 1..6) { "heading level $level outside 1..6" }
                 require(runs.isNotEmpty()) { "heading runs must not be empty" }
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
+                validateIndent(indentLeftTwips, indentRightTwips, firstLineTwips)
             }
         }
 
@@ -244,9 +260,15 @@ object DocxPackage {
             val alignment: Align? = null,
             val spaceBeforeTwips: Int? = null,
             val spaceAfterTwips: Int? = null,
+            val indentLeftTwips: Int? = null,
+            val indentRightTwips: Int? = null,
+            val firstLineTwips: Int? = null,
+            val keepWithNext: Boolean? = null,
+            val keepTogether: Boolean? = null,
         ) : Block {
             init {
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
+                validateIndent(indentLeftTwips, indentRightTwips, firstLineTwips)
             }
         }
 
@@ -772,19 +794,27 @@ object DocxPackage {
             when (b) {
                 is Block.Heading -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/>""")
-                    // CT_PPr sequence order: pStyle, numPr, spacing, jc.
+                    // CT_PPr sequence order: pStyle, keepNext, keepLines, numPr, spacing, ind, jc.
+                    appendKeepFlags(b.keepWithNext, b.keepTogether)
                     appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
+                    appendIndent(b.indentLeftTwips, b.indentRightTwips, b.firstLineTwips)
                     b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
                     append("</w:pPr>")
                     appendRuns(b.runs, hrefIds)
                     append("</w:p>")
                 }
                 is Block.Paragraph -> {
-                    if (b.alignment == null && b.spaceBeforeTwips == null && b.spaceAfterTwips == null) {
+                    val properties = b.keepWithNext != null || b.keepTogether != null ||
+                        b.spaceBeforeTwips != null ||
+                        b.spaceAfterTwips != null || b.indentLeftTwips != null ||
+                        b.indentRightTwips != null || b.firstLineTwips != null || b.alignment != null
+                    if (!properties) {
                         append("<w:p>")
                     } else {
                         append("<w:p><w:pPr>")
+                        appendKeepFlags(b.keepWithNext, b.keepTogether)
                         appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
+                        appendIndent(b.indentLeftTwips, b.indentRightTwips, b.firstLineTwips)
                         b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
                         append("</w:pPr>")
                     }
@@ -992,6 +1022,41 @@ object DocxPackage {
     }
 
     /**
+     * `w:keepNext` and `w:keepLines` are CT_PPrBase children that precede `w:numPr`, so they are written
+     * directly after `w:pStyle`. Both are CT_OnOff elements: omission inherits the value from the style
+     * hierarchy (ISO/IEC 29500-1 §17.3.1.26), so `null` writes nothing, `true` writes the bare element and
+     * `false` writes `w:val="0"` to override an inherited `true`.
+     */
+    private fun StringBuilder.appendKeepFlags(keepNext: Boolean?, keepLines: Boolean?) {
+        appendOnOff("keepNext", keepNext)
+        appendOnOff("keepLines", keepLines)
+    }
+
+    private fun StringBuilder.appendOnOff(name: String, value: Boolean?) {
+        when (value) {
+            null -> Unit
+            true -> append("<w:$name/>")
+            false -> append("""<w:$name w:val="0"/>""")
+        }
+    }
+
+    /**
+     * `w:ind` is a CT_PPrBase child that follows `w:spacing` and precedes `w:jc`. `w:firstLine` and
+     * `w:hanging` are mutually exclusive schema choices for one measurement, so a single signed value is
+     * emitted as exactly one of them: non-negative as `w:firstLine`, negative as `w:hanging`.
+     */
+    private fun StringBuilder.appendIndent(left: Int?, right: Int?, firstLine: Int?) {
+        if (left == null && right == null && firstLine == null) return
+        append("<w:ind")
+        if (left != null) append(""" w:left="$left"""")
+        if (right != null) append(""" w:right="$right"""")
+        if (firstLine != null) {
+            if (firstLine >= 0) append(""" w:firstLine="$firstLine"""") else append(""" w:hanging="${-firstLine}"""")
+        }
+        append("/>")
+    }
+
+    /**
      * `w:spacing` is a CT_PPrBase child that follows `w:numPr` and precedes `w:jc`, so it is written
      * before any alignment the caller declares.
      */
@@ -1149,6 +1214,13 @@ object DocxPackage {
         return targets
     }
 
+    /** ST_OnOff: an absent `w:val` means on; `0`, `false` and `off` mean off, any other token on. */
+    private fun onOff(node: BoundedXml.Node): Boolean {
+        val value = wAttr(node, "val") ?: return true
+        return value != "0" && !value.equals("false", ignoreCase = true) &&
+            !value.equals("off", ignoreCase = true)
+    }
+
     private fun hasPageBreak(pNode: BoundedXml.Node): Boolean =
         pNode.children.any { child ->
             child.name.local == "r" && child.children.any { runChild ->
@@ -1163,6 +1235,11 @@ object DocxPackage {
         var alignment: Align? = null
         var spaceBefore: Int? = null
         var spaceAfter: Int? = null
+        var indentLeft: Int? = null
+        var indentRight: Int? = null
+        var firstLine: Int? = null
+        var keepNext: Boolean? = null
+        var keepLines: Boolean? = null
         val runs = ArrayList<Run>()
 
         for (child in pNode.children) {
@@ -1175,6 +1252,20 @@ object DocxPackage {
                                 spaceBefore = wAttr(pr, "before")?.toIntOrNull()
                                 spaceAfter = wAttr(pr, "after")?.toIntOrNull()
                             }
+                            // `start`/`end` are the ISO-strict names for `left`/`right`; a foreign file is
+                            // read with either spelling rather than losing the indent.
+                            "ind" -> {
+                                indentLeft = (wAttr(pr, "left") ?: wAttr(pr, "start"))?.toIntOrNull()
+                                indentRight = (wAttr(pr, "right") ?: wAttr(pr, "end"))?.toIntOrNull()
+                                // `w:hanging` and `w:firstLine` are mutually exclusive in CT_Ind. A file
+                                // that carries both is out of schema, and ECMA-376 makes `w:firstLine` the
+                                // winner, so it is read first; a hanging indent is reported as the negative
+                                // first-line indent Word means.
+                                firstLine = wAttr(pr, "firstLine")?.toIntOrNull()
+                                    ?: wAttr(pr, "hanging")?.toIntOrNull()?.let { -it }
+                            }
+                            "keepNext" -> keepNext = onOff(pr)
+                            "keepLines" -> keepLines = onOff(pr)
                             "jc" -> alignment = when (wAttr(pr, "val")) {
                                 "left", "start" -> Align.LEFT
                                 "center" -> Align.CENTER
@@ -1211,12 +1302,17 @@ object DocxPackage {
         val textOnly = runs.all { it.text.isBlank() }
         return when {
             textOnly && pStyle == null && numId == null && hasPageBreak(pNode) -> Block.PageBreak
-            headingLvl != null && headingLvl in 1..6 ->
-                Block.Heading(headingLvl, runs.ifEmpty { listOf(Run("")) }, alignment, spaceBefore, spaceAfter)
+            headingLvl != null && headingLvl in 1..6 -> Block.Heading(
+                headingLvl, runs.ifEmpty { listOf(Run("")) }, alignment, spaceBefore, spaceAfter,
+                indentLeft, indentRight, firstLine, keepNext, keepLines,
+            )
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
             numId != null && numId != 0 -> Block.ListItem(isOrderedNum(numberingDefs, numId!!, ilvl), ilvl, runs)
-            else -> Block.Paragraph(runs, alignment, spaceBefore, spaceAfter)
+            else -> Block.Paragraph(
+                runs, alignment, spaceBefore, spaceAfter,
+                indentLeft, indentRight, firstLine, keepNext, keepLines,
+            )
         }
     }
 
