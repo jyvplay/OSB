@@ -83,10 +83,18 @@ object XlsxStyledBook {
         val freezeCols: Int = 0,
         val columnWidths: Map<Int, Double> = emptyMap(),
         val rowHeights: Map<Int, Double> = emptyMap(),
+        val hiddenRows: Set<Int> = emptySet(),
+        val hiddenColumns: Set<Int> = emptySet(),
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
             require(freezeRows >= 0 && freezeCols >= 0) { "Negative freeze pane split" }
+            hiddenRows.forEach { row ->
+                require(row in 1..1_048_576) { "Hidden row index $row outside 1..1048576" }
+            }
+            hiddenColumns.forEach { column ->
+                require(column in 1..16_384) { "Hidden column index $column outside 1..16384" }
+            }
             rowHeights.forEach { (row, height) ->
                 require(row in 1..1_048_576) { "Row height index $row outside 1..1048576" }
                 require(height > 0.0 && height <= MAX_ROW_HEIGHT_POINTS) {
@@ -237,17 +245,21 @@ object XlsxStyledBook {
         val freezeRows = pane?.attr("ySplit")?.toIntOrNull() ?: 0
         val freezeCols = pane?.attr("xSplit")?.toIntOrNull() ?: 0
         val colWidths = linkedMapOf<Int, Double>()
+        val hiddenColumns = linkedSetOf<Int>()
         root.firstChild("cols")?.children?.filter { it.localName == "col" }?.forEach { col ->
             val min = col.attr("min")?.toIntOrNull()
             val w = col.attr("width")?.toDoubleOrNull()
             if (min != null && w != null) colWidths[min] = w
+            if (min != null && isOn(col.attr("hidden"))) hiddenColumns.add(min)
         }
         val cells = mutableListOf<StyledCell>()
         val rowHeights = linkedMapOf<Int, Double>()
+        val hiddenRows = linkedSetOf<Int>()
         for (row in root.firstChild("sheetData")?.children?.filter { it.localName == "row" }.orEmpty()) {
             val rowNumber = row.attr("r")?.toIntOrNull()
             val height = row.attr("ht")?.toDoubleOrNull()
             if (rowNumber != null && height != null && height > 0.0) rowHeights[rowNumber] = height
+            if (rowNumber != null && isOn(row.attr("hidden"))) hiddenRows.add(rowNumber)
             for (c in row.children.filter { it.localName == "c" }) {
                 val ref = c.attr("r") ?: continue
                 val sIdx = c.attr("s")?.toIntOrNull() ?: 0
@@ -264,8 +276,16 @@ object XlsxStyledBook {
                 cells.add(StyledCell(ref, sv, style))
             }
         }
-        return StyledSheet(name, cells, freezeRows, freezeCols, colWidths, rowHeights)
+        return StyledSheet(
+            name, cells, freezeRows, freezeCols, colWidths, rowHeights, hiddenRows, hiddenColumns,
+        )
     }
+
+    /**
+     * ST_OnOff admits `1`/`true` (and `0`/`false`); this writer emits `1` only, but a foreign package may
+     * say `true`, and reading that as visible would silently unhide a row or column on import.
+     */
+    private fun isOn(value: String?): Boolean = value == "1" || value.equals("true", ignoreCase = true)
 
     private class StyleRegistry {
         private val numFmtIds = linkedMapOf<String, Int>()
@@ -431,20 +451,26 @@ object XlsxStyledBook {
             append(""" topLeftCell="$topLeftCol$topLeftRow" activePane="bottomLeft" state="frozen"/>""")
             append("</sheetView></sheetViews>")
         }
-        if (sheet.columnWidths.isNotEmpty()) {
+        if (sheet.columnWidths.isNotEmpty() || sheet.hiddenColumns.isNotEmpty()) {
             append("<cols>")
-            for ((colIdx, width) in sheet.columnWidths.toSortedMap()) {
-                append("""<col min="$colIdx" max="$colIdx" width="$width" customWidth="1"/>""")
+            // One <col> per declared column, ordered by index; a column may be wide, hidden, or both.
+            for (colIdx in (sheet.columnWidths.keys + sheet.hiddenColumns).toSortedSet()) {
+                append("""<col min="$colIdx" max="$colIdx"""")
+                sheet.columnWidths[colIdx]?.let { append(""" width="$it" customWidth="1"""") }
+                if (colIdx in sheet.hiddenColumns) append(""" hidden="1"""")
+                append("/>")
             }
             append("</cols>")
         }
         append("<sheetData>")
         val byRow = sheet.cells.groupBy { parseRef(it.ref).second }.toSortedMap()
-        for (rowNum in (byRow.keys + sheet.rowHeights.keys).toSortedSet()) {
+        val hiddenRows = sheet.hiddenRows
+        for (rowNum in (byRow.keys + sheet.rowHeights.keys + hiddenRows).toSortedSet()) {
             val rowCells = byRow[rowNum].orEmpty()
             val height = sheet.rowHeights[rowNum]
             val heightAttr = if (height == null) "" else " ht=\"$height\" customHeight=\"1\""
-            append("""<row r="$rowNum"$heightAttr>""")
+            val hiddenAttr = if (rowNum in hiddenRows) " hidden=\"1\"" else ""
+            append("""<row r="$rowNum"$heightAttr$hiddenAttr>""")
             for (cell in rowCells.sortedBy { parseRef(it.ref).first }) {
                 val xfIdx = styles.intern(cell.style)
                 val sAttr = if (xfIdx > 0) """ s="$xfIdx"""" else ""

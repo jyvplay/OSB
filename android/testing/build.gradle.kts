@@ -1648,6 +1648,30 @@ tasks.register<JavaExec>("r82SheetAlignContracts") {
     doFirst { rootProject.file("testing/build/r82sheet/artifacts").mkdirs() }
 }
 
+// R83: Writer paragraph spacing (w:spacing before/after on headings and paragraphs); python-docx verifies separately.
+val r83Writer by sourceSets.creating
+kotlin.sourceSets.named("r83Writer") { kotlin.srcDir("src/r83writer/kotlin") }
+dependencies { add(r83Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r83WriterSpacingContracts") {
+    dependsOn(r83Writer.classesTaskName)
+    classpath = r83Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R83WriterSpacingChecks")
+    args(rootProject.file("testing/build/r83writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r83writer/artifacts").mkdirs() }
+}
+
+// R83: Spreadsheet hidden rows and columns; openpyxl verifies separately.
+val r83Sheet by sourceSets.creating
+kotlin.sourceSets.named("r83Sheet") { kotlin.srcDir("src/r83sheet/kotlin") }
+dependencies { add(r83Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r83SheetHiddenContracts") {
+    dependsOn(r83Sheet.classesTaskName)
+    classpath = r83Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R83SheetHiddenChecks")
+    args(rootProject.file("testing/build/r83sheet/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r83sheet/artifacts").mkdirs() }
+}
+
 // R81: Writer table geometry (column widths, fixed layout, repeated header row); python-docx verifies separately.
 val r81Writer by sourceSets.creating
 kotlin.sourceSets.named("r81Writer") { kotlin.srcDir("src/r81writer/kotlin") }
