@@ -1696,6 +1696,42 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R87: Writer paragraph shading (w:shd fill) and the tab-character path; python-docx and docx-preview verify separately.
+val r87Writer by sourceSets.creating
+kotlin.sourceSets.named("r87Writer") { kotlin.srcDir("src/r87writer/kotlin") }
+dependencies { add(r87Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r87WriterShadeContracts") {
+    dependsOn(r87Writer.classesTaskName)
+    classpath = r87Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R87WriterShadeChecks")
+    args(rootProject.file("testing/build/r87writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r87writer/artifacts").mkdirs() }
+}
+
+// R86: Writer tab stops (w:tabs, explicit w:val, leaders) and tri-state pageBreakBefore/widowControl; python-docx verifies separately.
+val r86Writer by sourceSets.creating
+kotlin.sourceSets.named("r86Writer") { kotlin.srcDir("src/r86writer/kotlin") }
+dependencies { add(r86Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r86WriterTabContracts") {
+    dependsOn(r86Writer.classesTaskName)
+    classpath = r86Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R86WriterTabsChecks")
+    args(rootProject.file("testing/build/r86writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r86writer/artifacts").mkdirs() }
+}
+
+// R86: Spreadsheet tab colour, per-sheet zoomScale and workbookView showSheetTabs/firstSheet; openpyxl verifies separately.
+val r86Sheet by sourceSets.creating
+kotlin.sourceSets.named("r86Sheet") { kotlin.srcDir("src/r86sheet/kotlin") }
+dependencies { add(r86Sheet.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r86SheetViewContracts") {
+    dependsOn(r86Sheet.classesTaskName)
+    classpath = r86Sheet.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R86SheetViewChecks")
+    args(rootProject.file("testing/build/r86sheet/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r86sheet/artifacts").mkdirs() }
+}
+
 // R81: Writer table geometry (column widths, fixed layout, repeated header row); python-docx verifies separately.
 val r81Writer by sourceSets.creating
 kotlin.sourceSets.named("r81Writer") { kotlin.srcDir("src/r81writer/kotlin") }

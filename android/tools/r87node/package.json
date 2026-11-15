@@ -1,0 +1,12 @@
+{
+  "name": "r87node",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pinned third-party Node readers used by the R87 independent-verification lanes (docx-preview HTML renderer, exceljs workbook reader). Host-only tooling; nothing here ships in the app.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "docx-preview": "0.4.1",
+    "exceljs": "4.4.0",
+    "jsdom": "31.0.1"
+  }
+}
