@@ -96,6 +96,8 @@ object XlsxStyledBook {
         val tabRgb: String? = null,
         /** Sheet-view zoom percentage; Excel's UI window is 10..400. */
         val zoomScale: Int? = null,
+        /** CT_SheetView `showGridLines`; `null` leaves Excel's default (gridlines shown) unwritten. */
+        val showGridLines: Boolean? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -303,6 +305,11 @@ object XlsxStyledBook {
         val freezeCols = pane?.attr("xSplit")?.toIntOrNull() ?: 0
         val zoomScale = root.firstChild("sheetViews")?.firstChild("sheetView")
             ?.attr("zoomScale")?.toIntOrNull()?.takeIf { it in 10..400 }
+        val showGridLines = when (root.firstChild("sheetViews")?.firstChild("sheetView")?.attr("showGridLines")) {
+            null -> null
+            "0", "false" -> false
+            else -> true
+        }
         val colWidths = linkedMapOf<Int, Double>()
         val hiddenColumns = linkedSetOf<Int>()
         root.firstChild("cols")?.children?.filter { it.localName == "col" }?.forEach { col ->
@@ -347,6 +354,7 @@ object XlsxStyledBook {
             visibility = visibility,
             tabRgb = tabRgb,
             zoomScale = zoomScale,
+            showGridLines = showGridLines,
         )
     }
 
@@ -531,9 +539,10 @@ object XlsxStyledBook {
         // colour is written only when declared, so legacy sheet bytes are unchanged.
         sheet.tabRgb?.let { append("""<sheetPr><tabColor rgb="FF${it.uppercase()}"/></sheetPr>""") }
         val frozen = sheet.freezeRows > 0 || sheet.freezeCols > 0
-        if (frozen || sheet.zoomScale != null) {
+        if (frozen || sheet.zoomScale != null || sheet.showGridLines != null) {
             append("""<sheetViews><sheetView workbookViewId="0"""")
             sheet.zoomScale?.let { append(""" zoomScale="$it"""") }
+            sheet.showGridLines?.let { append(""" showGridLines="${if (it) 1 else 0}"""") }
             if (!frozen) {
                 append("/></sheetViews>")
             } else {

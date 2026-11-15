@@ -232,6 +232,49 @@ object DocxPackage {
         DOT("dot"), HYPHEN("hyphen"), UNDERSCORE("underscore"), HEAVY("heavy"), MIDDLE_DOT("middleDot"),
     }
 
+    /** The `w:val` line styles this writer emits for a paragraph border (a subset of ST_Border). */
+    enum class BorderStyle(val token: String) {
+        SINGLE("single"), DOUBLE("double"), DASHED("dashed"), DOTTED("dotted"), THICK("thick"), NIL("nil"),
+    }
+
+    /**
+     * One `w:pBdr` edge. `sizeEighths` is the line width in eighths of a point (Word's UI offers
+     * 0.25..12 pt, i.e. 2..96), `colorRgb` a 6-hex colour or `null` for `w:color="auto"`, and
+     * `spacePoints` the distance between the text and the line (0..31 pt, CT_Border `w:space`).
+     */
+    data class Border(
+        val style: BorderStyle = BorderStyle.SINGLE,
+        val sizeEighths: Int = 4,
+        val colorRgb: String? = null,
+        val spacePoints: Int = 1,
+    ) {
+        init {
+            require(sizeEighths in 2..96) { "border size $sizeEighths outside 2..96 eighths of a point" }
+            require(spacePoints in 0..31) { "border space $spacePoints outside 0..31 points" }
+            colorRgb?.let { require(HEX6.matches(it)) { "border colour must be 6-hex RGB: $it" } }
+        }
+    }
+
+    /**
+     * A `w:pBdr` box. Every edge is optional and the six appear in CT_PBdr order, so a heading with only
+     * a bottom rule and a callout with four edges are the same type. At least one edge must be declared:
+     * an empty box would emit an element that changes nothing and only churns the bytes.
+     */
+    data class ParagraphBorders(
+        val top: Border? = null,
+        val left: Border? = null,
+        val bottom: Border? = null,
+        val right: Border? = null,
+        val between: Border? = null,
+        val bar: Border? = null,
+    ) {
+        init {
+            require(listOfNotNull(top, left, bottom, right, between, bar).isNotEmpty()) {
+                "paragraph borders must declare at least one edge"
+            }
+        }
+    }
+
     /**
      * One `w:tab` inside `w:tabs`. `positionTwips` is measured from the left margin and must stay in
      * 0..31680 twips (22 inches, the widest page Word accepts), and a paragraph's stops must be strictly
@@ -289,6 +332,7 @@ object DocxPackage {
             val widowControl: Boolean? = null,
             val tabStops: List<TabStop> = emptyList(),
             val shadingRgb: String? = null,
+            val borders: ParagraphBorders? = null,
         ) : Block {
             init {
                 require(level in 1..6) { "heading level $level outside 1..6" }
@@ -314,6 +358,7 @@ object DocxPackage {
             val widowControl: Boolean? = null,
             val tabStops: List<TabStop> = emptyList(),
             val shadingRgb: String? = null,
+            val borders: ParagraphBorders? = null,
         ) : Block {
             init {
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
@@ -850,6 +895,7 @@ object DocxPackage {
                     appendKeepFlags(b.keepWithNext, b.keepTogether)
                     appendOnOff("pageBreakBefore", b.pageBreakBefore)
                     appendOnOff("widowControl", b.widowControl)
+                    appendBorders(b.borders)
                     appendShading(b.shadingRgb)
                     appendTabs(b.tabStops)
                     appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
@@ -862,7 +908,7 @@ object DocxPackage {
                 is Block.Paragraph -> {
                     val properties = b.keepWithNext != null || b.keepTogether != null ||
                         b.pageBreakBefore != null || b.widowControl != null || b.tabStops.isNotEmpty() ||
-                        b.shadingRgb != null ||
+                        b.shadingRgb != null || b.borders != null ||
                         b.spaceBeforeTwips != null ||
                         b.spaceAfterTwips != null || b.indentLeftTwips != null ||
                         b.indentRightTwips != null || b.firstLineTwips != null || b.alignment != null
@@ -873,6 +919,7 @@ object DocxPackage {
                         appendKeepFlags(b.keepWithNext, b.keepTogether)
                         appendOnOff("pageBreakBefore", b.pageBreakBefore)
                         appendOnOff("widowControl", b.widowControl)
+                        appendBorders(b.borders)
                         appendShading(b.shadingRgb)
                         appendTabs(b.tabStops)
                         appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
@@ -1100,6 +1147,26 @@ object DocxPackage {
             true -> append("<w:$name/>")
             false -> append("""<w:$name w:val="0"/>""")
         }
+    }
+
+    /**
+     * `w:pBdr` is a CT_PPrBase child that follows `w:numPr` and precedes `w:shd`, so it is written before
+     * the fill. Its six edges are written in CT_PBdr order (top, left, bottom, right, between, bar) and
+     * every edge carries `w:val`, `w:sz`, `w:space` and `w:color`; `auto` is the honest value for a border
+     * whose colour the caller did not choose.
+     */
+    private fun StringBuilder.appendBorders(box: ParagraphBorders?) {
+        if (box == null) return
+        append("<w:pBdr>")
+        for ((name, border) in listOf(
+            "top" to box.top, "left" to box.left, "bottom" to box.bottom,
+            "right" to box.right, "between" to box.between, "bar" to box.bar,
+        )) {
+            if (border == null) continue
+            append("""<w:$name w:val="${border.style.token}" w:sz="${border.sizeEighths}" """)
+            append("""w:space="${border.spacePoints}" w:color="${border.colorRgb?.uppercase() ?: "auto"}"/>""")
+        }
+        append("</w:pBdr>")
     }
 
     /**
@@ -1332,6 +1399,7 @@ object DocxPackage {
         var pageBreakBefore: Boolean? = null
         var widowControl: Boolean? = null
         var shadingRgb: String? = null
+        var borders: ParagraphBorders? = null
         val tabStops = ArrayList<TabStop>()
         val runs = ArrayList<Run>()
 
@@ -1363,6 +1431,7 @@ object DocxPackage {
                             "widowControl" -> widowControl = onOff(pr)
                             // A themed or pattern-shaded fill has no 6-hex value of its own and is left
                             // unset rather than approximated from the theme.
+                            "pBdr" -> borders = parseBorders(pr)
                             "shd" -> {
                                 // Only the solid `clear` pattern (also the schema default) is modelled: a
                                 // percentage or pattern fill would be flattened into a colour it never had.
@@ -1457,6 +1526,7 @@ object DocxPackage {
                 widowControl = widowControl,
                 tabStops = tabs,
                 shadingRgb = shadingRgb,
+                borders = borders,
             )
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
@@ -1475,8 +1545,41 @@ object DocxPackage {
                 widowControl = widowControl,
                 tabStops = tabs,
                 shadingRgb = shadingRgb,
+                borders = borders,
             )
         }
+    }
+
+    /**
+     * Reads one `w:pBdr` box. A foreign file may use any ST_Border style, a size outside this writer's
+     * 2..96 window, a space beyond 31 points or a theme colour: an edge that cannot be represented is
+     * dropped rather than approximated, and a box with no surviving edge becomes `null` instead of an
+     * empty element. `w:val="none"` is read as [BorderStyle.NIL], the canonical token for "no line".
+     */
+    private fun parseBorders(pBdr: BoundedXml.Node): ParagraphBorders? {
+        fun edge(name: String): Border? {
+            val node = pBdr.children.firstOrNull { it.name.local == name } ?: return null
+            val style = when (wAttr(node, "val") ?: "single") {
+                "single" -> BorderStyle.SINGLE
+                "double" -> BorderStyle.DOUBLE
+                "dashed" -> BorderStyle.DASHED
+                "dotted" -> BorderStyle.DOTTED
+                "thick" -> BorderStyle.THICK
+                "nil", "none" -> BorderStyle.NIL
+                else -> return null
+            }
+            val size = wAttr(node, "sz")?.toIntOrNull() ?: 4
+            val space = wAttr(node, "space")?.toIntOrNull() ?: 1
+            if (size !in 2..96 || space !in 0..31) return null
+            val color = wAttr(node, "color")?.takeIf { HEX6.matches(it) }?.uppercase()
+            return Border(style, size, color, space)
+        }
+
+        val edges = listOf(
+            edge("top"), edge("left"), edge("bottom"), edge("right"), edge("between"), edge("bar"),
+        )
+        if (edges.all { it == null }) return null
+        return ParagraphBorders(edges[0], edges[1], edges[2], edges[3], edges[4], edges[5])
     }
 
     private fun parseRun(rNode: BoundedXml.Node): Run? {
