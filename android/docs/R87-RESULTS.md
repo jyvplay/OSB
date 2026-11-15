@@ -219,6 +219,24 @@ Reproduce with `python3 tools/run_r87_writer_shade.py` and `python3 tools/run_r8
 | Census | `tools/module_testability.py --check` | 50/50 = 100.00 % substantial-testable; 0/50 = 0.00 % accepted |
 | Source audit | `tools/native_source_audit.py --check` | 231 requirements / 36 obligations |
 
+### CI observation (appended after the push; this is the observation, not a local claim)
+
+Workflow `R54 office authoring`, run 43687817844, job 132731892474, head `6dfb1f3` (PR #20):
+
+* step 9 **Compile Android and run actual JVM contracts — success**. The invocation now carries
+  `:testing:r87WriterShadeContracts`, so the new `r87Writer` source set compiled on the runner and the probe
+  executed there.
+* step 14 **Install the pinned R87 Node renderer and workbook reader — success**: `npm ci --prefix
+  tools/r87node` installed the lockfile on the runner.
+* step 15 **Independent document readers and formula comparison — success**. That step runs
+  `check_r87_writer_shade.py`, `check_r87_docx_render.py` (R84 + R86 + R87 corpora), `check_r87_sheet_exceljs.py`
+  and the two new control modules, so **docx-preview and exceljs ran on CI, not only on this host**.
+* steps 20 `Run real API34 UI and provider checks` and 22 `Require all 37 named Office cases without
+  duplicate or skip` **failed** — the same two steps that fail on `main` at `01ee6ce` and `ffcd4de`, i.e. the
+  pre-existing managed-emulator failure, not a consequence of this change. The job log text is not
+  downloadable from this sandbox (GitHub redirects it to blob storage, outside the egress allowlist), so this
+  comparison is by step conclusion, not by reading the failure messages.
+
 **Not run, and why:** Gradle (no Android SDK here; CI compiles the new `r87Writer` source set), Word, Excel,
 LibreOffice, any device or emulator. docx-preview is a browser HTML renderer with no pagination engine, and
 exceljs parses workbooks without calculating anything. No pixel comparison of a rendered page was made: the
