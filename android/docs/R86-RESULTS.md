@@ -249,6 +249,22 @@ Regression sweep, every lane re-run **after** the source edits (all exit 0):
 kernels), `r47_contracts` (2393 assertions / 61 kernels), plus the independent reference checkers
 (`5377/256`, `8198/256`, `1089/64` predicates).
 
+### CI observation (appended after the push; this is the observation, not a local claim)
+
+Workflow `R54 office authoring`, run 43680476301 on head `04ece7d` (PR #20):
+
+* step 9 **Compile Android and run actual JVM contracts — success**. That invocation now carries
+  `:testing:r86WriterTabContracts :testing:r86SheetViewContracts` alongside the other forty tasks, so both new
+  Gradle source sets compiled on the runner and both probes executed there.
+* step 14 **Independent document readers and formula comparison — success**. The two R86 checkers and the two
+  R86 control modules are inside that step's command list, so they ran green on the runner as well.
+* steps 19 `Run real API34 UI and provider checks` and 21 `Require all 37 named Office cases without duplicate
+  or skip` **failed**. The same two steps fail on `main` at `01ee6ce` (run 43650752625, job 132618449551) and
+  at `ffcd4de` (run 43638894847), so this is a pre-existing managed-emulator failure, not a consequence of
+  this change. The job's log text could not be downloaded — GitHub redirects it to blob storage, which is
+  outside this sandbox's egress allowlist — so the comparison above is by step conclusion, not by reading the
+  failure messages.
+
 **Not run, and why:** Gradle (no Android SDK in this environment — CI compiles the two new source sets),
 Word/Excel/LibreOffice (not installed), any device or emulator, any visual inspection of the emitted files.
 The evidence is therefore structural and reader-based, never rendered.
