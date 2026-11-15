@@ -240,6 +240,24 @@ substantial-testable standard; 0/50 (0 %) are specification-accepted**. `native_
 → 231 requirements, 36 cross-cutting obligations, unchanged counts. `:format:ooxml` evidence paths: 215
 checks + production paths.
 
+### CI observation (appended after the push; this is the observation, not a local claim)
+
+Commit `34edfbf` on `arena/fffb0d65-osb`, run `43697712661` (R54 office authoring), job `office`:
+
+| Step | Result |
+|---|---|
+| 9 — `gradle … :testing:r88OfficeContracts` (plus every R54–R87 contract) | **success** |
+| 14 — `npm ci --prefix tools/r87node` | **success** |
+| 15 — independent readers: the two R88 checkers, the `--r88` render and exceljs lanes, and `test_r88_borders test_r88_gridlines test_r88_render_lanes` | **success** |
+| 20 — "Run real API34 UI and provider checks" | failure |
+| 22 — "Require all 37 named Office cases without duplicate or skip" | failure |
+
+Steps 20/22 are the Android emulator gates and fail identically on `main` (they were red in R87 on `d937230`
+as well); the job log text is not downloadable in this sandbox (blob storage is off the allowlist), so the
+*content* of those failures is not quoted here. The `Android native` run on the same commit
+(`43697712616`) completed **success**. The Gradle compile of the new source set is therefore observed, not
+assumed.
+
 **H6. What could not run.** CI's steps 20/22 ("Run real API34 UI and provider checks", "Require all 37 named
 Office cases") fail on `main` too; there is no Android SDK, emulator, device, Word, Excel, LibreOffice or
 browser in this sandbox, so no pixel of a Word or Excel rendering exists anywhere in this repository. The
