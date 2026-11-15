@@ -5,6 +5,10 @@ exceljs (pinned in `tools/r87node/package.json`) is a third implementation: neit
 openpyxl, which is what the R86 lane used. It reports sheet state, `tabColor.argb`, `sheetView.zoomScale`
 and the workbook view's `firstSheet`/`activeTab`, so those four can be cross-checked against `views.tsv`.
 
+The optional `--r89` lane reads the R89 font-size workbooks: exceljs reports `font.size` (whole
+points — it truncates a fractional size, which this checker accepts only within one point and counts
+separately), `font.bold`, `font.italic` and `font.color.argb`.
+
 The optional `--r88` lane reads the R88 gridline workbooks: exceljs reports `sheetView.showGridLines`
 tri-state (`null`, `false`, `true`), so the declared suppression is cross-checked against a third-party
 reader. exceljs defaults an absent `zoomScale` to 100, so an undeclared zoom is accepted as `None`/`100`
@@ -106,8 +110,61 @@ def check_r88(payload: dict, artifacts: Path) -> dict[str, int]:
     return {'workbooks': len(table), 'sheets': sheets, 'grid_off': suppressed}
 
 
+FONT_FIELDS = 8
+
+
+def check_r89(payload: dict, artifacts: Path, fields: int) -> dict[str, int]:
+    """Cross-check `fonts.tsv` against an exceljs dump of the R89 workbooks."""
+    path = artifacts / 'fonts.tsv'
+    require(path.is_file(), f'missing intent table {path}')
+    table: dict[str, list[list[str]]] = {}
+    for number, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+        if not line.strip():
+            continue
+        parts = line.split('\t')
+        require(len(parts) == fields, f'fonts.tsv line {number}: {len(parts)} fields')
+        table.setdefault(parts[0], []).append(parts)
+    files = {entry['name'][:-5]: entry for entry in payload['files']}
+    require(sorted(files) == sorted(table),
+            'fonts.tsv and the read workbooks disagree about which files exist')
+    cells = 0
+    sized = 0
+    rounded = 0
+    for name, entries in table.items():
+        sheets = {sheet['name']: sheet for sheet in files[name]['sheets']}
+        for row in entries:
+            _, sheet_name, ref, bold, italic, colour, size, _fill = row
+            where = f'{name}:{sheet_name}!{ref}'
+            require(sheet_name in sheets, f'{where}: exceljs did not read this sheet')
+            cell = next((c for c in sheets[sheet_name].get('cells', []) if c['ref'] == ref), None)
+            require(cell is not None, f'{where}: exceljs did not read this cell')
+            require(bool(cell['bold']) == (bold == 'true'), f'{where}: exceljs bold mismatch')
+            require(bool(cell['italic']) == (italic == 'true'), f'{where}: exceljs italic mismatch')
+            if colour == '-':
+                require(cell['color'] is None, f'{where}: undeclared colour read as {cell["color"]}')
+            else:
+                require(cell['color'] == 'FF' + colour,
+                        f'{where}: colour read as {cell["color"]}, expected FF{colour}')
+            expected = None if size == '-' else float(size)
+            actual = cell['size']
+            if expected is None:
+                require(actual is None, f'{where}: undeclared size read as {actual}')
+            else:
+                require(actual is not None, f'{where}: exceljs reports no size, declared {size}')
+                if expected % 1.0 == 0.0:
+                    require(float(actual) == expected, f'{where}: size read as {actual}, declared {size}')
+                else:
+                    require(abs(float(actual) - expected) <= 0.5,
+                            f'{where}: size read as {actual}, declared {size} beyond one point')
+                    rounded += 1
+                sized += 1
+            cells += 1
+    return {'workbooks': len(table), 'cells': cells, 'sized': sized, 'rounded': rounded}
+
+
 def verify(artifacts: Path, node: str, reader_json: Path | None,
-           r88: Path | None = None, r88_json: Path | None = None) -> dict:
+           r88: Path | None = None, r88_json: Path | None = None,
+           r89: Path | None = None, r89_json: Path | None = None) -> dict:
     rows = intent_rows(artifacts / 'views.tsv')
     workdir = Path(tempfile.mkdtemp(prefix='r87-exceljs-'))
     try:
@@ -161,7 +218,8 @@ def verify(artifacts: Path, node: str, reader_json: Path | None,
     totals = {'reader': payload['reader'], 'workbooks': len(rows), 'sheets': sheets,
             'colours': colour_asserted, 'zooms': zoom_asserted, 'first_sheet': first_sheet_asserted,
             'show_tabs_skipped': show_tabs_skipped}
-    totals.update({'r88_workbooks': 0, 'r88_sheets': 0, 'r88_grid_off': 0})
+    totals.update({'r88_workbooks': 0, 'r88_sheets': 0, 'r88_grid_off': 0,
+                   'r89_workbooks': 0, 'r89_cells': 0, 'r89_sized': 0, 'r89_rounded': 0})
     if r88 is not None:
         workdir = Path(tempfile.mkdtemp(prefix='r88-exceljs-'))
         try:
@@ -172,6 +230,16 @@ def verify(artifacts: Path, node: str, reader_json: Path | None,
         r88_totals = check_r88(r88_payload, r88)
         totals.update({'r88_workbooks': r88_totals['workbooks'], 'r88_sheets': r88_totals['sheets'],
                        'r88_grid_off': r88_totals['grid_off']})
+    if r89 is not None:
+        workdir = Path(tempfile.mkdtemp(prefix='r89-exceljs-'))
+        try:
+            r89_payload = (json.loads(r89_json.read_text()) if r89_json
+                           else read(r89, node, workdir))
+        finally:
+            shutil.rmtree(workdir, ignore_errors=True)
+        r89_totals = check_r89(r89_payload, r89, FONT_FIELDS)
+        totals.update({'r89_workbooks': r89_totals['workbooks'], 'r89_cells': r89_totals['cells'],
+                       'r89_sized': r89_totals['sized'], 'r89_rounded': r89_totals['rounded']})
     return totals
 
 
@@ -182,6 +250,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--reader-json', type=Path, help='use a precomputed exceljs dump')
     parser.add_argument('--r88', type=Path, help='R88 gridline artifacts (grid.tsv)')
     parser.add_argument('--r88-reader-json', type=Path, help='use a precomputed R88 exceljs dump')
+    parser.add_argument('--r89', type=Path, help='R89 font-size artifacts (fonts.tsv)')
+    parser.add_argument('--r89-reader-json', type=Path, help='use a precomputed R89 exceljs dump')
     args = parser.parse_args(argv)
     node = args.node or shutil.which('node')
     try:
@@ -189,7 +259,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.reader_json is None:
             require(NODE_MODULES.is_dir(), f'missing {NODE_MODULES}; run `npm ci --prefix tools/r87node` first')
         totals = verify(args.artifacts, node or '', args.reader_json,
-                        getattr(args, 'r88', None), getattr(args, 'r88_reader_json', None))
+                        getattr(args, 'r88', None), getattr(args, 'r88_reader_json', None),
+                        getattr(args, 'r89', None), getattr(args, 'r89_reader_json', None))
     except Fail as failure:
         print(f'R87 exceljs verification FAILED: {failure}')
         return 1
@@ -205,6 +276,10 @@ def main(argv: list[str] | None = None) -> int:
     if totals['r88_workbooks']:
         print(f'R88 gridline lane: {totals["r88_sheets"]} sheets in {totals["r88_workbooks"]} workbooks '
               f'cross-checked through exceljs, {totals["r88_grid_off"]} with gridlines suppressed.')
+    if totals['r89_workbooks']:
+        print(f'R89 font lane: {totals["r89_cells"]} cells in {totals["r89_workbooks"]} workbooks '
+              f'cross-checked through exceljs, {totals["r89_sized"]} with a declared size '
+              f'({totals["r89_rounded"]} fractional size(s) that exceljs truncates by design).')
     return 0
 
 

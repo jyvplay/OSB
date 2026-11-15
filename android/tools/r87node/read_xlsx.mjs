@@ -31,6 +31,24 @@ for (const name of fs.readdirSync(directory).filter((entry) => entry.endsWith('.
   }
   const view = (workbook.views && workbook.views[0]) || {};
   const sheets = [];
+  // R89: the font of each populated cell, as exceljs models it (size in points, colour as ARGB).
+  const cellFonts = (sheet) => {
+    const cells = [];
+    sheet.eachRow({ includeEmpty: false }, (row) => {
+      row.eachCell({ includeEmpty: false }, (cell) => {
+        const font = cell.font || {};
+        cells.push({
+          ref: cell.address,
+          value: cell.value === null || cell.value === undefined ? null : String(cell.value),
+          size: font.size === undefined ? null : font.size,
+          bold: font.bold === true,
+          italic: font.italic === true,
+          color: font.color && font.color.argb ? font.color.argb : null,
+        });
+      });
+    });
+    return cells;
+  };
   workbook.eachSheet((sheet) => {
     const sheetView = (sheet.views && sheet.views[0]) || {};
     const colour = sheet.properties && sheet.properties.tabColor;
@@ -40,6 +58,7 @@ for (const name of fs.readdirSync(directory).filter((entry) => entry.endsWith('.
       tabArgb: colour ? colour.argb || null : null,
       zoomScale: sheetView.zoomScale === undefined ? null : sheetView.zoomScale,
       showGridLines: sheetView.showGridLines === undefined ? null : sheetView.showGridLines,
+      cells: cellFonts(sheet),
     });
   });
   files.push({

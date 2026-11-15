@@ -99,10 +99,19 @@ object DocxPackage {
         val strike: Boolean = false,
         val code: Boolean = false,
         val href: String? = null,
+        /** 6-hex RGB text colour, written as `<w:color w:val="RRGGBB"/>`; `null` inherits. */
+        val colorRgb: String? = null,
+        /**
+         * Text size in half-points (CT_HpsMeasure), written as `<w:sz w:val="N"/>`. Word's own window is
+         * 1..819 pt, i.e. 2..1638 half-points; `null` inherits the paragraph style's size.
+         */
+        val sizeHalfPoints: Int? = null,
     ) {
         init {
             validateXmlChars(text)
             if (href != null) validateHref(href)
+            colorRgb?.let { require(HEX6.matches(it)) { "run colour must be 6-hex RGB: $it" } }
+            sizeHalfPoints?.let { require(it in 2..1638) { "run size $it outside 2..1638 half-points" } }
         }
     }
 
@@ -1228,10 +1237,16 @@ object DocxPackage {
         for (r in runs) {
             if (r.text.isEmpty()) continue
             append("<w:r>")
-            if (r.bold || r.italic || r.underline || r.strike || r.code) {
+            if (r.bold || r.italic || r.underline || r.strike || r.code || r.colorRgb != null ||
+                r.sizeHalfPoints != null
+            ) {
                 append("<w:rPr>")
                 if (r.bold) append("<w:b/>")
                 if (r.italic) append("<w:i/>")
+                // CT_RPr order is color < sz < u; the pre-R89 children keep their positions so a run
+                // that declares neither new field writes exactly the bytes it wrote before R89.
+                r.colorRgb?.let { append("""<w:color w:val="${it.uppercase()}"/>""") }
+                r.sizeHalfPoints?.let { append("""<w:sz w:val="$it"/>""") }
                 if (r.underline) append("""<w:u w:val="single"/>""")
                 if (r.strike) append("<w:strike/>")
                 if (r.code) append("""<w:rFonts w:ascii="monospace" w:hAnsi="monospace"/>""")
@@ -1588,6 +1603,8 @@ object DocxPackage {
         var underline = false
         var strike = false
         var code = false
+        var color: String? = null
+        var size: Int? = null
         val sb = StringBuilder()
 
         for (child in rNode.children) {
@@ -1599,6 +1616,8 @@ object DocxPackage {
                             "i" -> italic = wBoolAttr(pr)
                             "u" -> underline = (wAttr(pr, "val") ?: "single") != "none"
                             "strike" -> strike = wBoolAttr(pr)
+                            "color" -> color = wAttr(pr, "val")?.takeIf { HEX6.matches(it) }?.uppercase()
+                            "sz" -> size = wAttr(pr, "val")?.toIntOrNull()?.takeIf { it in 2..1638 }
                             "rFonts" -> {
                                 val ascii = wAttr(pr, "ascii")?.lowercase() ?: ""
                                 if (ascii == "monospace" || "courier" in ascii || "consolas" in ascii) code = true
@@ -1611,7 +1630,8 @@ object DocxPackage {
                 "tab" -> sb.append('\t')
             }
         }
-        return if (sb.isEmpty()) null else Run(sb.toString(), bold, italic, underline, strike, code)
+        return if (sb.isEmpty()) null else
+            Run(sb.toString(), bold, italic, underline, strike, code, colorRgb = color, sizeHalfPoints = size)
     }
 
     private fun parseTable(tblNode: BoundedXml.Node): Block.Table? {
