@@ -1696,6 +1696,32 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R89: Writer run colour/size (w:rPr w:color/w:sz) and SpreadsheetML cell font size (CT_Font sz);
+// python-docx, openpyxl, docx-preview and exceljs verify separately.
+val r89Style by sourceSets.creating
+kotlin.sourceSets.named("r89Style") { kotlin.srcDir("src/r89/kotlin") }
+dependencies { add(r89Style.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r89StyleContracts") {
+    dependsOn(r89Style.classesTaskName)
+    classpath = r89Style.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R89Checks")
+    args(rootProject.file("testing/build/r89/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r89/artifacts").mkdirs() }
+}
+
+// R88: Writer paragraph borders (w:pBdr, six CT_PBdr edges) and sheet-view showGridLines; python-docx,
+// openpyxl, docx-preview and exceljs verify separately.
+val r88Office by sourceSets.creating
+kotlin.sourceSets.named("r88Office") { kotlin.srcDir("src/r88/kotlin") }
+dependencies { add(r88Office.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r88OfficeContracts") {
+    dependsOn(r88Office.classesTaskName)
+    classpath = r88Office.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R88Checks")
+    args(rootProject.file("testing/build/r88/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r88/artifacts").mkdirs() }
+}
+
 // R87: Writer paragraph shading (w:shd fill) and the tab-character path; python-docx and docx-preview verify separately.
 val r87Writer by sourceSets.creating
 kotlin.sourceSets.named("r87Writer") { kotlin.srcDir("src/r87writer/kotlin") }

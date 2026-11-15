@@ -32,6 +32,8 @@ object XlsxStyledBook {
     const val MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     /** Excel's own row-height ceiling in points; `ht` beyond it is not a legal measure. */
     const val MAX_ROW_HEIGHT_POINTS = 409.0
+    /** Calibri 11 pt is the workbook default this writer has always emitted when no size is declared. */
+    private const val DEFAULT_FONT_POINTS = 11.0
     const val REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     const val PKG_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
@@ -42,6 +44,8 @@ object XlsxStyledBook {
         val fillRgb: String? = null,
         val thinBorder: Boolean = false,
         val numberFormat: String? = null,
+        /** CT_Font `<sz val>` in points, 1.0..409.0; `null` keeps the workbook default of 11 pt. */
+        val fontSize: Double? = null,
         val horizontal: HAlign? = null,
         val vertical: VAlign? = null,
     ) {
@@ -53,6 +57,7 @@ object XlsxStyledBook {
         init {
             fontRgb?.let { require(HEX6.matches(it)) { "fontRgb must be 6-hex RGB: $it" } }
             fillRgb?.let { require(HEX6.matches(it)) { "fillRgb must be 6-hex RGB: $it" } }
+            fontSize?.let { require(it in 1.0..409.0) { "fontSize $it outside 1..409 points" } }
         }
     }
 
@@ -96,6 +101,8 @@ object XlsxStyledBook {
         val tabRgb: String? = null,
         /** Sheet-view zoom percentage; Excel's UI window is 10..400. */
         val zoomScale: Int? = null,
+        /** CT_SheetView `showGridLines`; `null` leaves Excel's default (gridlines shown) unwritten. */
+        val showGridLines: Boolean? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -243,10 +250,13 @@ object XlsxStyledBook {
             val code = nf.attr("formatCode")
             if (id != null && code != null) numFmts[id] = code
         }
-        data class FontRec(val bold: Boolean, val italic: Boolean, val rgb: String?)
+        data class FontRec(val bold: Boolean, val italic: Boolean, val rgb: String?, val size: Double?)
         val fonts = root.firstChild("fonts")?.children?.filter { it.localName == "font" }?.map { f ->
             val rgb = f.firstChild("color")?.attr("rgb")?.takeLast(6)
-            FontRec(f.firstChild("b") != null, f.firstChild("i") != null, rgb)
+            // 11 pt is the workbook default when a font carries no `<sz>`; only a declared size is
+            // reported, so a foreign 11 pt font and an undeclared one both read back as `null`.
+            val size = f.firstChild("sz")?.attr("val")?.toDoubleOrNull()?.takeIf { it in 1.0..409.0 && it != 11.0 }
+            FontRec(f.firstChild("b") != null, f.firstChild("i") != null, rgb, size)
         }.orEmpty()
         val fills = root.firstChild("fills")?.children?.filter { it.localName == "fill" }?.map { fl ->
             val pf = fl.firstChild("patternFill")
@@ -279,6 +289,7 @@ object XlsxStyledBook {
                 bold = font?.bold ?: false,
                 italic = font?.italic ?: false,
                 fontRgb = font?.rgb,
+                fontSize = font?.size,
                 fillRgb = fills.getOrNull(flIdx),
                 thinBorder = borders.getOrNull(bIdx) ?: false,
                 numberFormat = numFmts[nfId],
@@ -303,6 +314,11 @@ object XlsxStyledBook {
         val freezeCols = pane?.attr("xSplit")?.toIntOrNull() ?: 0
         val zoomScale = root.firstChild("sheetViews")?.firstChild("sheetView")
             ?.attr("zoomScale")?.toIntOrNull()?.takeIf { it in 10..400 }
+        val showGridLines = when (root.firstChild("sheetViews")?.firstChild("sheetView")?.attr("showGridLines")) {
+            null -> null
+            "0", "false" -> false
+            else -> true
+        }
         val colWidths = linkedMapOf<Int, Double>()
         val hiddenColumns = linkedSetOf<Int>()
         root.firstChild("cols")?.children?.filter { it.localName == "col" }?.forEach { col ->
@@ -347,6 +363,7 @@ object XlsxStyledBook {
             visibility = visibility,
             tabRgb = tabRgb,
             zoomScale = zoomScale,
+            showGridLines = showGridLines,
         )
     }
 
@@ -358,7 +375,14 @@ object XlsxStyledBook {
 
     private class StyleRegistry {
         private val numFmtIds = linkedMapOf<String, Int>()
-        private val fonts = mutableListOf(Triple(false, false, null as String?))
+        private data class FontKey(
+            val bold: Boolean = false,
+            val italic: Boolean = false,
+            val rgb: String? = null,
+            val size: Double? = null,
+        )
+
+        private val fonts = mutableListOf(FontKey())
         private val fills = mutableListOf<String?>(null, "__GRAY125__")
         private val borders = mutableListOf(false)
         private val xfs = mutableListOf(Quad(0, 0, 0, 0))
@@ -377,7 +401,7 @@ object XlsxStyledBook {
             val nfId = if (style.numberFormat == null) 0 else {
                 numFmtIds.getOrPut(style.numberFormat) { 164 + numFmtIds.size }
             }
-            val fontKey = Triple(style.bold, style.italic, style.fontRgb?.uppercase())
+            val fontKey = FontKey(style.bold, style.italic, style.fontRgb?.uppercase(), style.fontSize)
             var fontId = fonts.indexOf(fontKey)
             if (fontId < 0) {
                 fontId = fonts.size
@@ -413,12 +437,14 @@ object XlsxStyledBook {
                 append("</numFmts>")
             }
             append("""<fonts count="${fonts.size}">""")
-            for ((b, i, rgb) in fonts) {
+            for (font in fonts) {
                 append("<font>")
-                if (b) append("<b/>")
-                if (i) append("<i/>")
-                append("""<sz val="11"/><name val="Calibri"/>""")
-                if (rgb != null) append("""<color rgb="FF$rgb"/>""")
+                if (font.bold) append("<b/>")
+                if (font.italic) append("<i/>")
+                // `<sz>` keeps its pre-R89 position; only the value becomes declarable. `name` is not
+                // modelled, so the workbook default family is still written after the size.
+                append("""<sz val="${points(font.size ?: DEFAULT_FONT_POINTS)}"/><name val="Calibri"/>""")
+                if (font.rgb != null) append("""<color rgb="FF${font.rgb}"/>""")
                 append("</font>")
             }
             append("</fonts>")
@@ -531,9 +557,10 @@ object XlsxStyledBook {
         // colour is written only when declared, so legacy sheet bytes are unchanged.
         sheet.tabRgb?.let { append("""<sheetPr><tabColor rgb="FF${it.uppercase()}"/></sheetPr>""") }
         val frozen = sheet.freezeRows > 0 || sheet.freezeCols > 0
-        if (frozen || sheet.zoomScale != null) {
+        if (frozen || sheet.zoomScale != null || sheet.showGridLines != null) {
             append("""<sheetViews><sheetView workbookViewId="0"""")
             sheet.zoomScale?.let { append(""" zoomScale="$it"""") }
+            sheet.showGridLines?.let { append(""" showGridLines="${if (it) 1 else 0}"""") }
             if (!frozen) {
                 append("/></sheetViews>")
             } else {
@@ -592,6 +619,10 @@ object XlsxStyledBook {
         for (ch in m.groupValues[1]) col = col * 26 + (ch - 'A' + 1)
         return col to m.groupValues[2].toInt()
     }
+
+    /** XML Schema `double` spelling without a trailing `.0`, so 11.0 stays `11` and 10.5 stays `10.5`. */
+    private fun points(value: Double): String =
+        if (value % 1.0 == 0.0) value.toInt().toString() else value.toString()
 
     private fun colLabel(oneBased: Int): String {
         var n = oneBased

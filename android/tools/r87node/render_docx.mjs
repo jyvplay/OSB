@@ -81,6 +81,16 @@ for (const name of fs.readdirSync(directory).filter((entry) => entry.endsWith('.
       text: normalise(element.textContent),
       style: styleMap(element),
       tabSpans: tabSpans(element),
+      // R89: per-run children in document order, so a run colour or size can be read back from the CSS
+      // docx-preview actually applied. Unstyled runs may surface as bare text nodes (tag `#text`).
+      runs: [...element.childNodes]
+        .filter((node) => (node.nodeType === 1 && normalise(node.textContent) !== '')
+          || (node.nodeType === 3 && normalise(node.textContent) !== ''))
+        .map((node) => ({
+          tag: node.nodeType === 1 ? node.tagName : '#text',
+          text: normalise(node.textContent),
+          style: node.nodeType === 1 ? styleMap(node) : {},
+        })),
     }));
   files.push({
     name,
