@@ -92,10 +92,16 @@ object XlsxStyledBook {
         val hiddenRows: Set<Int> = emptySet(),
         val hiddenColumns: Set<Int> = emptySet(),
         val visibility: Visibility = Visibility.VISIBLE,
+        /** 6-hex RGB tab colour; written as `FF<hex>` inside `<sheetPr><tabColor>`. */
+        val tabRgb: String? = null,
+        /** Sheet-view zoom percentage; Excel's UI window is 10..400. */
+        val zoomScale: Int? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
             require(freezeRows >= 0 && freezeCols >= 0) { "Negative freeze pane split" }
+            tabRgb?.let { require(HEX6.matches(it)) { "tabRgb must be 6-hex RGB: $it" } }
+            zoomScale?.let { require(it in 10..400) { "zoomScale $it outside 10..400" } }
             hiddenRows.forEach { row ->
                 require(row in 1..1_048_576) { "Hidden row index $row outside 1..1048576" }
             }
@@ -114,6 +120,10 @@ object XlsxStyledBook {
     data class WorkbookSpec(
         val sheets: List<StyledSheet>,
         val definedNames: List<DefinedName> = emptyList(),
+        /** CT_BookView `showSheetTabs`; `null` leaves the schema default (tabs shown) unwritten. */
+        val showSheetTabs: Boolean? = null,
+        /** CT_BookView `firstSheet`: the index of the leftmost tab, which must be a visible sheet. */
+        val firstSheet: Int? = null,
     ) {
         init {
             require(sheets.isNotEmpty()) { "Workbook requires at least one sheet" }
@@ -121,6 +131,14 @@ object XlsxStyledBook {
             // would be empty and the file could not be reopened into a usable state.
             require(sheets.any { it.visibility == Visibility.VISIBLE }) {
                 "A workbook must keep at least one visible sheet"
+            }
+            // `firstSheet` names the leftmost tab. A hidden sheet there is not a tab, and Excel
+            // repairs such a workbook on open, so it is refused rather than written.
+            firstSheet?.let { index ->
+                require(index in sheets.indices) { "firstSheet $index outside 0..${sheets.size - 1}" }
+                require(sheets[index].visibility == Visibility.VISIBLE) {
+                    "firstSheet $index points at a hidden sheet"
+                }
             }
         }
     }
@@ -186,6 +204,12 @@ object XlsxStyledBook {
                 DefinedName(nm, dn.text)
             } ?: emptyList()
 
+        val view = wbRoot.firstChild("bookViews")?.firstChild("workbookView")
+        val showSheetTabs = when (view?.attr("showSheetTabs")) {
+            null -> null
+            "0", "false" -> false
+            else -> true
+        }
         val sheetElems = wbRoot.firstChild("sheets")?.children?.filter { it.localName == "sheet" }.orEmpty()
         val sheets = sheetElems.mapIndexed { idx, sEl ->
             val name = sEl.attr("name") ?: "Sheet${idx + 1}"
@@ -199,7 +223,13 @@ object XlsxStyledBook {
             }
             parseSheet(name, BoundedXml.parse(shBytes), styles, visibility)
         }
-        return WorkbookSpec(sheets = sheets, definedNames = defined)
+        // A firstSheet that no longer names a visible sheet is dropped on import: the sheets are all
+        // still readable, and the constructor refuses that value for the same repair reason it is
+        // refused on write.
+        val firstSheet = view?.attr("firstSheet")?.toIntOrNull()
+            ?.takeIf { it in sheets.indices && sheets[it].visibility == Visibility.VISIBLE }
+        return WorkbookSpec(sheets = sheets, definedNames = defined, showSheetTabs = showSheetTabs,
+            firstSheet = firstSheet)
     }
 
     private val BoundedXml.Node.localName: String get() = name.local
@@ -264,9 +294,15 @@ object XlsxStyledBook {
         styles: List<CellStyle>,
         visibility: Visibility = Visibility.VISIBLE,
     ): StyledSheet {
+        // Foreign packages may colour a tab with a theme/indexed colour instead of `rgb`; only a full
+        // 6-hex RGB value fits this model, so anything else is left unset rather than guessed.
+        val tabRgb = root.firstChild("sheetPr")?.firstChild("tabColor")?.attr("rgb")
+            ?.takeLast(6)?.takeIf { HEX6.matches(it) }?.uppercase()
         val pane = root.firstChild("sheetViews")?.firstChild("sheetView")?.firstChild("pane")
         val freezeRows = pane?.attr("ySplit")?.toIntOrNull() ?: 0
         val freezeCols = pane?.attr("xSplit")?.toIntOrNull() ?: 0
+        val zoomScale = root.firstChild("sheetViews")?.firstChild("sheetView")
+            ?.attr("zoomScale")?.toIntOrNull()?.takeIf { it in 10..400 }
         val colWidths = linkedMapOf<Int, Double>()
         val hiddenColumns = linkedSetOf<Int>()
         root.firstChild("cols")?.children?.filter { it.localName == "col" }?.forEach { col ->
@@ -300,8 +336,17 @@ object XlsxStyledBook {
             }
         }
         return StyledSheet(
-            name, cells, freezeRows, freezeCols, colWidths, rowHeights, hiddenRows, hiddenColumns,
-            visibility,
+            name = name,
+            cells = cells,
+            freezeRows = freezeRows,
+            freezeCols = freezeCols,
+            columnWidths = colWidths,
+            rowHeights = rowHeights,
+            hiddenRows = hiddenRows,
+            hiddenColumns = hiddenColumns,
+            visibility = visibility,
+            tabRgb = tabRgb,
+            zoomScale = zoomScale,
         )
     }
 
@@ -439,12 +484,18 @@ object XlsxStyledBook {
     private fun buildWorkbookXml(spec: WorkbookSpec): ByteArray = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<workbook xmlns="$MAIN_NS" xmlns:r="$REL_NS">""")
-        if (spec.sheets.any { it.visibility != Visibility.VISIBLE }) {
+        val hidden = spec.sheets.any { it.visibility != Visibility.VISIBLE }
+        if (hidden || spec.showSheetTabs != null || spec.firstSheet != null) {
             // A workbook whose active tab is hidden is repaired on open, and the default active tab is the
             // first sheet. Naming the first visible sheet keeps the file well formed; a workbook that
-            // hides nothing writes no bookViews at all, so its bytes stay identical to the pre-R84 output.
+            // hides nothing and declares no view option writes no bookViews at all, so its bytes stay
+            // identical to the pre-R84 output.
             val activeTab = spec.sheets.indexOfFirst { it.visibility == Visibility.VISIBLE }
-            append("""<bookViews><workbookView activeTab="$activeTab"/></bookViews>""")
+            append("<bookViews><workbookView")
+            spec.showSheetTabs?.let { append(""" showSheetTabs="${if (it) 1 else 0}"""") }
+            spec.firstSheet?.let { append(""" firstSheet="$it"""") }
+            if (hidden) append(""" activeTab="$activeTab"""")
+            append("/></bookViews>")
         }
         append("<sheets>")
         spec.sheets.forEachIndexed { idx, s ->
@@ -476,14 +527,24 @@ object XlsxStyledBook {
     private fun buildSheetXml(sheet: StyledSheet, styles: StyleRegistry): ByteArray = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<worksheet xmlns="$MAIN_NS">""")
-        if (sheet.freezeRows > 0 || sheet.freezeCols > 0) {
-            val topLeftCol = colLabel(sheet.freezeCols + 1)
-            val topLeftRow = sheet.freezeRows + 1
-            append("""<sheetViews><sheetView workbookViewId="0"><pane""")
-            if (sheet.freezeCols > 0) append(""" xSplit="${sheet.freezeCols}"""")
-            if (sheet.freezeRows > 0) append(""" ySplit="${sheet.freezeRows}"""")
-            append(""" topLeftCell="$topLeftCol$topLeftRow" activePane="bottomLeft" state="frozen"/>""")
-            append("</sheetView></sheetViews>")
+        // CT_Worksheet order: sheetPr, dimension, sheetViews, sheetFormatPr, cols, sheetData. A tab
+        // colour is written only when declared, so legacy sheet bytes are unchanged.
+        sheet.tabRgb?.let { append("""<sheetPr><tabColor rgb="FF${it.uppercase()}"/></sheetPr>""") }
+        val frozen = sheet.freezeRows > 0 || sheet.freezeCols > 0
+        if (frozen || sheet.zoomScale != null) {
+            append("""<sheetViews><sheetView workbookViewId="0"""")
+            sheet.zoomScale?.let { append(""" zoomScale="$it"""") }
+            if (!frozen) {
+                append("/></sheetViews>")
+            } else {
+                val topLeftCol = colLabel(sheet.freezeCols + 1)
+                val topLeftRow = sheet.freezeRows + 1
+                append("><pane")
+                if (sheet.freezeCols > 0) append(""" xSplit="${sheet.freezeCols}"""")
+                if (sheet.freezeRows > 0) append(""" ySplit="${sheet.freezeRows}"""")
+                append(""" topLeftCell="$topLeftCol$topLeftRow" activePane="bottomLeft" state="frozen"/>""")
+                append("</sheetView></sheetViews>")
+            }
         }
         if (sheet.columnWidths.isNotEmpty() || sheet.hiddenColumns.isNotEmpty()) {
             append("<cols>")

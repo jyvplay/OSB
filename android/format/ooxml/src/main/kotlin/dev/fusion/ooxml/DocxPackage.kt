@@ -79,6 +79,8 @@ object DocxPackage {
     private const val MAX_PARAGRAPH_SPACING_TWIPS = 31_680
     /** Word's ST_SignedTwipsMeasure window this writer accepts for paragraph indents. */
     private const val MAX_INDENT_TWIPS = 31_680
+    /** A paragraph `w:tabs` list is capped; 64 stops is far beyond any real ruler. */
+    private const val MAX_TAB_STOPS = 64
     /** Word's ST_TblWidth window is 0..31680 twips; a column below 240 twips is unusable. */
     private const val MIN_TABLE_COL_TWIPS = 240
     private const val MAX_TABLE_COL_TWIPS = 31_680
@@ -218,6 +220,27 @@ object DocxPackage {
     /** Paragraph alignment; `w:jc`'s `both` is Word's name for justified text. */
     enum class Align(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right"), JUSTIFY("both") }
 
+    /** ST_TabTblAlign tokens this writer emits; `clear` cancels an inherited stop at that position. */
+    enum class TabAlign(val token: String) {
+        LEFT("left"), CENTER("center"), RIGHT("right"), DECIMAL("decimal"), BAR("bar"), CLEAR("clear"),
+    }
+
+    /** ST_TabTblLeader tokens this writer emits. `null` means the gap is filled with nothing. */
+    enum class TabLeader(val token: String) {
+        DOT("dot"), HYPHEN("hyphen"), UNDERSCORE("underscore"), HEAVY("heavy"), MIDDLE_DOT("middleDot"),
+    }
+
+    /**
+     * One `w:tab` inside `w:tabs`. `positionTwips` is measured from the left margin and must stay in
+     * 0..31680 twips (22 inches, the widest page Word accepts), and a paragraph's stops must be strictly
+     * ascending, which is the order Word lays them out in and the order this writer emits and reads.
+     */
+    data class TabStop(
+        val positionTwips: Int,
+        val align: TabAlign = TabAlign.LEFT,
+        val leader: TabLeader? = null,
+    )
+
     private fun validateSpacing(before: Int?, after: Int?) {
         for (value in listOfNotNull(before, after)) {
             require(value in 0..MAX_PARAGRAPH_SPACING_TWIPS) {
@@ -234,6 +257,20 @@ object DocxPackage {
         }
     }
 
+    private fun validateTabs(stops: List<TabStop>) {
+        require(stops.size <= MAX_TAB_STOPS) { "tab stop count ${stops.size} exceeds $MAX_TAB_STOPS" }
+        for ((index, stop) in stops.withIndex()) {
+            require(stop.positionTwips in 0..MAX_INDENT_TWIPS) {
+                "tab stop ${stop.positionTwips} outside 0..$MAX_INDENT_TWIPS twips"
+            }
+            if (index > 0) {
+                require(stop.positionTwips > stops[index - 1].positionTwips) {
+                    "tab stops must be strictly ascending: ${stops[index - 1].positionTwips} then ${stop.positionTwips}"
+                }
+            }
+        }
+    }
+
     sealed interface Block {
         data class Heading(
             val level: Int,
@@ -246,12 +283,16 @@ object DocxPackage {
             val firstLineTwips: Int? = null,
             val keepWithNext: Boolean? = null,
             val keepTogether: Boolean? = null,
+            val pageBreakBefore: Boolean? = null,
+            val widowControl: Boolean? = null,
+            val tabStops: List<TabStop> = emptyList(),
         ) : Block {
             init {
                 require(level in 1..6) { "heading level $level outside 1..6" }
                 require(runs.isNotEmpty()) { "heading runs must not be empty" }
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
                 validateIndent(indentLeftTwips, indentRightTwips, firstLineTwips)
+                validateTabs(tabStops)
             }
         }
 
@@ -265,10 +306,14 @@ object DocxPackage {
             val firstLineTwips: Int? = null,
             val keepWithNext: Boolean? = null,
             val keepTogether: Boolean? = null,
+            val pageBreakBefore: Boolean? = null,
+            val widowControl: Boolean? = null,
+            val tabStops: List<TabStop> = emptyList(),
         ) : Block {
             init {
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
                 validateIndent(indentLeftTwips, indentRightTwips, firstLineTwips)
+                validateTabs(tabStops)
             }
         }
 
@@ -794,8 +839,12 @@ object DocxPackage {
             when (b) {
                 is Block.Heading -> {
                     append("""<w:p><w:pPr><w:pStyle w:val="Heading${b.level}"/>""")
-                    // CT_PPr sequence order: pStyle, keepNext, keepLines, numPr, spacing, ind, jc.
+                    // CT_PPr sequence order: pStyle, keepNext, keepLines, pageBreakBefore, widowControl,
+                    // tabs, spacing, ind, jc.
                     appendKeepFlags(b.keepWithNext, b.keepTogether)
+                    appendOnOff("pageBreakBefore", b.pageBreakBefore)
+                    appendOnOff("widowControl", b.widowControl)
+                    appendTabs(b.tabStops)
                     appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
                     appendIndent(b.indentLeftTwips, b.indentRightTwips, b.firstLineTwips)
                     b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
@@ -805,6 +854,7 @@ object DocxPackage {
                 }
                 is Block.Paragraph -> {
                     val properties = b.keepWithNext != null || b.keepTogether != null ||
+                        b.pageBreakBefore != null || b.widowControl != null || b.tabStops.isNotEmpty() ||
                         b.spaceBeforeTwips != null ||
                         b.spaceAfterTwips != null || b.indentLeftTwips != null ||
                         b.indentRightTwips != null || b.firstLineTwips != null || b.alignment != null
@@ -813,6 +863,9 @@ object DocxPackage {
                     } else {
                         append("<w:p><w:pPr>")
                         appendKeepFlags(b.keepWithNext, b.keepTogether)
+                        appendOnOff("pageBreakBefore", b.pageBreakBefore)
+                        appendOnOff("widowControl", b.widowControl)
+                        appendTabs(b.tabStops)
                         appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
                         appendIndent(b.indentLeftTwips, b.indentRightTwips, b.firstLineTwips)
                         b.alignment?.let { append("""<w:jc w:val="${it.token}"/>""") }
@@ -1041,6 +1094,23 @@ object DocxPackage {
     }
 
     /**
+     * `w:tabs` is a CT_PPrBase child that follows `w:widowControl` and precedes `w:spacing`. Every
+     * `w:tab` carries an explicit `w:val`, including the schema default `left`: python-docx raises
+     * `InvalidXmlError` when `w:val` is absent, so a file that omitted it would not be readable by a
+     * real consumer even though the schema permits the omission.
+     */
+    private fun StringBuilder.appendTabs(stops: List<TabStop>) {
+        if (stops.isEmpty()) return
+        append("<w:tabs>")
+        for (stop in stops) {
+            append("""<w:tab w:val="${stop.align.token}" w:pos="${stop.positionTwips}"""")
+            stop.leader?.let { append(""" w:leader="${it.token}"""") }
+            append("/>")
+        }
+        append("</w:tabs>")
+    }
+
+    /**
      * `w:ind` is a CT_PPrBase child that follows `w:spacing` and precedes `w:jc`. `w:firstLine` and
      * `w:hanging` are mutually exclusive schema choices for one measurement, so a single signed value is
      * emitted as exactly one of them: non-negative as `w:firstLine`, negative as `w:hanging`.
@@ -1240,6 +1310,9 @@ object DocxPackage {
         var firstLine: Int? = null
         var keepNext: Boolean? = null
         var keepLines: Boolean? = null
+        var pageBreakBefore: Boolean? = null
+        var widowControl: Boolean? = null
+        val tabStops = ArrayList<TabStop>()
         val runs = ArrayList<Run>()
 
         for (child in pNode.children) {
@@ -1266,6 +1339,35 @@ object DocxPackage {
                             }
                             "keepNext" -> keepNext = onOff(pr)
                             "keepLines" -> keepLines = onOff(pr)
+                            "pageBreakBefore" -> pageBreakBefore = onOff(pr)
+                            "widowControl" -> widowControl = onOff(pr)
+                            "tabs" -> {
+                                for (tab in pr.children) {
+                                    if (tab.name.local != "tab") continue
+                                    val position = wAttr(tab, "pos")?.toIntOrNull() ?: continue
+                                    tabStops.add(
+                                        TabStop(
+                                            position,
+                                            when (wAttr(tab, "val")) {
+                                                "center" -> TabAlign.CENTER
+                                                "right", "end" -> TabAlign.RIGHT
+                                                "decimal" -> TabAlign.DECIMAL
+                                                "bar" -> TabAlign.BAR
+                                                "clear" -> TabAlign.CLEAR
+                                                else -> TabAlign.LEFT
+                                            },
+                                            when (wAttr(tab, "leader")) {
+                                                "dot" -> TabLeader.DOT
+                                                "hyphen" -> TabLeader.HYPHEN
+                                                "underscore" -> TabLeader.UNDERSCORE
+                                                "heavy" -> TabLeader.HEAVY
+                                                "middleDot" -> TabLeader.MIDDLE_DOT
+                                                else -> null
+                                            },
+                                        ),
+                                    )
+                                }
+                            }
                             "jc" -> alignment = when (wAttr(pr, "val")) {
                                 "left", "start" -> Align.LEFT
                                 "center" -> Align.CENTER
@@ -1297,21 +1399,50 @@ object DocxPackage {
             }
         }
 
+        // A foreign file may order stops arbitrarily, repeat a position or exceed the writer's window.
+        // The model's contract is strictly ascending and bounded, so import normalises to that contract
+        // instead of refusing a document whose text it can still read; dropped stops are out of scope.
+        val tabs = tabStops
+            .filter { it.positionTwips in 0..MAX_INDENT_TWIPS }
+            .sortedBy { it.positionTwips }
+            .distinctBy { it.positionTwips }
+            .take(MAX_TAB_STOPS)
         val style = pStyle ?: ""
         val headingLvl = style.removePrefix("Heading").toIntOrNull()
         val textOnly = runs.all { it.text.isBlank() }
         return when {
             textOnly && pStyle == null && numId == null && hasPageBreak(pNode) -> Block.PageBreak
             headingLvl != null && headingLvl in 1..6 -> Block.Heading(
-                headingLvl, runs.ifEmpty { listOf(Run("")) }, alignment, spaceBefore, spaceAfter,
-                indentLeft, indentRight, firstLine, keepNext, keepLines,
+                level = headingLvl,
+                runs = runs.ifEmpty { listOf(Run("")) },
+                alignment = alignment,
+                spaceBeforeTwips = spaceBefore,
+                spaceAfterTwips = spaceAfter,
+                indentLeftTwips = indentLeft,
+                indentRightTwips = indentRight,
+                firstLineTwips = firstLine,
+                keepWithNext = keepNext,
+                keepTogether = keepLines,
+                pageBreakBefore = pageBreakBefore,
+                widowControl = widowControl,
+                tabStops = tabs,
             )
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
             numId != null && numId != 0 -> Block.ListItem(isOrderedNum(numberingDefs, numId!!, ilvl), ilvl, runs)
             else -> Block.Paragraph(
-                runs, alignment, spaceBefore, spaceAfter,
-                indentLeft, indentRight, firstLine, keepNext, keepLines,
+                runs = runs,
+                alignment = alignment,
+                spaceBeforeTwips = spaceBefore,
+                spaceAfterTwips = spaceAfter,
+                indentLeftTwips = indentLeft,
+                indentRightTwips = indentRight,
+                firstLineTwips = firstLine,
+                keepWithNext = keepNext,
+                keepTogether = keepLines,
+                pageBreakBefore = pageBreakBefore,
+                widowControl = widowControl,
+                tabStops = tabs,
             )
         }
     }
