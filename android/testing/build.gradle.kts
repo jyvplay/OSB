@@ -1696,6 +1696,18 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R87: Writer paragraph shading (w:shd fill) and the tab-character path; python-docx and docx-preview verify separately.
+val r87Writer by sourceSets.creating
+kotlin.sourceSets.named("r87Writer") { kotlin.srcDir("src/r87writer/kotlin") }
+dependencies { add(r87Writer.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r87WriterShadeContracts") {
+    dependsOn(r87Writer.classesTaskName)
+    classpath = r87Writer.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R87WriterShadeChecks")
+    args(rootProject.file("testing/build/r87writer/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r87writer/artifacts").mkdirs() }
+}
+
 // R86: Writer tab stops (w:tabs, explicit w:val, leaders) and tri-state pageBreakBefore/widowControl; python-docx verifies separately.
 val r86Writer by sourceSets.creating
 kotlin.sourceSets.named("r86Writer") { kotlin.srcDir("src/r86writer/kotlin") }

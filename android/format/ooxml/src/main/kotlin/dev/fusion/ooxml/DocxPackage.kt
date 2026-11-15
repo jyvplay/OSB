@@ -81,6 +81,8 @@ object DocxPackage {
     private const val MAX_INDENT_TWIPS = 31_680
     /** A paragraph `w:tabs` list is capped; 64 stops is far beyond any real ruler. */
     private const val MAX_TAB_STOPS = 64
+    /** Shading fills this writer accepts: exactly six hex digits, written upper-case. */
+    private val HEX6 = Regex("^[0-9A-Fa-f]{6}$")
     /** Word's ST_TblWidth window is 0..31680 twips; a column below 240 twips is unusable. */
     private const val MIN_TABLE_COL_TWIPS = 240
     private const val MAX_TABLE_COL_TWIPS = 31_680
@@ -286,6 +288,7 @@ object DocxPackage {
             val pageBreakBefore: Boolean? = null,
             val widowControl: Boolean? = null,
             val tabStops: List<TabStop> = emptyList(),
+            val shadingRgb: String? = null,
         ) : Block {
             init {
                 require(level in 1..6) { "heading level $level outside 1..6" }
@@ -293,6 +296,7 @@ object DocxPackage {
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
                 validateIndent(indentLeftTwips, indentRightTwips, firstLineTwips)
                 validateTabs(tabStops)
+                shadingRgb?.let { require(HEX6.matches(it)) { "shadingRgb must be 6-hex RGB: $it" } }
             }
         }
 
@@ -309,11 +313,13 @@ object DocxPackage {
             val pageBreakBefore: Boolean? = null,
             val widowControl: Boolean? = null,
             val tabStops: List<TabStop> = emptyList(),
+            val shadingRgb: String? = null,
         ) : Block {
             init {
                 validateSpacing(spaceBeforeTwips, spaceAfterTwips)
                 validateIndent(indentLeftTwips, indentRightTwips, firstLineTwips)
                 validateTabs(tabStops)
+                shadingRgb?.let { require(HEX6.matches(it)) { "shadingRgb must be 6-hex RGB: $it" } }
             }
         }
 
@@ -844,6 +850,7 @@ object DocxPackage {
                     appendKeepFlags(b.keepWithNext, b.keepTogether)
                     appendOnOff("pageBreakBefore", b.pageBreakBefore)
                     appendOnOff("widowControl", b.widowControl)
+                    appendShading(b.shadingRgb)
                     appendTabs(b.tabStops)
                     appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
                     appendIndent(b.indentLeftTwips, b.indentRightTwips, b.firstLineTwips)
@@ -855,6 +862,7 @@ object DocxPackage {
                 is Block.Paragraph -> {
                     val properties = b.keepWithNext != null || b.keepTogether != null ||
                         b.pageBreakBefore != null || b.widowControl != null || b.tabStops.isNotEmpty() ||
+                        b.shadingRgb != null ||
                         b.spaceBeforeTwips != null ||
                         b.spaceAfterTwips != null || b.indentLeftTwips != null ||
                         b.indentRightTwips != null || b.firstLineTwips != null || b.alignment != null
@@ -865,6 +873,7 @@ object DocxPackage {
                         appendKeepFlags(b.keepWithNext, b.keepTogether)
                         appendOnOff("pageBreakBefore", b.pageBreakBefore)
                         appendOnOff("widowControl", b.widowControl)
+                        appendShading(b.shadingRgb)
                         appendTabs(b.tabStops)
                         appendSpacing(b.spaceBeforeTwips, b.spaceAfterTwips)
                         appendIndent(b.indentLeftTwips, b.indentRightTwips, b.firstLineTwips)
@@ -1094,6 +1103,16 @@ object DocxPackage {
     }
 
     /**
+     * `w:shd` is a CT_PPrBase child that follows `w:pBdr` and precedes `w:tabs`, so it is written before
+     * the tab stops. Only the solid `clear` pattern is modelled: `w:color="auto"` leaves the pattern lines
+     * to the theme and `w:fill` carries the 6-hex background exactly as the caller declared it.
+     */
+    private fun StringBuilder.appendShading(fill: String?) {
+        if (fill == null) return
+        append("""<w:shd w:val="clear" w:color="auto" w:fill="${fill.uppercase()}"/>""")
+    }
+
+    /**
      * `w:tabs` is a CT_PPrBase child that follows `w:widowControl` and precedes `w:spacing`. Every
      * `w:tab` carries an explicit `w:val`, including the schema default `left`: python-docx raises
      * `InvalidXmlError` when `w:val` is absent, so a file that omitted it would not be readable by a
@@ -1312,6 +1331,7 @@ object DocxPackage {
         var keepLines: Boolean? = null
         var pageBreakBefore: Boolean? = null
         var widowControl: Boolean? = null
+        var shadingRgb: String? = null
         val tabStops = ArrayList<TabStop>()
         val runs = ArrayList<Run>()
 
@@ -1341,6 +1361,16 @@ object DocxPackage {
                             "keepLines" -> keepLines = onOff(pr)
                             "pageBreakBefore" -> pageBreakBefore = onOff(pr)
                             "widowControl" -> widowControl = onOff(pr)
+                            // A themed or pattern-shaded fill has no 6-hex value of its own and is left
+                            // unset rather than approximated from the theme.
+                            "shd" -> {
+                                // Only the solid `clear` pattern (also the schema default) is modelled: a
+                                // percentage or pattern fill would be flattened into a colour it never had.
+                                val pattern = (wAttr(pr, "val") ?: "clear").lowercase()
+                                if (pattern == "clear") {
+                                    shadingRgb = wAttr(pr, "fill")?.takeIf { HEX6.matches(it) }?.uppercase()
+                                }
+                            }
                             "tabs" -> {
                                 for (tab in pr.children) {
                                     if (tab.name.local != "tab") continue
@@ -1426,6 +1456,7 @@ object DocxPackage {
                 pageBreakBefore = pageBreakBefore,
                 widowControl = widowControl,
                 tabStops = tabs,
+                shadingRgb = shadingRgb,
             )
             style == "CodeBlock" -> Block.CodeBlock(runs.joinToString("") { it.text }.split('\n'))
             style == "Quote" || style == "IntenseQuote" -> Block.BlockQuote(runs)
@@ -1443,6 +1474,7 @@ object DocxPackage {
                 pageBreakBefore = pageBreakBefore,
                 widowControl = widowControl,
                 tabStops = tabs,
+                shadingRgb = shadingRgb,
             )
         }
     }
