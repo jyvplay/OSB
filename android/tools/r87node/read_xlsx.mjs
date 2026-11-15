@@ -43,6 +43,11 @@ for (const name of fs.readdirSync(directory).filter((entry) => entry.endsWith('.
           size: font.size === undefined ? null : font.size,
           bold: font.bold === true,
           italic: font.italic === true,
+          // R90: exceljs models an underline either as a boolean or as `{ style }`; both mean "underlined".
+          underline: font.underline === undefined || font.underline === null
+            ? false
+            : (typeof font.underline === 'object' ? Boolean(font.underline.style) : Boolean(font.underline)),
+          strike: font.strike === true,
           color: font.color && font.color.argb ? font.color.argb : null,
         });
       });

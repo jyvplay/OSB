@@ -1696,6 +1696,19 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R90: Writer run decorations (w:vertAlign, w:highlight) and SpreadsheetML font decorations (<u/>, <strike/>);
+// python-docx, openpyxl, docx-preview and exceljs verify separately.
+val r90Deco by sourceSets.creating
+kotlin.sourceSets.named("r90Deco") { kotlin.srcDir("src/r90/kotlin") }
+dependencies { add(r90Deco.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r90DecorationContracts") {
+    dependsOn(r90Deco.classesTaskName)
+    classpath = r90Deco.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R90Checks")
+    args(rootProject.file("testing/build/r90/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r90/artifacts").mkdirs() }
+}
+
 // R89: Writer run colour/size (w:rPr w:color/w:sz) and SpreadsheetML cell font size (CT_Font sz);
 // python-docx, openpyxl, docx-preview and exceljs verify separately.
 val r89Style by sourceSets.creating

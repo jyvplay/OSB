@@ -5720,7 +5720,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxPackage.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "48ab7b00a3a2b2e6483282656b15295187f48d2c47acdfa9221815b449cb5c7c"
+      "sha256": "5b5fc444e9284052d85292b02a230ccd5dcd0e85c8063147cf73da103d951a6b"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt",
@@ -5990,7 +5990,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "d940029766a84865b256d404038c60a740da04009a873f2bc238c0a13905a5cf"
+      "sha256": "2e37e1ea7ec446a8d9c6beef47e8797a95e4d85ec7b0671f750cf9d609f98f61"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/CropBox.kt",

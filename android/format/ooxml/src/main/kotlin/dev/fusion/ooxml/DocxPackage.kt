@@ -106,6 +106,10 @@ object DocxPackage {
          * 1..819 pt, i.e. 2..1638 half-points; `null` inherits the paragraph style's size.
          */
         val sizeHalfPoints: Int? = null,
+        /** ST_VerticalAlignRun; `null` inherits the baseline. */
+        val verticalAlign: VerticalAlign? = null,
+        /** ST_HighlightColor, written as `w:highlight w:val`; `null` leaves the run unhighlighted. */
+        val highlight: HighlightColor? = null,
     ) {
         init {
             validateXmlChars(text)
@@ -239,6 +243,17 @@ object DocxPackage {
     /** ST_TabTblLeader tokens this writer emits. `null` means the gap is filled with nothing. */
     enum class TabLeader(val token: String) {
         DOT("dot"), HYPHEN("hyphen"), UNDERSCORE("underscore"), HEAVY("heavy"), MIDDLE_DOT("middleDot"),
+    }
+
+    /** ST_VerticalAlignRun: the only two values a run can carry in ST_RPr. */
+    enum class VerticalAlign(val token: String) { SUPERSCRIPT("superscript"), SUBSCRIPT("subscript") }
+
+    /** ST_HighlightColor: the closed enumeration Word writes in `w:highlight`, all sixteen values. */
+    enum class HighlightColor(val token: String) {
+        BLACK("black"), BLUE("blue"), CYAN("cyan"), DARK_BLUE("darkBlue"), DARK_CYAN("darkCyan"),
+        DARK_GRAY("darkGray"), DARK_GREEN("darkGreen"), DARK_MAGENTA("darkMagenta"), DARK_RED("darkRed"),
+        DARK_YELLOW("darkYellow"), GREEN("green"), LIGHT_GRAY("lightGray"), MAGENTA("magenta"),
+        RED("red"), WHITE("white"), YELLOW("yellow"),
     }
 
     /** The `w:val` line styles this writer emits for a paragraph border (a subset of ST_Border). */
@@ -1238,7 +1253,7 @@ object DocxPackage {
             if (r.text.isEmpty()) continue
             append("<w:r>")
             if (r.bold || r.italic || r.underline || r.strike || r.code || r.colorRgb != null ||
-                r.sizeHalfPoints != null
+                r.sizeHalfPoints != null || r.verticalAlign != null || r.highlight != null
             ) {
                 append("<w:rPr>")
                 if (r.bold) append("<w:b/>")
@@ -1247,8 +1262,10 @@ object DocxPackage {
                 // that declares neither new field writes exactly the bytes it wrote before R89.
                 r.colorRgb?.let { append("""<w:color w:val="${it.uppercase()}"/>""") }
                 r.sizeHalfPoints?.let { append("""<w:sz w:val="$it"/>""") }
+                r.highlight?.let { append("""<w:highlight w:val="${it.token}"/>""") }
                 if (r.underline) append("""<w:u w:val="single"/>""")
                 if (r.strike) append("<w:strike/>")
+                r.verticalAlign?.let { append("""<w:vertAlign w:val="${it.token}"/>""") }
                 if (r.code) append("""<w:rFonts w:ascii="monospace" w:hAnsi="monospace"/>""")
                 append("</w:rPr>")
             }
@@ -1605,6 +1622,8 @@ object DocxPackage {
         var code = false
         var color: String? = null
         var size: Int? = null
+        var verticalAlign: VerticalAlign? = null
+        var highlight: HighlightColor? = null
         val sb = StringBuilder()
 
         for (child in rNode.children) {
@@ -1618,6 +1637,14 @@ object DocxPackage {
                             "strike" -> strike = wBoolAttr(pr)
                             "color" -> color = wAttr(pr, "val")?.takeIf { HEX6.matches(it) }?.uppercase()
                             "sz" -> size = wAttr(pr, "val")?.toIntOrNull()?.takeIf { it in 2..1638 }
+                            "vertAlign" -> when (wAttr(pr, "val")) {
+                                "superscript" -> verticalAlign = VerticalAlign.SUPERSCRIPT
+                                "subscript" -> verticalAlign = VerticalAlign.SUBSCRIPT
+                            }
+                            // An unknown highlight token is dropped: the enumeration is closed, so a
+                            // value outside it is a foreign extension rather than a colour we can name.
+                            "highlight" -> highlight =
+                                HighlightColor.values().firstOrNull { it.token == wAttr(pr, "val") }
                             "rFonts" -> {
                                 val ascii = wAttr(pr, "ascii")?.lowercase() ?: ""
                                 if (ascii == "monospace" || "courier" in ascii || "consolas" in ascii) code = true
@@ -1631,7 +1658,10 @@ object DocxPackage {
             }
         }
         return if (sb.isEmpty()) null else
-            Run(sb.toString(), bold, italic, underline, strike, code, colorRgb = color, sizeHalfPoints = size)
+            Run(
+                sb.toString(), bold, italic, underline, strike, code, colorRgb = color,
+                sizeHalfPoints = size, verticalAlign = verticalAlign, highlight = highlight,
+            )
     }
 
     private fun parseTable(tblNode: BoundedXml.Node): Block.Table? {

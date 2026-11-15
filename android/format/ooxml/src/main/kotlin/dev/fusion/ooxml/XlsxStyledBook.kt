@@ -48,6 +48,10 @@ object XlsxStyledBook {
         val fontSize: Double? = null,
         val horizontal: HAlign? = null,
         val vertical: VAlign? = null,
+        /** CT_Font `<u/>`: a single underline, the only underline form Excel's UI writes by default. */
+        val underline: Boolean = false,
+        /** CT_Font `<strike/>`. */
+        val strike: Boolean = false,
     ) {
         /** ECMA-376 `horizontal` tokens this writer emits; other schema tokens are import-only. */
         enum class HAlign(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right") }
@@ -250,13 +254,23 @@ object XlsxStyledBook {
             val code = nf.attr("formatCode")
             if (id != null && code != null) numFmts[id] = code
         }
-        data class FontRec(val bold: Boolean, val italic: Boolean, val rgb: String?, val size: Double?)
+        data class FontRec(
+            val bold: Boolean,
+            val italic: Boolean,
+            val rgb: String?,
+            val size: Double?,
+            val underline: Boolean = false,
+            val strike: Boolean = false,
+        )
         val fonts = root.firstChild("fonts")?.children?.filter { it.localName == "font" }?.map { f ->
             val rgb = f.firstChild("color")?.attr("rgb")?.takeLast(6)
             // 11 pt is the workbook default when a font carries no `<sz>`; only a declared size is
             // reported, so a foreign 11 pt font and an undeclared one both read back as `null`.
             val size = f.firstChild("sz")?.attr("val")?.toDoubleOrNull()?.takeIf { it in 1.0..409.0 && it != 11.0 }
-            FontRec(f.firstChild("b") != null, f.firstChild("i") != null, rgb, size)
+            FontRec(
+                f.firstChild("b") != null, f.firstChild("i") != null, rgb, size,
+                underline = f.firstChild("u") != null, strike = f.firstChild("strike") != null,
+            )
         }.orEmpty()
         val fills = root.firstChild("fills")?.children?.filter { it.localName == "fill" }?.map { fl ->
             val pf = fl.firstChild("patternFill")
@@ -295,6 +309,8 @@ object XlsxStyledBook {
                 numberFormat = numFmts[nfId],
                 horizontal = horizontal,
                 vertical = vertical,
+                underline = font?.underline ?: false,
+                strike = font?.strike ?: false,
             )
         }.orEmpty().ifEmpty { listOf(CellStyle()) }
     }
@@ -380,6 +396,8 @@ object XlsxStyledBook {
             val italic: Boolean = false,
             val rgb: String? = null,
             val size: Double? = null,
+            val underline: Boolean = false,
+            val strike: Boolean = false,
         )
 
         private val fonts = mutableListOf(FontKey())
@@ -401,7 +419,10 @@ object XlsxStyledBook {
             val nfId = if (style.numberFormat == null) 0 else {
                 numFmtIds.getOrPut(style.numberFormat) { 164 + numFmtIds.size }
             }
-            val fontKey = FontKey(style.bold, style.italic, style.fontRgb?.uppercase(), style.fontSize)
+            val fontKey = FontKey(
+                style.bold, style.italic, style.fontRgb?.uppercase(), style.fontSize,
+                style.underline, style.strike,
+            )
             var fontId = fonts.indexOf(fontKey)
             if (fontId < 0) {
                 fontId = fonts.size
@@ -441,6 +462,9 @@ object XlsxStyledBook {
                 append("<font>")
                 if (font.bold) append("<b/>")
                 if (font.italic) append("<i/>")
+                // CT_Font order is b, i, strike, …, u, …, sz, colour: the decorations precede the size.
+                if (font.strike) append("<strike/>")
+                if (font.underline) append("<u/>")
                 // `<sz>` keeps its pre-R89 position; only the value becomes declarable. `name` is not
                 // modelled, so the workbook default family is still written after the size.
                 append("""<sz val="${points(font.size ?: DEFAULT_FONT_POINTS)}"/><name val="Calibri"/>""")

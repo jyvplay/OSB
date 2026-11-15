@@ -14,6 +14,9 @@ Three artifact directories are checked, each against its own intent table:
   covers the bytes; this covers what a renderer does with them);
 * R84 `indent.tsv` — the R84 indent slice, whose twips must appear as the matching point values;
 * R86 `tabs.tsv`   — enumeration only: the renderer must see exactly the declared body paragraphs;
+* R90 `decorations.tsv` — run decorations: `w:highlight` must come out as the renderer's
+  `background-color` (it writes the ST token verbatim), and `w:vertAlign` is counted as *not rendered*
+  because docx-preview 0.4.1 drops run-level `vertAlign` — the count is printed rather than hidden;
 * R89 `runs.tsv`   — run colour and size: every `<w:color>`/`<w:sz>` must come out as the CSS `color`
   and `font-size` that the intent table declares, and an undeclared run must carry neither;
 * R88 `borders.tsv` — paragraph borders: every `w:pBdr` edge on the four sides must come out as the CSS
@@ -419,12 +422,61 @@ def check_r89(payload: dict, artifacts: Path) -> tuple[int, int, int]:
     return runs, colours, sizes
 
 
+def check_r90(payload: dict, artifacts: Path) -> tuple[int, int, int]:
+    """Cross-check run decorations against what docx-preview actually produced."""
+    rows = intent_rows(artifacts / 'decorations.tsv', 12)
+    require(sorted(rows) == sorted(entry['name'][:-5] for entry in payload['files']),
+            'decorations.tsv and the rendered packages disagree about which files exist')
+    runs = 0
+    highlighted = 0
+    unrendered_align = 0
+    for name, entries in rows.items():
+        document = lookup(payload, f'{name}.docx')
+        rendered = document['paragraphs']
+        paragraphs = sorted({int(entry[1]) for entry in entries})
+        require(len(rendered) == len(paragraphs),
+                f'{name}: renderer produced {len(rendered)} paragraphs, declared {len(paragraphs)}')
+        for paragraph_index, paragraph in zip(paragraphs, rendered):
+            declared = [entry for entry in entries if int(entry[1]) == paragraph_index]
+            spans = [span for span in paragraph.get('runs', []) if span['text'].strip()]
+            require(len(spans) == len(declared),
+                    f'{name} paragraph {paragraph_index}: renderer produced {len(spans)} run(s), '
+                    f'declared {len(declared)}')
+            for entry, span in zip(declared, spans):
+                where = f'{name} paragraph {paragraph_index} run {entry[2]}'
+                align, highlight = entry[4], entry[5]
+                background = span['style'].get('background-color')
+                if highlight == '-':
+                    require(background is None, f'{where}: undeclared highlight rendered as {background}')
+                else:
+                    # docx-preview copies the ST token into `background-color` lower-cased, so only the
+                    # tokens that are also CSS colour keywords (`yellow`, `white`, `green`, `cyan`) would
+                    # actually paint in a browser; `darkBlue` becomes the invalid keyword `darkblue`.
+                    require(background == highlight.lower(),
+                            f'{where}: highlight {highlight!r} rendered as {background!r}; docx-preview '
+                            'copies the ST token lower-cased')
+                    highlighted += 1
+                vertical = span['style'].get('verticalAlign') or span['style'].get('vertical-align')
+                if align == '-':
+                    require(vertical is None, f'{where}: undeclared alignment rendered as {vertical}')
+                elif vertical is None:
+                    # docx-preview 0.4.1 ignores run-level w:vertAlign: counted, never claimed.
+                    unrendered_align += 1
+                else:
+                    expected = 'sup' if align == 'superscript' else 'sub'
+                    require(vertical == expected,
+                            f'{where}: alignment rendered as {vertical!r}, expected {expected!r}')
+                runs += 1
+    return runs, highlighted, unrendered_align
+
+
 def verify(args: argparse.Namespace) -> dict:
     workdir = Path(tempfile.mkdtemp(prefix='r87-render-'))
     try:
         node = args.node or shutil.which('node')
         require(node is not None, 'node is not on PATH; the renderer lane needs Node 18+')
-        lanes = {name: getattr(args, name, None) for name in ('r87', 'r84', 'r86', 'r88', 'r89')}
+        lanes = {name: getattr(args, name, None)
+                 for name in ('r87', 'r84', 'r86', 'r88', 'r89', 'r90')}
         if args.renderer_json:
             payloads = {name: json.loads(Path(path).read_text()) for name, path in args.renderer_json}
             require(sorted(payloads) == sorted(name for name, value in lanes.items() if value),
@@ -436,7 +488,8 @@ def verify(args: argparse.Namespace) -> dict:
                         for k, value in lanes.items() if value}
         totals = {'r87_paragraphs': 0, 'r87_shaded': 0, 'r84_paragraphs': 0, 'r84_asserted': 0,
                   'r86_paragraphs': 0, 'r88_paragraphs': 0, 'r88_bordered': 0, 'r88_sides': 0,
-                  'r88_unrendered': 0, 'r89_runs': 0, 'r89_colours': 0, 'r89_sizes': 0, 'packages': 0}
+                  'r88_unrendered': 0, 'r89_runs': 0, 'r89_colours': 0, 'r89_sizes': 0,
+                  'r90_runs': 0, 'r90_highlighted': 0, 'r90_unrendered_align': 0, 'packages': 0}
         if lanes['r87']:
             totals['r87_paragraphs'], totals['r87_shaded'] = check_r87(payloads['r87'], args.r87)
             totals['packages'] += len(payloads['r87']['files'])
@@ -454,6 +507,10 @@ def verify(args: argparse.Namespace) -> dict:
             totals['r89_runs'], totals['r89_colours'], totals['r89_sizes'] = \
                 check_r89(payloads['r89'], lanes['r89'])
             totals['packages'] += len(payloads['r89']['files'])
+        if lanes['r90']:
+            totals['r90_runs'], totals['r90_highlighted'], totals['r90_unrendered_align'] = \
+                check_r90(payloads['r90'], lanes['r90'])
+            totals['packages'] += len(payloads['r90']['files'])
         totals['renderer'] = payloads[next(iter(payloads))]['renderer']
         return totals
     finally:
@@ -467,11 +524,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--r86', type=Path, help='R86 tab artifacts (tabs.tsv)')
     parser.add_argument('--r88', type=Path, help='R88 border artifacts (borders.tsv)')
     parser.add_argument('--r89', type=Path, help='R89 run-style artifacts (runs.tsv)')
+    parser.add_argument('--r90', type=Path, help='R90 decoration artifacts (decorations.tsv)')
     parser.add_argument('--node', help='node executable (default: PATH lookup)')
     parser.add_argument('--renderer-json', nargs=2, action='append', metavar=('LANE', 'PATH'),
                         help='use a precomputed renderer dump for LANE instead of running Node')
     args = parser.parse_args(argv)
-    if not any((args.r87, args.r84, args.r86, args.r88, args.r89)):
+    if not any((args.r87, args.r84, args.r86, args.r88, args.r89, args.r90)):
         parser.error('at least one artifact directory is required')
     try:
         totals = verify(args)
@@ -498,6 +556,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.r89:
         parts.append(f'{totals["r89_runs"]} R89 runs ({totals["r89_colours"]} colours, '
                      f'{totals["r89_sizes"]} sizes CSS-verified)')
+    if args.r90:
+        parts.append(f'{totals["r90_runs"]} R90 runs ({totals["r90_highlighted"]} highlights rendered as '
+                     f'background-color, {totals["r90_unrendered_align"]} vertAlign values that '
+                     'docx-preview 0.4.1 drops)')
     print(f'R87/R88 {totals["renderer"]} rendered {totals["packages"]} packages: ' + '; '.join(parts) + '. '
           'A third-party HTML renderer is not Word: no pagination, font metric or tab-stop arithmetic '
           'is claimed.')
