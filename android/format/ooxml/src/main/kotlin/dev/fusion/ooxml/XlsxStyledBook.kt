@@ -107,6 +107,8 @@ object XlsxStyledBook {
         val zoomScale: Int? = null,
         /** CT_SheetView `showGridLines`; `null` leaves Excel's default (gridlines shown) unwritten. */
         val showGridLines: Boolean? = null,
+        /** CT_DataValidation records, written after `<sheetData>`; empty leaves the sheet bytes unchanged. */
+        val validations: List<XlsxValidation.Rule> = emptyList(),
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -380,6 +382,7 @@ object XlsxStyledBook {
             tabRgb = tabRgb,
             zoomScale = zoomScale,
             showGridLines = showGridLines,
+            validations = XlsxValidation.parse(root),
         )
     }
 
@@ -634,7 +637,11 @@ object XlsxStyledBook {
             }
             append("</row>")
         }
-        append("</sheetData></worksheet>")
+        append("</sheetData>")
+        // CT_Worksheet sequence: dataValidations follows sheetData and precedes hyperlinks/pageSetup, none
+        // of which this writer emits, so appending here keeps the schema order for every sheet.
+        if (sheet.validations.isNotEmpty()) append(XlsxValidation.toXml(sheet.validations))
+        append("</worksheet>")
     }.toByteArray(StandardCharsets.UTF_8)
 
     private fun parseRef(ref: String): Pair<Int, Int> {

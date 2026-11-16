@@ -5990,7 +5990,13 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "2e37e1ea7ec446a8d9c6beef47e8797a95e4d85ec7b0671f750cf9d609f98f61"
+      "sha256": "7045004a8a310ed1c4344781568d7f1ce1cd81c818fe5a68b9154e0708d3c267"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxValidation.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "60f97adb1e8d6d9566c1299cd3408bda44658cceb5c603c28ab333598688fbf8"
     },
     {
       "path": "format/pdf/src/main/java/dev/fusion/format/pdf/CropBox.kt",

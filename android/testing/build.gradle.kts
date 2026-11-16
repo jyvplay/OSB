@@ -1696,6 +1696,19 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R91: SpreadsheetML data validation (CT_DataValidation) and its predicate; openpyxl plus a Python
+// re-implementation of the decision function verify separately.
+val r91Validation by sourceSets.creating
+kotlin.sourceSets.named("r91Validation") { kotlin.srcDir("src/r91/kotlin") }
+dependencies { add(r91Validation.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r91ValidationContracts") {
+    dependsOn(r91Validation.classesTaskName)
+    classpath = r91Validation.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R91Checks")
+    args(rootProject.file("testing/build/r91/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r91/artifacts").mkdirs() }
+}
+
 // R90: Writer run decorations (w:vertAlign, w:highlight) and SpreadsheetML font decorations (<u/>, <strike/>);
 // python-docx, openpyxl, docx-preview and exceljs verify separately.
 val r90Deco by sourceSets.creating
