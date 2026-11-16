@@ -117,10 +117,17 @@ object XlsxStyledBook {
         val protection: XlsxProtection.SheetProtection? = null,
         /** `<autoFilter>`; `null` writes nothing, so an unfiltered sheet keeps its prior bytes. */
         val autoFilter: XlsxAutoFilter.AutoFilter? = null,
+        /** `<mergeCells>`; empty writes nothing, so a sheet without merges keeps its prior bytes. */
+        val merges: List<XlsxMerges.Range> = emptyList(),
+        /** `<hyperlinks>` plus the worksheet relationship part; empty writes neither. */
+        val hyperlinks: List<XlsxHyperlinks.Link> = emptyList(),
+        /** `<printOptions>`/`<pageMargins>`/`<pageSetup>`; `null` writes nothing. */
+        val print: XlsxPrintSetup.Spec? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
             require(freezeRows >= 0 && freezeCols >= 0) { "Negative freeze pane split" }
+            XlsxMerges.requireDisjoint(merges)
             tabRgb?.let { require(HEX6.matches(it)) { "tabRgb must be 6-hex RGB: $it" } }
             zoomScale?.let { require(it in 10..400) { "zoomScale $it outside 10..400" } }
             hiddenRows.forEach { row ->
@@ -182,6 +189,12 @@ object XlsxStyledBook {
         parts["xl/styles.xml"] = styleTable.toXml()
         spec.sheets.forEachIndexed { idx, sheet ->
             parts["xl/worksheets/sheet${idx + 1}.xml"] = buildSheetXml(sheet, styleTable)
+            // Only an external link needs a relationship: an internal-only list gets no part at all, because an
+            // empty <Relationships> element is a claim that there is something to relate.
+            val linkIds = XlsxHyperlinks.relationshipIds(sheet.hyperlinks)
+            if (linkIds.isNotEmpty()) {
+                parts["xl/worksheets/_rels/sheet${idx + 1}.xml.rels"] = XlsxHyperlinks.toRels(linkIds)
+            }
         }
 
         val baos = ByteArrayOutputStream()
@@ -242,7 +255,9 @@ object XlsxStyledBook {
                 "veryHidden" -> Visibility.VERY_HIDDEN
                 else -> Visibility.VISIBLE
             }
-            parseSheet(name, BoundedXml.parse(shBytes), styles, visibility)
+            val targets = entries["xl/worksheets/_rels/sheet${idx + 1}.xml.rels"]
+                ?.let { XlsxHyperlinks.parseRels(it) } ?: emptyMap()
+            parseSheet(name, BoundedXml.parse(shBytes), styles, visibility, targets)
         }
         // A firstSheet that no longer names a visible sheet is dropped on import: the sheets are all
         // still readable, and the constructor refuses that value for the same repair reason it is
@@ -332,6 +347,7 @@ object XlsxStyledBook {
         root: BoundedXml.Node,
         styles: List<CellStyle>,
         visibility: Visibility = Visibility.VISIBLE,
+        relationshipTargets: Map<String, String> = emptyMap(),
     ): StyledSheet {
         // Foreign packages may colour a tab with a theme/indexed colour instead of `rgb`; only a full
         // 6-hex RGB value fits this model, so anything else is left unset rather than guessed.
@@ -395,6 +411,9 @@ object XlsxStyledBook {
             validations = XlsxValidation.parse(root),
             protection = XlsxProtection.parse(root),
             autoFilter = XlsxAutoFilter.parse(root),
+            merges = XlsxMerges.parse(root),
+            hyperlinks = XlsxHyperlinks.parse(root, relationshipTargets),
+            print = XlsxPrintSetup.parse(root),
         )
     }
 
@@ -672,7 +691,14 @@ object XlsxStyledBook {
         sheet.protection?.let { append(XlsxProtection.toXml(it)) }
         // CT_Worksheet sequence: autoFilter follows sheetProtection and precedes dataValidations.
         sheet.autoFilter?.let { append(XlsxAutoFilter.toXml(it)) }
+        // mergeCells precedes dataValidations in the same sequence.
+        if (sheet.merges.isNotEmpty()) append(XlsxMerges.toXml(sheet.merges))
         if (sheet.validations.isNotEmpty()) append(XlsxValidation.toXml(sheet.validations))
+        // Then hyperlinks, printOptions, pageMargins and pageSetup, in that order.
+        if (sheet.hyperlinks.isNotEmpty()) {
+            append(XlsxHyperlinks.toXml(sheet.hyperlinks, XlsxHyperlinks.relationshipIds(sheet.hyperlinks)))
+        }
+        sheet.print?.let { append(XlsxPrintSetup.toXml(it)) }
         append("</worksheet>")
     }.toByteArray(StandardCharsets.UTF_8)
 
