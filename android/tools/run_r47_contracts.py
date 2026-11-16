@@ -50,7 +50,27 @@ KERNELS: tuple[KernelSpec, ...] = (
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/NumFmtSections.kt",
         ),
     ),
-    KernelSpec("XlsxStyledBook", ":format:ooxml", "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt", "office"),
+    # `XlsxStyledBook` stopped being a lone file at R91: the sheet records it writes (validation, protection,
+    # autoFilter, merges, hyperlinks, print setup, header/footer, breaks) each live in their own file, so the
+    # domain-isolated jar has to carry them or the kernel cannot compile at all.
+    KernelSpec(
+        "XlsxStyledBook",
+        ":format:ooxml",
+        "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
+        "office",
+        (
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxValidation.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxProtection.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilter.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxMerges.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxHyperlinks.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxPrintSetup.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxHeaderFooter.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxBreaks.kt",
+        ),
+    ),
     KernelSpec("PdfOutlineBookmarks", ":format:pdf", "format/pdf/src/main/java/dev/fusion/format/pdf/PdfOutlineBookmarks.kt", "office"),
     KernelSpec("OdtRichWriter", ":format:lok", "format/lok/src/main/java/dev/fusion/lok/OdtRichWriter.kt", "office"),
     KernelSpec("LatexMathSvg", ":core:documents", "core/documents/src/main/kotlin/dev/fusion/documents/LatexMathSvg.kt", "office"),

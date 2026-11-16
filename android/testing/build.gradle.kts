@@ -1696,6 +1696,32 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R94: SpreadsheetML merged cells, cell hyperlinks (worksheet relationship part) and print layout; openpyxl
+// plus raw OPC relationship/content-type checks verify separately.
+val r94Tail by sourceSets.creating
+kotlin.sourceSets.named("r94Tail") { kotlin.srcDir("src/r94/kotlin") }
+dependencies { add(r94Tail.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r94TailContracts") {
+    dependsOn(r94Tail.classesTaskName)
+    classpath = r94Tail.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R94Checks")
+    args(rootProject.file("testing/build/r94/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r94/artifacts").mkdirs() }
+}
+
+// R95: the rest of the print tail — headerFooter plus rowBreaks/colBreaks — written after pageSetup in
+// CT_Worksheet order and read back by openpyxl's HeaderFooter/RowBreak/ColBreak models.
+val r95Tail by sourceSets.creating
+kotlin.sourceSets.named("r95Tail") { kotlin.srcDir("src/r95/kotlin") }
+dependencies { add(r95Tail.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r95TailContracts") {
+    dependsOn(r95Tail.classesTaskName)
+    classpath = r95Tail.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R95Checks")
+    args(rootProject.file("testing/build/r95/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r95/artifacts").mkdirs() }
+}
+
 // R93: SpreadsheetML autoFilter (filterColumn, filters, customFilters) and its row predicate; openpyxl plus a
 // Python re-implementation of the decision function verify separately.
 val r93AutoFilter by sourceSets.creating
