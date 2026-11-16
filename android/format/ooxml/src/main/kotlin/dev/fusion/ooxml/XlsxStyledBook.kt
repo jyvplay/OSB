@@ -52,6 +52,10 @@ object XlsxStyledBook {
         val underline: Boolean = false,
         /** CT_Font `<strike/>`. */
         val strike: Boolean = false,
+        /** CT_CellProtection `locked`; `null` keeps the schema default (a cell is locked). */
+        val locked: Boolean? = null,
+        /** CT_CellProtection `hidden`, which hides the formula bar contents; `null` keeps the default (shown). */
+        val hiddenFormula: Boolean? = null,
     ) {
         /** ECMA-376 `horizontal` tokens this writer emits; other schema tokens are import-only. */
         enum class HAlign(val token: String) { LEFT("left"), CENTER("center"), RIGHT("right") }
@@ -109,6 +113,8 @@ object XlsxStyledBook {
         val showGridLines: Boolean? = null,
         /** CT_DataValidation records, written after `<sheetData>`; empty leaves the sheet bytes unchanged. */
         val validations: List<XlsxValidation.Rule> = emptyList(),
+        /** `<sheetProtection>`; `null` writes nothing, so an unprotected sheet keeps its prior bytes. */
+        val protection: XlsxProtection.SheetProtection? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -313,6 +319,8 @@ object XlsxStyledBook {
                 vertical = vertical,
                 underline = font?.underline ?: false,
                 strike = font?.strike ?: false,
+                locked = xf.firstChild("protection")?.attr("locked")?.let { isOn(it) },
+                hiddenFormula = xf.firstChild("protection")?.attr("hidden")?.let { isOn(it) },
             )
         }.orEmpty().ifEmpty { listOf(CellStyle()) }
     }
@@ -383,6 +391,7 @@ object XlsxStyledBook {
             zoomScale = zoomScale,
             showGridLines = showGridLines,
             validations = XlsxValidation.parse(root),
+            protection = XlsxProtection.parse(root),
         )
     }
 
@@ -416,6 +425,8 @@ object XlsxStyledBook {
             val borderId: Int,
             val horizontal: CellStyle.HAlign? = null,
             val vertical: CellStyle.VAlign? = null,
+            val locked: Boolean? = null,
+            val hiddenFormula: Boolean? = null,
         )
 
         fun intern(style: CellStyle): Int = styleToXf.getOrPut(style) {
@@ -446,7 +457,8 @@ object XlsxStyledBook {
                 borders.add(style.thinBorder)
             }
             val xfIdx = xfs.size
-            xfs.add(Quad(nfId, fontId, fillId, borderId, style.horizontal, style.vertical))
+            xfs.add(Quad(nfId, fontId, fillId, borderId, style.horizontal, style.vertical,
+                style.locked, style.hiddenFormula))
             xfIdx
         }
 
@@ -501,15 +513,29 @@ object XlsxStyledBook {
                 if (q.fontId != 0) append(""" applyFont="1"""")
                 if (q.fillId != 0) append(""" applyFill="1"""")
                 if (q.borderId != 0) append(""" applyBorder="1"""")
-                if (q.horizontal == null && q.vertical == null) {
+                val align = q.horizontal != null || q.vertical != null
+                val protect = q.locked != null || q.hiddenFormula != null
+                if (align) append(""" applyAlignment="1"""")
+                if (protect) append(""" applyProtection="1"""")
+                if (!align && !protect) {
                     append("/>")
                     continue
                 }
-                append(""" applyAlignment="1">""")
-                append("<alignment")
-                q.horizontal?.let { append(""" horizontal="${it.token}"""") }
-                q.vertical?.let { append(""" vertical="${it.token}"""") }
-                append("/></xf>")
+                append(">")
+                if (align) {
+                    append("<alignment")
+                    q.horizontal?.let { append(""" horizontal="${it.token}"""") }
+                    q.vertical?.let { append(""" vertical="${it.token}"""") }
+                    append("/>")
+                }
+                // CT_Xf sequence is alignment, then protection, then extLst.
+                if (protect) {
+                    append("<protection")
+                    q.locked?.let { append(""" locked="${if (it) 1 else 0}"""") }
+                    q.hiddenFormula?.let { append(""" hidden="${if (it) 1 else 0}"""") }
+                    append("/>")
+                }
+                append("</xf>")
             }
             append("</cellXfs></styleSheet>")
         }.toByteArray(StandardCharsets.UTF_8)
@@ -638,8 +664,9 @@ object XlsxStyledBook {
             append("</row>")
         }
         append("</sheetData>")
-        // CT_Worksheet sequence: dataValidations follows sheetData and precedes hyperlinks/pageSetup, none
-        // of which this writer emits, so appending here keeps the schema order for every sheet.
+        // CT_Worksheet sequence: sheetProtection follows sheetData, and dataValidations follows
+        // sheetProtection. Neither element is written when undeclared, so prior sheet bytes are unchanged.
+        sheet.protection?.let { append(XlsxProtection.toXml(it)) }
         if (sheet.validations.isNotEmpty()) append(XlsxValidation.toXml(sheet.validations))
         append("</worksheet>")
     }.toByteArray(StandardCharsets.UTF_8)

@@ -37,7 +37,10 @@ object BoundedXml {
             override fun fatalError(e:SAXParseException) {throw e}
             override fun startPrefixMapping(prefix:String,uri:String) {require(++mappings<=16 && prefix.length<=128 && uri.length<=2048)}
             override fun startElement(uri:String,local:String,qName:String,attrs:Attributes) {
-                require(stack.size<32 && ++nodes<=32768 && attrs.length<=16 && local.length in 1..128 && qName.length<=256 && uri.length<=2048)
+                // 24 admits every real element this writer or Excel produces: CT_SheetProtection alone
+                // carries up to 21 attributes (password, sheet, and fifteen action flags plus the four
+                // strong-hash attributes), which the earlier cap of 16 refused as if it were an attack.
+                require(stack.size<32 && ++nodes<=32768 && attrs.length<=24 && local.length in 1..128 && qName.length<=256 && uri.length<=2048)
                 val values=LinkedHashMap<Name,String>()
                 for(i in 0 until attrs.length) {
                     require(attrs.getLocalName(i).length in 1..128 && attrs.getURI(i).length<=2048 && attrs.getValue(i).length<=4096)

@@ -1696,6 +1696,19 @@ tasks.register<JavaExec>("r84SheetVisibilityContracts") {
     doFirst { rootProject.file("testing/build/r84sheet/artifacts").mkdirs() }
 }
 
+// R92: worksheet protection (CT_SheetProtection, the legacy 16-bit password hash) and per-cell
+// CT_CellProtection; openpyxl's models plus its own hash implementation verify separately.
+val r92Protection by sourceSets.creating
+kotlin.sourceSets.named("r92Protection") { kotlin.srcDir("src/r92/kotlin") }
+dependencies { add(r92Protection.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r92ProtectionContracts") {
+    dependsOn(r92Protection.classesTaskName)
+    classpath = r92Protection.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R92Checks")
+    args(rootProject.file("testing/build/r92/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r92/artifacts").mkdirs() }
+}
+
 // R91: SpreadsheetML data validation (CT_DataValidation) and its predicate; openpyxl plus a Python
 // re-implementation of the decision function verify separately.
 val r91Validation by sourceSets.creating
