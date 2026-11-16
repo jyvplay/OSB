@@ -5636,7 +5636,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedXml.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "fec538f834a7d6f9bc72883bd799b2bfac52b3fd07169c5035e8ec3a6a42b27d"
+      "sha256": "7089b9649b5ec0e9a3574bffef643b0bd39030e07f14e31277e2e16197b9030c"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/BoundedZip.kt",
@@ -5969,6 +5969,12 @@
       "sha256": "5145dffda8069c340384e973832f34265b03e9e51cb0f4868f320ea01e220dda"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilter.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "36a09930b3889ca3a7e3a3194d6af0250a383cb4e2344c2b6813dd834a96565c"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxAutoFilterEvaluator.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
@@ -5987,10 +5993,16 @@
       "sha256": "f9c30930fb479c588347dd1aff7f8a62810e82c0e60799dd3263c194336e0ebc"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxProtection.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "4fa34ffdd2e4c0a9515cfcf32a204536099249068cb733e059e2959c37cc3415"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "7045004a8a310ed1c4344781568d7f1ce1cd81c818fe5a68b9154e0708d3c267"
+      "sha256": "08b8b87dc875735444408a4ea8fde00cd7c11afb920a4cacae67d06fc017776e"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxValidation.kt",
