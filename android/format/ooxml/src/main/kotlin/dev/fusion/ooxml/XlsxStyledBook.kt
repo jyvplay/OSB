@@ -115,6 +115,8 @@ object XlsxStyledBook {
         val validations: List<XlsxValidation.Rule> = emptyList(),
         /** `<sheetProtection>`; `null` writes nothing, so an unprotected sheet keeps its prior bytes. */
         val protection: XlsxProtection.SheetProtection? = null,
+        /** `<autoFilter>`; `null` writes nothing, so an unfiltered sheet keeps its prior bytes. */
+        val autoFilter: XlsxAutoFilter.AutoFilter? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -392,6 +394,7 @@ object XlsxStyledBook {
             showGridLines = showGridLines,
             validations = XlsxValidation.parse(root),
             protection = XlsxProtection.parse(root),
+            autoFilter = XlsxAutoFilter.parse(root),
         )
     }
 
@@ -667,6 +670,8 @@ object XlsxStyledBook {
         // CT_Worksheet sequence: sheetProtection follows sheetData, and dataValidations follows
         // sheetProtection. Neither element is written when undeclared, so prior sheet bytes are unchanged.
         sheet.protection?.let { append(XlsxProtection.toXml(it)) }
+        // CT_Worksheet sequence: autoFilter follows sheetProtection and precedes dataValidations.
+        sheet.autoFilter?.let { append(XlsxAutoFilter.toXml(it)) }
         if (sheet.validations.isNotEmpty()) append(XlsxValidation.toXml(sheet.validations))
         append("</worksheet>")
     }.toByteArray(StandardCharsets.UTF_8)
