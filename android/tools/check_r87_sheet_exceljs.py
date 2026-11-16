@@ -5,6 +5,9 @@ exceljs (pinned in `tools/r87node/package.json`) is a third implementation: neit
 openpyxl, which is what the R86 lane used. It reports sheet state, `tabColor.argb`, `sheetView.zoomScale`
 and the workbook view's `firstSheet`/`activeTab`, so those four can be cross-checked against `views.tsv`.
 
+The optional `--r90` lane reads the R90 decoration workbooks: exceljs models `font.underline`
+(boolean or `{ style }`) and `font.strike`.
+
 The optional `--r89` lane reads the R89 font-size workbooks: exceljs reports `font.size` (whole
 points — it truncates a fractional size, which this checker accepts only within one point and counts
 separately), `font.bold`, `font.italic` and `font.color.argb`.
@@ -162,9 +165,51 @@ def check_r89(payload: dict, artifacts: Path, fields: int) -> dict[str, int]:
     return {'workbooks': len(table), 'cells': cells, 'sized': sized, 'rounded': rounded}
 
 
+def check_r90(payload: dict, artifacts: Path, fields: int) -> dict[str, int]:
+    """Cross-check `decorations_xlsx.tsv` against an exceljs dump of the R90 workbooks."""
+    path = artifacts / 'decorations_xlsx.tsv'
+    require(path.is_file(), f'missing intent table {path}')
+    table: dict[str, list[list[str]]] = {}
+    for number, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+        if not line.strip():
+            continue
+        parts = line.split('\t')
+        require(len(parts) == fields, f'decorations_xlsx.tsv line {number}: {len(parts)} fields')
+        table.setdefault(parts[0], []).append(parts)
+    files = {entry['name'][:-5]: entry for entry in payload['files']}
+    require(sorted(files) == sorted(table),
+            'decorations_xlsx.tsv and the read workbooks disagree about which files exist')
+    cells = 0
+    decorated = 0
+    for name, entries in table.items():
+        sheets = {sheet['name']: sheet for sheet in files[name]['sheets']}
+        for row in entries:
+            _, sheet_name, ref, bold, italic, underline, strike, colour, _size, _fill = row
+            where = f'{name}:{sheet_name}!{ref}'
+            require(sheet_name in sheets, f'{where}: exceljs did not read this sheet')
+            cell = next((c for c in sheets[sheet_name].get('cells', []) if c['ref'] == ref), None)
+            require(cell is not None, f'{where}: exceljs did not read this cell')
+            require(bool(cell['underline']) == (underline == 'true'),
+                    f'{where}: exceljs reports underline={cell["underline"]!r}')
+            require(bool(cell['strike']) == (strike == 'true'),
+                    f'{where}: exceljs reports strike={cell["strike"]!r}')
+            require(bool(cell['bold']) == (bold == 'true'), f'{where}: exceljs bold mismatch')
+            require(bool(cell['italic']) == (italic == 'true'), f'{where}: exceljs italic mismatch')
+            if colour == '-':
+                require(cell['color'] is None, f'{where}: undeclared colour read as {cell["color"]}')
+            else:
+                require(cell['color'] == 'FF' + colour,
+                        f'{where}: colour read as {cell["color"]}, expected FF{colour}')
+            cells += 1
+            if underline == 'true' or strike == 'true':
+                decorated += 1
+    return {'workbooks': len(table), 'cells': cells, 'decorated': decorated}
+
+
 def verify(artifacts: Path, node: str, reader_json: Path | None,
            r88: Path | None = None, r88_json: Path | None = None,
-           r89: Path | None = None, r89_json: Path | None = None) -> dict:
+           r89: Path | None = None, r89_json: Path | None = None,
+           r90: Path | None = None, r90_json: Path | None = None) -> dict:
     rows = intent_rows(artifacts / 'views.tsv')
     workdir = Path(tempfile.mkdtemp(prefix='r87-exceljs-'))
     try:
@@ -219,7 +264,8 @@ def verify(artifacts: Path, node: str, reader_json: Path | None,
             'colours': colour_asserted, 'zooms': zoom_asserted, 'first_sheet': first_sheet_asserted,
             'show_tabs_skipped': show_tabs_skipped}
     totals.update({'r88_workbooks': 0, 'r88_sheets': 0, 'r88_grid_off': 0,
-                   'r89_workbooks': 0, 'r89_cells': 0, 'r89_sized': 0, 'r89_rounded': 0})
+                   'r89_workbooks': 0, 'r89_cells': 0, 'r89_sized': 0, 'r89_rounded': 0,
+                   'r90_workbooks': 0, 'r90_cells': 0, 'r90_decorated': 0})
     if r88 is not None:
         workdir = Path(tempfile.mkdtemp(prefix='r88-exceljs-'))
         try:
@@ -240,6 +286,16 @@ def verify(artifacts: Path, node: str, reader_json: Path | None,
         r89_totals = check_r89(r89_payload, r89, FONT_FIELDS)
         totals.update({'r89_workbooks': r89_totals['workbooks'], 'r89_cells': r89_totals['cells'],
                        'r89_sized': r89_totals['sized'], 'r89_rounded': r89_totals['rounded']})
+    if r90 is not None:
+        workdir = Path(tempfile.mkdtemp(prefix='r90-exceljs-'))
+        try:
+            r90_payload = (json.loads(r90_json.read_text()) if r90_json
+                           else read(r90, node, workdir))
+        finally:
+            shutil.rmtree(workdir, ignore_errors=True)
+        r90_totals = check_r90(r90_payload, r90, 10)
+        totals.update({'r90_workbooks': r90_totals['workbooks'], 'r90_cells': r90_totals['cells'],
+                       'r90_decorated': r90_totals['decorated']})
     return totals
 
 
@@ -252,6 +308,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument('--r88-reader-json', type=Path, help='use a precomputed R88 exceljs dump')
     parser.add_argument('--r89', type=Path, help='R89 font-size artifacts (fonts.tsv)')
     parser.add_argument('--r89-reader-json', type=Path, help='use a precomputed R89 exceljs dump')
+    parser.add_argument('--r90', type=Path, help='R90 decoration artifacts (decorations_xlsx.tsv)')
+    parser.add_argument('--r90-reader-json', type=Path, help='use a precomputed R90 exceljs dump')
     args = parser.parse_args(argv)
     node = args.node or shutil.which('node')
     try:
@@ -260,7 +318,8 @@ def main(argv: list[str] | None = None) -> int:
             require(NODE_MODULES.is_dir(), f'missing {NODE_MODULES}; run `npm ci --prefix tools/r87node` first')
         totals = verify(args.artifacts, node or '', args.reader_json,
                         getattr(args, 'r88', None), getattr(args, 'r88_reader_json', None),
-                        getattr(args, 'r89', None), getattr(args, 'r89_reader_json', None))
+                        getattr(args, 'r89', None), getattr(args, 'r89_reader_json', None),
+                        getattr(args, 'r90', None), getattr(args, 'r90_reader_json', None))
     except Fail as failure:
         print(f'R87 exceljs verification FAILED: {failure}')
         return 1
@@ -280,6 +339,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f'R89 font lane: {totals["r89_cells"]} cells in {totals["r89_workbooks"]} workbooks '
               f'cross-checked through exceljs, {totals["r89_sized"]} with a declared size '
               f'({totals["r89_rounded"]} fractional size(s) that exceljs truncates by design).')
+    if totals['r90_workbooks']:
+        print(f'R90 decoration lane: {totals["r90_cells"]} cells in {totals["r90_workbooks"]} workbooks '
+              f'cross-checked through exceljs, {totals["r90_decorated"]} with a declared underline/strike.')
     return 0
 
 
