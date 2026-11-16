@@ -5981,10 +5981,22 @@
       "sha256": "f1c18ede21457b74def28e916a7b315938644692a49d1ec7bac3012d3d8db39d"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxBreaks.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "346456bc9354278c4a261411ee2fb2a2eed7b9d9a8106a8fc9d40c76c99f4aac"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxDataValidationXml.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
       "sha256": "7b2b6e84423ff43381a83feafbdd20c0eb11adfcdba128a9d1392ddf6fad3a7b"
+    },
+    {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxHeaderFooter.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "d97e69c1548081a99cbede9c94e6c46fe0eb70f31b8e9e579cc65258c43134fb"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxHyperlinks.kt",
@@ -6020,7 +6032,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "e45aa54236fbf18b401986f408281980a7b6c12046a449f30d5fbd75441b1111"
+      "sha256": "25ce05ab8ac4e906d2e4d02591f8872e4b82ab820f039b4249824fad30399fe3"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxValidation.kt",

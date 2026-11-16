@@ -123,6 +123,10 @@ object XlsxStyledBook {
         val hyperlinks: List<XlsxHyperlinks.Link> = emptyList(),
         /** `<printOptions>`/`<pageMargins>`/`<pageSetup>`; `null` writes nothing. */
         val print: XlsxPrintSetup.Spec? = null,
+        /** `<headerFooter>`; `null` writes nothing, so a sheet without one keeps its prior bytes. */
+        val headerFooter: XlsxHeaderFooter.Spec? = null,
+        /** `<rowBreaks>`/`<colBreaks>`; `null` writes neither container. */
+        val breaks: XlsxBreaks.Spec? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -414,6 +418,8 @@ object XlsxStyledBook {
             merges = XlsxMerges.parse(root),
             hyperlinks = XlsxHyperlinks.parse(root, relationshipTargets),
             print = XlsxPrintSetup.parse(root),
+            headerFooter = XlsxHeaderFooter.parse(root),
+            breaks = XlsxBreaks.parse(root),
         )
     }
 
@@ -699,6 +705,9 @@ object XlsxStyledBook {
             append(XlsxHyperlinks.toXml(sheet.hyperlinks, XlsxHyperlinks.relationshipIds(sheet.hyperlinks)))
         }
         sheet.print?.let { append(XlsxPrintSetup.toXml(it)) }
+        // CT_Worksheet order continues headerFooter, rowBreaks, colBreaks — after pageSetup, before extLst.
+        sheet.headerFooter?.let { append(XlsxHeaderFooter.toXml(it)) }
+        sheet.breaks?.let { append(XlsxBreaks.toXml(it)) }
         append("</worksheet>")
     }.toByteArray(StandardCharsets.UTF_8)
 
