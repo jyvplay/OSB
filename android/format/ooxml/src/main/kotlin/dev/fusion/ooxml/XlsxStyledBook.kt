@@ -541,6 +541,9 @@ object XlsxStyledBook {
         fun internDxf(format: XlsxConditionalFormatting.Format): Int {
             val existing = dxfs.indexOf(format)
             if (existing >= 0) return existing
+            // A dxf's number format needs an id in `<numFmts>` exactly as a cell style's does — the code is
+            // written beside the id in the dxf, but a reader that resolves ids only must find it here too.
+            format.numberFormat?.let { code -> numFmtIds.getOrPut(code) { 164 + numFmtIds.size } }
             dxfs.add(format)
             return dxfs.size - 1
         }
@@ -658,7 +661,10 @@ object XlsxStyledBook {
             // so a workbook without conditional formatting keeps its previous styles.xml bytes.
             if (dxfs.isNotEmpty()) {
                 append("""<dxfs count="${dxfs.size}">""")
-                for (format in dxfs) append(XlsxConditionalFormatting.dxfToXml(format))
+                for (format in dxfs) {
+                    val id = format.numberFormat?.let { numFmtIds.getValue(it) } ?: 0
+                    append(XlsxConditionalFormatting.dxfToXml(format, id))
+                }
                 append("</dxfs>")
             }
             append("</styleSheet>")
