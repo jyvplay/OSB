@@ -135,6 +135,10 @@ object XlsxStyledBook {
         val breaks: XlsxBreaks.Spec? = null,
         /** `<conditionalFormatting>` blocks; empty writes nothing and leaves the sheet bytes unchanged. */
         val conditionalFormats: List<XlsxConditionalFormatting.Block> = emptyList(),
+        /** Grouped rows and columns (`outlineLevel`/`collapsed`); `null` writes neither attribute anywhere. */
+        val outline: XlsxOutline.Levels? = null,
+        /** `<sheetPr><outlinePr/>`; `null`, or the schema default, writes no element. */
+        val outlineSettings: XlsxOutline.Settings? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -424,7 +428,8 @@ object XlsxStyledBook {
     ): StyledSheet {
         // Foreign packages may colour a tab with a theme/indexed colour instead of `rgb`; only a full
         // 6-hex RGB value fits this model, so anything else is left unset rather than guessed.
-        val tabRgb = root.firstChild("sheetPr")?.firstChild("tabColor")?.attr("rgb")
+        val sheetPrNode = root.firstChild("sheetPr")
+        val tabRgb = sheetPrNode?.firstChild("tabColor")?.attr("rgb")
             ?.takeLast(6)?.takeIf { HEX6.matches(it) }?.uppercase()
         val pane = root.firstChild("sheetViews")?.firstChild("sheetView")?.firstChild("pane")
         val freezeRows = pane?.attr("ySplit")?.toIntOrNull() ?: 0
@@ -438,7 +443,8 @@ object XlsxStyledBook {
         }
         val colWidths = linkedMapOf<Int, Double>()
         val hiddenColumns = linkedSetOf<Int>()
-        root.firstChild("cols")?.children?.filter { it.localName == "col" }?.forEach { col ->
+        val colNodes = root.firstChild("cols")?.children?.filter { it.localName == "col" }.orEmpty()
+        colNodes.forEach { col ->
             val min = col.attr("min")?.toIntOrNull()
             val w = col.attr("width")?.toDoubleOrNull()
             if (min != null && w != null) colWidths[min] = w
@@ -447,7 +453,8 @@ object XlsxStyledBook {
         val cells = mutableListOf<StyledCell>()
         val rowHeights = linkedMapOf<Int, Double>()
         val hiddenRows = linkedSetOf<Int>()
-        for (row in root.firstChild("sheetData")?.children?.filter { it.localName == "row" }.orEmpty()) {
+        val rowNodes = root.firstChild("sheetData")?.children?.filter { it.localName == "row" }.orEmpty()
+        for (row in rowNodes) {
             val rowNumber = row.attr("r")?.toIntOrNull()
             val height = row.attr("ht")?.toDoubleOrNull()
             if (rowNumber != null && height != null && height > 0.0) rowHeights[rowNumber] = height
@@ -490,6 +497,8 @@ object XlsxStyledBook {
             headerFooter = XlsxHeaderFooter.parse(root),
             breaks = XlsxBreaks.parse(root),
             conditionalFormats = XlsxConditionalFormatting.parse(root, dxfs),
+            outline = XlsxOutline.parseLevels(rowNodes, colNodes, ::isOn),
+            outlineSettings = XlsxOutline.parseSettings(sheetPrNode),
         )
     }
 
@@ -725,9 +734,16 @@ object XlsxStyledBook {
     private fun buildSheetXml(sheet: StyledSheet, styles: StyleRegistry): ByteArray = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<worksheet xmlns="$MAIN_NS">""")
-        // CT_Worksheet order: sheetPr, dimension, sheetViews, sheetFormatPr, cols, sheetData. sheetPr is
-        // written only when the sheet has a tab colour or asks to fit to page, so legacy bytes are unchanged.
-        XlsxPrintSetup.sheetPrXml(sheet.tabRgb, sheet.print)?.let { append(it) }
+        // CT_Worksheet order: sheetPr, dimension, sheetViews, sheetFormatPr, cols, sheetData. Inside it,
+        // CT_SheetPr is a sequence — tabColor, outlinePr, pageSetUpPr — and Excel repairs a sheet whose
+        // children are out of order, so the three fragments are placed here and nowhere else. sheetPr itself
+        // is written only when a child exists, so a sheet that declares none keeps its prior bytes.
+        val sheetPr = buildString {
+            sheet.tabRgb?.let { append("""<tabColor rgb="FF${it.uppercase()}"/>""") }
+            XlsxOutline.outlinePrXml(sheet.outlineSettings)?.let { append(it) }
+            XlsxPrintSetup.pageSetUpPrXml(sheet.print)?.let { append(it) }
+        }
+        if (sheetPr.isNotEmpty()) append("<sheetPr>$sheetPr</sheetPr>")
         val frozen = sheet.freezeRows > 0 || sheet.freezeCols > 0
         if (frozen || sheet.zoomScale != null || sheet.showGridLines != null) {
             append("""<sheetViews><sheetView workbookViewId="0"""")
@@ -745,13 +761,18 @@ object XlsxStyledBook {
                 append("</sheetView></sheetViews>")
             }
         }
-        if (sheet.columnWidths.isNotEmpty() || sheet.hiddenColumns.isNotEmpty()) {
+        val outline = sheet.outline
+        val outlineCols = outline?.columnIndexes.orEmpty()
+        if (sheet.columnWidths.isNotEmpty() || sheet.hiddenColumns.isNotEmpty() || outlineCols.isNotEmpty()) {
             append("<cols>")
-            // One <col> per declared column, ordered by index; a column may be wide, hidden, or both.
-            for (colIdx in (sheet.columnWidths.keys + sheet.hiddenColumns).toSortedSet()) {
+            // One <col> per declared column, ordered by index; a column may be wide, hidden, grouped, or any
+            // combination. Grouping is written as one element per column rather than one per span, so a reader
+            // that keys on `min` (this one, and openpyxl's dimension map) loses nothing.
+            for (colIdx in (sheet.columnWidths.keys + sheet.hiddenColumns + outlineCols).toSortedSet()) {
                 append("""<col min="$colIdx" max="$colIdx"""")
                 sheet.columnWidths[colIdx]?.let { append(""" width="$it" customWidth="1"""") }
                 if (colIdx in sheet.hiddenColumns) append(""" hidden="1"""")
+                if (outline != null) append(XlsxOutline.colAttributes(outline, colIdx))
                 append("/>")
             }
             append("</cols>")
@@ -759,12 +780,14 @@ object XlsxStyledBook {
         append("<sheetData>")
         val byRow = sheet.cells.groupBy { parseRef(it.ref).second }.toSortedMap()
         val hiddenRows = sheet.hiddenRows
-        for (rowNum in (byRow.keys + sheet.rowHeights.keys + hiddenRows).toSortedSet()) {
+        val outlineRows = outline?.rowIndexes.orEmpty()
+        for (rowNum in (byRow.keys + sheet.rowHeights.keys + hiddenRows + outlineRows).toSortedSet()) {
             val rowCells = byRow[rowNum].orEmpty()
             val height = sheet.rowHeights[rowNum]
             val heightAttr = if (height == null) "" else " ht=\"$height\" customHeight=\"1\""
             val hiddenAttr = if (rowNum in hiddenRows) " hidden=\"1\"" else ""
-            append("""<row r="$rowNum"$heightAttr$hiddenAttr>""")
+            val outlineAttr = if (outline == null) "" else XlsxOutline.rowAttributes(outline, rowNum)
+            append("""<row r="$rowNum"$heightAttr$hiddenAttr$outlineAttr>""")
             for (cell in rowCells.sortedBy { parseRef(it.ref).first }) {
                 val xfIdx = styles.intern(cell.style)
                 val sAttr = if (xfIdx > 0) """ s="$xfIdx"""" else ""

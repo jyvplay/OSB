@@ -213,18 +213,12 @@ object XlsxPrintSetup {
     }
 
     /**
-     * `<sheetPr>` for a sheet: `tabColor` first, then `pageSetUpPr` (CT_SheetPr's own sequence). `null` when
-     * the sheet declares neither, so a sheet without a tab colour or a fit flag keeps its prior bytes.
+     * The `<pageSetUpPr/>` child of `<sheetPr>`, or null when the sheet does not fit to page. It is a fragment
+     * because `<sheetPr>` owns a *sequence* (`tabColor`, `outlinePr`, `pageSetUpPr`) and the sheet writer is the
+     * one place that can place it correctly.
      */
-    fun sheetPrXml(tabRgb: String?, spec: Spec?): String? {
-        if (tabRgb == null && spec?.fitToPage != true) return null
-        return buildString {
-            append("<sheetPr>")
-            tabRgb?.let { append("""<tabColor rgb="FF${it.uppercase()}"/>""") }
-            if (spec?.fitToPage == true) append("""<pageSetUpPr fitToPage="1"/>""")
-            append("</sheetPr>")
-        }
-    }
+    fun pageSetUpPrXml(spec: Spec?): String? =
+        if (spec?.fitToPage == true) """<pageSetUpPr fitToPage="1"/>""" else null
 
     /** `%.4f` without trailing zeros, and never in exponent notation, so the bytes stay decimal. */
     private fun inches(value: Double): String =

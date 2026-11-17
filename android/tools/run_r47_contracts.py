@@ -68,6 +68,7 @@ KERNELS: tuple[KernelSpec, ...] = (
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxMerges.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxHyperlinks.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxPrintSetup.kt",
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxOutline.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxHeaderFooter.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxBreaks.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxConditionalFormatting.kt",
