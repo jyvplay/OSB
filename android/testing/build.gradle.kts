@@ -1722,6 +1722,20 @@ tasks.register<JavaExec>("r95TailContracts") {
     doFirst { rootProject.file("testing/build/r95/artifacts").mkdirs() }
 }
 
+// R97: conditional-format verdicts — priority order, stopIfTrue, the cellIs/between operand grammar, the
+// expression subset, top10 with ties, colour-scale interpolation and data-bar arithmetic. A Python
+// re-implementation of the same decision procedure verifies every row separately.
+val r97Verdict by sourceSets.creating
+kotlin.sourceSets.named("r97Verdict") { kotlin.srcDir("src/r97/kotlin") }
+dependencies { add(r97Verdict.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r97VerdictContracts") {
+    dependsOn(r97Verdict.classesTaskName)
+    classpath = r97Verdict.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R97Checks")
+    args(rootProject.file("testing/build/r97/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r97/artifacts").mkdirs() }
+}
+
 // R96: conditional formatting — conditionalFormatting/cfRule over cellIs, expression, top10, colorScale and
 // dataBar, plus the reusable <dxfs> table that cfRule@dxfId resolves against. openpyxl's conditional_formatting
 // and _differential_styles models verify separately.

@@ -268,7 +268,9 @@ object XlsxConditionalFormatting {
         if (value % 1.0 == 0.0 && kotlin.math.abs(value) < 1e15) {
             value.toLong().toString()
         } else {
-            java.math.BigDecimal(value).stripTrailingZeros().toPlainString()
+            // `BigDecimal.valueOf` uses the canonical `Double.toString`, i.e. the shortest text that round-trips.
+            // `BigDecimal(double)` would write the exact binary expansion (0.1 as 0.1000000000000000055...).
+            java.math.BigDecimal.valueOf(value).stripTrailingZeros().toPlainString()
         }
 
     /** `<dxf>` for one format; the `CT_Dxf` sequence puts `font` before `fill`, which is the order written here. */
