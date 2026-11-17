@@ -127,11 +127,14 @@ object XlsxStyledBook {
         val headerFooter: XlsxHeaderFooter.Spec? = null,
         /** `<rowBreaks>`/`<colBreaks>`; `null` writes neither container. */
         val breaks: XlsxBreaks.Spec? = null,
+        /** `<conditionalFormatting>` blocks; empty writes nothing and leaves the sheet bytes unchanged. */
+        val conditionalFormats: List<XlsxConditionalFormatting.Block> = emptyList(),
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
             require(freezeRows >= 0 && freezeCols >= 0) { "Negative freeze pane split" }
             XlsxMerges.requireDisjoint(merges)
+            XlsxConditionalFormatting.requireDistinctPriorities(conditionalFormats)
             tabRgb?.let { require(HEX6.matches(it)) { "tabRgb must be 6-hex RGB: $it" } }
             zoomScale?.let { require(it in 10..400) { "zoomScale $it outside 10..400" } }
             hiddenRows.forEach { row ->
@@ -184,6 +187,13 @@ object XlsxStyledBook {
         for (sh in spec.sheets) {
             for (c in sh.cells) styleTable.intern(c.style)
         }
+        // styles.xml is serialised before the sheets are built, so the differential formats a rule points at have
+        // to be interned here: a cfRule whose dxfId names an absent <dxf> is exactly what Excel repairs.
+        for (sh in spec.sheets) {
+            for (block in sh.conditionalFormats) {
+                for (rule in block.rules) rule.format?.let { styleTable.internDxf(it) }
+            }
+        }
 
         val parts = linkedMapOf<String, ByteArray>()
         parts["[Content_Types].xml"] = buildContentTypes(spec.sheets.size)
@@ -233,7 +243,9 @@ object XlsxStyledBook {
                 "Refusing unsafe/macro XLSX entry: $name"
             }
         }
-        val styles = entries["xl/styles.xml"]?.let { parseStyles(BoundedXml.parse(it)) } ?: listOf(CellStyle())
+        val stylesRoot = entries["xl/styles.xml"]?.let { BoundedXml.parse(it) }
+        val styles = stylesRoot?.let { parseStyles(it) } ?: listOf(CellStyle())
+        val dxfs = stylesRoot?.let { XlsxConditionalFormatting.parseDxfs(it) } ?: emptyList()
         val wbRoot = BoundedXml.parse(entries["xl/workbook.xml"] ?: error("Missing xl/workbook.xml"))
         val defined = wbRoot.firstChild("definedNames")?.children
             ?.filter { it.localName == "definedName" }
@@ -261,7 +273,7 @@ object XlsxStyledBook {
             }
             val targets = entries["xl/worksheets/_rels/sheet${idx + 1}.xml.rels"]
                 ?.let { XlsxHyperlinks.parseRels(it) } ?: emptyMap()
-            parseSheet(name, BoundedXml.parse(shBytes), styles, visibility, targets)
+            parseSheet(name, BoundedXml.parse(shBytes), styles, visibility, targets, dxfs)
         }
         // A firstSheet that no longer names a visible sheet is dropped on import: the sheets are all
         // still readable, and the constructor refuses that value for the same repair reason it is
@@ -352,6 +364,7 @@ object XlsxStyledBook {
         styles: List<CellStyle>,
         visibility: Visibility = Visibility.VISIBLE,
         relationshipTargets: Map<String, String> = emptyMap(),
+        dxfs: List<XlsxConditionalFormatting.Format?> = emptyList(),
     ): StyledSheet {
         // Foreign packages may colour a tab with a theme/indexed colour instead of `rgb`; only a full
         // 6-hex RGB value fits this model, so anything else is left unset rather than guessed.
@@ -420,6 +433,7 @@ object XlsxStyledBook {
             print = XlsxPrintSetup.parse(root),
             headerFooter = XlsxHeaderFooter.parse(root),
             breaks = XlsxBreaks.parse(root),
+            conditionalFormats = XlsxConditionalFormatting.parse(root, dxfs),
         )
     }
 
@@ -445,6 +459,7 @@ object XlsxStyledBook {
         private val borders = mutableListOf(false)
         private val xfs = mutableListOf(Quad(0, 0, 0, 0))
         private val styleToXf = linkedMapOf(CellStyle() to 0)
+        private val dxfs = mutableListOf<XlsxConditionalFormatting.Format>()
 
         private data class Quad(
             val numFmtId: Int,
@@ -456,6 +471,14 @@ object XlsxStyledBook {
             val locked: Boolean? = null,
             val hiddenFormula: Boolean? = null,
         )
+
+        /** `dxfId` for a conditional-format rule; one entry per distinct format, in first-use order. */
+        fun internDxf(format: XlsxConditionalFormatting.Format): Int {
+            val existing = dxfs.indexOf(format)
+            if (existing >= 0) return existing
+            dxfs.add(format)
+            return dxfs.size - 1
+        }
 
         fun intern(style: CellStyle): Int = styleToXf.getOrPut(style) {
             val nfId = if (style.numberFormat == null) 0 else {
@@ -565,7 +588,15 @@ object XlsxStyledBook {
                 }
                 append("</xf>")
             }
-            append("</cellXfs></styleSheet>")
+            append("</cellXfs>")
+            // CT_Stylesheet order: cellXfs, cellStyles, dxfs. The table is written only when a rule needs it,
+            // so a workbook without conditional formatting keeps its previous styles.xml bytes.
+            if (dxfs.isNotEmpty()) {
+                append("""<dxfs count="${dxfs.size}">""")
+                for (format in dxfs) append(XlsxConditionalFormatting.dxfToXml(format))
+                append("</dxfs>")
+            }
+            append("</styleSheet>")
         }.toByteArray(StandardCharsets.UTF_8)
     }
 
@@ -699,6 +730,10 @@ object XlsxStyledBook {
         sheet.autoFilter?.let { append(XlsxAutoFilter.toXml(it)) }
         // mergeCells precedes dataValidations in the same sequence.
         if (sheet.merges.isNotEmpty()) append(XlsxMerges.toXml(sheet.merges))
+        // conditionalFormatting follows mergeCells (and phoneticPr, which this writer never emits).
+        if (sheet.conditionalFormats.isNotEmpty()) {
+            append(XlsxConditionalFormatting.toXml(sheet.conditionalFormats) { styles.internDxf(it) })
+        }
         if (sheet.validations.isNotEmpty()) append(XlsxValidation.toXml(sheet.validations))
         // Then hyperlinks, printOptions, pageMargins and pageSetup, in that order.
         if (sheet.hyperlinks.isNotEmpty()) {
