@@ -82,10 +82,16 @@ object XlsxStyledBook {
         val style: CellStyle = CellStyle(),
     )
 
-    data class DefinedName(val name: String, val reference: String) {
+    /**
+     * A workbook `definedName`. [localSheetId] scopes the name to one sheet (0-based position in the workbook),
+     * which is how Excel stores the print records (`_xlnm.Print_Area`, `_xlnm.Print_Titles`); `null` is the
+     * workbook-wide form.
+     */
+    data class DefinedName(val name: String, val reference: String, val localSheetId: Int? = null) {
         init {
             require(NAME_RE.matches(name)) { "Invalid Excel definedName: $name" }
             require(reference.isNotBlank()) { "definedName reference must not be blank" }
+            localSheetId?.let { require(it >= 0) { "definedName localSheetId $it is negative" } }
         }
     }
 
@@ -129,6 +135,10 @@ object XlsxStyledBook {
         val breaks: XlsxBreaks.Spec? = null,
         /** `<conditionalFormatting>` blocks; empty writes nothing and leaves the sheet bytes unchanged. */
         val conditionalFormats: List<XlsxConditionalFormatting.Block> = emptyList(),
+        /** Grouped rows and columns (`outlineLevel`/`collapsed`); `null` writes neither attribute anywhere. */
+        val outline: XlsxOutline.Levels? = null,
+        /** `<sheetPr><outlinePr/>`; `null`, or the schema default, writes no element. */
+        val outlineSettings: XlsxOutline.Settings? = null,
     ) {
         init {
             require(name.isNotBlank() && name.length <= 31) { "Invalid worksheet name: $name" }
@@ -175,12 +185,34 @@ object XlsxStyledBook {
                     "firstSheet $index points at a hidden sheet"
                 }
             }
+            // Excel keeps defined names unique per scope, and a print record is a name like any other: a
+            // caller that passes _xlnm.Print_Area by hand *and* declares a print area on the sheet would
+            // otherwise get two entries and a repair prompt.
+            val all = definedNames + printNames(sheets)
+            for (dn in all) {
+                dn.localSheetId?.let { require(it in sheets.indices) { "definedName scope $it outside the workbook" } }
+            }
+            val keys = all.map { it.name.lowercase() to it.localSheetId }
+            require(keys.size == keys.toSet().size) {
+                "Duplicate definedName in one scope: " + keys.groupBy { it }.filterValues { it.size > 1 }.keys
+            }
         }
     }
 
+    private val PRINT_RECORD_NAMES = setOf("_xlnm.Print_Area", "_xlnm.Print_Titles")
     private val HEX6 = Regex("^[0-9A-Fa-f]{6}$")
     private val NAME_RE = Regex("^[A-Za-z_][A-Za-z0-9_.]{0,63}$")
     private val CELL_RE = Regex("^([A-Z]{1,3})([1-9][0-9]{0,6})$")
+
+    /** The print records the sheets themselves declare, each scoped to its own sheet. */
+    private fun printNames(sheets: List<StyledSheet>): List<DefinedName> =
+        sheets.flatMapIndexed { idx, sheet ->
+            sheet.print?.let { print ->
+                XlsxPrintSetup.records(sheet.name, print).map { (name, reference) ->
+                    DefinedName(name, reference, idx)
+                }
+            }.orEmpty()
+        }
 
     fun write(spec: WorkbookSpec): ByteArray {
         val styleTable = StyleRegistry()
@@ -251,7 +283,7 @@ object XlsxStyledBook {
             ?.filter { it.localName == "definedName" }
             ?.mapNotNull { dn ->
                 val nm = dn.attr("name") ?: return@mapNotNull null
-                DefinedName(nm, dn.text)
+                DefinedName(nm, dn.text, dn.attr("localSheetId")?.toIntOrNull()?.takeIf { it >= 0 })
             } ?: emptyList()
 
         val view = wbRoot.firstChild("bookViews")?.firstChild("workbookView")
@@ -275,12 +307,40 @@ object XlsxStyledBook {
                 ?.let { XlsxHyperlinks.parseRels(it) } ?: emptyMap()
             parseSheet(name, BoundedXml.parse(shBytes), styles, visibility, targets, dxfs)
         }
+        // Print records are workbook-level names but per-sheet state: a resolved `_xlnm.Print_Area` /
+        // `_xlnm.Print_Titles` is folded back into the sheet it is scoped to, so a caller sees one object per
+        // sheet and never chases localSheetId himself. Two shapes are repaired away instead of kept: a name
+        // scoped to a sheet that does not exist (unwritable — the constructor refuses it — and meaningless in
+        // Excel), and a record that cannot be read as this sheet's area or titles (keeping it would collide on
+        // write with the record the model folded in). Both repairs are reported by the presence tests, not
+        // silently: `r98-foreign.xlsx` carries one of each and the probe asserts they are gone.
+        val inScope = defined.filter { it.localSheetId == null || it.localSheetId in sheets.indices }
+        val printRecords = inScope.filter { it.localSheetId != null && it.name in PRINT_RECORD_NAMES }
+        val unconsumed = printRecords.toMutableList()
+        val sheetsWithRecords = sheets.mapIndexed { idx, sheet ->
+            val mine = printRecords.filter { it.localSheetId == idx }
+            if (mine.isEmpty()) return@mapIndexed sheet
+            // Every record of this sheet's two names is consumed, resolvable or not: the model has exactly one
+            // print area and one print-title pair per sheet, and keeping an uninterpretable duplicate would make
+            // the shape it parsed unwritable. A record naming another sheet, or a second record of the same name
+            // in one scope, is dropped here — Excel repairs the same way.
+            unconsumed.removeAll(mine.toSet())
+            val area = mine.firstOrNull { it.name == "_xlnm.Print_Area" }
+                ?.let { XlsxPrintSetup.areaOf(sheet.name, it.reference) }
+            val titles = mine.firstOrNull { it.name == "_xlnm.Print_Titles" }
+                ?.let { XlsxPrintSetup.titlesOf(sheet.name, it.reference) }
+            if (area == null && titles == null) return@mapIndexed sheet
+            val base = sheet.print ?: XlsxPrintSetup.Spec()
+            sheet.copy(print = base.copy(area = area, titles = titles))
+        }
+        val leftover = inScope.filter { it !in printRecords } + unconsumed
+
         // A firstSheet that no longer names a visible sheet is dropped on import: the sheets are all
         // still readable, and the constructor refuses that value for the same repair reason it is
         // refused on write.
         val firstSheet = view?.attr("firstSheet")?.toIntOrNull()
             ?.takeIf { it in sheets.indices && sheets[it].visibility == Visibility.VISIBLE }
-        return WorkbookSpec(sheets = sheets, definedNames = defined, showSheetTabs = showSheetTabs,
+        return WorkbookSpec(sheets = sheetsWithRecords, definedNames = leftover, showSheetTabs = showSheetTabs,
             firstSheet = firstSheet)
     }
 
@@ -368,7 +428,8 @@ object XlsxStyledBook {
     ): StyledSheet {
         // Foreign packages may colour a tab with a theme/indexed colour instead of `rgb`; only a full
         // 6-hex RGB value fits this model, so anything else is left unset rather than guessed.
-        val tabRgb = root.firstChild("sheetPr")?.firstChild("tabColor")?.attr("rgb")
+        val sheetPrNode = root.firstChild("sheetPr")
+        val tabRgb = sheetPrNode?.firstChild("tabColor")?.attr("rgb")
             ?.takeLast(6)?.takeIf { HEX6.matches(it) }?.uppercase()
         val pane = root.firstChild("sheetViews")?.firstChild("sheetView")?.firstChild("pane")
         val freezeRows = pane?.attr("ySplit")?.toIntOrNull() ?: 0
@@ -382,7 +443,8 @@ object XlsxStyledBook {
         }
         val colWidths = linkedMapOf<Int, Double>()
         val hiddenColumns = linkedSetOf<Int>()
-        root.firstChild("cols")?.children?.filter { it.localName == "col" }?.forEach { col ->
+        val colNodes = root.firstChild("cols")?.children?.filter { it.localName == "col" }.orEmpty()
+        colNodes.forEach { col ->
             val min = col.attr("min")?.toIntOrNull()
             val w = col.attr("width")?.toDoubleOrNull()
             if (min != null && w != null) colWidths[min] = w
@@ -391,7 +453,8 @@ object XlsxStyledBook {
         val cells = mutableListOf<StyledCell>()
         val rowHeights = linkedMapOf<Int, Double>()
         val hiddenRows = linkedSetOf<Int>()
-        for (row in root.firstChild("sheetData")?.children?.filter { it.localName == "row" }.orEmpty()) {
+        val rowNodes = root.firstChild("sheetData")?.children?.filter { it.localName == "row" }.orEmpty()
+        for (row in rowNodes) {
             val rowNumber = row.attr("r")?.toIntOrNull()
             val height = row.attr("ht")?.toDoubleOrNull()
             if (rowNumber != null && height != null && height > 0.0) rowHeights[rowNumber] = height
@@ -434,6 +497,8 @@ object XlsxStyledBook {
             headerFooter = XlsxHeaderFooter.parse(root),
             breaks = XlsxBreaks.parse(root),
             conditionalFormats = XlsxConditionalFormatting.parse(root, dxfs),
+            outline = XlsxOutline.parseLevels(rowNodes, colNodes, ::isOn),
+            outlineSettings = XlsxOutline.parseSettings(sheetPrNode),
         )
     }
 
@@ -642,10 +707,14 @@ object XlsxStyledBook {
             append("""<sheet name="${esc(s.name)}" sheetId="${idx + 1}"$state r:id="rSheet${idx + 1}"/>""")
         }
         append("</sheets>")
-        if (spec.definedNames.isNotEmpty()) {
+        // User names first, then the records the sheets declare, so a workbook that declares neither keeps
+        // exactly the bytes it had before print records existed.
+        val names = spec.definedNames + printNames(spec.sheets)
+        if (names.isNotEmpty()) {
             append("<definedNames>")
-            for (dn in spec.definedNames) {
-                append("""<definedName name="${esc(dn.name)}">${esc(dn.reference)}</definedName>""")
+            for (dn in names) {
+                val scope = dn.localSheetId?.let { """ localSheetId="$it"""" } ?: ""
+                append("""<definedName name="${esc(dn.name)}"$scope>${esc(dn.reference)}</definedName>""")
             }
             append("</definedNames>")
         }
@@ -665,9 +734,16 @@ object XlsxStyledBook {
     private fun buildSheetXml(sheet: StyledSheet, styles: StyleRegistry): ByteArray = buildString {
         append("""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>""")
         append("""<worksheet xmlns="$MAIN_NS">""")
-        // CT_Worksheet order: sheetPr, dimension, sheetViews, sheetFormatPr, cols, sheetData. A tab
-        // colour is written only when declared, so legacy sheet bytes are unchanged.
-        sheet.tabRgb?.let { append("""<sheetPr><tabColor rgb="FF${it.uppercase()}"/></sheetPr>""") }
+        // CT_Worksheet order: sheetPr, dimension, sheetViews, sheetFormatPr, cols, sheetData. Inside it,
+        // CT_SheetPr is a sequence — tabColor, outlinePr, pageSetUpPr — and Excel repairs a sheet whose
+        // children are out of order, so the three fragments are placed here and nowhere else. sheetPr itself
+        // is written only when a child exists, so a sheet that declares none keeps its prior bytes.
+        val sheetPr = buildString {
+            sheet.tabRgb?.let { append("""<tabColor rgb="FF${it.uppercase()}"/>""") }
+            XlsxOutline.outlinePrXml(sheet.outlineSettings)?.let { append(it) }
+            XlsxPrintSetup.pageSetUpPrXml(sheet.print)?.let { append(it) }
+        }
+        if (sheetPr.isNotEmpty()) append("<sheetPr>$sheetPr</sheetPr>")
         val frozen = sheet.freezeRows > 0 || sheet.freezeCols > 0
         if (frozen || sheet.zoomScale != null || sheet.showGridLines != null) {
             append("""<sheetViews><sheetView workbookViewId="0"""")
@@ -685,13 +761,18 @@ object XlsxStyledBook {
                 append("</sheetView></sheetViews>")
             }
         }
-        if (sheet.columnWidths.isNotEmpty() || sheet.hiddenColumns.isNotEmpty()) {
+        val outline = sheet.outline
+        val outlineCols = outline?.columnIndexes.orEmpty()
+        if (sheet.columnWidths.isNotEmpty() || sheet.hiddenColumns.isNotEmpty() || outlineCols.isNotEmpty()) {
             append("<cols>")
-            // One <col> per declared column, ordered by index; a column may be wide, hidden, or both.
-            for (colIdx in (sheet.columnWidths.keys + sheet.hiddenColumns).toSortedSet()) {
+            // One <col> per declared column, ordered by index; a column may be wide, hidden, grouped, or any
+            // combination. Grouping is written as one element per column rather than one per span, so a reader
+            // that keys on `min` (this one, and openpyxl's dimension map) loses nothing.
+            for (colIdx in (sheet.columnWidths.keys + sheet.hiddenColumns + outlineCols).toSortedSet()) {
                 append("""<col min="$colIdx" max="$colIdx"""")
                 sheet.columnWidths[colIdx]?.let { append(""" width="$it" customWidth="1"""") }
                 if (colIdx in sheet.hiddenColumns) append(""" hidden="1"""")
+                if (outline != null) append(XlsxOutline.colAttributes(outline, colIdx))
                 append("/>")
             }
             append("</cols>")
@@ -699,12 +780,14 @@ object XlsxStyledBook {
         append("<sheetData>")
         val byRow = sheet.cells.groupBy { parseRef(it.ref).second }.toSortedMap()
         val hiddenRows = sheet.hiddenRows
-        for (rowNum in (byRow.keys + sheet.rowHeights.keys + hiddenRows).toSortedSet()) {
+        val outlineRows = outline?.rowIndexes.orEmpty()
+        for (rowNum in (byRow.keys + sheet.rowHeights.keys + hiddenRows + outlineRows).toSortedSet()) {
             val rowCells = byRow[rowNum].orEmpty()
             val height = sheet.rowHeights[rowNum]
             val heightAttr = if (height == null) "" else " ht=\"$height\" customHeight=\"1\""
             val hiddenAttr = if (rowNum in hiddenRows) " hidden=\"1\"" else ""
-            append("""<row r="$rowNum"$heightAttr$hiddenAttr>""")
+            val outlineAttr = if (outline == null) "" else XlsxOutline.rowAttributes(outline, rowNum)
+            append("""<row r="$rowNum"$heightAttr$hiddenAttr$outlineAttr>""")
             for (cell in rowCells.sortedBy { parseRef(it.ref).first }) {
                 val xfIdx = styles.intern(cell.style)
                 val sAttr = if (xfIdx > 0) """ s="$xfIdx"""" else ""
