@@ -1780,6 +1780,21 @@ tasks.register<JavaExec>("r105RangesContracts") {
     doFirst { rootProject.file("testing/build/r105/artifacts").mkdirs() }
 }
 
+// R106: the criteria functions and the criterion grammar. R105 could sum a range but not *select* cells from one, so
+// `COUNTIF(A1:A8,">5")` and `SUMIF(B1:B9,"draft")>100` were refused by name; this pass adds COUNTIF, SUMIF and
+// AVERAGEIF with Excel's criterion text (`">5"`, `"<=0"`, `"<>"`, `""`), case-insensitive `*`/`?` wildcards with
+// `~` escapes, numeric-text folding, a 255-character bound, and a second range that only has to match in shape.
+val r106Criteria by sourceSets.creating
+kotlin.sourceSets.named("r106Criteria") { kotlin.srcDir("src/r106/kotlin") }
+dependencies { add(r106Criteria.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r106CriteriaContracts") {
+    dependsOn(r106Criteria.classesTaskName)
+    classpath = r106Criteria.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R106Checks")
+    args(rootProject.file("testing/build/r106/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r106/artifacts").mkdirs() }
+}
+
 // R104: what an `expression` rule's formula may say. The regex reader two rounds ago decided `ISBLANK(G4)` and
 // `MOD(ROW(),2)=0` and nothing else, so every real conditional formula was silently undecided; this pass replaces it
 // with a bounded tokenizer, parser and evaluator over sixteen functions, and refuses what it cannot read.
