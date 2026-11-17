@@ -73,6 +73,9 @@ KERNELS: tuple[KernelSpec, ...] = (
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxBreaks.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxConditionalFormatting.kt",
             "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxConditionalFormatVerdict.kt",
+            # R101: the verdict layer's `timePeriod` calendar converts through SerialDate, so the isolated jar
+            # has to carry it exactly as it carries the sheet records above.
+            "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SerialDate.kt",
         ),
     ),
     KernelSpec("PdfOutlineBookmarks", ":format:pdf", "format/pdf/src/main/java/dev/fusion/format/pdf/PdfOutlineBookmarks.kt", "office"),

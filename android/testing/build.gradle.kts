@@ -1752,6 +1752,36 @@ tasks.register<JavaExec>("r99OutlineContracts") {
     doFirst { rootProject.file("testing/build/r99/artifacts").mkdirs() }
 }
 
+// R101: the last six conditional-format kinds — the four blank/error predicates, timePeriod with its seventeen
+// presets, and iconSet with its 3/4/5-icon sets and its showValue/percent/reverse flags — closing the base
+// schema's eighteen kinds. openpyxl's rule/iconSet models, its documented refusal of the seven non-UI presets,
+// and a Python re-derivation of every verdict verify separately.
+val r101Kinds by sourceSets.creating
+kotlin.sourceSets.named("r101Kinds") { kotlin.srcDir("src/r101/kotlin") }
+dependencies { add(r101Kinds.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r101KindsContracts") {
+    dependsOn(r101Kinds.classesTaskName)
+    classpath = r101Kinds.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R101Checks")
+    args(rootProject.file("testing/build/r101/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r101/artifacts").mkdirs() }
+}
+
+// R100: the seven conditional-format kinds that state a predicate — containsText, notContainsText, beginsWith,
+// endsWith (with their `text` and their own `operator` token), aboveAverage (with
+// aboveAverage/equalAverage/stdDev), duplicateValues and uniqueValues — and the verdicts they produce.
+// openpyxl's rule attributes and a Python re-derivation of every verdict verify separately.
+val r100Conditional by sourceSets.creating
+kotlin.sourceSets.named("r100Conditional") { kotlin.srcDir("src/r100/kotlin") }
+dependencies { add(r100Conditional.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r100ConditionalContracts") {
+    dependsOn(r100Conditional.classesTaskName)
+    classpath = r100Conditional.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R100Checks")
+    args(rootProject.file("testing/build/r100/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r100/artifacts").mkdirs() }
+}
+
 // R98: fit-to-page and page numbering on the sheet, plus the sheet-scoped print records
 // (_xlnm.Print_Area / _xlnm.Print_Titles). openpyxl's page_setup, pageSetUpPr and print_area verify separately.
 val r98Print by sourceSets.creating

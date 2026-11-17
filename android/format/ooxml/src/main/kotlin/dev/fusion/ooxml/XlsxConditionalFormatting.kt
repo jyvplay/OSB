@@ -7,10 +7,19 @@ package dev.fusion.ooxml
  * (§18.8.3) and its `<dxf>` entries (§18.8.3.2). Only the element sections are cited; the complex-type
  * subsections are named, never numbered, because a wrong number is worse than none.
  *
- * Modelled: five rule kinds whose whole content this writer can state — `cellIs`, `expression`, `top10`,
- * `colorScale` and `dataBar` — the `priority` that must be unique per sheet, `stopIfTrue`, the cellIs operators,
- * formula text, thresholds (`cfvo`), colours, and a bounded differential format (bold/italic/strike/underline,
- * font colour and a solid fill).
+ * Modelled: all eighteen rule kinds the base schema defines, so a file this writer produces can state every
+ * `cfRule` Excel writes outside the 2010 `x14` extensions — `cellIs`, `expression`, `top10`, `colorScale`,
+ * `dataBar`, the four text predicates (`containsText`, `notContainsText`, `beginsWith`, `endsWith` with their
+ * `text`), `aboveAverage` (with `aboveAverage`/`equalAverage`/`stdDev`), `duplicateValues`, `uniqueValues`, the
+ * four blank/error predicates, `timePeriod` (with its 17 presets) and `iconSet` (with its set name, its
+ * boundaries and its `showValue`/`percent`/`reverse` flags) — the `priority` that must be unique per sheet,
+ * `stopIfTrue`, the cellIs operators, formula text, thresholds (`cfvo`), colours, and a bounded differential
+ * format (bold/italic/strike/underline, font colour and a solid fill).
+ *
+ * A text rule is stated by its attributes alone. Excel also writes a `<formula>` beside it (`NOT(ISERROR(
+ * SEARCH("abc",A1)))`, or `LEFT(B1,2)="xy"`), which is redundant with `type`/`operator`/`text` under the reading
+ * this model takes; a foreign formula is dropped on read rather than echoed back, because re-emitting a formula
+ * this writer did not derive would be a claim about its spelling.
  *
  * Two model rules are self-imposed rather than schema rules, and are stated because they refuse files Excel
  * would accept:
@@ -22,10 +31,14 @@ package dev.fusion.ooxml
  *   ignores a dxf on those kinds.
  *
  * Not modelled, and not claimed: `dxf` fonts' families and sizes, number formats, borders, alignment and
- * protection inside a dxf; `iconSet`, `containsText`, `notContainsText`, `beginsWith`, `endsWith`, `timePeriod`,
- * `aboveAverage`, `duplicateValues`, `uniqueValues`, `containsBlanks`, `notContainsBlanks`, `containsErrors`,
- * `notContainsErrors`; `text` and `timePeriod` attributes; `equalAverage`/`stdDev`; `<extLst>`; and the
+ * protection inside a dxf; the 2010 `x14` extensions (`x14:dataBar` gradient/negative-bar options,
+ * `x14:iconSet` with its fifth icon, `<extLst>`); `expression` rules beyond the evaluator's grammar; and the
  * evaluation itself — whether Excel highlights a cell is not something a file can state.
+ *
+ * One deliberate exception to "write no default": an `iconSet` rule always writes its `iconSet` name, because the
+ * name is the rule's subject rather than a modifier, and a file that left it out would describe an anonymous
+ * icon set. Its `showValue`/`percent`/`reverse` follow the usual rule and are written only when they differ from
+ * the schema defaults (`showValue` true, `percent` true, `reverse` false).
  */
 object XlsxConditionalFormatting {
 
@@ -36,6 +49,12 @@ object XlsxConditionalFormatting {
     const val MAX_PRIORITY = 1_000_000
     const val MAX_SQREF_TOKENS = 64
 
+    /** Longest literal a text predicate may look for; Excel's own dialog accepts far less. */
+    const val MAX_TEXT = 255
+
+    /** Largest standard-deviation multiple an aboveAverage rule may widen its band by. */
+    const val MAX_STD_DEV = 100
+
     /** Rule kinds this model can write completely. */
     enum class Kind(val token: String) {
         CELL_IS("cellIs"),
@@ -43,13 +62,114 @@ object XlsxConditionalFormatting {
         TOP10("top10"),
         COLOR_SCALE("colorScale"),
         DATA_BAR("dataBar"),
+        TEXT_CONTAINS("containsText"),
+        TEXT_NOT_CONTAINS("notContainsText"),
+        TEXT_BEGINS_WITH("beginsWith"),
+        TEXT_ENDS_WITH("endsWith"),
+        ABOVE_AVERAGE("aboveAverage"),
+        DUPLICATE("duplicateValues"),
+        UNIQUE("uniqueValues"),
+        CONTAINS_BLANKS("containsBlanks"),
+        NOT_CONTAINS_BLANKS("notContainsBlanks"),
+        CONTAINS_ERRORS("containsErrors"),
+        NOT_CONTAINS_ERRORS("notContainsErrors"),
+        TIME_PERIOD("timePeriod"),
+        ICON_SET("iconSet"),
         ;
 
-        /** Kinds whose only visual is a differential format, so a rule of this kind must carry one. */
+        /**
+         * Kinds whose only visual is a differential format, so a rule of this kind must carry one. The four text
+         * predicates, `aboveAverage`, `duplicateValues` and `uniqueValues` paint through a dxf too, but accept a
+         * missing one on read: a foreign file may legitimately state such a rule with no format, and refusing it
+         * would drop the rule from the model rather than record that it fires and paints nothing.
+         */
         val needsFormat: Boolean get() = this == CELL_IS || this == EXPRESSION || this == TOP10
+
+        /** Kinds that paint through their own colour data, so a dxf on one would be a second, unused visual. */
+        val selfPainted: Boolean get() = this == COLOR_SCALE || this == DATA_BAR
+
+        /** The four predicates that carry `text`; each also writes its own `operator` token. */
+        val isText: Boolean
+            get() = this == TEXT_CONTAINS || this == TEXT_NOT_CONTAINS ||
+                this == TEXT_BEGINS_WITH || this == TEXT_ENDS_WITH
+
+        /** The `operator` attribute a text rule carries — Excel's token, which differs from the type for the
+         *  negative form (`notContainsText` is written `operator="notContains"`). */
+        val textOperator: String?
+            get() = when (this) {
+                TEXT_CONTAINS -> "containsText"
+                TEXT_NOT_CONTAINS -> "notContains"
+                TEXT_BEGINS_WITH -> "beginsWith"
+                TEXT_ENDS_WITH -> "endsWith"
+                else -> null
+            }
 
         companion object {
             fun of(token: String): Kind? = values().firstOrNull { it.token == token }
+        }
+    }
+
+    /** `ST_TimePeriod`: the 17 relative-date presets a `timePeriod` rule can carry. */
+    enum class TimePeriod(val token: String) {
+        TODAY("today"),
+        YESTERDAY("yesterday"),
+        TOMORROW("tomorrow"),
+        LAST_7_DAYS("last7Days"),
+        THIS_MONTH("thisMonth"),
+        LAST_MONTH("lastMonth"),
+        NEXT_MONTH("nextMonth"),
+        THIS_WEEK("thisWeek"),
+        LAST_WEEK("lastWeek"),
+        NEXT_WEEK("nextWeek"),
+        THIS_YEAR("thisYear"),
+        LAST_YEAR("lastYear"),
+        NEXT_YEAR("nextYear"),
+        FIRST_QUARTER("firstQuarter"),
+        SECOND_QUARTER("secondQuarter"),
+        THIRD_QUARTER("thirdQuarter"),
+        FOURTH_QUARTER("fourthQuarter"),
+        ;
+
+        companion object {
+            fun of(token: String): TimePeriod? = values().firstOrNull { it.token == token }
+        }
+    }
+
+    /**
+     * `ST_IconSetType` in the base schema: seventeen sets, named by their icon count (the leading digit).
+     *
+     * A five-icon set needs four boundaries, which is exactly the schema's `maxOccurs` for `<cfvo>`: the base
+     * element can describe 3, 4 and 5 icons, and the `x14` extension is needed only for the sets it adds (for
+     * example `5Boxes`), which this model does not claim.
+     */
+    enum class IconSet(val token: String) {
+        THREE_ARROWS("3Arrows"),
+        THREE_ARROWS_GRAY("3ArrowsGray"),
+        THREE_FLAGS("3Flags"),
+        THREE_TRAFFIC_LIGHTS_1("3TrafficLights1"),
+        THREE_TRAFFIC_LIGHTS_2("3TrafficLights2"),
+        THREE_SIGNS("3Signs"),
+        THREE_SYMBOLS("3Symbols"),
+        THREE_SYMBOLS_2("3Symbols2"),
+        FOUR_ARROWS("4Arrows"),
+        FOUR_ARROWS_GRAY("4ArrowsGray"),
+        FOUR_RED_TO_BLACK("4RedToBlack"),
+        FOUR_RATING("4Rating"),
+        FOUR_TRAFFIC_LIGHTS("4TrafficLights"),
+        FIVE_ARROWS("5Arrows"),
+        FIVE_ARROWS_GRAY("5ArrowsGray"),
+        FIVE_RATING("5Rating"),
+        FIVE_QUARTERS("5Quarters"),
+        ;
+
+        /** How many icons the set draws — and therefore how many boundaries a rule stores (`count - 1`). */
+        val iconCount: Int get() = token[0] - '0'
+
+        companion object {
+            fun of(token: String): IconSet? = values().firstOrNull { it.token == token }
+
+            /** The schema default, written when a caller names no set. */
+            val DEFAULT = THREE_TRAFFIC_LIGHTS_1
         }
     }
 
@@ -140,11 +260,32 @@ object XlsxConditionalFormatting {
         val operator: Operator? = null,
         val formulas: List<String> = emptyList(),
         val rank: Int? = null,
+        /**
+         * `@percent`, which two different elements spell: on `top10` it is `CT_CfRule/@percent` (default false)
+         * and on an icon set it is `CT_IconSet/@percent` (default true). Both are the same attribute name, so the
+         * field is shared; the writer puts it on whichever element the kind owns.
+         */
         val percent: Boolean? = null,
         val bottom: Boolean? = null,
         val thresholds: List<Threshold> = emptyList(),
         val colors: List<String> = emptyList(),
         val format: Format? = null,
+        /** The literal a text rule looks for; refused on every other kind. */
+        val text: String? = null,
+        /** `aboveAverage`; absent means the schema default `true`. Only an aboveAverage rule carries it. */
+        val aboveAverage: Boolean? = null,
+        /** `equalAverage`; absent means `false` — ties are excluded. */
+        val equalAverage: Boolean? = null,
+        /** `stdDev`: multiples of the population standard deviation the band is widened by. */
+        val stdDev: Int? = null,
+        /** The `timePeriod` preset; required on a `timePeriod` rule and refused everywhere else. */
+        val timePeriod: TimePeriod? = null,
+        /** The icon set an `iconSet` rule draws from; refused on every other kind. */
+        val iconSet: IconSet? = null,
+        /** `<iconSet showValue>`: whether the cell's number is still shown beside the icon. Default true. */
+        val showValue: Boolean? = null,
+        /** `<iconSet reverse>`: whether the icon order is flipped. Default false. */
+        val reverse: Boolean? = null,
     ) {
         init {
             require(priority in 1..MAX_PRIORITY) { "A rule priority must be in 1..$MAX_PRIORITY: $priority" }
@@ -158,11 +299,28 @@ object XlsxConditionalFormatting {
                 }
             }
             for (color in colors) require(HEX6.matches(color)) { "A rule colour must be six hex digits: $color" }
+            // `text` belongs to the four text predicates and to nothing else; the average attributes belong to
+            // aboveAverage. Keeping that split here means a caller cannot express a rule the schema would not.
+            if (!kind.isText) require(text == null) { "A ${kind.token} rule does not carry text" }
+            if (kind != Kind.TIME_PERIOD) {
+                require(timePeriod == null) { "A ${kind.token} rule does not carry a time period" }
+            }
+            if (kind != Kind.ICON_SET) {
+                require(iconSet == null && showValue == null && reverse == null) {
+                    "Only an iconSet rule carries iconSet/showValue/reverse"
+                }
+            }
+            if (kind != Kind.ABOVE_AVERAGE) {
+                require(aboveAverage == null && equalAverage == null && stdDev == null) {
+                    "Only an aboveAverage rule carries aboveAverage/equalAverage/stdDev"
+                }
+            }
             if (kind.needsFormat) {
                 require(format != null) {
                     "A ${kind.token} rule must carry a differential format, or it changes no cell"
                 }
-            } else {
+            }
+            if (kind.selfPainted) {
                 require(format == null) { "A ${kind.token} rule carries its own visual and must not carry a dxf" }
             }
             when (kind) {
@@ -207,6 +365,76 @@ object XlsxConditionalFormatting {
                         "A data bar carries only thresholds and a colour"
                     }
                     require(percent == null && bottom == null) { "A data bar takes no rank flags" }
+                }
+                Kind.TEXT_CONTAINS, Kind.TEXT_NOT_CONTAINS, Kind.TEXT_BEGINS_WITH, Kind.TEXT_ENDS_WITH -> {
+                    require(text != null && text.isNotBlank()) {
+                        "A ${kind.token} rule requires the text it looks for"
+                    }
+                    require(text.length <= MAX_TEXT) {
+                        "A text rule may look for at most $MAX_TEXT characters, got ${text.length}"
+                    }
+                    // The predicate is stated by type/operator/text; a formula would be a second, unverified
+                    // spelling of the same rule, so this model writes none and refuses one in its own input.
+                    require(formulas.isEmpty() && operator == null) {
+                        "A ${kind.token} rule is stated by its attributes, not by a formula"
+                    }
+                    require(rank == null && thresholds.isEmpty() && colors.isEmpty()) {
+                        "A ${kind.token} rule carries only its text and a format"
+                    }
+                    require(percent == null && bottom == null) { "A text rule takes no rank flags" }
+                }
+                Kind.ABOVE_AVERAGE -> {
+                    require(formulas.isEmpty() && operator == null && rank == null) {
+                        "An aboveAverage rule carries only its flags"
+                    }
+                    require(thresholds.isEmpty() && colors.isEmpty()) { "An aboveAverage rule carries no cfvo" }
+                    require(percent == null && bottom == null) { "An aboveAverage rule takes no rank flags" }
+                    stdDev?.let {
+                        require(it in 0..MAX_STD_DEV) { "stdDev $it outside 0..$MAX_STD_DEV" }
+                    }
+                }
+                Kind.DUPLICATE, Kind.UNIQUE -> {
+                    require(formulas.isEmpty() && operator == null && rank == null) {
+                        "A ${kind.token} rule carries only its format"
+                    }
+                    require(thresholds.isEmpty() && colors.isEmpty()) { "A ${kind.token} rule carries no cfvo" }
+                    require(percent == null && bottom == null) {
+                        "A ${kind.token} rule takes no rank flags"
+                    }
+                }
+                Kind.CONTAINS_BLANKS, Kind.NOT_CONTAINS_BLANKS,
+                Kind.CONTAINS_ERRORS, Kind.NOT_CONTAINS_ERRORS,
+                -> {
+                    require(formulas.isEmpty() && operator == null && rank == null) {
+                        "A ${kind.token} rule carries only its format"
+                    }
+                    require(thresholds.isEmpty() && colors.isEmpty()) { "A ${kind.token} rule carries no cfvo" }
+                    require(percent == null && bottom == null) {
+                        "A ${kind.token} rule takes no rank flags"
+                    }
+                }
+                Kind.TIME_PERIOD -> {
+                    require(timePeriod != null) { "A timePeriod rule requires the period it looks for" }
+                    require(formulas.isEmpty() && operator == null && rank == null) {
+                        "A timePeriod rule carries only its preset and a format"
+                    }
+                    require(thresholds.isEmpty() && colors.isEmpty()) { "A timePeriod rule carries no cfvo" }
+                    require(percent == null && bottom == null) { "A timePeriod rule takes no rank flags" }
+                }
+                Kind.ICON_SET -> {
+                    require(iconSet != null) { "An iconSet rule requires the set it draws" }
+                    val icons = iconSet.iconCount
+                    require(formulas.isEmpty() && operator == null && rank == null) {
+                        "An iconSet rule carries only its boundaries and flags"
+                    }
+                    require(colors.isEmpty()) { "An iconSet rule carries no colours" }
+                    require(bottom == null) { "An iconSet rule takes no bottom flag" }
+                    require(thresholds.size == icons - 1) {
+                        "A ${iconSet.token} rule takes ${icons - 1} boundary threshold(s), got ${thresholds.size}"
+                    }
+                    require(thresholds.none { it.kind == ThresholdKind.MIN || it.kind == ThresholdKind.MAX }) {
+                        "An iconSet boundary is a percent, percentile or number; min and max are not boundaries"
+                    }
                 }
             }
         }
@@ -366,6 +594,7 @@ object XlsxConditionalFormatting {
         val priority = node.attr("priority")?.toIntOrNull() ?: return null
         val format = node.attr("dxfId")?.toIntOrNull()?.let { dxfs.getOrNull(it) }
         val formulas = node.children.filter { it.name.local == "formula" }.map { it.text }
+            .let { list -> if (kind.isText) emptyList() else list }
         val operator = node.attr("operator")?.let { Operator.of(it) }
         val rank = node.attr("rank")?.toIntOrNull()
         val stopIfTrue = when (node.attr("stopIfTrue")?.lowercase()) {
@@ -373,7 +602,12 @@ object XlsxConditionalFormatting {
             "1", "true" -> true
             else -> false
         }
-        val percent = when (node.attr("percent")?.lowercase()) {
+        val text = node.attr("text")
+        val timePeriod = node.attr("timePeriod")?.let { TimePeriod.of(it) }
+        val aboveAverage = boolOr(node.attr("aboveAverage"))
+        val equalAverage = boolOr(node.attr("equalAverage"))
+        val stdDev = node.attr("stdDev")?.toIntOrNull()
+        var percent = when (node.attr("percent")?.lowercase()) {
             null -> null
             "1", "true" -> true
             else -> false
@@ -407,6 +641,36 @@ object XlsxConditionalFormatting {
             }
             for (colour in coloursOf(bar)) colors.add(colour)
         }
+        var iconSet: IconSet? = null
+        var showValue: Boolean? = null
+        var reverse: Boolean? = null
+        node.children.firstOrNull { it.name.local == "iconSet" }?.let { icons ->
+            for (cfvo in icons.children.filter { it.name.local == "cfvo" }) {
+                val thresholdKind = ThresholdKind.of(cfvo.attr("type") ?: "") ?: return null
+                thresholds.add(
+                    runCatching { Threshold(thresholdKind, cfvo.attr("val")?.toDoubleOrNull()) }.getOrNull()
+                        ?: return null,
+                )
+            }
+            iconSet = IconSet.of(icons.attr("iconSet") ?: IconSet.DEFAULT.token) ?: return null
+            showValue = boolOr(icons.attr("showValue"))
+            reverse = boolOr(icons.attr("reverse"))
+            // The icon set's own `percent` wins: on that kind the attribute lives on the child, not on cfRule.
+            percent = boolOr(icons.attr("percent")) ?: percent
+        }
+        // Excel writes one <cfvo> per icon, the first pinned at the range minimum; this model stores the boundary
+        // set only, so a leading no-op boundary is dropped. A leading boundary that is *not* the minimum cannot be
+        // dropped without changing which icon a value receives, so such a rule is refused instead of guessed at.
+        iconSet?.let { set ->
+            if (thresholds.size == set.iconCount) {
+                val first = thresholds.first()
+                val atMinimum = first.kind == ThresholdKind.MIN ||
+                    ((first.kind == ThresholdKind.PERCENT || first.kind == ThresholdKind.PERCENTILE) &&
+                        first.value == 0.0)
+                if (!atMinimum) return null
+                thresholds.removeAt(0)
+            }
+        }
         return runCatching {
             Rule(
                 kind = kind,
@@ -420,8 +684,26 @@ object XlsxConditionalFormatting {
                 thresholds = thresholds,
                 colors = colors,
                 format = format,
+                // A text rule's formula is redundant with type/operator/text under this model's reading, and
+                // echoing back a formula this writer did not derive would be a claim about its spelling.
+                text = if (kind.isText) text else null,
+                aboveAverage = aboveAverage,
+                equalAverage = equalAverage,
+                stdDev = stdDev,
+                timePeriod = if (kind == Kind.TIME_PERIOD) timePeriod else null,
+                iconSet = if (kind == Kind.ICON_SET) iconSet else null,
+                showValue = showValue,
+                reverse = reverse,
             )
         }.getOrNull()
+    }
+
+    /** ST_OnOff: `1`/`true`/`0`/`false`, case-insensitive; anything else is not a boolean and reads as absent. */
+    private fun boolOr(raw: String?): Boolean? = when (raw?.lowercase()) {
+        null -> null
+        "1", "true" -> true
+        "0", "false" -> false
+        else -> null
     }
 
     /** `<color>` children of a `dataBar` are handled the same way as in a colour scale. */
@@ -449,7 +731,15 @@ object XlsxConditionalFormatting {
         rule.percent?.let { append(""" percent="${if (it) 1 else 0}"""") }
         rule.bottom?.let { append(""" bottom="${if (it) 1 else 0}"""") }
         rule.operator?.let { append(""" operator="${it.token}"""") }
+        if (rule.kind.isText) {
+            append(""" operator="${rule.kind.textOperator}"""")
+            append(""" text="${esc(rule.text ?: "")}"""")
+        }
+        rule.aboveAverage?.let { append(""" aboveAverage="${if (it) 1 else 0}"""") }
+        rule.equalAverage?.let { append(""" equalAverage="${if (it) 1 else 0}"""") }
+        rule.stdDev?.let { append(""" stdDev="$it"""") }
         rule.rank?.let { append(""" rank="$it"""") }
+        rule.timePeriod?.let { append(""" timePeriod="${it.token}"""") }
         val hasChildren = rule.formulas.isNotEmpty() || rule.thresholds.isNotEmpty()
         if (!hasChildren) {
             append("/>")
@@ -458,8 +748,24 @@ object XlsxConditionalFormatting {
         append(">")
         for (formula in rule.formulas) append("<formula>${esc(formula)}</formula>")
         if (rule.thresholds.isNotEmpty()) {
-            val element = if (rule.kind == Kind.DATA_BAR) "dataBar" else "colorScale"
-            append("<$element>")
+            val element = when (rule.kind) {
+                Kind.DATA_BAR -> "dataBar"
+                Kind.ICON_SET -> "iconSet"
+                else -> "colorScale"
+            }
+            append("<$element")
+            if (rule.kind == Kind.ICON_SET) {
+                // The set's name is the rule's subject, not a modifier, so it is always written; the three flags
+                // are written only when they differ from the schema defaults (showValue true, percent true,
+                // reverse false).
+                append(""" iconSet="${(rule.iconSet ?: IconSet.DEFAULT).token}"""")
+                rule.showValue?.let { append(""" showValue="${if (it) 1 else 0}"""") }
+                rule.percent?.let { append(""" percent="${if (it) 1 else 0}"""") }
+                rule.reverse?.let { append(""" reverse="${if (it) 1 else 0}"""") }
+                append(">")
+            } else {
+                append(">")
+            }
             for (threshold in rule.thresholds) {
                 append("""<cfvo type="${threshold.kind.token}"""")
                 threshold.value?.let { append(""" val="${number(it)}"""") }
