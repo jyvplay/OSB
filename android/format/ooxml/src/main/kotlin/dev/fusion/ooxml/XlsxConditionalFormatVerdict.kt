@@ -18,9 +18,15 @@ package dev.fusion.ooxml
  *   includes ties; `percent` thresholds interpolate linearly between the range minimum and maximum; `percentile`
  *   uses linear interpolation between order statistics; colour interpolation is per-channel sRGB with rounding
  *   half-up. None of these was observed in Excel — see `docs/R97-RESULTS.md` §C.
+ * * **Text, average and duplicate rules** (R100), whose own hypotheses are stated at each predicate: SEARCH is
+ *   unanchored and case-insensitive, a blank cell's text is `""`, a number is compared by its general-format
+ *   text, `beginsWith`/`endsWith` are literal, the average band uses the *population* sigma over the rule's
+ *   numeric cells, and duplicates are counted by value with case-insensitive text keys. See
+ *   `docs/R100-RESULTS.md` §C, including the one hypothesis (§C.5) that no corpus here can distinguish.
  *
- * What is *not* here: font family/size, number formats, borders, alignment, icon sets, the 2010 data-bar
- * extensions, and the painting itself. A verdict is a claim about which rule fires, never about pixels.
+ * What is *not* here: font family/size, number formats, borders, alignment, icon sets, `timePeriod`, the
+ * blank/error predicate kinds, the 2010 data-bar extensions, and the painting itself. A verdict is a claim about
+ * which rule fires, never about pixels.
  */
 object XlsxConditionalFormatVerdict {
 
@@ -173,6 +179,15 @@ object XlsxConditionalFormatVerdict {
         XlsxConditionalFormatting.Kind.TOP10 -> top10(rule, blocks, grid, cell)
         XlsxConditionalFormatting.Kind.COLOR_SCALE -> colorScale(rule, blocks, grid, cell)
         XlsxConditionalFormatting.Kind.DATA_BAR -> dataBar(rule, blocks, grid, cell)
+        XlsxConditionalFormatting.Kind.TEXT_CONTAINS,
+        XlsxConditionalFormatting.Kind.TEXT_NOT_CONTAINS,
+        XlsxConditionalFormatting.Kind.TEXT_BEGINS_WITH,
+        XlsxConditionalFormatting.Kind.TEXT_ENDS_WITH,
+        -> textRule(rule, grid, cell)
+        XlsxConditionalFormatting.Kind.ABOVE_AVERAGE -> aboveAverage(rule, blocks, grid, cell)
+        XlsxConditionalFormatting.Kind.DUPLICATE,
+        XlsxConditionalFormatting.Kind.UNIQUE,
+        -> duplicates(rule, blocks, grid, cell)
     }
 
     // --- operands ----------------------------------------------------------------------------------------
@@ -407,16 +422,19 @@ object XlsxConditionalFormatVerdict {
      * Numeric values of every cell in the union of the blocks' references, or null when a reference is larger than
      * [MAX_RANGE_CELLS]: skipping the range silently would turn "too big to scan" into "no rule fires".
      */
-    private fun numbersIn(ruleBlocks: List<XlsxConditionalFormatting.Block>, grid: Grid): List<Double>? {
-        val out = ArrayList<Double>()
+    private fun numbersIn(ruleBlocks: List<XlsxConditionalFormatting.Block>, grid: Grid): List<Double>? =
+        valuesIn(ruleBlocks, grid)?.mapNotNull { (it as? Value.Num)?.value }
+
+    /** Every value in the union of the blocks' references, in row-major order; null when a reference is too large. */
+    private fun valuesIn(ruleBlocks: List<XlsxConditionalFormatting.Block>, grid: Grid): List<Value>? {
+        val out = ArrayList<Value>()
         for (block in ruleBlocks) {
             for (token in block.sqref.split(' ')) {
                 val range = runCatching { SheetRange.parse(token) }.getOrNull() ?: continue
                 if (range.cells > MAX_RANGE_CELLS) return null
                 for (row in range.top.row..range.bottom.row) {
                     for (col in range.top.col..range.bottom.col) {
-                        val value = grid.value(SheetRange.Cell(col, row))
-                        if (value is Value.Num) out.add(value.value)
+                        out.add(grid.value(SheetRange.Cell(col, row)))
                     }
                 }
             }
@@ -460,6 +478,187 @@ object XlsxConditionalFormatVerdict {
         val value = (grid.value(cell) as? Value.Num)?.value ?: return Decision.No
         val holds = if (bottom) value <= threshold else value >= threshold
         return yes(holds, rule)
+    }
+
+    // --- text, average and duplicate rules ----------------------------------------------------------------
+
+    /**
+     * `containsText`, `notContainsText`, `beginsWith`, `endsWith`.
+     *
+     * Import hypotheses, stated so they can be attacked (see `docs/R100-RESULTS.md` §C): `containsText` uses
+     * Excel's SEARCH grammar — `?` is one character, `*` is any run, `~` escapes the next character — matched
+     * case-insensitively over a cell's displayed text; `beginsWith`/`endsWith` are plain prefix/suffix compares
+     * with the same case folding, and Excel writes them as `LEFT`/`RIGHT` formulae, which are literal; a blank
+     * cell reads as the empty string; an error cell is not comparable and leaves the rule undecided.
+     */
+    private fun textRule(
+        rule: XlsxConditionalFormatting.Rule,
+        grid: Grid,
+        cell: SheetRange.Cell,
+    ): Decision {
+        val literal = rule.text ?: return Decision.Unsupported("a ${rule.kind.token} rule without text")
+        val value = grid.value(cell)
+        val text = textOf(value) ?: return Decision.Unsupported("an error value has no text to compare")
+        val holds = when (rule.kind) {
+            XlsxConditionalFormatting.Kind.TEXT_CONTAINS -> containsLiteral(literal, text)
+            XlsxConditionalFormatting.Kind.TEXT_NOT_CONTAINS -> !containsLiteral(literal, text)
+            XlsxConditionalFormatting.Kind.TEXT_BEGINS_WITH -> text.startsWith(literal, ignoreCase = true)
+            else -> text.endsWith(literal, ignoreCase = true)
+        }
+        return yes(holds, rule)
+    }
+
+    /**
+     * SEARCH's question — does [literal] occur *anywhere* in [text]? A leading and trailing `*` turn the
+     * anchored matcher below into an unanchored one: `*P*` matches a whole text exactly when `P` occurs inside it.
+     */
+    private fun containsLiteral(literal: String, text: String): Boolean =
+        matches(tokens("*" + literal + "*"), text)
+
+    /** A cell's text as Excel's text predicates see it; null for an error, which has none. */
+    private fun textOf(value: Value): String? = when (value) {
+        is Value.Txt -> value.text
+        Value.Blank -> ""
+        is Value.Num -> plainNumber(value.value)
+        is Value.Bool -> if (value.flag) "TRUE" else "FALSE"
+        is Value.Err -> null
+    }
+
+    /** A number as Excel's general format would show it, so a text predicate can look at it. */
+    private fun plainNumber(value: Double): String = when {
+        !value.isFinite() -> value.toString()
+        value == kotlin.math.floor(value) && kotlin.math.abs(value) < 1e15 -> value.toLong().toString()
+        else -> value.toString()
+    }
+
+    private sealed interface Token {
+        data class Lit(val char: Char) : Token
+        data object Any : Token
+        data object Star : Token
+    }
+
+    private fun tokens(pattern: String): List<Token> {
+        val out = ArrayList<Token>(pattern.length)
+        var index = 0
+        while (index < pattern.length) {
+            when (val char = pattern[index]) {
+                '~' ->
+                    if (index + 1 < pattern.length) {
+                        out.add(Token.Lit(pattern[index + 1])); index += 2
+                    } else {
+                        out.add(Token.Lit('~')); index += 1
+                    }
+                '*' -> { out.add(Token.Star); index += 1 }
+                '?' -> { out.add(Token.Any); index += 1 }
+                else -> { out.add(Token.Lit(char)); index += 1 }
+            }
+        }
+        return out
+    }
+
+    /** Greedy wildcard match with one backtrack point — linear in practice, no recursion, no allocation. */
+    private fun matches(tokens: List<Token>, text: String): Boolean {
+        var p = 0
+        var t = 0
+        var star = -1
+        var mark = 0
+        while (t < text.length) {
+            when {
+                p < tokens.size && tokens[p] is Token.Star -> { star = p; mark = t; p++ }
+                p < tokens.size && tokens[p] is Token.Any -> { p++; t++ }
+                p < tokens.size && (tokens[p] as? Token.Lit)?.let { folds(it.char, text[t]) } == true -> { p++; t++ }
+                star >= 0 -> { mark++; t = mark; p = star + 1 }
+                else -> return false
+            }
+        }
+        while (p < tokens.size && tokens[p] is Token.Star) p++
+        return p == tokens.size
+    }
+
+    /** Case folding without a collator: ASCII and the Unicode simple case mapping, which is host-independent. */
+    private fun folds(left: Char, right: Char): Boolean =
+        left == right || left.lowercaseChar() == right.lowercaseChar()
+
+    /**
+     * `aboveAverage`: does the cell sit above (or, with `aboveAverage="0"`, below) the mean of the rule's own
+     * range, widened by `stdDev` multiples of the population standard deviation? `equalAverage` includes ties.
+     *
+     * Import hypotheses: the band is computed over the numeric cells of the union of the rule's references — the
+     * same scope `top10` uses — with non-numeric cells skipped, not coerced to zero; standard deviation is the
+     * population form (divide by n); the schema default for `aboveAverage` is true and for `equalAverage` false.
+     * An error cell has no rank in a numeric band and leaves the rule undecided.
+     */
+    private fun aboveAverage(
+        rule: XlsxConditionalFormatting.Rule,
+        blocks: List<XlsxConditionalFormatting.Block>,
+        grid: Grid,
+        cell: SheetRange.Cell,
+    ): Decision {
+        if (scopeTooLarge(rule, blocks)) {
+            return Decision.Unsupported("an average-relative rule over a range larger than $MAX_RANGE_CELLS cells")
+        }
+        val value = grid.value(cell)
+        if (value is Value.Err) return Decision.Unsupported("an error value has no rank among the average band")
+        val number = (value as? Value.Num)?.value
+            ?: return Decision.No
+        val scope = blocks.filter { block -> block.rules.any { it === rule } }
+        val values = numbersIn(scope, grid)
+            ?: return Decision.Unsupported("an average-relative rule over a range larger than $MAX_RANGE_CELLS cells")
+        if (values.isEmpty()) return Decision.No
+        val mean = values.sum() / values.size
+        val steps = rule.stdDev ?: 0
+        val band = if (steps == 0) {
+            0.0
+        } else {
+            steps * kotlin.math.sqrt(values.sumOf { (it - mean) * (it - mean) } / values.size)
+        }
+        val inclusive = rule.equalAverage == true
+        val holds = if (rule.aboveAverage != false) {
+            if (inclusive) number >= mean + band else number > mean + band
+        } else {
+            if (inclusive) number <= mean - band else number < mean - band
+        }
+        return yes(holds, rule)
+    }
+
+    /**
+     * `duplicateValues` / `uniqueValues`: the cell's value occurs more than once (or exactly once) in the union of
+     * the rule's references.
+     *
+     * Import hypotheses: duplicates are counted by *value*, across the whole reference and not within a row;
+     * numbers compare numerically (`1` and `1.00` collide); text compares case-insensitively, as COUNTIF does;
+     * text and number never collide; blanks and error cells are never duplicated, so a blank cell is never
+     * highlighted by either rule.
+     */
+    private fun duplicates(
+        rule: XlsxConditionalFormatting.Rule,
+        blocks: List<XlsxConditionalFormatting.Block>,
+        grid: Grid,
+        cell: SheetRange.Cell,
+    ): Decision {
+        if (scopeTooLarge(rule, blocks)) {
+            return Decision.Unsupported("a duplicate rule over a range larger than $MAX_RANGE_CELLS cells")
+        }
+        val key = keyOf(grid.value(cell)) ?: return Decision.No
+        val scope = blocks.filter { block -> block.rules.any { it === rule } }
+        val values = valuesIn(scope, grid)
+            ?: return Decision.Unsupported("a duplicate rule over a range larger than $MAX_RANGE_CELLS cells")
+        val occurrences = values.count { keyOf(it) == key }
+        val holds = if (rule.kind == XlsxConditionalFormatting.Kind.DUPLICATE) {
+            occurrences > 1
+        } else {
+            occurrences == 1
+        }
+        return yes(holds, rule)
+    }
+
+    /** Comparison key for duplicate detection; null when a value takes part in no comparison. */
+    private fun keyOf(value: Value): String? = when (value) {
+        Value.Blank -> null
+        is Value.Num -> "n:" + plainNumber(value.value)
+        is Value.Txt -> "t:" + value.text.lowercase()
+        is Value.Bool -> "b:" + value.flag
+        is Value.Err -> null
     }
 
     private fun resolvedThresholds(

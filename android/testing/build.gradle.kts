@@ -1752,6 +1752,21 @@ tasks.register<JavaExec>("r99OutlineContracts") {
     doFirst { rootProject.file("testing/build/r99/artifacts").mkdirs() }
 }
 
+// R100: the seven conditional-format kinds that state a predicate — containsText, notContainsText, beginsWith,
+// endsWith (with their `text` and their own `operator` token), aboveAverage (with
+// aboveAverage/equalAverage/stdDev), duplicateValues and uniqueValues — and the verdicts they produce.
+// openpyxl's rule attributes and a Python re-derivation of every verdict verify separately.
+val r100Conditional by sourceSets.creating
+kotlin.sourceSets.named("r100Conditional") { kotlin.srcDir("src/r100/kotlin") }
+dependencies { add(r100Conditional.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r100ConditionalContracts") {
+    dependsOn(r100Conditional.classesTaskName)
+    classpath = r100Conditional.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R100Checks")
+    args(rootProject.file("testing/build/r100/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r100/artifacts").mkdirs() }
+}
+
 // R98: fit-to-page and page numbering on the sheet, plus the sheet-scoped print records
 // (_xlnm.Print_Area / _xlnm.Print_Titles). openpyxl's page_setup, pageSetUpPr and print_area verify separately.
 val r98Print by sourceSets.creating
