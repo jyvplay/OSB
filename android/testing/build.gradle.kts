@@ -1766,6 +1766,34 @@ tasks.register<JavaExec>("r103ShiftContracts") {
     doFirst { rootProject.file("testing/build/r103/artifacts").mkdirs() }
 }
 
+// R105: ranges and the seven aggregates a conditional format actually uses. `SUM(A1:A3)>10` was refused by the R104
+// grammar because its operands were single values; this pass adds `from:to` ranges, SUM, COUNT, COUNTA, AVERAGE,
+// MIN, MAX and MEDIAN, with Excel's range-vs-scalar rules and the R103 shift rule applied to both endpoints.
+val r105Ranges by sourceSets.creating
+kotlin.sourceSets.named("r105Ranges") { kotlin.srcDir("src/r105/kotlin") }
+dependencies { add(r105Ranges.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r105RangesContracts") {
+    dependsOn(r105Ranges.classesTaskName)
+    classpath = r105Ranges.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R105Checks")
+    args(rootProject.file("testing/build/r105/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r105/artifacts").mkdirs() }
+}
+
+// R104: what an `expression` rule's formula may say. The regex reader two rounds ago decided `ISBLANK(G4)` and
+// `MOD(ROW(),2)=0` and nothing else, so every real conditional formula was silently undecided; this pass replaces it
+// with a bounded tokenizer, parser and evaluator over sixteen functions, and refuses what it cannot read.
+val r104Grammar by sourceSets.creating
+kotlin.sourceSets.named("r104Grammar") { kotlin.srcDir("src/r104/kotlin") }
+dependencies { add(r104Grammar.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r104GrammarContracts") {
+    dependsOn(r104Grammar.classesTaskName)
+    classpath = r104Grammar.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R104Checks")
+    args(rootProject.file("testing/build/r104/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r104/artifacts").mkdirs() }
+}
+
 // R102: the differential format itself — the `<dxf>` entries every painting rule points at — from "bold, italic,
 // strike, underline, a font colour and a solid fill" to the whole element short of a gradient: font family and
 // size, a number format, patterned fills, borders with up to five edges, alignment and protection, carried through

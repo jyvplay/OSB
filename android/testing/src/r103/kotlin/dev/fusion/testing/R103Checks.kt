@@ -299,7 +299,9 @@ object R103Checks {
         ) { "a rule anchored at C5 compared the wrong cell at C7" }
 
         // An operand that is not a reference, a number, a string or a boolean stays unsupported.
-        for (token in listOf("A0>0", "A1:A2>0", "\"text\"&A1>0", "SUM(A1:A3)>0", "A1048577>0")) {
+        // R105 made `SUM` and ranges real, so the "looks like a reference but is not" list names a function that
+        // will never exist instead. The property under test is unchanged: an unreadable formula is undecided.
+        for (token in listOf("A0>0", "A1:A2>0", "\"text\"&A1>0", "FOO(A1:A3)>0", "A1048577>0")) {
             val block = listOf(
                 Block("B1", listOf(Rule(Kind.EXPRESSION, priority = 1, formulas = listOf(token), format = FILL))),
             )

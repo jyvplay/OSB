@@ -71,4 +71,6 @@ assert hashlib.sha256((root/'core/documents/src/contract/resources/editor-sessio
 subprocess.run([sys.executable,str(root/'tools/module_testability.py'),'--check'],check=True)
 subprocess.run([sys.executable,str(root/'tools/check_r45_touch_targets.py')],check=True)
 subprocess.run([sys.executable,str(root/'tools/check_r45_manifest_scope.py')],check=True)
+# R104: the project must stay inside Android Studio Rabbit 1's documented AGP/Gradle/JDK matrix.
+subprocess.run([sys.executable,str(root/'tools/check_r104_studio.py'),'--quiet'],check=True)
 

@@ -196,12 +196,13 @@ object XlsxConditionalFormatVerdict {
     private val NUMBER = Regex("^[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$")
     /** `[$]COL[$]ROW`; each `$` locks the coordinate that follows it, so a locked reference never shifts. */
     private val CELL_REF = Regex("^(\\$?)([A-Z]{1,3})(\\$?)([1-9][0-9]{0,6})$")
-    private val COMPARISON = Regex("^(.+?)\\s*(<=|>=|<>|=|<|>)\\s*(.+)$")
-    private val IS_BLANK = Regex("^ISBLANK\\(\\s*(\\$?[A-Z]{1,3}\\$?[1-9][0-9]{0,6})\\s*\\)$", RegexOption.IGNORE_CASE)
-    private val MOD_ROW = Regex(
-        "^MOD\\(\\s*ROW\\(\\)\\s*,\\s*(\\d{1,4})\\s*\\)\\s*=\\s*(\\d{1,4})$",
-        RegexOption.IGNORE_CASE,
-    )
+    /** Comparison operators, longest first so `<=` is not read as `<` followed by `=`. */
+    private val COMPARISONS = listOf("<=", ">=", "<>", "=", "<", ">")
+
+    /** Model bounds for the formula grammar: arguments per call, nesting, tokens, and scientific notation width. */
+    private const val MAX_CALL_ARGS = 8
+    private const val MAX_DEPTH = 16
+    private const val MAX_TOKENS = 512
 
     /**
      * Every rule that applies to [cell], in priority order, evaluated against [grid]. [blocks] is a sheet's
@@ -546,6 +547,27 @@ object XlsxConditionalFormatVerdict {
 
     // --- expression --------------------------------------------------------------------------------------
 
+    /**
+     * An `expression` rule: one formula, parsed and evaluated.
+     *
+     * The grammar is small, total and closed — a formula outside it is [Decision.Unsupported] with the position
+     * that failed, never a guess:
+     *
+     * ```
+     * formula    := comparison
+     * comparison := additive (op additive)?          op ∈ { < <= > >= = <> }, at most one
+     * additive   := multiplicative (('+' | '-') multiplicative)*
+     * multiplic. := unary (('*' | '/') unary)*
+     * unary      := '-' unary | primary
+     * primary    := number | "text" | TRUE | FALSE | ref | name '(' args ')' | '(' formula ')'
+     * args       := formula (',' formula)*           at most MAX_CALL_ARGS
+     * ```
+     *
+     * `AND`, `OR`, `NOT`, `ISBLANK`, `ISNUMBER`, `ISTEXT`, `LEN`, `TRIM`, `UPPER`, `LOWER`, `LEFT`, `RIGHT`, `ABS`,
+     * `ROUND`, `MOD` and `ROW` are the functions; every other name is refused. A formula that *evaluates* to a
+     * text or an error is refused rather than read as a condition, because "the formula says something that is not
+     * true or false" is not the same claim as "the rule did not fire".
+     */
     private fun expression(
         rule: XlsxConditionalFormatting.Rule,
         grid: Grid,
@@ -555,36 +577,537 @@ object XlsxConditionalFormatVerdict {
         val formula = rule.formulas.singleOrNull()
             ?: return Decision.Unsupported("an expression rule without exactly one formula")
         val text = formula.trim()
-        IS_BLANK.matchEntire(text)?.let { match ->
-            val target = reference(match.groupValues[1])
-                ?: return Decision.Unsupported("ISBLANK target is not a cell reference")
-            val shifted = shifted(target, cell, anchor)
-                ?: return Decision.Unsupported("ISBLANK target shifts outside the sheet at ${cell.toA1()}")
-            return yes(grid.value(shifted) is Value.Blank, rule)
+        if (text.isEmpty()) return Decision.Unsupported("an empty expression")
+        val outcome = try {
+            evaluate(parse(text), grid, cell, anchor)
+        } catch (refused: FormulaError) {
+            return Decision.Unsupported("expression '${shorten(text)}': ${refused.message}")
         }
-        MOD_ROW.matchEntire(text)?.let { match ->
-            val divisor = match.groupValues[1].toInt()
-            val remainder = match.groupValues[2].toInt()
-            if (divisor == 0) return Decision.Unsupported("MOD by zero")
-            return yes(cell.row % divisor == remainder, rule)
+        return when (outcome) {
+            is Value.Bool -> yes(outcome.flag, rule)
+            // Excel reads a non-zero number as TRUE and a zero as FALSE; anything else is not a condition.
+            is Value.Num -> yes(outcome.value != 0.0, rule)
+            Value.Blank -> Decision.No
+            is Value.Txt -> Decision.Unsupported("expression '${shorten(text)}' is text, not a condition")
+            is Value.Err -> Decision.Unsupported("expression '${shorten(text)}' evaluates to ${outcome.code}")
         }
-        val match = COMPARISON.matchEntire(text)
-            ?: return Decision.Unsupported("expression '${shorten(text)}' is outside the decided grammar")
-        val leftText = match.groupValues[1].trim()
-        val operator = match.groupValues[2]
-        val rightText = match.groupValues[3].trim()
-        val left = operand(leftText) ?: return Decision.Unsupported("left side '${shorten(leftText)}' is not supported")
-        val right = operand(rightText) ?: return Decision.Unsupported("right side '${shorten(rightText)}' is not supported")
-        val a = resolve(left, grid, cell, anchor)
-            ?: return Decision.Unsupported("left side '${shorten(leftText)}' shifts outside the sheet at ${cell.toA1()}")
-        val b = resolve(right, grid, cell, anchor)
-            ?: return Decision.Unsupported("right side '${shorten(rightText)}' shifts outside the sheet at ${cell.toA1()}")
-        if (operator == "=" || operator == "<>") {
-            val equal = equalValues(a, b) ?: return undecidable(a, b)
-            return yes(equal == (operator == "="), rule)
+    }
+
+    // --- the expression grammar --------------------------------------------------------------------------
+
+    /** A parse or evaluation refusal; its message becomes the `Unsupported` reason, so it must say what and where. */
+    private class FormulaError(message: String) : Exception(message)
+
+    /** The formula grammar's syntax tree. Nothing here knows about cells; [evaluate] supplies the scan position. */
+    private sealed interface Node {
+        data class Literal(val value: Value) : Node
+        data class Cell(val reference: Operand.Reference) : Node
+
+        /** `from:to`, both endpoints carrying their own `$` locks and shifting like any other reference. */
+        data class RangeRef(val from: Operand.Reference, val to: Operand.Reference) : Node
+        data class Comparison(val left: Node, val operator: String, val right: Node) : Node
+        data class Arithmetic(val left: Node, val operator: Char, val right: Node) : Node
+        data class Call(val name: String, val args: List<Node>) : Node
+    }
+
+    private sealed interface FormulaToken {
+        data class Num(val value: Double) : FormulaToken
+        data class Str(val text: String) : FormulaToken
+        data class Word(val text: String) : FormulaToken
+        data class Sym(val text: String) : FormulaToken
+    }
+
+    private fun isWordStart(c: Char): Boolean = c.isLetter() || c == '$' || c == '_'
+    private fun isWordPart(c: Char): Boolean = c.isLetterOrDigit() || c == '$' || c == '_' || c == '.'
+
+    /** Turns a formula into tokens, or refuses it. No token is ever dropped: an unknown character is an error. */
+    private fun tokenize(text: String): List<FormulaToken> {
+        val out = ArrayList<FormulaToken>()
+        var index = 0
+        while (index < text.length) {
+            val c = text[index]
+            when {
+                c.isWhitespace() -> index++
+                c == '"' -> {
+                    val literal = StringBuilder()
+                    var scan = index + 1
+                    var closed = false
+                    while (scan < text.length) {
+                        if (text[scan] == '"') {
+                            // `""` inside a literal is one quote, as in Excel.
+                            if (scan + 1 < text.length && text[scan + 1] == '"') {
+                                literal.append('"')
+                                scan += 2
+                                continue
+                            }
+                            closed = true
+                            scan++
+                            break
+                        }
+                        literal.append(text[scan])
+                        scan++
+                    }
+                    if (!closed) throw FormulaError("unterminated text literal at position ${index + 1}")
+                    out.add(FormulaToken.Str(literal.toString()))
+                    index = scan
+                }
+                c.isDigit() || (c == '.' && index + 1 < text.length && text[index + 1].isDigit()) -> {
+                    var scan = index
+                    while (scan < text.length && (text[scan].isDigit() || text[scan] == '.')) scan++
+                    // An exponent is part of the number only when digits follow it.
+                    if (scan < text.length && (text[scan] == 'e' || text[scan] == 'E')) {
+                        var expo = scan + 1
+                        if (expo < text.length && (text[expo] == '+' || text[expo] == '-')) expo++
+                        var digits = expo
+                        while (digits < text.length && text[digits].isDigit()) digits++
+                        if (digits > expo) scan = digits
+                    }
+                    val literal = text.substring(index, scan)
+                    val value = literal.toDoubleOrNull()
+                        ?: throw FormulaError("'$literal' is not a number")
+                    out.add(FormulaToken.Num(value))
+                    index = scan
+                }
+                isWordStart(c) -> {
+                    var scan = index
+                    while (scan < text.length && isWordPart(text[scan])) scan++
+                    out.add(FormulaToken.Word(text.substring(index, scan)))
+                    index = scan
+                }
+                else -> {
+                    val two = if (index + 1 < text.length) text.substring(index, index + 2) else ""
+                    val symbol = if (two in COMPARISONS) two else c.toString()
+                    if (symbol !in SYMBOLS) throw FormulaError("unexpected '${c}' at position ${index + 1}")
+                    out.add(FormulaToken.Sym(symbol))
+                    index += symbol.length
+                }
+            }
+            if (out.size > MAX_TOKENS) throw FormulaError("more than $MAX_TOKENS tokens")
         }
-        val comparison = order(a, b) ?: return undecidable(a, b)
-        return yes(holds(comparison, operator, symbolic = true), rule)
+        return out
+    }
+
+    /** The one-character symbols the grammar reads; everything else is refused by [tokenize]. */
+    private val SYMBOLS = setOf(
+        "(", ")", ",", ":", "+", "-", "*", "/", "<=", ">=", "<>", "=", "<", ">",
+    )
+
+    /**
+     * Recursive descent over [tokenize]'s output. Depth and arity are bounded so a hostile formula cannot recurse
+     * this reader to death; a bound reached is a refusal, never a truncated parse.
+     */
+    private class Parser(private val tokens: List<FormulaToken>) {
+        private var position = 0
+        private var depth = 0
+
+        fun parse(): Node {
+            if (tokens.isEmpty()) throw FormulaError("the formula is empty")
+            val root = comparison()
+            if (position != tokens.size) throw FormulaError("unexpected ${describe(tokens[position])} after the formula")
+            return root
+        }
+
+        private fun comparison(): Node {
+            val left = additive()
+            val next = tokens.getOrNull(position)
+            if (next !is FormulaToken.Sym || next.text !in XlsxConditionalFormatVerdict.COMPARISONS) return left
+            position++
+            // Excel has no chained comparison: `a<b<c` is a parse error, not a pairwise test.
+            return Node.Comparison(left, next.text, additive())
+        }
+
+        private fun additive(): Node {
+            var node = multiplicative()
+            while (true) {
+                val next = tokens.getOrNull(position)
+                if (next !is FormulaToken.Sym || (next.text != "+" && next.text != "-")) return node
+                position++
+                node = Node.Arithmetic(node, next.text[0], multiplicative())
+            }
+        }
+
+        private fun multiplicative(): Node {
+            var node = unary()
+            while (true) {
+                val next = tokens.getOrNull(position)
+                if (next !is FormulaToken.Sym || (next.text != "*" && next.text != "/")) return node
+                position++
+                node = Node.Arithmetic(node, next.text[0], unary())
+            }
+        }
+
+        private fun unary(): Node {
+            val next = tokens.getOrNull(position)
+            if (next is FormulaToken.Sym && next.text == "-") {
+                position++
+                return Node.Arithmetic(Node.Literal(Value.Num(0.0)), '-', unary())
+            }
+            if (next is FormulaToken.Sym && next.text == "+") {
+                position++
+                return unary()
+            }
+            return primary()
+        }
+
+        private fun primary(): Node {
+            val token = tokens.getOrNull(position) ?: throw FormulaError("the formula ends where a value was expected")
+            position++
+            return when (token) {
+                is FormulaToken.Num -> Node.Literal(Value.Num(token.value))
+                is FormulaToken.Str -> Node.Literal(Value.Txt(token.text))
+                is FormulaToken.Word -> {
+                    if (tokens.getOrNull(position) is FormulaToken.Sym && (tokens[position] as FormulaToken.Sym).text == "(") {
+                        position++
+                        return call(token.text.uppercase())
+                    }
+                    when (token.text.uppercase()) {
+                        "TRUE" -> Node.Literal(Value.Bool(true))
+                        "FALSE" -> Node.Literal(Value.Bool(false))
+                        else -> {
+                            val ref = XlsxConditionalFormatVerdict.reference(token.text)
+                                ?: throw FormulaError("'${token.text}' is neither a function, a literal nor a cell reference")
+                            val colon = tokens.getOrNull(position)
+                            if (colon is FormulaToken.Sym && colon.text == ":") {
+                                position++
+                                val endpoint = tokens.getOrNull(position)
+                                    ?: throw FormulaError("':' must be followed by a cell reference")
+                                position++
+                                val to = if (endpoint is FormulaToken.Word) {
+                                    XlsxConditionalFormatVerdict.reference(endpoint.text)
+                                } else {
+                                    null
+                                } ?: throw FormulaError("':' must be followed by a cell reference")
+                                Node.RangeRef(ref, to)
+                            } else {
+                                Node.Cell(ref)
+                            }
+                        }
+                    }
+                }
+                is FormulaToken.Sym -> {
+                    if (token.text != "(") throw FormulaError("unexpected ${describe(token)}")
+                    depth++
+                    if (depth > XlsxConditionalFormatVerdict.MAX_DEPTH) throw FormulaError("nesting deeper than ${XlsxConditionalFormatVerdict.MAX_DEPTH}")
+                    val inner = comparison()
+                    val close = tokens.getOrNull(position)
+                    if (close !is FormulaToken.Sym || close.text != ")") throw FormulaError("missing ')'")
+                    position++
+                    depth--
+                    inner
+                }
+            }
+        }
+
+        private fun call(name: String): Node {
+            if (name !in XlsxConditionalFormatVerdict.FUNCTIONS) throw FormulaError("'$name' is not a function this reader evaluates")
+            val args = ArrayList<Node>()
+            val first = tokens.getOrNull(position)
+            if (first is FormulaToken.Sym && first.text == ")") {
+                position++
+            } else {
+                while (true) {
+                    if (args.size >= XlsxConditionalFormatVerdict.MAX_CALL_ARGS) throw FormulaError("more than ${XlsxConditionalFormatVerdict.MAX_CALL_ARGS} arguments to $name")
+                    depth++
+                    if (depth > XlsxConditionalFormatVerdict.MAX_DEPTH) throw FormulaError("nesting deeper than ${XlsxConditionalFormatVerdict.MAX_DEPTH}")
+                    args.add(comparison())
+                    depth--
+                    val next = tokens.getOrNull(position)
+                    when {
+                        next is FormulaToken.Sym && next.text == "," -> position++
+                        next is FormulaToken.Sym && next.text == ")" -> {
+                            position++
+                            break
+                        }
+                        else -> throw FormulaError("expected ',' or ')' in $name, found ${next?.let { describe(it) } ?: "the end"}")
+                    }
+                }
+            }
+            val arity = XlsxConditionalFormatVerdict.FUNCTIONS.getValue(name)
+            if (args.size !in arity) {
+                val expected = if (arity.first == arity.last) "${arity.first}" else "${arity.first} to ${arity.last}"
+                throw FormulaError("$name takes $expected argument(s), not ${args.size}")
+            }
+            return Node.Call(name, args)
+        }
+
+        private fun describe(token: FormulaToken): String = when (token) {
+            is FormulaToken.Num -> "number ${token.value}"
+            is FormulaToken.Str -> "text \"${token.text}\""
+            is FormulaToken.Word -> "name '${token.text}'"
+            is FormulaToken.Sym -> "'${token.text}'"
+        }
+    }
+
+    /** Argument counts each function accepts, as inclusive ranges. */
+    private val FUNCTIONS: Map<String, IntRange> = mapOf(
+        "AND" to 1..MAX_CALL_ARGS,
+        "OR" to 1..MAX_CALL_ARGS,
+        "NOT" to 1..1,
+        "ISBLANK" to 1..1,
+        "ISNUMBER" to 1..1,
+        "ISTEXT" to 1..1,
+        "LEN" to 1..1,
+        "TRIM" to 1..1,
+        "UPPER" to 1..1,
+        "LOWER" to 1..1,
+        "LEFT" to 2..2,
+        "RIGHT" to 2..2,
+        "ABS" to 1..1,
+        "ROUND" to 2..2,
+        "MOD" to 2..2,
+        "ROW" to 0..0,
+        // R105: aggregates. Each accepts one or more arguments, each of which may be a range.
+        "SUM" to 1..MAX_CALL_ARGS,
+        "COUNT" to 1..MAX_CALL_ARGS,
+        "COUNTA" to 1..MAX_CALL_ARGS,
+        "AVERAGE" to 1..MAX_CALL_ARGS,
+        "MIN" to 1..MAX_CALL_ARGS,
+        "MAX" to 1..MAX_CALL_ARGS,
+        "MEDIAN" to 1..MAX_CALL_ARGS,
+    )
+
+    /** Parses [text], refusing anything outside the grammar. */
+    private fun parse(text: String): Node = Parser(tokenize(text)).parse()
+
+    /**
+     * Evaluates [node] with the scan at [cell], whose covering range token is anchored at [anchor]. References
+     * shift exactly as [shifted] says, so `AND(A2>5,$B$1="x")` written on `A2:A9` reads the row below itself each
+     * time it advances. A refusal throws [FormulaError]; it never yields a fabricated value.
+     */
+    private fun evaluate(
+        node: Node,
+        grid: Grid,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): Value = when (node) {
+        is Node.Literal -> node.value
+        is Node.Cell -> {
+            val target = shifted(node.reference, cell, anchor)
+                ?: throw FormulaError("'${node.reference.cell.toA1()}' shifts outside the sheet at ${cell.toA1()}")
+            grid.value(target)
+        }
+        is Node.Comparison -> {
+            val left = evaluate(node.left, grid, cell, anchor)
+            val right = evaluate(node.right, grid, cell, anchor)
+            if (node.operator == "=" || node.operator == "<>") {
+                val equal = equalValues(left, right)
+                    ?: throw FormulaError("cannot compare ${describe(left)} with ${describe(right)}")
+                Value.Bool(equal == (node.operator == "="))
+            } else {
+                val ordering = order(left, right)
+                    ?: throw FormulaError("cannot order ${describe(left)} against ${describe(right)}")
+                Value.Bool(holds(ordering, node.operator, symbolic = true))
+            }
+        }
+        is Node.Arithmetic -> {
+            val left = number(evaluate(node.left, grid, cell, anchor), node.operator)
+            val right = number(evaluate(node.right, grid, cell, anchor), node.operator)
+            when (node.operator) {
+                '+' -> Value.Num(left + right)
+                '-' -> Value.Num(left - right)
+                '*' -> Value.Num(left * right)
+                else -> if (right == 0.0) Value.Err("#DIV/0!") else Value.Num(left / right)
+            }
+        }
+        is Node.RangeRef -> throw FormulaError("a range is not a single value")
+        is Node.Call -> apply(node, grid, cell, anchor)
+    }
+
+    /** A numeric operand; text is refused here even when it looks numeric, matching [order]'s type rule. */
+    private fun number(value: Value, operator: Char): Double = when (value) {
+        is Value.Num -> value.value
+        is Value.Blank -> 0.0
+        is Value.Bool -> if (value.flag) 1.0 else 0.0
+        is Value.Txt -> throw FormulaError("text \"${shorten(value.text)}\" is not a number")
+        is Value.Err -> throw FormulaError("error ${value.code} in '$operator'")
+    }
+
+    private fun text(value: Value): String = when (value) {
+        is Value.Txt -> value.text
+        is Value.Blank -> ""
+        is Value.Num -> formatNumber(value.value)
+        is Value.Bool -> if (value.flag) "TRUE" else "FALSE"
+        is Value.Err -> throw FormulaError("error ${value.code} where text was expected")
+    }
+
+    /** Excel's general number rendering: no trailing `.0`, and at most 15 significant digits. */
+    private fun formatNumber(value: Double): String {
+        if (value.isNaN() || value.isInfinite()) throw FormulaError("'$value' is not a number this reader renders")
+        val rounded = value.toBigDecimal().round(java.math.MathContext(15)).stripTrailingZeros()
+        return rounded.toPlainString()
+    }
+
+    private fun flag(value: Value, where: String): Boolean = when (value) {
+        is Value.Bool -> value.flag
+        is Value.Num -> value.value != 0.0
+        is Value.Blank -> false
+        is Value.Txt -> throw FormulaError("text \"${shorten(value.text)}\" is not a condition in $where")
+        is Value.Err -> throw FormulaError("error ${value.code} in $where")
+    }
+
+    /** Functions that read a range as a set of cells rather than as a single value. */
+    private val AGGREGATES = setOf("SUM", "COUNT", "COUNTA", "AVERAGE", "MIN", "MAX", "MEDIAN")
+
+    /**
+     * The cells a range names when the scan is at [cell], both endpoints shifting exactly as a single reference
+     * does. A reversed pair (`B2:A1`) is normalized, which is what Excel's own address arithmetic produces. A range
+     * that leaves the grid, or that is larger than the component's existing [MAX_RANGE_CELLS] bound, is refused
+     * rather than truncated: one rule may not walk an arbitrary share of the sheet.
+     */
+    private fun rangeCells(
+        range: Node.RangeRef,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): Sequence<SheetRange.Cell> {
+        val from = shifted(range.from, cell, anchor)
+            ?: throw FormulaError("'${range.from.cell.toA1()}' shifts outside the sheet at ${cell.toA1()}")
+        val to = shifted(range.to, cell, anchor)
+            ?: throw FormulaError("'${range.to.cell.toA1()}' shifts outside the sheet at ${cell.toA1()}")
+        val firstColumn = minOf(from.col, to.col)
+        val lastColumn = maxOf(from.col, to.col)
+        val firstRow = minOf(from.row, to.row)
+        val lastRow = maxOf(from.row, to.row)
+        val area = (lastColumn - firstColumn + 1).toLong() * (lastRow - firstRow + 1).toLong()
+        if (area > MAX_RANGE_CELLS) {
+            throw FormulaError("a $area-cell range is above the $MAX_RANGE_CELLS-cell aggregate bound")
+        }
+        return sequence {
+            for (row in firstRow..lastRow) {
+                for (column in firstColumn..lastColumn) yield(SheetRange.Cell(column, row))
+            }
+        }
+    }
+
+    /**
+     * Excel's aggregate rules. Inside a range, text, booleans and blanks are *ignored* by `SUM`, `AVERAGE`, `MIN`,
+     * `MAX` and `MEDIAN`, counted only by `COUNTA`, and an error value propagates as a refusal with its code — an
+     * error is not a number and is not a zero. A scalar argument is one cell, not a range: `COUNT` classifies it by
+     * type, `COUNTA` counts it unless it is blank, and the arithmetic aggregates use [number]'s existing coercion
+     * (a boolean is 1 or 0, text is refused). That difference is Excel's, and it is why `SUM(A1:A8)` above ignores
+     * the boolean in `A6` while `SUM(TRUE)` counts it.
+     */
+    private fun aggregate(
+        node: Node.Call,
+        grid: Grid,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): Value {
+        val numbers = ArrayList<Double>()
+        var numeric = 0
+        var nonBlank = 0
+        for (argument in node.args) {
+            if (argument is Node.RangeRef) {
+                for (target in rangeCells(argument, cell, anchor)) {
+                    when (val value = grid.value(target)) {
+                        is Value.Err -> throw FormulaError(
+                            "error ${value.code} in ${node.name} at ${target.toA1()}",
+                        )
+                        is Value.Num -> {
+                            numbers.add(value.value)
+                            numeric++
+                            nonBlank++
+                        }
+                        Value.Blank -> Unit
+                        is Value.Txt, is Value.Bool -> nonBlank++
+                    }
+                }
+                continue
+            }
+            when (val value = evaluate(argument, grid, cell, anchor)) {
+                is Value.Err -> throw FormulaError("error ${value.code} in ${node.name}")
+                Value.Blank -> Unit
+                is Value.Num -> {
+                    numbers.add(value.value)
+                    numeric++
+                    nonBlank++
+                }
+                // A scalar is not a range cell: `COUNT` classifies it by type, `COUNTA` counts it when it is not
+                // blank, and the arithmetic aggregates use the model's existing coercion, which turns a boolean
+                // into 1 or 0 (`SUM(TRUE)` is 1, as in Excel) and refuses text outright.
+                is Value.Txt -> when (node.name) {
+                    "COUNTA" -> nonBlank++
+                    "COUNT" -> Unit
+                    else -> throw FormulaError("${describe(value)} is not a number for ${node.name}")
+                }
+                is Value.Bool -> when (node.name) {
+                    "COUNTA" -> nonBlank++
+                    "COUNT" -> Unit
+                    else -> {
+                        numbers.add(number(value, ' '))
+                        numeric++
+                        nonBlank++
+                    }
+                }
+            }
+        }
+        return when (node.name) {
+            "SUM" -> Value.Num(numbers.sum())
+            "COUNT" -> Value.Num(numeric.toDouble())
+            "COUNTA" -> Value.Num(nonBlank.toDouble())
+            "AVERAGE" -> if (numbers.isEmpty()) Value.Err("#DIV/0!") else Value.Num(numbers.average())
+            "MIN" -> Value.Num(numbers.minOrNull() ?: 0.0)
+            "MAX" -> Value.Num(numbers.maxOrNull() ?: 0.0)
+            "MEDIAN" -> median(numbers)
+            else -> throw FormulaError("'${node.name}' is not an aggregate")
+        }
+    }
+
+    /** Excel's `MEDIAN`: the middle value, the mean of the two middle values for an even count, `#NUM!` when empty. */
+    private fun median(numbers: List<Double>): Value {
+        if (numbers.isEmpty()) return Value.Err("#NUM!")
+        val sorted = numbers.sorted()
+        val middle = sorted.size / 2
+        return if (sorted.size % 2 == 1) Value.Num(sorted[middle])
+        else Value.Num((sorted[middle - 1] + sorted[middle]) / 2)
+    }
+
+    /** `ROUND` halves away from zero, as Excel does (`ROUND(-2.5,0)` is `-3`); `MOD` takes the divisor's sign. */
+    private fun apply(node: Node.Call, grid: Grid, cell: SheetRange.Cell, anchor: SheetRange.Cell): Value {
+        if (node.name == "ROW") return Value.Num(cell.row.toDouble())
+        if (node.name in AGGREGATES) return aggregate(node, grid, cell, anchor)
+        val args = node.args.map { evaluate(it, grid, cell, anchor) }
+        return when (node.name) {
+            "AND" -> Value.Bool(args.all { flag(it, "AND") })
+            "OR" -> Value.Bool(args.any { flag(it, "OR") })
+            "NOT" -> Value.Bool(!flag(args[0], "NOT"))
+            "ISBLANK" -> Value.Bool(args[0] is Value.Blank)
+            "ISNUMBER" -> Value.Bool(args[0] is Value.Num)
+            "ISTEXT" -> Value.Bool(args[0] is Value.Txt)
+            "LEN" -> Value.Num(text(args[0]).length.toDouble())
+            "TRIM" -> Value.Txt(text(args[0]).trim().replace(Regex(" +"), " "))
+            "UPPER" -> Value.Txt(text(args[0]).uppercase())
+            "LOWER" -> Value.Txt(text(args[0]).lowercase())
+            "LEFT", "RIGHT" -> {
+                val body = text(args[0])
+                val count = number(args[1], ' ')
+                if (count < 0.0 || count != Math.floor(count)) throw FormulaError("${node.name} count must be a whole number >= 0")
+                val width = count.toInt().coerceAtMost(body.length)
+                Value.Txt(if (node.name == "LEFT") body.take(width) else body.takeLast(width))
+            }
+            "ABS" -> Value.Num(Math.abs(number(args[0], ' ')))
+            "ROUND" -> {
+                val digits = number(args[1], ' ')
+                if (digits != Math.floor(digits) || Math.abs(digits) > 15.0) {
+                    throw FormulaError("ROUND digits must be a whole number within 15")
+                }
+                val value = number(args[0], ' ')
+                if (value.isNaN() || value.isInfinite()) throw FormulaError("'$value' is not a number ROUND can read")
+                // Two steps, both required to match Excel. First read the binary double as the fifteen significant
+                // decimal digits Excel keeps — without it `ROUND(2.675,2)` would answer 2.67, because the double
+                // nearest 2.675 is 2.67499999999999982236..., while Excel rounds the *typed* 2.675 and says 2.68.
+                // Then round half away from zero: BigDecimal's HALF_UP, not Java's Math.round, which rounds a
+                // negative half toward positive infinity and would answer ROUND(-2.5,0) with -2 instead of -3.
+                val decimal = java.math.BigDecimal(value).round(java.math.MathContext(15))
+                val rounded = decimal.setScale(digits.toInt(), java.math.RoundingMode.HALF_UP)
+                Value.Num(rounded.toDouble())
+            }
+            "MOD" -> {
+                val divisor = number(args[1], ' ')
+                if (divisor == 0.0) Value.Err("#DIV/0!")
+                else Value.Num(number(args[0], ' ') - divisor * Math.floor(number(args[0], ' ') / divisor))
+            }
+            else -> throw FormulaError("'${node.name}' is not a function this reader evaluates")
+        }
     }
 
     /** Equality with the same type rule as [order]; null when the pair has no defined equality here. */

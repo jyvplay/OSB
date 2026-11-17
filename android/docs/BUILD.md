@@ -1,3 +1,60 @@
+# R105 — ranges and the seven aggregates a conditional format uses
+
+A conditional format whose formula is `SUM(A1:A3)>10`, `AVERAGE(B1:B5)<2` or `COUNT(A1:A9)=9` is now decided. The
+`expression` grammar reads `from:to` ranges (both endpoints carrying their own `$` locks and shifting with the cell
+under test) and seven aggregates — `SUM`, `COUNT`, `COUNTA`, `AVERAGE`, `MIN`, `MAX`, `MEDIAN` — with Excel's rules:
+inside a range, text, booleans and blanks are ignored by the arithmetic aggregates and counted only by `COUNTA`; an
+error in a range is a refusal carrying the cell; `AVERAGE` of no numbers is `#DIV/0!` and `MEDIAN` of no numbers is
+`#NUM!`; a reversed range is normalized; a range used as a single value, a range that leaves the grid, and a range
+above the component's 100000-cell bound are refused with a reason.
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r105_checks.py                     # probe + independent Python lane + controls
+python3 tools/check_r105_ranges.py testing/build/r105/artifacts --require-openpyxl
+PYTHONPATH=tools python3 -m unittest test_r105_ranges
+```
+
+The corresponding Studio/CI task is `:testing:r105RangesContracts`. Host checks are not Android execution, and a
+verdict is not a rendered cell: no Excel or LibreOffice ran. See [R105 results](R105-RESULTS.md).
+
+---
+
+# R104 — open it in Android Studio Rabbit 1, and the conditional-format formula grammar
+
+Open **`OSB/android/`** (not the legacy root web project) in **Android Studio Rabbit 1 (2026.2.1)** with a full
+**JDK 17** as the Gradle JDK, and let the pinned wrapper resolve Gradle **9.3.1**. Then:
+
+```sh
+./gradlew :app:assembleProDebug     # first build downloads Gradle 9.3.1 and the AGP 9.1.1 artifacts
+./gradlew :app:installProDebug      # with a device or emulator attached
+```
+
+`python3 tools/check_r104_studio.py` checks the configuration this depends on — AGP inside Rabbit 1's 7.1–9.4 range,
+the wrapper at or above AGP 9.1's Gradle 9.3 floor, every Android module on JDK 17 with a namespace and a
+`compileSdk` no newer than 37, AndroidX on, the AGP 9 Kotlin bridge declared, an exported launcher, and both flavors.
+It is **configuration evidence only**: no Android SDK, Gradle distribution, JDK, emulator or device exists in this
+sandbox, so no sync, compile, install or launch has been observed here. `PYTHONPATH=tools python3 -m unittest
+test_r104_studio_gate` exercises the gate itself (16 controls).
+
+For spreadsheets, an `expression` conditional format now reads a real formula grammar rather than two regexes:
+`AND`, `OR`, `NOT`, `ISBLANK`, `ISNUMBER`, `ISTEXT`, `LEN`, `TRIM`, `UPPER`, `LOWER`, `LEFT`, `RIGHT`, `ABS`,
+`ROUND`, `MOD`, `ROW`, with `+ - * /`, parentheses, comparisons, text literals, booleans and cell references that
+shift relative to the cell under test (`$` locks a coordinate). Anything outside that grammar — ranges, cross-sheet
+references, other functions — is reported undecided with a reason, never silently "did not fire".
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r104_checks.py                     # probe + independent Python lane + controls
+python3 tools/check_r104_grammar.py testing/build/r104/artifacts --require-openpyxl
+PYTHONPATH=tools python3 -m unittest test_r104_grammar test_r104_studio_gate
+```
+
+The corresponding Studio/CI tasks are `:testing:r104GrammarContracts`. Host checks are not Android execution, and a
+verdict is not a rendered cell: no Excel or LibreOffice ran. See [R104 results](R104-RESULTS.md).
+
+---
+
 # R64 — bounded copy, table and values-only export candidates
 
 Open `OSB/android/` in Android Studio Rabbit 1 with JDK 17 and SDK `platforms;android-37.0`, then use `./gradlew :app:assembleProDebug`. The R64 feature candidate has not yet been built or run on Android; check its exact CI revision before depending on these controls. Use disposable data.
