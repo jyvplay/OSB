@@ -42,7 +42,7 @@ VERDICT_FIELDS = 18
 NUMBER = re.compile(r'^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$')
 CELL_REF = re.compile(r'^[A-Z]{1,3}[1-9][0-9]{0,6}$')
 COMPARISON = re.compile(r'^(.+?)\s*(<=|>=|<>|=|<|>)\s*(.+)$')
-IS_BLANK = re.compile(r'^ISBLANK\(\s*([A-Z]{1,3}[1-9][0-9]{0,6})\s*\)$', re.IGNORECASE)
+IS_BLANK = re.compile(r'^ISBLANK\(\s*(\$?[A-Z]{1,3}\$?[1-9][0-9]{0,6})\s*\)$', re.IGNORECASE)
 MOD_ROW = re.compile(r'^MOD\(\s*ROW\(\)\s*,\s*(\d{1,4})\s*\)\s*=\s*(\d{1,4})$', re.IGNORECASE)
 SEPARATOR = '\x1f'
 MAX_RANGE_CELLS = 100_000
@@ -91,6 +91,35 @@ def parse_range(token: str) -> tuple[int, int, int, int]:
     c1, r1 = parse_cell(left)
     c2, r2 = parse_cell(right)
     return min(c1, c2), min(r1, r2), max(c1, c2), max(r1, r2)
+
+
+# R103: a formula's references are relative to the cell being evaluated, anchored at the top-left of the range
+# token that covers it, and `$` locks a coordinate. This oracle re-implements that rule; without it the oracle
+# would still be checking the pre-R103 (literal) reading and would disagree with the product on every unlocked
+# reference.
+REFERENCE = re.compile(r'^(\$?)([A-Z]{1,3})(\$?)([1-9][0-9]{0,6})$')
+MAX_COLUMN = 16384
+MAX_ROW = 1048576
+
+
+def shift_reference(token: str, cell: tuple[int, int], anchor: tuple[int, int]):
+    match = REFERENCE.match(token.strip().upper())
+    require(match is not None, f'{token!r} is not a reference')
+    column, row = parse_cell(match.group(2) + match.group(4))
+    if not match.group(1):
+        column += cell[0] - anchor[0]
+    if not match.group(3):
+        row += cell[1] - anchor[1]
+    if not (1 <= column <= MAX_COLUMN) or not (1 <= row <= MAX_ROW):
+        return None
+    return column, row
+
+
+def anchor_of(sqref: str, cell: tuple[int, int]):
+    for token in sqref.split(' '):
+        if covers(token, cell):
+            return parse_range(token)[:2]
+    return None
 
 
 def covers(token: str, cell: tuple[int, int]) -> bool:
@@ -265,9 +294,12 @@ def operand(text: str):
     return None
 
 
-def resolve(candidate, grid: Grid):
+def resolve(candidate, grid: Grid, cell: tuple[int, int], anchor: tuple[int, int]):
     if candidate[0] == 'ref':
-        return grid.get(parse_cell(candidate[1]))
+        target = shift_reference(candidate[1], cell, anchor)
+        if target is None:
+            raise Unresolved(-1, f'reference {candidate[1]} shifts outside the sheet at {to_a1(cell)}')
+        return grid.get(target)
     return candidate
 
 
@@ -387,7 +419,7 @@ def interpolate(colors: list[str], points: list[float], value: float) -> str:
     return colors[-1].upper()
 
 
-def decide(rule: Rule, blocks, grid: Grid, cell: tuple[int, int]) -> list[str]:
+def decide(rule: Rule, blocks, grid: Grid, cell: tuple[int, int], anchor: tuple[int, int]) -> list[str]:
     if rule.kind == 'cellIs':
         if rule.operator is None:
             raise Unresolved(rule.priority, 'cellIs without an operator')
@@ -397,7 +429,7 @@ def decide(rule: Rule, blocks, grid: Grid, cell: tuple[int, int]) -> list[str]:
             candidate = operand(formula.strip())
             if candidate is None:
                 raise Unresolved(rule.priority, f"cellIs operand '{formula}' is not a literal or a cell reference")
-            right.append(resolve(candidate, grid))
+            right.append(resolve(candidate, grid, cell, anchor))
         if rule.operator in ('between', 'notBetween'):
             if len(right) != 2:
                 raise Unresolved(rule.priority, f'cellIs {rule.operator} needs two operands')
@@ -424,7 +456,10 @@ def decide(rule: Rule, blocks, grid: Grid, cell: tuple[int, int]) -> list[str]:
         text = rule.formulas[0].strip()
         blank = IS_BLANK.match(text)
         if blank is not None:
-            if grid.get(parse_cell(blank.group(1).upper()))[0] == 'blank':
+            target = shift_reference(blank.group(1), cell, anchor)
+            if target is None:
+                raise Unresolved(rule.priority, f'ISBLANK target shifts outside the sheet at {to_a1(cell)}')
+            if grid.get(target)[0] == 'blank':
                 raise Yes(visuals(rule))
             raise No()
         modular = MOD_ROW.match(text)
@@ -444,7 +479,7 @@ def decide(rule: Rule, blocks, grid: Grid, cell: tuple[int, int]) -> list[str]:
             raise Unresolved(rule.priority, f"left side '{match.group(1).strip()}' is not supported")
         if right_candidate is None:
             raise Unresolved(rule.priority, f"right side '{match.group(3).strip()}' is not supported")
-        a, b = resolve(left_candidate, grid), resolve(right_candidate, grid)
+        a, b = resolve(left_candidate, grid, cell, anchor), resolve(right_candidate, grid, cell, anchor)
         symbol = match.group(2)
         if symbol in ('=', '<>'):
             outcome = equal(a, b)
@@ -516,17 +551,18 @@ def decide(rule: Rule, blocks, grid: Grid, cell: tuple[int, int]) -> list[str]:
 
 def evaluate(blocks, grid: Grid, cell: tuple[int, int]):
     applicable = [
-        rule
+        (rule, anchor)
         for _, (sqref, rules) in sorted(blocks.items())
-        if any(covers(token, cell) for token in sqref.split(' '))
+        for anchor in [anchor_of(sqref, cell)]
+        if anchor is not None
         for rule in rules
     ]
-    applicable.sort(key=lambda rule: rule.priority)
+    applicable.sort(key=lambda pair: pair[0].priority)
     fired, unresolved = [], []
     stopped = False
-    for rule in applicable:
+    for rule, anchor in applicable:
         try:
-            decide(rule, blocks, grid, cell)
+            decide(rule, blocks, grid, cell, anchor)
         except Unresolved as refused:
             unresolved.append(refused)
             continue

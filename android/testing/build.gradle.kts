@@ -1752,6 +1752,20 @@ tasks.register<JavaExec>("r99OutlineContracts") {
     doFirst { rootProject.file("testing/build/r99/artifacts").mkdirs() }
 }
 
+// R103: what a conditional-format formula's cell references mean. Excel reads them relative to the cell being
+// evaluated, anchored at the top-left of the range token that covers it, with `$` locking one coordinate; this
+// pass pins the offsets, the locks, the per-token anchor, the grid-edge refusal and the shapes that stay undecided.
+val r103Shift by sourceSets.creating
+kotlin.sourceSets.named("r103Shift") { kotlin.srcDir("src/r103/kotlin") }
+dependencies { add(r103Shift.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r103ShiftContracts") {
+    dependsOn(r103Shift.classesTaskName)
+    classpath = r103Shift.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R103Checks")
+    args(rootProject.file("testing/build/r103/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r103/artifacts").mkdirs() }
+}
+
 // R102: the differential format itself — the `<dxf>` entries every painting rule points at — from "bold, italic,
 // strike, underline, a font colour and a solid fill" to the whole element short of a gradient: font family and
 // size, a number format, patterned fills, borders with up to five edges, alignment and protection, carried through

@@ -146,7 +146,10 @@ object R97Checks {
             sqref = "B1:B5",
             rules = listOf(
                 Rule(Kind.CELL_IS, 1, operator = Operator.EQUAL, formulas = listOf("\"apple\""), format = ITALIC),
-                Rule(Kind.EXPRESSION, 2, formulas = listOf("ISBLANK(B4)"), format = STRIKE),
+                // `$B$4`, not `B4`: R103 made a formula's references relative to the cell being evaluated, so an
+                // unlocked `B4` on `B1:B5` tests B5 at row 2 and B6 at row 3. This rule means "the sheet's own B4",
+                // which is what a locked reference states, and what this fixture asserted before R103 by accident.
+                Rule(Kind.EXPRESSION, 2, formulas = listOf("ISBLANK(\$B\$4)"), format = STRIKE),
                 Rule(Kind.CELL_IS, 3, operator = Operator.LESS_THAN, formulas = listOf("\"banana\""), format = GREEN_FILL),
             ),
         ),

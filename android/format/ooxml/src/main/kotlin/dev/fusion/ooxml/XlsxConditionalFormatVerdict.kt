@@ -18,6 +18,13 @@ package dev.fusion.ooxml
  *   includes ties; `percent` thresholds interpolate linearly between the range minimum and maximum; `percentile`
  *   uses linear interpolation between order statistics; colour interpolation is per-channel sRGB with rounding
  *   half-up. None of these was observed in Excel — see `docs/R97-RESULTS.md` §C.
+ * * **References shift** (R103). A formula's cell references are relative to the cell being evaluated, anchored at
+ *   the top-left of the range token that covers it: `A1>5` on `A1:A9` asks `A5>5` when the scan reaches A5, and
+ *   `$A$1>5` asks the same question of every cell. `$` locks one coordinate (`$A1`, `A$1`). A shift that leaves
+ *   the grid is refused rather than clamped, because a clamped reference reads a different cell than Excel does.
+ *   Cross-sheet references (`Sheet2!A1`) are still outside the grammar. See `docs/R103-RESULTS.md` §B.
+ * * **The dxf's other fields** (R102) ride along in [Decoration.detail] — a font's family and size, a number
+ *   format, a fill's pattern, a border, alignment and protection — merged field by field, first rule wins.
  * * **Blank, error, time and icon rules** (R101). A blank rule follows Excel's own formula (`LEN(TRIM(cell))=0`,
  *   where TRIM removes spaces only), an error rule follows `ISERROR(cell)`, and both treat an error cell as
  *   *no format* rather than as a negation — `notContainsBlanks` is not the complement of `containsBlanks` on an
@@ -31,9 +38,10 @@ package dev.fusion.ooxml
  *   numeric cells, and duplicates are counted by value with case-insensitive text keys. See
  *   `docs/R100-RESULTS.md` §C, including the one hypothesis (§C.5) that no corpus here can distinguish.
  *
- * What is *not* here: font family/size, number formats, borders, alignment, the icon *images* themselves (only
- * which icon a value earns), the 2010 `x14` data-bar and icon-set extensions, and the painting itself. A verdict
- * is a claim about which rule fires and which icon index it assigns, never about pixels.
+ * What is *not* here: the icon *images* themselves (only which icon a value earns), the vertAlign/shadow/outline
+ * font flags, gradient fills inside a dxf, cross-sheet references, the 2010 `x14` data-bar and icon-set
+ * extensions, and the painting itself. A verdict is a claim about which rule fires and which icon index it
+ * assigns, never about pixels.
  */
 object XlsxConditionalFormatVerdict {
 
@@ -186,9 +194,10 @@ object XlsxConditionalFormatVerdict {
     )
 
     private val NUMBER = Regex("^[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$")
-    private val CELL_REF = Regex("^[A-Z]{1,3}[1-9][0-9]{0,6}$")
+    /** `[$]COL[$]ROW`; each `$` locks the coordinate that follows it, so a locked reference never shifts. */
+    private val CELL_REF = Regex("^(\\$?)([A-Z]{1,3})(\\$?)([1-9][0-9]{0,6})$")
     private val COMPARISON = Regex("^(.+?)\\s*(<=|>=|<>|=|<|>)\\s*(.+)$")
-    private val IS_BLANK = Regex("^ISBLANK\\(\\s*([A-Z]{1,3}[1-9][0-9]{0,6})\\s*\\)$", RegexOption.IGNORE_CASE)
+    private val IS_BLANK = Regex("^ISBLANK\\(\\s*(\\$?[A-Z]{1,3}\\$?[1-9][0-9]{0,6})\\s*\\)$", RegexOption.IGNORE_CASE)
     private val MOD_ROW = Regex(
         "^MOD\\(\\s*ROW\\(\\)\\s*,\\s*(\\d{1,4})\\s*\\)\\s*=\\s*(\\d{1,4})$",
         RegexOption.IGNORE_CASE,
@@ -204,15 +213,23 @@ object XlsxConditionalFormatVerdict {
         cell: SheetRange.Cell,
         calendar: Calendar? = null,
     ): Outcome {
+        // A rule is evaluated with the anchor of its own block, so a multi-token `sqref` behaves like the separate
+        // ranges Excel's dialog writes: the offset is measured from the token that covers this cell.
         val applicable = blocks
             .filter { block -> block.covers(cell) }
-            .flatMap { block -> block.rules }
-            .sortedBy { it.priority }
+            .flatMap { block ->
+                // `covers` has already established that some token contains the cell, so the anchor cannot be null
+                // here; the elvis keeps the compiler happy without inventing an anchor for a block that does not
+                // apply.
+                val anchor = block.anchorFor(cell) ?: cell
+                block.rules.map { rule -> rule to anchor }
+            }
+            .sortedBy { it.first.priority }
         val fired = ArrayList<Fired>()
         val unresolved = ArrayList<Unresolved>()
         var stopped = false
-        for (rule in applicable) {
-            when (val decision = predicate(rule, blocks, grid, cell, calendar)) {
+        for ((rule, anchor) in applicable) {
+            when (val decision = predicate(rule, blocks, grid, cell, calendar, anchor)) {
                 is Decision.Unsupported -> unresolved.add(Unresolved(rule.priority, decision.reason))
                 is Decision.No -> Unit
                 is Decision.Yes -> {
@@ -266,9 +283,20 @@ object XlsxConditionalFormatVerdict {
     }
 
     private fun XlsxConditionalFormatting.Block.covers(cell: SheetRange.Cell): Boolean =
-        sqref.split(' ').any { token ->
-            runCatching { SheetRange.contains(SheetRange.parse(token), cell) }.getOrDefault(false)
+        anchorFor(cell) != null
+
+    /**
+     * The top-left of the first `sqref` token that contains [cell], or null when the block does not cover it. This
+     * is the anchor Excel measures a rule's relative references from; taking the first token unconditionally would
+     * shift a rule on `C1:C9` by the origin of `A1:A9` in a block that names both.
+     */
+    private fun XlsxConditionalFormatting.Block.anchorFor(cell: SheetRange.Cell): SheetRange.Cell? {
+        for (token in sqref.split(' ')) {
+            val range = runCatching { SheetRange.parse(token) }.getOrNull() ?: continue
+            if (SheetRange.contains(range, cell)) return range.top
         }
+        return null
+    }
 
     private fun predicate(
         rule: XlsxConditionalFormatting.Rule,
@@ -276,9 +304,10 @@ object XlsxConditionalFormatVerdict {
         grid: Grid,
         cell: SheetRange.Cell,
         calendar: Calendar? = null,
+        anchor: SheetRange.Cell = cell,
     ): Decision = when (rule.kind) {
-        XlsxConditionalFormatting.Kind.CELL_IS -> cellIs(rule, grid, cell)
-        XlsxConditionalFormatting.Kind.EXPRESSION -> expression(rule, grid, cell)
+        XlsxConditionalFormatting.Kind.CELL_IS -> cellIs(rule, grid, cell, anchor)
+        XlsxConditionalFormatting.Kind.EXPRESSION -> expression(rule, grid, cell, anchor)
         XlsxConditionalFormatting.Kind.TOP10 -> top10(rule, blocks, grid, cell)
         XlsxConditionalFormatting.Kind.COLOR_SCALE -> colorScale(rule, blocks, grid, cell)
         XlsxConditionalFormatting.Kind.DATA_BAR -> dataBar(rule, blocks, grid, cell)
@@ -307,7 +336,17 @@ object XlsxConditionalFormatVerdict {
         data class Number(val value: Double) : Operand
         data class Text(val text: String) : Operand
         data class Bool(val flag: Boolean) : Operand
-        data class Reference(val cell: SheetRange.Cell) : Operand
+
+        /**
+         * A cell reference as the formula spells it. [cell] is the coordinate *in the formula*, not the coordinate
+         * to read: the reader of that coordinate depends on which cell is being evaluated (§ the header's
+         * "References shift").
+         */
+        data class Reference(
+            val cell: SheetRange.Cell,
+            val columnLocked: Boolean = false,
+            val rowLocked: Boolean = false,
+        ) : Operand
     }
 
     /** A formula operand this evaluator understands; anything else is refused rather than guessed. */
@@ -318,16 +357,49 @@ object XlsxConditionalFormatVerdict {
             Operand.Text(text.substring(1, text.length - 1).replace("\"\"", "\""))
         text.equals("TRUE", ignoreCase = true) -> Operand.Bool(true)
         text.equals("FALSE", ignoreCase = true) -> Operand.Bool(false)
-        CELL_REF.matches(text.uppercase()) -> runCatching { Operand.Reference(SheetRange.parseCell(text.uppercase())) }
-            .getOrNull()
-        else -> null
+        else -> reference(text)
     }
 
-    private fun resolve(candidate: Operand, grid: Grid): Value = when (candidate) {
-        is Operand.Number -> Value.Num(candidate.value)
-        is Operand.Text -> Value.Txt(candidate.text)
-        is Operand.Bool -> Value.Bool(candidate.flag)
-        is Operand.Reference -> grid.value(candidate.cell)
+    /** A cell reference token, or null when the token is not one this grammar reads. */
+    private fun reference(text: String): Operand.Reference? {
+        val match = CELL_REF.matchEntire(text.uppercase().trim()) ?: return null
+        val cell = runCatching { SheetRange.parseCell(match.groupValues[2] + match.groupValues[4]) }.getOrNull()
+            ?: return null
+        return Operand.Reference(
+            cell = cell,
+            columnLocked = match.groupValues[1].isNotEmpty(),
+            rowLocked = match.groupValues[3].isNotEmpty(),
+        )
+    }
+
+    /**
+     * The value an operand names when the scan is at [cell], whose block is anchored at [anchor]. `null` means the
+     * operand cannot be read there — only a reference can do that, by shifting off the grid.
+     */
+    private fun resolve(candidate: Operand, grid: Grid, cell: SheetRange.Cell, anchor: SheetRange.Cell): Value? =
+        when (candidate) {
+            is Operand.Number -> Value.Num(candidate.value)
+            is Operand.Text -> Value.Txt(candidate.text)
+            is Operand.Bool -> Value.Bool(candidate.flag)
+            is Operand.Reference -> shifted(candidate, cell, anchor)?.let { grid.value(it) }
+        }
+
+    /**
+     * Excel's conditional-format references are relative: `A1>5` written on the range `A1:A9` asks about the cell
+     * `A9` when it reaches `A9`, and `$A$1>5` asks about `A1` every time. The anchor is the top-left of the range
+     * token that covers [cell], which is what makes a multi-token `sqref` behave like the separate rules Excel's
+     * own dialog produces. A shift outside the sheet is `null` rather than clamped: clamping would silently read a
+     * different cell, and the caller turns `null` into an undecided rule.
+     */
+    private fun shifted(
+        reference: Operand.Reference,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): SheetRange.Cell? {
+        val column = reference.cell.col + if (reference.columnLocked) 0 else cell.col - anchor.col
+        val row = reference.cell.row + if (reference.rowLocked) 0 else cell.row - anchor.row
+        if (column !in 1..ColLetters.MAX_COLUMN || row !in 1..SheetRange.MAX_ROW) return null
+        return SheetRange.Cell(column, row)
     }
 
     // --- cellIs ------------------------------------------------------------------------------------------
@@ -336,12 +408,15 @@ object XlsxConditionalFormatVerdict {
         rule: XlsxConditionalFormatting.Rule,
         grid: Grid,
         cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
     ): Decision {
         val operator = rule.operator ?: return Decision.Unsupported("cellIs without an operator")
         val left = grid.value(cell)
         val right = rule.formulas.map { formula ->
-            operand(formula.trim())?.let { resolve(it, grid) }
+            val parsed = operand(formula.trim())
                 ?: return Decision.Unsupported("cellIs operand '$formula' is not a literal or a cell reference")
+            resolve(parsed, grid, cell, anchor)
+                ?: return Decision.Unsupported("cellIs operand '$formula' shifts outside the sheet at ${cell.toA1()}")
         }
         if (operator == XlsxConditionalFormatting.Operator.BETWEEN ||
             operator == XlsxConditionalFormatting.Operator.NOT_BETWEEN
@@ -475,14 +550,17 @@ object XlsxConditionalFormatVerdict {
         rule: XlsxConditionalFormatting.Rule,
         grid: Grid,
         cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
     ): Decision {
         val formula = rule.formulas.singleOrNull()
             ?: return Decision.Unsupported("an expression rule without exactly one formula")
         val text = formula.trim()
         IS_BLANK.matchEntire(text)?.let { match ->
-            val target = runCatching { SheetRange.parseCell(match.groupValues[1].uppercase()) }.getOrNull()
+            val target = reference(match.groupValues[1])
                 ?: return Decision.Unsupported("ISBLANK target is not a cell reference")
-            return yes(grid.value(target) is Value.Blank, rule)
+            val shifted = shifted(target, cell, anchor)
+                ?: return Decision.Unsupported("ISBLANK target shifts outside the sheet at ${cell.toA1()}")
+            return yes(grid.value(shifted) is Value.Blank, rule)
         }
         MOD_ROW.matchEntire(text)?.let { match ->
             val divisor = match.groupValues[1].toInt()
@@ -497,8 +575,10 @@ object XlsxConditionalFormatVerdict {
         val rightText = match.groupValues[3].trim()
         val left = operand(leftText) ?: return Decision.Unsupported("left side '${shorten(leftText)}' is not supported")
         val right = operand(rightText) ?: return Decision.Unsupported("right side '${shorten(rightText)}' is not supported")
-        val a = resolve(left, grid)
-        val b = resolve(right, grid)
+        val a = resolve(left, grid, cell, anchor)
+            ?: return Decision.Unsupported("left side '${shorten(leftText)}' shifts outside the sheet at ${cell.toA1()}")
+        val b = resolve(right, grid, cell, anchor)
+            ?: return Decision.Unsupported("right side '${shorten(rightText)}' shifts outside the sheet at ${cell.toA1()}")
         if (operator == "=" || operator == "<>") {
             val equal = equalValues(a, b) ?: return undecidable(a, b)
             return yes(equal == (operator == "="), rule)
