@@ -1,3 +1,25 @@
+# R105 — ranges and the seven aggregates a conditional format uses
+
+A conditional format whose formula is `SUM(A1:A3)>10`, `AVERAGE(B1:B5)<2` or `COUNT(A1:A9)=9` is now decided. The
+`expression` grammar reads `from:to` ranges (both endpoints carrying their own `$` locks and shifting with the cell
+under test) and seven aggregates — `SUM`, `COUNT`, `COUNTA`, `AVERAGE`, `MIN`, `MAX`, `MEDIAN` — with Excel's rules:
+inside a range, text, booleans and blanks are ignored by the arithmetic aggregates and counted only by `COUNTA`; an
+error in a range is a refusal carrying the cell; `AVERAGE` of no numbers is `#DIV/0!` and `MEDIAN` of no numbers is
+`#NUM!`; a reversed range is normalized; a range used as a single value, a range that leaves the grid, and a range
+above the component's 100000-cell bound are refused with a reason.
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r105_checks.py                     # probe + independent Python lane + controls
+python3 tools/check_r105_ranges.py testing/build/r105/artifacts --require-openpyxl
+PYTHONPATH=tools python3 -m unittest test_r105_ranges
+```
+
+The corresponding Studio/CI task is `:testing:r105RangesContracts`. Host checks are not Android execution, and a
+verdict is not a rendered cell: no Excel or LibreOffice ran. See [R105 results](R105-RESULTS.md).
+
+---
+
 # R104 — open it in Android Studio Rabbit 1, and the conditional-format formula grammar
 
 Open **`OSB/android/`** (not the legacy root web project) in **Android Studio Rabbit 1 (2026.2.1)** with a full

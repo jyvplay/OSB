@@ -602,6 +602,9 @@ object XlsxConditionalFormatVerdict {
     private sealed interface Node {
         data class Literal(val value: Value) : Node
         data class Cell(val reference: Operand.Reference) : Node
+
+        /** `from:to`, both endpoints carrying their own `$` locks and shifting like any other reference. */
+        data class RangeRef(val from: Operand.Reference, val to: Operand.Reference) : Node
         data class Comparison(val left: Node, val operator: String, val right: Node) : Node
         data class Arithmetic(val left: Node, val operator: Char, val right: Node) : Node
         data class Call(val name: String, val args: List<Node>) : Node
@@ -686,7 +689,7 @@ object XlsxConditionalFormatVerdict {
 
     /** The one-character symbols the grammar reads; everything else is refused by [tokenize]. */
     private val SYMBOLS = setOf(
-        "(", ")", ",", "+", "-", "*", "/", "<=", ">=", "<>", "=", "<", ">",
+        "(", ")", ",", ":", "+", "-", "*", "/", "<=", ">=", "<>", "=", "<", ">",
     )
 
     /**
@@ -763,7 +766,21 @@ object XlsxConditionalFormatVerdict {
                         else -> {
                             val ref = XlsxConditionalFormatVerdict.reference(token.text)
                                 ?: throw FormulaError("'${token.text}' is neither a function, a literal nor a cell reference")
-                            Node.Cell(ref)
+                            val colon = tokens.getOrNull(position)
+                            if (colon is FormulaToken.Sym && colon.text == ":") {
+                                position++
+                                val endpoint = tokens.getOrNull(position)
+                                    ?: throw FormulaError("':' must be followed by a cell reference")
+                                position++
+                                val to = if (endpoint is FormulaToken.Word) {
+                                    XlsxConditionalFormatVerdict.reference(endpoint.text)
+                                } else {
+                                    null
+                                } ?: throw FormulaError("':' must be followed by a cell reference")
+                                Node.RangeRef(ref, to)
+                            } else {
+                                Node.Cell(ref)
+                            }
                         }
                     }
                 }
@@ -839,6 +856,14 @@ object XlsxConditionalFormatVerdict {
         "ROUND" to 2..2,
         "MOD" to 2..2,
         "ROW" to 0..0,
+        // R105: aggregates. Each accepts one or more arguments, each of which may be a range.
+        "SUM" to 1..MAX_CALL_ARGS,
+        "COUNT" to 1..MAX_CALL_ARGS,
+        "COUNTA" to 1..MAX_CALL_ARGS,
+        "AVERAGE" to 1..MAX_CALL_ARGS,
+        "MIN" to 1..MAX_CALL_ARGS,
+        "MAX" to 1..MAX_CALL_ARGS,
+        "MEDIAN" to 1..MAX_CALL_ARGS,
     )
 
     /** Parses [text], refusing anything outside the grammar. */
@@ -884,6 +909,7 @@ object XlsxConditionalFormatVerdict {
                 else -> if (right == 0.0) Value.Err("#DIV/0!") else Value.Num(left / right)
             }
         }
+        is Node.RangeRef -> throw FormulaError("a range is not a single value")
         is Node.Call -> apply(node, grid, cell, anchor)
     }
 
@@ -919,9 +945,126 @@ object XlsxConditionalFormatVerdict {
         is Value.Err -> throw FormulaError("error ${value.code} in $where")
     }
 
+    /** Functions that read a range as a set of cells rather than as a single value. */
+    private val AGGREGATES = setOf("SUM", "COUNT", "COUNTA", "AVERAGE", "MIN", "MAX", "MEDIAN")
+
+    /**
+     * The cells a range names when the scan is at [cell], both endpoints shifting exactly as a single reference
+     * does. A reversed pair (`B2:A1`) is normalized, which is what Excel's own address arithmetic produces. A range
+     * that leaves the grid, or that is larger than the component's existing [MAX_RANGE_CELLS] bound, is refused
+     * rather than truncated: one rule may not walk an arbitrary share of the sheet.
+     */
+    private fun rangeCells(
+        range: Node.RangeRef,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): Sequence<SheetRange.Cell> {
+        val from = shifted(range.from, cell, anchor)
+            ?: throw FormulaError("'${range.from.cell.toA1()}' shifts outside the sheet at ${cell.toA1()}")
+        val to = shifted(range.to, cell, anchor)
+            ?: throw FormulaError("'${range.to.cell.toA1()}' shifts outside the sheet at ${cell.toA1()}")
+        val firstColumn = minOf(from.col, to.col)
+        val lastColumn = maxOf(from.col, to.col)
+        val firstRow = minOf(from.row, to.row)
+        val lastRow = maxOf(from.row, to.row)
+        val area = (lastColumn - firstColumn + 1).toLong() * (lastRow - firstRow + 1).toLong()
+        if (area > MAX_RANGE_CELLS) {
+            throw FormulaError("a $area-cell range is above the $MAX_RANGE_CELLS-cell aggregate bound")
+        }
+        return sequence {
+            for (row in firstRow..lastRow) {
+                for (column in firstColumn..lastColumn) yield(SheetRange.Cell(column, row))
+            }
+        }
+    }
+
+    /**
+     * Excel's aggregate rules. Inside a range, text, booleans and blanks are *ignored* by `SUM`, `AVERAGE`, `MIN`,
+     * `MAX` and `MEDIAN`, counted only by `COUNTA`, and an error value propagates as a refusal with its code — an
+     * error is not a number and is not a zero. A scalar argument is one cell, not a range: `COUNT` classifies it by
+     * type, `COUNTA` counts it unless it is blank, and the arithmetic aggregates use [number]'s existing coercion
+     * (a boolean is 1 or 0, text is refused). That difference is Excel's, and it is why `SUM(A1:A8)` above ignores
+     * the boolean in `A6` while `SUM(TRUE)` counts it.
+     */
+    private fun aggregate(
+        node: Node.Call,
+        grid: Grid,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): Value {
+        val numbers = ArrayList<Double>()
+        var numeric = 0
+        var nonBlank = 0
+        for (argument in node.args) {
+            if (argument is Node.RangeRef) {
+                for (target in rangeCells(argument, cell, anchor)) {
+                    when (val value = grid.value(target)) {
+                        is Value.Err -> throw FormulaError(
+                            "error ${value.code} in ${node.name} at ${target.toA1()}",
+                        )
+                        is Value.Num -> {
+                            numbers.add(value.value)
+                            numeric++
+                            nonBlank++
+                        }
+                        Value.Blank -> Unit
+                        is Value.Txt, is Value.Bool -> nonBlank++
+                    }
+                }
+                continue
+            }
+            when (val value = evaluate(argument, grid, cell, anchor)) {
+                is Value.Err -> throw FormulaError("error ${value.code} in ${node.name}")
+                Value.Blank -> Unit
+                is Value.Num -> {
+                    numbers.add(value.value)
+                    numeric++
+                    nonBlank++
+                }
+                // A scalar is not a range cell: `COUNT` classifies it by type, `COUNTA` counts it when it is not
+                // blank, and the arithmetic aggregates use the model's existing coercion, which turns a boolean
+                // into 1 or 0 (`SUM(TRUE)` is 1, as in Excel) and refuses text outright.
+                is Value.Txt -> when (node.name) {
+                    "COUNTA" -> nonBlank++
+                    "COUNT" -> Unit
+                    else -> throw FormulaError("${describe(value)} is not a number for ${node.name}")
+                }
+                is Value.Bool -> when (node.name) {
+                    "COUNTA" -> nonBlank++
+                    "COUNT" -> Unit
+                    else -> {
+                        numbers.add(number(value, ' '))
+                        numeric++
+                        nonBlank++
+                    }
+                }
+            }
+        }
+        return when (node.name) {
+            "SUM" -> Value.Num(numbers.sum())
+            "COUNT" -> Value.Num(numeric.toDouble())
+            "COUNTA" -> Value.Num(nonBlank.toDouble())
+            "AVERAGE" -> if (numbers.isEmpty()) Value.Err("#DIV/0!") else Value.Num(numbers.average())
+            "MIN" -> Value.Num(numbers.minOrNull() ?: 0.0)
+            "MAX" -> Value.Num(numbers.maxOrNull() ?: 0.0)
+            "MEDIAN" -> median(numbers)
+            else -> throw FormulaError("'${node.name}' is not an aggregate")
+        }
+    }
+
+    /** Excel's `MEDIAN`: the middle value, the mean of the two middle values for an even count, `#NUM!` when empty. */
+    private fun median(numbers: List<Double>): Value {
+        if (numbers.isEmpty()) return Value.Err("#NUM!")
+        val sorted = numbers.sorted()
+        val middle = sorted.size / 2
+        return if (sorted.size % 2 == 1) Value.Num(sorted[middle])
+        else Value.Num((sorted[middle - 1] + sorted[middle]) / 2)
+    }
+
     /** `ROUND` halves away from zero, as Excel does (`ROUND(-2.5,0)` is `-3`); `MOD` takes the divisor's sign. */
     private fun apply(node: Node.Call, grid: Grid, cell: SheetRange.Cell, anchor: SheetRange.Cell): Value {
         if (node.name == "ROW") return Value.Num(cell.row.toDouble())
+        if (node.name in AGGREGATES) return aggregate(node, grid, cell, anchor)
         val args = node.args.map { evaluate(it, grid, cell, anchor) }
         return when (node.name) {
             "AND" -> Value.Bool(args.all { flag(it, "AND") })

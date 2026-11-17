@@ -61,7 +61,7 @@ FUNCTIONS = {
     'ABS': (1, 1), 'ROUND': (2, 2), 'MOD': (2, 2), 'ROW': (0, 0),
 }
 COMPARISONS = ('<=', '>=', '<>', '=', '<', '>')
-SYMBOLS = set('(),+-*/') | set(COMPARISONS)
+SYMBOLS = set('(),:+-*/') | set(COMPARISONS)
 MAX_DEPTH = 16
 MAX_TOKENS = 512
 
@@ -223,6 +223,11 @@ class Parser:
             reference = self.reference(payload)
             if reference is None:
                 raise Refused(f"'{payload}' is neither a function, a literal nor a cell reference")
+            following = self.peek()
+            if following[0] == 'sym' and following[1] == ':':
+                # This lane is the R104-era grammar and stops here; the range grammar is R105's lane. The product
+                # parses the range and refuses it as a value, which is the same refusal this line states.
+                raise Refused('a range is not a single value')
             return ('ref', reference)
         if payload != '(':
             raise Refused(f'unexpected {self.describe((kind, payload))}')

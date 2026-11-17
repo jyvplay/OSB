@@ -220,8 +220,10 @@ object R104Checks {
         Case("a locked reference at the anchor", "\$A\$1=10", "G1", "TRUE", "G1:G3"),
         Case("a locked reference away from the anchor", "\$A\$1=10", "G3", "TRUE", "G1:G3"),
         // Grammar refusals: each must be undecided with a reason, not silently "did not fire".
-        Case("unknown function", "SUM(A1,A2)>0", "B1", "UNDECIDED~not a function"),
-        Case("range operator", "A1:A3>0", "B1", "UNDECIDED~':'"),
+        // R105 made `SUM` a real function, so the unknown-function case names one that will never exist.
+        Case("unknown function", "FOO(A1,A2)>0", "B1", "UNDECIDED~not a function"),
+        // R105 parses `A1:A3` as a range, so the refusal now names the reason instead of the character.
+        Case("range as a value", "A1:A3>0", "B1", "UNDECIDED~a range is not a single value"),
         Case("sheet-qualified reference", "Sheet2!A1>0", "B1", "UNDECIDED~'!'"),
         Case("chained comparison", "1<2<3", "B1", "UNDECIDED~unexpected"),
         Case("unbalanced parentheses", "(1+2=3", "B1", "UNDECIDED~missing ')'"),

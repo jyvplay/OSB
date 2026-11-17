@@ -188,8 +188,8 @@ class RefusalTests(unittest.TestCase):
         self.assertIn(fragment, reason, formula)
 
     def test_outside_the_grammar(self):
-        self.assertRefused('SUM(A1,A2)>0', 'not a function')
-        self.assertRefused('A1:A3>0', "':'")
+        self.assertRefused('FOO(A1,A2)>0', 'not a function')
+        self.assertRefused('A1:A3>0', 'a range is not a single value')
         self.assertRefused('Sheet2!A1>0', "'!'")
         self.assertRefused('1<2<3', 'unexpected')
         self.assertRefused('(1+2=3', "missing ')'")
