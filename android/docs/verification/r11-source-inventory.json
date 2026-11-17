@@ -6032,7 +6032,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxPrintSetup.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "8222fcde650cc3480175313b45ca807a790b407f653c65817f2b327c23c0512e"
+      "sha256": "67d9b00a337628b993981662f58421b82662f863d26fc51ff90839f8888c9beb"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxProtection.kt",
@@ -6044,7 +6044,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "87ea9888b67e1c0441d8212e6fb2bc27f0f56dd1e9172e57fca03072c99b4478"
+      "sha256": "f891880c15fa68612ab7ba49ff9643924d5b56554e42561f95706976512de805"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxValidation.kt",

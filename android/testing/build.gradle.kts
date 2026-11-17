@@ -1739,6 +1739,19 @@ tasks.register<JavaExec>("r97VerdictContracts") {
 // R96: conditional formatting — conditionalFormatting/cfRule over cellIs, expression, top10, colorScale and
 // dataBar, plus the reusable <dxfs> table that cfRule@dxfId resolves against. openpyxl's conditional_formatting
 // and _differential_styles models verify separately.
+// R98: fit-to-page and page numbering on the sheet, plus the sheet-scoped print records
+// (_xlnm.Print_Area / _xlnm.Print_Titles). openpyxl's page_setup, pageSetUpPr and print_area verify separately.
+val r98Print by sourceSets.creating
+kotlin.sourceSets.named("r98Print") { kotlin.srcDir("src/r98/kotlin") }
+dependencies { add(r98Print.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r98PrintContracts") {
+    dependsOn(r98Print.classesTaskName)
+    classpath = r98Print.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R98Checks")
+    args(rootProject.file("testing/build/r98/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r98/artifacts").mkdirs() }
+}
+
 val r96Tail by sourceSets.creating
 kotlin.sourceSets.named("r96Tail") { kotlin.srcDir("src/r96/kotlin") }
 dependencies { add(r96Tail.implementationConfigurationName, project(":format:ooxml")) }
