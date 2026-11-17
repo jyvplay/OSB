@@ -1722,6 +1722,20 @@ tasks.register<JavaExec>("r95TailContracts") {
     doFirst { rootProject.file("testing/build/r95/artifacts").mkdirs() }
 }
 
+// R96: conditional formatting — conditionalFormatting/cfRule over cellIs, expression, top10, colorScale and
+// dataBar, plus the reusable <dxfs> table that cfRule@dxfId resolves against. openpyxl's conditional_formatting
+// and _differential_styles models verify separately.
+val r96Tail by sourceSets.creating
+kotlin.sourceSets.named("r96Tail") { kotlin.srcDir("src/r96/kotlin") }
+dependencies { add(r96Tail.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r96TailContracts") {
+    dependsOn(r96Tail.classesTaskName)
+    classpath = r96Tail.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R96Checks")
+    args(rootProject.file("testing/build/r96/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r96/artifacts").mkdirs() }
+}
+
 // R93: SpreadsheetML autoFilter (filterColumn, filters, customFilters) and its row predicate; openpyxl plus a
 // Python re-implementation of the decision function verify separately.
 val r93AutoFilter by sourceSets.creating

@@ -5987,6 +5987,12 @@
       "sha256": "346456bc9354278c4a261411ee2fb2a2eed7b9d9a8106a8fc9d40c76c99f4aac"
     },
     {
+      "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxConditionalFormatting.kt",
+      "module": ":format:ooxml",
+      "package": "dev.fusion.ooxml",
+      "sha256": "b5ae15bc6cacc65138b7190e978a50768361469ced8a0ab8ced391c8f1cd8318"
+    },
+    {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxDataValidationXml.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
@@ -6032,7 +6038,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxStyledBook.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "25ce05ab8ac4e906d2e4d02591f8872e4b82ab820f039b4249824fad30399fe3"
+      "sha256": "87ea9888b67e1c0441d8212e6fb2bc27f0f56dd1e9172e57fca03072c99b4478"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxValidation.kt",
