@@ -28,7 +28,7 @@ import java.io.File
  *    `operator` token differ from the type for `notContainsText`; a text rule carries no `<formula>`);
  * 2. `XlsxStyledBook.read` round-trips the same rules through an independent parser, and a hand-built "foreign"
  *    package exercises what a *another* producer writes: a redundant `<formula>` beside `containsText`, a rule
- *    with no `dxfId`, an unparsable `aboveAverage`, a blank `text` and an unmodelled `containsBlanks`;
+ *    with no `dxfId`, an unparsable `aboveAverage`, a blank `text` and a rule type this model does not claim;
  * 3. `tools/check_r100_conditional.py` re-derives both the XML facts (raw OPC + openpyxl 3.1.5) and every
  *    verdict in Python from `rules.tsv`/`values.tsv`.
  *
@@ -301,8 +301,10 @@ object R100Checks {
                 """<conditionalFormatting sqref="F1:F9"><cfRule type="uniqueValues" priority="6"/></conditionalFormatting>""" +
                 // Blank text is refused: SEARCH of the empty string matches every cell, so the rule would be a lie.
                 """<conditionalFormatting sqref="G1:G9"><cfRule type="containsText" priority="7" operator="containsText" text="   "/></conditionalFormatting>""" +
-                // Still unmodelled, and still dropped rather than guessed at.
-                """<conditionalFormatting sqref="H1:H9"><cfRule type="containsBlanks" priority="8"/></conditionalFormatting>""" +
+                // A type outside the base schema, and therefore still outside this model: R101 completed the
+                // eighteen base kinds, so the example of "unmodelled" is now the 2010 extension rather than a base
+                // kind. It is dropped rather than guessed at, which is what this rule is here to check.
+                """<conditionalFormatting sqref="H1:H9"><cfRule type="x14:iconSet" priority="8"/></conditionalFormatting>""" +
                 "</worksheet>",
         )
         val out = java.io.ByteArrayOutputStream()

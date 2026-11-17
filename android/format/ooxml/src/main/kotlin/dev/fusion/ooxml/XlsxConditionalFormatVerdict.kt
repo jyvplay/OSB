@@ -18,15 +18,22 @@ package dev.fusion.ooxml
  *   includes ties; `percent` thresholds interpolate linearly between the range minimum and maximum; `percentile`
  *   uses linear interpolation between order statistics; colour interpolation is per-channel sRGB with rounding
  *   half-up. None of these was observed in Excel — see `docs/R97-RESULTS.md` §C.
+ * * **Blank, error, time and icon rules** (R101). A blank rule follows Excel's own formula (`LEN(TRIM(cell))=0`,
+ *   where TRIM removes spaces only), an error rule follows `ISERROR(cell)`, and both treat an error cell as
+ *   *no format* rather than as a negation — `notContainsBlanks` is not the complement of `containsBlanks` on an
+ *   error cell, because the formula Excel writes for it also errors. A `timePeriod` rule needs a [Calendar]:
+ *   without one it is undecided, and week boundaries follow [Calendar.weekStartsOn] because no attribute in the
+ *   file states the first day of the week. An `iconSet` rule reports the icon index it assigns; `showValue`
+ *   changes what is printed beside the icon, not which icon a value earns, so it does not move the index.
  * * **Text, average and duplicate rules** (R100), whose own hypotheses are stated at each predicate: SEARCH is
  *   unanchored and case-insensitive, a blank cell's text is `""`, a number is compared by its general-format
  *   text, `beginsWith`/`endsWith` are literal, the average band uses the *population* sigma over the rule's
  *   numeric cells, and duplicates are counted by value with case-insensitive text keys. See
  *   `docs/R100-RESULTS.md` §C, including the one hypothesis (§C.5) that no corpus here can distinguish.
  *
- * What is *not* here: font family/size, number formats, borders, alignment, icon sets, `timePeriod`, the
- * blank/error predicate kinds, the 2010 data-bar extensions, and the painting itself. A verdict is a claim about
- * which rule fires, never about pixels.
+ * What is *not* here: font family/size, number formats, borders, alignment, the icon *images* themselves (only
+ * which icon a value earns), the 2010 `x14` data-bar and icon-set extensions, and the painting itself. A verdict
+ * is a claim about which rule fires and which icon index it assigns, never about pixels.
  */
 object XlsxConditionalFormatVerdict {
 
@@ -63,7 +70,53 @@ object XlsxConditionalFormatVerdict {
         data class Bar(val fraction: Double) : Visual
     }
 
-    data class Fired(val priority: Int, val kind: XlsxConditionalFormatting.Kind, val visuals: List<Visual>)
+    /**
+     * A rule that fired. [icon] is set only by an `iconSet` rule: the icon it assigns is not a [Visual] because it
+     * is an index into a set, not a colour or a length, and the rendering of that index is out of scope.
+     */
+    data class Fired(
+        val priority: Int,
+        val kind: XlsxConditionalFormatting.Kind,
+        val visuals: List<Visual>,
+        val icon: Icon? = null,
+    )
+
+    /** The icon an `iconSet` rule assigns: the set's schema name and a zero-based index inside it. */
+    data class Icon(val set: String, val index: Int)
+
+    /**
+     * A reference date for `timePeriod` rules. [today] is a whole-day serial *in the workbook's own date system*,
+     * which the caller reads from the file; this model never guesses it, because a rule evaluated against the
+     * wrong date system is wrong by four years and one day.
+     */
+    data class Calendar(
+        val today: Int,
+        val date1904: Boolean = false,
+        val weekStartsOn: WeekStart = WeekStart.MONDAY,
+    ) {
+        init {
+            require(today >= if (date1904) 0 else 1) { "today $today is not a valid serial in this date system" }
+        }
+
+        companion object {
+            /** Builds a calendar from a civil date, converting through the workbook's date system. */
+            fun ofDate(
+                year: Int,
+                month: Int,
+                day: Int,
+                date1904: Boolean = false,
+                weekStartsOn: WeekStart = WeekStart.MONDAY,
+            ): Calendar = Calendar(
+                today = if (date1904) SerialDate.toSerial1904(year, month, day)
+                else SerialDate.toSerial1900(year, month, day),
+                date1904 = date1904,
+                weekStartsOn = weekStartsOn,
+            )
+        }
+    }
+
+    /** The first day of a week, which no attribute in a spreadsheet file states, so the caller supplies it. */
+    enum class WeekStart(val token: String) { MONDAY("monday"), SUNDAY("sunday") }
 
     /** A rule that applies to the cell but whose predicate this evaluator will not decide. */
     data class Unresolved(val priority: Int, val reason: String)
@@ -91,6 +144,10 @@ object XlsxConditionalFormatVerdict {
         val fillRgb: String? = null,
         val scaleRgb: String? = null,
         val barFraction: Double? = null,
+        /** The icon set the highest-priority icon rule draws from, if any fired. */
+        val iconSet: String? = null,
+        /** The zero-based icon index inside [iconSet] that this cell earned. */
+        val iconIndex: Int? = null,
     )
 
     private val NUMBER = Regex("^[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$")
@@ -106,7 +163,12 @@ object XlsxConditionalFormatVerdict {
      * Every rule that applies to [cell], in priority order, evaluated against [grid]. [blocks] is a sheet's
      * conditional formats as [XlsxConditionalFormatting.parse] returns them.
      */
-    fun verdict(blocks: List<XlsxConditionalFormatting.Block>, grid: Grid, cell: SheetRange.Cell): Outcome {
+    fun verdict(
+        blocks: List<XlsxConditionalFormatting.Block>,
+        grid: Grid,
+        cell: SheetRange.Cell,
+        calendar: Calendar? = null,
+    ): Outcome {
         val applicable = blocks
             .filter { block -> block.covers(cell) }
             .flatMap { block -> block.rules }
@@ -115,11 +177,11 @@ object XlsxConditionalFormatVerdict {
         val unresolved = ArrayList<Unresolved>()
         var stopped = false
         for (rule in applicable) {
-            when (val decision = predicate(rule, blocks, grid, cell)) {
+            when (val decision = predicate(rule, blocks, grid, cell, calendar)) {
                 is Decision.Unsupported -> unresolved.add(Unresolved(rule.priority, decision.reason))
                 is Decision.No -> Unit
                 is Decision.Yes -> {
-                    fired.add(Fired(rule.priority, rule.kind, decision.visuals))
+                    fired.add(Fired(rule.priority, rule.kind, decision.visuals, decision.icon))
                     if (rule.stopIfTrue == true) {
                         stopped = true
                         break
@@ -153,12 +215,16 @@ object XlsxConditionalFormatVerdict {
                     is Visual.Bar -> result.copy(barFraction = result.barFraction ?: visual.fraction)
                 }
             }
+            // An icon is not merged: the first rule that assigns one owns the cell's icon, as with fills.
+            fired.icon?.let { icon ->
+                if (result.iconIndex == null) result = result.copy(iconSet = icon.set, iconIndex = icon.index)
+            }
         }
         return result
     }
 
     private sealed interface Decision {
-        data class Yes(val visuals: List<Visual>) : Decision
+        data class Yes(val visuals: List<Visual>, val icon: Icon? = null) : Decision
         data object No : Decision
         data class Unsupported(val reason: String) : Decision
     }
@@ -173,6 +239,7 @@ object XlsxConditionalFormatVerdict {
         blocks: List<XlsxConditionalFormatting.Block>,
         grid: Grid,
         cell: SheetRange.Cell,
+        calendar: Calendar? = null,
     ): Decision = when (rule.kind) {
         XlsxConditionalFormatting.Kind.CELL_IS -> cellIs(rule, grid, cell)
         XlsxConditionalFormatting.Kind.EXPRESSION -> expression(rule, grid, cell)
@@ -188,6 +255,14 @@ object XlsxConditionalFormatVerdict {
         XlsxConditionalFormatting.Kind.DUPLICATE,
         XlsxConditionalFormatting.Kind.UNIQUE,
         -> duplicates(rule, blocks, grid, cell)
+        XlsxConditionalFormatting.Kind.CONTAINS_BLANKS,
+        XlsxConditionalFormatting.Kind.NOT_CONTAINS_BLANKS,
+        -> blanks(rule, grid, cell)
+        XlsxConditionalFormatting.Kind.CONTAINS_ERRORS,
+        XlsxConditionalFormatting.Kind.NOT_CONTAINS_ERRORS,
+        -> errors(rule, grid, cell)
+        XlsxConditionalFormatting.Kind.TIME_PERIOD -> timePeriod(rule, grid, cell, calendar)
+        XlsxConditionalFormatting.Kind.ICON_SET -> iconSet(rule, blocks, grid, cell)
     }
 
     // --- operands ----------------------------------------------------------------------------------------
@@ -659,6 +734,160 @@ object XlsxConditionalFormatVerdict {
         is Value.Txt -> "t:" + value.text.lowercase()
         is Value.Bool -> "b:" + value.flag
         is Value.Err -> null
+    }
+
+    // --- blank, error, time and icon rules ----------------------------------------------------------------
+
+    /**
+     * `containsBlanks` / `notContainsBlanks`, on Excel's own formula `LEN(TRIM(cell))=0` — so a cell holding only
+     * spaces counts as blank, because `TRIM` removes spaces, while a cell holding only a tab does not.
+     *
+     * The error case is the one place these two rules are *not* complements: Excel's argument errors out, an
+     * erroring conditional-format formula applies nothing, and the negation is written as a second formula that
+     * errors on the same cell. So an error cell fires neither rule, and neither is left undecided.
+     */
+    private fun blanks(
+        rule: XlsxConditionalFormatting.Rule,
+        grid: Grid,
+        cell: SheetRange.Cell,
+    ): Decision {
+        val text = when (val value = grid.value(cell)) {
+            Value.Blank -> ""
+            is Value.Txt -> value.text
+            is Value.Num -> plainNumber(value.value)
+            is Value.Bool -> if (value.flag) "TRUE" else "FALSE"
+            is Value.Err -> return Decision.No
+        }
+        val empty = text.trim { it == ' ' }.isEmpty()
+        val holds = if (rule.kind == XlsxConditionalFormatting.Kind.CONTAINS_BLANKS) empty else !empty
+        return yes(holds, rule)
+    }
+
+    /** `containsErrors` / `notContainsErrors`, on `ISERROR(cell)`; a blank is not an error, so the negative form
+     *  fires on it, and an error cell fires only the positive form. */
+    private fun errors(
+        rule: XlsxConditionalFormatting.Rule,
+        grid: Grid,
+        cell: SheetRange.Cell,
+    ): Decision {
+        val isError = grid.value(cell) is Value.Err
+        val holds = if (rule.kind == XlsxConditionalFormatting.Kind.CONTAINS_ERRORS) isError else !isError
+        return yes(holds, rule)
+    }
+
+    /** The civil day a whole-day serial names, or null when the serial lies outside the modelled window. */
+    private fun Calendar.day(serial: Int): SerialDate.Day? =
+        if (date1904) runCatching { SerialDate.fromSerial1904(serial) }.getOrNull()
+        else runCatching { SerialDate.fromSerial1900(serial) }.getOrNull()
+
+    /**
+     * Day-of-week index with Monday = 0, computed in *serial* space rather than from the civil date, so the 1900
+     * phantom leap day costs nothing: the phantom occupies a serial without occupying a day, so serials after it
+     * subtract one day. This reproduces Excel's own `WEEKDAY` on both date systems (serial 1 is a Monday, serial
+     * 61 a Thursday) and needs no calendar table.
+     */
+    private fun Calendar.weekday(serial: Int): Int =
+        if (date1904) Math.floorMod(serial + 4, 7)
+        else Math.floorMod(serial - 1 - (if (serial >= 61) 1 else 0), 7)
+
+    /** The serial of the first day of the week containing [serial], under the caller's first day of week. */
+    private fun Calendar.weekStart(serial: Int, start: WeekStart): Int {
+        val monday = weekday(serial)
+        val offset = if (start == WeekStart.SUNDAY) (monday + 1) % 7 else monday
+        return serial - offset
+    }
+
+    private fun monthIndex(day: SerialDate.Day): Int = day.year * 12 + (day.month - 1)
+
+    private fun quarter(month: Int): Int = (month - 1) / 3 + 1
+
+    /**
+     * `timePeriod`: does the cell's date fall in the named preset relative to [calendar]?
+     *
+     * Import hypotheses, stated because no application ran: the presets mean what their Excel names say
+     * (`today` is that day, `last7Days` is the six days before it plus it, `lastMonth` is the calendar month
+     * before, and the four quarter presets are the named quarter *of the reference year*, mirroring `thisMonth`);
+     * a cell's date is the serial with its time fraction dropped; a numeric cell that is not a date in the
+     * workbook's date system decides nothing (it is not a date, so no format applies) rather than being refused;
+     * week boundaries follow [Calendar.weekStartsOn] because the file states no first day of week, and the base
+     * schema's quarters are the only presets with no Excel user-interface counterpart to compare against.
+     */
+    private fun timePeriod(
+        rule: XlsxConditionalFormatting.Rule,
+        grid: Grid,
+        cell: SheetRange.Cell,
+        calendar: Calendar?,
+    ): Decision {
+        val period = rule.timePeriod
+            ?: return Decision.Unsupported("a timePeriod rule without a period")
+        val cal = calendar
+            ?: return Decision.Unsupported("a timePeriod rule needs a reference date")
+        val raw = (grid.value(cell) as? Value.Num)?.value ?: return Decision.No
+        val serial = kotlin.math.floor(raw).toInt()
+        val day = cal.day(serial) ?: return Decision.No
+        val today = cal.day(cal.today)
+            ?: return Decision.Unsupported("the reference date is outside the modelled range")
+        val weekOfCell = cal.weekStart(serial, cal.weekStartsOn)
+        val weekOfToday = cal.weekStart(cal.today, cal.weekStartsOn)
+        val holds = when (period) {
+            XlsxConditionalFormatting.TimePeriod.TODAY -> serial == cal.today
+            XlsxConditionalFormatting.TimePeriod.YESTERDAY -> serial == cal.today - 1
+            XlsxConditionalFormatting.TimePeriod.TOMORROW -> serial == cal.today + 1
+            XlsxConditionalFormatting.TimePeriod.LAST_7_DAYS -> serial in (cal.today - 6)..cal.today
+            XlsxConditionalFormatting.TimePeriod.THIS_MONTH ->
+                day.year == today.year && day.month == today.month
+            XlsxConditionalFormatting.TimePeriod.LAST_MONTH -> monthIndex(day) == monthIndex(today) - 1
+            XlsxConditionalFormatting.TimePeriod.NEXT_MONTH -> monthIndex(day) == monthIndex(today) + 1
+            XlsxConditionalFormatting.TimePeriod.THIS_YEAR -> day.year == today.year
+            XlsxConditionalFormatting.TimePeriod.LAST_YEAR -> day.year == today.year - 1
+            XlsxConditionalFormatting.TimePeriod.NEXT_YEAR -> day.year == today.year + 1
+            XlsxConditionalFormatting.TimePeriod.THIS_WEEK -> weekOfCell == weekOfToday
+            XlsxConditionalFormatting.TimePeriod.LAST_WEEK -> weekOfCell == weekOfToday - 7
+            XlsxConditionalFormatting.TimePeriod.NEXT_WEEK -> weekOfCell == weekOfToday + 7
+            XlsxConditionalFormatting.TimePeriod.FIRST_QUARTER ->
+                day.year == today.year && quarter(day.month) == 1
+            XlsxConditionalFormatting.TimePeriod.SECOND_QUARTER ->
+                day.year == today.year && quarter(day.month) == 2
+            XlsxConditionalFormatting.TimePeriod.THIRD_QUARTER ->
+                day.year == today.year && quarter(day.month) == 3
+            XlsxConditionalFormatting.TimePeriod.FOURTH_QUARTER ->
+                day.year == today.year && quarter(day.month) == 4
+        }
+        return yes(holds, rule)
+    }
+
+    /**
+     * `iconSet`: which icon index the cell's value earns.
+     *
+     * The boundaries are resolved exactly as a colour scale's are (percent of the range's span, percentile of its
+     * order statistics, or an absolute number), the index is the number of boundaries the value reaches, and
+     * `reverse` flips it. `showValue` does not move the index: it decides whether the number is printed beside the
+     * icon, which is a rendering question this model does not answer. A blank or text cell earns no icon at all.
+     */
+    private fun iconSet(
+        rule: XlsxConditionalFormatting.Rule,
+        blocks: List<XlsxConditionalFormatting.Block>,
+        grid: Grid,
+        cell: SheetRange.Cell,
+    ): Decision {
+        val set = rule.iconSet ?: return Decision.Unsupported("an iconSet rule without a set")
+        // A cell that is not a number earns no icon, and that answer does not depend on the range's boundaries:
+        // deciding it first keeps an all-blank range from turning "no icon" into "unknown".
+        val value = (grid.value(cell) as? Value.Num)?.value ?: return Decision.No
+        if (scopeTooLarge(rule, blocks)) {
+            return Decision.Unsupported("an iconSet rule over a range larger than $MAX_RANGE_CELLS cells")
+        }
+        val points = resolvedThresholds(rule, blocks, grid)
+            ?: return Decision.Unsupported("an iconSet rule whose boundaries cannot be resolved")
+        if (points.size != set.iconCount - 1) {
+            return Decision.Unsupported("a ${set.token} rule needs ${set.iconCount - 1} boundaries")
+        }
+        if (points.zipWithNext().any { (low, high) -> high < low }) {
+            return Decision.Unsupported("an iconSet rule whose boundaries are not in ascending order")
+        }
+        val reached = points.count { value >= it }
+        val index = if (rule.reverse == true) set.iconCount - 1 - reached else reached
+        return Decision.Yes(emptyList(), Icon(set.token, index))
     }
 
     private fun resolvedThresholds(
