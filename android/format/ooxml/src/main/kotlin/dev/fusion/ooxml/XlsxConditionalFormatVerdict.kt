@@ -68,6 +68,39 @@ object XlsxConditionalFormatVerdict {
 
         /** Data-bar length as a fraction of the cell width, clamped to `0.0..1.0`. */
         data class Bar(val fraction: Double) : Visual
+
+        /**
+         * The parts of a differential format this evaluator has no opinion about — a font's family and size, a
+         * number format, a fill's pattern and background, a border, alignment and protection. They are carried
+         * through unchanged so a renderer does not have to re-read `styles.xml`, and nothing here changes which
+         * cells fire or how a lower-priority rule's paint is overridden.
+         */
+        data class Detail(
+            val fontName: String? = null,
+            val fontSize: Double? = null,
+            val numberFormat: String? = null,
+            val fillPattern: XlsxConditionalFormatting.PatternType? = null,
+            val fillBgRgb: String? = null,
+            val border: XlsxConditionalFormatting.Border? = null,
+            val alignment: XlsxConditionalFormatting.Alignment? = null,
+            val protection: XlsxConditionalFormatting.Protection? = null,
+        ) : Visual {
+            val isEmpty: Boolean
+                get() = fontName == null && fontSize == null && numberFormat == null && fillPattern == null &&
+                    fillBgRgb == null && border == null && alignment == null && protection == null
+
+            /** Field-wise first-wins merge: a rule that fired earlier keeps every field it set. */
+            fun merge(lower: Detail): Detail = Detail(
+                fontName = fontName ?: lower.fontName,
+                fontSize = fontSize ?: lower.fontSize,
+                numberFormat = numberFormat ?: lower.numberFormat,
+                fillPattern = fillPattern ?: lower.fillPattern,
+                fillBgRgb = fillBgRgb ?: lower.fillBgRgb,
+                border = border ?: lower.border,
+                alignment = alignment ?: lower.alignment,
+                protection = protection ?: lower.protection,
+            )
+        }
     }
 
     /**
@@ -148,6 +181,8 @@ object XlsxConditionalFormatVerdict {
         val iconSet: String? = null,
         /** The zero-based icon index inside [iconSet] that this cell earned. */
         val iconIndex: Int? = null,
+        /** Everything the fired dxfs said that is not a decoration flag or a colour; `null` when they said none. */
+        val detail: Visual.Detail? = null,
     )
 
     private val NUMBER = Regex("^[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?$")
@@ -213,6 +248,7 @@ object XlsxConditionalFormatVerdict {
                     is Visual.Fill -> result.copy(fillRgb = result.fillRgb ?: visual.rgb)
                     is Visual.Scale -> result.copy(scaleRgb = result.scaleRgb ?: visual.rgb)
                     is Visual.Bar -> result.copy(barFraction = result.barFraction ?: visual.fraction)
+                    is Visual.Detail -> result.copy(detail = result.detail?.merge(visual) ?: visual)
                 }
             }
             // An icon is not merged: the first rule that assigns one owns the cell's icon, as with fills.
@@ -416,9 +452,20 @@ object XlsxConditionalFormatVerdict {
             underline = format.underline,
             rgb = format.fontRgb,
         )
+        val detail = Visual.Detail(
+            fontName = format.fontName,
+            fontSize = format.fontSize,
+            numberFormat = format.numberFormat,
+            fillPattern = format.fillPattern,
+            fillBgRgb = format.fillBgRgb,
+            border = format.border,
+            alignment = format.alignment,
+            protection = format.protection,
+        )
         return buildList {
             if (format.hasFont) add(font)
             format.fillRgb?.let { add(Visual.Fill(it)) }
+            if (!detail.isEmpty) add(detail)
         }
     }
 

@@ -13,8 +13,9 @@ package dev.fusion.ooxml
  * `text`), `aboveAverage` (with `aboveAverage`/`equalAverage`/`stdDev`), `duplicateValues`, `uniqueValues`, the
  * four blank/error predicates, `timePeriod` (with its 17 presets) and `iconSet` (with its set name, its
  * boundaries and its `showValue`/`percent`/`reverse` flags) — the `priority` that must be unique per sheet,
- * `stopIfTrue`, the cellIs operators, formula text, thresholds (`cfvo`), colours, and a bounded differential
- * format (bold/italic/strike/underline, font colour and a solid fill).
+ * `stopIfTrue`, the cellIs operators, formula text, thresholds (`cfvo`), colours, and a differential format that
+ * says everything a `<dxf>` can say about a cell's paint: font decorations, family and size; a number format; a
+ * fill (solid or patterned); a border with up to five edges; alignment; and protection.
  *
  * A text rule is stated by its attributes alone. Excel also writes a `<formula>` beside it (`NOT(ISERROR(
  * SEARCH("abc",A1)))`, or `LEFT(B1,2)="xy"`), which is redundant with `type`/`operator`/`text` under the reading
@@ -30,10 +31,11 @@ package dev.fusion.ooxml
  * * `colorScale` and `dataBar` must **not** carry one: their visuals are the gradient or the bar, and Excel
  *   ignores a dxf on those kinds.
  *
- * Not modelled, and not claimed: `dxf` fonts' families and sizes, number formats, borders, alignment and
- * protection inside a dxf; the 2010 `x14` extensions (`x14:dataBar` gradient/negative-bar options,
- * `x14:iconSet` with its fifth icon, `<extLst>`); `expression` rules beyond the evaluator's grammar; and the
- * evaluation itself — whether Excel highlights a cell is not something a file can state.
+ * Not modelled, and not claimed: a `<dxf>`'s gradient fill, `extLst`, vertical-text rotation (the schema's
+ * `textRotation="255"`), and the two `x14` border-ish extensions; the 2010 `x14` extensions (`x14:dataBar`
+ * gradient/negative-bar options, `x14:iconSet` with its fifth icon, `<extLst>`); `expression` rules beyond the
+ * evaluator's grammar; and the evaluation itself — whether Excel highlights a cell is not something a file can
+ * state. A dxf that carries only constructs this model cannot hold is read as `null`, so a `dxfId` never shifts.
  *
  * One deliberate exception to "write no default": an `iconSet` rule always writes its `iconSet` name, because the
  * name is the rule's subject rather than a modifier, and a file that left it out would describe an anonymous
@@ -54,6 +56,19 @@ object XlsxConditionalFormatting {
 
     /** Largest standard-deviation multiple an aboveAverage rule may widen its band by. */
     const val MAX_STD_DEV = 100
+
+    /** Longest font family name a dxf may set; Excel's own limit. */
+    const val MAX_FONT_NAME = 31
+
+    /** Smallest and largest font size a dxf may set, in points; Excel's dialog refuses both ends. */
+    const val MIN_FONT_SIZE = 1.0
+    const val MAX_FONT_SIZE = 409.0
+
+    /** Longest number-format code a dxf may carry. */
+    const val MAX_FORMAT_CODE = 255
+
+    /** Largest alignment indent a dxf may set (§18.18.47 caps `indent` at 250). */
+    const val MAX_INDENT = 250
 
     /** Rule kinds this model can write completely. */
     enum class Kind(val token: String) {
@@ -226,8 +241,179 @@ object XlsxConditionalFormatting {
     private val HEX6 = Regex("^[0-9A-Fa-f]{6}$")
 
     /**
-     * A bounded `<dxf>`: a font decoration block and/or a solid fill. Both halves are optional, but an empty
-     * format is refused because it would point a rule at a differential format that changes nothing.
+     * `ST_OnOff` as this reader understands it: `1`/`true`/`on` and `0`/`false`/`off`, anything else `null`.
+     * A dxf is the one place where "absent" and "off" mean different things (`<b val="0"/>` clears bold while a
+     * missing `<b>` leaves it alone), so both the value and its absence are representable.
+     */
+    private fun readOnOff(raw: String?): Boolean? = when (raw?.trim()?.lowercase()) {
+        null, "" -> null
+        "1", "true", "on" -> true
+        "0", "false", "off" -> false
+        else -> null
+    }
+
+    /** `ST_BorderStyle`; `none` is an absent [Edge] rather than a token, so "no line" cannot be written by accident. */
+    enum class BorderStyle(val token: String) {
+        THIN("thin"),
+        MEDIUM("medium"),
+        DASHED("dashed"),
+        DOTTED("dotted"),
+        THICK("thick"),
+        DOUBLE("double"),
+        HAIR("hair"),
+        MEDIUM_DASHED("mediumDashed"),
+        DASH_DOT("dashDot"),
+        MEDIUM_DASH_DOT("mediumDashDot"),
+        DASH_DOT_DOT("dashDotDot"),
+        MEDIUM_DASH_DOT_DOT("mediumDashDotDot"),
+        SLANT_DASH_DOT("slantDashDot"),
+        ;
+
+        companion object {
+            fun of(token: String?): BorderStyle? = entries.firstOrNull { it.token == token }
+        }
+    }
+
+    /** One edge of a dxf border: a line style, optionally coloured. */
+    data class Edge(val style: BorderStyle, val rgb: String? = null) {
+        init {
+            rgb?.let { require(HEX6.matches(it)) { "A border colour must be six hex digits: $it" } }
+        }
+    }
+
+    /**
+     * `CT_Border` inside a dxf: up to five edges. A diagonal edge is only drawn when `diagonalUp` or
+     * `diagonalDown` is set, and those flags draw nothing without the edge, so neither half is accepted alone.
+     */
+    data class Border(
+        val top: Edge? = null,
+        val right: Edge? = null,
+        val bottom: Edge? = null,
+        val left: Edge? = null,
+        val diagonal: Edge? = null,
+        val diagonalUp: Boolean = false,
+        val diagonalDown: Boolean = false,
+    ) {
+        init {
+            require(top != null || right != null || bottom != null || left != null || diagonal != null) {
+                "A border needs at least one edge; a border that draws nothing changes nothing"
+            }
+            require(diagonal != null || (!diagonalUp && !diagonalDown)) {
+                "A diagonal flag draws nothing without a diagonal edge"
+            }
+            require(diagonal == null || diagonalUp || diagonalDown) {
+                "A diagonal edge is only drawn when diagonalUp or diagonalDown is set"
+            }
+        }
+
+        /** The edges in `CT_Border` order, so the writer and the checker agree on one sequence. */
+        val edges: List<Pair<String, Edge>>
+            get() = listOfNotNull(
+                left?.let { "left" to it },
+                right?.let { "right" to it },
+                top?.let { "top" to it },
+                bottom?.let { "bottom" to it },
+                diagonal?.let { "diagonal" to it },
+            )
+    }
+
+    /** `ST_HorizontalAlignment`. */
+    enum class Horizontal(val token: String) {
+        GENERAL("general"),
+        LEFT("left"),
+        CENTER("center"),
+        RIGHT("right"),
+        FILL("fill"),
+        JUSTIFY("justify"),
+        CENTER_CONTINUOUS("centerContinuous"),
+        DISTRIBUTED("distributed"),
+        ;
+
+        companion object {
+            fun of(token: String?): Horizontal? = entries.firstOrNull { it.token == token }
+        }
+    }
+
+    /** `ST_VerticalAlignment`. */
+    enum class Vertical(val token: String) {
+        TOP("top"),
+        CENTER("center"),
+        BOTTOM("bottom"),
+        JUSTIFY("justify"),
+        DISTRIBUTED("distributed"),
+        ;
+
+        companion object {
+            fun of(token: String?): Vertical? = entries.firstOrNull { it.token == token }
+        }
+    }
+
+    /**
+     * `CT_CellAlignment` inside a dxf. `textRotation` is `0..180`; the schema's `255` (stacked vertically) is
+     * refused rather than rounded into a rotation, because it is a different behaviour, not a larger angle.
+     */
+    data class Alignment(
+        val horizontal: Horizontal? = null,
+        val vertical: Vertical? = null,
+        val textRotation: Int? = null,
+        val wrapText: Boolean? = null,
+        val indent: Int? = null,
+        val shrinkToFit: Boolean? = null,
+        val readingOrder: Int? = null,
+    ) {
+        init {
+            require(
+                horizontal != null || vertical != null || textRotation != null || wrapText != null ||
+                    indent != null || shrinkToFit != null || readingOrder != null,
+            ) { "An alignment that sets nothing is not written" }
+            textRotation?.let {
+                require(it in 0..180) {
+                    "A text rotation is 0..180 degrees; 255 is vertical text, which this model does not hold: $it"
+                }
+            }
+            indent?.let { require(it in 0..MAX_INDENT) { "An indent is 0..$MAX_INDENT: $it" } }
+            readingOrder?.let { require(it in 0..2) { "A reading order is 0..2 (context, left-to-right, right-to-left): $it" } }
+        }
+    }
+
+    /** `CT_Protection` inside a dxf: `locked` and `hidden`, each written only when it differs from the default. */
+    data class Protection(val locked: Boolean? = null, val hidden: Boolean? = null) {
+        init {
+            require(locked != null || hidden != null) { "A protection that sets nothing is not written" }
+        }
+    }
+
+    /** `ST_PatternType`; `none` is an absent pattern, for the same reason `none` is an absent border edge. */
+    enum class PatternType(val token: String) {
+        SOLID("solid"),
+        MEDIUM_GRAY("mediumGray"),
+        DARK_GRAY("darkGray"),
+        LIGHT_GRAY("lightGray"),
+        DARK_HORIZONTAL("darkHorizontal"),
+        DARK_VERTICAL("darkVertical"),
+        DARK_DOWN("darkDown"),
+        DARK_UP("darkUp"),
+        DARK_GRID("darkGrid"),
+        DARK_TRELLIS("darkTrellis"),
+        LIGHT_HORIZONTAL("lightHorizontal"),
+        LIGHT_VERTICAL("lightVertical"),
+        LIGHT_DOWN("lightDown"),
+        LIGHT_UP("lightUp"),
+        LIGHT_GRID("lightGrid"),
+        LIGHT_TRELLIS("lightTrellis"),
+        GRAY_125("gray125"),
+        GRAY_0625("gray0625"),
+        ;
+
+        companion object {
+            fun of(token: String?): PatternType? = entries.firstOrNull { it.token == token }
+        }
+    }
+
+    /**
+     * A `<dxf>`: every section `CT_Dxf` allows except a gradient fill, `extLst` and vertical text. Each section
+     * is optional — an absent section means "leave that property alone" — but a format that sets nothing at all
+     * is refused, because it would point a rule at a differential format that changes nothing.
      */
     data class Format(
         val bold: Boolean = false,
@@ -236,17 +422,52 @@ object XlsxConditionalFormatting {
         val underline: Boolean = false,
         val fontRgb: String? = null,
         val fillRgb: String? = null,
+        val fontName: String? = null,
+        val fontSize: Double? = null,
+        /** Number-format code, e.g. `0.0%`; the writer also registers it in `<numFmts>` so the id resolves. */
+        val numberFormat: String? = null,
+        val fillPattern: PatternType? = null,
+        val fillBgRgb: String? = null,
+        val border: Border? = null,
+        val alignment: Alignment? = null,
+        val protection: Protection? = null,
     ) {
         init {
-            require(bold || italic || strike || underline || fontRgb != null || fillRgb != null) {
-                "An empty differential format is not written"
-            }
+            require(
+                bold || italic || strike || underline || fontRgb != null || fillRgb != null ||
+                    fontName != null || fontSize != null || numberFormat != null || fillPattern != null ||
+                    fillBgRgb != null || border != null || alignment != null || protection != null,
+            ) { "An empty differential format is not written" }
             fontRgb?.let { require(HEX6.matches(it)) { "A font colour must be six hex digits: $it" } }
             fillRgb?.let { require(HEX6.matches(it)) { "A fill colour must be six hex digits: $it" } }
+            fillBgRgb?.let {
+                require(HEX6.matches(it)) { "A fill colour must be six hex digits: $it" }
+                require(fillPattern != null) { "A background colour sets nothing without a pattern" }
+            }
+            fillPattern?.let { require(it != PatternType.SOLID || fillRgb != null) {
+                "A solid pattern needs a foreground colour"
+            } }
+            fontName?.let {
+                require(it.length in 1..MAX_FONT_NAME) { "A font name is 1..$MAX_FONT_NAME characters: $it" }
+                require(it.none { c -> c.code < 0x20 }) { "A font name must not contain control characters" }
+            }
+            fontSize?.let {
+                require(it.isFinite() && it >= MIN_FONT_SIZE && it <= MAX_FONT_SIZE) {
+                    "A font size is $MIN_FONT_SIZE..$MAX_FONT_SIZE points: $it"
+                }
+            }
+            numberFormat?.let {
+                require(it.length in 1..MAX_FORMAT_CODE) { "A number format is 1..$MAX_FORMAT_CODE characters" }
+                require(it.none { c -> c.code < 0x20 }) { "A number format must not contain control characters" }
+            }
         }
 
         /** The `<font>` half is written only when it says something; the fill half likewise. */
-        val hasFont: Boolean get() = bold || italic || strike || underline || fontRgb != null
+        val hasFont: Boolean
+            get() = bold || italic || strike || underline || fontRgb != null || fontName != null || fontSize != null
+
+        /** A fill needs a colour or a pattern; `fillPattern` alone still paints (a hatch with no colour is legal). */
+        val hasFill: Boolean get() = fillRgb != null || fillPattern != null || fillBgRgb != null
     }
 
     /**
@@ -501,8 +722,15 @@ object XlsxConditionalFormatting {
             java.math.BigDecimal.valueOf(value).stripTrailingZeros().toPlainString()
         }
 
-    /** `<dxf>` for one format; the `CT_Dxf` sequence puts `font` before `fill`, which is the order written here. */
-    fun dxfToXml(format: Format): String = buildString {
+    /**
+     * `<dxf>` for one format. `CT_Dxf` is a sequence — `font`, `numFmt`, `fill`, `alignment`, `border`,
+     * `protection` — and the sections are written in exactly that order, because a file whose sections are
+     * shuffled is one Excel offers to repair.
+     *
+     * `numFmtId` is the id the caller registered the code under in `<numFmts>`; the code is written beside it, so
+     * a reader that trusts only the attribute still sees the format. `0` means "no code", i.e. no `<numFmt>`.
+     */
+    fun dxfToXml(format: Format, numFmtId: Int = 0): String = buildString {
         append("<dxf>")
         if (format.hasFont) {
             append("<font>")
@@ -510,32 +738,91 @@ object XlsxConditionalFormatting {
             if (format.italic) append("<i/>")
             if (format.strike) append("<strike/>")
             if (format.underline) append("<u/>")
+            // `CT_Font` allows these in any order; `sz` before `color` before `name` is the order Excel writes.
+            format.fontSize?.let { append("""<sz val="${number(it)}"/>""") }
             format.fontRgb?.let { append("""<color rgb="FF${it.uppercase()}"/>""") }
+            format.fontName?.let { append("""<name val="${esc(it)}"/>""") }
             append("</font>")
         }
-        format.fillRgb?.let {
-            append("""<fill><patternFill patternType="solid">""")
-            append("""<fgColor rgb="FF${it.uppercase()}"/><bgColor indexed="64"/>""")
-            append("""</patternFill></fill>""")
+        format.numberFormat?.let { append("""<numFmt numFmtId="$numFmtId" formatCode="${esc(it)}"/>""") }
+        if (format.hasFill) {
+            append("<fill>")
+            val pattern = format.fillPattern
+            when {
+                pattern != null -> {
+                    append("""<patternFill patternType="${pattern.token}">""")
+                    format.fillRgb?.let { append("""<fgColor rgb="FF${it.uppercase()}"/>""") }
+                    format.fillBgRgb?.let { append("""<bgColor rgb="FF${it.uppercase()}"/>""") }
+                    append("</patternFill>")
+                }
+                else -> {
+                    append("""<patternFill patternType="solid">""")
+                    append("""<fgColor rgb="FF${format.fillRgb!!.uppercase()}"/><bgColor indexed="64"/>""")
+                    append("</patternFill>")
+                }
+            }
+            append("</fill>")
+        }
+        format.alignment?.let { a ->
+            append("<alignment")
+            a.horizontal?.let { append(""" horizontal="${it.token}"""") }
+            a.vertical?.let { append(""" vertical="${it.token}"""") }
+            a.textRotation?.let { append(""" textRotation="$it"""") }
+            a.wrapText?.let { append(""" wrapText="${onOff(it)}"""") }
+            a.indent?.let { append(""" indent="$it"""") }
+            a.shrinkToFit?.let { append(""" shrinkToFit="${onOff(it)}"""") }
+            a.readingOrder?.let { append(""" readingOrder="$it"""") }
+            append("/>")
+        }
+        format.border?.let { b ->
+            append("<border")
+            if (b.diagonalUp) append(""" diagonalUp="1"""")
+            if (b.diagonalDown) append(""" diagonalDown="1"""")
+            append(">")
+            for ((side, edge) in b.edges) {
+                val colour = edge.rgb
+                if (colour == null) {
+                    append("""<$side style="${edge.style.token}"/>""")
+                } else {
+                    append("""<$side style="${edge.style.token}">""")
+                    append("""<color rgb="FF${colour.uppercase()}"/></$side>""")
+                }
+            }
+            append("</border>")
+        }
+        format.protection?.let { p ->
+            append("<protection")
+            p.locked?.let { append(""" locked="${onOff(it)}"""") }
+            p.hidden?.let { append(""" hidden="${onOff(it)}"""") }
+            append("/>")
         }
         append("</dxf>")
     }
 
-    /** Reads the `<dxfs>` table; a `<dxf>` this model cannot hold is kept as `null` so dxfIds stay aligned. */
+    private fun onOff(value: Boolean): String = if (value) "1" else "0"
+
+    /**
+     * Reads the `<dxfs>` table; a `<dxf>` this model cannot hold is kept as `null` so `dxfId`s never shift. The
+     * `<numFmts>` table is read first because a dxf's `<numFmt>` may state only an id that the table resolves.
+     */
     fun parseDxfs(stylesRoot: BoundedXml.Node): List<Format?> {
         val node = stylesRoot.children.firstOrNull { it.name.local == "dxfs" } ?: return emptyList()
-        return node.children.filter { it.name.local == "dxf" }.map { parseDxf(it) }
+        val codes = stylesRoot.children.firstOrNull { it.name.local == "numFmts" }
+            ?.children.orEmpty()
+            .filter { it.name.local == "numFmt" }
+            .mapNotNull { nf -> nf.attr("numFmtId")?.toIntOrNull()?.let { id -> id to nf.attr("formatCode") } }
+            .filter { it.second != null }
+            .associate { it.first to it.second!! }
+        return node.children.filter { it.name.local == "dxf" }.map { parseDxf(it, codes) }
     }
 
-    private fun parseDxf(node: BoundedXml.Node): Format? {
+    private fun parseDxf(node: BoundedXml.Node, numFmts: Map<Int, String>): Format? {
         val font = node.children.firstOrNull { it.name.local == "font" }
         val fill = node.children.firstOrNull { it.name.local == "fill" }
-        val color = font?.children?.firstOrNull { it.name.local == "color" }?.attr("rgb")
-        // A dxf solid fill is written with <fgColor> by Excel and with <bgColor> by other writers (openpyxl does
-        // exactly that), so both are accepted; the foreground wins when a file carries both.
-        val pattern = fill?.children?.firstOrNull { it.name.local == "patternFill" }
-        val fillRgb = pattern?.children?.firstOrNull { it.name.local == "fgColor" }?.attr("rgb")
-            ?: pattern?.children?.firstOrNull { it.name.local == "bgColor" }?.attr("rgb")
+        val alignment = node.children.firstOrNull { it.name.local == "alignment" }
+        val border = node.children.firstOrNull { it.name.local == "border" }
+        val protection = node.children.firstOrNull { it.name.local == "protection" }
+        val numFmt = node.children.firstOrNull { it.name.local == "numFmt" }
         fun rgb(raw: String?): String? {
             val value = raw?.trim() ?: return null
             val hex = when (value.length) {
@@ -545,14 +832,72 @@ object XlsxConditionalFormatting {
             }
             return if (HEX6.matches(hex)) hex.uppercase() else null
         }
+        /** A dxf's decoration flags are written `<b/>` by this writer and `<b val="1"/>`/`<b val="0"/>` by others. */
+        fun flag(parent: BoundedXml.Node?, name: String): Boolean {
+            val child = parent?.children?.firstOrNull { it.name.local == name } ?: return false
+            return readOnOff(child.attr("val")) ?: true
+        }
+        /**
+         * `<u>` is not an `ST_OnOff`: `val` is `ST_UnderlineValues`, where `none` means "no underline" and
+         * `single`/`double`/the two accounting forms all mean "there is one". This model holds the fact, not the
+         * style, so every non-`none` value collapses to `true` — and `<u/>` with no `val` is `single`.
+         */
+        fun underlineFlag(): Boolean {
+            val child = font?.children?.firstOrNull { it.name.local == "u" } ?: return false
+            val raw = child.attr("val")?.trim()?.lowercase() ?: return true
+            return raw != "none" && readOnOff(raw) != false
+        }
+        // A dxf solid fill is written with <fgColor> by Excel and with <bgColor> by other writers (openpyxl does
+        // exactly that), so both are accepted; the foreground wins when a file carries both.
+        val pattern = fill?.children?.firstOrNull { it.name.local == "patternFill" }
+        val patternType = PatternType.of(pattern?.attr("patternType"))
+        val fg = rgb(pattern?.children?.firstOrNull { it.name.local == "fgColor" }?.attr("rgb"))
+        val bg = rgb(pattern?.children?.firstOrNull { it.name.local == "bgColor" }?.attr("rgb"))
+        val hatched = patternType != null && patternType != PatternType.SOLID
+        fun edge(side: String): Edge? {
+            val child = border?.children?.firstOrNull { it.name.local == side } ?: return null
+            val style = BorderStyle.of(child.attr("style")) ?: return null
+            return Edge(style, rgb(child.children.firstOrNull { it.name.local == "color" }?.attr("rgb")))
+        }
         return runCatching {
+            val borderModel = if (border == null) null else Border(
+                top = edge("top"),
+                right = edge("right"),
+                bottom = edge("bottom"),
+                left = edge("left"),
+                diagonal = edge("diagonal"),
+                diagonalUp = readOnOff(border.attr("diagonalUp")) == true,
+                diagonalDown = readOnOff(border.attr("diagonalDown")) == true,
+            )
+            val alignmentModel = if (alignment == null) null else Alignment(
+                horizontal = Horizontal.of(alignment.attr("horizontal")),
+                vertical = Vertical.of(alignment.attr("vertical")),
+                textRotation = alignment.attr("textRotation")?.toIntOrNull(),
+                wrapText = readOnOff(alignment.attr("wrapText")),
+                indent = alignment.attr("indent")?.toDoubleOrNull()?.toInt(),
+                shrinkToFit = readOnOff(alignment.attr("shrinkToFit")),
+                readingOrder = alignment.attr("readingOrder")?.toDoubleOrNull()?.toInt(),
+            )
+            val protectionModel = if (protection == null) null else Protection(
+                locked = readOnOff(protection.attr("locked")),
+                hidden = readOnOff(protection.attr("hidden")),
+            )
             Format(
-                bold = font?.children?.any { it.name.local == "b" } == true,
-                italic = font?.children?.any { it.name.local == "i" } == true,
-                strike = font?.children?.any { it.name.local == "strike" } == true,
-                underline = font?.children?.any { it.name.local == "u" } == true,
-                fontRgb = rgb(color),
-                fillRgb = rgb(fillRgb),
+                bold = flag(font, "b"),
+                italic = flag(font, "i"),
+                strike = flag(font, "strike"),
+                underline = underlineFlag(),
+                fontRgb = rgb(font?.children?.firstOrNull { it.name.local == "color" }?.attr("rgb")),
+                fillRgb = if (hatched) fg else fg ?: bg,
+                fontName = font?.children?.firstOrNull { it.name.local == "name" }?.attr("val"),
+                fontSize = font?.children?.firstOrNull { it.name.local == "sz" }?.attr("val")?.toDoubleOrNull(),
+                numberFormat = numFmt?.attr("formatCode")
+                    ?: numFmt?.attr("numFmtId")?.toIntOrNull()?.let { numFmts[it] },
+                fillPattern = if (hatched) patternType else null,
+                fillBgRgb = if (hatched) bg else null,
+                border = borderModel,
+                alignment = alignmentModel,
+                protection = protectionModel,
             )
         }.getOrNull()
     }

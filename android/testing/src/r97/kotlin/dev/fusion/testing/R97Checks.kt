@@ -210,6 +210,10 @@ object R97Checks {
         is XlsxConditionalFormatVerdict.Visual.Fill -> "fill:${visual.rgb}"
         is XlsxConditionalFormatVerdict.Visual.Scale -> "scale:${visual.rgb}"
         is XlsxConditionalFormatVerdict.Visual.Bar -> "bar:${number(visual.fraction)}"
+        // R102 added a fifth visual for the dxf fields the evaluator has no opinion about. None of R97's formats
+        // sets one, so this branch is unreachable here — it exists because the `when` is exhaustive, and a silent
+        // `else` would have hidden a real sixth visual if one ever appears.
+        is XlsxConditionalFormatVerdict.Visual.Detail -> "detail"
     }
 
     private fun valueKind(value: Value): String = when (value) {

@@ -1752,6 +1752,21 @@ tasks.register<JavaExec>("r99OutlineContracts") {
     doFirst { rootProject.file("testing/build/r99/artifacts").mkdirs() }
 }
 
+// R102: the differential format itself — the `<dxf>` entries every painting rule points at — from "bold, italic,
+// strike, underline, a font colour and a solid fill" to the whole element short of a gradient: font family and
+// size, a number format, patterned fills, borders with up to five edges, alignment and protection, carried through
+// to the evaluator's decoration field by field.
+val r102Dxf by sourceSets.creating
+kotlin.sourceSets.named("r102Dxf") { kotlin.srcDir("src/r102/kotlin") }
+dependencies { add(r102Dxf.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r102DxfContracts") {
+    dependsOn(r102Dxf.classesTaskName)
+    classpath = r102Dxf.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R102Checks")
+    args(rootProject.file("testing/build/r102/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r102/artifacts").mkdirs() }
+}
+
 // R101: the last six conditional-format kinds — the four blank/error predicates, timePeriod with its seventeen
 // presets, and iconSet with its 3/4/5-icon sets and its showValue/percent/reverse flags — closing the base
 // schema's eighteen kinds. openpyxl's rule/iconSet models, its documented refusal of the seven non-UI presets,
