@@ -1,3 +1,52 @@
+# R107 — plural criteria functions: COUNTIFS, SUMIFS and AVERAGEIFS
+
+A conditional format whose formula is `COUNTIFS(A1:A9,">5",B1:B9,"draft")`, `SUMIFS(C1:C9,A1:A9,">5",B1:B9,"draft")`
+or `AVERAGEIFS(C1:C9,A1:A9,">5")` is now decided. R106 could ask one question of a range; R107 adds the three plural
+functions, which read one or more range/criterion pairs and require **every** pair to hold at the same position, with
+the range to accumulate first for `SUMIFS`/`AVERAGEIFS`. A range's *position* is free (a sum range may start in any
+column) while its *width and height* must match the first range's; an unpaired argument is refused; every pair is
+read at every position, so an error under a criterion cannot hide behind an earlier criterion that already failed;
+an error in the accumulated range is refused only where that range is read; only numbers are accumulated, and
+`AVERAGEIFS` with no matching number is `#DIV/0!`. The grammar's existing `MAX_CALL_ARGS` of 8 bounds the forms at
+four pairs (`COUNTIFS`) and three (`SUMIFS`, `AVERAGEIFS`); Excel allows 127, and that ceiling is stated rather than
+hidden.
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r107_checks.py                     # probe + independent Python lane + controls
+python3 tools/check_r107_plural_criteria.py testing/build/r107/artifacts --require-openpyxl
+PYTHONPATH=tools python3 -m unittest test_r107_plural_criteria
+```
+
+The corresponding Studio/CI task is `:testing:r107PluralCriteriaContracts`. Host checks are not Android execution,
+and a verdict is not a rendered cell: no Excel or LibreOffice ran. See [R107 results](R107-RESULTS.md).
+
+---
+
+# R106 — criteria functions: COUNTIF, SUMIF and AVERAGEIF
+
+A conditional format whose formula is `COUNTIF(A1:A8,">5")`, `SUMIF(B1:B9,"draft")>100` or
+`AVERAGEIF(C1:C9,"<>",B1:B9)` is now decided. R105 could sum a range but not select cells from one; R106 adds the
+three criteria functions and the **criterion** grammar they take — a number, a boolean, a comparison written as text
+(`">5"`, `"<=0"`, `"<>draft"`, `"="`, `"<>"`), or a case-insensitive wildcard pattern (`"a*"`, `"?p*"`, `"~*"` for a
+literal star), with Excel's rules: text matching ignores case, a blank cell satisfies only the empty `=` criterion
+(so `""` counts blanks and `"<>"` counts non-blanks), a numeric criterion also matches text that spells that number,
+an error under a criterion or in the sum range is a refusal carrying its code, a sum range only has to match the
+criteria range in **shape**, a criterion above 255 characters is refused before a cell is read, and ordering two
+*different* texts is refused because this reader carries no collator rather than guessing a locale.
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r106_checks.py                     # probe + independent Python lane + controls
+python3 tools/check_r106_criteria.py testing/build/r106/artifacts --require-openpyxl
+PYTHONPATH=tools python3 -m unittest test_r106_criteria
+```
+
+The corresponding Studio/CI task is `:testing:r106CriteriaContracts`. Host checks are not Android execution, and a
+verdict is not a rendered cell: no Excel or LibreOffice ran. See [R106 results](R106-RESULTS.md).
+
+---
+
 # R105 — ranges and the seven aggregates a conditional format uses
 
 A conditional format whose formula is `SUM(A1:A3)>10`, `AVERAGE(B1:B5)<2` or `COUNT(A1:A9)=9` is now decided. The
