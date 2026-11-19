@@ -204,6 +204,16 @@ object XlsxConditionalFormatVerdict {
     private const val MAX_DEPTH = 16
     private const val MAX_TOKENS = 512
 
+    /** Excel's cell-text ceiling: a computed text longer than this is `#VALUE!`, never a silent truncation. */
+    private const val MAX_TEXT_LENGTH = 32767
+
+    /**
+     * Worst-case matching steps `SEARCH` will spend before refusing: candidate positions × pattern tokens. Without
+     * it a 32767-character cell and a 31-token pattern could ask for a billion comparisons, and this reader refuses
+     * unbounded work rather than hanging on a formula from a file it did not write.
+     */
+    private const val MAX_SEARCH_WORK = 1_000_000L
+
     /**
      * Every rule that applies to [cell], in priority order, evaluated against [grid]. [blocks] is a sheet's
      * conditional formats as [XlsxConditionalFormatting.parse] returns them.
@@ -568,7 +578,8 @@ object XlsxConditionalFormatVerdict {
      * `MEDIAN` over `from:to` ranges; R106 added `COUNTIF`, `SUMIF` and `AVERAGEIF`, whose second argument is a
      * criterion (`">5"`, `"<>draft"`, `"a*"`, or a plain value); R107 added the plural `COUNTIFS`, `SUMIFS` and
      * `AVERAGEIFS`, which read one or more range/criterion pairs and require every pair to hold at the same
-     * position. Every other name is refused. A formula that *evaluates* to a
+     * position; R108 added the text functions `MID`, `FIND`, `SEARCH`, `EXACT`, `SUBSTITUTE`, `REPT` and `VALUE`,
+     * which test a label without needing a second cell. Every other name is refused. A formula that *evaluates* to a
      * text or an error is refused rather than read as a condition, because "the formula says something that is not
      * true or false" is not the same claim as "the rule did not fire".
      */
@@ -880,6 +891,15 @@ object XlsxConditionalFormatVerdict {
         "COUNTIFS" to 2..MAX_CALL_ARGS,
         "SUMIFS" to 3..MAX_CALL_ARGS,
         "AVERAGEIFS" to 3..MAX_CALL_ARGS,
+        // R108: the text functions. `MID`, `FIND` and `SEARCH` take one-based indices; `SUBSTITUTE` takes an
+        // optional instance number; `VALUE` reads text that spells a number.
+        "MID" to 3..3,
+        "FIND" to 2..3,
+        "SEARCH" to 2..3,
+        "EXACT" to 2..2,
+        "SUBSTITUTE" to 3..4,
+        "REPT" to 2..2,
+        "VALUE" to 1..1,
     )
 
     /** Parses [text], refusing anything outside the grammar. */
@@ -944,6 +964,34 @@ object XlsxConditionalFormatVerdict {
         is Value.Num -> formatNumber(value.value)
         is Value.Bool -> if (value.flag) "TRUE" else "FALSE"
         is Value.Err -> throw FormulaError("error ${value.code} where text was expected")
+    }
+
+    /** A whole-number argument as an `Int`, or null when it is not one; the caller answers `#VALUE!`. */
+    private fun whole(value: Value): Int? {
+        val number = number(value, ' ')
+        if (number != Math.floor(number) || Math.abs(number) > 1.0e9) return null
+        return number.toInt()
+    }
+
+    /**
+     * `SUBSTITUTE`'s walk: case-sensitive, every occurrence when [instance] is null, only the [instance]th otherwise.
+     * An [instance] past the last occurrence leaves the text unchanged, which is Excel's answer and not an error.
+     */
+    private fun substitute(body: String, old: String, replacement: String, instance: Int?): String {
+        val out = StringBuilder(body.length)
+        var seen = 0
+        var index = 0
+        while (index < body.length) {
+            if (body.startsWith(old, index)) {
+                seen++
+                if (instance == null || seen == instance) out.append(replacement) else out.append(old)
+                index += old.length
+            } else {
+                out.append(body[index])
+                index++
+            }
+        }
+        return out.toString()
     }
 
     /** Excel's general number rendering: no trailing `.0`, and at most 15 significant digits. */
@@ -1274,9 +1322,8 @@ object XlsxConditionalFormatVerdict {
         return null
     }
 
-    /** Excel's `*` (any run), `?` (one character) and `~` (escape) matching, case-insensitive, without a regex. */
-    private fun wildcard(pattern: String, text: String): Boolean {
-        if (pattern.isEmpty()) return text.isEmpty()
+    /** The token list a wildcard pattern denotes: `*` any run, `?` one character, `~` escaping the next character. */
+    private fun wildTokens(pattern: String): List<Wild> {
         val tokens = ArrayList<Wild>(pattern.length)
         var index = 0
         while (index < pattern.length) {
@@ -1295,11 +1342,19 @@ object XlsxConditionalFormatVerdict {
             }
             index++
         }
-        val folded = text.lowercase()
+        return tokens
+    }
+
+    /**
+     * Whether [tokens] match [folded] from [from]. With [prefix] the pattern only has to match a *prefix* of what
+     * remains, which is what `SEARCH` asks of a pattern at a candidate start position; without it the pattern has to
+     * cover the whole text, which is what a criterion and a `SEARCH` that begins at the match both rely on.
+     */
+    private fun wildMatches(tokens: List<Wild>, folded: String, from: Int, prefix: Boolean): Boolean {
         var token = 0
-        var position = 0
+        var position = from
         var star = -1
-        var mark = 0
+        var mark = from
         while (position < folded.length) {
             when (val current = tokens.getOrNull(token)) {
                 is Wild.One -> {
@@ -1323,18 +1378,25 @@ object XlsxConditionalFormatVerdict {
                     mark = position
                     token++
                 }
-                null -> if (star >= 0) {
-                    token = star + 1
-                    mark++
-                    position = mark
-                } else {
-                    return false
+                null -> {
+                    if (prefix) return true
+                    if (star >= 0) {
+                        token = star + 1
+                        mark++
+                        position = mark
+                    } else {
+                        return false
+                    }
                 }
             }
         }
         while (token < tokens.size && tokens[token] is Wild.Run) token++
         return token == tokens.size
     }
+
+    /** Excel's `*` (any run), `?` (one character) and `~` (escape) matching, case-insensitive, without a regex. */
+    private fun wildcard(pattern: String, text: String): Boolean =
+        wildMatches(wildTokens(pattern), text.lowercase(), 0, prefix = false)
 
     /**
      * Excel's aggregate rules. Inside a range, text, booleans and blanks are *ignored* by `SUM`, `AVERAGE`, `MIN`,
@@ -1443,6 +1505,93 @@ object XlsxConditionalFormatVerdict {
                 if (count < 0.0 || count != Math.floor(count)) throw FormulaError("${node.name} count must be a whole number >= 0")
                 val width = count.toInt().coerceAtMost(body.length)
                 Value.Txt(if (node.name == "LEFT") body.take(width) else body.takeLast(width))
+            }
+            "MID" -> {
+                val body = text(args[0])
+                val start = whole(args[1])
+                val width = whole(args[2])
+                when {
+                    start == null || start < 1 || width == null || width < 0 -> Value.Err("#VALUE!")
+                    start > body.length -> Value.Txt("")
+                    else -> Value.Txt(
+                        body.substring(start - 1, minOf(body.length.toLong(), (start - 1).toLong() + width).toInt()),
+                    )
+                }
+            }
+            // FIND is case-sensitive and has no wildcards; an empty needle answers the start position, as Excel does.
+            "FIND" -> {
+                val needle = text(args[0])
+                val body = text(args[1])
+                val start = if (node.args.size == 3) whole(args[2]) else 1
+                when {
+                    start == null || start < 1 || start > body.length + 1 -> Value.Err("#VALUE!")
+                    else -> {
+                        val at = body.indexOf(needle, start - 1)
+                        if (at < 0) Value.Err("#VALUE!") else Value.Num((at + 1).toDouble())
+                    }
+                }
+            }
+            // SEARCH is the case-insensitive, wildcard-aware twin: it returns where a pattern *starts* matching, so
+            // the pattern only has to match a prefix of the text from that position.
+            "SEARCH" -> {
+                val needle = text(args[0])
+                val body = text(args[1])
+                val start = if (node.args.size == 3) whole(args[2]) else 1
+                when {
+                    start == null || start < 1 || start > body.length + 1 -> Value.Err("#VALUE!")
+                    needle.isEmpty() -> Value.Num(start.toDouble())
+                    else -> {
+                        val tokens = wildTokens(needle)
+                        if (body.length.toLong() * tokens.size > MAX_SEARCH_WORK) {
+                            throw FormulaError(
+                                "SEARCH over ${body.length} characters with a ${tokens.size}-token pattern is " +
+                                    "above the $MAX_SEARCH_WORK-step scan bound",
+                            )
+                        }
+                        // Fold character by character: `lowercase()` can change a string's length for a few code
+                        // points, which would shift every position SEARCH reports.
+                        val folded = String(CharArray(body.length) { body[it].lowercaseChar() })
+                        var found = -1
+                        for (offset in start - 1..folded.length) {
+                            if (wildMatches(tokens, folded, offset, prefix = true)) {
+                                found = offset
+                                break
+                            }
+                        }
+                        if (found < 0) Value.Err("#VALUE!") else Value.Num((found + 1).toDouble())
+                    }
+                }
+            }
+            // EXACT is the only case-sensitive comparison in the grammar; `=` on text folds case.
+            "EXACT" -> Value.Bool(text(args[0]) == text(args[1]))
+            "SUBSTITUTE" -> {
+                val body = text(args[0])
+                val old = text(args[1])
+                val replacement = text(args[2])
+                val instance = if (node.args.size == 4) whole(args[3]) else null
+                when {
+                    old.isEmpty() -> Value.Txt(body)
+                    node.args.size == 4 && (instance == null || instance < 1) -> Value.Err("#VALUE!")
+                    else -> {
+                        val replaced = substitute(body, old, replacement, instance)
+                        if (replaced.length > MAX_TEXT_LENGTH) Value.Err("#VALUE!") else Value.Txt(replaced)
+                    }
+                }
+            }
+            "REPT" -> {
+                val body = text(args[0])
+                val times = whole(args[1])
+                when {
+                    times == null || times < 0 -> Value.Err("#VALUE!")
+                    body.isNotEmpty() && body.length.toLong() * times > MAX_TEXT_LENGTH -> Value.Err("#VALUE!")
+                    else -> Value.Txt(body.repeat(times))
+                }
+            }
+            // The reader's own number grammar, not Excel's currency/percent/date parsing: `VALUE("1e2")` is 100 and
+            // `VALUE("$5")` is `#VALUE!`, and the narrowing is stated rather than guessed.
+            "VALUE" -> {
+                val body = text(args[0]).trim()
+                if (body.isNotEmpty() && NUMBER.matches(body)) Value.Num(body.toDouble()) else Value.Err("#VALUE!")
             }
             "ABS" -> Value.Num(Math.abs(number(args[0], ' ')))
             "ROUND" -> {
