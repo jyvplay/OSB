@@ -124,17 +124,19 @@ object R93Checks {
                 continue
             }
             for (column in filter.columns) {
+                val values = column.values
+                val custom = column.custom
                 val kind: String
                 val payload: String
-                if (column.values != null) {
+                if (values != null) {
                     kind = "values"
-                    payload = column.values.joinToString("\u001f")
+                    payload = values.joinToString("\u001f")
                 } else {
                     kind = "custom"
-                    payload = (column.custom ?: emptyList()).joinToString("\u001f") { "${it.operator.token}=${it.value}" }
+                    payload = (custom ?: emptyList()).joinToString("\u001f") { "${it.operator.token}=${it.value}" }
                 }
                 val join = when {
-                    column.custom == null || column.custom.size == 1 -> "-"
+                    custom == null || custom.size == 1 -> "-"
                     column.join -> "and"
                     else -> "or"
                 }
@@ -180,15 +182,17 @@ object R93Checks {
         )
         val lines = ArrayList<String>()
         rules.forEachIndexed { index, column ->
+            val values = column.values
+            val custom = column.custom
             val id = "C${index + 1}"
-            val kind = if (column.values != null) "values" else "custom"
-            val payload = if (column.values != null) {
-                column.values.joinToString("\u001f")
+            val kind = if (values != null) "values" else "custom"
+            val payload = if (values != null) {
+                values.joinToString("\u001f")
             } else {
-                (column.custom ?: emptyList()).joinToString("\u001f") { "${it.operator.token}=${it.value}" }
+                (custom ?: emptyList()).joinToString("\u001f") { "${it.operator.token}=${it.value}" }
             }
             val join = when {
-                column.custom == null || column.custom.size == 1 -> "-"
+                custom == null || custom.size == 1 -> "-"
                 column.join -> "and"
                 else -> "or"
             }

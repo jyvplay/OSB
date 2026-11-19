@@ -1,3 +1,31 @@
+# R110 — the module boundary: repairing the R93 probe and gating probe compilation
+
+`:testing:assemble` has been red since before R92 because the R93 probe read a property inside its own null check —
+`if (column.values != null) { … column.values.joinToString … }`. Kotlin accepts that smart cast inside one compilation
+unit and refuses it across two, and every probe source set in `testing/build.gradle.kts` is a unit of its own with
+`:format:ooxml` as a dependency. Every host runner in this repository compiles the product and the probe **in one**
+kotlinc invocation, which is why seventeen green rounds could not see it. R110 reads both sites into locals (**+13/−9**
+in `R93Checks.kt`, no product file touched, all 72 assertions unchanged) and adds the gate that would have caught it:
+`tools/check_r110_probe_boundaries.py` builds one jar from the product and then compiles each *reproducible* probe
+source set **separately against that jar**, the way Gradle does — **56 of 102** source sets, **60** files, 0 diagnostics.
+The other 46 are excluded and named, because Gradle assembles them from several directories, `include(...)` globs, a
+`"../$it/…"` loop template, an extra dependency or an inherited implementation configuration, and compiling those here
+would be a different compilation unit.
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r110_checks.py                     # product jar -> boundary gate -> controls -> R93 probe
+python3 tools/check_r110_probe_boundaries.py --list   # what is compilable here, and why the rest is not
+python3 tools/check_r110_probe_boundaries.py --jar testing/build/r110/product.jar
+PYTHONPATH=tools python3 -m unittest test_r110_probe_boundaries
+```
+
+There is no new Gradle task: Gradle's own `assemble` already compiles all 102 units, and that job is the external
+verifier — it is not observable from this sandbox, so no claim is made that CI now passes. Host checks are not Android
+execution and a successful compile is not a rendered cell. See [R110 results](R110-RESULTS.md).
+
+---
+
 # R108 — text functions: MID, FIND, SEARCH, EXACT, SUBSTITUTE, REPT and VALUE
 
 A conditional format whose formula is `SEARCH("draft",B1)>0`, `MID(D1,4,2)="Q3"`, `EXACT(E1,"paid")`,
