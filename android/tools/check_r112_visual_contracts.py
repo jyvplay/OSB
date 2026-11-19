@@ -15,6 +15,9 @@ layout, so these five contracts are checked statically against the sources that 
   R112-5 bounded viewport      the details column keeps a bounded height instead of growing unboundedly.
   R112-6 clip control survives the deliberate-clip control still requires an AssertionError, and its clip is the
                                node's own viewport rather than an ancestor the repaired helper would scroll.
+  R112-7 probe include closure an ooxml source the r47 probe compiles may not reference a sibling file the probe's
+                               include(...) list omits: Gradle compiles that set as one module, so the reference is an
+                               unresolved symbol only CI sees, after an 18-minute queue.
 
 Each rule is a source predicate, not a claim about rendering. A passing gate means "the evidence code kept its
 shape"; it is not a visual pass and not a substitute for the device run.
@@ -22,6 +25,7 @@ shape"; it is not a visual pass and not a substitute for the device run.
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import re
 import sys
 from pathlib import Path
@@ -32,6 +36,8 @@ EVIDENCE = f'{TEST_DIR}/NativeVisualEvidence.kt'
 EDITOR = 'feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt'
 CONTROL = f'{TEST_DIR}/NativeVisualEvidenceDeviceTest.kt'
 CONTROL_TEST = 'textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText'
+OOXML_DIR = 'format/ooxml/src/main/kotlin/dev/fusion/ooxml'
+BUILD_FILE = 'testing/build.gradle.kts'
 HELPER = 'fun assertFullTextVisible'
 SAFETY_TAG = 'writer-structured-safety'
 SCROLL_TAG = 'writer-structured-scroll'
@@ -43,6 +49,7 @@ RULES = {
     'R112-4': 'every tag named by a dialog capture is defined by product code',
     'R112-5': 'the details column keeps a bounded height',
     'R112-6': 'the deliberate-clip control survives and clips through the node itself, not an ancestor',
+    'R112-7': 'the r47 probe include list covers every ooxml sibling its compiled sources reference',
 }
 
 
@@ -77,6 +84,33 @@ def capture_tags(text: str) -> list[str]:
         literals = re.findall(r'"((?:[^"\\]|\\.)*)"', text[match.end():index - 1])
         tags.extend(literals[1:])  # literals[0] is the capture filename, not a tag
     return tags
+
+
+def r47_patterns(text: str) -> list[str]:
+    marker = text.find('val r47')
+    if marker < 0:
+        return []
+    block = text[marker:]
+    start = block.find('kotlin.include(')
+    if start < 0:
+        return []
+    depth, index = 1, block.find('(', start) + 1
+    while index < len(block) and depth:
+        depth += 1 if block[index] == '(' else -1 if block[index] == ')' else 0
+        index += 1
+    return [pattern[len('**/'):] if pattern.startswith('**/') else pattern
+            for pattern in re.findall(r'"([^"]+)"', block[block.find('(', start):index])]
+
+
+def code_only(text: str) -> str:
+    """Comments and string literals mention type names without using them; drop them before looking for references."""
+    text = re.sub(r'/\*.*?\*/', ' ', text, flags=re.S)
+    text = re.sub(r'//[^\n]*', ' ', text)
+    return re.sub(r'"(?:\\.|[^"\\])*"', ' "" ', text)
+
+
+def declarations(text: str) -> set[str]:
+    return set(re.findall(r'^(?:internal |private |public )?(?:object|class|interface|fun|val|var)\s+([A-Z][A-Za-z0-9_]*)', text, re.M))
 
 
 def product_tag(text: str) -> set[str]:
@@ -136,6 +170,19 @@ def violations(root: Path) -> list[str]:
     clipped = next((line for line in text.splitlines() if 'testTag("clipped")' in line), '')
     if 'verticalScroll(' not in clipped:
         found.append('R112-6: the deliberate clip must come from the node\'s own viewport, or the reveal would hide it')
+
+    build = root / BUILD_FILE
+    package_dir = root / OOXML_DIR
+    patterns = r47_patterns(build.read_text(encoding='utf-8')) if build.is_file() else []
+    if patterns and package_dir.is_dir():
+        sources = {p.name: code_only(p.read_text(encoding='utf-8')) for p in sorted(package_dir.glob('*.kt'))}
+        included = {n for n in sources if any(fnmatch.fnmatch(n, pat) for pat in patterns)}
+        elsewhere = {decl: n for n, body in sources.items() if n not in included for decl in declarations(body)}
+        used = set()
+        for name in included:
+            used |= set(re.findall(r'\b[A-Z][A-Za-z0-9_]*\b', sources[name]))
+        for decl in sorted(used & set(elsewhere)):
+            found.append(f'R112-7: the r47 probe compiles a source that uses {decl} from {elsewhere[decl]}, which its include list omits')
     return found
 
 

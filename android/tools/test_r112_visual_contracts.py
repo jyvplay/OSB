@@ -21,6 +21,10 @@ EVIDENCE = f'{checker.TEST_DIR}/NativeVisualEvidence.kt'
 EDITOR = checker.EDITOR
 TEST_FILE = f'{checker.TEST_DIR}/SyntheticDialogTest.kt'
 CONTROL_FILE = checker.CONTROL
+BUILD = checker.BUILD_FILE
+ALPHA = f'{checker.OOXML_DIR}/Alpha.kt'
+BETA = f'{checker.OOXML_DIR}/Beta.kt'
+GAMMA = f'{checker.OOXML_DIR}/Gamma.kt'
 PRODUCT = 'app/src/main/java/dev/fusion/shell/SyntheticTags.kt'
 
 FILES = {
@@ -60,6 +64,20 @@ FILES = {
         '    Text("long", Modifier.heightIn(max = 32.dp).verticalScroll(rememberScrollState()).testTag("clipped"))\n'
         '}\n'
     ),
+    BUILD: (
+        'val r47 by sourceSets.creating\n'
+        'kotlin.sourceSets.named("r47") {\n'
+        '    kotlin.srcDir("../format/ooxml/src/main/kotlin")\n'
+        '    kotlin.include("**/Alpha.kt", "**/Beta.kt")\n'
+        '}\n'
+    ),
+    ALPHA: (
+        'package x\n'
+        '// Gamma is discussed here but not used by the probe compilation.\n'
+        'object Alpha { val beta = Beta.make() }\n'
+    ),
+    BETA: 'package x\nobject Beta { fun make() = 1 }\n',
+    GAMMA: 'package x\nobject Gamma\n',
     PRODUCT: (
         'package dev.fusion.shell\n'
         'val confirm = Modifier.testTag("writer-structured-confirm")\n'
@@ -138,6 +156,17 @@ class SyntheticControls(unittest.TestCase):
             'Modifier.heightIn(max = 32.dp).testTag("clipped")')
         self.assertEqual({'R112-6'}, self.rules(self.run_root({CONTROL_FILE: text})))
 
+    def test_omitted_sibling_fires_rule_7(self):
+        text = FILES[BUILD].replace('"**/Alpha.kt", "**/Beta.kt"', '"**/Alpha.kt"')
+        self.assertEqual({'R112-7'}, self.rules(self.run_root({BUILD: text})))
+
+    def test_comment_only_mention_is_not_a_dependency(self):
+        self.assertEqual([], self.run_root())
+
+    def test_real_reference_to_omitted_sibling_fires_rule_7(self):
+        text = FILES[ALPHA].replace('object Alpha { val beta = Beta.make() }', 'object Alpha { val beta = Beta.make(); val gamma = Gamma }')
+        self.assertEqual({'R112-7'}, self.rules(self.run_root({ALPHA: text})))
+
     def test_unbounded_details_fires_rule_5(self):
         text = FILES[EDITOR].replace('.heightIn(max = 248.dp)', '')
         self.assertEqual({'R112-5'}, self.rules(self.run_root({EDITOR: text})))
@@ -147,7 +176,7 @@ class RepositoryControls(unittest.TestCase):
     def test_this_repository_satisfies_every_rule(self):
         found = checker.violations(ROOT)
         self.assertEqual([], found, '\n'.join(found))
-        self.assertEqual({'R112-1', 'R112-2', 'R112-3', 'R112-4', 'R112-5', 'R112-6'}, set(checker.RULES))
+        self.assertEqual({'R112-1', 'R112-2', 'R112-3', 'R112-4', 'R112-5', 'R112-6', 'R112-7'}, set(checker.RULES))
 
     def test_rules_document_themselves(self):
         for rule, text in checker.RULES.items():

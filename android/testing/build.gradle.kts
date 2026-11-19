@@ -970,7 +970,10 @@ kotlin.sourceSets.named("r47") {
     kotlin.srcDir("../benchmark/src/main/java")
     kotlin.include(
         "**/BoundedXml.kt", "**/ColLetters.kt", "**/SheetRange.kt", "**/CellErr.kt", "**/FormulaEval.kt", "**/NumberFormatRender.kt", "**/NumFmtSections.kt",
-        "**/BoundedZip.kt", "**/DocxRichDocument.kt", "**/Xlsx*.kt", "**/PdfOutlineBookmarks.kt", "**/OdtRichWriter.kt",
+        "**/BoundedZip.kt", "**/DocxRichDocument.kt", "**/XlsxStyledBook.kt", "**/PdfOutlineBookmarks.kt", "**/OdtRichWriter.kt",
+        // XlsxStyledBook.kt references these sibling records, so the probe must compile them with it.
+        "**/XlsxAutoFilter.kt", "**/XlsxBreaks.kt", "**/XlsxConditionalFormatting.kt", "**/XlsxHeaderFooter.kt", "**/XlsxHyperlinks.kt",
+        "**/XlsxMerges.kt", "**/XlsxOutline.kt", "**/XlsxPrintSetup.kt", "**/XlsxProtection.kt", "**/XlsxValidation.kt",
         "**/LatexMathSvg.kt", "**/DocumentDiffMerge.kt", "**/SvgChartPlot.kt", "**/WikiLinkGraph.kt",
         "**/HtmlSanitizer.kt", "**/WasiPreview1Host.kt", "**/AdblockFilterEngine.kt", "**/JsonPatchRfc6902.kt",
         "**/ArgvSpecParser.kt", "**/HdrLatencyHist.kt", "**/BTreePageIndex.kt", "**/ZipSafeExtract.kt",

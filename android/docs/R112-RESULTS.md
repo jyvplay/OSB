@@ -59,9 +59,23 @@ records `writer-structured-scroll`, so the next run **measures `V`** instead of 
 CI prediction this repair is falsifiable against: the failing Office case should stop reporting a 38 px clip. If the
 new capture shows `V ≥ 556 px`, then the layout, not the test, was at fault and the dialog needs a taller text slot.
 
-## 3. New gate: `tools/check_r112_visual_contracts.py`
+## 3. A second, pre-existing red surfaced the moment the lane moved
 
-Six source contracts, run by `test_r112_visual_contracts.py` inside the existing discovery lane (no workflow edit):
+`Check source contracts and generated traceability` then reached the Gradle steps for the first time in this history
+and `:testing:compileR47Kotlin` failed on nine unresolved `Xlsx*` symbols in `XlsxStyledBook.kt`. Cause: the r47
+source set compiles the whole ooxml directory behind a `kotlin.include(...)` allowlist that named only
+`XlsxStyledBook.kt`, while later rounds made that file reference ten sibling records. Nothing in R112 touched
+`format/ooxml` or the build file, and the R110 boundary gate deliberately excludes every set with an `include(...)`
+filter — r47 included — so no local gate could have seen it.
+
+Repair: ten explicit `"**/Xlsx<Sibling>.kt"` entries next to `"**/XlsxStyledBook.kt"`. I first tried the single glob
+`"**/Xlsx*.kt"`; it is cleaner, but `tools/test_r47_tools.py` pins each of the 61 kernels by literal filename and
+rejected it in CI (`Ran 2247 tests … FAILED (errors=1)`). The explicit list keeps that check meaningful, and rule
+R112-7 below makes the closure checkable instead of silent.
+
+## 4. New gate: `tools/check_r112_visual_contracts.py`
+
+Seven source contracts, run by `test_r112_visual_contracts.py` inside the existing discovery lane (no workflow edit):
 
 | Rule | Property |
 |---|---|
@@ -71,21 +85,24 @@ Six source contracts, run by `test_r112_visual_contracts.py` inside the existing
 | R112-4 | every tag a dialog capture names is defined by product code (a typo would otherwise surface after an 18-minute emulator boot) |
 | R112-5 | the details column keeps a bounded height |
 | R112-6 | the deliberate-clip control survives, and its clip comes from the node itself, not an ancestor the reveal would scroll away |
+| R112-7 | every ooxml sibling an included r47 source actually uses is matched by that set's `include(...)` list (comments and string literals are ignored, so a KDoc mention is not a dependency) |
 
-Verification: `R112_VISUAL_CONTRACTS_OK rules=6 test_files=57`; **13/13 controls pass** — two against this
-repository, a clean synthetic tree, one benign-edit control, and nine mutants that each fire exactly their own rule
+Verification: `R112_VISUAL_CONTRACTS_OK rules=7 test_files=57`; **16/16 controls pass** — two against this
+repository, a clean synthetic tree, one benign-edit control, and eleven mutants that each fire exactly their own rule
 and no other: removed reveal, reveal after the judgement, self-matching scroll instead of an ancestor scroll, private
-fit judgment, safety inside the scroll, misspelled capture tag, unbounded column, removed clip control, and a clip
-caused by an ancestor rather than the node's own viewport.
+fit judgment, safety inside the scroll, misspelled capture tag, unbounded column, removed clip control, a clip caused
+by an ancestor rather than the node's own viewport, an omitted sibling the probe uses, and a real (non-comment)
+reference to an omitted sibling. A comment-only mention is checked *not* to fire, which is what keeps the rule from
+turning KDoc prose into a false dependency.
 
-## 4. Census and audit
+## 5. Census and audit
 
 `tools/r112_census_deepen.py` re-pins exactly the three pinned files this round edited and refuses if anything else
 drifted; it added the gate and its commands to `:app` and `:feature:editor`. `tools/native_source_audit.py` was
 regenerated and re-checks. Unchanged counts: **50/50 modules (100.00%) meet the bounded testability standard**,
 `not_established: 0`, and **0/50 (0.00%)** are specification-accepted Class A — a testable subset is not delivery.
 
-## 5. What was not done, and what would falsify this
+## 6. What was not done, and what would falsify this
 
 - **No visual inspection.** No emulator, device, Android SDK, Gradle or Excel in this sandbox; no Kotlin compile, so
   the three Kotlin edits are reviewed by hand and by the new static gate only. Their real verifier is the Office job.
