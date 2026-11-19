@@ -1,3 +1,30 @@
+# R108 — text functions: MID, FIND, SEARCH, EXACT, SUBSTITUTE, REPT and VALUE
+
+A conditional format whose formula is `SEARCH("draft",B1)>0`, `MID(D1,4,2)="Q3"`, `EXACT(E1,"paid")`,
+`SUBSTITUTE(F1,"-","")="20240101"`, `REPT("*",LEN(A1))>10` or `VALUE(A1)>100` is now decided. R104 could read `LEFT`,
+`RIGHT`, `LEN`, `LOWER`, `UPPER` and `TRIM`, but every formula that tests a *label* was refused by name; R108 adds the
+seven text functions. Indices are one-based and whole (`#VALUE!` for anything else, including a fractional index);
+`MID` answers empty text past the end but not for a start below 1 or a negative count; `FIND` is case-sensitive and
+reads no wildcards while `SEARCH` folds case, reads Excel's `*` `?` `~` and answers where a match *starts*; `EXACT` is
+the grammar's only case-sensitive equality; `SUBSTITUTE` replaces every occurrence or one instance, case-sensitively,
+and leaves the text alone for an empty old text or an instance past the last occurrence; `REPT` and `SUBSTITUTE` are
+bounded by Excel's 32767-character cell text and answer `#VALUE!` rather than truncating; `VALUE` reads this reader's
+own number grammar, so `VALUE("$5")` and `VALUE("1,5")` are refused rather than locale-guessed. `SEARCH` carries a
+stated scan bound of 1 000 000 token-position steps and refuses above it instead of running quadratic work on a
+formula from a file the reader did not write.
+
+```sh
+python3 tools/bootstrap_host_tools.py install
+python3 tools/run_r108_checks.py                     # probe + independent Python lane + controls
+python3 tools/check_r108_text_functions.py testing/build/r108/artifacts --require-openpyxl
+PYTHONPATH=tools python3 -m unittest test_r108_text_functions
+```
+
+The corresponding Studio/CI task is `:testing:r108TextFunctionContracts`. Host checks are not Android execution, and
+a verdict is not a rendered cell: no Excel or LibreOffice ran. See [R108 results](R108-RESULTS.md).
+
+---
+
 # R107 — plural criteria functions: COUNTIFS, SUMIFS and AVERAGEIFS
 
 A conditional format whose formula is `COUNTIFS(A1:A9,">5",B1:B9,"draft")`, `SUMIFS(C1:C9,A1:A9,">5",B1:B9,"draft")`

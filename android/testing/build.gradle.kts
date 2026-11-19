@@ -1810,6 +1810,22 @@ tasks.register<JavaExec>("r107PluralCriteriaContracts") {
     doFirst { rootProject.file("testing/build/r107/artifacts").mkdirs() }
 }
 
+// R108: the text functions. The grammar could read `LEN` and `LEFT` but every formula that tests a *label* —
+// `SEARCH("draft",B1)>0`, `MID(D1,4,2)="Q3"`, `EXACT(E1,"paid")`, `SUBSTITUTE(F1,"-","")="20240101"` — was refused
+// by name; this pass adds MID, FIND, SEARCH, EXACT, SUBSTITUTE, REPT and VALUE, with one-based whole indices,
+// case sensitivity where Excel has it, wildcards where it has them, and Excel's 32767-character cell-text ceiling
+// rather than a silent truncation.
+val r108Text by sourceSets.creating
+kotlin.sourceSets.named("r108Text") { kotlin.srcDir("src/r108/kotlin") }
+dependencies { add(r108Text.implementationConfigurationName, project(":format:ooxml")) }
+tasks.register<JavaExec>("r108TextFunctionContracts") {
+    dependsOn(r108Text.classesTaskName)
+    classpath = r108Text.runtimeClasspath
+    mainClass.set("dev.fusion.testing.R108Checks")
+    args(rootProject.file("testing/build/r108/artifacts").absolutePath)
+    doFirst { rootProject.file("testing/build/r108/artifacts").mkdirs() }
+}
+
 // R104: what an `expression` rule's formula may say. The regex reader two rounds ago decided `ISBLANK(G4)` and
 // `MOD(ROW(),2)=0` and nothing else, so every real conditional formula was silently undecided; this pass replaces it
 // with a bounded tokenizer, parser and evaluator over sixteen functions, and refuses what it cannot read.

@@ -5990,7 +5990,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxConditionalFormatVerdict.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "63fae0f113052618ee7276dc23e39039a07325139c79b32d1ad04aa51dbdf8ad"
+      "sha256": "37df0c4b89ce4a5995aa914000b1f3c3933f96252e40030d850d042386c86dd7"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/XlsxConditionalFormatting.kt",
