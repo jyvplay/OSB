@@ -566,7 +566,9 @@ object XlsxConditionalFormatVerdict {
      * `AND`, `OR`, `NOT`, `ISBLANK`, `ISNUMBER`, `ISTEXT`, `LEN`, `TRIM`, `UPPER`, `LOWER`, `LEFT`, `RIGHT`, `ABS`,
      * `ROUND`, `MOD` and `ROW` are the functions; R105 added `SUM`, `COUNT`, `COUNTA`, `AVERAGE`, `MIN`, `MAX` and
      * `MEDIAN` over `from:to` ranges; R106 added `COUNTIF`, `SUMIF` and `AVERAGEIF`, whose second argument is a
-     * criterion (`">5"`, `"<>draft"`, `"a*"`, or a plain value). Every other name is refused. A formula that *evaluates* to a
+     * criterion (`">5"`, `"<>draft"`, `"a*"`, or a plain value); R107 added the plural `COUNTIFS`, `SUMIFS` and
+     * `AVERAGEIFS`, which read one or more range/criterion pairs and require every pair to hold at the same
+     * position. Every other name is refused. A formula that *evaluates* to a
      * text or an error is refused rather than read as a condition, because "the formula says something that is not
      * true or false" is not the same claim as "the rule did not fire".
      */
@@ -871,6 +873,13 @@ object XlsxConditionalFormatVerdict {
         "COUNTIF" to 2..2,
         "SUMIF" to 2..3,
         "AVERAGEIF" to 2..3,
+        // R107: plural criteria functions. `COUNTIFS(range, criterion, …)` is all pairs; `SUMIFS` and
+        // `AVERAGEIFS` take the range to accumulate first and then the same pairs. The grammar's existing
+        // MAX_CALL_ARGS of 8 bounds them at four pairs (COUNTIFS) and three (SUMIFS, AVERAGEIFS); Excel allows 127,
+        // and that ceiling is documented rather than hidden.
+        "COUNTIFS" to 2..MAX_CALL_ARGS,
+        "SUMIFS" to 3..MAX_CALL_ARGS,
+        "AVERAGEIFS" to 3..MAX_CALL_ARGS,
     )
 
     /** Parses [text], refusing anything outside the grammar. */
@@ -957,6 +966,9 @@ object XlsxConditionalFormatVerdict {
 
     /** Functions that read a range through a criterion. */
     private val CRITERIA_FUNCTIONS = setOf("COUNTIF", "SUMIF", "AVERAGEIF")
+
+    /** Functions that read one or more ranges through criteria, every one of which must hold. */
+    private val PLURAL_CRITERIA_FUNCTIONS = setOf("COUNTIFS", "SUMIFS", "AVERAGEIFS")
 
     /** The operators a criterion may begin with, longest first so `<=` is not read as `<`. */
     private val CRITERIA_OPERATORS = listOf("<=", ">=", "<>", "=", "<", ">")
@@ -1067,6 +1079,98 @@ object XlsxConditionalFormatVerdict {
             "AVERAGEIF" -> if (counted == 0) Value.Err("#DIV/0!") else Value.Num(sum / counted)
             else -> throw FormulaError("'${node.name}' is not a criteria function")
         }
+    }
+
+    /**
+     * The plural criteria functions. `COUNTIFS` reads range/criterion pairs and counts the positions where every pair
+     * holds; `SUMIFS` and `AVERAGEIFS` read the range to accumulate first and then the same pairs. A pair is the R106
+     * grammar unchanged — one `criterion` parser serves both the singular and the plural forms — and the positions
+     * are the row-major ones `rangeCells` walks, so a pair, its sibling pair and the accumulated range all line up
+     * cell for cell.
+     *
+     * Every range must have the first one's shape: the *position* of a range is free (a sum range may start in any
+     * column) but its width and height are not. All pairs are read for every position even after one has already
+     * failed, because "an error value under a criterion is an error, not a zero" must not depend on which criterion
+     * happened to be checked first.
+     */
+    private fun pluralCriteriaCall(
+        node: Node.Call,
+        grid: Grid,
+        cell: SheetRange.Cell,
+        anchor: SheetRange.Cell,
+    ): Value {
+        val name = node.name
+        val subjectFirst = if (name == "COUNTIFS") 0 else 1
+        if ((node.args.size - subjectFirst) % 2 != 0) {
+            throw FormulaError(
+                "$name takes criteria range/criterion pairs, so ${node.args.size} arguments leave one unpaired",
+            )
+        }
+        val label = if (name == "SUMIFS") "sum range" else "average range"
+        val subject = if (subjectFirst == 1) {
+            val argument = node.args[0]
+            if (argument !is Node.RangeRef) throw FormulaError("$name needs a cell range as its first argument")
+            argument
+        } else {
+            null
+        }
+        val subjectShape = subject?.let { rangeBounds(it, cell, anchor) }
+        val pairs = (node.args.size - subjectFirst) / 2
+        val shapes = arrayOfNulls<LongArray>(pairs)
+        val criteria = ArrayList<Criterion>(pairs)
+        for (pair in 0 until pairs) {
+            val argument = node.args[subjectFirst + pair * 2]
+            if (argument !is Node.RangeRef) {
+                throw FormulaError("$name needs a cell range for criteria range ${pair + 1}")
+            }
+            criteria.add(criterion(evaluate(node.args[subjectFirst + pair * 2 + 1], grid, cell, anchor), name))
+            val shape = rangeBounds(argument, cell, anchor)
+            shapes[pair] = shape
+            // `shapes[0]` is assigned above before any later pair is compared against it.
+            val reference = subjectShape ?: shapes[0]
+            if (reference != null && (reference[2] != shape[2] || reference[3] != shape[3])) {
+                val what = if (subjectShape != null) label else "first criteria range"
+                throw FormulaError(
+                    "$name's criteria range ${pair + 1} is ${shape[2]}x${shape[3]} cells, the $what is " +
+                        "${reference[2]}x${reference[3]}",
+                )
+            }
+        }
+        val first = shapes[0] ?: throw FormulaError("$name needs at least one criteria range")
+        val positions = (first[2] * first[3]).toInt()
+        var matched = 0
+        var sum = 0.0
+        var counted = 0
+        for (position in 0 until positions) {
+            var holds = true
+            for (pair in 0 until pairs) {
+                val value = grid.value(cellAt(shapes[pair] ?: first, position))
+                if (value is Value.Err) throw FormulaError("error ${value.code} under a criterion")
+                if (holds && !matches(criteria[pair], value)) holds = false
+            }
+            if (!holds) continue
+            matched++
+            val candidate = subjectShape?.let { grid.value(cellAt(it, position)) }
+            when (candidate) {
+                null, Value.Blank, is Value.Txt, is Value.Bool -> Unit
+                is Value.Err -> throw FormulaError("error ${candidate.code} in $name's $label")
+                is Value.Num -> {
+                    sum += candidate.value
+                    counted++
+                }
+            }
+        }
+        return when (name) {
+            "COUNTIFS" -> Value.Num(matched.toDouble())
+            "SUMIFS" -> Value.Num(sum)
+            else -> if (counted == 0) Value.Err("#DIV/0!") else Value.Num(sum / counted)
+        }
+    }
+
+    /** The cell at [position] of a range, in the row-major order [rangeCells] walks. */
+    private fun cellAt(bounds: LongArray, position: Int): SheetRange.Cell {
+        val width = bounds[2].toInt()
+        return SheetRange.Cell(bounds[0].toInt() + position % width, bounds[1].toInt() + position / width)
     }
 
     /** A parsed criterion: one of the six comparison operators and the value it compares against. */
@@ -1320,6 +1424,7 @@ object XlsxConditionalFormatVerdict {
         if (node.name == "ROW") return Value.Num(cell.row.toDouble())
         if (node.name in AGGREGATES) return aggregate(node, grid, cell, anchor)
         if (node.name in CRITERIA_FUNCTIONS) return criteriaCall(node, grid, cell, anchor)
+        if (node.name in PLURAL_CRITERIA_FUNCTIONS) return pluralCriteriaCall(node, grid, cell, anchor)
         val args = node.args.map { evaluate(it, grid, cell, anchor) }
         return when (node.name) {
             "AND" -> Value.Bool(args.all { flag(it, "AND") })
