@@ -1,0 +1,95 @@
+# R112 — two red builds, one repaired lane, one contract made honest
+
+R112 finishes the two open items from R111 and nothing else. It changes **no feature behaviour**: one inert
+`testTag`, one shared test helper made stricter, one test's stated contract corrected, one Python `setUp` guarded,
+plus the round's gate and its census re-pin.
+
+## 1. `source-python-tests` (pre-existing red since `dbf8585`): reproduced, then closed
+
+`android.yml` runs `python3 -m unittest discover -s tools -p 'test_*.py'` **before** any Gradle step, so
+`testing/build/r92/artifacts/` does not exist yet. `test_r92_password_hash.CorpusTampering.setUp` read
+`password_hashes.tsv` unconditionally, so nine tests errored in `setUp`; two are skipped by their own guards, which
+is why CI reported exactly **`errors=7`**. Reproduced locally with the artifact directory absent (identical
+summary line, identical traceback, line 70).
+
+Repair: two lines that mirror the guard already used by the same file's `HashArithmetic.test_corpus_matches_a_third_implementation`.
+
+| Lane | Before | After |
+|---|---|---|
+| `test_r92_password_hash` alone, artifacts absent | `FAILED (errors=7, skipped=3)` | `OK (skipped=10)` |
+| `unittest discover -s tools -p 'test_*.py'` (the CI step) | `FAILED (failures=1, errors=1, …)` mid-repair; `errors=7` at `dbf8585` | `Ran 2322 tests … OK (skipped=446)`, rc 0 |
+
+The seven tests are not lost: `android-r54-office.yml` invokes `test_r92_password_hash` by name in the job that has
+the artifacts, and `check_r92_password_hash.py` runs against them there. **Unverified by me:** which step in that
+workflow generates the R92 artifacts; I read the checker invocation, not the producer.
+
+## 2. The 38 px disclosure clip: why the old assertion could not be satisfied
+
+Measured in the failed Office run: `writer-structured-disclosure` laid out **424.0 px**, visible **386.0 px**. The
+node is the first child of `Column(Modifier.heightIn(max=248.dp).verticalScroll(...))` in
+`feature/editor/.../EditorScreen.kt`; the test reached it after `performScrollTo()` on `writer-numbered-option`.
+
+With the disclosure at content offset 0, a viewport `V`, row height `h` and scroll offset `o`:
+
+- "disclosure fully visible" ⇒ `o = 0`; measured visible 386 ⇒ **`o = 38`**, so the clip was scroll-induced.
+- "numbered notice fully visible" ⇒ `424 + h − o ≤ V`; minimal scrolling gives **`V = 386 + h`**.
+- At `o = 0` the row then overhangs by `424 + h − V = 38`, **invariant in `h`**.
+
+So "both notices fully visible together" was **unsatisfiable in that dialog on that window** — by 38 px, whatever the
+row height. Raising the 248 dp bound is predicted to be a no-op, because `V = 386 + h` is already below the bound;
+moving the disclosure out of the scroll column is worse, because it removes 424 px from the viewport. The condition
+is Compose's minimal-scroll behaviour, which is why the repair below is a contract statement, not a layout change.
+
+Repair, three lines in one helper, following the idiom `revealAndClick` already used:
+
+```kotlin
+val node = compose.onNodeWithTag(tag, useUnmergedTree = true)
+if (hasAnyAncestor(hasScrollAction()).matches(node.fetchSemanticsNode())) node.performScrollTo()
+node.assertIsDisplayed()
+```
+
+`assertFullTextVisible` now means **"can be made wholly visible in its own viewport"**: a scroll offset is no longer
+misreported as a layout defect, and a notice genuinely taller than its viewport still fails. The pinned
+`writer-structured-safety` summary has no scroll ancestor, so it is judged exactly as before — that promise is
+untouched. The R54 comment now states that contract instead of the unsatisfiable joint claim, and the capture list
+records `writer-structured-scroll`, so the next run **measures `V`** instead of inferring it.
+
+CI prediction this repair is falsifiable against: the failing Office case should stop reporting a 38 px clip. If the
+new capture shows `V ≥ 556 px`, then the layout, not the test, was at fault and the dialog needs a taller text slot.
+
+## 3. New gate: `tools/check_r112_visual_contracts.py`
+
+Five source contracts, run by `test_r112_visual_contracts.py` inside the existing discovery lane (no workflow edit):
+
+| Rule | Property |
+|---|---|
+| R112-1 | the text-fit judge reveals a scrolled node **before** it asserts |
+| R112-2 | no androidTest file computes its own fit verdict from clipped bounds |
+| R112-3 | the pinned safety summary stays outside the scrolling details column |
+| R112-4 | every tag a dialog capture names is defined by product code (a typo would otherwise surface after an 18-minute emulator boot) |
+| R112-5 | the details column keeps a bounded height |
+
+Verification: `R112_VISUAL_CONTRACTS_OK rules=5 test_files=57`; **10/10 controls pass** — one against this
+repository, one benign-edit control, and six mutants that each fire exactly their own rule and no other
+(removed reveal, reveal after the judgement, private fit judgment, safety inside the scroll, misspelled capture tag,
+unbounded column).
+
+## 4. Census and audit
+
+`tools/r112_census_deepen.py` re-pins exactly the three pinned files this round edited and refuses if anything else
+drifted; it added the gate and its commands to `:app` and `:feature:editor`. `tools/native_source_audit.py` was
+regenerated and re-checks. Unchanged counts: **50/50 modules (100.00%) meet the bounded testability standard**,
+`not_established: 0`, and **0/50 (0.00%)** are specification-accepted Class A — a testable subset is not delivery.
+
+## 5. What was not done, and what would falsify this
+
+- **No visual inspection.** No emulator, device, Android SDK, Gradle or Excel in this sandbox; no Kotlin compile, so
+  the three Kotlin edits are reviewed by hand and by the new static gate only. Their real verifier is the Office job.
+- **No claim that the Office job is green**: it will tell us. The gate and this document deliberately claim source
+  shape and a lane result, not rendering.
+- **Regressions versus `625837b`: none known.** No product behaviour, copy, bound or semantic changed; the only
+  product edit is an inert tag. The helper is strictly more capable (it adds reach, not tolerance).
+- Next highest-information tests: ① the Office run's `r60-writer-numbered.json`, read for
+  `writer-structured-scroll.visible_height_dp` — this resolves the `V` question; ② the 37 named Office cases;
+  ③ the `source-python-tests` step, expected green; ④ if `V < 556 px` is confirmed, do **not** enlarge the dialog —
+  the per-notice contract is then the correct one.

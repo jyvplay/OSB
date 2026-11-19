@@ -66,6 +66,8 @@ class HashArithmetic(unittest.TestCase):
 
 class CorpusTampering(unittest.TestCase):
     def setUp(self):
+        if not (ARTIFACTS / 'password_hashes.tsv').is_file():
+            self.skipTest('R92 artifacts are absent; run tools/run_r92_checks.py')
         self.folder = Path(tempfile.mkdtemp(prefix='r92-hash-'))
         self.rows = (ARTIFACTS / 'password_hashes.tsv').read_text(encoding='utf-8').splitlines()
         self.write(self.rows)

@@ -41,9 +41,12 @@ object NativeVisualEvidence {
         assertEquals(1, layouts.size); assertEquals(1, layouts.single().lineCount)
         assertFalse("$tag has vertical text overflow", layouts.single().didOverflowHeight)
     }
-    /** At the tested font/viewport, require the entire laid-out disclosure to fit visibly. */
+    /** At the tested font/viewport, require the entire laid-out disclosure to fit visibly in its own viewport. */
     fun assertFullTextVisible(compose: ComposeContentTestRule, tag: String) {
-        val node = compose.onNodeWithTag(tag, useUnmergedTree = true).assertIsDisplayed()
+        val node = compose.onNodeWithTag(tag, useUnmergedTree = true)
+        // A scroll ancestor may hold the node at an offset that clips it; reveal it (as revealAndClick does), then judge fit.
+        if (hasAnyAncestor(hasScrollAction()).matches(node.fetchSemanticsNode())) node.performScrollTo()
+        node.assertIsDisplayed()
         val visible = node.fetchSemanticsNode().boundsInRoot
         val layouts = mutableListOf<TextLayoutResult>()
         node.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { assertTrue(it(layouts)) }

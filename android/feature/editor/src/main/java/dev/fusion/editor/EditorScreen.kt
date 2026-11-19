@@ -276,7 +276,7 @@ private fun EditorScreenContent(
             text={ Column {
                 // Keep the safety summary visible even while the optional format details scroll.
                 Text("Not a rich editor or full Markdown. Draft unchanged; choose a new file. Provider identity and atomicity aren't guaranteed.", Modifier.testTag("writer-structured-safety"))
-                Column(Modifier.heightIn(max=248.dp).verticalScroll(rememberScrollState())) {
+                Column(Modifier.heightIn(max=248.dp).verticalScroll(rememberScrollState()).testTag("writer-structured-scroll")) {
                 Text("Normally one paragraph per line; optional pipe tables group lines. CR/LF normalize. With text after the marker: '# '–'###### ' headings; '- ' bullets; '> ' quotes. **bold**, *italic*, `code` format runs. Unmatched, nested, escaped or ambiguous markers stay literal. Plain export keeps markers. Max 128 KiB, 2,048 lines, 8,192 runs.", Modifier.testTag("writer-structured-disclosure"))
                 Row(Modifier.fillMaxWidth().heightIn(min=48.dp).toggleable(value=numberedLines, role=Role.Checkbox, onValueChange={ numberedLines=it; if (!it) restartOrderedGroups=false })
                     .testTag("writer-numbered-option"), verticalAlignment=Alignment.CenterVertically) {
