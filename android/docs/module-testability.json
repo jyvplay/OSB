@@ -176,8 +176,8 @@
     "tools/test_r64_runners.py": "e85d686a48e08eacddb7cd143cbb2a53e4f516440b64d16e8e9db1061008515c",
     "tools/check_r104_studio.py": "6eea213daa723bbbe5beb240dca36e9be554abf6615af19f25fdba57a6e9af40",
     "tools/test_r104_studio_gate.py": "0cff7018e65506d1f722354c98f80f94ed7606a0c3c9350ef394cd257aa1a861",
-    "tools/check_r112_visual_contracts.py": "4cbe77677707703eabca26b88ad1f5b1ce3b81e69fcc5d0b86d56819436fc2c1",
-    "tools/test_r112_visual_contracts.py": "98f06e8bcf3751bd08bad676c40610bb14c72c6a9d8caac476e2f1f8ed5d2f26"
+    "tools/check_r112_visual_contracts.py": "ddb919116e95092199e227569bdfb3eb3d92020df8ceedead7a8fb8ed81d0d16",
+    "tools/test_r112_visual_contracts.py": "ca12efa64cd622d7d6381873e1111dbbffd486b55171b740f1cc9e6626cda665"
    }
   },
   {
@@ -2042,8 +2042,8 @@
     "tools/test_r64_writer_reference.py": "fcae7240e9bf0b753caf54adb88ad7a205b2e9eb1dd0a901dcecd6ba5623a01a",
     "tools/test_r64_integration_contracts.py": "9037fbfdf532bc2aa60324f230b81b0b2bd1548aafdbbef99e5e9d21f81fa798",
     "tools/test_r64_runners.py": "e85d686a48e08eacddb7cd143cbb2a53e4f516440b64d16e8e9db1061008515c",
-    "tools/check_r112_visual_contracts.py": "4cbe77677707703eabca26b88ad1f5b1ce3b81e69fcc5d0b86d56819436fc2c1",
-    "tools/test_r112_visual_contracts.py": "98f06e8bcf3751bd08bad676c40610bb14c72c6a9d8caac476e2f1f8ed5d2f26"
+    "tools/check_r112_visual_contracts.py": "ddb919116e95092199e227569bdfb3eb3d92020df8ceedead7a8fb8ed81d0d16",
+    "tools/test_r112_visual_contracts.py": "ca12efa64cd622d7d6381873e1111dbbffd486b55171b740f1cc9e6626cda665"
    }
   },
   {

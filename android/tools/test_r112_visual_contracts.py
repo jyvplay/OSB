@@ -20,6 +20,7 @@ checker = importlib.import_module('check_r112_visual_contracts')
 EVIDENCE = f'{checker.TEST_DIR}/NativeVisualEvidence.kt'
 EDITOR = checker.EDITOR
 TEST_FILE = f'{checker.TEST_DIR}/SyntheticDialogTest.kt'
+CONTROL_FILE = checker.CONTROL
 PRODUCT = 'app/src/main/java/dev/fusion/shell/SyntheticTags.kt'
 
 FILES = {
@@ -46,6 +47,17 @@ FILES = {
         '        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "cap-review",\n'
         '            "writer-structured-confirm", listOf("extra-option"))\n'
         '    }\n'
+        '}\n'
+    ),
+    CONTROL_FILE: (
+        'class NativeVisualEvidenceDeviceTest {\n'
+        '    fun textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText() {\n'
+        '        val error = runCatching { NativeVisualEvidence.assertFullTextVisible(compose, "clipped") }.exceptionOrNull()\n'
+        '        assertTrue("A clipped disclosure must fail the geometry check, got $error", error is AssertionError)\n'
+        '    }\n'
+        '}\n'
+        'private fun EvidenceFixture() {\n'
+        '    Text("long", Modifier.heightIn(max = 32.dp).verticalScroll(rememberScrollState()).testTag("clipped"))\n'
         '}\n'
     ),
     PRODUCT: (
@@ -110,6 +122,22 @@ class SyntheticControls(unittest.TestCase):
         text = FILES[TEST_FILE].replace('listOf("extra-option")', 'listOf("extra-optoin")')
         self.assertEqual({'R112-4'}, self.rules(self.run_root({TEST_FILE: text})))
 
+    def test_self_matching_scroll_fires_rule_1(self):
+        text = FILES[EVIDENCE].replace(
+            'hasAnyAncestor(hasScrollAction()).matches(node.fetchSemanticsNode())',
+            'hasScrollAction().matches(node.fetchSemanticsNode())')
+        self.assertEqual({'R112-1'}, self.rules(self.run_root({EVIDENCE: text})))
+
+    def test_removed_clip_control_fires_rule_6(self):
+        text = FILES[CONTROL_FILE].replace('error is AssertionError', 'error is IllegalArgumentException', 1)
+        self.assertEqual({'R112-6'}, self.rules(self.run_root({CONTROL_FILE: text})))
+
+    def test_ancestor_caused_clip_fires_rule_6(self):
+        text = FILES[CONTROL_FILE].replace(
+            'Modifier.heightIn(max = 32.dp).verticalScroll(rememberScrollState()).testTag("clipped")',
+            'Modifier.heightIn(max = 32.dp).testTag("clipped")')
+        self.assertEqual({'R112-6'}, self.rules(self.run_root({CONTROL_FILE: text})))
+
     def test_unbounded_details_fires_rule_5(self):
         text = FILES[EDITOR].replace('.heightIn(max = 248.dp)', '')
         self.assertEqual({'R112-5'}, self.rules(self.run_root({EDITOR: text})))
@@ -119,7 +147,7 @@ class RepositoryControls(unittest.TestCase):
     def test_this_repository_satisfies_every_rule(self):
         found = checker.violations(ROOT)
         self.assertEqual([], found, '\n'.join(found))
-        self.assertEqual({'R112-1', 'R112-2', 'R112-3', 'R112-4', 'R112-5'}, set(checker.RULES))
+        self.assertEqual({'R112-1', 'R112-2', 'R112-3', 'R112-4', 'R112-5', 'R112-6'}, set(checker.RULES))
 
     def test_rules_document_themselves(self):
         for rule, text in checker.RULES.items():

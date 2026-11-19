@@ -13,6 +13,8 @@ layout, so these five contracts are checked statically against the sources that 
   R112-4 capture tags exist    every dialog tag a capture names is defined by product code, so the run cannot die on
                                a typo only after an 18-minute emulator boot.
   R112-5 bounded viewport      the details column keeps a bounded height instead of growing unboundedly.
+  R112-6 clip control survives the deliberate-clip control still requires an AssertionError, and its clip is the
+                               node's own viewport rather than an ancestor the repaired helper would scroll.
 
 Each rule is a source predicate, not a claim about rendering. A passing gate means "the evidence code kept its
 shape"; it is not a visual pass and not a substitute for the device run.
@@ -28,6 +30,8 @@ DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 TEST_DIR = 'app/src/androidTest/java/dev/fusion/shell'
 EVIDENCE = f'{TEST_DIR}/NativeVisualEvidence.kt'
 EDITOR = 'feature/editor/src/main/java/dev/fusion/editor/EditorScreen.kt'
+CONTROL = f'{TEST_DIR}/NativeVisualEvidenceDeviceTest.kt'
+CONTROL_TEST = 'textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText'
 HELPER = 'fun assertFullTextVisible'
 SAFETY_TAG = 'writer-structured-safety'
 SCROLL_TAG = 'writer-structured-scroll'
@@ -38,6 +42,7 @@ RULES = {
     'R112-3': 'the pinned safety summary is not inside the scrolling details column',
     'R112-4': 'every tag named by a dialog capture is defined by product code',
     'R112-5': 'the details column keeps a bounded height',
+    'R112-6': 'the deliberate-clip control survives and clips through the node itself, not an ancestor',
 }
 
 
@@ -122,6 +127,15 @@ def violations(root: Path) -> list[str]:
     line = next((line for line in editor.splitlines() if f'testTag("{SCROLL_TAG}")' in line), '')
     if SCROLL_TAG and not re.search(r'heightIn\(\s*max\s*=', line):
         found.append('R112-5: the details column lost its bounded height (heightIn(max = ...))')
+
+    control = root / CONTROL
+    text = control.read_text(encoding='utf-8') if control.is_file() else ''
+    body = text.split(CONTROL_TEST, 1)[1][:1200] if CONTROL_TEST in text else ''
+    if 'AssertionError' not in body:
+        found.append('R112-6: the deliberate-clip control no longer requires an AssertionError')
+    clipped = next((line for line in text.splitlines() if 'testTag("clipped")' in line), '')
+    if 'verticalScroll(' not in clipped:
+        found.append('R112-6: the deliberate clip must come from the node\'s own viewport, or the reveal would hide it')
     return found
 
 

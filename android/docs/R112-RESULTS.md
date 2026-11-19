@@ -51,7 +51,9 @@ node.assertIsDisplayed()
 `assertFullTextVisible` now means **"can be made wholly visible in its own viewport"**: a scroll offset is no longer
 misreported as a layout defect, and a notice genuinely taller than its viewport still fails. The pinned
 `writer-structured-safety` summary has no scroll ancestor, so it is judged exactly as before — that promise is
-untouched. The R54 comment now states that contract instead of the unsatisfiable joint claim, and the capture list
+untouched, and so is the *negative* control: `NativeVisualEvidenceDeviceTest.textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText`
+clips a `Text` through **its own** `verticalScroll` viewport, so the ancestor guard does not fire there and a
+deliberately clipped disclosure still fails the check. The R54 comment now states that contract instead of the unsatisfiable joint claim, and the capture list
 records `writer-structured-scroll`, so the next run **measures `V`** instead of inferring it.
 
 CI prediction this repair is falsifiable against: the failing Office case should stop reporting a 38 px clip. If the
@@ -59,7 +61,7 @@ new capture shows `V ≥ 556 px`, then the layout, not the test, was at fault an
 
 ## 3. New gate: `tools/check_r112_visual_contracts.py`
 
-Five source contracts, run by `test_r112_visual_contracts.py` inside the existing discovery lane (no workflow edit):
+Six source contracts, run by `test_r112_visual_contracts.py` inside the existing discovery lane (no workflow edit):
 
 | Rule | Property |
 |---|---|
@@ -68,11 +70,13 @@ Five source contracts, run by `test_r112_visual_contracts.py` inside the existin
 | R112-3 | the pinned safety summary stays outside the scrolling details column |
 | R112-4 | every tag a dialog capture names is defined by product code (a typo would otherwise surface after an 18-minute emulator boot) |
 | R112-5 | the details column keeps a bounded height |
+| R112-6 | the deliberate-clip control survives, and its clip comes from the node itself, not an ancestor the reveal would scroll away |
 
-Verification: `R112_VISUAL_CONTRACTS_OK rules=5 test_files=57`; **10/10 controls pass** — one against this
-repository, one benign-edit control, and six mutants that each fire exactly their own rule and no other
-(removed reveal, reveal after the judgement, private fit judgment, safety inside the scroll, misspelled capture tag,
-unbounded column).
+Verification: `R112_VISUAL_CONTRACTS_OK rules=6 test_files=57`; **13/13 controls pass** — two against this
+repository, a clean synthetic tree, one benign-edit control, and nine mutants that each fire exactly their own rule
+and no other: removed reveal, reveal after the judgement, self-matching scroll instead of an ancestor scroll, private
+fit judgment, safety inside the scroll, misspelled capture tag, unbounded column, removed clip control, and a clip
+caused by an ancestor rather than the node's own viewport.
 
 ## 4. Census and audit
 
