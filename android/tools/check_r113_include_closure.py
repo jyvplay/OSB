@@ -31,6 +31,8 @@ import re
 import sys
 from pathlib import Path
 
+from kotlin_code_only import code_only
+
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 BUILD = 'testing/build.gradle.kts'
 
@@ -53,12 +55,6 @@ FUNCTION = re.compile(r'^(?P<indent>[ \t]*)(?:@\w+\s+)*(?:public |internal |priv
                       r'fun\s+(?:<[^>]*>\s*)?(?:[A-Za-z_][\w.<>?, ]*?\.)?(?P<name>[A-Za-z_]\w*)\s*\(', re.M)
 PACKAGE = re.compile(r'^package\s+([\w.]+)', re.M)
 IDENTIFIER = re.compile(r'\b[A-Z][A-Za-z0-9_]*\b')
-
-
-def code_only(text: str) -> str:
-    text = re.sub(r'/\*.*?\*/', ' ', text, flags=re.S)
-    text = re.sub(r'//[^\n]*', ' ', text)
-    return re.sub(r'"(?:\\.|[^"\\])*"', ' "" ', text)
 
 
 def source_sets(text: str) -> dict[str, dict]:

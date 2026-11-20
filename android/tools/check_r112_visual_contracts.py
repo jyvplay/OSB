@@ -33,6 +33,8 @@ import re
 import sys
 from pathlib import Path
 
+from kotlin_code_only import code_only
+
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 TEST_DIR = 'app/src/androidTest/java/dev/fusion/shell'
 EVIDENCE = f'{TEST_DIR}/NativeVisualEvidence.kt'
@@ -121,13 +123,6 @@ def r47_patterns(text: str) -> list[str]:
         index += 1
     return [pattern[len('**/'):] if pattern.startswith('**/') else pattern
             for pattern in re.findall(r'"([^"]+)"', block[block.find('(', start):index])]
-
-
-def code_only(text: str) -> str:
-    """Comments and string literals mention type names without using them; drop them before looking for references."""
-    text = re.sub(r'/\*.*?\*/', ' ', text, flags=re.S)
-    text = re.sub(r'//[^\n]*', ' ', text)
-    return re.sub(r'"(?:\\.|[^"\\])*"', ' "" ', text)
 
 
 def declarations(text: str) -> set[str]:
