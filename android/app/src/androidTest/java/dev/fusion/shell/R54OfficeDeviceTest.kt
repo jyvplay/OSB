@@ -221,8 +221,8 @@ class R54OfficeDeviceTest {
         // Cancellation cannot make the extra transformation sticky on the next review.
         compose.onNodeWithTag("writer-numbered-option").performScrollTo().assertIsOff().performClick().assertIsOn()
         NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r60-writer-numbered", "writer-structured-confirm",
-            listOf("writer-numbered-option", "writer-structured-cancel"))
-        // Both notices must remain fully visible together after selecting the option.
+            listOf("writer-numbered-option", "writer-structured-cancel", "writer-structured-scroll"))
+        // Each notice must be fully showable inside the bounded details viewport; the pinned safety summary must not scroll.
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-safety")
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-structured-disclosure")
         NativeVisualEvidence.assertFullTextVisible(compose, "writer-numbered-disclosure")
