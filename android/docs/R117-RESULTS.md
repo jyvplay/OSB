@@ -178,8 +178,7 @@ histogram of ulp differences is zero — the tolerance is `1e-12`, not exact equ
 
 ## I. Repair: a candidate inherits no trust
 
-No CI failure occurred on this round's first push. Two *local* failures did, and both were in my own evidence
-machinery, not the product:
+Three failures occurred, and all three were in my own evidence machinery, not the product:
 
 1. The gate's coverage rule demanded ≥20 rows per name; the `A` family had 16 datasets. The gate was right and the
    corpus was thin — eight more mixed-type datasets were added (776 rows total) rather than the threshold lowered.
@@ -187,8 +186,18 @@ machinery, not the product:
    refusal rows and so correctly fired R117-2 as well as R117-3; the other renamed a helper to a name that still
    contained the checked substring. Both were control bugs. The gate caught a badly-written control, which is the
    gate working as intended.
+3. **CI failed on the first push** (`Android native` run 44713175095, `Run all JVM unit tests`):
+   `PercentileFunctionTest > aFamilyCountsTextAsZero FAILED`. The product source compiled and the test executed —
+   the machinery worked. The failing assertion was mine: I asserted `AVERAGE(A1)` returns 5.0 when `A1` holds the
+   text `"5"`. It returns `#DIV/0!`, because text in a *referenced cell* is ignored by `AVERAGE`; the `"5"` → 5
+   coercion applies only to a direct literal argument. The engine was right and the test was wrong. Fixed by
+   asserting the direct-literal pair (`AVERAGEA("5")` = 0, `AVERAGE("5")` = 5) and the referenced-cell refusal
+   (`AVERAGE(A1)` = `#DIV/0!`), which is the distinction the `A` family exists to make. A new meta-control
+   (`test_the_generator_and_the_oracle_are_independent_implementations`) was added with the repair: it mutates the
+   generator's counting rules and requires the render to move, proving the fixture is not a transcript of one
+   implementation.
 
-After both repairs the whole local lane, the census and the CI job were re-run on the repaired commit.
+After each repair the whole local lane, the census and the CI job were re-run on the repaired commit.
 
 ## J. Stopping point and next highest-information test
 

@@ -163,11 +163,14 @@ class PercentileFunctionTest {
     @Test fun aFamilyCountsTextAsZero() {
         val env = envFor("1,\"x\",3")
         assertEquals(4.0 / 3.0, (FormulaEval.evaluateFormulaAsGrid("=AVERAGEA(A1:A3)", env)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
-        // Numeric-looking text is still text: AVERAGEA("5") is 0, where AVERAGE("5") is 5.
+        // Numeric-looking text is still text: AVERAGEA("5") is 0, where AVERAGE("5") is 5. The coercion applies
+        // to a direct literal argument; a referenced cell holding text is ignored by AVERAGE entirely.
         val textEnv = HashMap<String, FormulaEval.CellValue>()
         textEnv["A1"] = FormulaEval.CellValue.Text("5")
         assertEquals(0.0, (FormulaEval.evaluateFormulaAsGrid("=AVERAGEA(A1)", textEnv)[0][0] as FormulaEval.CellValue.Num).value, 0.0)
-        assertEquals(5.0, (FormulaEval.evaluateFormulaAsGrid("=AVERAGE(A1)", textEnv)[0][0] as FormulaEval.CellValue.Num).value, 0.0)
+        assertEquals(0.0, (FormulaEval.evaluateFormulaAsGrid("=AVERAGEA(\"5\")", textEnv)[0][0] as FormulaEval.CellValue.Num).value, 0.0)
+        assertEquals(5.0, (FormulaEval.evaluateFormulaAsGrid("=AVERAGE(\"5\")", textEnv)[0][0] as FormulaEval.CellValue.Num).value, 0.0)
+        assertEquals("#DIV/0!", FormulaEval.evaluateFormulaAsGrid("=AVERAGE(A1)", textEnv)[0][0].displayText())
         // MAXA over only text is 0, not an error and not the text.
         val onlyText = envFor("\"a\",\"b\"")
         assertEquals(0.0, (FormulaEval.evaluateFormulaAsGrid("=MAXA(A1:A2)", onlyText)[0][0] as FormulaEval.CellValue.Num).value, 0.0)

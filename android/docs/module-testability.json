@@ -5815,9 +5815,9 @@
     "format/ooxml/src/test/kotlin/dev/fusion/ooxml/TrigFunctionTest.kt": "f953cc6502f8fafd32da22da95d9f7ec85332ad0a75f2949258642db45c8c91c",
     "format/ooxml/src/test/resources/r116/trig_corpus.tsv": "742c119b9b9fbeca0ff1c7e9d440917516dfa31a0ab3b08c883de73fe5360371",
     "tools/check_r117_percentile.py": "9657ae3c8cd720c3f9a5be69b7f549b2f207f2bcb289f99b98f40b65e9092f65",
-    "tools/test_r117_percentile.py": "9e3f563c0e693577cf425b7e6e754cb1a10036b258b01bb93bb85100c2b55dff",
+    "tools/test_r117_percentile.py": "b033b9e808900b4dc179bfa0153be38398497041c6c9efcde5a8fac1813527a5",
     "tools/gen_r117_percentile_corpus.py": "dd989f877d27dcc855dc75436dc7315b65abda4fb3bf6289ca70a8221af86b3c",
-    "format/ooxml/src/test/kotlin/dev/fusion/ooxml/PercentileFunctionTest.kt": "afd68181c51d0c3f86e9f35a6fcad9fff24f8bb63b9e9f08682774a834b09ca1",
+    "format/ooxml/src/test/kotlin/dev/fusion/ooxml/PercentileFunctionTest.kt": "0caad02db9e988f1ae5ddfe8f245c4eb4fd2c1d2195233b48a0ce3b59e3d462e",
     "format/ooxml/src/test/resources/r117/percentile_corpus.tsv": "84e371eb42481e6a0a1313f272862038a722fb7b91e2a6b84732de96997df6e6"
    }
   },
