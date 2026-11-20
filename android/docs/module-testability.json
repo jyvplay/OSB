@@ -5805,9 +5805,9 @@
     "tools/r110_mutants.py": "d9d7595eade975e7656f35c41c87ea95a72c64c601799bfa9cea06aea2bf0ab5",
     "tools/check_r113_include_closure.py": "3f5454de25ff887582106f65f56839fef393b7ac7c0ecf25b60de228e8b02fee",
     "tools/check_r116_trig.py": "66376a156a92b8066193c7f236ab908ea4edfbd83b6a19ff5b1fb3ea849424d3",
-    "tools/test_r116_trig.py": "fe99c3d20c2886b3f2b5885e62d9df87d0ce78bcf0756862d2270810fa147f87",
+    "tools/test_r116_trig.py": "5546fe05fc654d202e0af28fe7402a9aa5e6b5d7203f5374ff7813710b4baf10",
     "tools/gen_r116_trig_corpus.py": "0bb3955b35d4c2d9a247f3e1b690fe239bc0e257919b89e70aeb94894296c1bb",
-    "format/ooxml/src/test/kotlin/dev/fusion/ooxml/TrigFunctionTest.kt": "a29c792f875d92c1527daea5c4127de900011922072bf2abc12ba345f6e507f3",
+    "format/ooxml/src/test/kotlin/dev/fusion/ooxml/TrigFunctionTest.kt": "c5caccd327f76f832c9cfa5199947f369e64f3b53dd214b67d8d79b4f60bf0ba",
     "format/ooxml/src/test/resources/r116/trig_corpus.tsv": "742c119b9b9fbeca0ff1c7e9d440917516dfa31a0ab3b08c883de73fe5360371"
    }
   },
