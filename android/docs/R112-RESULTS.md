@@ -102,7 +102,26 @@ drifted; it added the gate and its commands to `:app` and `:feature:editor`. `to
 regenerated and re-checks. Unchanged counts: **50/50 modules (100.00%) meet the bounded testability standard**,
 `not_established: 0`, and **0/50 (0.00%)** are specification-accepted Class A — a testable subset is not delivery.
 
-## 6. What was not done, and what would falsify this
+## 6. CI evidence actually observed this turn
+
+Both workflows were green on `6a05d80`, which is the state this document describes:
+
+| Run | Job | Result | Steps that used to fail |
+|---|---|---|---|
+| [44641350727](https://github.com/jyvplay/OSB/actions/runs/44641350727) `Android native` | Traceability, assemble both flavors, JVM tests | **success** | `Check source contracts and generated traceability` (the discovery lane), `Production Kotlin pilot contracts` (`:testing:compileR47Kotlin`), `Run all JVM unit tests`, `Assemble both flavors`, lint — every step green |
+| [44641350589](https://github.com/jyvplay/OSB/actions/runs/44641350589) `R54 office authoring` | office | **success** | `Run real API34 UI and provider checks`, `Require all 37 named Office cases without duplicate or skip` |
+
+The Office run is the first green one after R110's compile repair, and it includes the R112 judge change, so the
+disclosure case that reported a 38 px clip no longer does. Iteration that CI itself caught: the single glob
+`"**/Xlsx*.kt"` was rejected by `tools/test_r47_tools.py` (`Ran 2247 tests … FAILED (errors=1)`), which is why the
+include list is explicit; and the Office run at `71d5346` was cancelled by the next push, so no verdict exists there.
+
+What this does **not** prove: I could not download `r54-office-evidence`, because the artifact redirects to a storage
+host this sandbox cannot reach. So **I have not inspected any frame**, and I have not read the new
+`writer-structured-scroll` measurement. "37/37 named cases" is the workflow's own gate as reported by the run, not my
+visual inspection; the viewport height `V` from §2 is therefore still unmeasured by me.
+
+## 7. What was not done, and what would falsify this
 
 - **No visual inspection.** No emulator, device, Android SDK, Gradle or Excel in this sandbox; no Kotlin compile, so
   the three Kotlin edits are reviewed by hand and by the new static gate only. Their real verifier is the Office job.
