@@ -1219,6 +1219,13 @@ object FormulaEval {
             "PERCENTILE", "QUARTILE", "PERCENTILE.INC", "PERCENTILE.EXC",
             "QUARTILE.INC", "QUARTILE.EXC" -> evalPercentileOrQuartile(name, args, env)
             "AVERAGEA", "MAXA", "MINA", "VARA", "VARPA", "STDEVA", "STDEVPA" -> evalAggregateA(name, args, env)
+            // R119: legacy statistical aliases delegate to the modern kernels they rename.
+            "VAR" -> evalEssential("VAR.S", args, env)
+            "VARP" -> evalEssential("VAR.P", args, env)
+            "STDEVP" -> evalEssential("STDEV.P", args, env)
+            "MODE" -> evalEssential("MODE.SNGL", args, env)
+            "COVARIANCE" -> evalR51ScalarFunction("COVARIANCE.P", args, env)
+            "FORECAST", "FORECAST.LINEAR" -> evalForecast(args, env)
             "CORREL", "SLOPE", "INTERCEPT" -> evalLinearStats(name, args, env)
             "IRR" -> evalIrr(args, env)
             "RATE" -> evalRate(args, env)
@@ -3711,6 +3718,42 @@ object FormulaEval {
             "SLOPE" -> sxy / sxx
             else -> my - (sxy / sxx) * mx
         }
+        return if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
+    }
+
+    /**
+     * R119: `FORECAST(x, known_y, known_x)` (and its rename `FORECAST.LINEAR`): the least-squares
+     * prediction `intercept + slope * x` over the paired numeric values, with the same pairing rules as
+     * `SLOPE`/`INTERCEPT` — mismatched sizes `#N/A`, non-numeric pairs skipped, fewer than two pairs or a
+     * constant `known_x` `#DIV/0!`, error cells propagated.
+     */
+    private fun evalForecast(args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+        val xVal = evalScalarAsNum(evalExpr(args[0], env)); if (xVal is CellValue.Err) return xVal
+        val x = (xVal as CellValue.Num).value
+        val yVec = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+        val xVec = exprTo1DVector(args[2], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+        if (yVec.size != xVec.size) return CellValue.Err(CellErr.Err.NA)
+        val xs = ArrayList<Double>()
+        val ys = ArrayList<Double>()
+        for (i in yVec.indices) {
+            val y = yVec[i]; val xv = xVec[i]
+            if (y is CellValue.Err) return y
+            if (xv is CellValue.Err) return xv
+            if (y is CellValue.Num && xv is CellValue.Num) {
+                ys.add(y.value); xs.add(xv.value)
+            }
+        }
+        if (xs.size < 2) return CellValue.Err(CellErr.Err.DIV0)
+        val mx = xs.sum() / xs.size
+        val my = ys.sum() / ys.size
+        var sxx = 0.0; var sxy = 0.0
+        for (i in xs.indices) {
+            val dx = xs[i] - mx
+            sxx += dx * dx; sxy += dx * (ys[i] - my)
+        }
+        if (sxx == 0.0) return CellValue.Err(CellErr.Err.DIV0)
+        val res = (my - (sxy / sxx) * mx) + (sxy / sxx) * x
         return if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
     }
 
