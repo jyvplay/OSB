@@ -5744,7 +5744,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "f0943df2954f185f24c72be0a53adafa44fc32741ecd108b8e4d497a49fa6fb1"
+      "sha256": "034ef68f6a8d73e0711641d0e10d5233f3b76088ae53b876730e6ae60dd87fd5"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt",

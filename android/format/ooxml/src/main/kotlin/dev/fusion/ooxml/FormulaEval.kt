@@ -33,7 +33,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -1291,6 +1291,8 @@ object FormulaEval {
             "FISHER", "FISHERINV", "STANDARDIZE", "CONFIDENCE.T",
             "HARMEAN", "TRIMMEAN", "DEVSQ", "AVEDEV", "SERIESSUM", "MULTINOMIAL" ->
                 evalR53ScalarFunction(name, args, env)
+            "SIN", "COS", "TAN", "ASIN", "ACOS", "ATAN", "ATAN2", "SINH", "COSH", "TANH",
+            "ASINH", "ACOSH", "ATANH", "PI" -> evalR116TrigFunction(name, args, env)
             else -> {
                 val lexicalClosure = runtimeState.get().richScopes[normalizeVarName(rawName)]
                 if (lexicalClosure is RichBinding.Closure) {
@@ -5043,6 +5045,52 @@ object FormulaEval {
     }
 
     // ---- Tokenizer & Recursive Descent Parser ------------------------------
+
+    /**
+     * R116: circular and hyperbolic trigonometry plus `PI()`.
+     *
+     * These primitives were already used *inside* this engine — `SEC`/`CSC`/`COT` and `SECH`/`CSCH`/`COTH` call
+     * `cos`/`sin`/`tan`/`cosh`/`sinh` directly — but a formula could not reach them: a sheet could compute `SEC(x)`
+     * and not `COS(x)`, or `SQRTPI(x)` and not `PI()`. Domains follow the documented spreadsheet behaviour rather than
+     * the host library's: `ASIN`/`ACOS` outside [-1, 1], `ACOSH` below 1 and `ATANH` at or beyond ±1 are `#NUM!`,
+     * `ATAN2(0, 0)` is `#DIV/0!`, a non-finite result is `#NUM!`, and a wrong argument count is `#VALUE!`.
+     * `ATAN2(x_num, y_num)` keeps the spreadsheet argument order, i.e. atan2(y_num, x_num) mathematically.
+     */
+    private fun evalR116TrigFunction(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (name == "PI") {
+            if (args.isNotEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+            return CellValue.Num(Math.PI)
+        }
+        val arity = if (name == "ATAN2") 2 else 1
+        if (args.size != arity) return CellValue.Err(CellErr.Err.VALUE)
+        for (i in 0 until arity) {
+            val raw = evalExpr(args[i], env)
+            if (raw is CellValue.Err) return raw
+        }
+        fun num(idx: Int): Double? = (evalScalarAsNum(evalExpr(args[idx], env)) as? CellValue.Num)?.value
+        val x = num(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+        val v = when (name) {
+            "SIN" -> kotlin.math.sin(x)
+            "COS" -> kotlin.math.cos(x)
+            "TAN" -> kotlin.math.tan(x)
+            "ASIN" -> { if (x < -1.0 || x > 1.0) return CellValue.Err(CellErr.Err.NUM); kotlin.math.asin(x) }
+            "ACOS" -> { if (x < -1.0 || x > 1.0) return CellValue.Err(CellErr.Err.NUM); kotlin.math.acos(x) }
+            "ATAN" -> kotlin.math.atan(x)
+            "ATAN2" -> {
+                val y = num(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (x == 0.0 && y == 0.0) return CellValue.Err(CellErr.Err.DIV0)
+                kotlin.math.atan2(y, x)
+            }
+            "SINH" -> kotlin.math.sinh(x)
+            "COSH" -> kotlin.math.cosh(x)
+            "TANH" -> kotlin.math.tanh(x)
+            "ASINH" -> kotlin.math.asinh(x)
+            "ACOSH" -> { if (x < 1.0) return CellValue.Err(CellErr.Err.NUM); kotlin.math.acosh(x) }
+            "ATANH" -> { if (x <= -1.0 || x >= 1.0) return CellValue.Err(CellErr.Err.NUM); kotlin.math.atanh(x) }
+            else -> return CellValue.Err(CellErr.Err.NAME)
+        }
+        return if (v.isFinite()) CellValue.Num(normalizeNegZero(v)) else CellValue.Err(CellErr.Err.NUM)
+    }
 
     private class Parser(private val src: String) {
         private var pos = 0
