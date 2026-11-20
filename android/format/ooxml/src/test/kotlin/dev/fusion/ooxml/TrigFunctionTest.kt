@@ -236,6 +236,24 @@ class TrigFunctionTest {
         }
     }
 
+    @Test fun theSheetEvaluatorThatTheEditorUsesReachesThemToo() {
+        // The formulas above go through evaluateFormulaAsGrid; a workbook cell goes through the dependency DAG.
+        val sheet = FormulaEval.evaluateSheet(
+            mapOf(
+                "A1" to FormulaEval.CellInput.NumberLiteral(1.0),
+                "B1" to FormulaEval.CellInput.Formula("=ATAN2(A1, A1)"),
+                "B2" to FormulaEval.CellInput.Formula("=SIN(PI()/2)"),
+                "B3" to FormulaEval.CellInput.Formula("=ACOSH(0.5)"),
+                "B4" to FormulaEval.CellInput.Formula("=B2*2"),
+            ),
+        )
+        assertEquals(Math.PI / 4.0, (sheet.values["B1"] as FormulaEval.CellValue.Num).value, 1e-16)
+        assertEquals(1.0, (sheet.values["B2"] as FormulaEval.CellValue.Num).value, 1e-16)
+        assertEquals("#NUM!", sheet.values["B3"]!!.displayText())
+        assertEquals(2.0, (sheet.values["B4"] as FormulaEval.CellValue.Num).value, 1e-16)
+        assertTrue("B1 must depend on A1", sheet.dependencies["B1"]!!.contains("A1"))
+    }
+
     private companion object {
         const val CORPUS = "/r116/trig_corpus.tsv"
     }

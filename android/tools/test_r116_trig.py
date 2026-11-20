@@ -160,7 +160,7 @@ class Repository(unittest.TestCase):
         self.assertEqual(14, summary['names'])
         self.assertEqual(534, summary['rows'])
         self.assertEqual(10, summary['error_rows'])
-        self.assertEqual(14, summary['tests'])
+        self.assertEqual(15, summary['tests'])
         self.assertEqual(1e-12, summary['tolerance'])
 
     def test_the_corpus_reproduces_from_its_generator(self):
