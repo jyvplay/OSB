@@ -5826,7 +5826,7 @@
     "format/ooxml/src/test/resources/r117/percentile_corpus.tsv": "84e371eb42481e6a0a1313f272862038a722fb7b91e2a6b84732de96997df6e6",
     "tools/check_r119_legacy_stats.py": "9f8b20159b2d442effadd9a6691f8e13c1bc720187b559ffdec2111bd75a7edb",
     "tools/test_r119_legacy_stats.py": "665357e6ac6f8d00b85a18c8d84e9dcd92c187d2a59e35169acb09f161812cb9",
-    "tools/gen_r119_legacy_stats_corpus.py": "c9db0401d6f18e01da0c26fef7aeacf0a6c1a964eae61f5fbbe7e4780fa16d96",
+    "tools/gen_r119_legacy_stats_corpus.py": "2bd91f37bb66fc6e9dc7f5595a33cb59a862680d5b83d1a7e8bbbe9622f1625a",
     "format/ooxml/src/test/kotlin/dev/fusion/ooxml/LegacyStatsFunctionTest.kt": "d93d127daba64babe4f7ce0cf4b2cc140bff2fe9ff1d84e25605bf000a6b831d",
     "format/ooxml/src/test/resources/r119/legacy_stats_corpus.tsv": "d249a1f6d67a2b6f4c738607caa0443437db9118870d75fe29bc2bcbcc107caa"
    }

@@ -187,6 +187,27 @@ assertion in the Kotlin test was re-derived from the documented semantics in Pyt
 (`statistics.variance`/`pvariance`/`pstdev`, `linear_regression`, `covariance·(n−1)/n`) — all agree, so the CI
 run is not a guess.
 
+5. **CI failed on the first push** (`Android native` run 44834405157, `Check source contracts and generated
+   traceability`): 13 Python-lane failures, all in the R119 controls, all with R119-5 (generator fidelity)
+   firing in mutant trees — meaning `render()` differed from the committed corpus under CI's Python 3.12 while
+   agreeing under the local 3.11. Root cause: **CPython 3.12 changed `sum()` for floats from naive left-to-right
+   to Neumaier compensated summation** [1][2][3], so the generator's `sum()` calls produced last-ULP-different
+   values under 3.12. The corpus was byte-identical (verified by `git show HEAD:…corpus` == `render()` under
+   3.11); the generator was not version-stable. Fixed by replacing every float `sum()` in the generator with
+   `naive_sum` (explicit left-to-right loops, matching Kotlin's `sum()` and identical on every Python version)
+   and `** 2` with `x * x`. The corpus is unchanged under 3.11 (where `sum()` is already naive), which is the
+   proof the fix is a no-op locally and a correction in CI. The gate and controls sum only ints and use
+   `statistics` (exact arithmetic), so they needed no change. This is the same class of failure as R117's
+   hand-arithmetic errors — my evidence machinery, not the product — and the reason the byte-exact R119-5 rule
+   exists: it caught a real version instability that a tolerance-based check would have hidden.
+
+[1] https://github.com/Jev-Engineering/cookbook/issues/274 — "CPython 3.12 changed sum() to use Neumaier
+compensated summation for floats."
+[2] https://github.com/buster14a/buster/pull/2111 — "In Python 3.12, built-in float sum() changed from naive
+left-to-right addition to compensated (Neumaier) summation."
+[3] https://github.com/buster14a/buster/issues/2110 — "From Python 3.12, sum() of floats uses compensated
+(Neumaier) summation, while 3.11 and earlier add naively left to right."
+
 ## J. Stopping point and next highest-information test
 
 Stopped at: seven names reachable from both evaluator entry points, 212 independent probes, 17 JUnit cases, 7 gate

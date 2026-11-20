@@ -122,6 +122,19 @@ FORECAST_DATASETS: list[tuple[list[str], list[str], list[str]]] = [
 ]
 
 
+def naive_sum(values) -> float:
+    """Left-to-right float summation, matching Kotlin's `sum()` and the engine's kernels.
+
+    Python 3.12 changed `sum()` for floats to Neumaier (compensated) summation, which differs from naive
+    summation in the last ULP. The corpus must render identically on every Python version, so the generator
+    never calls `sum()` on floats.
+    """
+    total = 0.0
+    for value in values:
+        total += value
+    return total
+
+
 def numeric_values(tokens: list[str]) -> list[float] | str:
     """The aggregate-kernel view of one array: numbers only, text/logicals/empty ignored, errors propagate."""
     out: list[float] = []
@@ -158,18 +171,18 @@ def single_expected(name: str, tokens: list[str]) -> float | str:
     if name == 'VAR':
         if n < 2:
             return '#DIV/0!'
-        mean = sum(values) / n
-        return sum((v - mean) ** 2 for v in values) / (n - 1)
+        mean = naive_sum(values) / n
+        return naive_sum((v - mean) * (v - mean) for v in values) / (n - 1)
     if name == 'VARP':
         if n < 1:
             return '#DIV/0!'
-        mean = sum(values) / n
-        return sum((v - mean) ** 2 for v in values) / n
+        mean = naive_sum(values) / n
+        return naive_sum((v - mean) * (v - mean) for v in values) / n
     if name == 'STDEVP':
         if n < 1:
             return '#DIV/0!'
-        mean = sum(values) / n
-        return math.sqrt(sum((v - mean) ** 2 for v in values) / n)
+        mean = naive_sum(values) / n
+        return math.sqrt(naive_sum((v - mean) * (v - mean) for v in values) / n)
     raise AssertionError(name)
 
 
@@ -199,9 +212,9 @@ def covariance_expected(y_tokens: list[str], x_tokens: list[str]) -> float | str
     n = len(xs)
     if n < 1:
         return '#DIV/0!'
-    mx = sum(xs) / n
-    my = sum(ys) / n
-    return sum((xs[i] - mx) * (ys[i] - my) for i in range(n)) / n
+    mx = naive_sum(xs) / n
+    my = naive_sum(ys) / n
+    return naive_sum((xs[i] - mx) * (ys[i] - my) for i in range(n)) / n
 
 
 def forecast_expected(y_tokens: list[str], x_tokens: list[str], x: float) -> float | str:
@@ -212,12 +225,12 @@ def forecast_expected(y_tokens: list[str], x_tokens: list[str], x: float) -> flo
     n = len(xs)
     if n < 2:
         return '#DIV/0!'
-    mx = sum(xs) / n
-    my = sum(ys) / n
-    sxx = sum((v - mx) ** 2 for v in xs)
+    mx = naive_sum(xs) / n
+    my = naive_sum(ys) / n
+    sxx = naive_sum((v - mx) * (v - mx) for v in xs)
     if sxx == 0.0:
         return '#DIV/0!'
-    sxy = sum((xs[i] - mx) * (ys[i] - my) for i in range(n))
+    sxy = naive_sum((xs[i] - mx) * (ys[i] - my) for i in range(n))
     slope = sxy / sxx
     return (my - slope * mx) + slope * x
 
