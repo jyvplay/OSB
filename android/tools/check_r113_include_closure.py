@@ -47,6 +47,10 @@ RULES = {
 DECLARATION = re.compile(r'^(?P<indent>[ \t]*)(?:@\w+\s+)*(?:public |internal |private |protected )*'
                          r'(?:data |sealed |enum |annotation |abstract |open |value |inline |const )*'
                          r'(?:object|class|interface|typealias|val|var)\s+(?P<name>[A-Z][A-Za-z0-9_]*)', re.M)
+# `fun Map<String, Any?>.str(...)` declares `str`, not `Map`; `fun Helper()` declares `Helper`.
+FUNCTION = re.compile(r'^(?P<indent>[ \t]*)(?:@\w+\s+)*(?:public |internal |private |protected )*'
+                      r'(?:inline |suspend |operator |infix |tailrec |external )*'
+                      r'fun\s+(?:<[^>]*>\s*)?(?:[A-Za-z_][\w.<>?, ]*?\.)?(?P<name>[A-Za-z_]\w*)\s*\(', re.M)
 PACKAGE = re.compile(r'^package\s+([\w.]+)', re.M)
 IDENTIFIER = re.compile(r'\b[A-Z][A-Za-z0-9_]*\b')
 
@@ -67,6 +71,22 @@ def source_sets(text: str) -> dict[str, dict]:
             index += 1
         body = text[match.end():index - 1]
         directories = re.findall(r'kotlin\.srcDir\("([^"]+)"\)', body)
+        if any('$it' in directory for directory in directories):
+            expanded: list[str] = []
+            resolved: set[str] = set()
+            for element in re.findall(r'listOf\(([^)]*)\)\s*\.forEach\s*\{', body):
+                names = re.findall(r'"([^"]+)"', element)
+                if not names:
+                    continue
+                for directory in directories:
+                    if '$it' not in directory:
+                        continue
+                    resolved.add(directory)
+                    expanded.extend(directory.replace('$it', name) for name in names)
+            directories = ([directory for directory in directories if '$it' in directory and directory not in resolved]
+                           + [directory for directory in directories if '$it' not in directory] + expanded)
+        # A template with no enclosing `listOf(...).forEach` cannot be named: the set stays unmodelled and is not
+        # accused of having no directory, because the directory exists and only its name is unknown here.
         patterns: list[str] = []
         for start in [i for i in range(len(body)) if body.startswith('kotlin.include(', i)]:
             cursor, brace = body.find('(', start) + 1, 1
@@ -86,6 +106,11 @@ def declarations(code: str) -> tuple[set[str], set[str]]:
     reference is only suspicious when the file itself does not declare it.
     """
     top, local = set(), set()
+    for match in FUNCTION.finditer(code):
+        name, indent = match.group('name'), match.group('indent')
+        local.add(name)
+        if not indent and name[:1].isupper():
+            top.add(name)
     for match in DECLARATION.finditer(code):
         name, indent = match.group('name'), match.group('indent')
         tail = code[match.end():match.end() + 4].lstrip()
