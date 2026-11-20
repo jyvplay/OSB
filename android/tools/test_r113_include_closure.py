@@ -43,7 +43,8 @@ class RepositoryControls(unittest.TestCase):
         self.assertEqual([], found, '\n'.join(found))
         self.assertEqual(102, summary['sets'])
         self.assertEqual(43, summary['with_include'])
-        self.assertEqual(3, summary['templates'])
+        self.assertEqual(0, summary['templates'])
+        self.assertEqual(43, summary['modelled'])
 
     def test_rules_document_themselves(self):
         self.assertEqual({'R113-1', 'R113-2', 'R113-3', 'R113-4'}, set(gate.RULES))
@@ -90,6 +91,15 @@ class SyntheticControls(unittest.TestCase):
         '}\n'
     )
     ALPHA = 'package x\nval alpha = Beta\n'
+    LOOP_BUILD = (
+        'val r95 by sourceSets.creating\n'
+        'kotlin.sourceSets.named("r95") {\n'
+        '    listOf("loopone", "looptwo").forEach {\n'
+        '        kotlin.srcDir("../$it/src/main/kotlin")\n'
+        '    }\n'
+        '    kotlin.include("**/Alpha.kt")\n'
+        '}\n'
+    )
     BETA = 'package x\nobject Beta\n'
 
     def build(self, folder: Path, alpha: str = ALPHA, beta: str = BETA, build: str | None = None) -> Path:
@@ -133,10 +143,33 @@ class SyntheticControls(unittest.TestCase):
         build = self.BUILD_TEXT.replace('kotlin.include("**/Alpha.kt")', 'kotlin.include("**/Alpha.kt", "**/Alpha.kt")', 1)
         self.assertTrue(any(item.startswith('R113-3') for item in self.judge(build=build)))
 
-    def test_template_set_is_reported_not_guessed(self):
-        _, summary = gate.violations(self.build(Path(tempfile.mkdtemp(prefix='r113-'))))
+    def test_unexpandable_template_is_unmodelled_not_accused(self):
+        build = self.BUILD_TEXT
+        _, summary = gate.violations(self.build(Path(tempfile.mkdtemp(prefix='r113-')), build=build))
         self.assertEqual(1, summary['templates'])
-        self.assertEqual(1, summary['modelled'])
+
+    def test_template_set_is_expanded_not_guessed(self):
+        with tempfile.TemporaryDirectory(prefix='r113-') as folder:
+            root = self.build(Path(folder))
+            (root / BUILD).write_text(self.LOOP_BUILD, encoding='utf-8')
+            for name in ('loopone', 'looptwo'):
+                (root / name / 'src/main/kotlin').mkdir(parents=True, exist_ok=True)
+                (root / name / 'src/main/kotlin/Alpha.kt').write_text(self.ALPHA, encoding='utf-8')
+                (root / name / 'src/main/kotlin/Beta.kt').write_text(self.BETA, encoding='utf-8')
+            found, summary = gate.violations(root)
+            self.assertEqual(0, summary['templates'], 'the loop must be expanded, not reported as unmodelled')
+            self.assertEqual(1, summary['modelled'])
+            self.assertTrue(any(item.startswith('R113-1') for item in found), found)
+
+    def test_capitalised_function_is_provided(self):
+        alpha = 'package x\nval alpha = Helper\n'
+        beta = 'package x\nfun Helper() = 1\n'
+        self.assertTrue(any('Helper' in item for item in self.judge(alpha=alpha, beta=beta)))
+
+    def test_extension_function_declares_its_name_not_its_receiver(self):
+        beta = 'package x\nfun Foo() = 1\nobject Unrelated\n'
+        alpha = 'package x\nval alpha = 1\n'
+        self.assertEqual([], self.judge(alpha=alpha, beta=beta))
 
 
 if __name__ == '__main__':

@@ -21,6 +21,7 @@ EVIDENCE = f'{checker.TEST_DIR}/NativeVisualEvidence.kt'
 EDITOR = checker.EDITOR
 TEST_FILE = f'{checker.TEST_DIR}/SyntheticDialogTest.kt'
 CONTROL_FILE = checker.CONTROL
+NAMES_FILE = checker.NAMES
 BUILD = checker.BUILD_FILE
 ALPHA = f'{checker.OOXML_DIR}/Alpha.kt'
 BETA = f'{checker.OOXML_DIR}/Beta.kt'
@@ -48,7 +49,7 @@ FILES = {
     TEST_FILE: (
         'class SyntheticDialogTest {\n'
         '    fun review() {\n'
-        '        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "cap-review",\n'
+        '        NativeVisualEvidence.captureDialogDisplay(compose, compose.activity, "r58-review",\n'
         '            "writer-structured-confirm", listOf("extra-option"))\n'
         '    }\n'
         '}\n'
@@ -62,6 +63,12 @@ FILES = {
         '}\n'
         'private fun EvidenceFixture() {\n'
         '    Text("long", Modifier.heightIn(max = 32.dp).verticalScroll(rememberScrollState()).testTag("clipped"))\n'
+        '}\n'
+    ),
+    NAMES_FILE: (
+        'internal object NativeCaptureNames {\n'
+        '    private val dialog = Regex("(?:r24c|r58)-[a-z-]{1,40}")\n'
+        '    fun dialog(name: String): Boolean = dialog.matches(name)\n'
         '}\n'
     ),
     BUILD: (
@@ -167,6 +174,19 @@ class SyntheticControls(unittest.TestCase):
         text = FILES[ALPHA].replace('object Alpha { val beta = Beta.make() }', 'object Alpha { val beta = Beta.make(); val gamma = Gamma }')
         self.assertEqual({'R112-7'}, self.rules(self.run_root({ALPHA: text})))
 
+    def test_capture_arity_limit_fires_rule_8(self):
+        tags = ', '.join(f'"t{i}"' for i in range(9))
+        text = FILES[TEST_FILE].replace('listOf("extra-option")', f'listOf({tags})')
+        self.assertIn('R112-8', self.rules(self.run_root({TEST_FILE: text})))
+
+    def test_duplicate_capture_tag_fires_rule_8(self):
+        text = FILES[TEST_FILE].replace('listOf("extra-option")', 'listOf("writer-structured-confirm")')
+        self.assertIn('R112-8', self.rules(self.run_root({TEST_FILE: text})))
+
+    def test_offlist_capture_name_fires_rule_9(self):
+        text = FILES[TEST_FILE].replace('"r58-review"', '"cap-review"')
+        self.assertEqual({'R112-9'}, self.rules(self.run_root({TEST_FILE: text})))
+
     def test_unbounded_details_fires_rule_5(self):
         text = FILES[EDITOR].replace('.heightIn(max = 248.dp)', '')
         self.assertEqual({'R112-5'}, self.rules(self.run_root({EDITOR: text})))
@@ -176,7 +196,8 @@ class RepositoryControls(unittest.TestCase):
     def test_this_repository_satisfies_every_rule(self):
         found = checker.violations(ROOT)
         self.assertEqual([], found, '\n'.join(found))
-        self.assertEqual({'R112-1', 'R112-2', 'R112-3', 'R112-4', 'R112-5', 'R112-6', 'R112-7'}, set(checker.RULES))
+        self.assertEqual({'R112-1', 'R112-2', 'R112-3', 'R112-4', 'R112-5', 'R112-6', 'R112-7', 'R112-8', 'R112-9'},
+                         set(checker.RULES))
 
     def test_rules_document_themselves(self):
         for rule, text in checker.RULES.items():

@@ -18,6 +18,9 @@ layout, so these five contracts are checked statically against the sources that 
   R112-7 probe include closure an ooxml source the r47 probe compiles may not reference a sibling file the probe's
                                include(...) list omits: Gradle compiles that set as one module, so the reference is an
                                unresolved symbol only CI sees, after an 18-minute queue.
+  R112-8 capture arity        a capture call passes at most eight extra tags and repeats none, which is what the
+                               runtime `require` in captureDialogDisplay enforces only after the emulator boots.
+  R112-9 capture name         a capture name matches the allowlist regex in NativeCaptureNames, for the same reason.
 
 Each rule is a source predicate, not a claim about rendering. A passing gate means "the evidence code kept its
 shape"; it is not a visual pass and not a substitute for the device run.
@@ -30,6 +33,8 @@ import re
 import sys
 from pathlib import Path
 
+from kotlin_code_only import code_only
+
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 TEST_DIR = 'app/src/androidTest/java/dev/fusion/shell'
 EVIDENCE = f'{TEST_DIR}/NativeVisualEvidence.kt'
@@ -38,6 +43,7 @@ CONTROL = f'{TEST_DIR}/NativeVisualEvidenceDeviceTest.kt'
 CONTROL_TEST = 'textFitCheckerAcceptsVisibleTextAndRejectsClippedScrollableText'
 OOXML_DIR = 'format/ooxml/src/main/kotlin/dev/fusion/ooxml'
 BUILD_FILE = 'testing/build.gradle.kts'
+NAMES = f'{TEST_DIR}/NativeCaptureNames.kt'
 HELPER = 'fun assertFullTextVisible'
 SAFETY_TAG = 'writer-structured-safety'
 SCROLL_TAG = 'writer-structured-scroll'
@@ -50,6 +56,8 @@ RULES = {
     'R112-5': 'the details column keeps a bounded height',
     'R112-6': 'the deliberate-clip control survives and clips through the node itself, not an ancestor',
     'R112-7': 'the r47 probe include list covers every ooxml sibling its compiled sources reference',
+    'R112-8': 'capture calls stay inside the runtime arity and duplicate limits',
+    'R112-9': 'capture names match the allowlist the device test enforces',
 }
 
 
@@ -70,6 +78,21 @@ def helper_body(text: str) -> str:
         if 0 <= nxt < end:
             end = nxt
     return text[start:end]
+
+
+def captures(text: str) -> list[tuple[str, list[str]]]:
+    """`(name, tags)` for every `captureDialogDisplay(...)` call: the first literal is the capture name."""
+    calls: list[tuple[str, list[str]]] = []
+    for match in re.finditer(r'captureDialogDisplay\s*\(', text):
+        depth, index = 1, match.end()
+        while index < len(text) and depth:
+            char = text[index]
+            depth += 1 if char == '(' else -1 if char == ')' else 0
+            index += 1
+        literals = re.findall(r'"((?:[^"\\]|\\.)*)"', text[match.end():index - 1])
+        if literals:
+            calls.append((literals[0], literals[1:]))
+    return calls
 
 
 def capture_tags(text: str) -> list[str]:
@@ -100,13 +123,6 @@ def r47_patterns(text: str) -> list[str]:
         index += 1
     return [pattern[len('**/'):] if pattern.startswith('**/') else pattern
             for pattern in re.findall(r'"([^"]+)"', block[block.find('(', start):index])]
-
-
-def code_only(text: str) -> str:
-    """Comments and string literals mention type names without using them; drop them before looking for references."""
-    text = re.sub(r'/\*.*?\*/', ' ', text, flags=re.S)
-    text = re.sub(r'//[^\n]*', ' ', text)
-    return re.sub(r'"(?:\\.|[^"\\])*"', ' "" ', text)
 
 
 def declarations(text: str) -> set[str]:
@@ -170,6 +186,22 @@ def violations(root: Path) -> list[str]:
     clipped = next((line for line in text.splitlines() if 'testTag("clipped")' in line), '')
     if 'verticalScroll(' not in clipped:
         found.append('R112-6: the deliberate clip must come from the node\'s own viewport, or the reveal would hide it')
+
+    name_source = root / NAMES
+    allow = ''
+    if name_source.is_file():
+        found_regex = re.search(r'val dialog\s*=\s*Regex\("((?:[^"\\]|\\.)*)"\)', name_source.read_text(encoding='utf-8'))
+        allow = found_regex.group(1) if found_regex else ''
+    for path in tests:
+        if path.name == 'NativeVisualEvidence.kt':
+            continue
+        for name, tags in captures(path.read_text(encoding='utf-8')):
+            if len(tags) > 8:
+                found.append(f'R112-8: {path.name} capture "{name}" passes {len(tags)} extra tags; the runtime limit is 8')
+            if len(set([name] + tags)) != len(tags) + 1:
+                found.append(f'R112-8: {path.name} capture "{name}" repeats a tag')
+            if allow and not re.fullmatch(allow, name):
+                found.append(f'R112-9: {path.name} capture "{name}" is not in the NativeCaptureNames allowlist')
 
     build = root / BUILD_FILE
     package_dir = root / OOXML_DIR
