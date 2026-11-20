@@ -60,10 +60,11 @@ class LegacyStatsFunctionTest {
 
     private fun corpusFormula(row: Row): String {
         val n = row.a.split(',').size
+        val m = if (row.b.isEmpty()) n else row.b.split(',').size
         return when {
-            row.function == "COVARIANCE" -> "=${row.function}(A1:A$n, B1:B$n)"
+            row.function == "COVARIANCE" -> "=${row.function}(A1:A$n, B1:B$m)"
             row.function == "FORECAST" || row.function == "FORECAST.LINEAR" ->
-                "=${row.function}(${row.c}, A1:A$n, B1:B$n)"
+                "=${row.function}(${row.c}, A1:A$n, B1:B$m)"
             else -> "=${row.function}(A1:A$n)"
         }
     }
@@ -104,11 +105,14 @@ class LegacyStatsFunctionTest {
 
     @Test fun everyRegisteredNameIsReachableFromAFormula() {
         val env = envFor("1,2,3,4", "2,4,6,8")
-        for (name in listOf("VAR", "VARP", "STDEVP", "MODE")) {
+        for (name in listOf("VAR", "VARP", "STDEVP")) {
             val formula = "=$name(A1:A4)"
             val value = FormulaEval.evaluateFormulaAsGrid(formula, env)[0][0]
             assertTrue("$formula must evaluate to a number, got ${value.displayText()}", value is FormulaEval.CellValue.Num)
         }
+        // MODE needs a repeat to return a number; on 1,2,3,4 it is #N/A (asserted in modeRefusesWhenNothingRepeats).
+        val mode = FormulaEval.evaluateFormulaAsGrid("=MODE(A1:A4)", envFor("1,1,2,3", ""))[0][0]
+        assertTrue("MODE must evaluate to a number, got ${mode.displayText()}", mode is FormulaEval.CellValue.Num)
         val covariance = FormulaEval.evaluateFormulaAsGrid("=COVARIANCE(A1:A4, B1:B4)", env)[0][0]
         assertTrue("COVARIANCE must evaluate to a number, got ${covariance.displayText()}", covariance is FormulaEval.CellValue.Num)
         for (name in listOf("FORECAST", "FORECAST.LINEAR")) {
@@ -182,7 +186,8 @@ class LegacyStatsFunctionTest {
     }
 
     @Test fun forecastRefusesConstantKnownX() {
-        assertEquals("#DIV/0!", FormulaEval.evaluateFormulaAsGrid("=FORECAST(2, A1:A3, B1:B3)", envFor("5,5,5", "1,2,3"))[0][0].displayText())
+        // known_x constant (B column 5,5,5): the slope is undefined.
+        assertEquals("#DIV/0!", FormulaEval.evaluateFormulaAsGrid("=FORECAST(2, A1:A3, B1:B3)", envFor("1,2,3", "5,5,5"))[0][0].displayText())
         assertEquals("#DIV/0!", FormulaEval.evaluateFormulaAsGrid("=FORECAST(4, A1:A1, B1:B1)", envFor("9", "4"))[0][0].displayText())
     }
 
@@ -214,7 +219,7 @@ class LegacyStatsFunctionTest {
     @Test fun textAndLogicalsAreIgnoredInRanges() {
         // In a range, the aggregate kernels ignore text and logicals: VAR(1,"x",3) is VAR(1,3) = 2.
         assertEquals(2.0, (FormulaEval.evaluateFormulaAsGrid("=VAR(A1:A3)", envFor("1,\"x\",3", ""))[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
-        assertEquals(2.0, (FormulaEval.evaluateFormulaAsGrid("=VAR(A1:A3)", envFor("TRUE,2,3", ""))[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
+        assertEquals(0.5, (FormulaEval.evaluateFormulaAsGrid("=VAR(A1:A3)", envFor("TRUE,2,3", ""))[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
         // MODE likewise sees only numbers.
         assertEquals(2.0, (FormulaEval.evaluateFormulaAsGrid("=MODE(A1:A3)", envFor("2,2,\"x\"", ""))[0][0] as FormulaEval.CellValue.Num).value, 0.0)
     }
