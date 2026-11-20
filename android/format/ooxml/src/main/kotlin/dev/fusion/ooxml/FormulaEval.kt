@@ -1216,7 +1216,9 @@ object FormulaEval {
             "PMT", "PV", "FV" -> evalFinancialTvm(name, args, env)
             "LET" -> evalLet(args, env)
             "SUMPRODUCT" -> evalSumproduct(args, env)
-            "PERCENTILE", "QUARTILE" -> evalPercentileOrQuartile(name, args, env)
+            "PERCENTILE", "QUARTILE", "PERCENTILE.INC", "PERCENTILE.EXC",
+            "QUARTILE.INC", "QUARTILE.EXC" -> evalPercentileOrQuartile(name, args, env)
+            "AVERAGEA", "MAXA", "MINA", "VARA", "VARPA", "STDEVA", "STDEVPA" -> evalAggregateA(name, args, env)
             "CORREL", "SLOPE", "INTERCEPT" -> evalLinearStats(name, args, env)
             "IRR" -> evalIrr(args, env)
             "RATE" -> evalRate(args, env)
@@ -3605,21 +3607,29 @@ object FormulaEval {
         val numsRes = collectNumericAggregate(listOf(args[0]), env)
         val kRaw = evalScalarAsNum(evalExpr(args[1], env))
         if (kRaw is CellValue.Err) return kRaw
-        val k = if (name == "QUARTILE") {
+        // R117: the `*.INC` variants are the legacy inclusive method; `*.EXC` uses Excel's exclusive
+        // rank pos = k*(n+1)-1 and refuses ranks outside 0..n-1 (ECMA-376 18.17.7 / Microsoft docs).
+        val exclusive = name.endsWith(".EXC")
+        val k = if (name.startsWith("QUARTILE")) {
             val q = (kRaw as CellValue.Num).value.toInt()
-            if (q !in 0..4) return CellValue.Err(CellErr.Err.NUM)
+            if (exclusive) { if (q !in 1..3) return CellValue.Err(CellErr.Err.NUM) }
+            else if (q !in 0..4) return CellValue.Err(CellErr.Err.NUM)
             q * 0.25
         } else {
             val p = (kRaw as CellValue.Num).value
-            if (p < 0.0 || p > 1.0) return CellValue.Err(CellErr.Err.NUM)
+            if (exclusive) { if (p <= 0.0 || p >= 1.0) return CellValue.Err(CellErr.Err.NUM) }
+            else if (p < 0.0 || p > 1.0) return CellValue.Err(CellErr.Err.NUM)
             p
         }
         return numsRes.fold(
             onSuccess = { nums ->
                 if (nums.isEmpty()) return CellValue.Err(CellErr.Err.NUM)
                 val sorted = nums.sorted()
-                if (sorted.size == 1) return CellValue.Num(sorted[0])
-                val pos = k * (sorted.size - 1)
+                if (!exclusive && sorted.size == 1) return CellValue.Num(sorted[0])
+                val pos = if (exclusive) k * (sorted.size + 1) - 1.0 else k * (sorted.size - 1)
+                if (exclusive && (pos < 0.0 || pos > sorted.lastIndex.toDouble())) {
+                    return CellValue.Err(CellErr.Err.NUM)
+                }
                 val lo = floor(pos).toInt().coerceIn(0, sorted.lastIndex)
                 val hi = ceil(pos).toInt().coerceIn(0, sorted.lastIndex)
                 val frac = pos - lo
@@ -3627,6 +3637,49 @@ object FormulaEval {
             },
             onFailure = { CellValue.Err((it as CellErrorSignal).err) },
         )
+    }
+
+    /**
+     * R117: the `A`-suffixed aggregate family (AVERAGEA/MAXA/MINA/VARA/VARPA/STDEVA/STDEVPA).
+     * Unlike AVERAGE/MIN/MAX, text — numeric-looking or not — and logicals are *counted*: text as 0,
+     * TRUE as 1, FALSE as 0, empty cells/omitted args skipped, errors propagated (Microsoft docs,
+     * "AVERAGEA function": "Text ... are evaluated as 0"). Population vs sample variance follows the
+     * `P`/no-suffix split of VAR.P/VAR.S.
+     */
+    private fun evalAggregateA(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (args.isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+        val nums = ArrayList<Double>()
+        for ((v, _) in flattenArgValues(args, env)) {
+            when (v) {
+                is CellValue.Err -> return v
+                is CellValue.Num -> nums.add(v.value)
+                is CellValue.Bool -> nums.add(if (v.value) 1.0 else 0.0)
+                is CellValue.Text -> nums.add(0.0)
+                CellValue.Empty -> {}
+            }
+        }
+        val variance = when (name) {
+            "VARA" -> true
+            "VARPA" -> true
+            "STDEVA" -> true
+            "STDEVPA" -> true
+            else -> false
+        }
+        if (variance) {
+            val sample = name == "VARA" || name == "STDEVA"
+            if (nums.isEmpty() || (sample && nums.size < 2)) return CellValue.Err(CellErr.Err.DIV0)
+            val mean = nums.sum() / nums.size
+            val sq = nums.sumOf { (it - mean) * (it - mean) }
+            val res = sq / (if (sample) nums.size - 1 else nums.size)
+            val out = if (name.startsWith("STDEV")) sqrt(res) else res
+            return if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
+        }
+        val out = when (name) {
+            "AVERAGEA" -> if (nums.isEmpty()) return CellValue.Err(CellErr.Err.DIV0) else nums.sum() / nums.size
+            "MAXA" -> nums.maxOrNull() ?: 0.0
+            else -> nums.minOrNull() ?: 0.0
+        }
+        return if (!out.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(out))
     }
 
     private fun evalLinearStats(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
