@@ -136,6 +136,12 @@ class TestDiscipline(Mutant):
         folder = self.tree(test=lambda text: text.replace('#NAME?', 'unknown'))
         self.assertEqual({'R116-6'}, self.rules(folder))
 
+    def test_a_helper_arity_mistake_fires_rule_6(self):
+        # The exact defect CI found: three values passed to a helper that takes a formula and two of them.
+        folder = self.tree(test=lambda text: text.replace(
+            'shown("=ATAN2(A1,A2,A2)", 1.0, 2.0)', 'shown("=ATAN2(A1,A2,A2)", 1.0, 2.0, 3.0)'))
+        self.assertEqual({'R116-6'}, self.rules(folder))
+
     def test_losing_the_corpus_resource_reference_fires_rule_6(self):
         folder = self.tree(test=lambda text: text.replace('/r116/trig_corpus.tsv', '/r116/elsewhere.tsv'))
         self.assertEqual({'R116-6'}, self.rules(folder))

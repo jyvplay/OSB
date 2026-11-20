@@ -39,6 +39,8 @@ DISPATCH_CALL = 'evalR116TrigFunction(name, args, env)'
 DISPATCH_WINDOW = 420
 LITERALS = {'#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A'}
 TOLERANCE_CEILING = 1e-12
+HELPERS = ('cell', 'number', 'shown')
+MAX_HELPER_ARGS = 3
 ACOT_DEFINITION = '"ACOT" -> (Math.PI / 2.0) - kotlin.math.atan(x)'
 RECIPROCALS = ('"SEC", "CSC", "COT", "SECH", "CSCH", "COTH", "ACOT", "ACOTH",')
 
@@ -108,6 +110,30 @@ def registered(source: str) -> list[str]:
         elif branches != 1:
             found.append(f'R116-1: {name} has {branches} implementation branches; expected exactly one')
     return found
+
+
+def helper_arities(text: str, helper: str) -> list[int]:
+    """Top-level argument counts of every `helper(...)` call, so a test cannot pass a Kotlin arity error to CI."""
+    counts: list[int] = []
+    for match in re.finditer(r'\b%s\(' % helper, text):
+        depth, commas, index = 0, 0, match.end() - 1
+        while index < len(text):
+            character = text[index]
+            if character == '"':
+                index += 1
+                while index < len(text) and text[index] != '"':
+                    index += 2 if text[index] == '\\' else 1
+            elif character == '(':
+                depth += 1
+            elif character == ')':
+                depth -= 1
+                if depth == 0:
+                    counts.append(commas + 1 if text[match.end():index].strip() or commas else 0)
+                    break
+            elif character == ',' and depth == 1:
+                commas += 1
+            index += 1
+    return counts
 
 
 def violations(root: Path = DEFAULT_ROOT) -> tuple[list[str], dict]:
@@ -213,6 +239,11 @@ def violations(root: Path = DEFAULT_ROOT) -> tuple[list[str], dict]:
         found.append(f'R116-6: TOL was loosened to {tolerance.group(1)}, above {TOLERANCE_CEILING:g}')
     if test.count('@Test') < 14:
         found.append(f'R116-6: the Kotlin test has {test.count("@Test")} cases; at least 14 are required')
+    for helper in HELPERS:
+        for arity in helper_arities(test, helper):
+            if arity > MAX_HELPER_ARGS:
+                found.append(f'R116-6: {helper}(...) is called with {arity} arguments; the helpers take a formula and '
+                             f'at most two values')
     if '/r116/trig_corpus.tsv' not in test:
         found.append('R116-6: the Kotlin test does not read the R116 corpus resource')
     for literal in ('#NUM!', '#DIV/0!', '#VALUE!', '#NAME?'):

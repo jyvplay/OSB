@@ -170,7 +170,7 @@ class TrigFunctionTest {
         assertEquals("#VALUE!", shown("=SIN()"))
         assertEquals("#VALUE!", shown("=SIN(A1,A2)", 1.0, 2.0))
         assertEquals("#VALUE!", shown("=TAN(A1,A2)", 1.0, 2.0))
-        assertEquals("#VALUE!", shown("=ATAN2(A1,A2,A2)", 1.0, 2.0, 3.0))
+        assertEquals("#VALUE!", shown("=ATAN2(A1,A2,A2)", 1.0, 2.0))
         assertEquals("#VALUE!", shown("=SINH()"))
         assertEquals("#VALUE!", shown("=ATANH()"))
     }
