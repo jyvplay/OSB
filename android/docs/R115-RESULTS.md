@@ -113,3 +113,39 @@ to a shared scanner, and the census re-pin; no product source, no build file, no
   sandbox cannot produce and must not fake.
 * **`Probe died`** on `BrowserProfileDeviceTest.sameOriginCookiesAndDomStorageRemainInTheirOwnProcessProfiles`
   (R113 head) is still unproven as flake — a rerun was refused by GitHub, so there is one clean sample and one failure.
+
+## 6. What CI said about `03dffce`, read carefully
+
+Three things happened on the pushed head, and only one of them is about this round.
+
+**The office job passed its own assertion.** `office` (run 44688085159, 21m41s) completed every step, including
+*Require all 37 named Office cases without duplicate or skip* and *Publish actual device cases*. That is the device
+job this round's gate models, and the local prediction (`expected=37 selected=37`) matched a real emulator: no case
+missing, no duplicate, no skip. The local gate and the device gate agree on the same list.
+
+**Two device-suite steps failed, on a commit that contains no Kotlin.** R115's diff is Python and Markdown only.
+
+| Failing case | Job | What the annotations say |
+|---|---|---|
+| `R24MapAndServiceDeviceTest.providerLinksRequireExplicitDisclosureAndDoNotMasqueradeAsPlayback` | *Actual API34 tabletop media and offline atlas* | FAILED in that job — yet the **same case on the same commit** is published `=PASS` by the office job's notice, and it is one of the 37 expected cases |
+| `R25LocalVideoDeviceTest.actualMp4DecoderProducesOrderedChangingSurfacePixelsAndReleasesOnHome` | *API34 managed-device checks* | `java.lang.AssertionError` at `org.junit.Assert.assertTrue`; the same case is `PASS` in the stored focused run `docs/verification/r25-video-first-result.json` |
+
+Both cases drive real hardware behaviour — the first waits on the **real IME** becoming visible and then hidden
+(`waitUntil(10_000)` on `WindowInsets.Type.ime()`), the second asserts an ordered sequence of decoded surface pixels.
+Neither is decided by a name or a source shape, which is exactly the class of case a static gate cannot cover.
+
+I am **not** labelling either one flaky. The evidence is that the same test passed on the same commit in another job,
+which makes a product regression in this diff implausible and a timing/IME/environment dependency plausible; it does
+not establish the cause. R58's rule stands: a second pass does not excuse the first failure, and a rerun is not a
+diagnosis.
+
+**The R113 open item changed state, without being closed.** `BrowserProfileDeviceTest.sameOriginCookiesAndDomStorage
+RemainInTheirOwnProcessProfiles` — the case that died with `Probe died` on the R113 head — is published `=PASS` by the
+API34 job on this commit. So the failure is not reproducible on this head. The original cause is still unproved; there
+is now one failure and two passes, and no artifact from the failure (see below).
+
+**Why the detail is thin.** This sandbox cannot read the failing jobs' logs or artifacts: `gh run view --log` returns
+`EOF` from `results-receiver.actions.githubusercontent.com`, `gh run download` returns `EOF` from
+`*.blob.core.windows.net`, and `gh run rerun --failed` was refused with *"cannot be rerun; its workflow file may be
+broken"* — the same refusal as R113. What is reported above comes from the check-run **annotations**, which are
+reachable and which publish the named case outcomes. Anything beyond that would be invention.
