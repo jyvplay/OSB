@@ -208,9 +208,11 @@ class PercentileFunctionTest {
         assertEquals(1.25, (FormulaEval.evaluateFormulaAsGrid("=VARPA(A1:A4)", env)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
         assertEquals(sqrt(5.0 / 3.0), (FormulaEval.evaluateFormulaAsGrid("=STDEVA(A1:A4)", env)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
         assertEquals(sqrt(1.25), (FormulaEval.evaluateFormulaAsGrid("=STDEVPA(A1:A4)", env)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
-        // Text and logicals enter the variance too, as 0 and 1.
+        // Text and logicals enter the aggregates too, as 0 and 1: (1 + 0 + 3 + 1) / 4 = 1.25.
         val mixed = envFor("1,\"x\",3,TRUE")
-        assertEquals(2.0, (FormulaEval.evaluateFormulaAsGrid("=AVERAGEA(A1:A4)", mixed)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
+        assertEquals(1.25, (FormulaEval.evaluateFormulaAsGrid("=AVERAGEA(A1:A4)", mixed)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
+        // Population variance of [1, 0, 3, 1] about 1.25: (0.0625 + 1.5625 + 3.0625 + 0.0625) / 4 = 1.1875.
+        assertEquals(1.1875, (FormulaEval.evaluateFormulaAsGrid("=VARPA(A1:A4)", mixed)[0][0] as FormulaEval.CellValue.Num).value, 1e-15)
     }
 
     @Test fun varianceFamilyRefusals() {

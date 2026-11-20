@@ -196,6 +196,11 @@ Three failures occurred, and all three were in my own evidence machinery, not th
    (`test_the_generator_and_the_oracle_are_independent_implementations`) was added with the repair: it mutates the
    generator's counting rules and requires the render to move, proving the fixture is not a transcript of one
    implementation.
+4. **CI failed again on the repaired commit** (run 44713905975): `varianceFamilySplitsSampleFromPopulation FAILED`.
+   Another of my hand-computed assertions: I claimed `AVERAGEA(1,"x",3,TRUE)` is 2.0; it is (1+0+3+1)/4 = 1.25.
+   The engine was right a second time. Before pushing the fix, every remaining numeric assertion in the test was
+   re-derived from the documented semantics in Python (rank positions, refusals, counting rules, sample/population
+   divisors) — all 14 now agree, so the third CI run is not a third guess.
 
 After each repair the whole local lane, the census and the CI job were re-run on the repaired commit.
 
