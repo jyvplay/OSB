@@ -3257,7 +3257,7 @@ object FormulaEval {
                 }
             }
         }
-        "CONFIDENCE.NORM" -> {
+        "CONFIDENCE", "CONFIDENCE.NORM" -> {
             if (args.size != 3) CellValue.Err(CellErr.Err.VALUE)
             else {
                 val av = evalScalarAsNum(evalExpr(args[0], env)); if (av is CellValue.Err) return av
