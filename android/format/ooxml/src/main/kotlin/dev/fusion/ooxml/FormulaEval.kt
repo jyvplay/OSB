@@ -3,13 +3,16 @@ package dev.fusion.ooxml
 
 import kotlin.math.abs
 import kotlin.math.ceil
+import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.floor
 import kotlin.math.ln
 import kotlin.math.log10
+import kotlin.math.PI
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sign
+import kotlin.math.sin
 import kotlin.math.sqrt
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -33,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -5686,6 +5689,154 @@ object FormulaEval {
         return sum
     }
 
+    // R121: `BESSELK` / `BESSELY`. The convergent series is accurate to 1e-12 up to x = 10 (the
+    // corpus range); the DLMF asymptotic takes over beyond it so both stay positive and finite for
+    // arbitrarily large x. Mirrors tools/r121_bessel_proto.py, verified there in pure `math`.
+    private const val BESSEL_GAMMA = 0.577215664901532860606512090082402431
+    private const val BESSEL_XOVER = 10.0
+
+    private fun bessh(m: Int): Double {
+        var s = 0.0
+        for (i in 1..m) s += 1.0 / i
+        return s
+    }
+
+    // K_0(x) = -(ln(x/2)+gamma) I_0(x) + sum_{k>=1} H_k (x/2)^(2k) / (k!)^2
+    private fun bessk0(x: Double): Double {
+        val i0 = besselSeries(x, 0, modified = true)
+        var total = -(ln(x / 2.0) + BESSEL_GAMMA) * i0
+        val x2o4 = (x / 2.0) * (x / 2.0)
+        var h = 1.0
+        var kfact = 1.0
+        var k2fact = 1.0
+        var p = x2o4
+        total += h * p / k2fact // k = 1
+        for (k in 2..400) {
+            h += 1.0 / k
+            kfact *= k
+            k2fact = kfact * kfact
+            p *= x2o4
+            val term = h * p / k2fact
+            total += term
+            if (abs(term) <= abs(total) * 1e-17) break
+        }
+        return total
+    }
+
+    // K_1(x) = -K_0'(x) = (1/x) I_0 + (ln(x/2)+gamma) I_1 - sum_k H_k*k*(x/2)^(2k-1)/(k!)^2
+    private fun bessk1(x: Double): Double {
+        val i0 = besselSeries(x, 0, modified = true)
+        val i1 = besselSeries(x, 1, modified = true)
+        val x2o4 = (x / 2.0) * (x / 2.0)
+        var sp = 0.0
+        var p = x / 2.0 // (x/2)^(2k-1), k = 1
+        var kfact = 1.0
+        var k2fact = 1.0
+        var h = 1.0
+        for (k in 1..400) {
+            if (k > 1) {
+                h += 1.0 / k
+                kfact *= k
+                k2fact = kfact * kfact
+                p *= x2o4
+            }
+            val term = h * k * p / k2fact
+            sp += term
+            if (abs(term) <= abs(sp) * 1e-17) break
+        }
+        return (1.0 / x) * i0 + (ln(x / 2.0) + BESSEL_GAMMA) * i1 - sp
+    }
+
+    // K_n(x): series then forward recurrence K_{i+1} = K_{i-1} + (2i/x) K_i (stable for K).
+    private fun besskSeries(x: Double, n: Int): Double {
+        return when {
+            n == 0 -> bessk0(x)
+            n == 1 -> bessk1(x)
+            else -> {
+                var km2 = bessk0(x)
+                var km1 = bessk1(x)
+                for (i in 1 until n) {
+                    val next = km2 + (2.0 * i / x) * km1
+                    km2 = km1
+                    km1 = next
+                }
+                km1
+            }
+        }
+    }
+
+    // K_n(x), DLMF 10.40 asymptotic; term_k = term_{k-1} * (4n^2-(2k-1)^2) / (8 k x).
+    private fun besskAsymp(x: Double, n: Int): Double {
+        val pref = sqrt(PI / (2.0 * x)) * exp(-x)
+        var total = 1.0 // the k = 0 term
+        var term = 1.0
+        var best = abs(term)
+        for (k in 1..600) {
+            term *= (4.0 * n * n - (2.0 * k - 1.0) * (2.0 * k - 1.0)) / (8.0 * k * x)
+            total += term
+            if (abs(term) > best && k > 3) break
+            best = abs(term)
+        }
+        return pref * total
+    }
+
+    // K_n(x), x > 0, n >= 0.
+    private fun bessk(x: Double, n: Int): Double =
+        if (x <= BESSEL_XOVER) besskSeries(x, n) else besskAsymp(x, n)
+
+    // Y_n(x), DLMF 10.8.1 series, x > 0, n >= 0.
+    private fun bessySeries(x: Double, n: Int): Double {
+        val half = x / 2.0
+        val pi = PI
+        val fact = DoubleArray(n + 1) { 1.0 }
+        for (i in 1..n) fact[i] = fact[i - 1] * i.toDouble()
+        var total = 0.0
+        // finite sum k = 0 .. n-1: -(1/pi) * (n-k-1)!/k! * (x/2)^(2k-n)
+        for (k in 0 until n) {
+            total -= (fact[n - k - 1] / fact[k]) * pow(half, 2.0 * k - n) / pi
+        }
+        // (2/pi) ln(x/2) J_n(x)
+        total += (2.0 / pi) * ln(half) * besselSeries(x, n, modified = false)
+        // infinite sum -(1/pi) sum_k (-1)^k [H_k + H_{n+k} - 2 gamma] / (k! (n+k)!) * (x/2)^(2k+n)
+        var p = pow(half, n.toDouble()) // (x/2)^n
+        var kfact = 1.0
+        var nkfact = fact[n]
+        var sign = 1.0
+        for (k in 0..400) {
+            if (k > 0) {
+                p *= half * half
+                kfact *= k
+                nkfact *= (n + k).toDouble()
+                sign = -sign
+            }
+            val coeff = sign * p / (kfact * nkfact)
+            val bracket = bessh(k) + bessh(n + k) - 2.0 * BESSEL_GAMMA
+            total -= coeff * bracket / pi
+            if (abs(coeff * bracket) <= abs(total) * 1e-16) break
+        }
+        return total
+    }
+
+    // Y_n(x), DLMF 10.17 asymptotic; same coefficients as K.
+    private fun bessyAsymp(x: Double, n: Int): Double {
+        val w = x - n * PI / 2.0 - PI / 4.0
+        val pref = sqrt(2.0 / (PI * x))
+        var se = 1.0 // the k = 0 term
+        var so = 0.0
+        var term = 1.0
+        for (k in 1..600) {
+            term *= (4.0 * n * n - (2.0 * k - 1.0) * (2.0 * k - 1.0)) / (8.0 * k * x)
+            val s = if ((k / 2) % 2 == 0) 1.0 else -1.0
+            if (k % 2 == 0) se += s * term else so += s * term
+            if (abs(term) < 1e-18 && k > 4) break
+        }
+        return pref * (sin(w) * se - cos(w) * so)
+    }
+
+    // Y_n(x), x > 0, n >= 0.
+    private fun bessy(x: Double, n: Int): Double =
+        if (x <= BESSEL_XOVER) bessySeries(x, n) else bessyAsymp(x, n)
+
     private fun evalR52Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>> {
         fun errGrid(e: CellErr.Err = CellErr.Err.VALUE) = listOf(listOf(CellValue.Err(e)))
         return when (name) {
@@ -5911,6 +6062,17 @@ object FormulaEval {
                 val n = (numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)).toInt()
                 if (n < 0) return CellValue.Err(CellErr.Err.NUM)
                 CellValue.Num(normalizeNegZero(besselSeries(x, n, modified = (name == "BESSELI"))))
+            }
+            // R121: `BESSELK` / `BESSELY` — Bessel functions of the second kind, x > 0, n >= 0.
+            "BESSELK", "BESSELY" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val x = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val n = (numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)).toInt()
+                if (x <= 0.0 || n < 0) return CellValue.Err(CellErr.Err.NUM)
+                val res = if (name == "BESSELK") bessk(x, n) else bessy(x, n)
+                if (!res.isFinite()) return CellValue.Err(CellErr.Err.NUM)
+                CellValue.Num(normalizeNegZero(res))
             }
             "ERF.PRECISE" -> {
                 if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
