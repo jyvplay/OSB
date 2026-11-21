@@ -108,10 +108,13 @@ class R120DistInverseTest {
     }
 
     @Test fun tDistTailRules() {
-        // Two-tailed requires x >= 0; one-tailed mirrors about zero.
-        assertTrue(abs(number("=T.DIST(2, 10, 1)") - number("=T.DIST(-2, 10, 1)")) <= TOL)
-        assertTrue(abs(2.0 * number("=T.DIST(2, 10, 1)") - number("=T.DIST(2, 10, 2)")) <= 1e-12)
-        assertTrue(abs((1.0 - number("=T.DIST(2, 10, 1)")) - number("=T.DIST(-2, 10, 1)")) <= TOL)
+        // One-tailed mirrors about zero: rt(-x) = 1 - rt(x), so rt(x) + rt(-x) = 1.
+        // Two-tailed (tails=2) is twice one-tailed for x >= 0.
+        val rt2 = number("=T.DIST(2, 10, 1)")
+        val rtNeg2 = number("=T.DIST(-2, 10, 1)")
+        assertTrue(abs(rt2 + rtNeg2 - 1.0) <= TOL)
+        assertTrue(abs(2.0 * rt2 - number("=T.DIST(2, 10, 2)")) <= 1e-12)
+        assertTrue(abs((1.0 - rt2) - rtNeg2) <= TOL)
     }
 
     @Test fun gammalnPreciseHoldsAtExactPoints() {
