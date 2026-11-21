@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -5837,6 +5837,15 @@ object FormulaEval {
     private fun bessy(x: Double, n: Int): Double =
         if (x <= BESSEL_XOVER) bessySeries(x, n) else bessyAsymp(x, n)
 
+    // R122: `PHI` — standard normal probability density: exp(-x^2/2) / sqrt(2*pi).
+    private fun phi(x: Double): Double = exp(-(x * x) / 2.0) / sqrt(2.0 * PI)
+
+    // R122: `DELTA` — 1 if a == b else 0 (IEEE 754 equality).
+    private fun delta(a: Double, b: Double): Double = if (a == b) 1.0 else 0.0
+
+    // R122: `GESTEP` — 1 if x >= step else 0; step defaults to 0.
+    private fun gestep(x: Double, step: Double = 0.0): Double = if (x >= step) 1.0 else 0.0
+
     private fun evalR52Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>> {
         fun errGrid(e: CellErr.Err = CellErr.Err.VALUE) = listOf(listOf(CellValue.Err(e)))
         return when (name) {
@@ -6087,6 +6096,24 @@ object FormulaEval {
                 val x = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
                 val erfVal = (if (x < 0.0) -1.0 else 1.0) * regGammaLowerP(0.5, x * x)
                 CellValue.Num(normalizeNegZero(1.0 - erfVal))
+            }
+            // R122: `PHI` / `DELTA` / `GESTEP` — standard normal PDF and engineering comparison functions.
+            "PHI", "DELTA", "GESTEP" -> {
+                if (name == "PHI" && args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+                if (name == "DELTA" && args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                if (name == "GESTEP" && args.size !in 1..2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val res = when (name) {
+                    "PHI" -> phi(numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE))
+                    "DELTA" -> delta(
+                        numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE),
+                        numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+                    "GESTEP" -> gestep(
+                        numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE),
+                        if (args.size == 2) (numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)) else 0.0)
+                    else -> return CellValue.Err(CellErr.Err.NAME)
+                }
+                CellValue.Num(normalizeNegZero(res))
             }
             "TBILLEQ", "TBILLPRICE", "TBILLYIELD" -> {
                 if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)

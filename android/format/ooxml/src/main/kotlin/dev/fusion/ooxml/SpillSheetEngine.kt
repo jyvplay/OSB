@@ -70,7 +70,7 @@ object SpillSheetEngine {
             "FORECAST.LINEAR",
             "T.DIST", "T.DIST.2T", "T.DIST.RT", "T.INV", "T.INV.2T",
             "CHISQ.INV", "CHISQ.INV.RT", "F.DIST", "F.INV", "F.INV.RT",
-            "BESSELK", "BESSELY", "BETA.INV", "GAMMA.INV", "GAMMALN.PRECISE",
+            "BESSELK", "BESSELY", "PHI", "DELTA", "GESTEP", "BETA.INV", "GAMMA.INV", "GAMMALN.PRECISE",
             "BITAND", "BITOR", "BITXOR", "BITLSHIFT", "BITRSHIFT",
             "EXPAND", "TRIMRANGE", "GROUPBY", "PIVOTBY",
         )) {
