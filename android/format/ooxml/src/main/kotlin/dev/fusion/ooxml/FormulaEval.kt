@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -5846,6 +5846,132 @@ object FormulaEval {
     // R122: `GESTEP` — 1 if x >= step else 0; step defaults to 0.
     private fun gestep(x: Double, step: Double = 0.0): Double = if (x >= step) 1.0 else 0.0
 
+    // R123: Statistical test functions.
+
+    // CHISQ.TEST(actual, expected) — chi-square test of independence.
+    // χ² = Σ((a−e)²/e), df = (rows−1)(cols−1), p = CHISQ.DIST.RT(χ², df).
+    private fun chisqTest(actual: List<List<Double>>, expected: List<List<Double>>): Double {
+        val rows = actual.size
+        val cols = actual[0].size
+        var chi2 = 0.0
+        for (i in actual.indices) {
+            for (j in actual[i].indices) {
+                val e = expected[i][j]
+                if (e <= 0.0) return Double.NaN
+                val d = actual[i][j] - e
+                chi2 += d * d / e
+            }
+        }
+        val df = (rows - 1) * (cols - 1)
+        return 1.0 - regGammaLowerP(df / 2.0, chi2 / 2.0)
+    }
+
+    // F.TEST(array1, array2) — two-sample F test for equal variances.
+    // F = larger_variance / smaller_variance, p = 2 * F.DIST.RT(F, n1−1, n2−1).
+    private fun fTest(xs: List<Double>, ys: List<Double>): Double {
+        val nx = xs.size
+        val ny = ys.size
+        if (nx < 2 || ny < 2) return Double.NaN
+        val mx = xs.average()
+        val my = ys.average()
+        var vx = 0.0; var vy = 0.0
+        for (x in xs) vx += (x - mx) * (x - mx)
+        for (y in ys) vy += (y - my) * (y - my)
+        vx /= (nx - 1); vy /= (ny - 1)
+        if (vx == 0.0 || vy == 0.0) return Double.NaN
+        val (largerDf, smallerDf, largerVar, smallerVar) =
+            if (vx >= vy) Pair(Pair(nx - 1, ny - 1), Pair(vx, vy)) else Pair(Pair(ny - 1, nx - 1), Pair(vy, vx))
+        val f = largerVar / smallerVar
+        // F.DIST.RT(f, d1, d2) = 1 − incompleteBeta(d1/2, d2/2, d1*f/(d1*f + d2))
+        val u = (largerDf * f) / (largerDf * f + smallerDf)
+        val ib = incompleteBetaContinuedFraction(largerDf / 2.0, smallerDf / 2.0, u)
+        val rt = 1.0 - ib
+        return (2.0 * rt).coerceAtMost(1.0)
+    }
+
+    // Z.TEST(array, x, [sigma]) — one-sample Z test.
+    // z = (x̄ − μ) / (σ/√n), p = NORM.S.DIST(−z, TRUE).
+    private fun zTest(xs: List<Double>, mu: Double, sigma: Double?): Double {
+        val n = xs.size
+        if (n < 1) return Double.NaN
+        val mean = xs.average()
+        val s = if (sigma != null) sigma else {
+            var ss = 0.0
+            for (x in xs) ss += (x - mean) * (x - mean)
+            sqrt(ss / n) // population standard deviation
+        }
+        if (s == 0.0) return Double.NaN
+        val z = (mean - mu) / (s / sqrt(n.toDouble()))
+        // p = P(Z > z) = 1 − NORM.S.DIST(z, TRUE) = NORM.S.DIST(−z, TRUE)
+        return 0.5 * (1.0 + erfApprox(-z / sqrt(2.0)))
+    }
+
+    // T.TEST(array1, array2, tails, type) — Student's t test.
+    // type = 1 paired, 2 two-sample equal variance, 3 two-sample unequal variance.
+    private fun tTest(xs: List<Double>, ys: List<Double>, tails: Double, type: Double): Double {
+        val nx = xs.size
+        val ny = ys.size
+        when {
+            tails != 1.0 && tails != 2.0 -> return Double.NaN
+            type != 1.0 && type != 2.0 && type != 3.0 -> return Double.NaN
+        }
+        val t: Double
+        val df: Double
+        if (type == 1.0) {
+            // Paired
+            if (nx != ny) return Double.NaN
+            var sd = 0.0
+            for (i in xs.indices) sd += (xs[i] - ys[i])
+            val md = sd / nx
+            var ss = 0.0
+            for (i in xs.indices) ss += (xs[i] - ys[i] - md) * (xs[i] - ys[i] - md)
+            val sdDiff = sqrt(ss / (nx - 1))
+            if (sdDiff == 0.0) return Double.NaN
+            t = md / (sdDiff / sqrt(nx.toDouble()))
+            df = nx - 1
+        } else {
+            val mx = xs.average(); val my = ys.average()
+            var vx = 0.0; var vy = 0.0
+            for (x in xs) vx += (x - mx) * (x - mx)
+            for (y in ys) vy += (y - my) * (y - my)
+            vx /= (nx - 1); vy /= (ny - 1)
+            if (type == 2.0) {
+                // Equal variance (pooled)
+                val sp2 = ((nx - 1) * vx + (ny - 1) * vy) / (nx + ny - 2)
+                if (sp2 == 0.0) return Double.NaN
+                t = (mx - my) / sqrt(sp2 * (1.0 / nx + 1.0 / ny))
+                df = nx + ny - 2
+            } else {
+                // Unequal variance (Welch)
+                if (vx == 0.0 || vy == 0.0) return Double.NaN
+                val num = vx / nx + vy / ny
+                t = (mx - my) / sqrt(num)
+                df = num * num / ((vx / nx) * (vx / nx) / (nx - 1) + (vy / ny) * (vy / ny) / (ny - 1))
+            }
+        }
+        if (t.isNaN() || df <= 0.0) return Double.NaN
+        val absT = abs(t)
+        // p = TDIST.2T(absT, df) for tails=2, TDIST.RT(absT, df) for tails=1
+        // Use the t-distribution tail via incomplete beta
+        // T.DIST.RT(t, df) = 0.5 * incompleteBeta(df/2, 0.5, df/(df+t²))
+        val ib = incompleteBetaContinuedFraction(df / 2.0, 0.5, df / (df + absT * absT))
+        val rt = 0.5 * ib
+        return if (tails == 2.0) (2.0 * rt).coerceAtMost(1.0) else rt
+    }
+
+    // SKEW.P(number1, ...) — population skewness.
+    private fun skewP(nums: List<Double>): Double {
+        val n = nums.size
+        if (n < 3) return Double.NaN
+        val mean = nums.average()
+        var ss = 0.0
+        for (x in nums) ss += (x - mean) * (x - mean)
+        val sigma = sqrt(ss / n) // population SD
+        if (sigma == 0.0) return Double.NaN
+        val m3 = nums.sumOf { ((it - mean) / sigma).pow(3.0) }
+        return (n.toDouble() / ((n - 1).toDouble() * (n - 2).toDouble())) * m3
+    }
+
     private fun evalR52Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>> {
         fun errGrid(e: CellErr.Err = CellErr.Err.VALUE) = listOf(listOf(CellValue.Err(e)))
         return when (name) {
@@ -6114,6 +6240,95 @@ object FormulaEval {
                     else -> return CellValue.Err(CellErr.Err.NAME)
                 }
                 CellValue.Num(normalizeNegZero(res))
+            }
+            // R123: `CHISQ.TEST` / `F.TEST` / `Z.TEST` / `T.TEST` / `SKEW.P` — statistical test functions.
+            "CHISQ.TEST", "F.TEST", "Z.TEST", "T.TEST", "SKEW.P" -> {
+                if (name == "CHISQ.TEST") {
+                    if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(2)?.let { return it }
+                    val gA = exprTo2DGrid(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val gB = exprTo2DGrid(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    if (gA.size != gB.size || gA.isEmpty()) return CellValue.Err(CellErr.Err.NUM)
+                    if (gA.any { row -> row.size != gB[gA.indexOf(row)].size }) return CellValue.Err(CellErr.Err.NUM)
+                    val actual = gA.map { row ->
+                        row.map { c -> if (c !is CellValue.Num) return CellValue.Err(CellErr.Err.NUM) else c.value }
+                    }
+                    val expected = gB.map { row ->
+                        row.map { c -> if (c !is CellValue.Num) return CellValue.Err(CellErr.Err.NUM) else c.value }
+                    }
+                    val p = chisqTest(actual, expected)
+                    if (p.isNaN() || !p.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(p))
+                } else if (name == "F.TEST") {
+                    if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(2)?.let { return it }
+                    val vx = exprTo1DVector(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val vy = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val xs = ArrayList<Double>(); val ys = ArrayList<Double>()
+                    for (i in vx.indices) {
+                        if (vx[i] is CellValue.Err) return vx[i]
+                        if (vy[i] is CellValue.Err) return vy[i]
+                        if (vx[i] is CellValue.Num && vy[i] is CellValue.Num) {
+                            xs.add((vx[i] as CellValue.Num).value)
+                            ys.add((vy[i] as CellValue.Num).value)
+                        }
+                    }
+                    val p = fTest(xs, ys)
+                    if (p.isNaN() || !p.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(p))
+                } else if (name == "Z.TEST") {
+                    if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(3)?.let { return it }
+                    val vx = exprTo1DVector(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val xv = evalScalarAsNum(evalExpr(args[1], env)); if (xv is CellValue.Err) return xv
+                    val x = (xv as CellValue.Num).value
+                    val sigma = if (args.size == 3) {
+                        val sv = evalScalarAsNum(evalExpr(args[2], env)); if (sv is CellValue.Err) return sv
+                        val s = (sv as CellValue.Num).value
+                        if (s <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                        s
+                    } else null
+                    val xs = ArrayList<Double>()
+                    for (i in vx.indices) {
+                        if (vx[i] is CellValue.Err) return vx[i]
+                        if (vx[i] is CellValue.Num) xs.add((vx[i] as CellValue.Num).value)
+                    }
+                    val p = zTest(xs, x, sigma)
+                    if (p.isNaN() || !p.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(p))
+                } else if (name == "T.TEST") {
+                    if (args.size != 4) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(4)?.let { return it }
+                    val vx = exprTo1DVector(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val vy = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val tv = evalScalarAsNum(evalExpr(args[2], env)); if (tv is CellValue.Err) return tv
+                    val typev = evalScalarAsNum(evalExpr(args[3], env)); if (typev is CellValue.Err) return typev
+                    val tails = (tv as CellValue.Num).value
+                    val type = (typev as CellValue.Num).value
+                    val xs = ArrayList<Double>(); val ys = ArrayList<Double>()
+                    for (i in vx.indices) {
+                        if (vx[i] is CellValue.Err) return vx[i]
+                        if (vy[i] is CellValue.Err) return vy[i]
+                        if (vx[i] is CellValue.Num && vy[i] is CellValue.Num) {
+                            xs.add((vx[i] as CellValue.Num).value)
+                            ys.add((vy[i] as CellValue.Num).value)
+                        }
+                    }
+                    val p = tTest(xs, ys, tails, type)
+                    if (p.isNaN() || !p.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(p))
+                } else {
+                    // SKEW.P
+                    if (args.size < 1) return CellValue.Err(CellErr.Err.VALUE)
+                    collectNumericAggregate(args, env).fold(
+                        onSuccess = { nums ->
+                            val p = skewP(nums)
+                            if (p.isNaN() || !p.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                            else CellValue.Num(normalizeNegZero(p))
+                        },
+                        onFailure = { CellValue.Err((it as CellErrorSignal).err) },
+                    )
+                }
             }
             "TBILLEQ", "TBILLPRICE", "TBILLYIELD" -> {
                 if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
