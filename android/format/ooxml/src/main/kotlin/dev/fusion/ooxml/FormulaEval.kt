@@ -5972,6 +5972,103 @@ object FormulaEval {
         return (n.toDouble() / ((n - 1).toDouble() * (n - 2).toDouble())) * m3
     }
 
+    // R124: Distribution functions.
+
+    // NORM.S.DIST(x, cumulative) — standard normal distribution.
+    // cumulative=true: 0.5 * (1 + erf(x / sqrt(2))); cumulative=false: phi(x).
+    private fun normSDist(x: Double, cumulative: Boolean): Double =
+        if (cumulative) 0.5 * (1.0 + erfApprox(x / sqrt(2.0))) else phi(x)
+
+    // NORM.S.INV(probability) — inverse standard normal CDF (Acklam's algorithm).
+    private fun normSInv(p: Double): Double {
+        if (p <= 0.0 || p >= 1.0) return Double.NaN
+        val a1 = -39.69683028665376; val a2 = 220.9460984245205; val a3 = -275.9285104469687
+        val a4 = 138.3577518672690; val a5 = -30.66479806614716; val a6 = 2.506628277459239
+        val b1 = -54.47609879822406; val b2 = 161.5858368580409; val b3 = -155.6989798598866
+        val b4 = 66.80131188771972; val b5 = -13.28068155288572
+        val c1 = -7.784894002430293e-03; val c2 = -3.223964580411365e-01
+        val c3 = -2.400758277161838; val c4 = -2.549732539343734; val c5 = 4.374664141464968
+        val c6 = 2.938163982698783
+        val d1 = 7.784695709041462e-03; val d2 = 3.224671290700398e-01
+        val d3 = 2.445134137142996; val d4 = 3.754408661907416
+        val plow = 0.02425; val phigh = 1.0 - plow
+        return when {
+            p < plow -> {
+                val q = sqrt(-2.0 * ln(p))
+                val num = ((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6
+                val den = ((((d1 * q + d2) * q + d3) * q + d4) * q + 1.0)
+                num / den
+            }
+            p <= phigh -> {
+                val q = p - 0.5; val r = q * q
+                val num = ((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6
+                val den = ((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1.0
+                num * q / den
+            }
+            else -> {
+                val q = sqrt(-2.0 * ln(1.0 - p))
+                val num = ((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6
+                val den = ((((d1 * q + d2) * q + d3) * q + d4) * q + 1.0)
+                -num / den
+            }
+        }
+    }
+
+    // BINOM.DIST(number_s, trials, probability_s, cumulative) — binomial distribution.
+    // PMF: C(n,k) * p^k * (1-p)^(n-k); CDF: direct sum of PMFs via lnGammaLanczos.
+    private fun binomDist(k: Double, n: Double, p: Double, cumulative: Boolean): Double {
+        if (k < 0.0 || k > n || p < 0.0 || p > 1.0) return Double.NaN
+        val ki = k.toInt(); val ni = n.toInt()
+        fun logFactorial(m: Int): Double = if (m <= 1) 0.0 else lnGammaLanczos(m.toDouble() + 1.0)
+        if (!cumulative) {
+            // PMF: exp(ln(n!) - ln(k!) - ln((n-k)!) + k*ln(p) + (n-k)*ln(1-p))
+            var logP = logFactorial(ni) - logFactorial(ki) - logFactorial(ni - ki)
+            if (p > 0.0) {
+                if (ki > 0) logP += ki * ln(p)
+            } else if (ki > 0) return Double.NaN
+            if (1.0 - p > 0.0) {
+                if (ni - ki > 0) logP += (ni - ki) * ln(1.0 - p)
+            } else if (ni - ki > 0) return Double.NaN
+            return exp(logP)
+        }
+        // CDF: direct sum of PMFs (reliable for test-sized n)
+        var total = 0.0
+        for (i in 0..ki) total += binomDist(i.toDouble(), n.toDouble(), p, false)
+        return if (total > 1.0) 1.0 else total
+    }
+
+    // POISSON.DIST(x, mean, cumulative) — Poisson distribution.
+    // PMF: exp(-mean) * mean^x / x!; CDF: 1 - regGammaLowerP(floor(x)+1, mean) for x >= 0.
+    private fun poissonDist(x: Double, mean: Double, cumulative: Boolean): Double {
+        if (x < 0.0 || mean < 0.0) return Double.NaN
+        val xi = x.toInt()
+        if (!cumulative) {
+            if (mean == 0.0) return if (xi == 0) 1.0 else 0.0
+            var logP = -mean
+            if (xi > 0 && mean > 0.0) logP += xi * ln(mean)
+            for (i in 2..xi) logP -= ln(i.toDouble())
+            return exp(logP)
+        }
+        if (mean == 0.0) return 1.0
+        return 1.0 - regGammaLowerP(xi + 1.0, mean)
+    }
+
+    // EXPON.DIST(x, lambda, cumulative) — exponential distribution.
+    // PDF: lambda * exp(-lambda * x); CDF: 1 - exp(-lambda * x).
+    private fun exponDist(x: Double, lambda: Double, cumulative: Boolean): Double {
+        if (x < 0.0 || lambda <= 0.0) return Double.NaN
+        return if (cumulative) 1.0 - exp(-lambda * x) else lambda * exp(-lambda * x)
+    }
+
+    // CONFIDENCE.NORM(alpha, standard_dev, size) — confidence interval for a population mean.
+    // NORM.S.INV(1 - alpha/2) * standard_dev / sqrt(size).
+    private fun confidenceNorm(alpha: Double, stdDev: Double, size: Double): Double {
+        if (alpha <= 0.0 || alpha >= 1.0) return Double.NaN
+        if (stdDev <= 0.0) return Double.NaN
+        if (size < 1.0) return Double.NaN
+        return normSInv(1.0 - alpha / 2.0) * stdDev / sqrt(size)
+    }
+
     private fun evalR52Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>> {
         fun errGrid(e: CellErr.Err = CellErr.Err.VALUE) = listOf(listOf(CellValue.Err(e)))
         return when (name) {
@@ -6330,7 +6427,58 @@ object FormulaEval {
                     )
                 }
             }
-            "TBILLEQ", "TBILLPRICE", "TBILLYIELD" -> {
+            // R124: `NORM.S.DIST` / `NORM.S.INV` / `BINOM.DIST` / `POISSON.DIST` / `EXPON.DIST` / `CONFIDENCE.NORM`.
+            "NORM.S.DIST", "NORM.S.INV", "BINOM.DIST", "POISSON.DIST", "EXPON.DIST", "CONFIDENCE.NORM" -> {
+                if (name == "NORM.S.DIST") {
+                    if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(2)?.let { return it }
+                    val xv = evalScalarAsNum(evalExpr(args[0], env)); if (xv is CellValue.Err) return xv
+                    val x = (xv as CellValue.Num).value
+                    val cv = evalScalarAsNum(evalExpr(args[1], env)); if (cv is CellValue.Err) return cv
+                    val cumulative = cv.value != 0.0
+                    CellValue.Num(normalizeNegZero(normSDist(x, cumulative)))
+                } else if (name == "NORM.S.INV") {
+                    if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(1)?.let { return it }
+                    val pv = evalScalarAsNum(evalExpr(args[0], env)); if (pv is CellValue.Err) return pv
+                    val p = (pv as CellValue.Num).value
+                    CellValue.Num(normalizeNegZero(normSInv(p)))
+                } else if (name == "BINOM.DIST") {
+                    if (args.size != 4) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(4)?.let { return it }
+                    val kv = evalScalarAsNum(evalExpr(args[0], env)); if (kv is CellValue.Err) return kv
+                    val nv = evalScalarAsNum(evalExpr(args[1], env)); if (nv is CellValue.Err) return nv
+                    val pv = evalScalarAsNum(evalExpr(args[2], env)); if (pv is CellValue.Err) return pv
+                    val cv = evalScalarAsNum(evalExpr(args[3], env)); if (cv is CellValue.Err) return cv
+                    val cumulative = cv.value != 0.0
+                    CellValue.Num(normalizeNegZero(binomDist(kv.value, nv.value, pv.value, cumulative)))
+                } else if (name == "POISSON.DIST") {
+                    if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(3)?.let { return it }
+                    val xv = evalScalarAsNum(evalExpr(args[0], env)); if (xv is CellValue.Err) return xv
+                    val mv = evalScalarAsNum(evalExpr(args[1], env)); if (mv is CellValue.Err) return mv
+                    val cv = evalScalarAsNum(evalExpr(args[2], env)); if (cv is CellValue.Err) return cv
+                    val cumulative = cv.value != 0.0
+                    CellValue.Num(normalizeNegZero(poissonDist(xv.value, mv.value, cumulative)))
+                } else if (name == "EXPON.DIST") {
+                    if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(3)?.let { return it }
+                    val xv = evalScalarAsNum(evalExpr(args[0], env)); if (xv is CellValue.Err) return xv
+                    val lv = evalScalarAsNum(evalExpr(args[1], env)); if (lv is CellValue.Err) return lv
+                    val cv = evalScalarAsNum(evalExpr(args[2], env)); if (cv is CellValue.Err) return cv
+                    val cumulative = cv.value != 0.0
+                    CellValue.Num(normalizeNegZero(exponDist(xv.value, lv.value, cumulative)))
+                } else {
+                    // CONFIDENCE.NORM
+                    if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(3)?.let { return it }
+                    val av = evalScalarAsNum(evalExpr(args[0], env)); if (av is CellValue.Err) return av
+                    val sv = evalScalarAsNum(evalExpr(args[1], env)); if (sv is CellValue.Err) return sv
+                    val nv = evalScalarAsNum(evalExpr(args[2], env)); if (nv is CellValue.Err) return nv
+                    CellValue.Num(normalizeNegZero(confidenceNorm(av.value, sv.value, nv.value)))
+                }
+            }
+             "TBILLEQ", "TBILLPRICE", "TBILLYIELD" -> {
                 if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
                 errIfAny(3)?.let { return it }
                 val settle = (numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)).toLong()
