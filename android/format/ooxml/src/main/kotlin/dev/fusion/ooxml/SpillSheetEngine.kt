@@ -67,6 +67,7 @@ object SpillSheetEngine {
             "VSTACK", "HSTACK", "TAKE", "DROP", "TOCOL", "TOROW", "CHOOSECOLS", "CHOOSEROWS", "WRAPROWS", "WRAPCOLS",
             "MUNIT", "PERCENTRANK.INC", "PERCENTRANK.EXC", "RANK.EQ", "RANK.AVG",
             "PERCENTILE.INC", "PERCENTILE.EXC", "QUARTILE.INC", "QUARTILE.EXC",
+            "FORECAST.LINEAR",
             "BITAND", "BITOR", "BITXOR", "BITLSHIFT", "BITRSHIFT",
             "EXPAND", "TRIMRANGE", "GROUPBY", "PIVOTBY",
         )) {
