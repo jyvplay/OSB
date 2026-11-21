@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -6069,6 +6069,106 @@ object FormulaEval {
         return normSInv(1.0 - alpha / 2.0) * stdDev / sqrt(size)
     }
 
+    // R125: Financial functions for irregular cash flows and accrued interest.
+
+    // Day count basis: 0=US(NASD)30/360, 1=Actual/Actual, 2=Actual/360, 3=Actual/365, 4=European30/360
+    private fun daysBetween(d1: LocalDate, d2: LocalDate, basis: Int): Double {
+        return when (basis) {
+            0, 4 -> {
+                // 30/360 (US or European)
+                val y1 = d1.year; val m1 = d1.monthValue; val d1d = d1.dayOfMonth
+                val y2 = d2.year; val m2 = d2.monthValue; val d2d = d2.dayOfMonth
+                val dd1 = if (basis == 0 && d1d == 31) 30 else d1d
+                val dd2 = if (basis == 0 && d2d == 31 && dd1 == 30) 30 else d2d
+                val ee1 = if (basis == 4 && d1d == 31) 30 else d1d
+                val ee2 = if (basis == 4 && d2d == 31) 30 else d2d
+                (360 * (y2 - y1) + 30 * (m2 - m1) + (ee2 - ee1)).toDouble()
+            }
+            1 -> ChronoUnit.DAYS.between(d1, d2).toDouble() / 365.25 // approx actual/actual
+            2 -> ChronoUnit.DAYS.between(d1, d2).toDouble() / 360.0
+            3 -> ChronoUnit.DAYS.between(d1, d2).toDouble() / 365.0
+            else -> ChronoUnit.DAYS.between(d1, d2).toDouble() / 365.0
+        }
+    }
+
+    // XNPV(rate, values, dates) — net present value for irregular cash flows.
+    // XNPV = sum(values[i] / (1 + rate)^((dates[i] - dates[0]) / 365))
+    private fun xnpv(rate: Double, values: List<Double>, dates: List<LocalDate>): Double {
+        if (values.isEmpty() || dates.isEmpty() || values.size != dates.size) return Double.NaN
+        if (rate <= -1.0) return Double.NaN
+        val d0 = dates[0]
+        var total = 0.0
+        for (i in values.indices) {
+            val days = ChronoUnit.DAYS.between(d0, dates[i]).toDouble()
+            total += values[i] / pow(1.0 + rate, days / 365.0)
+        }
+        return total
+    }
+
+    // XIRR(values, dates, [guess]) — internal rate of return for irregular cash flows.
+    // Finds rate such that XNPV(rate, values, dates) == 0 using Newton-Raphson with bisection fallback.
+    private fun xirr(values: List<Double>, dates: List<LocalDate>, guess: Double): Double {
+        if (values.isEmpty() || dates.isEmpty() || values.size != dates.size || values.size < 2) return Double.NaN
+        // Must have at least one positive and one negative value
+        var hasPos = false; var hasNeg = false
+        for (v in values) { if (v > 0) hasPos = true; if (v < 0) hasNeg = true }
+        if (!hasPos || !hasNeg) return Double.NaN
+
+        var rate = if (guess > -1.0) guess else 0.1
+        // Newton-Raphson
+        for (iter in 1..100) {
+            val npv = xnpv(rate, values, dates)
+            if (abs(npv) < 1e-12) return rate
+            // Derivative: d(XNPV)/d(rate) = -sum(values[i] * days[i] / (365 * (1+rate)^(days[i]/365 + 1)))
+            val d0 = dates[0]
+            var deriv = 0.0
+            for (i in values.indices) {
+                val days = ChronoUnit.DAYS.between(d0, dates[i]).toDouble()
+                deriv -= values[i] * days / (365.0 * pow(1.0 + rate, days / 365.0 + 1.0))
+            }
+            if (deriv == 0.0) break
+            val newRate = rate - npv / deriv
+            if (newRate <= -1.0 || newRate.isNaN() || !newRate.isFinite()) break
+            rate = newRate
+        }
+        // Bisection fallback
+        var lo = -0.999999; var hi = 1e6
+        for (iter in 1..200) {
+            val mid = (lo + hi) / 2.0
+            val npv = xnpv(mid, values, dates)
+            if (abs(npv) < 1e-12) return mid
+            val npvLo = xnpv(lo, values, dates)
+            if (npvLo * npv < 0) hi = mid else lo = mid
+        }
+        return Double.NaN
+    }
+
+    // ACCRINT(issue, first_interest, settlement, rate, par, frequency, [basis], [calc_method])
+    // Accrued interest for a security that pays periodic interest.
+    private fun accrint(issue: LocalDate, firstInterest: LocalDate, settlement: LocalDate,
+                        rate: Double, par: Double, frequency: Double, basis: Int): Double {
+        if (rate < 0.0 || par <= 0.0) return Double.NaN
+        if (frequency != 1.0 && frequency != 2.0 && frequency != 4.0) return Double.NaN
+        if (issue.isAfter(settlement) || firstInterest.isAfter(settlement)) return Double.NaN
+        val days = daysBetween(issue, settlement, basis)
+        val freqDays = when (frequency.toInt()) {
+            1 -> 365.0
+            2 -> 182.5
+            4 -> 91.25
+            else -> return Double.NaN
+        }
+        return par * rate * days / freqDays
+    }
+
+    // ACCRINTM(issue, settlement, rate, par, [basis])
+    // Accrued interest at maturity for a security that pays interest at maturity.
+    private fun accrintm(issue: LocalDate, settlement: LocalDate, rate: Double, par: Double, basis: Int): Double {
+        if (rate < 0.0 || par <= 0.0) return Double.NaN
+        if (issue.isAfter(settlement)) return Double.NaN
+        val days = daysBetween(issue, settlement, basis)
+        return par * rate * days / 365.0
+    }
+
     private fun evalR52Grid(name: String, args: List<Expr>, env: Map<String, CellValue>): List<List<CellValue>> {
         fun errGrid(e: CellErr.Err = CellErr.Err.VALUE) = listOf(listOf(CellValue.Err(e)))
         return when (name) {
@@ -6478,7 +6578,89 @@ object FormulaEval {
                     CellValue.Num(normalizeNegZero(confidenceNorm(av.value, sv.value, nv.value)))
                 }
             }
-             "TBILLEQ", "TBILLPRICE", "TBILLYIELD" -> {
+            // R125: `XNPV` / `XIRR` / `ACCRINT` / `ACCRINTM` — financial functions for irregular cash flows.
+            "XNPV", "XIRR", "ACCRINT", "ACCRINTM" -> {
+                if (name == "XNPV") {
+                    if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(3)?.let { return it }
+                    val rv = evalScalarAsNum(evalExpr(args[0], env)); if (rv is CellValue.Err) return rv
+                    val rate = (rv as CellValue.Num).value
+                    val gv = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val dv = exprTo1DVector(args[2], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    if (gv.size != dv.size || gv.isEmpty()) return CellValue.Err(CellErr.Err.NUM)
+                    val values = ArrayList<Double>(); val dates = ArrayList<LocalDate>()
+                    for (i in gv.indices) {
+                        if (gv[i] is CellValue.Err || dv[i] is CellValue.Err) return CellValue.Err(CellErr.Err.NUM)
+                        if (gv[i] is CellValue.Num && dv[i] is CellValue.Num) {
+                            values.add((gv[i] as CellValue.Num).value)
+                            serialToLocalDate((dv[i] as CellValue.Num).value)?.let { dates.add(it) }
+                                ?: return CellValue.Err(CellErr.Err.NUM)
+                        }
+                    }
+                    val result = xnpv(rate, values, dates)
+                    if (result.isNaN() || !result.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(result))
+                } else if (name == "XIRR") {
+                    if (args.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(3)?.let { return it }
+                    val gv = exprTo1DVector(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    val dv = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                    if (gv.size != dv.size || gv.size < 2) return CellValue.Err(CellErr.Err.NUM)
+                    val values = ArrayList<Double>(); val dates = ArrayList<LocalDate>()
+                    for (i in gv.indices) {
+                        if (gv[i] is CellValue.Err || dv[i] is CellValue.Err) return CellValue.Err(CellErr.Err.NUM)
+                        if (gv[i] is CellValue.Num && dv[i] is CellValue.Num) {
+                            values.add((gv[i] as CellValue.Num).value)
+                            serialToLocalDate((dv[i] as CellValue.Num).value)?.let { dates.add(it) }
+                                ?: return CellValue.Err(CellErr.Err.NUM)
+                        }
+                    }
+                    val guess = if (args.size == 3) {
+                        val g = evalScalarAsNum(evalExpr(args[2], env)); if (g is CellValue.Err) return g
+                        (g as CellValue.Num).value
+                    } else 0.1
+                    val result = xirr(values, dates, guess)
+                    if (result.isNaN() || !result.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(result))
+                } else if (name == "ACCRINT") {
+                    if (args.size !in 6..8) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(8)?.let { return it }
+                    val issue = serialToLocalDate((evalScalarAsNum(evalExpr(args[0], env)) as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+                    val firstInt = serialToLocalDate((evalScalarAsNum(evalExpr(args[1], env)) as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+                    val settlement = serialToLocalDate((evalScalarAsNum(evalExpr(args[2], env)) as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+                    val rv = evalScalarAsNum(evalExpr(args[3], env)); if (rv is CellValue.Err) return rv
+                    val rate = (rv as CellValue.Num).value
+                    val pv = evalScalarAsNum(evalExpr(args[4], env)); if (pv is CellValue.Err) return pv
+                    val par = (pv as CellValue.Num).value
+                    val fv = evalScalarAsNum(evalExpr(args[5], env)); if (fv is CellValue.Err) return fv
+                    val frequency = (fv as CellValue.Num).value
+                    val basis = if (args.size >= 7) {
+                        val bv = evalScalarAsNum(evalExpr(args[6], env)); if (bv is CellValue.Err) return bv
+                        (bv as CellValue.Num).value.toInt()
+                    } else 0
+                    val result = accrint(issue, firstInt, settlement, rate, par, frequency, basis)
+                    if (result.isNaN() || !result.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(result))
+                } else {
+                    // ACCRINTM
+                    if (args.size !in 4..5) return CellValue.Err(CellErr.Err.VALUE)
+                    errIfAny(5)?.let { return it }
+                    val issue = serialToLocalDate((evalScalarAsNum(evalExpr(args[0], env)) as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+                    val settlement = serialToLocalDate((evalScalarAsNum(evalExpr(args[1], env)) as CellValue.Num).value) ?: return CellValue.Err(CellErr.Err.NUM)
+                    val rv = evalScalarAsNum(evalExpr(args[2], env)); if (rv is CellValue.Err) return rv
+                    val rate = (rv as CellValue.Num).value
+                    val pv = evalScalarAsNum(evalExpr(args[3], env)); if (pv is CellValue.Err) return pv
+                    val par = (pv as CellValue.Num).value
+                    val basis = if (args.size == 5) {
+                        val bv = evalScalarAsNum(evalExpr(args[4], env)); if (bv is CellValue.Err) return bv
+                        (bv as CellValue.Num).value.toInt()
+                    } else 0
+                    val result = accrintm(issue, settlement, rate, par, basis)
+                    if (result.isNaN() || !result.isFinite()) CellValue.Err(CellErr.Err.NUM)
+                    else CellValue.Num(normalizeNegZero(result))
+                }
+            }
+            "TBILLEQ", "TBILLPRICE", "TBILLYIELD" -> {
                 if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
                 errIfAny(3)?.let { return it }
                 val settle = (numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)).toLong()
