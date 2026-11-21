@@ -151,10 +151,12 @@ corpus was written), and Excel's own last-ULP values (out of scope, stated).
 
 | Claim | Evidence | Strength |
 |---|---|---|
-| Product source compiles in the real AGP/Kotlin toolchain | CI `Android native` on this commit (pending at write time; see §J) | strong when green (compiler) |
+| Product source compiles in the real AGP/Kotlin toolchain | CI `Android native` run 44836948580, `Traceability, assemble both flavors, JVM tests` — pass (9m36s) | strong (compiler) |
 | The module's JUnit test compiles and the test task passes | same job, `Run all JVM unit tests` step, which includes `:format:ooxml:test` | strong for compile+pass; **the per-case JUnit names are not visible to me** (test-report artifact is on `*.blob.core.windows.net`, unreachable) |
-| No regression in the contract source sets that compile `FormulaEval.kt` | same job, `Production Kotlin pilot contracts` step | strong when green |
-| The Python lane and source checks are green in CI | same job, `Check source contracts and generated traceability` | strong when green |
+| No regression in the contract source sets that compile `FormulaEval.kt` | same job, `Production Kotlin pilot contracts` step | strong |
+| The Python lane and source checks are green in CI | same job, `Check source contracts and generated traceability` | strong |
+| Office authoring (device) | CI `office` run 44836954440 — pass (18m11s) | strong |
+| All PR checks | 29/29 pass, including `API34 managed-device checks` (33m19s) | strong |
 | The corpus is an independent oracle | 117 numeric rows recomputed by the `statistics` module in the local control `test_every_value_is_the_statistics_library_value` (rows the statistics module cannot handle — single points, constant `known_x` — are skipped there and covered by the corpus test in CI); 12 `MODE` rows recomputed by a separate transcription | strong locally, and the same numbers are the ones CI's JUnit test reads |
 | Gate + controls | `R119_LEGACY_STATS_OK names=7 rows=212 error_rows=50 tests=17 tolerance=1e-12`; `Ran 25 tests … OK` | strong locally |
 | Prior rounds still green | `R117_PERCENTILE_OK`, `R116_TRIG_OK`, `Ran 24 tests … OK` (R117 controls) | strong locally |
