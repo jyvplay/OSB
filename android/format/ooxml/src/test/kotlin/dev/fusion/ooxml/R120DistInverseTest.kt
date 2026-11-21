@@ -1,8 +1,6 @@
 package dev.fusion.ooxml
 
 import kotlin.math.abs
-import kotlin.math.log
-import kotlin.math.sqrt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -97,33 +95,32 @@ class R120DistInverseTest {
 
     @Test fun inversesRoundTripThroughTheirCdfs() {
         // Each inverse must land back on its probability through the CDF kernel it inverts.
-        assertEquals(0.05, number("=TDIST.2T(T.INV(0.05, 10), 10)"), TOL)
-        assertEquals(0.95, number("=TDIST.2T(T.INV.2T(0.95, 10), 10)"), TOL)
-        assertEquals(0.05, number("=CHISQ.DIST(CHISQ.INV(0.05, 10), 10, TRUE)"), TOL)
-        assertEquals(0.95, number("=CHISQ.DIST(CHISQ.INV.RT(0.05, 10), 10, TRUE)"), TOL)
+        assertTrue(abs(number("=TDIST.2T(T.INV(0.05, 10), 10)") - 0.05) <= TOL)
+        assertTrue(abs(number("=TDIST.2T(T.INV.2T(0.95, 10), 10)") - 0.95) <= TOL)
+        assertTrue(abs(number("=CHISQ.DIST(CHISQ.INV(0.05, 10), 10, TRUE)") - 0.05) <= TOL)
+        assertTrue(abs(number("=CHISQ.DIST(CHISQ.INV.RT(0.05, 10), 10, TRUE)") - 0.95) <= TOL)
         // `F.DIST(x, d1, d2)` (three arguments) is the right tail, so the left-tailed inverse lands on 0.95
         // and the right-tailed inverse lands on 0.05.
-        assertEquals(0.95, number("=F.DIST(F.INV(0.05, 5, 10), 5, 10)"), TOL)
-        assertEquals(0.05, number("=F.DIST(F.INV.RT(0.05, 5, 10), 5, 10)"), TOL)
-        assertEquals(0.05, number("=BETA.DIST(BETA.INV(0.05, 2, 3), 2, 3, TRUE)"), TOL)
-        assertEquals(0.05, number("=GAMMA.DIST(GAMMA.INV(0.05, 2, 3), 2, 3, TRUE)"), TOL)
+        assertTrue(abs(number("=F.DIST(F.INV(0.05, 5, 10), 5, 10)") - 0.95) <= TOL)
+        assertTrue(abs(number("=F.DIST(F.INV.RT(0.05, 5, 10), 5, 10)") - 0.05) <= TOL)
+        assertTrue(abs(number("=BETA.DIST(BETA.INV(0.05, 2, 3), 2, 3, TRUE)") - 0.05) <= TOL)
+        assertTrue(abs(number("=GAMMA.DIST(GAMMA.INV(0.05, 2, 3), 2, 3, TRUE)") - 0.05) <= TOL)
     }
 
     @Test fun tDistTailRules() {
         // Two-tailed requires x >= 0; one-tailed mirrors about zero.
-        assertEquals(number("=T.DIST(2, 10, 1)"), number("=T.DIST(-2, 10, 1)"), TOL)
-        assertEquals(2.0 * number("=T.DIST(2, 10, 1)"), number("=T.DIST(2, 10, 2)"), 1e-12)
-        assertEquals(1.0 - number("=T.DIST(2, 10, 1)"), number("=T.DIST(-2, 10, 1)"), TOL)
+        assertTrue(abs(number("=T.DIST(2, 10, 1)") - number("=T.DIST(-2, 10, 1)")) <= TOL)
+        assertTrue(abs(2.0 * number("=T.DIST(2, 10, 1)") - number("=T.DIST(2, 10, 2)")) <= 1e-12)
+        assertTrue(abs((1.0 - number("=T.DIST(2, 10, 1)")) - number("=T.DIST(-2, 10, 1)")) <= TOL)
     }
 
     @Test fun gammalnPreciseHoldsAtExactPoints() {
         // ln(Gamma(1)) = ln(1) = 0; ln(Gamma(2)) = ln(1) = 0; ln(Gamma(3)) = ln(2).
-        // The Lanczos kernel is accurate to ~1e-16, not exact, so a small tolerance is required.
-        assertEquals(0.0, number("=GAMMALN.PRECISE(1)"), TOL)
-        assertEquals(0.0, number("=GAMMALN.PRECISE(2)"), TOL)
-        assertEquals(log(2.0), number("=GAMMALN.PRECISE(3)"), 1e-12)
-        // ln(Gamma(1/2)) = ln(sqrt(pi)).
-        assertEquals(0.5 * log(Math.PI), number("=GAMMALN.PRECISE(0.5)"), 1e-12)
+        // ln(Gamma(1/2)) = ln(sqrt(pi)). Lanczos is accurate to ~1e-16, not exact.
+        assertTrue(abs(number("=GAMMALN.PRECISE(1)") - 0.0) <= TOL)
+        assertTrue(abs(number("=GAMMALN.PRECISE(2)") - 0.0) <= TOL)
+        assertTrue(abs(number("=GAMMALN.PRECISE(3)") - 0.6931471805599453) <= 1e-12)
+        assertTrue(abs(number("=GAMMALN.PRECISE(0.5)") - 0.5723649429247001) <= 1e-12)
     }
 
     @Test fun inversesRefuseOutOfDomain() {
@@ -158,8 +155,8 @@ class R120DistInverseTest {
 
     @Test fun tDistAcceptsFlooredDegreesOfFreedom() {
         // Degrees of freedom are floored: 10.7 behaves like 10.
-        assertEquals(number("=T.DIST(1, 10, 2)"), number("=T.DIST(1, 10.7, 2)"), 0.0)
-        assertEquals(number("=CHISQ.INV(0.05, 10)"), number("=CHISQ.INV(0.05, 10.9)"), 0.0)
+        assertTrue(abs(number("=T.DIST(1, 10, 2)") - number("=T.DIST(1, 10.7, 2)")) <= TOL)
+        assertTrue(abs(number("=CHISQ.INV(0.05, 10)") - number("=CHISQ.INV(0.05, 10.9)")) <= TOL)
     }
 
     @Test fun betaInverseAcceptsSingularShapes() {
@@ -212,8 +209,8 @@ class R120DistInverseTest {
                 "B4" to FormulaEval.CellInput.Formula("=T.DIST.2T(B1, 10)"),
             ),
         )
-        assertEquals(0.05, (sheet.values["B4"] as FormulaEval.CellValue.Num).value, TOL)
-        assertEquals(0.0, (sheet.values["B3"] as FormulaEval.CellValue.Num).value, TOL)
+        assertTrue(abs((sheet.values["B4"] as FormulaEval.CellValue.Num).value - 0.05) <= TOL)
+        assertTrue(abs((sheet.values["B3"] as FormulaEval.CellValue.Num).value - 0.0) <= TOL)
         assertTrue("B1 must depend on A1", sheet.dependencies["B1"]!!.contains("A1"))
     }
 
