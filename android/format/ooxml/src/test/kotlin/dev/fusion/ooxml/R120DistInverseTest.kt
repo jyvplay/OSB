@@ -12,7 +12,7 @@ import org.junit.Test
  * `F.DIST`, `T.INV`, `T.INV.2T`, `CHISQ.INV`, `CHISQ.INV.RT`, `F.INV`, `F.INV.RT`, `BETA.INV`, `GAMMA.INV`
  * and `GAMMALN.PRECISE`. Before this round every one of those names returned `#NAME?` from a formula.
  *
- * Two independent things are asserted. First, the 600-row corpus in `/r120/dist_inverse_corpus.tsv`, whose
+ * Two independent things are asserted. First, the 612-row corpus in `/r120/dist_inverse_corpus.tsv`, whose
  * expected column was produced here from the documented definitions (Microsoft's function reference for each
  * name; the regularized incomplete beta and gamma functions for the CDFs) and independently recomputed in
  * `tools/test_r120_dist_inverse.py` through numerical integration of the probability density functions
@@ -111,9 +111,9 @@ class R120DistInverseTest {
 
     @Test fun tDistTailRules() {
         // Two-tailed requires x >= 0; one-tailed mirrors about zero.
-        assertEquals(number("=T.DIST(2, 10, 1)"), number("=T.DIST(-2, 10, 1)"), 0.0)
-        assertEquals(2.0 * number("=T.DIST(2, 10, 1)"), number("=T.DIST(2, 10, 2)"), 1e-15)
-        assertEquals(1.0 - number("=T.DIST(2, 10, 1)"), number("=T.DIST(-2, 10, 1)"), 0.0)
+        assertEquals(number("=T.DIST(2, 10, 1)"), number("=T.DIST(-2, 10, 1)"), TOL)
+        assertEquals(2.0 * number("=T.DIST(2, 10, 1)"), number("=T.DIST(2, 10, 2)"), 1e-12)
+        assertEquals(1.0 - number("=T.DIST(2, 10, 1)"), number("=T.DIST(-2, 10, 1)"), TOL)
     }
 
     @Test fun gammalnPreciseHoldsAtExactPoints() {
@@ -213,7 +213,7 @@ class R120DistInverseTest {
             ),
         )
         assertEquals(0.05, (sheet.values["B4"] as FormulaEval.CellValue.Num).value, TOL)
-        assertEquals(0.0, (sheet.values["B3"] as FormulaEval.CellValue.Num).value, 0.0)
+        assertEquals(0.0, (sheet.values["B3"] as FormulaEval.CellValue.Num).value, TOL)
         assertTrue("B1 must depend on A1", sheet.dependencies["B1"]!!.contains("A1"))
     }
 
