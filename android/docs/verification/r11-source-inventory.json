@@ -5744,7 +5744,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "44ccc8878610167d3c920cd1dc3067afaac085944a560e6887339a273ce8945b"
+      "sha256": "3399c68c90c7233209421b4fe375129e12b383801fae418bc3fe4fb98bc2e7ac"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt",
@@ -5954,7 +5954,7 @@
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/SpillSheetEngine.kt",
       "module": ":format:ooxml",
       "package": "dev.fusion.ooxml",
-      "sha256": "35df72d6c3add9442e2ec582979520efab054941f64e17d66ab3732df47aa471"
+      "sha256": "a3b8d040035d6a910304c2897d1bdcacbca1a3952f153ad26aa7ce3e46b53d60"
     },
     {
       "path": "format/ooxml/src/main/kotlin/dev/fusion/ooxml/StructuredTableRefEngine.kt",

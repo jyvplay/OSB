@@ -1226,6 +1226,21 @@ object FormulaEval {
             "MODE" -> evalEssential("MODE.SNGL", args, env)
             "COVARIANCE" -> evalR51ScalarFunction("COVARIANCE.P", args, env)
             "FORECAST", "FORECAST.LINEAR" -> evalForecast(args, env)
+            // R120: modern distribution names delegate to the kernels they rename; inverses bisect the CDFs.
+            "T.DIST.2T" -> evalR53ScalarFunction("TDIST.2T", args, env)
+            "T.DIST.RT" -> evalR53ScalarFunction("TDIST.RT", args, env)
+            "F.DIST" -> evalR53ScalarFunction("F.DIST.RT", args, env)
+            "T.DIST" -> evalTDist(args, env)
+            "GAMMALN.PRECISE" -> {
+                if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+                val xVal = evalScalarAsNum(evalExpr(args[0], env)); if (xVal is CellValue.Err) return xVal
+                val x = (xVal as CellValue.Num).value
+                if (x <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                val res = lanczosLnGamma(x)
+                if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
+            }
+            "T.INV", "T.INV.2T", "CHISQ.INV", "CHISQ.INV.RT", "F.INV", "F.INV.RT",
+            "BETA.INV", "GAMMA.INV" -> evalDistInverse(name, args, env)
             "CORREL", "SLOPE", "INTERCEPT" -> evalLinearStats(name, args, env)
             "IRR" -> evalIrr(args, env)
             "RATE" -> evalRate(args, env)
@@ -3755,6 +3770,148 @@ object FormulaEval {
         if (sxx == 0.0) return CellValue.Err(CellErr.Err.DIV0)
         val res = (my - (sxy / sxx) * mx) + (sxy / sxx) * x
         return if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
+    }
+
+    /**
+     * R120: `T.DIST(x, df, tails)`: `tails` 1 is the right-tailed probability, 2 the two-tailed probability.
+     * Anything else is `#NUM!`. Delegates to the `TDIST.RT`/`TDIST.2T` kernels, which carry the `df` and
+     * sign rules (two-tailed requires `x >= 0`).
+     */
+    private fun evalTDist(args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+        for (i in 0 until 3) {
+            val r = evalExpr(args[i], env)
+            if (r is CellValue.Err) return r
+        }
+        fun numArg(idx: Int): Double? {
+            val v = evalScalarAsNum(evalExpr(args[idx], env))
+            return (v as? CellValue.Num)?.value
+        }
+        val df = floor(numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+        val tails = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+        if (df < 1.0 || (tails != 1.0 && tails != 2.0)) return CellValue.Err(CellErr.Err.NUM)
+        return if (tails == 2.0) evalR53ScalarFunction("TDIST.2T", args.subList(0, 2), env)
+        else evalR53ScalarFunction("TDIST.RT", args.subList(0, 2), env)
+    }
+
+    /**
+     * R120: distribution inverses by bisection on the CDF kernels. Every inverse requires `0 < p < 1`
+     * (else `#NUM!`); degrees of freedom are floored and must be at least 1, matching the CDF kernels.
+     * `T.INV`/`T.INV.2T` are the two-tailed inverse; `CHISQ.INV`/`BETA.INV`/`GAMMA.INV` are left-tailed;
+     * `CHISQ.INV.RT`/`F.INV`/`F.INV.RT` are right-tailed. Bisection is used because the CDFs are monotone,
+     * so it cannot diverge the way Newton iteration can.
+     */
+    private fun evalDistInverse(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        fun numArg(idx: Int): Double? {
+            if (idx !in args.indices) return null
+            val v = evalScalarAsNum(evalExpr(args[idx], env))
+            return (v as? CellValue.Num)?.value
+        }
+        fun errIfAny(count: Int): CellValue.Err? {
+            for (i in 0 until minOf(count, args.size)) {
+                val r = evalExpr(args[i], env)
+                if (r is CellValue.Err) return r
+            }
+            return null
+        }
+        // Bisects a monotone increasing CDF for the quantile at p, expanding hi until it brackets p.
+        fun invertCdf(cdf: (Double) -> Double, p: Double, hiStart: Double): Double {
+            var hi = hiStart
+            var guard = 0
+            while (cdf(hi) < p && guard < 200) {
+                hi *= 2.0
+                guard++
+                if (hi > 1e15) break
+            }
+            var lo = 0.0
+            repeat(100) {
+                val mid = 0.5 * (lo + hi)
+                if (cdf(mid) < p) lo = mid else hi = mid
+            }
+            return 0.5 * (lo + hi)
+        }
+        return when (name) {
+            "T.INV", "T.INV.2T" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val df = floor(numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+                if (p <= 0.0 || p >= 1.0 || df < 1.0) return CellValue.Err(CellErr.Err.NUM)
+                // Binary search t > 0 such that TDIST.2T(t, df) == p (the tail decreases in t).
+                var lo = 0.0; var hi = 1e6
+                repeat(80) {
+                    val mid = 0.5 * (lo + hi)
+                    val tail2 = incompleteBetaContinuedFraction(df / 2.0, 0.5, df / (df + mid * mid))
+                    if (tail2 > p) lo = mid else hi = mid
+                }
+                CellValue.Num(normalizeNegZero(0.5 * (lo + hi)))
+            }
+            "CHISQ.INV" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val df = floor(numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+                if (p <= 0.0 || p >= 1.0 || df < 1.0) return CellValue.Err(CellErr.Err.NUM)
+                val halfK = df / 2.0
+                CellValue.Num(normalizeNegZero(invertCdf({ regGammaLowerP(halfK, it / 2.0) }, p, 1.0)))
+            }
+            "CHISQ.INV.RT" -> {
+                if (args.size != 2) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(2)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val df = floor(numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+                if (p <= 0.0 || p >= 1.0 || df < 1.0) return CellValue.Err(CellErr.Err.NUM)
+                // Right-tailed: P(X > x) == p is P(X <= x) == 1 - p.
+                val halfK = df / 2.0
+                CellValue.Num(normalizeNegZero(invertCdf({ regGammaLowerP(halfK, it / 2.0) }, 1.0 - p, 1.0)))
+            }
+            "F.INV" -> {
+                if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(3)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val d1 = floor(numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+                val d2 = floor(numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE))
+                if (p <= 0.0 || p >= 1.0 || d1 < 1.0 || d2 < 1.0) return CellValue.Err(CellErr.Err.NUM)
+                // Left-tailed: I_u(d1/2, d2/2) == p, with u = d1*x/(d1*x+d2).
+                val cdf = { x: Double ->
+                    val u = (d1 * x) / (d1 * x + d2)
+                    incompleteBetaContinuedFraction(d1 / 2.0, d2 / 2.0, u)
+                }
+                CellValue.Num(normalizeNegZero(invertCdf(cdf, p, 1.0)))
+            }
+            "F.INV.RT" -> {
+                if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(3)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val d1 = floor(numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE))
+                val d2 = floor(numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE))
+                if (p <= 0.0 || p >= 1.0 || d1 < 1.0 || d2 < 1.0) return CellValue.Err(CellErr.Err.NUM)
+                // Right-tailed: 1 - I_u(d1/2, d2/2) == p is I_u == 1 - p, with u = d1*x/(d1*x+d2).
+                val cdf = { x: Double ->
+                    val u = (d1 * x) / (d1 * x + d2)
+                    incompleteBetaContinuedFraction(d1 / 2.0, d2 / 2.0, u)
+                }
+                CellValue.Num(normalizeNegZero(invertCdf(cdf, 1.0 - p, 1.0)))
+            }
+            "BETA.INV" -> {
+                if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(3)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val alpha = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val beta = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (p <= 0.0 || p >= 1.0 || alpha <= 0.0 || beta <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                CellValue.Num(normalizeNegZero(invertCdf({ incompleteBetaContinuedFraction(alpha, beta, it) }, p, 1.0)))
+            }
+            else -> { // GAMMA.INV
+                if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+                errIfAny(3)?.let { return it }
+                val p = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val alpha = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val beta = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (p <= 0.0 || p >= 1.0 || alpha <= 0.0 || beta <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                CellValue.Num(normalizeNegZero(invertCdf({ regGammaLowerP(alpha, it / beta) }, p, maxOf(1.0, alpha * beta))))
+            }
+        }
     }
 
     private fun evalIrr(args: List<Expr>, env: Map<String, CellValue>): CellValue {
