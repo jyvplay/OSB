@@ -5837,7 +5837,7 @@
     "tools/check_r120_dist_inverse.py": "9865319dc3e102856b3847351af97cc7570978a552bb5be5cb9b087542b33cb7",
     "tools/test_r120_dist_inverse.py": "7fb6b1a0f97d08806ce46003707599168bf7fc644f2b7a074b908a972d03cd59",
     "tools/gen_r120_dist_inverse_corpus.py": "4ccc0429fb2a65056a5269081b398c6a1b867a35a9f262d5149eab4ef3c5cd8a",
-    "format/ooxml/src/test/kotlin/dev/fusion/ooxml/R120DistInverseTest.kt": "450ca3f6d77c4ad244c24cbebfc2107fb8a7f75a2707ab308bcef58d897234a1",
+    "format/ooxml/src/test/kotlin/dev/fusion/ooxml/R120DistInverseTest.kt": "01e57e0d5d94a3249f2a09e75301b4fa6dbe0e1ffd643a31cebfbce2896cc4b8",
     "format/ooxml/src/test/resources/r120/dist_inverse_corpus.tsv": "3b4e68b24e3e33c5fb02bc64c0be43df5f9e72ca0c4d7665e7280fba7d4b2354"
    }
   },
