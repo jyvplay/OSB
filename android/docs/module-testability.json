@@ -5497,7 +5497,7 @@
     "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxRichDocument.kt": "f523d1aac843037a8a756774b75ff917110d8a7c97343de14e46495da341ff5c",
     "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DocxTableLayoutGridEngine.kt": "dd22cdc0bd7481c15d046766d8572f3e1f2879a1c07d6e2e8e5651c3f548d6ac",
     "format/ooxml/src/main/kotlin/dev/fusion/ooxml/DrawingMlChartBuilder.kt": "37638447cd628134d2f7eb7c339b100795e5cc25f2b6ed14e53a1969250cf226",
-    "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt": "81743794db57e297b748aefec42b6c799527bada3cef1890eff673d7262c30ae",
+    "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaEval.kt": "0a490cfeacf211e1765055def932a33aca58d603023a7cc70563c57b548f9ff3",
     "format/ooxml/src/main/kotlin/dev/fusion/ooxml/FormulaXlsx.kt": "242e0efda46ce59db2f9ef355fa1ca1bf0686e262efcf73d4e0ae97402b5588d",
     "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralWorkbook.kt": "2697f3230eb6b73b5b9e982711dcc3f69758282b9d745502baff6d8161f0041f",
     "format/ooxml/src/main/kotlin/dev/fusion/ooxml/LiteralXlsxImport.kt": "599669619d26bb4137362fc121be3c932e6d56a7ae0d771252889ae1c5ed77e3",
