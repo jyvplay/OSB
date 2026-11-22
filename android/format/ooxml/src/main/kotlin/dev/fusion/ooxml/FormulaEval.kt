@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -4540,6 +4540,60 @@ object FormulaEval {
             }
             if (chosen < 0) CellValue.Err(CellErr.Err.NA) else result[chosen]
         }
+        // R127: DOLLAR / FIXED / TIMEVALUE / COLUMN / ROW / COLUMNS / ROWS — text, time and reference functions.
+        "DOLLAR", "FIXED" -> {
+            if (name == "DOLLAR" && args.size !in 1..2) return CellValue.Err(CellErr.Err.VALUE)
+            if (name == "FIXED" && args.size !in 1..3) return CellValue.Err(CellErr.Err.VALUE)
+            val nv = evalScalarAsNum(evalExpr(args[0], env)); if (nv is CellValue.Err) return nv
+            val num = (nv as CellValue.Num).value
+            val decimals = if (args.size >= 2) {
+                val dv = evalScalarAsNum(evalExpr(args[1], env)); if (dv is CellValue.Err) return dv
+                (dv as CellValue.Num).value.toInt()
+            } else 2
+            if (decimals < 0 || decimals > 15) return CellValue.Err(CellErr.Err.VALUE)
+            val noCommas = if (name == "FIXED" && args.size == 3) {
+                val ncv = evalScalarAsNum(evalExpr(args[2], env)); if (ncv is CellValue.Err) return ncv
+                (ncv as CellValue.Num).value != 0.0
+            } else false
+            val scaled = math.round(math.abs(num) * math.pow(10.0, decimals.toDouble()))
+            val intPart = (scaled / math.pow(10.0, decimals.toDouble())).toLong()
+            val fracPart = (scaled - intPart * math.pow(10.0, decimals.toDouble())).toLong()
+            val intStr = if (noCommas) intPart.toString() else formatWithCommas(intPart)
+            val fracStr = "%0${decimals}d".format(fracPart)
+            val signed = if (num < 0.0) "-$intStr.$fracStr" else "$intStr.$fracStr"
+            val text = if (name == "DOLLAR") "\$$signed" else signed
+            CellValue.Text(text)
+        }
+        "TIMEVALUE" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val tv = evalAsString(evalExpr(args[0], env)); if (tv is CellValue.Err) return tv
+            val s = (tv as CellValue.Text).value.trim()
+            val parts = s.split(":")
+            if (parts.size !in 2..3) return CellValue.Err(CellErr.Err.VALUE)
+            val h = parts[0].toDoubleOrNull() ?: return CellValue.Err(CellErr.Err.VALUE)
+            val m = parts[1].toDoubleOrNull() ?: return CellValue.Err(CellErr.Err.VALUE)
+            val sec = if (parts.size == 3) parts[2].toDoubleOrNull() ?: return CellValue.Err(CellErr.Err.VALUE) else 0.0
+            if (h < 0 || m < 0 || sec < 0 || m >= 60 || sec >= 60) return CellValue.Err(CellErr.Err.NUM)
+            val dayFraction = (h * 3600.0 + m * 60.0 + sec) / 86400.0
+            CellValue.Num(normalizeNegZero(dayFraction))
+        }
+        "COLUMN", "ROW" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val ref = when (val a = args[0]) {
+                is Expr.CellRef -> a.a1
+                is Expr.RangeRef -> if (a.range.top == a.range.bottom) a.range.top.toA1()
+                    else return CellValue.Err(CellErr.Err.VALUE)
+                else -> return CellValue.Err(CellErr.Err.VALUE)
+            }
+            val cell = SheetRange.parseCell(ref.replace("$", ""))
+            CellValue.Num(if (name == "COLUMN") cell.col.toDouble() else cell.row.toDouble())
+        }
+        "COLUMNS", "ROWS" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val g = exprTo2DGrid(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+            if (g.isEmpty() || g[0].isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+            CellValue.Num(if (name == "COLUMNS") g[0].size.toDouble() else g.size.toDouble())
+        }
         else -> CellValue.Err(CellErr.Err.NAME)
         }
     }
@@ -7299,6 +7353,18 @@ object FormulaEval {
             }
             else -> CellValue.Err(CellErr.Err.NAME)
         }
+    }
+
+    // R127: formats a non-negative long with thousands separators (commas every 3 digits).
+    private fun formatWithCommas(v: Long): String {
+        val s = v.toString()
+        if (s.length <= 3) return s
+        val sb = StringBuilder()
+        for (i in s.indices) {
+            if (i > 0 && (s.length - i) % 3 == 0) sb.append(',')
+            sb.append(s[i])
+        }
+        return sb.toString()
     }
 }
 
