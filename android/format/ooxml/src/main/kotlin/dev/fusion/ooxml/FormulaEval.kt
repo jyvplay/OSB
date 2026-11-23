@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions. R129 adds SHEET/SHEETS sheet reference functions (single-sheet engine always returns 1)."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions. R129 adds SHEET/SHEETS sheet reference functions (single-sheet engine always returns 1). R130 adds DAVERAGE/DCOUNT/DCOUNTA/DGET/DMAX/DMIN/DPRODUCT/DSTDEV/DSTDEVP/DSUM/DVAR/DVARP database aggregation functions with header-based field resolution and criteria-range filtering (AND across columns, OR across criteria rows)."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -1318,6 +1318,8 @@ object FormulaEval {
             "FISHER", "FISHERINV", "STANDARDIZE", "CONFIDENCE.T",
             "HARMEAN", "TRIMMEAN", "DEVSQ", "AVEDEV", "SERIESSUM", "MULTINOMIAL" ->
                 evalR53ScalarFunction(name, args, env)
+            "DAVERAGE", "DCOUNT", "DCOUNTA", "DGET", "DMAX", "DMIN", "DPRODUCT",
+            "DSTDEV", "DSTDEVP", "DSUM", "DVAR", "DVARP" -> evalDatabaseFunction(name, args, env)
             "SIN", "COS", "TAN", "ASIN", "ACOS", "ATAN", "ATAN2", "SINH", "COSH", "TANH",
             "ASINH", "ACOSH", "ATANH", "PI" -> evalR116TrigFunction(name, args, env)
             else -> {
@@ -5185,6 +5187,95 @@ object FormulaEval {
             "COUNTIFS" -> CellValue.Num(count.toDouble())
             "SUMIFS" -> if (!sum.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(sum))
             else -> if (count == 0) CellValue.Err(CellErr.Err.DIV0) else CellValue.Num(normalizeNegZero(sum / count))
+        }
+    }
+
+    /** Database functions (DAVERAGE/DCOUNT/etc.): filter database rows by criteria, aggregate field column. */
+    private fun evalDatabaseFunction(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (args.size != 3) return CellValue.Err(CellErr.Err.VALUE)
+        val database = exprToRange(args[0]) ?: return CellValue.Err(CellErr.Err.VALUE)
+        val criteria = exprToRange(args[2]) ?: return CellValue.Err(CellErr.Err.VALUE)
+        val fieldVal = evalExpr(args[1], env)
+        if (fieldVal is CellValue.Err) return fieldVal
+
+        // Header row = first row of database; map column name -> 0-based column offset.
+        val headerRow = database.top.row
+        val leftCol = database.top.col
+        val headerMap = mutableMapOf<String, Int>()
+        for (dc in 0 until database.width) {
+            val cv = env[SheetRange.Cell(leftCol + dc, headerRow).toA1()] ?: CellValue.Empty
+            val h = if (cv is CellValue.Text) cv.value else cv.displayText()
+            if (!h.isEmpty() && h !in headerMap) headerMap[h] = dc
+        }
+
+        // Resolve field to 0-based column offset within database.
+        val fieldCol: Int = when (fieldVal) {
+            is CellValue.Text -> headerMap[fieldVal.value] ?: return CellValue.Err(CellErr.Err.VALUE)
+            is CellValue.Num -> {
+                val idx = fieldVal.value.toInt()
+                if (idx < 1 || idx > database.width) return CellValue.Err(CellErr.Err.VALUE)
+                idx - 1
+            }
+            else -> return CellValue.Err(CellErr.Err.VALUE)
+        }
+
+        // Criteria column map: (criteria col offset, database col offset) for named headers.
+        val critHeaderRow = criteria.top.row
+        val critLeftCol = criteria.top.col
+        val critCols = mutableListOf<Pair<Int, Int>>()
+        for (dc in 0 until criteria.width) {
+            val cv = env[SheetRange.Cell(critLeftCol + dc, critHeaderRow).toA1()] ?: CellValue.Empty
+            val h = if (cv is CellValue.Text) cv.value else cv.displayText()
+            val dbCol = headerMap[h] ?: continue
+            critCols.add(Pair(dc, dbCol))
+        }
+
+        // Collect field values for rows matching any criteria row (OR across rows, AND across columns).
+        val fieldVals = mutableListOf<CellValue>()
+        for (dr in (database.top.row + 1)..database.bottom.row) {
+            var rowMatches = false
+            for (cr in (criteria.top.row + 1)..criteria.bottom.row) {
+                var allMatch = true
+                for ((cc, dc) in critCols) {
+                    val dbCell = env[SheetRange.Cell(leftCol + dc, dr).toA1()] ?: CellValue.Empty
+                    val critCell = env[SheetRange.Cell(critLeftCol + cc, cr).toA1()] ?: CellValue.Empty
+                    if (critCell == CellValue.Empty) continue
+                    if (!matchesCriteria(dbCell, critCell)) { allMatch = false; break }
+                }
+                if (allMatch) { rowMatches = true; break }
+            }
+            if (rowMatches) {
+                fieldVals.add(env[SheetRange.Cell(leftCol + fieldCol, dr).toA1()] ?: CellValue.Empty)
+            }
+        }
+
+        val nums = fieldVals.filterIsInstance<CellValue.Num>().map { it.value }
+        return when (name) {
+            "DAVERAGE" -> if (nums.isEmpty()) CellValue.Err(CellErr.Err.DIV0) else CellValue.Num(normalizeNegZero(nums.sum() / nums.size))
+            "DCOUNT" -> CellValue.Num(nums.size.toDouble())
+            "DCOUNTA" -> CellValue.Num(fieldVals.count { it != CellValue.Empty && it !is CellValue.Err }.toDouble())
+            "DGET" -> if (fieldVals.size != 1) CellValue.Err(CellErr.Err.NA) else fieldVals[0]
+            "DMAX" -> if (nums.isEmpty()) CellValue.Num(0.0) else CellValue.Num(nums.maxOrNull()!!)
+            "DMIN" -> if (nums.isEmpty()) CellValue.Num(0.0) else CellValue.Num(nums.minOrNull()!!)
+            "DPRODUCT" -> if (nums.isEmpty()) CellValue.Num(0.0) else CellValue.Num(normalizeNegZero(nums.fold(1.0) { a, b -> a * b }))
+            "DSTDEV" -> if (nums.size < 2) CellValue.Err(CellErr.Err.DIV0) else {
+                val m = nums.sum() / nums.size
+                CellValue.Num(normalizeNegZero(Math.sqrt(nums.sumOf { (it - m) * (it - m) } / (nums.size - 1))))
+            }
+            "DSTDEVP" -> if (nums.isEmpty()) CellValue.Num(0.0) else {
+                val m = nums.sum() / nums.size
+                CellValue.Num(normalizeNegZero(Math.sqrt(nums.sumOf { (it - m) * (it - m) } / nums.size)))
+            }
+            "DSUM" -> if (nums.isEmpty()) CellValue.Num(0.0) else CellValue.Num(normalizeNegZero(nums.sum()))
+            "DVAR" -> if (nums.size < 2) CellValue.Err(CellErr.Err.DIV0) else {
+                val m = nums.sum() / nums.size
+                CellValue.Num(normalizeNegZero(nums.sumOf { (it - m) * (it - m) } / (nums.size - 1)))
+            }
+            "DVARP" -> if (nums.isEmpty()) CellValue.Num(0.0) else {
+                val m = nums.sum() / nums.size
+                CellValue.Num(normalizeNegZero(nums.sumOf { (it - m) * (it - m) } / nums.size))
+            }
+            else -> CellValue.Err(CellErr.Err.NAME)
         }
     }
 
