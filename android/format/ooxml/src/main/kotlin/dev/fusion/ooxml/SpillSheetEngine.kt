@@ -386,20 +386,30 @@ object SpillSheetEngine {
                 }
             }
             "TEXTSPLIT" -> {
-                require(args.size in 2..3) { "TEXTSPLIT expects text, col_delimiter, [row_delimiter]" }
+                require(args.size in 2..6) { "TEXTSPLIT expects text, col_delimiter, [row_delimiter], [ignore_empty], [match_mode], [pad_with]" }
                 val text = evalScalarArg(args[0], env).displayText()
                 val colDelim = evalScalarArg(args[1], env).displayText()
                 require(colDelim.isNotEmpty()) { "TEXTSPLIT col_delimiter must be non-empty" }
-                val rowDelim = if (args.size == 3) evalScalarArg(args[2], env).displayText() else null
-                val rawRows = if (!rowDelim.isNullOrEmpty()) text.split(rowDelim) else listOf(text)
-                val splitRows = rawRows.map { r -> r.split(colDelim) }
-                val maxW = splitRows.maxOfOrNull { it.size } ?: 1
+                val rowDelim = if (args.size >= 3) evalScalarArg(args[2], env).displayText() else null
+                val ignoreEmpty = if (args.size >= 4) {
+                    (evalScalarArg(args[3], env) as? FormulaEval.CellValue.Bool)?.value ?: false
+                } else false
+                val matchMode = if (args.size >= 5) {
+                    (evalScalarArg(args[4], env) as? FormulaEval.CellValue.Num)?.value?.toInt() ?: 0
+                } else 0
+                val padWith = if (args.size >= 6) evalScalarArg(args[5], env) else FormulaEval.CellValue.Err(CellErr.Err.NA)
+                val ic = matchMode == 1
+                val rows = if (rowDelim != null && rowDelim.isNotEmpty()) text.split(rowDelim, ignoreCase = ic) else listOf(text)
+                val splitRows = rows.map { r ->
+                    r.split(colDelim, ignoreCase = ic).filter { !ignoreEmpty || it.isNotEmpty() }
+                }
+                val maxW = splitRows.maxOfOrNull { it.size } ?: 0
                 splitRows.map { r ->
                     List(maxW) { idx ->
                         if (idx < r.size) FormulaEval.CellValue.Text(r[idx])
-                        else FormulaEval.CellValue.Err(CellErr.Err.NA)
+                        else padWith
                     }
-                }
+                }.ifEmpty { listOf(listOf(padWith)) }
             }
             else -> error("unsupported dynamic array function $head")
         }
