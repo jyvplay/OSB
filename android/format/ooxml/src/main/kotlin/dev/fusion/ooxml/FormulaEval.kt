@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -4593,6 +4593,29 @@ object FormulaEval {
             val g = exprTo2DGrid(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
             if (g.isEmpty() || g[0].isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
             CellValue.Num(if (name == "COLUMNS") g[0].size.toDouble() else g.size.toDouble())
+        }
+        // R128: T / N — text and number conversion functions.
+        "T" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val v = evalExpr(args[0], env)
+            when (v) {
+                is CellValue.Text -> CellValue.Text(v.value)
+                else -> CellValue.Text("")
+            }
+        }
+        "N" -> {
+            if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
+            val v = evalExpr(args[0], env)
+            when (v) {
+                is CellValue.Err -> v
+                is CellValue.Num -> CellValue.Num(normalizeNegZero(v.value))
+                is CellValue.Bool -> CellValue.Num(if (v.value) 1.0 else 0.0)
+                CellValue.Empty -> CellValue.Num(0.0)
+                is CellValue.Text -> {
+                    val parsed = v.value.trim().toDoubleOrNull()?.takeIf { it.isFinite() }
+                    if (parsed != null) CellValue.Num(normalizeNegZero(parsed)) else CellValue.Num(0.0)
+                }
+            }
         }
         else -> CellValue.Err(CellErr.Err.NAME)
         }

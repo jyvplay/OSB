@@ -1,0 +1,21 @@
+FUNCTION	ARGS	EXPECTED
+T	"hello"	hello
+T	""	
+T	123	
+T	TRUE	
+T	FALSE	
+T	"42"	42
+N	42	42.0
+N	3.14	3.14
+N	0	0.0
+N	-7.5	-7.5
+N	TRUE	1.0
+N	FALSE	0.0
+N	"123"	123.0
+N	"3.14"	3.14
+N	"not a number"	0.0
+N	""	0.0
+T		#VALUE!
+T	1,2	#VALUE!
+N		#VALUE!
+N	1,2	#VALUE!
