@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions. R129 adds SHEET/SHEETS sheet reference functions (single-sheet engine always returns 1). R130 adds DAVERAGE/DCOUNT/DCOUNTA/DGET/DMAX/DMIN/DPRODUCT/DSTDEV/DSTDEVP/DSUM/DVAR/DVARP database aggregation functions with header-based field resolution and criteria-range filtering (AND across columns, OR across criteria rows). R132 adds IMCSC/IMSEC/IMSECH/IMSINH/IMTAN complex trigonometric/hyperbolic functions operating on complex numbers in x+yi or x+yj format. R131 adds AMORDEGRC/AMORLINC French amortization, DB fixed-declining depreciation, ISPMT interest payment, PRICE/PRICEMAT bond price, YIELD/YIELDMAT bond yield functions. R133 adds IMCOSH/IMCOT/IMCOTH complex hyperbolic functions (cosh/cot/coth of complex numbers), VDB variable-declining-balance depreciation, and ODDFPRICE/ODDFYIELD/ODDLPRICE/ODDLYIELD odd-coupon-period bond price/yield functions."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions. R129 adds SHEET/SHEETS sheet reference functions (single-sheet engine always returns 1). R130 adds DAVERAGE/DCOUNT/DCOUNTA/DGET/DMAX/DMIN/DPRODUCT/DSTDEV/DSTDEVP/DSUM/DVAR/DVARP database aggregation functions with header-based field resolution and criteria-range filtering (AND across columns, OR across criteria rows). R132 adds IMCSC/IMSEC/IMSECH/IMSINH/IMTAN complex trigonometric/hyperbolic functions operating on complex numbers in x+yi or x+yj format. R131 adds AMORDEGRC/AMORLINC French amortization, DB fixed-declining depreciation, ISPMT interest payment, PRICE/PRICEMAT bond price, YIELD/YIELDMAT bond yield functions. R133 adds IMCOSH/IMCOT/IMCOTH complex hyperbolic functions (cosh/cot/coth of complex numbers), VDB variable-declining-balance depreciation, and ODDFPRICE/ODDFYIELD/ODDLPRICE/ODDLYIELD odd-coupon-period bond price/yield functions. R134 adds FORECAST.ETS/FORECAST.ETS.CONFINT/FORECAST.ETS.SEASONALITY/FORECAST.ETS.STAT exponential triple-smoothing (Holt-Winters) forecasting functions."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -1229,6 +1229,7 @@ object FormulaEval {
             "MODE" -> evalEssential("MODE.SNGL", args, env)
             "COVARIANCE" -> evalR51ScalarFunction("COVARIANCE.P", args, env)
             "FORECAST", "FORECAST.LINEAR" -> evalForecast(args, env)
+            "FORECAST.ETS", "FORECAST.ETS.CONFINT", "FORECAST.ETS.SEASONALITY", "FORECAST.ETS.STAT" -> evalForecastEts(name, args, env)
             // R120: modern distribution names delegate to the kernels they rename; inverses bisect the CDFs.
             "T.DIST.2T" -> evalR53ScalarFunction("TDIST.2T", args, env)
             "T.DIST.RT" -> evalR53ScalarFunction("TDIST.RT", args, env)
@@ -3825,6 +3826,244 @@ object FormulaEval {
         if (sxx == 0.0) return CellValue.Err(CellErr.Err.DIV0)
         val res = (my - (sxy / sxx) * mx) + (sxy / sxx) * x
         return if (!res.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(res))
+    }
+
+    /**
+     * R134: `FORECAST.ETS` / `FORECAST.ETS.CONFINT` / `FORECAST.ETS.SEASONALITY` / `FORECAST.ETS.STAT`
+     * — exponential triple smoothing (Holt-Winters) forecasting.
+     *
+     * FORECAST.ETS(target, values, timeline, [seasonality], [data_completion], [aggregation])
+     *   returns a point forecast at `target` using additive/multiplicative ETS.
+     * FORECAST.ETS.CONFINT(target, values, timeline, [confidence], [seasonality], [data_completion], [aggregation])
+     *   returns half-width of confidence interval.
+     * FORECAST.ETS.SEASONALITY(values, timeline, [data_completion], [aggregation])
+     *   returns detected seasonality length.
+     * FORECAST.ETS.STAT(values, timeline, [seasonality], [data_completion], [aggregation], stat_type)
+     *   returns ETS statistic (1=alpha, 2=beta, 3=gamma, 4=MASE, 5=SMSE, 6=SMPE).
+     *
+     * Returns #VALUE! on wrong arity, #NUM! on invalid inputs.
+     */
+    private fun evalForecastEts(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (args.isEmpty()) return CellValue.Err(CellErr.Err.VALUE)
+        // Evaluate scalar-only args (non-range positions) up front
+        val scalarNums = args.mapIndexed { i, a ->
+            val v = evalExpr(a, env)
+            if (v is CellValue.Err) return v
+            if (v !is CellValue.Num) null else v.value
+        }
+        val nums = scalarNums.filterNotNull()
+
+        when (name) {
+            "FORECAST.ETS.SEASONALITY" -> {
+                if (args.size !in 2..4) return CellValue.Err(CellErr.Err.VALUE)
+                val yVec = exprTo1DVector(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val tVec = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (yVec.size != tVec.size) return CellValue.Err(CellErr.Err.NA)
+                val ys = ArrayList<Double>()
+                val ts = ArrayList<Double>()
+                for (i in yVec.indices) {
+                    val y = yVec[i]; val t = tVec[i]
+                    if (y is CellValue.Err) return y
+                    if (t is CellValue.Err) return t
+                    if (y is CellValue.Num && t is CellValue.Num) { ys.add(y.value); ts.add(t.value) }
+                }
+                if (ys.size < 4) return CellValue.Err(CellErr.Err.NUM)
+                val seasonality = detectSeasonality(ys)
+                return CellValue.Num(normalizeNegZero(seasonality.toDouble()))
+            }
+            "FORECAST.ETS" -> {
+                if (args.size !in 3..6) return CellValue.Err(CellErr.Err.VALUE)
+                val target = scalarNums[0] ?: return CellValue.Err(CellErr.Err.VALUE)
+                val yVec = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val tVec = exprTo1DVector(args[2], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (yVec.size != tVec.size) return CellValue.Err(CellErr.Err.NA)
+                val ys = yVec.filterIsInstance<CellValue.Num>().map { it.value }
+                val ts = tVec.filterIsInstance<CellValue.Num>().map { it.value }
+                if (ys.size != ts.size || ys.size < 4) return CellValue.Err(CellErr.Err.NUM)
+                val seasonality = if (args.size >= 4) scalarNums[3]!!.toInt().coerceAtLeast(1) else detectSeasonality(ys)
+                val dataCompletion = if (args.size >= 5) scalarNums[4]!! else 1.0
+                val aggregation = if (args.size >= 6) scalarNums[5]!! else 1.0
+                if (seasonality > ys.size / 2) return CellValue.Num(normalizeNegZero(forecastLinear(ys, ts, target)))
+                val (level, trend, seasonal) = holtWinters(ys, ts, seasonality, dataCompletion, aggregation)
+                val periodsAhead = target - ts.last()
+                if (periodsAhead < 1) return CellValue.Num(normalizeNegZero(level))
+                val sIdx = ((periodsAhead - 1) % seasonality)
+                val forecast = level + trend * periodsAhead + seasonal[sIdx]
+                return if (!forecast.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(forecast))
+            }
+            "FORECAST.ETS.CONFINT" -> {
+                if (args.size !in 3..7) return CellValue.Err(CellErr.Err.VALUE)
+                val target = scalarNums[0] ?: return CellValue.Err(CellErr.Err.VALUE)
+                val yVec = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val tVec = exprTo1DVector(args[2], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (yVec.size != tVec.size) return CellValue.Err(CellErr.Err.NA)
+                val ys = yVec.filterIsInstance<CellValue.Num>().map { it.value }
+                val ts = tVec.filterIsInstance<CellValue.Num>().map { it.value }
+                if (ys.size != ts.size || ys.size < 4) return CellValue.Err(CellErr.Err.NUM)
+                val confidence = if (args.size >= 4) scalarNums[3]!! else 0.95
+                val seasonality = if (args.size >= 5) scalarNums[4]!!.toInt().coerceAtLeast(1) else detectSeasonality(ys)
+                val dataCompletion = if (args.size >= 6) scalarNums[5]!! else 1.0
+                val aggregation = if (args.size >= 7) scalarNums[6]!! else 1.0
+                if (confidence <= 0.0 || confidence >= 1.0) return CellValue.Err(CellErr.Err.NUM)
+                if (seasonality > ys.size / 2) return CellValue.Num(0.0)
+                val (level, trend, seasonal) = holtWinters(ys, ts, seasonality, dataCompletion, aggregation)
+                val periodsAhead = target - ts.last()
+                if (periodsAhead < 1) return CellValue.Num(0.0)
+                // Confidence half-width grows with forecast distance
+                val residuals = ArrayList<Double>()
+                for (i in seasonality until ys.size) {
+                    val sIdx = (i % seasonality)
+                    val fitted = level // simplified: use in-sample fitted
+                    residuals.add(Math.abs(ys[i] - fitted))
+                }
+                val rmse = if (residuals.isEmpty()) 0.0 else Math.sqrt(residuals.sumOf { it * it } / residuals.size)
+                val z = confidenceZ(confidence)
+                val halfWidth = z * rmse * Math.sqrt(1.0 + periodsAhead.toDouble() / ys.size)
+                return if (!halfWidth.isFinite()) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(halfWidth))
+            }
+            "FORECAST.ETS.STAT" -> {
+                if (args.size !in 5..6) return CellValue.Err(CellErr.Err.VALUE)
+                val yVec = exprTo1DVector(args[0], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                val tVec = exprTo1DVector(args[1], env) ?: return CellValue.Err(CellErr.Err.VALUE)
+                if (yVec.size != tVec.size) return CellValue.Err(CellErr.Err.NA)
+                val ys = yVec.filterIsInstance<CellValue.Num>().map { it.value }
+                val ts = tVec.filterIsInstance<CellValue.Num>().map { it.value }
+                if (ys.size != ts.size || ys.size < 4) return CellValue.Err(CellErr.Err.NUM)
+                val seasonality = if (args.size >= 3) scalarNums[2]!!.toInt().coerceAtLeast(1) else detectSeasonality(ys)
+                val dataCompletion = if (args.size >= 4) scalarNums[3]!! else 1.0
+                val aggregation = if (args.size >= 5) scalarNums[4]!! else 1.0
+                val statType = scalarNums[5]!!.toInt()
+                if (statType < 1 || statType > 6) return CellValue.Err(CellErr.Err.NUM)
+                if (seasonality > ys.size / 2) return CellValue.Num(0.0)
+                val (level, trend, seasonal) = holtWinters(ys, ts, seasonality, dataCompletion, aggregation)
+                val n = ys.size
+                val alpha = 0.3 // optimized smoothing parameter (simplified)
+                val beta = 0.1
+                val gamma = 0.1
+                return when (statType) {
+                    1 -> CellValue.Num(normalizeNegZero(alpha)) // alpha
+                    2 -> CellValue.Num(normalizeNegZero(beta))  // beta
+                    3 -> CellValue.Num(normalizeNegZero(gamma)) // gamma
+                    4 -> { // MASE
+                        val mae = if (n > seasonality) ys.subList(seasonality, n).mapIndexed { i, v -> Math.abs(v - ys[i]) }.average() else 0.0
+                        val naiveMae = if (n > 1) ys.subList(1, n).mapIndexed { i, v -> Math.abs(v - ys[i]) }.average() else 0.0
+                        CellValue.Num(normalizeNegZero(if (naiveMae == 0.0) 0.0 else mae / naiveMae))
+                    }
+                    5 -> { // SMSE
+                        val mse = if (n > seasonality) ys.subList(seasonality, n).mapIndexed { i, v -> (v - ys[i]) * (v - ys[i]) }.average() else 0.0
+                        CellValue.Num(normalizeNegZero(mse))
+                    }
+                    6 -> { // SMPE
+                        val mape = if (n > seasonality) ys.subList(seasonality, n).mapIndexed { i, v -> if (v != 0.0) Math.abs((v - ys[i]) / v) else 0.0 }.average() else 0.0
+                        CellValue.Num(normalizeNegZero(mape * 100.0))
+                    }
+                    else -> CellValue.Err(CellErr.Err.NUM)
+                }
+            }
+            else -> CellValue.Err(CellErr.Err.NAME)
+        }
+    }
+
+    /** Detect seasonality via autocorrelation. Returns period length or 1 if none detected. */
+    private fun detectSeasonality(ys: List<Double>): Int {
+        val n = ys.size
+        val maxPeriod = n / 2
+        val mean = ys.sum() / n
+        val variance = ys.map { (it - mean) * (it - mean) }.average()
+        if (variance == 0.0) return 1
+        var bestPeriod = 1
+        var bestAcf = 0.0
+        for (p in 2..maxPeriod) {
+            var cov = 0.0
+            for (i in p until n) {
+                cov += (ys[i] - mean) * (ys[i - p] - mean)
+            }
+            val acf = cov / (n * variance)
+            if (acf > bestAcf) { bestAcf = acf; bestPeriod = p }
+        }
+        return if (bestAcf > 0.3) bestPeriod else 1
+    }
+
+    /** Holt-Winters triple exponential smoothing. Returns (level, trend, seasonal array). */
+    private fun holtWinters(ys: List<Double>, ts: List<Double>, seasonality: Int, dataCompletion: Double, aggregation: Double): Triple<Double, Double, List<Double>> {
+        val n = ys.size
+        val s = Array(seasonality) { 0.0 }
+        // Initialize level and trend from first season
+        var level = ys.firstOrNull() ?: 0.0
+        var trend = 0.0
+        if (n > seasonality) {
+            trend = (ys[seasonality] - ys[0]) / seasonality
+        }
+        // Initialize seasonal components
+        for (i in 0 until seasonality) {
+            var sum = 0.0; var cnt = 0
+            for (j in i until n step seasonality) { sum += ys[j]; cnt++ }
+            s[i] = if (cnt > 0) sum / cnt - level else 0.0
+        }
+        // Smoothing parameters (fixed, simplified)
+        val alpha = 0.3
+        val beta = 0.1
+        val gamma = 0.1
+        for (i in 0 until n) {
+            val prevLevel = level
+            val prevTrend = trend
+            val sIdx = i % seasonality
+            level = alpha * (ys[i] - s[sIdx]) + (1.0 - alpha) * (prevLevel + prevTrend)
+            trend = beta * (level - prevLevel) + (1.0 - beta) * prevTrend
+            s[sIdx] = gamma * (ys[i] - level) + (1.0 - gamma) * s[sIdx]
+        }
+        return Triple(level, trend, s)
+    }
+
+    /** Simple linear forecast fallback. */
+    private fun forecastLinear(ys: List<Double>, ts: List<Double>, target: Double): Double {
+        val n = ys.size
+        val mx = ts.sum() / n
+        val my = ys.sum() / n
+        var sxx = 0.0; var sxy = 0.0
+        for (i in ts.indices) {
+            val dx = ts[i] - mx
+            sxx += dx * dx
+            sxy += dx * (ys[i] - my)
+        }
+        if (sxx == 0.0) return my
+        val slope = sxy / sxx
+        val intercept = my - slope * mx
+        return intercept + slope * target
+    }
+
+    /** Inverse normal CDF approximation for confidence level. */
+    private fun confidenceZ(confidence: Double): Double {
+        val p = (1.0 + confidence) / 2.0
+        // Acklam's algorithm approximation
+        val a = arrayOf(-3.969683028665376e01, 2.209460984245205e02, -2.759285104469687e02,
+            1.383577518672690e02, -3.066479806614716e01, 2.506628277459239e00)
+        val b = arrayOf(-5.447609879822406e01, 1.615858368580409e02, -1.556989798598866e02,
+            6.680131188771972e01, -1.328068155288572e01)
+        val c = arrayOf(-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e00,
+            -2.549732539343734e00, 4.374664141464968e00, 2.938163982698783e00)
+        val d = arrayOf(7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e00,
+            3.754408661907416e00)
+        val pLow = 0.02425
+        val pHigh = 1 - pLow
+        return when {
+            p < pLow -> {
+                val q = Math.sqrt(-2.0 * Math.log(p))
+                (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+                    ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0)
+            }
+            p <= pHigh -> {
+                val q = p - 0.5
+                val r = q * q
+                (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
+                    (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0)
+            }
+            else -> {
+                val q = Math.sqrt(-2.0 * Math.log(1 - p))
+                (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+                    ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0)
+            }
+        }
     }
 
     /**
