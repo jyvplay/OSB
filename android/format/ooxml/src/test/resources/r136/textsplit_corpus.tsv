@@ -1,0 +1,20 @@
+FUNCTION	ARGS	EXPECTED
+TEXTSPLIT	"a,b,c", ","	a
+TEXTSPLIT	"one|two|three", "|"	one
+TEXTSPLIT	"a,b", ","	a
+TEXTSPLIT	"single", ","	single
+TEXTSPLIT	"a,,b", ","	a
+TEXTSPLIT	"a,b;c,d", ",", ";"	a
+TEXTSPLIT	"x,y", ",", ";"	x
+TEXTSPLIT	"a,,b", ",", , TRUE	a
+TEXTSPLIT	"a,,b", ",", , FALSE	a
+TEXTSPLIT	"A,B,C", ",", , FALSE, 0	A
+TEXTSPLIT	"a,b,c", ",", , FALSE, 1	a
+TEXTSPLIT	"a,b;c", ",", ";", , , "-"	a
+TEXTSPLIT	"a;b,c", ",", ";", , , "-"	a
+TEXTSPLIT	#VALUE!, ','	#VALUE!
+TEXTSPLIT	"a,b", ""	#VALUE!
+TEXTSPLIT	"a,b"	#VALUE!
+TEXTSPLIT	"" , ","	
+TEXTSPLIT	"a<>b<>c", "<>"	a
+TEXTSPLIT	"a,,b", ",,"	a
