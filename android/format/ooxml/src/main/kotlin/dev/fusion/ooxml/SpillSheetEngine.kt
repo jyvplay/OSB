@@ -81,6 +81,7 @@ object SpillSheetEngine {
             "VDB",
             "ODDFPRICE", "ODDFYIELD", "ODDLPRICE", "ODDLYIELD",
             "FORECAST.ETS", "FORECAST.ETS.CONFINT", "FORECAST.ETS.SEASONALITY", "FORECAST.ETS.STAT",
+            "CONCATENATE",
         )) {
             s = Regex("(?<![A-Za-z0-9_.])" + xlFn + "\\s*\\(", RegexOption.IGNORE_CASE)
                 .replace(s) { "_xlfn.${xlFn}(" }
