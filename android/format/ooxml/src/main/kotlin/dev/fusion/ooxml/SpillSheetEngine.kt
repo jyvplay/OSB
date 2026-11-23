@@ -77,6 +77,9 @@ object SpillSheetEngine {
             "DAVERAGE", "DCOUNT", "DCOUNTA", "DGET", "DMAX", "DMIN", "DPRODUCT", "DSTDEV", "DSTDEVP", "DSUM", "DVAR", "DVARP",
             "IMCSC", "IMSEC", "IMSECH", "IMSINH", "IMTAN",
             "AMORDEGRC", "AMORLINC", "DB", "ISPMT", "PRICE", "PRICEMAT", "YIELD", "YIELDMAT",
+            "IMCOSH", "IMCOT", "IMCOTH",
+            "VDB",
+            "ODDFPRICE", "ODDFYIELD", "ODDLPRICE", "ODDLYIELD",
         )) {
             s = Regex("(?<![A-Za-z0-9_.])" + xlFn + "\\s*\\(", RegexOption.IGNORE_CASE)
                 .replace(s) { "_xlfn.${xlFn}(" }
