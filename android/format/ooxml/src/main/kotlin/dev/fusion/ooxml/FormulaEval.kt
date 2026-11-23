@@ -36,7 +36,7 @@ import java.time.temporal.ChronoUnit
  */
 object FormulaEval {
     const val SCOPE =
-        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions. R129 adds SHEET/SHEETS sheet reference functions (single-sheet engine always returns 1). R130 adds DAVERAGE/DCOUNT/DCOUNTA/DGET/DMAX/DMIN/DPRODUCT/DSTDEV/DSTDEVP/DSUM/DVAR/DVARP database aggregation functions with header-based field resolution and criteria-range filtering (AND across columns, OR across criteria rows). R132 adds IMCSC/IMSEC/IMSECH/IMSINH/IMTAN complex trigonometric/hyperbolic functions operating on complex numbers in x+yi or x+yj format. R131 adds AMORDEGRC/AMORLINC French amortization, DB fixed-declining depreciation, ISPMT interest payment, PRICE/PRICEMAT bond price, YIELD/YIELDMAT bond yield functions."
+        "Typed single-sheet DAG formula engine (300 pure functions R53 expanding 260 pure functions R52 expanding 215 pure functions expanding 168 pure functions R50, 130 pure functions R49, 95 pure functions R48, 61 pure functions R47, and 35 pure functions R46 baselines: HANKEL/TOEPLITZ/VANDERMONDE/KRONECKER/CONVOLVE1D/PARETOGRID + COMPLEX/IMREAL/IMAGINARY/IMABS/IMARGUMENT/IMCONJUGATE/IMSUM/IMSUB/IMPRODUCT/IMDIV/IMPOWER/IMSQRT/IMEXP/IMLN/IMSIN/IMCOS + COUPDAYS/COUPDAYBS/COUPDAYSNC/COUPNUM/COUPPCD/COUPNCD/DURATION/MDURATION + BETA.DIST/TDIST.2T/TDIST.RT/F.DIST.RT/FISHER/FISHERINV/STANDARDIZE/CONFIDENCE.T/HARMEAN/TRIMMEAN/DEVSQ/AVEDEV/SERIESSUM/MULTINOMIAL + OUTERPRODUCT/CUMSUM/DIFFARRAY/MOVINGAVERAGE/ZSCOREGRID/DIAGONAL + WEIBULL.DIST/HYPGEOM.DIST/NEGBINOM.DIST/LOGNORM.DIST/LOGNORM.INV/GAMMA/GAMMA.DIST/CHISQ.DIST/CHISQ.DIST.RT/BESSELJ/BESSELI/BESSELK/BESSELY/ERF.PRECISE/ERFC.PRECISE/PHI/DELTA/GESTEP/CHISQ.TEST/F.TEST/Z.TEST/T.TEST/SKEW.P + TBILLEQ/TBILLPRICE/TBILLYIELD/DISC/INTRATE/RECEIVED/PRICEDISC/YIELDDISC + PERMUTATIONA/SEC/CSC/COT/SECH/CSCH/COTH/ACOT/ACOTH/OCT2BIN/OCT2HEX/HEX2OCT/BIN2OCT/TEXTBEFORE/TEXTAFTER/ENCODEURL/UNICHAR/UNICODE + EXPAND/TRIMRANGE/GROUPBY/PIVOTBY/LINEST/LOGEST/FLATTEN + NORM.S.DIST/NORM.S.INV/NORM.DIST/POISSON.DIST/BINOM.DIST/EXPON.DIST/CONFIDENCE.NORM/XNPV/XIRR/ACCRINT/ACCRINTM/GEOMEAN/SKEW/KURT/RSQ/STEYX/COVARIANCE.P/COVARIANCE.S + SLN/SYD/DDB/MIRR/IPMT/PPMT/CUMIPMT/CUMPRINC/EFFECT/NOMINAL + BASE/DECIMAL/ROMAN/ARABIC/COMBINA/FACTDOUBLE/QUOTIENT/MROUND/SQRTPI/DEGREES/RADIANS/ISOWEEKNUM/ADDRESS/PERCENTOF/ARRAYTOTEXT/VALUETOTEXT + matrix MMULT/MINVERSE/MDETERM/MUNIT + FREQUENCY/TREND/GROWTH + lexical LAMBDA closures + ISOMITTED + HOFs + dynamic array shapers, ranges, CellErr propagation, cycle refusal, dirty-dependent closure); volatile NOW/RAND/INDIRECT and single-sheet 3D refs refused. R116 exposes the trigonometry the reciprocal kernels already used internally: SIN/COS/TAN/ASIN/ACOS/ATAN/ATAN2/SINH/COSH/TANH/ASINH/ACOSH/ATANH + PI. R127 adds DOLLAR/FIXED currency and fixed-decimal text formatting, TIMEVALUE text-to-time serial, COLUMN/ROW cell-reference lookup, and COLUMNS/ROWS array dimension queries. R128 adds T (text or empty) and N (number or zero) value conversion functions. R129 adds SHEET/SHEETS sheet reference functions (single-sheet engine always returns 1). R130 adds DAVERAGE/DCOUNT/DCOUNTA/DGET/DMAX/DMIN/DPRODUCT/DSTDEV/DSTDEVP/DSUM/DVAR/DVARP database aggregation functions with header-based field resolution and criteria-range filtering (AND across columns, OR across criteria rows). R132 adds IMCSC/IMSEC/IMSECH/IMSINH/IMTAN complex trigonometric/hyperbolic functions operating on complex numbers in x+yi or x+yj format. R131 adds AMORDEGRC/AMORLINC French amortization, DB fixed-declining depreciation, ISPMT interest payment, PRICE/PRICEMAT bond price, YIELD/YIELDMAT bond yield functions. R133 adds IMCOSH/IMCOT/IMCOTH complex hyperbolic functions (cosh/cot/coth of complex numbers), VDB variable-declining-balance depreciation, and ODDFPRICE/ODDFYIELD/ODDLPRICE/ODDLYIELD odd-coupon-period bond price/yield functions."
 
     const val MAX_CELLS = 16_384
     const val MAX_RANGE_CELLS = 16_384L
@@ -3270,7 +3270,8 @@ object FormulaEval {
                 else CellValue.Num(normalizeNegZero(normSInvAcklam(1.0 - alpha / 2.0) * sd / sqrt(sz)))
             }
         }
-        "SLN", "SYD", "DDB" -> evalDepreciation(name, args, env)
+            "SLN", "SYD", "DDB" -> evalDepreciation(name, args, env)
+            "VDB" -> evalVDB(args, env)
         "MIRR", "IPMT", "PPMT", "CUMIPMT", "CUMPRINC", "EFFECT", "NOMINAL" -> evalR51Financial(name, args, env)
         "BASE" -> {
             if (args.size !in 2..3) CellValue.Err(CellErr.Err.VALUE)
@@ -3477,6 +3478,55 @@ object FormulaEval {
                 CellValue.Num(normalizeNegZero(dep))
             }
         }
+    }
+
+    /** VDB: variable declining balance depreciation between start and end period. */
+    private fun evalVDB(args: List<Expr>, env: Map<String, CellValue>): CellValue {
+        if (args.size !in 5..7) return CellValue.Err(CellErr.Err.VALUE)
+        val nums = args.mapIndexed { i, a ->
+            if (a == Expr.OmittedArg) {
+                if (i == 5) 2.0 else if (i == 6) false else 0.0
+            } else {
+                val v = evalScalarAsNum(evalExpr(a, env)); if (v is CellValue.Err) return v
+                (v as CellValue.Num).value
+            }
+        }
+        val cost = nums[0]; val salvage = nums[1]; val life = nums[2]
+        val startPeriod = floor(nums[3]).toInt()
+        val endPeriod = floor(nums[4]).toInt()
+        val factor = if (args.size > 5) nums[5] else 2.0
+        val noSwitch = if (args.size > 6) nums[6] != 0.0 else false
+
+        if (cost < 0.0 || salvage < 0.0 || life <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+        if (startPeriod < 1 || startPeriod > life || endPeriod < startPeriod || endPeriod > life) return CellValue.Err(CellErr.Err.NUM)
+        if (factor <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+
+        val rate = factor / life
+        var book = cost
+        var totalDep = 0.0
+
+        for (p in 1..endPeriod) {
+            val ddbDep = book * rate
+            val slDep = (book - salvage) / (life - p + 1.0)
+
+            var dep: Double
+            if (!noSwitch && slDep > ddbDep) {
+                dep = slDep
+            } else {
+                dep = ddbDep
+            }
+
+            // Don't depreciate below salvage
+            val minRemaining = book - dep
+            if (minRemaining < salvage) dep = book - salvage
+
+            if (p >= startPeriod) totalDep += dep
+            book -= dep
+
+            if (book <= salvage) break
+        }
+
+        CellValue.Num(normalizeNegZero(totalDep))
     }
 
     private fun evalR51Financial(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
@@ -6870,7 +6920,8 @@ object FormulaEval {
                 }
                 if (!v.isFinite() || v <= 0.0) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(v))
             }
-            "AMORDEGRC", "AMORLINC", "DB", "ISPMT", "PRICE", "PRICEMAT", "YIELD", "YIELDMAT" -> evalR131FinancialFunction(name, args, env)
+            "AMORDEGRC", "AMORLINC", "DB", "ISPMT", "PRICE", "PRICEMAT", "YIELD", "YIELDMAT",
+            "ODDFPRICE", "ODDFYIELD", "ODDLPRICE", "ODDLYIELD" -> evalR131FinancialFunction(name, args, env)
             /** R131 financial functions: AMORDEGRC, AMORLINC, DB, ISPMT, PRICE, PRICEMAT, YIELD, YIELDMAT, ODDFPRICE, ODDFYIELD, ODDLPRICE, ODDLYIELD. */
             private fun evalR131FinancialFunction(name: String, args: List<Expr>, env: Map<String, CellValue>): CellValue {
                 errIfAny(args.size)?.let { return it }
@@ -7058,14 +7109,74 @@ object FormulaEval {
                         val yearDays = if (basis == 1 || basis == 3) 365.0 else 360.0
                         val dsm = (maturity - settle).toDouble()
                         val dsi = (maturity - issue).toDouble()
-                        // YIELDMAT = (redemption - pr) / (pr * dsm / yearDays) + rate * dsi / yearDays ... simplified
-                        // More accurately: pr = redemption / (1 + yield * dsm / yearDays) + rate * redemption * dsi / yearDays / (1 + yield * dsm / yearDays)
-                        // Solve: yield = (redemption + rate * redemption * dsi / yearDays - pr) / (pr * dsm / yearDays)
                         val numerator = redemption + rate * redemption * dsi / yearDays - pr
                         val denominator = pr * dsm / yearDays
                         if (denominator == 0.0) return CellValue.Err(CellErr.Err.NUM)
                         val v = numerator / denominator
                         if (!v.isFinite() || v <= 0.0) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(v))
+                    }
+                    "ODDFPRICE", "ODDFYIELD", "ODDLPRICE", "ODDLYIELD" -> {
+                        if (name == "ODDFPRICE" || name == "ODDLPRICE") {
+                            if (args.size !in 8..9) return CellValue.Err(CellErr.Err.VALUE)
+                        } else {
+                            if (args.size !in 8..9) return CellValue.Err(CellErr.Err.VALUE)
+                        }
+                        val settle = numArg(0) ?: return CellValue.Err(CellErr.Err.VALUE)
+                        val maturity = numArg(1) ?: return CellValue.Err(CellErr.Err.VALUE)
+                        val rate = numArg(2) ?: return CellValue.Err(CellErr.Err.VALUE)
+                        val yld = numArg(3) ?: return CellValue.Err(CellErr.Err.VALUE)
+                        val redemption = numArg(4) ?: return CellValue.Err(CellErr.Err.VALUE)
+                        val frequency = numArg(5) ?: return CellValue.Err(CellErr.Err.VALUE)
+                        val basis = if (args.size == 9) (numArg(6) ?: return CellValue.Err(CellErr.Err.VALUE)).toInt() else 0
+                        val prArg = if (name == "ODDFYIELD" || name == "ODDLYIELD") numArg(7) ?: return CellValue.Err(CellErr.Err.VALUE) else null
+                        if (settle >= maturity || frequency !in setOf(1.0, 2.0, 4.0) || basis !in 0..4 || redemption <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                        val freq = frequency.toInt()
+                        val yearDays = if (basis == 1 || basis == 3) 365.0 else 360.0
+                        val dsm = (maturity - settle).toDouble()
+                        val n = (dsm * freq / yearDays).toInt()
+                        val dSr = dsm - n * yearDays / freq
+                        val a = dSr / (yearDays / freq)
+                        val b = a
+                        if (name == "ODDFPRICE" || name == "ODDLPRICE") {
+                            val p1 = redemption / kotlin.math.pow(1.0 + yld / freq, n + b)
+                            var p2 = 0.0
+                            for (k in 1..n) {
+                                p2 += rate / freq * redemption / kotlin.math.pow(1.0 + yld / freq, k + b)
+                            }
+                            val p3 = rate / freq * redemption / kotlin.math.pow(1.0 + yld / freq, 1 + b)
+                            val v = p1 + p2 - p3 * a
+                            if (!v.isFinite() || v <= 0.0) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(v))
+                        } else {
+                            // ODDFYIELD / ODDLYIELD: Newton-Raphson solve for yield
+                            val pr = prArg!!
+                            if (pr <= 0.0) return CellValue.Err(CellErr.Err.NUM)
+                            var y = rate
+                            for (iter in 1..50) {
+                                val p1 = redemption / kotlin.math.pow(1.0 + y / freq, n + b)
+                                var p2 = 0.0
+                                for (k in 1..n) {
+                                    p2 += rate / freq * redemption / kotlin.math.pow(1.0 + y / freq, k + b)
+                                }
+                                val p3 = rate / freq * redemption / kotlin.math.pow(1.0 + y / freq, 1 + b)
+                                val price = p1 + p2 - p3 * b
+                                val diff = price - pr
+                                if (abs(diff) < 1e-10) break
+                                val dy = 1e-6
+                                val y2 = y + dy
+                                val p1b = redemption / kotlin.math.pow(1.0 + y2 / freq, n + b)
+                                var p2b = 0.0
+                                for (k in 1..n) {
+                                    p2b += rate / freq * redemption / kotlin.math.pow(1.0 + y2 / freq, k + b)
+                                }
+                                val p3b = rate / freq * redemption / kotlin.math.pow(1.0 + y2 / freq, 1 + b)
+                                val price2 = p1b + p2b - p3b * b
+                                val deriv = (price2 - price) / dy
+                                if (deriv == 0.0) break
+                                y -= diff / deriv
+                                if (y <= 0.0) y = 1e-10
+                            }
+                            if (!y.isFinite() || y <= 0.0) CellValue.Err(CellErr.Err.NUM) else CellValue.Num(normalizeNegZero(y))
+                        }
                     }
                     else -> CellValue.Err(CellErr.Err.NAME)
                 }
@@ -7398,7 +7509,7 @@ object FormulaEval {
                 if (sufStr != "i" && sufStr != "j") return CellValue.Err(CellErr.Err.VALUE)
                 CellValue.Text(formatComplex(re, im, sufStr[0]))
             }
-            "IMREAL", "IMAGINARY", "IMABS", "IMARGUMENT", "IMCONJUGATE", "IMSQRT", "IMEXP", "IMLN", "IMSIN", "IMCOS", "IMCSC", "IMSEC", "IMSECH", "IMSINH", "IMTAN" -> {
+            "IMREAL", "IMAGINARY", "IMABS", "IMARGUMENT", "IMCONJUGATE", "IMSQRT", "IMEXP", "IMLN", "IMSIN", "IMCOS", "IMCSC", "IMSEC", "IMSECH", "IMSINH", "IMTAN", "IMCOSH", "IMCOT", "IMCOTH" -> {
                 if (args.size != 1) return CellValue.Err(CellErr.Err.VALUE)
                 errIfAny(1)?.let { return it }
                 val z = parseComplexText(evalExpr(args[0], env).displayText()) ?: return CellValue.Err(CellErr.Err.NUM)
@@ -7455,6 +7566,21 @@ object FormulaEval {
                         val den = kotlin.math.cos(2.0 * z.re) + cosh2Im
                         if (den == 0.0) CellValue.Err(CellErr.Err.DIV0)
                         else CellValue.Text(formatComplex(sin2Re / den, kotlin.math.sinh(2.0 * z.im) / den, z.suffix))
+                    }
+                    "IMCOSH" -> CellValue.Text(formatComplex(kotlin.math.cosh(z.re) * kotlin.math.cos(z.im), kotlin.math.sinh(z.re) * kotlin.math.sin(z.im), z.suffix))
+                    "IMCOT" -> {
+                        val sin2Re = kotlin.math.sin(2.0 * z.re)
+                        val cosh2Im = kotlin.math.cosh(2.0 * z.im)
+                        val den = kotlin.math.cos(2.0 * z.re) + cosh2Im
+                        if (den == 0.0) CellValue.Err(CellErr.Err.DIV0)
+                        else CellValue.Text(formatComplex(-sin2Re / den, -kotlin.math.sinh(2.0 * z.im) / den, z.suffix))
+                    }
+                    "IMCOTH" -> {
+                        val sinh2Re = kotlin.math.sinh(2.0 * z.re)
+                        val sin2Im = kotlin.math.sin(2.0 * z.im)
+                        val den = kotlin.math.cosh(2.0 * z.re) - kotlin.math.cos(2.0 * z.im)
+                        if (den == 0.0) CellValue.Err(CellErr.Err.DIV0)
+                        else CellValue.Text(formatComplex(sinh2Re / den, -sin2Im / den, z.suffix))
                     }
                     else -> CellValue.Text(formatComplex(kotlin.math.cos(z.re) * kotlin.math.cosh(z.im), -kotlin.math.sin(z.re) * kotlin.math.sinh(z.im), z.suffix))
                 }
