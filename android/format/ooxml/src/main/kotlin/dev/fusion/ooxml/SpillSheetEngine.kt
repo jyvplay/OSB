@@ -75,7 +75,7 @@ object SpillSheetEngine {
             "EXPAND", "TRIMRANGE", "GROUPBY", "PIVOTBY",
             "DOLLAR", "FIXED", "TIMEVALUE", "COLUMN", "ROW", "COLUMNS", "ROWS", "T", "N", "SHEET", "SHEETS",
             "DAVERAGE", "DCOUNT", "DCOUNTA", "DGET", "DMAX", "DMIN", "DPRODUCT", "DSTDEV", "DSTDEVP", "DSUM", "DVAR", "DVARP",
-            "IMCSC", "IMSEC", "IMSECH", "IMSINH", "IMTAN",
+            "IMCSC", "IMCSCH", "IMSEC", "IMSECH", "IMSINH", "IMTAN", "IMLOG2", "IMLOG10",
             "AMORDEGRC", "AMORLINC", "DB", "ISPMT", "PRICE", "PRICEMAT", "YIELD", "YIELDMAT",
             "IMCOSH", "IMCOT", "IMCOTH",
             "VDB",
