@@ -1,0 +1,20 @@
+FUNCTION	ARGS	EXPECTED
+HYPERLINK	"https://example.com"	https://example.com
+HYPERLINK	"https://example.com", "Example"	Example
+HYPERLINK	"https://example.com", ""	
+HYPERLINK	"https://example.com/page?q=1", "Page 1"	Page 1
+HYPERLINK	"https://a.com", "Link A"	Link A
+HYPERLINK	"https://b.com", "Link B"	Link B
+HYPERLINK	"https://c.com", "Click here"	Click here
+HYPERLINK	#VALUE!	#VALUE!
+HYPERLINK	#VALUE!, ''	#VALUE!
+HYPERLINK	"https://example.com", #VALUE!	#VALUE!
+HYPERLINK	#REF!, 'Click'	#REF!
+HYPERLINK		#VALUE!
+HYPERLINK	"a", "b", "c"	#VALUE!
+HYPERLINK	""	#VALUE!
+HYPERLINK	"https://example.com/path with spaces", "Link"	Link
+HYPERLINK	"https://example.com?x=1&y=2", "Query"	Query
+HYPERLINK	"file:///C:/docs/report.pdf", "Report"	Report
+HYPERLINK	"mailto:someone@example.com", "Email"	Email
+HYPERLINK	"https://example.org", "Org"	Org
