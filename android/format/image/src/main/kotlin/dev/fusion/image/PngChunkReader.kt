@@ -17,9 +17,9 @@ package dev.fusion.image
  */
 class PngChunkReader private constructor() {
     companion object {
-        const val MAX_INPUT = 1 << 20  // 1 MiB
+        const val MAX_INPUT = 1 shl 20  // 1 MiB
         const val MAX_CHUNKS = 1024
-        const val MAX_CHUNK_LEN = 1 << 16  // 64 KiB per chunk
+        const val MAX_CHUNK_LEN = 1 shl 16  // 64 KiB per chunk
         private val SIGNATURE = byteArrayOf(
             0x89.toByte(), 0x50.toByte(), 0x4E.toByte(), 0x47.toByte(),
             0x0D.toByte(), 0x0A.toByte(), 0x1A.toByte(), 0x0A.toByte()
@@ -61,7 +61,7 @@ class PngChunkReader private constructor() {
             val crcStart = dataEnd
             if (crcStart + 4 > input.size) break
             val crc = readIntBE(input, crcStart)
-            val critical = typeBytes[0] in 'A'..'Z'
+            val critical = typeBytes[0].toInt() in 'A'.code..'Z'.code
             chunks.add(Chunk(type, dataStart, dataEnd, crc, critical))
             offset = crcStart + 4
         }

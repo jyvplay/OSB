@@ -16,6 +16,8 @@ from bootstrap_host_tools import environment
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = [
+    ROOT / "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticExportAllowlist.kt",
+    ROOT / "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticExportSession.kt",
     ROOT / 'privacy/src/main/java/dev/fusion/privacy/DiagnosticExportAllowlist.kt',
     ROOT / 'privacy/src/main/java/dev/fusion/privacy/DiagnosticExportSession.kt',
     ROOT / 'tools/diagnostics/DiagnosticExportCli.kt',

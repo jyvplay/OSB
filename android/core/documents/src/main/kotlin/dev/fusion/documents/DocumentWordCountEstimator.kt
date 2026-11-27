@@ -6,7 +6,7 @@ package dev.fusion.documents
  */
 class DocumentWordCountEstimator private constructor() {
     companion object {
-        const val MAX_DOC_LEN = 1 << 22
+        const val MAX_DOC_LEN = 1 shl 22
 
         data class Stats(val chars: Int, val words: Int, val lines: Int)
 

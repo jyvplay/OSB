@@ -10,7 +10,7 @@ class EditorTransactionEngine private constructor(
     private val maxHistory: Int = 256
 ) {
     companion object {
-        const val MAX_DOC_LEN = 1 << 22 // 4 MiB chars
+        const val MAX_DOC_LEN = 1 shl 22 // 4 MiB chars
 
         fun create(initialText: String = "", maxHistory: Int = 256): EditorTransactionEngine {
             require(initialText.length <= MAX_DOC_LEN) { "initialText exceeds MAX_DOC_LEN" }

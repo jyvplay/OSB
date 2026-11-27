@@ -33,6 +33,8 @@ from r146_corpus import build_corpus  # noqa: E402
 from r146_oracle import FEATURES, Refusal, oracle  # noqa: E402
 
 PROBE_SOURCES = [
+    "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticExportAllowlist.kt",
+    "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticExportSession.kt",
     "feature/alerts/src/main/kotlin/dev/fusion/alerts/InexactAlarmPlanner.kt",
     "feature/accessibility/src/main/kotlin/dev/fusion/a11y/KeyToTouchMapper.kt",
     "format/pdf/src/main/java/dev/fusion/format/pdf/PdfAnnotationPlan.kt",

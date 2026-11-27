@@ -12,7 +12,7 @@ package dev.fusion.settings
  * [MAX_KEY_LEN] chars matching [KEY_RE]; values at most [MAX_VALUE_LEN] chars;
  * no empty keys; no embedded NUL in keys or values.
  */
-class SettingsCatalog private constructor(
+class SettingsValueCatalog private constructor(
     private val entries: LinkedHashMap<String, String>
 ) {
     companion object {
@@ -21,12 +21,13 @@ class SettingsCatalog private constructor(
         const val MAX_VALUE_LEN = 4096
         private val KEY_RE = Regex("[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*")
 
-        fun empty(): SettingsCatalog = SettingsCatalog(LinkedHashMap())
+        fun empty(): SettingsValueCatalog = SettingsValueCatalog(LinkedHashMap())
     }
 
     fun put(key: String, value: String) {
         require(KEY_RE.matches(key)) { "invalid settings key: $key" }
         require(key.length <= MAX_KEY_LEN) { "key exceeds $MAX_KEY_LEN chars" }
+        require('\u0000' !in value) { "NUL in value" }
         require(value.length <= MAX_VALUE_LEN) { "value exceeds $MAX_VALUE_LEN chars" }
         if (!entries.containsKey(key)) require(entries.size < MAX_ENTRIES) { "catalog full: $MAX_ENTRIES entries" }
         entries[key] = value

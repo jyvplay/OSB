@@ -32,6 +32,10 @@ jobs:
         run: |
           set -o pipefail
           python3 -m unittest discover -s tools -p 'test_r146_*.py' -v 2>&1 | tee r146-focused.log
+      - name: R176 workflow and complete-core build regression gate
+        run: |
+          set -o pipefail
+          python3 tools/run_r176_checks.py 2>&1 | tee r176-focused.log
       - name: Validate preserved source and privacy contracts
         run: python3 tools/check_project.py --keep
       - name: Preserve host evidence (not Android acceptance)
@@ -39,5 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: r146-host-contracts
-          path: android/r146-*.log
+          path: |
+            android/r146-*.log
+            android/r176-*.log
           if-no-files-found: warn

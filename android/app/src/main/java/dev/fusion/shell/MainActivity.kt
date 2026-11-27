@@ -1029,9 +1029,8 @@ class MainActivity : ComponentActivity() {
         SettingsScreen(settingsGraph, probeText, desktop.density.name,
             onDensity = { dispatch(WindowCommand.SetDensity(WindowDensity.valueOf(it))) },
             onShareReport = {
-                runCatching { startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"; putExtra(Intent.EXTRA_TEXT, probeText)
-                }, "Share redacted pilot observations")) }.onFailure { message = "No share target available." }
+                runCatching { startActivity(Intent(this@MainActivity, DiagnosticExportActivity::class.java)) }
+                    .onFailure { message = "Diagnostic review unavailable. No report shared." }
             })
     }
 

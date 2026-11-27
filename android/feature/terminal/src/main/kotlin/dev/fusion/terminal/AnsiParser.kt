@@ -17,12 +17,12 @@ package dev.fusion.terminal
  */
 class AnsiParser private constructor() {
     companion object {
-        const val MAX_INPUT = 1 << 14  // 16 KiB
+        const val MAX_INPUT = 1 shl 14  // 16 KiB
         const val MAX_PARAMS = 16
         const val MAX_PARAM_LEN = 8
         const val MAX_SEQUENCES = 256
         private val ESC = '\u001B'
-        private val CSI = "\["
+        private val CSI = "["
         private val SGR_RE = Regex("\\d+")
 
         data class Sgr(

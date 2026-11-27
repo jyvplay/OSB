@@ -14,7 +14,7 @@ package dev.fusion.security
  * Returns true only when both length and every byte are equal.
  */
 object ConstantTimeCompare {
-    const val MAX_LEN = 1 << 16  // 64 KiB
+    const val MAX_LEN = 1 shl 16  // 64 KiB
 
     fun equals(a: ByteArray, b: ByteArray): Boolean {
         require(a.size <= MAX_LEN) { "array a exceeds $MAX_LEN bytes" }

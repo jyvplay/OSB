@@ -244,14 +244,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.2",
-    "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent.",
+    "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent. R176 GeometryClamp now registers work areas, refuses impossible minima and bounds distance arithmetic; held-out host geometry checks run. Full compositor/device acceptance remains.",
     "tests": [
       "testing/contract/PilotCoreChecks",
       "plan:physical-device-and-Android-acceptance",
       "jvm:WindowRestoreChecks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1120,12 +1121,13 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Settings registry/history and capability/system-settings adapters R176 replaces direct sharing of live probe text with the explicit diagnostic review Activity. No report is sent automatically.",
     "tests": [
       "plan:T-ST-04",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1857,12 +1859,13 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted.",
+    "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted. R176 resolves duplicate unit-converter declarations while retaining decimal/Double APIs; repairs DecimalMath JVM APIs and bounds scale before arithmetic.",
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
       "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
       "plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2415,10 +2418,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries R146 allowlist review, digest-approved ZIP export via separate offline host CLI; scratchpad remains no-export. Heuristic redaction, not anonymity.",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries R146 allowlist review, digest-approved ZIP export via separate offline host CLI; scratchpad remains no-export. Heuristic redaction, not anonymity. R176 Shell diagnostic Activity adds opt-in fixed fields, exact review, approval-gated SAF ZIP save/readback and bounded imported-bundle verification. Scratchpad still has no export route. Activity API-compiles; device/provider UI acceptance unrun.",
     "tests": [
       "plan:T-SC-08",
-      "host:R146Checks"
+      "host:R146Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": []

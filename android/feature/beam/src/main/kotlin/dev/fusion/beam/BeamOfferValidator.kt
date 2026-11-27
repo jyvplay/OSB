@@ -19,7 +19,7 @@ class BeamOfferValidator private constructor(
     companion object {
         const val MAX_OFFERS = 512
         const val MAX_ID_LEN = 128
-        const val MAX_PAYLOAD_BYTES = 1L << 30 // 1 GiB
+        const val MAX_PAYLOAD_BYTES = 1L shl 30 // 1 GiB
         const val MAX_MIME_LEN = 128
         const val MAX_TS = Long.MAX_VALUE
         private val ID_RE = Regex("[a-zA-Z0-9_-]{1,64}")

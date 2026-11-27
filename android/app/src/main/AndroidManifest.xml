@@ -31,6 +31,7 @@
           The automatic SAF HTTP server is disabled. A per-transport LAN allowlist,
           receiver trust UI and network security review remain release blockers.
         -->
+        <activity android:name=".DiagnosticExportActivity" android:exported="false" android:excludeFromRecents="true" />
         <activity android:name=".PngCopyActivity" android:exported="false" />
         <!-- R28: detection-only USB attach/detach alerts (verdict text + private
              record + notification-if-permitted; never blocks). Registered here, NOT

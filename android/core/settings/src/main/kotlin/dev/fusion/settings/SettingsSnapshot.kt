@@ -62,6 +62,12 @@ class SettingsCatalog(definitions: List<SettingDef>) {
         return result.toMap()
     }
     companion object {
+        // R176: keep both the portable definition registry and the later mutable
+        // value-catalog API without declaring SettingsCatalog twice.
+        fun empty(): SettingsValueCatalog = SettingsValueCatalog.empty()
+        const val MAX_ENTRIES = SettingsValueCatalog.MAX_ENTRIES
+        const val MAX_KEY_LEN = SettingsValueCatalog.MAX_KEY_LEN
+        const val MAX_VALUE_LEN = SettingsValueCatalog.MAX_VALUE_LEN
         const val MAX_VALUE = 4096
         const val MAX_FRAME = 65536
         private fun strict(b: ByteArray): String = Charsets.UTF_8.newDecoder()

@@ -19,8 +19,8 @@ class CaptureSegmentQuota private constructor(
     companion object {
         const val MAX_SEGMENTS = 4096
         const val MAX_ID_LEN = 128
-        const val MAX_SEGMENT_BYTES = 1L << 30 // 1 GiB
-        const val MAX_QUOTA_BYTES = 1L << 40 // 1 TiB
+        const val MAX_SEGMENT_BYTES = 1L shl 30 // 1 GiB
+        const val MAX_QUOTA_BYTES = 1L shl 40 // 1 TiB
         private val ID_RE = Regex("[a-zA-Z0-9_-]{1,64}")
 
         fun empty(quotaBytes: Long): CaptureSegmentQuota {

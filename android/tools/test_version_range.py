@@ -2,7 +2,7 @@
 """Independent differential oracle for VersionRange (core/model).
 
 Implements bounded SemVer range matching: >=, <=, ==, !=, >, <, ^ (caret
-compatible), ~ (tilde approximate), and bare ==. Delegates to SemVer for
+compatible), ~ (tilde approximate), explicit operators only. Delegates to SemVer for
 parsing and precedence. Cross-checks against the Kotlin contract in
 core/model/src/main/kotlin/dev/fusion/model/VersionRange.kt.
 
@@ -95,27 +95,21 @@ def satisfied_by(op: str, version: SemVer, other: SemVer) -> bool:
 
 
 def _caret_compatible(other: SemVer, version: SemVer) -> bool:
-    if other.major != version.major:
-        return False
-    if version.major == 0 and version.minor == 0:
-        return other == version
-    if version.major == 0:
-        return (other.minor >= version.minor and
-                (other.minor > version.minor or other.patch >= version.patch) and
-                other.minor < version.minor + 1)
-    return other.major == version.major and other.minor >= version.minor
+    lower = (version.major, version.minor, version.patch)
+    candidate = (other.major, other.minor, other.patch)
+    if version.major:
+        upper = (version.major + 1, 0, 0)
+    elif version.minor:
+        upper = (0, version.minor + 1, 0)
+    else:
+        upper = (0, 0, version.patch + 1)
+    return lower <= candidate < upper
 
 
 def _tilde_compatible(other: SemVer, version: SemVer) -> bool:
-    if version.major == 0 and version.minor == 0:
-        return other == version
-    if version.major == 0:
-        return (other.major == 0 and
-                other.minor == version.minor and
-                other.patch >= version.patch)
-    return (other.major == version.major and
-            other.minor == version.minor and
-            other.patch >= version.patch)
+    return ((version.major, version.minor, version.patch) <=
+            (other.major, other.minor, other.patch) <
+            (version.major, version.minor + 1, 0))
 
 
 class VersionRangeTest(unittest.TestCase):
@@ -191,17 +185,19 @@ class VersionRangeTest(unittest.TestCase):
         self.assertFalse(satisfied_by("~", v, SemVer.parse("1.2.2")))
 
     def test_tilde_zero_major_zero_minor(self):
-        # ~0.0.3 means >=0.0.3, <0.0.4 — only 0.0.3 matches
+        # ~0.0.3 means >=0.0.3, <0.1.0 (original R43 contract)
         v = SemVer.parse("0.0.3")
         self.assertTrue(satisfied_by("~", v, SemVer.parse("0.0.3")))
-        self.assertFalse(satisfied_by("~", v, SemVer.parse("0.0.9")))
+        self.assertTrue(satisfied_by("~", v, SemVer.parse("0.0.9")))
         self.assertFalse(satisfied_by("~", v, SemVer.parse("0.0.2")))
-        self.assertFalse(satisfied_by("~", v, SemVer.parse("0.0.4")))
+        self.assertTrue(satisfied_by("~", v, SemVer.parse("0.0.4")))
 
-    def test_bare_equals_eq(self):
-        v = SemVer.parse("1.2.3")
-        self.assertTrue(satisfied_by("", v, SemVer.parse("1.2.3")))
-        self.assertFalse(satisfied_by("", v, SemVer.parse("1.2.4")))
+    def test_bare_version_is_not_a_range(self):
+        with self.assertRaises(AssertionError):
+            parse_range("1.2.3")
+
+    def test_caret_lower_patch_bound(self):
+        self.assertFalse(satisfied_by("^", SemVer.parse("1.2.3"), SemVer.parse("1.2.2")))
 
     def test_invalid_range_operator(self):
         with self.assertRaises(AssertionError):

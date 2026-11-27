@@ -1515,7 +1515,9 @@ def _diagexp(payload: str) -> str:
         seen.add(key)
         _require(len(value) <= 1024, "value cap")
         if key in allow_set:
-            _require(all(ord(c) >= 32 and ord(c) != 127 for c in value), "export control")
+            _require(all(not (ord(c) < 32 or 127 <= ord(c) <= 159 or 0x2028 <= ord(c) <= 0x202e
+                             or 0x2066 <= ord(c) <= 0x2069 or ord(c) in (0x200e, 0x200f, 0x061c))
+                         for c in value), "export control")
             kept.append((key, _scrub_value(value)))
     kept.sort(key=lambda kv: kv[0])
     if not kept:

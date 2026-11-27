@@ -30,6 +30,8 @@ class DiagnosticWorkflow(unittest.TestCase):
         cls.work = Path(cls.tmp.name)
         cls.classes = cls.work / 'classes'
         sources = [
+            "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticExportAllowlist.kt",
+            "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticExportSession.kt",
             'privacy/src/main/java/dev/fusion/privacy/DiagnosticExportAllowlist.kt',
             'privacy/src/main/java/dev/fusion/privacy/DiagnosticExportSession.kt',
             'feature/together/src/main/kotlin/dev/fusion/together/EditLogCoalescer.kt',

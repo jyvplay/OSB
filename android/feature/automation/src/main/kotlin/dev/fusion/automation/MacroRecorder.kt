@@ -24,7 +24,7 @@ class MacroRecorder private constructor(
         const val MAX_NAME_LEN = 128
         const val MAX_PARAMS = 16
         const val MAX_PARAM_LEN = 256
-        const val MAX_TOTAL_BYTES = 1 << 16  // 64 KiB
+        const val MAX_TOTAL_BYTES = 1 shl 16  // 64 KiB
         private val NAME_RE = Regex("[a-z][a-z0-9_]{0,63}")
 
         data class MacroStep(

@@ -19,7 +19,7 @@ class PlainTextNormalizer private constructor(
     private val lowercase: Boolean
 ) {
     companion object {
-        const val MAX_INPUT = 1 << 16  // 64 KiB chars
+        const val MAX_INPUT = 1 shl 16  // 64 KiB chars
         private val ZERO_WIDTH = setOf(0x200B, 0x200C, 0x200D, 0xFEFF)
         private val WS = setOf(0x09, 0x0A, 0x0D, 0x20)
 

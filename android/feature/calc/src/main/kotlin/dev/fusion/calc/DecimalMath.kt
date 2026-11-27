@@ -34,16 +34,20 @@ object DecimalMath {
     )
 
     private fun parseDecimal(text: String): BigDecimal {
+        require(text.length <= 512) { "decimal literal too long" }
         require(text.isNotBlank()) { "empty decimal literal" }
         require(text.matches(Regex("[+-]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][+-]?\\d+)?"))) {
             "invalid decimal literal: $text"
         }
-        return BigDecimal(text)
+        return BigDecimal(text).also {
+            require(it.scale() in -2048..2048) { "decimal scale out of bounds" }
+            checkBounds(it)
+        }
     }
 
     private fun checkBounds(value: BigDecimal) {
-        require(value.isFinite) { "non-finite decimal result" }
-        val adjustedExponent = value.precision.toLong() - value.scale - 1
+        // BigDecimal represents finite numbers only; NaN/Infinity literals refuse in parsing.
+        val adjustedExponent = value.precision().toLong() - value.scale() - 1
         if (value.signum() != 0) {
             require(adjustedExponent in MIN_EXPONENT..MAX_EXPONENT) {
                 "adjusted exponent $adjustedExponent outside [$MIN_EXPONENT, $MAX_EXPONENT]"
@@ -56,8 +60,8 @@ object DecimalMath {
         val normalized = value.stripTrailingZeros()
         return DecimalResult(
             value = if (normalized.signum() == 0) "0" else normalized.toPlainString(),
-            scale = normalized.scale,
-            precision = normalized.precision
+            scale = normalized.scale(),
+            precision = normalized.precision()
         )
     }
 

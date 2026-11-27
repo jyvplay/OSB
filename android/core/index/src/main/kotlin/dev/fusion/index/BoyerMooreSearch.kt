@@ -19,7 +19,7 @@ class BoyerMooreSearch private constructor(
     private val shiftTable: IntArray
 ) {
     companion object {
-        const val MAX_HAYSTACK = 1 << 20  // 1 MiB chars
+        const val MAX_HAYSTACK = 1 shl 20  // 1 MiB chars
         const val MAX_NEEDLE = 4096
         const val ALPHABET = 256
 

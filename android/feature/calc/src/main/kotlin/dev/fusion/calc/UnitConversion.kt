@@ -15,7 +15,7 @@ package dev.fusion.calc
  * Throws IllegalArgumentException for unknown units, mismatched dimensions,
  * or out-of-bounds values.
  */
-object Units {
+object UnitConversion {
     private const val MAX_VALUE = 10_000_000_000_000_000.0
 
     private val dimensions = mapOf(
@@ -44,8 +44,8 @@ object Units {
 
     fun convert(value: Double, fromUnit: String, toUnit: String): ConversionResult {
         require(value.isFinite()) { "value must be finite" }
-        require(value.absoluteValue <= MAX_VALUE) {
-            "value magnitude ${value.absoluteValue} exceeds $MAX_VALUE"
+        require(kotlin.math.abs(value) <= MAX_VALUE) {
+            "value magnitude ${kotlin.math.abs(value)} exceeds $MAX_VALUE"
         }
         require(fromUnit.isNotBlank()) { "fromUnit must not be blank" }
         require(toUnit.isNotBlank()) { "toUnit must not be blank" }

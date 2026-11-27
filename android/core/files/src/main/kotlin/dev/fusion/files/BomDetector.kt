@@ -19,7 +19,7 @@ package dev.fusion.files
  */
 class BomDetector private constructor() {
     companion object {
-        const val MAX_INPUT = 1 << 20  // 1 MiB
+        const val MAX_INPUT = 1 shl 20  // 1 MiB
         private val UTF8_BOM = byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte())
         private val UTF16_LE_BOM = byteArrayOf(0xFF.toByte(), 0xFE.toByte())
         private val UTF16_BE_BOM = byteArrayOf(0xFE.toByte(), 0xFF.toByte())
