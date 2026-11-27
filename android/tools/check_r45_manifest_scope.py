@@ -3,7 +3,7 @@
 
 Enforces:
 1. `app/src/main/AndroidManifest.xml`: exact R28 component/permission scope
-   (2 activities, 1 USB receiver, 0 services/providers, `allowBackup="false"`,
+   (3 activities including R176 internal diagnostics, 1 USB receiver, 0 services/providers, `allowBackup="false"`,
    `INTERNET` + `READ_MEDIA_IMAGES` only).
 2. `privacy/src/main/AndroidManifest.xml`: air-gapped companion invariant — ZERO `INTERNET`
    permission and exact `HIDE_OVERLAY_WINDOWS` anti-overlay protection.
@@ -41,15 +41,15 @@ PRO_ONLY_PERMS = {
 }
 
 
-def check_manifests() -> dict[str, object]:
+def check_manifests(root_dir: Path = ROOT) -> dict[str, object]:
     manifests = sorted(
-        p for p in ROOT.rglob("AndroidManifest.xml") if "/build/" not in p.as_posix()
+        p for p in root_dir.rglob("AndroidManifest.xml") if "/build/" not in p.as_posix()
     )
     if not manifests:
         raise SystemExit("no AndroidManifest.xml files found")
 
     for mf in manifests:
-        rel = mf.relative_to(ROOT).as_posix()
+        rel = mf.relative_to(root_dir).as_posix()
         root = ET.fromstring(mf.read_text(encoding="utf-8"))
         perms = [
             el.attrib.get(f"{ANDROID_NS}name", "")
@@ -73,7 +73,7 @@ def check_manifests() -> dict[str, object]:
                     raise SystemExit(f"{rel}: <{comp_tag}> with intent-filter missing explicit android:exported")
 
     # Exact check on app/src/main/AndroidManifest.xml
-    app_main = ET.fromstring((ROOT / "app/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))
+    app_main = ET.fromstring((root_dir / "app/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))
     main_perms = sorted(
         e.attrib[f"{ANDROID_NS}name"].split(".")[-1]
         for e in app_main.findall("uses-permission")
@@ -86,13 +86,18 @@ def check_manifests() -> dict[str, object]:
         raise SystemExit("app/src/main must set android:allowBackup='false'")
     acts = sorted(e.attrib[f"{ANDROID_NS}name"] for e in app_node.findall("activity"))
     recvs = sorted(e.attrib[f"{ANDROID_NS}name"] for e in app_node.findall("receiver"))
-    if acts != [".MainActivity", ".PngCopyActivity"] or recvs != [".UsbWatchReceiver"]:
+    if acts != [".DiagnosticExportActivity", ".MainActivity", ".PngCopyActivity"] or recvs != [".UsbWatchReceiver"]:
         raise SystemExit(f"unexpected app/src/main components: acts={acts}, recvs={recvs}")
+    diagnostic = next(e for e in app_node.findall("activity") if e.attrib[f"{ANDROID_NS}name"] == ".DiagnosticExportActivity")
+    if diagnostic.attrib.get(f"{ANDROID_NS}exported") != "false" or diagnostic.find("intent-filter") is not None:
+        raise SystemExit("diagnostic review must be internal with no inbound intent route")
+    if diagnostic.attrib.get(f"{ANDROID_NS}excludeFromRecents") != "true":
+        raise SystemExit("diagnostic review must stay out of recents")
     if app_node.findall("service") or app_node.findall("provider"):
         raise SystemExit("app/src/main must declare 0 services and 0 providers")
 
     # Exact check on privacy/src/main/AndroidManifest.xml (air-gapped companion: NO INTERNET!)
-    priv_main = ET.fromstring((ROOT / "privacy/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))
+    priv_main = ET.fromstring((root_dir / "privacy/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))
     priv_perms = sorted(
         e.attrib[f"{ANDROID_NS}name"] for e in priv_main.findall("uses-permission")
     )

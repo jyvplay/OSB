@@ -18,7 +18,7 @@ class TextSelectionRange private constructor(
     private var end: Int
 ) {
     companion object {
-        const val MAX_DOC_LEN = 1 << 20 // 1 MiB chars
+        const val MAX_DOC_LEN = 1 shl 20 // 1 MiB chars
 
         fun create(docLen: Int, start: Int, end: Int): TextSelectionRange {
             require(docLen >= 0 && docLen <= MAX_DOC_LEN) { "docLen out of bounds" }

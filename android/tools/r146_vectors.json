@@ -1,0 +1,1886 @@
+[
+  {
+    "case": 0,
+    "lane": "inexact",
+    "note": "grid-ceiling basic",
+    "sha256": "2bb6a939505671e32e3344cc26f463aadbf8596623335340c957997ddc6384b8"
+  },
+  {
+    "case": 1,
+    "lane": "inexact",
+    "note": "mixed exact/inexact",
+    "sha256": "ae04a95c2c2e90a98326e0dd21d14c02fde2e31f60a85265ea5aae825e4b2f7a"
+  },
+  {
+    "case": 2,
+    "lane": "inexact",
+    "note": "firstDue==now boundary",
+    "sha256": "fef6d8f28294c233585505b2378a0eba0e9f455dc2e482df6c7ee3768343cf37"
+  },
+  {
+    "case": 3,
+    "lane": "inexact",
+    "note": "due just past -> next interval",
+    "sha256": "2025add226c08e73944602100325fb7b408a1211c712e250172702dd33832068"
+  },
+  {
+    "case": 4,
+    "lane": "inexact",
+    "note": "horizon boundary at 35d refused",
+    "sha256": "9fadffada86853d29975da1f478f1a0a0e3d684f7648c92573f207de997d9afd"
+  },
+  {
+    "case": 5,
+    "lane": "inexact",
+    "note": "30d-1000ms horizon accepted",
+    "sha256": "1e7f81f01b577d62213d9c599ffaf64efbed69b5f170e206d46ba9eb401e62fc"
+  },
+  {
+    "case": 6,
+    "lane": "inexact",
+    "note": "grid under min refused",
+    "sha256": "1d9292ea66d9579ba9fde26ef75b53994ed1fc0c5f1789e22af32a51c5decef7"
+  },
+  {
+    "case": 7,
+    "lane": "inexact",
+    "note": "grid over max refused",
+    "sha256": "cb156ab0cfc7abebbfc8e959e38a19899ef06321202a48f662fb8ec7fe09dec9"
+  },
+  {
+    "case": 8,
+    "lane": "inexact",
+    "note": "duplicate ids refused",
+    "sha256": "af6a74fb791eac09cdfac0bd6cfb4deccc43092c96671cd4bed73516c9c2864f"
+  },
+  {
+    "case": 9,
+    "lane": "inexact",
+    "note": "interval under min refused",
+    "sha256": "690c5858207784ce6662b4dc75847e74e61650b177dc94be065286a49dca5970"
+  },
+  {
+    "case": 10,
+    "lane": "inexact",
+    "note": "interval over 30d refused",
+    "sha256": "143da9fce09743296dd129b8d7799ddc090d1ad077c0e87a75fbee13005449cf"
+  },
+  {
+    "case": 11,
+    "lane": "inexact",
+    "note": "flex over interval/4 refused",
+    "sha256": "9b60c17ca627a113bf639e100f9bf0e3f6c744a8c7e405c2d2f67f07241ceb3d"
+  },
+  {
+    "case": 12,
+    "lane": "inexact",
+    "note": "flex at interval/4 accepted",
+    "sha256": "11ff6c12cd7fc3e5cb5faf46edb4fcc7e4f22f41527f2dfc7f81afee5f982e45"
+  },
+  {
+    "case": 13,
+    "lane": "inexact",
+    "note": "illegal id refused",
+    "sha256": "639c54f1f50b721bbb9920ea58fad8ac24550da9bfb556c16488ba9d69d3a22b"
+  },
+  {
+    "case": 14,
+    "lane": "inexact",
+    "note": "exact flag 2 refused",
+    "sha256": "e2d1f11aecdcf65b6e93d9ab7696be3bc15b22f5137955a24078ee1a8517be3c"
+  },
+  {
+    "case": 15,
+    "lane": "inexact",
+    "note": "negative now refused",
+    "sha256": "231e86e3a320a1a719391416b5d7b3444a302b623e8d222fb272b93ca5095dd6"
+  },
+  {
+    "case": 16,
+    "lane": "inexact",
+    "note": "five alarms share a maintenance slot",
+    "sha256": "1c6b553a7b1dca1481b8945ac09b16ff10dab3a575102a89489874618d0f2b6c"
+  },
+  {
+    "case": 17,
+    "lane": "keyres",
+    "note": "mapped tap resolves",
+    "sha256": "54b26a37edad5ac30eaf9389a89f7f2cf1a4ccc012cea570668d382086814ceb"
+  },
+  {
+    "case": 18,
+    "lane": "keyres",
+    "note": "canonicalizes case+order",
+    "sha256": "3757a61066d78eaafc2372a5850ade99036d324611a876f977145c4273a8fbec"
+  },
+  {
+    "case": 19,
+    "lane": "keyres",
+    "note": "unknown key refused",
+    "sha256": "825d56b89896a0348a923ef0af33aa1899216b2ddd07ad9817abf559697ee13f"
+  },
+  {
+    "case": 20,
+    "lane": "keyres",
+    "note": "dup modifier refused",
+    "sha256": "32d0734f1a49bfe917e7583547410f7a2bddaac7080436d215eb40829c6627c0"
+  },
+  {
+    "case": 21,
+    "lane": "keyres",
+    "note": "out-of-order mods refused",
+    "sha256": "b7b752cb2ece53ee78f0aeca41d44c0a78562b22266557fba4cf964cc49d520e"
+  },
+  {
+    "case": 22,
+    "lane": "keyres",
+    "note": "unmapped -> UNMAPPED (not REF)",
+    "sha256": "0c12bcf927a5293415a1da8c64e6ec8d59864bf4e198f5c90b3ad1950ba0aa13"
+  },
+  {
+    "case": 23,
+    "lane": "keyres",
+    "note": "reserved meta chord refused at table parse",
+    "sha256": "62dd9d14a00f51370fcc814fdf52ea7a19677d5b2f49f2c9c0437cf436cdc996"
+  },
+  {
+    "case": 24,
+    "lane": "keyres",
+    "note": "reserved ctrl+alt+delete refused",
+    "sha256": "a1bfb149cdd271554027a1eb4dea4e2747581daa339627ad4dab7f27d2051902"
+  },
+  {
+    "case": 25,
+    "lane": "keyres",
+    "note": "modifier-only chord refused",
+    "sha256": "7f1b2204bbace3690d5ef571c4c98b72448cea6be71b2c1bead713575eebfcd5"
+  },
+  {
+    "case": 26,
+    "lane": "keyres",
+    "note": "permille over 1000",
+    "sha256": "05c9c5f753734f64590837d2f91ed21c81da6f07e1118d0fa01ff7a502fc7222"
+  },
+  {
+    "case": 27,
+    "lane": "keyres",
+    "note": "hold 49ms refused",
+    "sha256": "76bbf1f0e963238e7f0bc25cdf81e6710fcc35766ca713fe2d1a6e3d5abf5a3e"
+  },
+  {
+    "case": 28,
+    "lane": "keyseq",
+    "note": "cooldown suppression",
+    "sha256": "b6b0785de54375a0558b313dc469ba8374deaa8522d61edc2fff187bbb5e9020"
+  },
+  {
+    "case": 29,
+    "lane": "keyseq",
+    "note": "cooldown 0 never suppresses",
+    "sha256": "c5efd8d43e80ea57df3e1aec16de67a7d2867a6afdf2860f99975cf1a8f47398"
+  },
+  {
+    "case": 30,
+    "lane": "keyseq",
+    "note": "negative cooldown",
+    "sha256": "6c882f543ab26c3a867c2880d0d3d9021565f5b0c8b5dd5d7773cfe76570ba24"
+  },
+  {
+    "case": 31,
+    "lane": "keyseq",
+    "note": "decreasing timestamps refused",
+    "sha256": "0c6d5bcc64ce0289b8a1b784854716afd7845802e435cd04da1698bec6ebf07f"
+  },
+  {
+    "case": 32,
+    "lane": "keyseq",
+    "note": "unmapped chord in seq refused",
+    "sha256": "fd59f8412ecb4c85d794501e1b31cec9f93a2702e1f7139a3bc2bcabd95a2d43"
+  },
+  {
+    "case": 33,
+    "lane": "keyseq",
+    "note": "empty sequence -> empty",
+    "sha256": "eb9fee7f29f4613c3459f68e625168dd1cd2e2c30296f3ec17c0a8e55789ca30"
+  },
+  {
+    "case": 34,
+    "lane": "keyseq",
+    "note": "cooldown over 5000 refused",
+    "sha256": "b1113c2d5c385f7b178b3011dc84717004ac8a180a0649ddd499baf665723f5c"
+  },
+  {
+    "case": 35,
+    "lane": "pdf",
+    "note": "sticky note with hostile author/contents",
+    "sha256": "e7741333b12e35831478b54915f3a138dfcc05622667c792663befe1f80b11ca"
+  },
+  {
+    "case": 36,
+    "lane": "pdf",
+    "note": "two quads + union rect",
+    "sha256": "f277d1d2423e0c91c88ac45f3f0e60bf46221dbd14cc2943d9467bcdcee3e53f"
+  },
+  {
+    "case": 37,
+    "lane": "pdf",
+    "note": "ink polyline",
+    "sha256": "c5eba946d54a9bfd232d071cc866c34d3da300f555157d95140a3e59009af003"
+  },
+  {
+    "case": 38,
+    "lane": "pdf",
+    "note": "anchor on page corner -> degenerate rect refused",
+    "sha256": "7591e69a2bd699b1ded352d353ceb2748585474a464a833e520b54c2fdfe7464"
+  },
+  {
+    "case": 39,
+    "lane": "pdf",
+    "note": "opacity 0 refused",
+    "sha256": "d4f427217c03bb1bc6760b280d7377fea24aaae4a9e15dc5f055580a7ca5cc46"
+  },
+  {
+    "case": 40,
+    "lane": "pdf",
+    "note": "opacity >1 refused",
+    "sha256": "27eaed3eef63a56d6a720f372f3018a62d4762effa73fdd75928ac5b79c3a48d"
+  },
+  {
+    "case": 41,
+    "lane": "pdf",
+    "note": "unknown flag bit refused",
+    "sha256": "572924f99131ddeb9bc70989e0d9e4a173c99e1b01945658e81eb6f0fa01173a"
+  },
+  {
+    "case": 42,
+    "lane": "pdf",
+    "note": "partially visible quad accepted",
+    "sha256": "e3873fbefcdce6678957dd9511bc906cd10c48f371bbe319ce946f17afd85676"
+  },
+  {
+    "case": 43,
+    "lane": "pdf",
+    "note": "ink point outside refused",
+    "sha256": "db50aecaaa8f99137677e65bcfa286b4deee631c84c3db648c0d9389b87a70fb"
+  },
+  {
+    "case": 44,
+    "lane": "pdf",
+    "note": "inverted box refused",
+    "sha256": "21e1730cdea91f6a078435aec23e3ef261a553d5718c1c37d8fe39798e902857"
+  },
+  {
+    "case": 45,
+    "lane": "pdf",
+    "note": "unknown type refused",
+    "sha256": "7847429f917dcde7a0daab9648e40fa25d11c65c2a01d71e3cf7397aecdd07a6"
+  },
+  {
+    "case": 46,
+    "lane": "pdf",
+    "note": "coordinate over 1e6 refused",
+    "sha256": "d3fb70f461d076ae64a994dc88983479624a2624625afe79790334c7779577e1"
+  },
+  {
+    "case": 47,
+    "lane": "pdf",
+    "note": "512-bound prologue kept small here",
+    "sha256": "7543dca70c71f48e924e37d55b685eea848b11e29125d66a6d892436dace856f"
+  },
+  {
+    "case": 48,
+    "lane": "cpio",
+    "note": "two members + trailer",
+    "sha256": "e6922656a5c7399573c868f4ddf7918a38c3b2d8118f6d9da53ae402caf61f38"
+  },
+  {
+    "case": 49,
+    "lane": "cpio",
+    "note": "trailer-only archive",
+    "sha256": "e6aa7f7f1c808882a922a575cc5f946d9aecee15626a986b22076a8f8f1355e2"
+  },
+  {
+    "case": 50,
+    "lane": "cpio",
+    "note": "500 zero bytes after trailer",
+    "sha256": "844ce44cfeff44bea231496c0a2c8a8ffe8637cdad621ef7353ac09340375776"
+  },
+  {
+    "case": 51,
+    "lane": "cpio",
+    "note": "512 fill after trailer refused",
+    "sha256": "c51d37d2c1492368fda5e9aea9d1e6bd9a03496e12ac2ab7b2320e5c5e0002d2"
+  },
+  {
+    "case": 52,
+    "lane": "cpio",
+    "note": "nonzero fill refused",
+    "sha256": "2b99e50423e04e876a6cef0383a82248e212b930e873f2d76dd65a0bea9a8b38"
+  },
+  {
+    "case": 53,
+    "lane": "cpio",
+    "note": "missing trailer refused",
+    "sha256": "2657df80ca97136121e5e727b709a77f622114be29a49e970c1f005f02eec3b8"
+  },
+  {
+    "case": 54,
+    "lane": "cpio",
+    "note": "odc magic refused",
+    "sha256": "0d479042bad411e8b5253ec28ff9bc10e75f7f483b188777389e012cfa2aed93"
+  },
+  {
+    "case": 55,
+    "lane": "cpio",
+    "note": "non-hex count refused",
+    "sha256": "660feee45e13393543de7d1473a790169ac3d1527e35f46fa64127f292d0bd70"
+  },
+  {
+    "case": 56,
+    "lane": "cpio",
+    "note": "interior NUL refused",
+    "sha256": "256a387b7ec85865bfcd9c9f5146460caaffb1a80d1e0f2394d14a0a19f8f97c"
+  },
+  {
+    "case": 57,
+    "lane": "cpio",
+    "note": "member size 1GiB+1 refused before read",
+    "sha256": "fcdc153983c5929ba4d9780ca83caf1ee28bf327a8769c4dd7fa90b2406f2ec5"
+  },
+  {
+    "case": 58,
+    "lane": "cpio",
+    "note": "truncated stream refused",
+    "sha256": "db0d65bec2eb061bb014660a77cb7a2077232ecbe131fc97c3c384366637a30b"
+  },
+  {
+    "case": 59,
+    "lane": "cpio",
+    "note": "255-char name accepted",
+    "sha256": "3c5196481a3d50225cec7a4a918a8355d1159115ed27017eac1356ca41fae540"
+  },
+  {
+    "case": 60,
+    "lane": "cpio",
+    "note": "256-char name refused",
+    "sha256": "d29a7f96c76ff4df530ba988d65c874252c0da3f68fd2ea4915b2870017fdd46"
+  },
+  {
+    "case": 61,
+    "lane": "cpio",
+    "note": "crc magic accepted",
+    "sha256": "12f39e384891095ff7e86735db08575151b13ed0dbb36d1e6edb01f03b3d7cec"
+  },
+  {
+    "case": 62,
+    "lane": "cpio",
+    "note": "utf-8 member name",
+    "sha256": "9448dc9865d0015e2cecff3eb917228ef6e398971ed7f68fa48a5eee83453771"
+  },
+  {
+    "case": 63,
+    "lane": "psd",
+    "note": "8BIM + JPEG thumb",
+    "sha256": "70d47564a41174497fc19e0bb50ba0e41e02077523c9aa9e981dfc5d829df9ff"
+  },
+  {
+    "case": 64,
+    "lane": "psd",
+    "note": "raw thumbnail id1036",
+    "sha256": "c537c122716aa98966c64649fd9cc1780f1d10f1fe763ba2c287360ac22bcaa7"
+  },
+  {
+    "case": 65,
+    "lane": "psd",
+    "note": "no thumbnail",
+    "sha256": "844b1d5c713bc89ff0ff63d844f8d40fb32ec23f0916bb0938fc5b76820191db"
+  },
+  {
+    "case": 66,
+    "lane": "psd",
+    "note": "odd pascal name padded",
+    "sha256": "2d860bd8368ccfe837d5cd27dce6be31c2a42219d8876d707a2d4a91e525d7bb"
+  },
+  {
+    "case": 67,
+    "lane": "psd",
+    "note": "PSB version2 refused",
+    "sha256": "64fbee0206c30d2cae05b83010df2ab22f3f17f8b36fc3bf1187b16838d32e04"
+  },
+  {
+    "case": 68,
+    "lane": "psd",
+    "note": "zero channels refused",
+    "sha256": "85a607710fd04f79d2224ae0fb6c1ad1f68283582362821a67a63f0ce93eae33"
+  },
+  {
+    "case": 69,
+    "lane": "psd",
+    "note": "depth7 refused",
+    "sha256": "7805aae4e37a9cc614b9862530af93ab45c2833aa5dbf7ed1276f5337f4cfa4d"
+  },
+  {
+    "case": 70,
+    "lane": "psd",
+    "note": "color mode 10 refused",
+    "sha256": "50a1df2365fe1877beba34785c73cf6aaa4873ee2afd901c7e1af134d9f07b0f"
+  },
+  {
+    "case": 71,
+    "lane": "psd",
+    "note": "bad signature refused",
+    "sha256": "77c32e56291cf54222eee773fcd441d424fcf1db680d1eee79219652d53acb6d"
+  },
+  {
+    "case": 72,
+    "lane": "psd",
+    "note": "truncated header refused",
+    "sha256": "5c08eb3790cb7bd87d01d011db56223a3ca0267ad118d88110edfe41c9dbf1e5"
+  },
+  {
+    "case": 73,
+    "lane": "psd",
+    "note": "rows 30001 refused",
+    "sha256": "ea0226397b6a2c69d000a51acad5812f9b240be363d1d6671292026382d4c8ec"
+  },
+  {
+    "case": 74,
+    "lane": "psd",
+    "note": "jpeg thumb without SOI refused",
+    "sha256": "7145abd8da14acb2f5ac35686b63c248cc671123df763cf592e6b11ac55e9cff"
+  },
+  {
+    "case": 75,
+    "lane": "psd",
+    "note": "thumb width 4097 refused",
+    "sha256": "befacc3604311b9caf7ae5033cb7fdfa5c4fd4681710bf6de76615ffb27c42a0"
+  },
+  {
+    "case": 76,
+    "lane": "psd",
+    "note": "section length overrun refused",
+    "sha256": "5c3917c002bd0da6520c5bc799ae84ef67ca1c2527af11dcfe2576363b1b5829"
+  },
+  {
+    "case": 77,
+    "lane": "odfmeta",
+    "note": "drop creator+generator keep title+language",
+    "sha256": "9a13dac09963346eec36ccb8d014e28115a9f5c1697a34a0ebe72a40c4664685"
+  },
+  {
+    "case": 78,
+    "lane": "odfmeta",
+    "note": "comment dropped, user-defined dropped",
+    "sha256": "43301853ab0440ce4b9aeb1e171efe16b9105876ed863e330a431806d7c8c3b9"
+  },
+  {
+    "case": 79,
+    "lane": "odfmeta",
+    "note": "escaped content kept verbatim",
+    "sha256": "2fea5c7fa20be80a22fcfa94beaee7c264a736f3f3e16d3b4dd41a1974a5d8de"
+  },
+  {
+    "case": 80,
+    "lane": "odfmeta",
+    "note": "nested child refused",
+    "sha256": "b74126efcf0845f1d98cb3f81e79a3ea2acb359a547eaf8bb80968a1d2aa2310"
+  },
+  {
+    "case": 81,
+    "lane": "odfmeta",
+    "note": "unterminated child refused",
+    "sha256": "99bac6fdd6e4f81f171e2e441df5947a09a61793e7fece85603f989919e59b1b"
+  },
+  {
+    "case": 82,
+    "lane": "odfmeta",
+    "note": "missing meta refused",
+    "sha256": "19c381fdc1521cb39570f928d6ec10a43637c1096ba9c5edae0755f81fb13134"
+  },
+  {
+    "case": 83,
+    "lane": "odfmeta",
+    "note": "duplicate meta refused",
+    "sha256": "e4c0293d183d9bd6717895fc588e49ac2e4ed7b862c901c32e37eec5c1bb2a2e"
+  },
+  {
+    "case": 84,
+    "lane": "odfmeta",
+    "note": "quote-held '>' attribute parsed",
+    "sha256": "856e6ec58c7931c1361c853908e81a154f563efc708179cde4e208fd2a3b6ce8"
+  },
+  {
+    "case": 85,
+    "lane": "odfmeta",
+    "note": "self-closing allow/drop mix",
+    "sha256": "7b51414d1386ed0ed2275dc4a8e456fe6591dd1d95672590eadaf87e754f493f"
+  },
+  {
+    "case": 86,
+    "lane": "odfmeta",
+    "note": "unterminated comment refused",
+    "sha256": "21fc3d67abe534289c2d3f476d76a29e0935d361d50297164530f3bffaf8554e"
+  },
+  {
+    "case": 87,
+    "lane": "odfmeta",
+    "note": "second close refused",
+    "sha256": "e10ea9e7de6903162c0b2195f4263dcddfc72e587e3ff87241b3c5ec8f2bc73c"
+  },
+  {
+    "case": 88,
+    "lane": "geo",
+    "note": "encode precision 5",
+    "sha256": "f50ece33cd7fb1d93aea3099454e93a9eca064864c1dc385dee3ca0e54d544d4"
+  },
+  {
+    "case": 89,
+    "lane": "geo",
+    "note": "decode standard example",
+    "sha256": "bb16f796c7c5d6bd8915bd6f5e17c2af713418d396d53777e3b850e55d9cab4c"
+  },
+  {
+    "case": 90,
+    "lane": "geo",
+    "note": "decode idempotent check",
+    "sha256": "bb16f796c7c5d6bd8915bd6f5e17c2af713418d396d53777e3b850e55d9cab4c"
+  },
+  {
+    "case": 91,
+    "lane": "geo",
+    "note": "south-east corner",
+    "sha256": "2cd0fa13cf6c0d4a7180f672f1506794b0d2c9b547a11f93cd081e57f1122a4a"
+  },
+  {
+    "case": 92,
+    "lane": "geo",
+    "note": "north-west corner",
+    "sha256": "16d30ba092c28041d4a1eeee05a3146404a4c7dd7bede66fbb07f679f4e50e52"
+  },
+  {
+    "case": 93,
+    "lane": "geo",
+    "note": "neighbour north",
+    "sha256": "f234af555b22a02948fae0bc1a99c056242b7d72eefe0329f7888163cc5ef8b4"
+  },
+  {
+    "case": 94,
+    "lane": "geo",
+    "note": "neighbour south",
+    "sha256": "868071fe44af988d01a13e3fb3d5531e7145173388971e9d7ce17fb2fcce6740"
+  },
+  {
+    "case": 95,
+    "lane": "geo",
+    "note": "neighbour east",
+    "sha256": "c1f7344bd9deacdae27da26cf4d8637913285734c72f9ae1c0d68ef079d948de"
+  },
+  {
+    "case": 96,
+    "lane": "geo",
+    "note": "neighbour west",
+    "sha256": "bdb64a9bd6a4dd290be77957de576af90b7289f981474da7c3c939645b263250"
+  },
+  {
+    "case": 97,
+    "lane": "geo",
+    "note": "encode near pole",
+    "sha256": "d423512d15f7bec6b1713a455ab822867b53b6c52932448df3ae2ba86746fc18"
+  },
+  {
+    "case": 98,
+    "lane": "geo",
+    "note": "encode at antimeridian",
+    "sha256": "107efb12d25a89d97e3a02bb3ee9efb6f82c364d28cda75a732331337e493790"
+  },
+  {
+    "case": 99,
+    "lane": "geo",
+    "note": "latitude 91 refused",
+    "sha256": "a804a2c975d09c2a2fe0136c98af6af5166e00c114919afa1d8ead42db38f30c"
+  },
+  {
+    "case": 100,
+    "lane": "geo",
+    "note": "longitude 181 refused",
+    "sha256": "311e75e5920eb1c0dc0cfa3e43acb363229e08586e79575e287b4ace9c1f0634"
+  },
+  {
+    "case": 101,
+    "lane": "geo",
+    "note": "precision 13 refused",
+    "sha256": "c5f2ae2c12a1f187c197a52bc9011d7bcda8e25aa879dee473bfb6dd2a91eb7c"
+  },
+  {
+    "case": 102,
+    "lane": "geo",
+    "note": "precision 0 refused",
+    "sha256": "dd23bab7f1708f6cc36baa80efe5ad7b73b81969c0def84fc2f2341358bdf1a2"
+  },
+  {
+    "case": 103,
+    "lane": "geo",
+    "note": "invalid char refused",
+    "sha256": "dabcff9e771ee078ed540d5d3a3a56fd5f7f5d0b31da46acdd3d6106d97c88c4"
+  },
+  {
+    "case": 104,
+    "lane": "geo",
+    "note": "empty hash refused",
+    "sha256": "b9d205dcdfe5dd93198fca758ff9615245fda0f5ced0f269f7f5c1604f037d99"
+  },
+  {
+    "case": 105,
+    "lane": "geo",
+    "note": "bad direction refused",
+    "sha256": "1f539d0e5f885aff272df6860342ec9335b63e549c7bdcbdcd6e66ed4ed42796"
+  },
+  {
+    "case": 106,
+    "lane": "geo",
+    "note": "seeded encode #0",
+    "sha256": "a299d2aad6cfd4c01cbeaa579f83811277dee05c375f0da05c4dbfccad024a28"
+  },
+  {
+    "case": 107,
+    "lane": "geo",
+    "note": "seeded encode #1",
+    "sha256": "bd2f7e2cb11d0fdbc7ff166b65fc4e889627560f8c6826c704111fd434acf95b"
+  },
+  {
+    "case": 108,
+    "lane": "geo",
+    "note": "seeded encode #2",
+    "sha256": "f4fe5f0ec804f64a5b9fa5be9430185b188d26832b4e832e12b7f744b77def7b"
+  },
+  {
+    "case": 109,
+    "lane": "geo",
+    "note": "seeded encode #3",
+    "sha256": "8e5fe7e8f0e448cfbf89acf4d4603ebf12abb35bc5a6a6cb72e02d2c36861bf1"
+  },
+  {
+    "case": 110,
+    "lane": "geo",
+    "note": "seeded encode #4",
+    "sha256": "f6b0efc3401346f3474cb4896739a5a0b3fb02a3ac92d9eeea818880ce12ecf0"
+  },
+  {
+    "case": 111,
+    "lane": "geo",
+    "note": "seeded encode #5",
+    "sha256": "a7fd10ce23696b5b8c391d1a9f93ebb95e210be54e23f1c30d6ff678715072ba"
+  },
+  {
+    "case": 112,
+    "lane": "geo",
+    "note": "seeded neighbour #0",
+    "sha256": "3341f1cd5bd54bdf53bad103a0f8f779922ea216748cc904738b44f2436b059d"
+  },
+  {
+    "case": 113,
+    "lane": "geo",
+    "note": "seeded neighbour #1",
+    "sha256": "27c84630029e0733ddaf899258a030f37dcb070653237cf5d208c04a4410c5e5"
+  },
+  {
+    "case": 114,
+    "lane": "geo",
+    "note": "seeded neighbour #2",
+    "sha256": "a22b929db1e76d1021181e4301a0a86011f247c28a901080d27f3ebf676fad38"
+  },
+  {
+    "case": 115,
+    "lane": "geo",
+    "note": "seeded neighbour #3",
+    "sha256": "0de1399b3602a02b34fb944da2634b7458c58adc5c7a061ec3687c170fb59d2f"
+  },
+  {
+    "case": 116,
+    "lane": "synonym",
+    "note": "first ring wins, dedupe",
+    "sha256": "f6371bfce0f44b799cb2a8aad305e93e71643977c73167d7160fe71d7202dcbb"
+  },
+  {
+    "case": 117,
+    "lane": "synonym",
+    "note": "no-ring term passes",
+    "sha256": "0ac15c3f2e3f23d1f916711df90ac239e21793ee6a17cdd46354087c5025b631"
+  },
+  {
+    "case": 118,
+    "lane": "synonym",
+    "note": "empty query -> empty",
+    "sha256": "2e60b081c9f7b424355c9466482dc24bdf155106ecd46001376dc688babe516e"
+  },
+  {
+    "case": 119,
+    "lane": "synonym",
+    "note": "empty rings refused",
+    "sha256": "adb90905c9689eca396deaee2cf57000b07733a62e065ad538a77b7dfa59eb19"
+  },
+  {
+    "case": 120,
+    "lane": "synonym",
+    "note": "17 query terms refused",
+    "sha256": "02c27e6aa3259fd9a26286516ba623366320f4b3792a43c6cdd06ef5cf559066"
+  },
+  {
+    "case": 121,
+    "lane": "synonym",
+    "note": "ring of 9 refused",
+    "sha256": "0786e10790fbe3713e2127a913d9603665172eee77ad3e984f9770ae43c37b81"
+  },
+  {
+    "case": 122,
+    "lane": "synonym",
+    "note": "duplicate in ring refused",
+    "sha256": "cdc35119c702cb2f91d51e098d37d9d92ec7add2570afea30742917482f41cb3"
+  },
+  {
+    "case": 123,
+    "lane": "synonym",
+    "note": "uppercase query folded",
+    "sha256": "01065790bba35eb1f602b488830c1d2e5d9f688d01a05a353ec0863dfefaca4a"
+  },
+  {
+    "case": 124,
+    "lane": "synonym",
+    "note": "257 rings refused",
+    "sha256": "1fa7a95f3c63e324f96ec5e57c34201665a8642b1abac6500f200ee3be743990"
+  },
+  {
+    "case": 125,
+    "lane": "synonym",
+    "note": "expansion over 64 refused",
+    "sha256": "6ac91f24677603aeeb8c7e288d0fed1747c26b1668537eada5de365417a060d7"
+  },
+  {
+    "case": 126,
+    "lane": "termurl",
+    "note": "two urls + punctuation trim",
+    "sha256": "37f4135b9774c2ab41733a01f05b421094dbef70d3c54bbe05fee2533a15a4da"
+  },
+  {
+    "case": 127,
+    "lane": "termurl",
+    "note": "credentials redacted",
+    "sha256": "d2e456fb63846b38d50ed4afb1d5cc2ea0ff4039ec51bd36402a3e0fccf33169"
+  },
+  {
+    "case": 128,
+    "lane": "termurl",
+    "note": "word-boundary + bare www skipped",
+    "sha256": "5795e0330f9d971d25aa2a208a1377010f7fb04b79e85a3e56bdf11f29ffbbc6"
+  },
+  {
+    "case": 129,
+    "lane": "termurl",
+    "note": "port + ftp scheme",
+    "sha256": "77c036aeb3f3310cbe8f14071a48e3ee3ddc62624c9f26ae3301d2eb7794c773"
+  },
+  {
+    "case": 130,
+    "lane": "termurl",
+    "note": "port 99999 invalid candidate skipped",
+    "sha256": "78bb04cb0c7f8067788ba95143669974254f8da911825629117588b3e3099f8a"
+  },
+  {
+    "case": 131,
+    "lane": "termurl",
+    "note": "host without dot skipped",
+    "sha256": "ef833b8c730d459f6fbabfa19de84c196024a59d21dad68c8e19f57e706e0118"
+  },
+  {
+    "case": 132,
+    "lane": "termurl",
+    "note": "url over 2048 refused",
+    "sha256": "f626c92fde51ee3d68fdced1a1edea7f2691be4d1938cf5d48484cac0b499106"
+  },
+  {
+    "case": 133,
+    "lane": "termurl",
+    "note": "multiple matches with offsets",
+    "sha256": "ab31357f7e43b3c314c64702e25e5a017bda6cd1d8a40833b588ac3493b70b24"
+  },
+  {
+    "case": 134,
+    "lane": "termurl",
+    "note": "unsupported scheme not matched",
+    "sha256": "11a8fc96e268f8049f8719c89b5ee616697ba1b47a44b06790e1e477b7813278"
+  },
+  {
+    "case": 135,
+    "lane": "termurl",
+    "note": "comma/semicolon delimiters trimmed",
+    "sha256": "2fbf4c1f908f81a6b0c7f194944bc6b3cce64cb0823561c73400835bb8a08b37"
+  },
+  {
+    "case": 136,
+    "lane": "termurl",
+    "note": "ipv6 literal skipped",
+    "sha256": "404d28f09fa8bb6c6b4e0eb84c0b6f215033e3a140d9d60d070df458b637ef82"
+  },
+  {
+    "case": 137,
+    "lane": "termurl",
+    "note": "double-dot host skipped",
+    "sha256": "33e58cca7ee253badf6b001b69ee0b530625ba706ae075f546cbfaae2523203a"
+  },
+  {
+    "case": 138,
+    "lane": "termurl",
+    "note": "260 urls refused at cap",
+    "sha256": "c0bf5ceeee5a9b4649923f35c20f9cdc65c9748c46203241a42b3d0cb8007381"
+  },
+  {
+    "case": 139,
+    "lane": "notetag",
+    "note": "canonical corpus",
+    "sha256": "a0533ab77d53e7e1fccee02d7f34972d0f90c29021d07f25de005c615557ab60"
+  },
+  {
+    "case": 140,
+    "lane": "notetag",
+    "note": "ancestor chain",
+    "sha256": "7a5e5994019f00d12b1ba62b367e02e2eef91902554c28afb8ed5f47a684b91c"
+  },
+  {
+    "case": 141,
+    "lane": "notetag",
+    "note": "single segment",
+    "sha256": "c3cfb35b304fb3dca2f588eca9e0803beb128f2bc96da190fb60263ec0f12886"
+  },
+  {
+    "case": 142,
+    "lane": "notetag",
+    "note": "!MISSING ancestor",
+    "sha256": "e68a35646ff7536ba8a3e429eca3f59994f1515b19a47c6aea4f3f649918d84b"
+  },
+  {
+    "case": 143,
+    "lane": "notetag",
+    "note": "descendants sorted",
+    "sha256": "8392a5851411226e017ca43d0d6e9cfd9e2c32a0efe89be5f9529495cf33791e"
+  },
+  {
+    "case": 144,
+    "lane": "notetag",
+    "note": "prefix subtree",
+    "sha256": "b1099c6d51b63bc471b5ca014fb50a7efedeeb4b8af78d17567c8ec6e92996b8"
+  },
+  {
+    "case": 145,
+    "lane": "notetag",
+    "note": "!MISSING desc",
+    "sha256": "7ac608f3927ee0fc7c0c62391cc58691f46a8fb7267a1c26a9430d17ac9d2818"
+  },
+  {
+    "case": 146,
+    "lane": "notetag",
+    "note": "duplicate after normalize refused",
+    "sha256": "61b2c6d5d7486c6d3293b927e4a134e043095a6bbf6881d70288ad268ff29360"
+  },
+  {
+    "case": 147,
+    "lane": "notetag",
+    "note": "bad segment refused",
+    "sha256": "9aeeed61d53639aa12fe878f132e7a95533558e08ce41ecc56996587f2daf9e5"
+  },
+  {
+    "case": 148,
+    "lane": "notetag",
+    "note": "9 segments refused",
+    "sha256": "f9aaae97b836d2950442a231e6a5d99d3825b56aece3f000ed4ae9eb98268510"
+  },
+  {
+    "case": 149,
+    "lane": "notetag",
+    "note": "empty corpus",
+    "sha256": "77e56662549c50188341c11411cd35c0d2ce8b728d2dffae4c635b74b0a75b9b"
+  },
+  {
+    "case": 150,
+    "lane": "editlog",
+    "note": "insert+delete then fuse nothing",
+    "sha256": "4c86acc088c918425fb1412092d3ecb27fe9d1761e0cfe34789becc0fc5f3dd8"
+  },
+  {
+    "case": 151,
+    "lane": "editlog",
+    "note": "insert then delete",
+    "sha256": "8f894fa1932a9f3544ee99d52ee0543bdb572075fb21114603e959f9ae846ddf"
+  },
+  {
+    "case": 152,
+    "lane": "editlog",
+    "note": "positions validated against live doc",
+    "sha256": "78c92a43c56066e450d70261fdf7f5e98e17af2e40bf066b79c9ba03e2456c69"
+  },
+  {
+    "case": 153,
+    "lane": "editlog",
+    "note": "delete past end refused",
+    "sha256": "5f941a946c64677512eb70d5471353c6cbbed42cd15cbd8b8a41d3f29b930002"
+  },
+  {
+    "case": 154,
+    "lane": "editlog",
+    "note": "insert past end refused",
+    "sha256": "e0f03246db1813f5f8b909c2d56ebc24b1b52b6f3b263de91a7d1ade1bc3bc70"
+  },
+  {
+    "case": 155,
+    "lane": "editlog",
+    "note": "zero-length delete refused",
+    "sha256": "607836fa25cc1923ded127f25e00da38e726728e3342c9098f05e2ff67ddf7a3"
+  },
+  {
+    "case": 156,
+    "lane": "editlog",
+    "note": "empty script",
+    "sha256": "2c16a32199060dc2bf2e37ef901f38e14a4535f563dd7b4cb857c791684bd564"
+  },
+  {
+    "case": 157,
+    "lane": "editlog",
+    "note": "consecutive same-pos deletes fuse",
+    "sha256": "ec6a26747694d7ec22498fa14da550d0a62fb8ef1dc6757ee42faf511c2622e4"
+  },
+  {
+    "case": 158,
+    "lane": "editlog",
+    "note": "adjacent deletes do not fuse (documented rule)",
+    "sha256": "2066f601e9e82413c0e448d3c9dec6297615be54bc9cd7ff81b9a50324b2c128"
+  },
+  {
+    "case": 159,
+    "lane": "editlog",
+    "note": "mixed script replayed",
+    "sha256": "9ea98363f7d5ef1903808d7f0fe5cf1b7a20183b95686e6b3415986a75e7595a"
+  },
+  {
+    "case": 160,
+    "lane": "editlog",
+    "note": "insert then delete at shifted pos",
+    "sha256": "439cd756e087567df8b85a014a4251b69f9136d8ab64b27e531a35b7c8c5886e"
+  },
+  {
+    "case": 161,
+    "lane": "editlog",
+    "note": "insert keeps doc at bound",
+    "sha256": "33cae1e00a50d3160c83d41397f05d44f592bef1cef076cb550e0c478427c255"
+  },
+  {
+    "case": 162,
+    "lane": "editlog",
+    "note": "seeded script #0",
+    "sha256": "42d58ed2059866159b01976122fd3f7837969982ff8f0420000fc0572859adbd"
+  },
+  {
+    "case": 163,
+    "lane": "editlog",
+    "note": "seeded script #1",
+    "sha256": "83b2b3d5b811376c387eaf6c030ed25fab7c529b1a4d3a5d87053879661a3691"
+  },
+  {
+    "case": 164,
+    "lane": "editlog",
+    "note": "seeded script #2",
+    "sha256": "4780d670f8b99e379587b354e0f5aa6d7ea99e58b4bf8ed3c4755e8758901f5d"
+  },
+  {
+    "case": 165,
+    "lane": "editlog",
+    "note": "seeded script #3",
+    "sha256": "88e2327ca8d3ea00de5b01325dca702042b9a9a0b2d1a0aac596ee1d4483555e"
+  },
+  {
+    "case": 166,
+    "lane": "editlog",
+    "note": "seeded script #4",
+    "sha256": "53905f451a1bc2735279f88c7c6495b2d370369795339b02042b3a060602d2ed"
+  },
+  {
+    "case": 167,
+    "lane": "editlog",
+    "note": "seeded script #5",
+    "sha256": "7b27d3b4574a916cb3d307a3725c6d22a74829753457ba3bd1d9942fb24055f7"
+  },
+  {
+    "case": 168,
+    "lane": "macro",
+    "note": "canonical round trip",
+    "sha256": "2a498b4cd591fce9475e50ff42d204d6eddb5f0e1215e292714895f048cac112"
+  },
+  {
+    "case": 169,
+    "lane": "macro",
+    "note": "escape round trip",
+    "sha256": "7992212f125a65316ec2f8b593a7d954bbfa1a7cb5394fe554c47879ffec0b7e"
+  },
+  {
+    "case": 170,
+    "lane": "macro",
+    "note": "header only",
+    "sha256": "b089c8e93794c01b9b44bccb076bf842c8efa272ba56601cc8b1a5173792add2"
+  },
+  {
+    "case": 171,
+    "lane": "macro",
+    "note": "bad version refused",
+    "sha256": "d5199d42ad8048a4f20187ada2fa923dbd652a8ca3952702d0850cfea64ee5cf"
+  },
+  {
+    "case": 172,
+    "lane": "macro",
+    "note": "unknown step refused",
+    "sha256": "22a1814deef811b637b923306e98edd3cb178de5aae15c1f24ffebdf1ad22d6c"
+  },
+  {
+    "case": 173,
+    "lane": "macro",
+    "note": "wait over 60s refused",
+    "sha256": "8ae34f4a9b4cf42e0d777110fe9adaf26b31c91eb4019a303f950952d18160eb"
+  },
+  {
+    "case": 174,
+    "lane": "macro",
+    "note": "tap permille refused",
+    "sha256": "87034d889e6c1e5e4140ff45b0cb1abaca11a29aa435d6e33b2b5deaf0e6c142"
+  },
+  {
+    "case": 175,
+    "lane": "macro",
+    "note": "swipe 49ms refused",
+    "sha256": "23cbb3e6a7dab66954bf8eb48f48817227b5dd5b071df6a22f6fc5c01b6634c1"
+  },
+  {
+    "case": 176,
+    "lane": "macro",
+    "note": "illegal escape refused",
+    "sha256": "01a1e91db6c12cf1c182bf271e2102ed4242fc35f023ec782600575bccaaec75"
+  },
+  {
+    "case": 177,
+    "lane": "macro",
+    "note": "dangling escape refused",
+    "sha256": "c76aaec9fcbdbd0d7ae74cc7ae0771b11166fd83b304a0a3f193431388dd1f8a"
+  },
+  {
+    "case": 178,
+    "lane": "macro",
+    "note": "bad package refused",
+    "sha256": "ec8034a7a88abbe04eb7af4f8787c66a1a8f5464bee7dd7ffb11f6781c531ac2"
+  },
+  {
+    "case": 179,
+    "lane": "macro",
+    "note": "type text over 512 refused",
+    "sha256": "ea240d57ee8ce7c56f27b4e4b2615b47041dfafb460be345cd143ffa3576666b"
+  },
+  {
+    "case": 180,
+    "lane": "macro",
+    "note": "empty step refused",
+    "sha256": "c511af9582292d8b0e4c3498fd8db7c26acdd421b802d5244561a596fd225645"
+  },
+  {
+    "case": 181,
+    "lane": "macro",
+    "note": "empty type refused",
+    "sha256": "626a15c6ac77dca8d43ba49a34d05ba827dc5406b07997b632c1e24f2317cbf9"
+  },
+  {
+    "case": 182,
+    "lane": "macro",
+    "note": "long canonical text",
+    "sha256": "7ef9ab4f9284d23098d4a787b46f8faebfe74a396257d14ebad4f00a756bc472"
+  },
+  {
+    "case": 183,
+    "lane": "ntp",
+    "note": "epoch 0 -> NTP offset",
+    "sha256": "b516652d1f698317c36a01e91365315d30ff71b6393a3da8bae34d90541f9ad0"
+  },
+  {
+    "case": 184,
+    "lane": "ntp",
+    "note": "modern epoch",
+    "sha256": "057a0938d473431208373acc0069207b3c084a03da81ea4db11d9fe557889762"
+  },
+  {
+    "case": 185,
+    "lane": "ntp",
+    "note": "era0 timestamp near now",
+    "sha256": "b7843795acf52889233f2d66dff615bc3e43e3e41ffc3759bbba3739e492c9cd"
+  },
+  {
+    "case": 186,
+    "lane": "ntp",
+    "note": "wire zero resolves to 1900",
+    "sha256": "a6bf43636de8db7e5baa446fc1ede0762da7f85f3f364c34664d827057234e3a"
+  },
+  {
+    "case": 187,
+    "lane": "ntp",
+    "note": "half-second fraction floors",
+    "sha256": "e1d3e3428d2c873ecab03b704e46193fe4e33f63576080d857d58972cb5c2be5"
+  },
+  {
+    "case": 188,
+    "lane": "ntp",
+    "note": "uint32 max resolves inside window",
+    "sha256": "c01b1a5661a21aad3cf9b4d8e7c3e1f7f6270fc61d8129eb5f7c0b247564c755"
+  },
+  {
+    "case": 189,
+    "lane": "ntp",
+    "note": "era outside window refused",
+    "sha256": "49af499ceaea9f61ae9c58469fe4478475d09be4a6ca760c19e50b1dfe93d1c5"
+  },
+  {
+    "case": 190,
+    "lane": "ntp",
+    "note": "seconds 2^32 refused",
+    "sha256": "8c1e6a058ddabe7fc2fc68376ad59cd050e06ec204afbc14b002e04a434f7fee"
+  },
+  {
+    "case": 191,
+    "lane": "ntp",
+    "note": "epoch past 2100 refused",
+    "sha256": "017c18c6b40d6f1560af74b0f52c01eb29a9f7f47176a9c90a863dc9d1f9513b"
+  },
+  {
+    "case": 192,
+    "lane": "ntp",
+    "note": "negative epoch refused",
+    "sha256": "1654be37757d2f61b25da97bc239eccae45d3a04c8b922d3e9df217c3ffddd44"
+  },
+  {
+    "case": 193,
+    "lane": "ntp",
+    "note": "rev bound #0",
+    "sha256": "9e651e9d2871c6c65e085ef5a5ea98a18ba26aaa5be3af449adfc00d27dd50c0"
+  },
+  {
+    "case": 194,
+    "lane": "ntp",
+    "note": "rev bound #1",
+    "sha256": "71aae300ddc98c671c3faba7c040422adf92b1a8ad1248a76380994f78e1718a"
+  },
+  {
+    "case": 195,
+    "lane": "ntp",
+    "note": "rev bound #2",
+    "sha256": "a44b039fcd0f1300c5cd5f40a16ddf03740b4aae8929783039c0deabd9ac075b"
+  },
+  {
+    "case": 196,
+    "lane": "ntp",
+    "note": "rev bound #3",
+    "sha256": "e5bb9a15507e0ef9f9d5b47270458c99aa9164e108f4a38c9013f946c9e3c0a2"
+  },
+  {
+    "case": 197,
+    "lane": "ntp",
+    "note": "rev bound #4",
+    "sha256": "0391e1012c00120782a9a7b4b609212d803333dc1d316d2b5246fbb0eda4ae8d"
+  },
+  {
+    "case": 198,
+    "lane": "ntp",
+    "note": "non-numeric ref refused",
+    "sha256": "caa7fecdae359fb327d39e085d9f06c503874105f169f2af037d7631aeab9d03"
+  },
+  {
+    "case": 199,
+    "lane": "dur",
+    "note": "plain seconds",
+    "sha256": "6430c61755f248bd1c38c61519456cc689718ba9184129cc5bc53a7b82d2955a"
+  },
+  {
+    "case": 200,
+    "lane": "dur",
+    "note": "in-prefix compound",
+    "sha256": "4d9213e83636c820eddde06a7d0dd7b3c1ca871605dc0dcbc9a4b87609531009"
+  },
+  {
+    "case": 201,
+    "lane": "dur",
+    "note": "spaced compound",
+    "sha256": "2db554ef01c341072f130f55dd52aa5b8d541aa8d056ab55c0d9fb11c80bd7b7"
+  },
+  {
+    "case": 202,
+    "lane": "dur",
+    "note": "zero -> 0",
+    "sha256": "a8c5f425d16747dc5a9464f46f5134e710dbc7f9fcaacc1a2b64a6a70fb28ba8"
+  },
+  {
+    "case": 203,
+    "lane": "dur",
+    "note": "one week",
+    "sha256": "d1d698dd44b02376e174114df15e6cfced854b25ae68602dd7ab244897ac4f3f"
+  },
+  {
+    "case": 204,
+    "lane": "dur",
+    "note": "empty refused",
+    "sha256": "8898841dc2ead28c1699adc905515d9384b52e618488f4322f57fe8013d77418"
+  },
+  {
+    "case": 205,
+    "lane": "dur",
+    "note": "bare prefix refused",
+    "sha256": "372e296a0841a5da46e218a5408214a08d6412056340254494a56fa985d2334e"
+  },
+  {
+    "case": 206,
+    "lane": "dur",
+    "note": "unknown unit refused",
+    "sha256": "a85e3b8836d9967c74594aebf994bffc356d93848310d235afd277d1088394db"
+  },
+  {
+    "case": 207,
+    "lane": "dur",
+    "note": "missing unit refused",
+    "sha256": "a3ef31a3fef71a6e01030b2612b9b2a86a00e54a7dd556b853409ce14160a187"
+  },
+  {
+    "case": 208,
+    "lane": "dur",
+    "note": "leading text refused",
+    "sha256": "66fe771ec92452e450e772934e643e6dcdd3bff3c0549d67323ed7fd64f1b030"
+  },
+  {
+    "case": 209,
+    "lane": "dur",
+    "note": "negative refused",
+    "sha256": "47157e49ff25b9ab5e1e5e29afa1d7dd45d028bb14e6efd87d89c851a4704cec"
+  },
+  {
+    "case": 210,
+    "lane": "dur",
+    "note": "fraction refused",
+    "sha256": "8975f997af5fb5cb63ed2b61950163e3f61f09ff7c2bfc0ac0bbdd7429f3db62"
+  },
+  {
+    "case": 211,
+    "lane": "dur",
+    "note": "over 30 days refused",
+    "sha256": "63171eddac4d0f53c39d13c81b006c69022a5018bdff7f502d7ff86cbf5afd4f"
+  },
+  {
+    "case": 212,
+    "lane": "dur",
+    "note": "exactly 30 days accepted",
+    "sha256": "0821ce725e22ae88077f4bf632a6926d60851c3764bfa57ed42ad33a8e58d308"
+  },
+  {
+    "case": 213,
+    "lane": "dur",
+    "note": "component over 1e9 refused",
+    "sha256": "e8acc84dd3263f2699c972fb515c32c3398a93002b9f905ed4f8ca73ccd1baf7"
+  },
+  {
+    "case": 214,
+    "lane": "dur",
+    "note": "9 components refused",
+    "sha256": "388d8d63dc4c2e276424108927001735df91afda8511dbdc526e27157750f86b"
+  },
+  {
+    "case": 215,
+    "lane": "dur",
+    "note": "10-digit leading zeros accepted",
+    "sha256": "c1dcf43c4fab3363e57c0e8a9db643f45928e9c6c92303de2c70276c8abc1a9b"
+  },
+  {
+    "case": 216,
+    "lane": "shuffle",
+    "note": "seeded windowed deal",
+    "sha256": "d58d2b2c7067ad598bf1b2c48012160ba5381be6fe8a07bbb555c26108eb3eca"
+  },
+  {
+    "case": 217,
+    "lane": "shuffle",
+    "note": "same seed deterministic again",
+    "sha256": "d58d2b2c7067ad598bf1b2c48012160ba5381be6fe8a07bbb555c26108eb3eca"
+  },
+  {
+    "case": 218,
+    "lane": "shuffle",
+    "note": "different seed",
+    "sha256": "950beed3ee9b078c02ddafaedb11307bad7b5e243ba1a4c5c6eb3d1d86023d54"
+  },
+  {
+    "case": 219,
+    "lane": "shuffle",
+    "note": "min queue window 1",
+    "sha256": "c037c0d989e01115fb0a05820237d95597482a0ba6dec1a2eb1eafb7ca6c5e1a"
+  },
+  {
+    "case": 220,
+    "lane": "shuffle",
+    "note": "window 65 refused",
+    "sha256": "ac2a8188d5f68ccbb21eff2ad252b034271f46c48f5537cc25f566047ad6873b"
+  },
+  {
+    "case": 221,
+    "lane": "shuffle",
+    "note": "empty seed refused",
+    "sha256": "20a02e8ee519fa7b125f76b673300134c89a729cf0ef18f8f363f89c7558a8d0"
+  },
+  {
+    "case": 222,
+    "lane": "shuffle",
+    "note": "duplicate ids refused",
+    "sha256": "b40a46a892331c0113b53a755f9d58b7ca4aafe7fad234f84719b1d7e31c868f"
+  },
+  {
+    "case": 223,
+    "lane": "shuffle",
+    "note": "single item refused",
+    "sha256": "b49292f78c4c0190e5fb8c1420a11cf8fa56a640797b5a92fbe7e67273d327b7"
+  },
+  {
+    "case": 224,
+    "lane": "shuffle",
+    "note": "window 0 refused",
+    "sha256": "740b01d4d9d891585b61ff7f792e4fbe98500cf6a28150d7eacc86e78873a9da"
+  },
+  {
+    "case": 225,
+    "lane": "shuffle",
+    "note": "300-item queue",
+    "sha256": "06b57b3b471a5e26277204d19e7da8b5db6208e0206ebe34a61e11bdae036551"
+  },
+  {
+    "case": 226,
+    "lane": "shuffle",
+    "note": "unicode id refused by grammar",
+    "sha256": "3bf0e45a2972001006c690b0673def240bfdeb47a9f0ea332d15f4ea68cf6ec2"
+  },
+  {
+    "case": 227,
+    "lane": "shuffle",
+    "note": "charset-valid ids",
+    "sha256": "b15ee6d955448e3bbf9c30fc845bfae912d5145916db95c22fa348c5fd0a8a8e"
+  },
+  {
+    "case": 228,
+    "lane": "shuffle",
+    "note": "60-char seed",
+    "sha256": "1fc523bb57d20686669bd78c91f505cbd11af51e8b63745cf1ae6e5aeeb95233"
+  },
+  {
+    "case": 229,
+    "lane": "shuffle",
+    "note": "65-char seed refused",
+    "sha256": "b49ea4f9e3e90c32c3e56c8e6320398af2bebf12b88409b53f10fd7989701640"
+  },
+  {
+    "case": 230,
+    "lane": "sri",
+    "note": "sha256 valid",
+    "sha256": "52fd424f66a10491d763f231fa160e41a5c3342cb2b3e7efac27a028a1f1be55"
+  },
+  {
+    "case": 231,
+    "lane": "sri",
+    "note": "sha384 valid",
+    "sha256": "1b9053aa6f99425ad9582315ee14a9b58977c3fe678b74a2a46428653c9337e3"
+  },
+  {
+    "case": 232,
+    "lane": "sri",
+    "note": "sha512 valid",
+    "sha256": "476cd9d1f0a416ad2b16617e50bc5edc560275a79bb3814e928c933e6334ee01"
+  },
+  {
+    "case": 233,
+    "lane": "sri",
+    "note": "ordered multi-token",
+    "sha256": "f52f561c16687c9de651919ed8aa0d7c1724af239e9190e1b7f557d15b3eba2e"
+  },
+  {
+    "case": 234,
+    "lane": "sri",
+    "note": "sha1 refused",
+    "sha256": "e003ad158fd79a4c116f827a093a9b05ab603cb4c7bed543e32514ca1ee6414f"
+  },
+  {
+    "case": 235,
+    "lane": "sri",
+    "note": "wrong digest length refused",
+    "sha256": "e6b09511a69dd2703258b32e4e4beab6c4956fbf3cac9a889f0cae37642ba291"
+  },
+  {
+    "case": 236,
+    "lane": "sri",
+    "note": "length not multiple of 4 refused",
+    "sha256": "a78df45b2296b0f0ed89d7788a48ef950102619be0b3a3429de9c7f5f716605b"
+  },
+  {
+    "case": 237,
+    "lane": "sri",
+    "note": "duplicate algo refused",
+    "sha256": "b8e678cf177fd4cafd063d5f37671ec03958c6a616009d229573ef00b3cb0cbe"
+  },
+  {
+    "case": 238,
+    "lane": "sri",
+    "note": "non-zero pad bits refused",
+    "sha256": "3a564fead25af5810f11e9ac9f2ae1e922b4357985db1d626e0469d308835e23"
+  },
+  {
+    "case": 239,
+    "lane": "sri",
+    "note": "surrounding whitespace",
+    "sha256": "fb657744b8d95273192c3b2a6abb43d97969a567383d0e81371221a49ccaffeb"
+  },
+  {
+    "case": 240,
+    "lane": "sri",
+    "note": "empty refused",
+    "sha256": "ca337e697b13ae870388a7dccd5ad9c0748ecc4a91ee5a82b504ac9c1eea613d"
+  },
+  {
+    "case": 241,
+    "lane": "sri",
+    "note": "all-A wrong length refused",
+    "sha256": "9d7aaee0e9a58290c56fdec1fe40f62db7ca9ba2ccd500ed997bbe69307e0445"
+  },
+  {
+    "case": 242,
+    "lane": "sri",
+    "note": "bad base64 char refused",
+    "sha256": "1818892253c38fdaf8560b6df96190043e4f51453797e7a8026284894c98e970"
+  },
+  {
+    "case": 243,
+    "lane": "sri",
+    "note": "9 tokens refused",
+    "sha256": "42d1009f0048f894d85da817cdbbc62b696a43303934291e7fbe363ce8137fba"
+  },
+  {
+    "case": 244,
+    "lane": "oem",
+    "note": "60s LIGHT episode",
+    "sha256": "820004b122aadb01cc04471ba90f50c16e58e731b85877ab290f9e9c70f6fb9b"
+  },
+  {
+    "case": 245,
+    "lane": "oem",
+    "note": "no cap -> none",
+    "sha256": "dde6d97faa0ce32aeae5caae93644260a97d53813b602d9c6a7bea19fe53f264"
+  },
+  {
+    "case": 246,
+    "lane": "oem",
+    "note": "single sample -> none",
+    "sha256": "8b2cc82f4e81c302ff3e37db67eab68c770a8a5c7af07b02c19d12ceb4bd0df2"
+  },
+  {
+    "case": 247,
+    "lane": "oem",
+    "note": "span under 30s dropped",
+    "sha256": "5eeb08bea5260cb98939cb2192d93f8fd48796cdc1cf825b2f768031802a2b62"
+  },
+  {
+    "case": 248,
+    "lane": "oem",
+    "note": "310s SEVERE by duration",
+    "sha256": "d0d2213adf383c014f85ba08491fe87f5ff464c056aef7e66f41392935c3cc84"
+  },
+  {
+    "case": 249,
+    "lane": "oem",
+    "note": "480 tenths -> CRITICAL",
+    "sha256": "042e17fae7b7f772361990f82761b3071da9396f914ecfb933d5640e529fb133"
+  },
+  {
+    "case": 250,
+    "lane": "oem",
+    "note": "455 tenths -> SEVERE",
+    "sha256": "c1e05bf98b70de75b6b617c941a0da10b628ef197b5178f53d0960fad152d3ef"
+  },
+  {
+    "case": 251,
+    "lane": "oem",
+    "note": "31-minute gap refused",
+    "sha256": "a83ccecb82e14e2e50a1f1ce21c15590964fed25a583410140d6319a0b625bbc"
+  },
+  {
+    "case": 252,
+    "lane": "oem",
+    "note": "unsorted timestamps refused",
+    "sha256": "9e17716d19b080f8dd02a1c3bbffe8b0d01a78932f330fd40f0f4d674e27944b"
+  },
+  {
+    "case": 253,
+    "lane": "oem",
+    "note": "zero frequency refused",
+    "sha256": "d8224a2add01fd47777fe5bcde91cc8b8face07a73e42d00078256ef6fb36cdb"
+  },
+  {
+    "case": 254,
+    "lane": "oem",
+    "note": "temperature over bound refused",
+    "sha256": "bf5712f49f8b7f8237855024f83d7276eb72c3d88b65fdb879be38d2a3521fc5"
+  },
+  {
+    "case": 255,
+    "lane": "oem",
+    "note": "second episode after recovery",
+    "sha256": "c2d8cab6aa5db233d583b6161f16bf348805dbb259461520b2e4200c6da5d8de"
+  },
+  {
+    "case": 256,
+    "lane": "oem",
+    "note": "empty series refused",
+    "sha256": "485754c2433c777bb7fc089ce53e71155348643818caa6e4c71418ae4ebc58c5"
+  },
+  {
+    "case": 257,
+    "lane": "pwhist",
+    "note": "first password stored",
+    "sha256": "6371990a1ecd422fa22a0278f7535ba3cec60cdb06ed3d93363a3fd978441369"
+  },
+  {
+    "case": 258,
+    "lane": "pwhist",
+    "note": "reuse detected at index 0",
+    "sha256": "d1162b71ce46719183557e0c8fe79ddd164b3e8578409825d407eeaa4817a398"
+  },
+  {
+    "case": 259,
+    "lane": "pwhist",
+    "note": "new password appended",
+    "sha256": "fad472b5cdf8f865aa90d7fdfa8d7ce6afcc8dc267e6c434a1717775bda56aad"
+  },
+  {
+    "case": 260,
+    "lane": "pwhist",
+    "note": "uppercase history refused",
+    "sha256": "14e5c94f27ba35c38bdb2b9373f9db1e9bff99b86ec8dc52d7560294009bf766"
+  },
+  {
+    "case": 261,
+    "lane": "pwhist",
+    "note": "31-byte salt refused",
+    "sha256": "91295681a0a4f645d7e5215f265b9faf813eb407d0922c1fe2413dfbed505dc5"
+  },
+  {
+    "case": 262,
+    "lane": "pwhist",
+    "note": "empty salt refused",
+    "sha256": "1b516c8a3a59a28a9943db14864650bd9e5d5fc0d70768354e4ce958e3c37fdb"
+  },
+  {
+    "case": 263,
+    "lane": "pwhist",
+    "note": "empty password refused",
+    "sha256": "f143401fd9cdb496195167373fab65ccab662e878d53b71eaa1c63fefe232d15"
+  },
+  {
+    "case": 264,
+    "lane": "pwhist",
+    "note": "12-entry history prunes oldest",
+    "sha256": "5316e7da1ad9c8b16d898b266b85f2610e14209ef1d936af0233bf9819152f00"
+  },
+  {
+    "case": 265,
+    "lane": "pwhist",
+    "note": "13-entry history refused",
+    "sha256": "71656cea1ffd2bbfda8546a9674d786f319bbc7feec9e8282077936a7450cbf6"
+  },
+  {
+    "case": 266,
+    "lane": "pwhist",
+    "note": "short hash refused",
+    "sha256": "6a3012d875326ec8632dc26949b5d4a1ead0b338bbe96567dc9b2b50692051ec"
+  },
+  {
+    "case": 267,
+    "lane": "pwhist",
+    "note": "utf-8 password",
+    "sha256": "d2930fa13b6a5a42f8d65292988670457a8e60cfe26a7804a77d73881c46b159"
+  },
+  {
+    "case": 268,
+    "lane": "pwhist",
+    "note": "1025-char password refused",
+    "sha256": "e5e57a99cebf910255863b2adbb40e4f015f1e5841ead0d9a5c6120884d517c4"
+  },
+  {
+    "case": 269,
+    "lane": "dupframe",
+    "note": "three identical frames",
+    "sha256": "095c69236ee34f240af7b7877f399249a3fcf2a33dca459b5d3ad6d4e6490c0f"
+  },
+  {
+    "case": 270,
+    "lane": "dupframe",
+    "note": "gap over 5s splits run",
+    "sha256": "bf4c384215d3f8f38bf42cb07341745ab2ad30a259abf468ccd04f217e30be26"
+  },
+  {
+    "case": 271,
+    "lane": "dupframe",
+    "note": "2-bit near-duplicate joins",
+    "sha256": "52c1c2435296d5b7aeaa9ea4a54028917cabf329e6337423dcf9276fb4b14294"
+  },
+  {
+    "case": 272,
+    "lane": "dupframe",
+    "note": "distinct frames -> none",
+    "sha256": "ef96f8603e4b4b09a6750b4b87d1cf7e4009764dc39b9797fbc675b7887e382f"
+  },
+  {
+    "case": 273,
+    "lane": "dupframe",
+    "note": "single frame -> none",
+    "sha256": "8ea7e162ca372e4e38082af70f6b6691b873c68e50de91216795eb35aecdf4de"
+  },
+  {
+    "case": 274,
+    "lane": "dupframe",
+    "note": "unsorted refused",
+    "sha256": "65dba9431b76edea17657d0a11326da7f258535dc17d43fba2db89aa70bce389"
+  },
+  {
+    "case": 275,
+    "lane": "dupframe",
+    "note": "non-hex fp refused",
+    "sha256": "ac2deca4b9e37e89fffdde75d7b8d96d19e84e0f8344dfd059888fc36d759df0"
+  },
+  {
+    "case": 276,
+    "lane": "dupframe",
+    "note": "71-char fp refused",
+    "sha256": "9d227d4533f7b7bd328d2806e7a85abe4b50871b0ecf6f7b9ce23c2194b72e9c"
+  },
+  {
+    "case": 277,
+    "lane": "dupframe",
+    "note": "empty refused",
+    "sha256": "010f50af46b58317bb5708194cb03dfae96dde632dae6b81bb8362ee374b6b9d"
+  },
+  {
+    "case": 278,
+    "lane": "dupframe",
+    "note": "5-frame run then new anchor",
+    "sha256": "562ab087440272d806ab526ee44be0ace5e0a191735e40589b99850810fcb136"
+  },
+  {
+    "case": 279,
+    "lane": "dupframe",
+    "note": "4096-frame cap accepted",
+    "sha256": "eb43d98fbf62628acdbf1d39340be7f798090a290b7cf2da0b09cc9f18f0d845"
+  },
+  {
+    "case": 280,
+    "lane": "diagexp",
+    "note": "all keys, all shapes",
+    "sha256": "7b365253118a1d0dca39b1efd11872a2c3160adece19b42d69fd0771cf1e56b3"
+  },
+  {
+    "case": 281,
+    "lane": "diagexp",
+    "note": "drop non-allowlisted",
+    "sha256": "c04352c99883b7812b7773f652c5ce72ac03d1a83b474fdb2c6a9435ccb21c22"
+  },
+  {
+    "case": 282,
+    "lane": "diagexp",
+    "note": "dropped key is not an error",
+    "sha256": "f8b01642255c4b3d1974ebc3fed2b712de0957daa334662d331d43b8f318fb91"
+  },
+  {
+    "case": 283,
+    "lane": "diagexp",
+    "note": "empty export",
+    "sha256": "370770672a17997f39c9217d9b9113eda34e54b22ef58ca688e6123b610a933e"
+  },
+  {
+    "case": 284,
+    "lane": "diagexp",
+    "note": "bad allow key refused",
+    "sha256": "0022b9ad56124902425d2ce123f64ef563f1887230a0f6d82136d77550e2da99"
+  },
+  {
+    "case": 285,
+    "lane": "diagexp",
+    "note": "dup allow refused",
+    "sha256": "7586a971b61e526fba455957891c2eb5aa7b1efc1bdd800abe5ccac59821cd49"
+  },
+  {
+    "case": 286,
+    "lane": "diagexp",
+    "note": "dup record refused",
+    "sha256": "4beda2c7b69688ae9dafa5236e9da00f84728a2084cefd28210835de1638d7a9"
+  },
+  {
+    "case": 287,
+    "lane": "diagexp",
+    "note": "records field with no pairs",
+    "sha256": "fa700aa6b7290783a78cde5cd9226fa09c517ea5c9f2ef276da2f33b51e1848e"
+  },
+  {
+    "case": 288,
+    "lane": "diagexp",
+    "note": "missing equals refused",
+    "sha256": "66b3b5f473d6ee6b999d6554238333132a2066f2e8ba507d173e3f10c6fb0438"
+  },
+  {
+    "case": 289,
+    "lane": "diagexp",
+    "note": "uppercase key refused",
+    "sha256": "4fc9864da8df0cf6ffecffb46c4da8e14c657fe7b686405974f8e545e12a5073"
+  },
+  {
+    "case": 290,
+    "lane": "diagexp",
+    "note": "token= mid-value scrubbed",
+    "sha256": "0fa566b8d20751e9a6fdd9c9432ed1121c1535cdcbeb04e4c132faaa5b0fc1b9"
+  },
+  {
+    "case": 291,
+    "lane": "diagexp",
+    "note": "phone-shaped digit run",
+    "sha256": "b3794a31aea73dcab9b399639ac7f26696b0857d2c538da9c640cb014dc4e0ac"
+  },
+  {
+    "case": 292,
+    "lane": "diagexp",
+    "note": "256-record cap",
+    "sha256": "390de859f2332ec4a73b50fbc595c5008090cee261f8420734fc44847be98be5"
+  },
+  {
+    "case": 293,
+    "lane": "diagexp",
+    "note": "257 records refused",
+    "sha256": "e105158d82b3c6a849f02f473fb35798afd88fcd10858b755d36f9dd02717c36"
+  },
+  {
+    "case": 294,
+    "lane": "diagexp",
+    "note": "value over 1024",
+    "sha256": "b31a7e30b03defcbbe65dd3bb98caec4630bc60de038b594bc497fa5879ff032"
+  },
+  {
+    "case": 295,
+    "lane": "diagexp",
+    "note": "scrub order bearer then others",
+    "sha256": "ce25911600c6c83260aadaaee137a4cd7f5c3adee2c900262e64f8b3e9d54a83"
+  },
+  {
+    "case": 296,
+    "lane": "msgthread",
+    "note": "simple thread",
+    "sha256": "76cbdd5e8ef53740a04d424ac8b30b74b505a2162e4f8e4c72d29804e2d6a0c5"
+  },
+  {
+    "case": 297,
+    "lane": "msgthread",
+    "note": "forward reference parent",
+    "sha256": "212d20c58f1a2fa2044b51731178275bbcae511344fee812aa8d2d8157ea11fc"
+  },
+  {
+    "case": 298,
+    "lane": "msgthread",
+    "note": "forward two-cycle refused",
+    "sha256": "a4876e35cc9abf211a0ad53e157da13093aa06813a95ba493fc9d950a0e24d97"
+  },
+  {
+    "case": 299,
+    "lane": "msgthread",
+    "note": "self-parent unreachable refused",
+    "sha256": "01a322ef917153f5f6df84633312476eafab0a3a4994cf2efcbb2b2e1c195206"
+  },
+  {
+    "case": 300,
+    "lane": "msgthread",
+    "note": "detached cycle refused",
+    "sha256": "5d6e15ff1fc726aeac82785ffee69658c6c485de815c6fc5c4e7c39d02ba3ed8"
+  },
+  {
+    "case": 301,
+    "lane": "msgthread",
+    "note": "ordered siblings",
+    "sha256": "1728e0412d4e8b2c788fef5a95ef882ee63a8e50655a2233cbbc9dd05dd5e581"
+  },
+  {
+    "case": 302,
+    "lane": "msgthread",
+    "note": "empty corpus",
+    "sha256": "4d43118dfab50da0bfed48a972ad1d342e8a39b74cd43928622689ae7794e5f8"
+  },
+  {
+    "case": 303,
+    "lane": "msgthread",
+    "note": "invalid id refused",
+    "sha256": "1d55753c5a7105560ac46ed2394a0e29337fbbaa0e9dc8de382cbef431e9c1e5"
+  },
+  {
+    "case": 304,
+    "lane": "msgthread",
+    "note": "text over cap",
+    "sha256": "a97b6c5f3fe64ae625f1ee6b98c4d9891eaf09387ae8674a0f2a7e2186d81913"
+  },
+  {
+    "case": 305,
+    "lane": "msgthread",
+    "note": "80-deep chain, depth-bounded",
+    "sha256": "0778a51d5a901f63fbe2199705c2346a4d0f603c62f8088cbab39e754165a3cf"
+  },
+  {
+    "case": 306,
+    "lane": "msgthread",
+    "note": "missing parent -> root (documented)",
+    "sha256": "ab2cfd629b179ecd51c157e371f42a097755f57e1a4a5a56fe21dd36e2642a35"
+  },
+  {
+    "case": 307,
+    "lane": "editlog",
+    "note": "final document bound refused",
+    "sha256": "ca1c257a21c2333a855685798f39b4faf80a770326fdd38c70b41fca942029a8"
+  },
+  {
+    "case": 308,
+    "lane": "editlog",
+    "note": "structured op-count bound refused",
+    "sha256": "39a3412a0c108bf8d2b33c0c6a54e7d3c3cbaa2975ed227c53777144b5028b4f"
+  },
+  {
+    "case": 309,
+    "lane": "editlog",
+    "note": "delete range overflow refused",
+    "sha256": "8744b31e110935f337296a40199e4f7ac55a1037b8298c31d605c06bae25b1e3"
+  },
+  {
+    "case": 310,
+    "lane": "editlog",
+    "note": "fused output remains importable",
+    "sha256": "ecccad7b8da80e4135ad1c1c0d6d8dbce6751fe8589e006ba233878172fb6c54"
+  },
+  {
+    "case": 311,
+    "lane": "diagexp",
+    "note": "decoded line injection refused",
+    "sha256": "a53428b37124b37dba056415bff558118f589acf49eacc568d93ce877e438577"
+  },
+  {
+    "case": 312,
+    "lane": "diagexp",
+    "note": "terminal escape refused",
+    "sha256": "b3e592ce1a5f8c4c731415f6b81bfde73e305ab608615b2376463a98c2c99c9f"
+  },
+  {
+    "case": 313,
+    "lane": "diagexp",
+    "note": "literal punctuation retained",
+    "sha256": "0e7072b49a3e8b8a1148a5c0553c29b5cc51aa723fcd97a88ddcde75f5711edb"
+  }
+]

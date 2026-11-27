@@ -1,4 +1,26 @@
 # Current R64 / R72 — Office ZIP accounting repaired; full specification incomplete
+
+# Current R146 — partial delivery; full specification incomplete
+
+2026-11-27. Actual host Kotlin/JVM execution: 314 cases across 22 lanes, zero
+oracle mismatches, all four negative/wiring controls pass. Added offline
+operator-input diagnostic review/approval/ZIP export without changing the
+scratchpad's no-export boundary. 336 focused tests pass, including real file and
+stream-failure tests. Visual inspection is host Java2D, not Android UI.
+
+Broad regression suite: **3406 tests / 11 failures / 3 errors / 443 skips**;
+zero new failure/error identities versus baseline **3062 / 12 / 4 / 443**.
+Structural `check_project.py --keep` passes. Android compilation, provider/UI,
+accessibility, hardware and device acceptance remain unrun for this revision.
+
+**50/50 (100.00%) substantial runnable module subsets; 0/50 (0.00%) fully
+original-spec Class A; 50/50 (100.00%) unfinished at full scope.** Per-feature
+runnable-code table, limits and reproduction: [R146 results](docs/R146-RESULTS.md).
+Formal model/adversaries: [R146 plan](docs/R146-PLAN.md). Historical status follows.
+
+---
+
+
 ## R72 (host verification on the merged baseline)
 The merged baseline `aacae23` accepted Office archives that hid data inside directory-named entries, because the DOCX/XLSX readers counted only non-directory entries and `ZipInputStream.closeEntry()` discarded the rest. Both readers now count every decoded byte of every entry, reject repeated names including directories, require forward progress, and stop at the existing limits. The plain Writer now refuses text above 131,072 UTF-16 units before XML validation and UTF-8 encoding; accepted output is byte-identical. The uncommitted R69/R71 work from the previous turn was **not recoverable** in this environment and is not claimed as restored. See [R72 results](docs/R72-RESULTS.md) and [R72 plan](docs/R72-PLAN.md). Host evidence: 40 Office archives / 1,703 independent predicates / 10 pinned counterexamples / 0 candidate mismatches; 30 import archives / 20,202 predicates / 0 mismatches; 13 workbooks through the new shared bounded reader with 7 pinned counterexamples and 0 mismatches, extending the same repair to `MultiSheetBook`, `XlsxStyledBook`, `PptxSlideDeck` and `DocxRichDocument`; Writer `-Xmx80m` pinned OOM versus candidate refusal with 201 byte-identical retained artifacts. **50/50 (100%) narrow runnable subsets; 0/50 (0%) fully accepted.** Android, provider, Word/Excel and frame gates remain unrun for this revision.
 

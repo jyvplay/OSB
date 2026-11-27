@@ -44,7 +44,9 @@ data class SemVer(
             val an = a.all { it in '0'..'9' }
             val bn = b.all { it in '0'..'9' }
             val c = when {
-                an && bn -> a.toLong().compareTo(b.toLong())
+                // SemVer numeric identifiers have no length limit. Compare
+                // canonical digit lengths, then lexically; never parse Long.
+                an && bn -> a.length.compareTo(b.length).takeIf { it != 0 } ?: a.compareTo(b)
                 an -> -1 // numeric < alphanumeric
                 bn -> 1
                 else -> a.compareTo(b) // ASCII sort

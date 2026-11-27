@@ -56,8 +56,8 @@ fun SettingsScreen(graph: SettingsGraph, probeText: String, density: String,
             style = MaterialTheme.typography.bodySmall,
         )
         Text(probeText, Modifier.padding(top = 8.dp))
-        Text("Report excludes fingerprint, document text, paths, network addresses and notification contents. It includes OS/SoC/RAM/codec observations; review before sharing.")
-        Button(onClick = onShareReport) { Text("Share redacted report…") }
+        Text("Live observations above are not exported automatically. Diagnostic export opens a separate review: explicitly select API level, app version and/or an optional note. No live probe text is handed to a share target.")
+        Button(onClick = onShareReport) { Text("Review / save diagnostic ZIP…") }
         OutlinedTextField(query, { if(it.length<=256) query=it else patchStatus="Search query exceeds256 UTF16 code units; query unchanged." }, label = { Text("Search planned settings / aliases") },modifier=Modifier.testTag("settings-query"))
         graph.search(query).forEach { definition ->
             Text("${definition.title} (${definition.id}) — registry entry; only controls above are active", Modifier.padding(4.dp))

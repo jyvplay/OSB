@@ -1,3 +1,19 @@
+## Current R146 — host-executed feature slices and offline diagnostic export
+
+R146 adds 20 bounded module implementations, repairs message-thread forward
+references/cycles, and adds a real review → digest approval → ZIP export workflow.
+**314 JVM/Python cases match; 336 focused tests pass.** The broader suite remains
+red on existing failures (3406 tests, 11 failures, 3 errors, 443 skips; no new
+failure/error identities versus the 3062-test baseline). No Android/device run is
+claimed. **50/50 modules (100%) have a substantial runnable subset; 0/50 (0%) are
+fully original-spec Class A.** Most new slices still need Android integration.
+
+[Exact R146 results and runnable export commands](android/docs/R146-RESULTS.md) ·
+[A–J contract and adversarial tests](android/docs/R146-PLAN.md) ·
+[Every module's source/check/limit](android/docs/MODULE-TESTABILITY.md).
+
+---
+
 # Fusion Shell — native Android development
 
 Open **[`android/`](android/README.md)** in Android Studio. That is the Kotlin /

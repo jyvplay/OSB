@@ -21,7 +21,7 @@ class DlnaDevice private constructor(
     private val presentationUrl: String?
 ) {
     companion object {
-        const val MAX_INPUT = 1 << 14  // 16 KiB
+        const val MAX_INPUT = 1 shl 14  // 16 KiB
         const val MAX_FIELD_LEN = 1024
         private val TAG_RE = Regex("<([a-zA-Z][a-zA-Z0-9]*)>([^<]*)</\\1>")
 

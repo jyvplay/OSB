@@ -204,13 +204,14 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.1 §1.3/§4",
-    "route": "Pure-JVM BlackTopSessionCoordinator frame-deadline jitter OEM throttle detector & remediation advisor tested; live Choreographer sampling and S23 device validation remain pending.",
+    "route": "Pure-JVM BlackTopSessionCoordinator frame-deadline jitter OEM throttle detector & remediation advisor tested; live Choreographer sampling and S23 device validation remain pending. R146 caller-supplied throttle sample analysis, not hardware measurement.",
     "tests": [
       "plan:T-SH-12",
       "jvm:R49Checks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -243,14 +244,15 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.2",
-    "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent.",
+    "route": "Half/maximize with minimum-viewport admission and saved normal geometry. Third/quarter/custom/groups remain absent. R176 GeometryClamp now registers work areas, refuses impossible minima and bounds distance arithmetic; held-out host geometry checks run. Full compositor/device acceptance remains.",
     "tests": [
       "testing/contract/PilotCoreChecks",
       "plan:physical-device-and-Android-acceptance",
       "jvm:WindowRestoreChecks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -457,13 +459,14 @@
     "tier": "B",
     "phase": "P4",
     "sources": "owner:v2.0 §7.2",
-    "route": "Pure-JVM KeyToTouchOverlayMapper WASD/d-pad/button-to-normalized-touch coordinate profile engine tested; live MotionEvent overlay dispatch remains unverified on device.",
+    "route": "Pure-JVM KeyToTouchOverlayMapper WASD/d-pad/button-to-normalized-touch coordinate profile engine tested; live MotionEvent overlay dispatch remains unverified on device. R146 reserved-chord and key-to-touch action mapping (no overlay injection).",
     "tests": [
       "plan:T-WM-14",
       "jvm:R50Checks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -726,13 +729,14 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.4",
-    "route": "Pure-JVM ZipAesExtraFieldCodec WinZip AE-2 (0x9901) HMAC-SHA1/AES-CTR + FormatSandboxWatchdog zip-slip/compression-ratio bomb guards tested; SAF archive write integration remains pending.",
+    "route": "Pure-JVM ZipAesExtraFieldCodec WinZip AE-2 (0x9901) HMAC-SHA1/AES-CTR + FormatSandboxWatchdog zip-slip/compression-ratio bomb guards tested; SAF archive write integration remains pending. R146 newc CPIO read-only index/validation, not extraction or general archive completion.",
     "tests": [
       "plan:T-FM-05",
       "jvm:R49Checks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1117,12 +1121,13 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.6",
-    "route": "Settings registry/history and capability/system-settings adapters",
+    "route": "Settings registry/history and capability/system-settings adapters R176 replaces direct sharing of live probe text with the explicit diagnostic review Activity. No report is sent automatically.",
     "tests": [
       "plan:T-ST-04",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1295,13 +1300,14 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.8",
-    "route": "Pure-JVM VtTrueColorSafePasteEngine 24-bit SGR truecolor, SGR 1006 mouse & bracketed paste sanitizer + PromptOsc133 wired into TerminalScreen.kt; PTY process isolation and S5 remain pending.",
+    "route": "Pure-JVM VtTrueColorSafePasteEngine 24-bit SGR truecolor, SGR 1006 mouse & bracketed paste sanitizer + PromptOsc133 wired into TerminalScreen.kt; PTY process isolation and S5 remain pending. R146 bounded terminal URL detection; no automatic opening.",
     "tests": [
       "plan:T-TD-01",
       "jvm:R49Checks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -1439,13 +1445,14 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Pure-JVM TaskRepository/TaskQuery (R17) + CalendarIcsRecurrenceEngine (R49) + MeteredBatteryLowRamScheduler (R50) local tasks & recurrence rules without exact-alarm permissions tested; WorkManager inexact notification firing remains unrun.",
+    "route": "Pure-JVM TaskRepository/TaskQuery (R17) + CalendarIcsRecurrenceEngine (R49) + MeteredBatteryLowRamScheduler (R50) local tasks & recurrence rules without exact-alarm permissions tested; WorkManager inexact notification firing remains unrun. R146 bounded inexact alarm timing plans (no AlarmManager delivery).",
     "tests": [
       "plan:T-PR-03",
       "jvm:R50Checks",
       "jvm:R51Checks",
       "jvm:R52Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1836,11 +1843,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.9",
-    "route": "Pure-JVM PdfFormAcroFieldInspector, PdfPageTextSearchHighlighter & PdfPkcs7SignatureVerifier Ed25519/ByteRange kernels wired into PdfScreen.kt; interactive ink/signature UI remains partial.",
+    "route": "Pure-JVM PdfFormAcroFieldInspector, PdfPageTextSearchHighlighter & PdfPkcs7SignatureVerifier Ed25519/ByteRange kernels wired into PdfScreen.kt; interactive ink/signature UI remains partial. R146 bounded annotation geometry plans; no PDF writer or signing.",
     "tests": [
       "plan:T-PR-08",
       "jvm:R49Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1851,12 +1859,13 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.9",
-    "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted.",
+    "route": "Native Compose plus bounded decimal/scientific/programmer/units/history kernels;2056 host checks and API34 render smoke passed. Complete lifecycle/keyboard/AX/200% and physical budgets unaccepted. R176 resolves duplicate unit-converter declarations while retaining decimal/Double APIs; repairs DecimalMath JVM APIs and bounds scale before arithmetic.",
     "tests": [
       "jvm:feature/calc/src/contract/kotlin/dev/fusion/calc/CalculatorChecks.kt",
       "androidTest:ShellSmokeTest.openingCalculatorRendersItsContent (unrun)",
       "plan:T-PR-09 device keyboard/TalkBack/200%-reflow/recovery",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1867,11 +1876,12 @@
     "tier": "A",
     "phase": "P3",
     "sources": "owner:v2.0 §7.9",
-    "route": "Pure-JVM CalendarIcsRecurrenceEngine (R49) + FocusModeContextEvaluator (R50) minute-of-day schedule window & timer deadline math without SCHEDULE_EXACT_ALARM tested; Android AlarmManager inexact UI remains partial.",
+    "route": "Pure-JVM CalendarIcsRecurrenceEngine (R49) + FocusModeContextEvaluator (R50) minute-of-day schedule window & timer deadline math without SCHEDULE_EXACT_ALARM tested; Android AlarmManager inexact UI remains partial. R146 duration phrase parsing and inexact plans (no device timer acceptance).",
     "tests": [
       "plan:T-PR-10",
       "jvm:R50Checks",
-      "jvm:R53Checks"
+      "jvm:R53Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -1961,11 +1971,12 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "R24 separate consent-gated readonly PDF preview: actual platform renderer only in isolated child with readonly seekable FD, source≤2MiB/pages≤1024/preview≤320px per side, bounded raw ARGB parent. Full PDF editing/signing/export/fidelity and full Office gates remain blocked.",
+    "route": "R24 separate consent-gated readonly PDF preview: actual platform renderer only in isolated child with readonly seekable FD, source≤2MiB/pages≤1024/preview≤320px per side, bounded raw ARGB parent. Full PDF editing/signing/export/fidelity and full Office gates remain blocked. R146 bounded annotation geometry plans; no PDF writer or signing.",
     "tests": [
       "plan:T-FF-03",
       "android:R24PdfDeviceTest",
-      "host:R24Checks"
+      "host:R24Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2108,10 +2119,11 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.10",
-    "route": "Pure-JVM ThumbnailMetadataIndexer magic-byte MIME sniffer, PNG IHDR/JPEG SOF dimension parser & bounded LRU thumbnail budgeter tested; isolated-process bitmap decode service remains unintegrated.",
+    "route": "Pure-JVM ThumbnailMetadataIndexer magic-byte MIME sniffer, PNG IHDR/JPEG SOF dimension parser & bounded LRU thumbnail budgeter tested; isolated-process bitmap decode service remains unintegrated. R146 PSD thumbnail structural inspection, not image decode/render.",
     "tests": [
       "plan:T-FF-13",
-      "jvm:R50Checks"
+      "jvm:R50Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2308,9 +2320,10 @@
     "tier": "A/B",
     "phase": "P2",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries R146 FHC2 PBKDF2-HMAC-SHA256 history reuse check, 600000 iterations; vault persistence/integration unverified.",
     "tests": [
-      "plan:T-SC-01"
+      "plan:T-SC-01",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2405,9 +2418,11 @@
     "tier": "A",
     "phase": "P1",
     "sources": "owner:v2.0 §7.12",
-    "route": "Keystore/least-privilege platform services; isolated security boundaries",
+    "route": "Keystore/least-privilege platform services; isolated security boundaries R146 allowlist review, digest-approved ZIP export via separate offline host CLI; scratchpad remains no-export. Heuristic redaction, not anonymity. R176 Shell diagnostic Activity adds opt-in fixed fields, exact review, approval-gated SAF ZIP save/readback and bounded imported-bundle verification. Scratchpad still has no export route. Activity API-compiles; device/provider UI acceptance unrun.",
     "tests": [
-      "plan:T-SC-08"
+      "plan:T-SC-08",
+      "host:R146Checks",
+      "host:R176Checks"
     ],
     "status": "partial_unverified",
     "gates": []
@@ -2604,10 +2619,11 @@
     "tier": "A",
     "phase": "P2",
     "sources": "owner:v2.0 §7.15",
-    "route": "Pure-JVM RaopRtpSyncPacketizer RFC 3550 RTP 16-bit PCM/ALAC framing, NTP-RTP sync & dB volume mapper tested; mDNS RAOP RTSP session and S18 hardware verification remain pending.",
+    "route": "Pure-JVM RaopRtpSyncPacketizer RFC 3550 RTP 16-bit PCM/ALAC framing, NTP-RTP sync & dB volume mapper tested; mDNS RAOP RTSP session and S18 hardware verification remain pending. R146 NTP timestamp era conversion, not AirPlay transport completion.",
     "tests": [
       "plan:T-CA-01",
-      "jvm:R49Checks"
+      "jvm:R49Checks",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": [
@@ -2945,9 +2961,10 @@
     "tier": "A/B",
     "phase": "P3",
     "sources": "owner:v2.0 §7.17",
-    "route": "Own local automation registry with dry-run/permission/audit boundaries",
+    "route": "Own local automation registry with dry-run/permission/audit boundaries R146 canonical macro exchange codec, no execution or device integration.",
     "tests": [
-      "plan:T-AU-01"
+      "plan:T-AU-01",
+      "host:R146Checks"
     ],
     "status": "partial_unverified",
     "gates": []

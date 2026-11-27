@@ -18,9 +18,9 @@ package dev.fusion.lens
  */
 class OcrPreprocessing private constructor() {
     companion object {
-        const val MAX_INPUT = 1 << 20  // 1 MiB
+        const val MAX_INPUT = 1 shl 20  // 1 MiB
         const val MAX_DIM = 4096
-        const val MAX_PIXELS = 1 << 18  // 256K pixels
+        const val MAX_PIXELS = 1 shl 18  // 256K pixels
         const val MAX_WIDTH = 4096
 
         data class Preprocessed(
@@ -53,7 +53,7 @@ class OcrPreprocessing private constructor() {
         // Binarize
         val binary = ByteArray(pixels.size)
         for (i in pixels.indices) {
-            binary[i] = if ((pixels[i].toInt() and 0xFF) >= threshold) 255 else 0
+            binary[i] = (if ((pixels[i].toInt() and 0xFF) >= threshold) 255 else 0).toByte()
         }
 
         // Deskew angle (declared approximation: row darkness variance)
@@ -76,7 +76,8 @@ class OcrPreprocessing private constructor() {
 
     fun thresholdOnly(pixels: ByteArray, threshold: Int): ByteArray {
         require(threshold in 0..255) { "threshold out of range" }
-        return pixels.map { if ((it.toInt() and 0xFF) >= threshold) 255 else 0 }.toByteArray()
+        require(pixels.size <= MAX_PIXELS) { "too many threshold pixels" }
+        return ByteArray(pixels.size) { i -> (if ((pixels[i].toInt() and 0xFF) >= threshold) 255 else 0).toByte() }
     }
 
     private fun deskewAngle(pixels: ByteArray, width: Int, height: Int): Double {
@@ -88,7 +89,7 @@ class OcrPreprocessing private constructor() {
             for (x in 0 until width) {
                 sum += (pixels[y * width + x].toInt() and 0xFF)
             }
-            rowSums[y] = sum / width
+            rowSums[y] = sum.toDouble() / width
         }
         val mean = rowSums.average()
         var variance = 0.0
@@ -103,6 +104,7 @@ class OcrPreprocessing private constructor() {
     private fun padOrScale(
         src: ByteArray, srcW: Int, srcH: Int, dstW: Int, dstH: Int
     ): ByteArray {
+        require(dstW.toLong() * dstH <= MAX_PIXELS) { "scaled image too large" }
         val dst = ByteArray(dstW * dstH) { 0 }
         val xScale = srcW.toDouble() / dstW
         val yScale = srcH.toDouble() / dstH

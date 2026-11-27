@@ -8,6 +8,11 @@ data class UnitDefinition(val id: String, val label: String, val dimension: Dime
                           val numerator: BigDecimal, val denominator: BigDecimal = BigDecimal.ONE,
                           val offset: BigDecimal = BigDecimal.ZERO)
 object Units {
+    // R176: retain the Double API and the exact-decimal API under one owner.
+    fun convert(value: Double, from: String, to: String): UnitConversion.ConversionResult =
+        UnitConversion.convert(value, from, to)
+    fun dimensionNames(): List<String> = UnitConversion.dimensionNames()
+    fun unitsForDimension(dimension: String): List<String> = UnitConversion.unitsForDimension(dimension)
     private fun unit(id: String, label: String, dimension: Dimension, n: String, d: String="1", offset: String="0") =
         UnitDefinition(id,label,dimension,BigDecimal(n),BigDecimal(d),BigDecimal(offset))
     val definitions: List<UnitDefinition> = listOf(

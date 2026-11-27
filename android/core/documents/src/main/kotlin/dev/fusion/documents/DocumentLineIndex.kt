@@ -11,7 +11,7 @@ class DocumentLineIndex private constructor(
     private val docLen: Int
 ) {
     companion object {
-        const val MAX_DOC_LEN = 1 << 22 // 4 MiB chars
+        const val MAX_DOC_LEN = 1 shl 22 // 4 MiB chars
 
         fun build(text: String): DocumentLineIndex {
             require(text.length <= MAX_DOC_LEN) { "document exceeds MAX_DOC_LEN" }

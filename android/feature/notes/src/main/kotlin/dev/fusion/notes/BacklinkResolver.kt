@@ -16,7 +16,7 @@ package dev.fusion.notes
  */
 class BacklinkResolver private constructor() {
     companion object {
-        const val MAX_INPUT = 1 << 14  // 16 KiB
+        const val MAX_INPUT = 1 shl 14  // 16 KiB
         const val MAX_LINKS = 512
         const val MAX_TARGET_LEN = 256
         const val MAX_DISPLAY_LEN = 512
@@ -43,7 +43,7 @@ class BacklinkResolver private constructor() {
             if (links.size >= MAX_LINKS) break
             val groupValues = found.groupValues
             val rawTarget = groupValues[1]
-            val display = groupValues[3]
+            val display = found.groups[3]?.value
             if (rawTarget.isNotEmpty() && rawTarget.length <= MAX_TARGET_LEN && validTarget(rawTarget)) {
                 val noteId = normalize(rawTarget)
                 val disp = if (display != null && display.length <= MAX_DISPLAY_LEN) display else null

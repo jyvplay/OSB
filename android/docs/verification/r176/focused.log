@@ -1,0 +1,24 @@
+test_horspool_search_against_native_bytes_find (test_r176_build_surface.BuildSurfaceExecution.test_horspool_search_against_native_bytes_find) ... ok
+test_registered_work_areas_oversized_windows_and_extreme_positions (test_r176_build_surface.BuildSurfaceExecution.test_registered_work_areas_oversized_windows_and_extreme_positions) ... ok
+test_runtime_caps_and_cross_module_behavior (test_r176_build_surface.BuildSurfaceExecution.test_runtime_caps_and_cross_module_behavior) ... ok
+test_no_c_style_numeric_constant_shifts_remain (test_r176_build_surface.InvalidKotlinSyntaxGate.test_no_c_style_numeric_constant_shifts_remain) ... ok
+test_archive_inspector_independent_positive_and_hostile_archives (test_r176_system.R176Execution.test_archive_inspector_independent_positive_and_hostile_archives) ... ok
+test_held_out_decimal_results_against_cpython_decimal (test_r176_system.R176Execution.test_held_out_decimal_results_against_cpython_decimal) ... ok
+test_held_out_ranges_against_integer_tuple_reference (test_r176_system.R176Execution.test_held_out_ranges_against_integer_tuple_reference) ... ok
+test_real_export_zip_independent_reader (test_r176_system.R176Execution.test_real_export_zip_independent_reader) ... ok
+test_real_protocol_threads_and_affected_apis (test_r176_system.R176Execution.test_real_protocol_threads_and_affected_apis) ... ok
+test_diagnostic_manifest_scope_control_rejects_exposure (test_r176_system.R176SourceBoundaries.test_diagnostic_manifest_scope_control_rejects_exposure) ... ok
+test_internal_activity_no_new_permissions (test_r176_system.R176SourceBoundaries.test_internal_activity_no_new_permissions) ... ok
+test_legacy_forecast_gate_distinguishes_helper_prefixes_and_duplicates (test_r176_system.R176SourceBoundaries.test_legacy_forecast_gate_distinguishes_helper_prefixes_and_duplicates) ... ok
+test_no_scratchpad_export_route_added (test_r176_system.R176SourceBoundaries.test_no_scratchpad_export_route_added) ... ok
+test_old_unreviewed_share_path_is_not_used (test_r176_system.R176SourceBoundaries.test_old_unreviewed_share_path_is_not_used) ... ok
+test_registration_remains_rabbit_compatible (test_r176_system.R176SourceBoundaries.test_registration_remains_rabbit_compatible) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 40.774s
+
+OK
+R176_HOST_FRAME_OK actual_phases=REVIEW,SAVED android_ui=false
+R176_ANDROID_API_COMPILE_OK jar_sha256=4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b
+Compile-only Android Activity + shared workflow; NOT APK/resources/Gradle/device verification.
+R176_HOST_OK range_cases=1039 decimal_cases=169 archive_cases=27 workflow_assertions=84 geometry_cases=262 search_cases=404

@@ -1,0 +1,16 @@
+== R146 differential: kotlinc=/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc
+== corpus: 314 cases, 22 lanes
+== control W1 wiring: PASS
+== control W4 binding: PASS
+== compiling 24 sources -> /home/user/.cache/fusion-host-r23/r146/classes
+== differential: cases=314 mismatches=0 PASS
+== control W2 tamper: PASS (1 mismatches after weakening)
+== W3 baseline: getOrEmpty -> [id].orEmpty compile adapter
+== control W3 defect: PASS (6 msgthread mismatches on pre-fix source)
+   DEFECT c0297[msgthread] forward reference parent: oracle='root:kid' probe='kid:\nroot:'
+   DEFECT c0298[msgthread] forward two-cycle refused: oracle='!REF' probe='a:b'
+   DEFECT c0299[msgthread] self-parent unreachable refused: oracle='!REF' probe='root:'
+   DEFECT c0300[msgthread] detached cycle refused: oracle='!REF' probe='a:b\nc:d'
+   DEFECT c0303[msgthread] invalid id refused: oracle='!REF' probe='bad id:'
+   DEFECT c0304[msgthread] text over cap: oracle='!REF' probe='a:'
+== R146_DIFF_OK cases=314 lanes=22 controls=W1,W2,W3,W4

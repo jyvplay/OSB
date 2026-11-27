@@ -20,7 +20,7 @@ class CpuCapabilities private constructor(
     private val flags: Set<String>
 ) {
     companion object {
-        const val MAX_INPUT = 1 << 14  // 16 KiB
+        const val MAX_INPUT = 1 shl 14  // 16 KiB
         const val MAX_FLAGS = 64
         const val MAX_CORES = 1024
         const val MAX_STRING_LEN = 128
@@ -82,11 +82,10 @@ class CpuCapabilities private constructor(
     private fun ascii(s: String): String {
         val sb = StringBuilder()
         for (c in s) {
-            if (c in 0x20..0x7E) sb.append(c)
+            if (c.code in 0x20..0x7E) sb.append(c)
             else break
         }
         return sb.toString().take(if (sb.length > MAX_STRING_LEN) MAX_STRING_LEN else sb.length)
     }
 
-    private fun String.coerceAtMost(max: Int) = if (this > max) max else this
 }

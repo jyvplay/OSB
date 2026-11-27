@@ -15,7 +15,7 @@ package dev.fusion.castv2
  */
 class CastV2Channel private constructor() {
     companion object {
-        const val MAX_INPUT = 1 << 16  // 64 KiB
+        const val MAX_INPUT = 1 shl 16  // 64 KiB
         const val MAX_FRAMES = 256
         const val MAX_FIELD_LEN = 4096
         private val NS_RE = Regex("urn:x-cast:[a-z0-9.]+")
@@ -53,7 +53,7 @@ class CastV2Channel private constructor() {
             val namespace = readLengthPrefixed(frameBytes, fo) ?: break
             fo = namespace.let { it.second }
             val payload = readLengthPrefixed(frameBytes, fo) ?: break
-            require(NS_RE.matches(namespace.second)) { "invalid namespace: $namespace" }
+            require(NS_RE.matches(String(namespace.first, Charsets.UTF_8))) { "invalid namespace: $namespace" }
             frames.add(Frame(
                 String(sourceId.first, charset("UTF-8")),
                 String(destinationId.first, charset("UTF-8")),

@@ -18,7 +18,7 @@ class ClipboardEntryStore private constructor(
     companion object {
         const val MAX_ENTRIES = 256
         const val MAX_ID_LEN = 128
-        const val MAX_CONTENT_BYTES = 1 << 20 // 1 MiB
+        const val MAX_CONTENT_BYTES = 1 shl 20 // 1 MiB
         const val MAX_MIME_LEN = 128
         const val MAX_TS = Long.MAX_VALUE
         const val MAX_AGE_MS = 30L * 24 * 60 * 60 * 1000 // 30 days

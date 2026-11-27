@@ -19,7 +19,7 @@ class BackupManifest private constructor(
     companion object {
         const val MAX_ENTRIES = 8192
         const val MAX_PATH_LEN = 4096
-        const val MAX_SIZE = 1L << 40  // 1 TiB
+        const val MAX_SIZE = 1L shl 40  // 1 TiB
         const val MAX_VERSION_LEN = 32
         private val HEX64 = Regex("[0-9a-fA-F]{64}")
         private val VERSION_RE = Regex("[0-9]+(\\.[0-9]+)*")

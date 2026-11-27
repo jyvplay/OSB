@@ -1,0 +1,146 @@
+[
+  {
+    "path": "cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Channel.kt",
+    "constant": "MAX_INPUT",
+    "value": 65536,
+    "class": "dev.fusion.castv2.CastV2Channel"
+  },
+  {
+    "path": "cast/dlna/src/main/kotlin/dev/fusion/dlna/DlnaDevice.kt",
+    "constant": "MAX_INPUT",
+    "value": 16384,
+    "class": "dev.fusion.dlna.DlnaDevice"
+  },
+  {
+    "path": "core/capabilities/src/main/kotlin/dev/fusion/capabilities/CpuCapabilities.kt",
+    "constant": "MAX_INPUT",
+    "value": 16384,
+    "class": "dev.fusion.capabilities.CpuCapabilities"
+  },
+  {
+    "path": "core/documents/src/main/kotlin/dev/fusion/documents/DocumentLineIndex.kt",
+    "constant": "MAX_DOC_LEN",
+    "value": 4194304,
+    "class": "dev.fusion.documents.DocumentLineIndex"
+  },
+  {
+    "path": "core/documents/src/main/kotlin/dev/fusion/documents/DocumentWordCountEstimator.kt",
+    "constant": "MAX_DOC_LEN",
+    "value": 4194304,
+    "class": "dev.fusion.documents.DocumentWordCountEstimator"
+  },
+  {
+    "path": "core/documents/src/main/kotlin/dev/fusion/documents/PlainTextNormalizer.kt",
+    "constant": "MAX_INPUT",
+    "value": 65536,
+    "class": "dev.fusion.documents.PlainTextNormalizer"
+  },
+  {
+    "path": "core/files/src/main/kotlin/dev/fusion/files/BomDetector.kt",
+    "constant": "MAX_INPUT",
+    "value": 1048576,
+    "class": "dev.fusion.files.BomDetector"
+  },
+  {
+    "path": "core/index/src/main/kotlin/dev/fusion/index/BoyerMooreSearch.kt",
+    "constant": "MAX_HAYSTACK",
+    "value": 1048576,
+    "class": "dev.fusion.index.BoyerMooreSearch"
+  },
+  {
+    "path": "core/security/src/main/kotlin/dev/fusion/security/ConstantTimeCompare.kt",
+    "constant": "MAX_LEN",
+    "value": 65536,
+    "class": "dev.fusion.security.ConstantTimeCompare"
+  },
+  {
+    "path": "core/windowing/src/main/kotlin/dev/fusion/windowing/GeometryClamp.kt",
+    "constant": "MAX_COORD",
+    "value": 65536,
+    "class": "dev.fusion.windowing.GeometryClamp"
+  },
+  {
+    "path": "feature/backup/src/main/kotlin/dev/fusion/backup/BackupManifest.kt",
+    "constant": "MAX_SIZE",
+    "value": 1099511627776,
+    "class": "dev.fusion.backup.BackupManifest"
+  },
+  {
+    "path": "feature/automation/src/main/kotlin/dev/fusion/automation/MacroRecorder.kt",
+    "constant": "MAX_TOTAL_BYTES",
+    "value": 65536,
+    "class": "dev.fusion.automation.MacroRecorder"
+  },
+  {
+    "path": "feature/beam/src/main/kotlin/dev/fusion/beam/BeamOfferValidator.kt",
+    "constant": "MAX_PAYLOAD_BYTES",
+    "value": 1073741824,
+    "class": "dev.fusion.beam.BeamOfferValidator"
+  },
+  {
+    "path": "feature/capture/src/main/kotlin/dev/fusion/capture/CaptureSegmentQuota.kt",
+    "constant": "MAX_SEGMENT_BYTES",
+    "value": 1073741824,
+    "class": "dev.fusion.capture.CaptureSegmentQuota"
+  },
+  {
+    "path": "feature/capture/src/main/kotlin/dev/fusion/capture/CaptureSegmentQuota.kt",
+    "constant": "MAX_QUOTA_BYTES",
+    "value": 1099511627776,
+    "class": "dev.fusion.capture.CaptureSegmentQuota"
+  },
+  {
+    "path": "feature/continuity/src/main/kotlin/dev/fusion/continuity/ClipboardEntryStore.kt",
+    "constant": "MAX_CONTENT_BYTES",
+    "value": 1048576,
+    "class": "dev.fusion.continuity.ClipboardEntryStore"
+  },
+  {
+    "path": "feature/editor/src/main/kotlin/dev/fusion/editor/EditorTransactionEngine.kt",
+    "constant": "MAX_DOC_LEN",
+    "value": 4194304,
+    "class": "dev.fusion.editor.EditorTransactionEngine"
+  },
+  {
+    "path": "feature/editor/src/main/kotlin/dev/fusion/editor/TextSelectionRange.kt",
+    "constant": "MAX_DOC_LEN",
+    "value": 1048576,
+    "class": "dev.fusion.editor.TextSelectionRange"
+  },
+  {
+    "path": "feature/lens/src/main/kotlin/dev/fusion/lens/OcrPreprocessing.kt",
+    "constant": "MAX_INPUT",
+    "value": 1048576,
+    "class": "dev.fusion.lens.OcrPreprocessing"
+  },
+  {
+    "path": "feature/lens/src/main/kotlin/dev/fusion/lens/OcrPreprocessing.kt",
+    "constant": "MAX_PIXELS",
+    "value": 262144,
+    "class": "dev.fusion.lens.OcrPreprocessing"
+  },
+  {
+    "path": "feature/notes/src/main/kotlin/dev/fusion/notes/BacklinkResolver.kt",
+    "constant": "MAX_INPUT",
+    "value": 16384,
+    "class": "dev.fusion.notes.BacklinkResolver"
+  },
+  {
+    "path": "feature/terminal/src/main/kotlin/dev/fusion/terminal/AnsiParser.kt",
+    "constant": "MAX_INPUT",
+    "value": 16384,
+    "class": "dev.fusion.terminal.AnsiParser"
+  },
+  {
+    "path": "format/image/src/main/kotlin/dev/fusion/image/PngChunkReader.kt",
+    "constant": "MAX_INPUT",
+    "value": 1048576,
+    "class": "dev.fusion.image.PngChunkReader"
+  },
+  {
+    "path": "format/image/src/main/kotlin/dev/fusion/image/PngChunkReader.kt",
+    "constant": "MAX_CHUNK_LEN",
+    "value": 65536,
+    "class": "dev.fusion.image.PngChunkReader"
+  }
+]

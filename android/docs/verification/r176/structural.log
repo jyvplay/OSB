@@ -1,0 +1,10 @@
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 50, "unfinished": 50, "unfinished_percent": 100.0}
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+{"not_established": 0, "not_established_percent": 0.0, "substantial_testable_subsets": 50, "testable_percent": 100.0, "total": 50}
+R45 touch-target gate OK: {'tile_label_fit_floor_dp': 48, 'default_dock_slot_dp': 56, 'xml_violations': 0}
+R45 manifest-scope gate OK: {'manifests_checked': 17, 'app_main_permissions': ['INTERNET', 'READ_MEDIA_IMAGES'], 'privacy_permissions': ['android.permission.HIDE_OVERLAY_WINDOWS'], 'global_forbidden_violations': 0} (static XML only; merged truth needs AGP)
+50 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).

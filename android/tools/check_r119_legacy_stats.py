@@ -111,7 +111,7 @@ def registered(source: str, spill: str) -> list[str]:
     for dispatch, name in DISPATCH.items():
         if source.count(dispatch) != 1:
             found.append(f'R119-1: the dispatch for {name} is not present exactly once: {dispatch}')
-    if source.count('private fun evalForecast') != 1:
+    if len(re.findall(r'\bprivate\s+fun\s+evalForecast\s*\(', source)) != 1:
         found.append('R119-1: evalForecast is not defined exactly once')
     if source.count('evalForecast(args, env)') != 1:
         found.append('R119-1: the evalForecast dispatch call is not present exactly once')

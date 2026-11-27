@@ -2,106 +2,64 @@
 package dev.fusion.model
 
 /**
- * Bounded SemVer range matcher. Parses and evaluates version ranges of the
- * form: `>=1.2.3`, `<=1.2.3`, `==1.2.3`, `!=1.2.3`, `>1.2.3`, `<1.2.3`,
- * `^1.2.3` (compatible: >=1.2.3, <2.0.0), `~1.2.3` (approximately: >=1.2.3,
- * <1.3.0 when minor > 0; >=1.2.3, <1.2.4 when minor == 0), and bare
- * `1.2.3` (treated as `==1.2.3`). Delegates to [SemVer] for parsing and
- * precedence; only the operators above are admitted — wildcards, x-ranges,
- * and git references are refused.
- *
- * Declared narrowings: a range string is at most [MAX_RANGE_LEN] chars; a
- * version has at most [MAX_COMPONENTS] dot-separated numeric components;
- * leading-zero components are refused (delegated to SemVer); the `^`/`~`
- * operators apply only to the first non-zero component.
+ * R176 repairs the R43 public range API and removes a colliding SemVer placeholder.
+ * Uses the real SemVer parser/precedence comparator. Single explicit operator:
+ * ^, ~, >=, <=, ==, !=, >, <. No unions, whitespace, bare versions or wildcards.
+ * Prerelease candidates never satisfy these release-only ranges; prerelease
+ * bounds refuse. Build metadata does not affect precedence. Range <=64 chars.
+ * Caret bumps the first nonzero component (0.0.x bumps patch); tilde bumps minor.
+ * An unrepresentable exclusive upper bound refuses, never wraps or saturates.
  */
-class VersionRange private constructor(
-    private val op: String,
-    private val version: SemVer
-) {
-    companion object {
-        const val MAX_RANGE_LEN = 64
-        private val OP = Regex("^(>=|<=|==|!=|>|<|\\^|~|)")
-    }
+object VersionRange {
+    const val SCOPE = "Bounded explicit single-operator release-version ranges; no unions or prerelease admission."
+    const val MAX_RANGE_LEN = 64
+    private val EXPRESSION = Regex("(>=|<=|==|!=|>|<|\\^|~)(.+)")
 
-    data class Result(val satisfied: Boolean, val range: String)
-
-    fun satisfiedBy(other: SemVer): Boolean = when (op) {
-        ">=" -> other.compareTo(version) >= 0
-        "<=" -> other.compareTo(version) <= 0
-        "==" -> other.compareTo(version) == 0
-        "!=" -> other.compareTo(version) != 0
-        ">" -> other.compareTo(version) > 0
-        "<" -> other.compareTo(version) < 0
-        "^" -> compatibleCaret(other)
-        "~" -> compatibleTilde(other)
-        "" -> other.compareTo(version) == 0
-        else -> throw IllegalArgumentException("unknown operator: $op")
-    }
-
-    fun range(): String = when (op) {
-        "^" -> "^${version.toString()}"
-        "~" -> "~${version.toString()}"
-        else -> "$op${version.toString()}"
-    }
-
-    private fun compatibleCaret(other: SemVer): Boolean {
-        if (other.major != version.major) return false
-        if (version.major == 0 && version.minor == 0) {
-            return other == version
+    class Range internal constructor(
+        private val operator: String,
+        val lower: SemVer,
+        val upperExclusive: SemVer?,
+    ) {
+        fun satisfiedBy(other: SemVer): Boolean {
+            if (other.prerelease.isNotEmpty()) return false
+            val comparison = other.compareTo(lower)
+            return when (operator) {
+                "^", "~" -> comparison >= 0 && other < requireNotNull(upperExclusive)
+                ">=" -> comparison >= 0
+                "<=" -> comparison <= 0
+                "==" -> comparison == 0
+                "!=" -> comparison != 0
+                ">" -> comparison > 0
+                "<" -> comparison < 0
+                else -> error("unreachable operator")
+            }
         }
-        if (version.major == 0) {
-            return other.minor >= version.minor &&
-                   (other.minor > version.minor || other.patch >= version.patch) &&
-                   other.minor < version.minor + 1
-        }
-        return other.major == version.major &&
-               other.minor >= version.minor
+        fun range(): String = operator + lower.toString()
     }
 
-    private fun compatibleTilde(other: SemVer): Boolean {
-        if (version.major == 0 && version.minor == 0) {
-            return other == version
+    fun parse(text: String): Range {
+        require(text.length <= MAX_RANGE_LEN) { "range too long" }
+        val match = EXPRESSION.matchEntire(text) ?: throw IllegalArgumentException("invalid range")
+        val operator = match.groupValues[1]
+        val lower = SemVer.parse(match.groupValues[2])
+        require(lower.prerelease.isEmpty()) { "prerelease bounds not supported" }
+        fun increment(value: Long): Long {
+            require(value < Long.MAX_VALUE) { "range upper bound overflow" }
+            return value + 1
         }
-        if (version.major == 0) {
-            return other == version
+        fun version(major: Long, minor: Long, patch: Long) = SemVer(major, minor, patch, emptyList(), emptyList())
+        val upper = when (operator) {
+            "~" -> version(lower.major, increment(lower.minor), 0)
+            "^" -> when {
+                lower.major > 0 -> version(increment(lower.major), 0, 0)
+                lower.minor > 0 -> version(0, increment(lower.minor), 0)
+                else -> version(0, 0, increment(lower.patch))
+            }
+            else -> null
         }
-        return other.major == version.major &&
-               other.minor == version.minor &&
-               other.patch >= version.patch
+        return Range(operator, lower, upper)
     }
 
-    fun parse(s: String): VersionRange {
-        require(s.length <= MAX_RANGE_LEN) { "range exceeds $MAX_RANGE_LEN chars" }
-        val m = OP.matchEntire(s) ?: throw IllegalArgumentException("invalid range operator in: $s")
-        val opText = m.groupValues[1]
-        val rest = s.substring(opText.length)
-        require(rest.isNotEmpty()) { "range missing version: $s" }
-        return VersionRange(opText, SemVer.parse(rest))
-    }
-
-    fun isValid(s: String): Boolean = try { parse(s); true } catch (_: IllegalArgumentException) { false }
-}
-
-/** Minimal SemVer placeholder so VersionRange compiles standalone. */
-class SemVer private constructor(
-    val major: Int, val minor: Int, val patch: Int
-) : Comparable<SemVer> {
-    companion object {
-        fun parse(s: String): SemVer {
-            val parts = s.split(".")
-            require(parts.size == 3) { "SemVer must be MAJOR.MINOR.PATCH: $s" }
-            val major = parts[0].toInt()
-            val minor = parts[1].toInt()
-            val patch = parts[2].toInt()
-            require(major >= 0 && minor >= 0 && patch >= 0) { "negative component: $s" }
-            require(parts.all { it == it.toInt().toString() || it == "0" }) { "leading zeros refused: $s" }
-            return SemVer(major, minor, patch)
-        }
-    }
-    override fun compareTo(other: SemVer): Int =
-        if (major != other.major) major.compareTo(other.major)
-        else if (minor != other.minor) minor.compareTo(other.minor)
-        else patch.compareTo(other.patch)
-    override fun toString(): String = "$major.$minor.$patch"
+    fun satisfies(version: String, range: String): Boolean = parse(range).satisfiedBy(SemVer.parse(version))
+    fun isValid(text: String): Boolean = try { parse(text); true } catch (_: IllegalArgumentException) { false }
 }
