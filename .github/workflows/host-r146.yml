@@ -1,0 +1,43 @@
+name: R146 host differential and offline export
+on:
+  pull_request:
+    paths: ['android/**', '.github/workflows/host-r146.yml']
+  push:
+    paths: ['android/**', '.github/workflows/host-r146.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: r146-host-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  host-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: android
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # W3 reads the pinned historical defect source.
+      - name: Install pinned disposable host test tools
+        run: python3 tools/bootstrap_host_tools.py install
+      - name: Compile and execute differential with fault controls
+        run: |
+          set -o pipefail
+          python3 tools/run_r146_checks.py 2>&1 | tee r146-differential.log
+      - name: Oracle pins, harness integrity and real ZIP workflow
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s tools -p 'test_r146_*.py' -v 2>&1 | tee r146-focused.log
+      - name: Validate preserved source and privacy contracts
+        run: python3 tools/check_project.py --keep
+      - name: Preserve host evidence (not Android acceptance)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r146-host-contracts
+          path: android/r146-*.log
+          if-no-files-found: warn

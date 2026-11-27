@@ -1,0 +1,98 @@
+R146 executed host evidence, 2026-11-27
+Baseline 92bcd3278445af8467da5e3fd5cea7531b9815f4
+
+== R146 differential: kotlinc=/home/user/.cache/fusion-host-r23/node_modules/kotlin-compiler/bin/kotlinc
+== corpus: 314 cases, 22 lanes
+== control W1 wiring: PASS
+== control W4 binding: PASS
+== compiling 22 sources -> /home/user/.cache/fusion-host-r23/r146/classes
+== differential: cases=314 mismatches=0 PASS
+== control W2 tamper: PASS (1 mismatches after weakening)
+== W3 baseline: getOrEmpty -> [id].orEmpty compile adapter
+== control W3 defect: PASS (6 msgthread mismatches on pre-fix source)
+   DEFECT c0297[msgthread] forward reference parent: oracle='root:kid' probe='kid:\nroot:'
+   DEFECT c0298[msgthread] forward two-cycle refused: oracle='!REF' probe='a:b'
+   DEFECT c0299[msgthread] self-parent unreachable refused: oracle='!REF' probe='root:'
+   DEFECT c0300[msgthread] detached cycle refused: oracle='!REF' probe='a:b\nc:d'
+   DEFECT c0303[msgthread] invalid id refused: oracle='!REF' probe='bad id:'
+   DEFECT c0304[msgthread] text over cap: oracle='!REF' probe='a:'
+== R146_DIFF_OK cases=314 lanes=22 controls=W1,W2,W3,W4
+
+FOCUSED UNITTEST
+................................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 336 tests in 12.615s
+
+OK
+
+FULL-SUITE BASELINE TAIL
+'SemVer' : core/model/src/main/kotlin/dev/fusion/model/SemVer.kt redeclares {'SemVer'} from VersionRange.kt
+
+----------------------------------------------------------------------
+Ran 3062 tests in 66.908s
+
+FAILED (failures=12, errors=4, skipped=443)
+R72 Office ZIP fixtures: 40 actual archives; not Android or full-import acceptance
+R72 Ooxml fixtures: 30 actual archives; not Android or provider evidence
+R73 oracle cases: 371 formulas, independent expected values; host-only
+R73 oracle cases: 371 formulas, independent expected values; host-only
+R73 essentials: 371 formulas matched the independent oracle; host-only
+MISMATCH roundup-2.675-2: got n:999.0 grid=n:999.0 want N:2.68
+1 mismatches out of 371 cases
+EXIT=1
+
+FULL-SUITE CANDIDATE TAIL
+AssertionError: Items in the first set but not the second:
+'SemVer' : core/model/src/main/kotlin/dev/fusion/model/SemVer.kt redeclares {'SemVer'} from VersionRange.kt
+
+----------------------------------------------------------------------
+Ran 3406 tests in 79.830s
+
+FAILED (failures=11, errors=3, skipped=443)
+R72 Office ZIP fixtures: 40 actual archives; not Android or full-import acceptance
+R72 Ooxml fixtures: 30 actual archives; not Android or provider evidence
+R73 oracle cases: 371 formulas, independent expected values; host-only
+R73 oracle cases: 371 formulas, independent expected values; host-only
+R73 essentials: 371 formulas matched the independent oracle; host-only
+MISMATCH roundup-2.675-2: got n:999.0 grid=n:999.0 want N:2.68
+1 mismatches out of 371 cases
+
+NAMED REGRESSION COMPARISON
+{
+  "new_failures_or_errors": [],
+  "resolved": [
+    "test_current_pairings_and_denominator (test_module_testability.TestabilityCensusChecks.test_current_pairings_and_denominator)",
+    "test_current_source_report_is_reproducible (test_native_source_audit.NativeSourceAuditChecks.test_current_source_report_is_reproducible)"
+  ],
+  "remaining": [
+    "test_a_duplicated_row_fires_rule_3 (test_r119_legacy_stats.Corpus.test_a_duplicated_row_fires_rule_3)",
+    "test_a_helper_arity_mistake_fires_rule_6 (test_r119_legacy_stats.TestDiscipline.test_a_helper_arity_mistake_fires_rule_6)",
+    "test_a_loosened_tolerance_fires_rule_6 (test_r119_legacy_stats.TestDiscipline.test_a_loosened_tolerance_fires_rule_6)",
+    "test_a_shrunken_suite_fires_rule_6 (test_r119_legacy_stats.TestDiscipline.test_a_shrunken_suite_fires_rule_6)",
+    "test_an_unregistered_function_row_fires_rule_3 (test_r119_legacy_stats.Corpus.test_an_unregistered_function_row_fires_rule_3)",
+    "test_changing_the_mode_kernel_fires_rule_7 (test_r119_legacy_stats.NoRegression.test_changing_the_mode_kernel_fires_rule_7)",
+    "test_dropping_an_error_assertion_fires_rule_6 (test_r119_legacy_stats.TestDiscipline.test_dropping_an_error_assertion_fires_rule_6)",
+    "test_dropping_the_stdev_kernel_fires_rule_7 (test_r119_legacy_stats.NoRegression.test_dropping_the_stdev_kernel_fires_rule_7)",
+    "test_losing_the_corpus_resource_reference_fires_rule_6 (test_r119_legacy_stats.TestDiscipline.test_losing_the_corpus_resource_reference_fires_rule_6)",
+    "test_no_top_level_redeclaration (test_r38_tools.NoPackageCollisions.test_no_top_level_redeclaration)",
+    "test_r43_tools (unittest.loader._FailedTest.test_r43_tools)",
+    "test_r45_tools (unittest.loader._FailedTest.test_r45_tools)",
+    "test_r46_tools (unittest.loader._FailedTest.test_r46_tools)",
+    "test_this_repository_is_silent_and_the_summary_is_stated (test_r119_legacy_stats.Repository.test_this_repository_is_silent_and_the_summary_is_stated)"
+  ]
+}
+
+STRUCTURAL CHECK stdout/stderr
+231 requirement rows; 30 unique spike IDs; structural traceability valid.
+{"complete": 0, "complete_percent": 0.0, "total": 50, "unfinished": 50, "unfinished_percent": 100.0}
+231 recorded requirements,36 cross-cutting obligations and all native main-source package ownership checked. NOT a build or completeness proof.
+{"not_established": 0, "not_established_percent": 0.0, "substantial_testable_subsets": 50, "testable_percent": 100.0, "total": 50}
+R45 touch-target gate OK: {'tile_label_fit_floor_dp': 48, 'default_dock_slot_dp': 56, 'xml_violations': 0}
+R45 manifest-scope gate OK: {'manifests_checked': 17, 'app_main_permissions': ['INTERNET', 'READ_MEDIA_IMAGES'], 'privacy_permissions': ['android.permission.HIDE_OVERLAY_WINDOWS'], 'global_forbidden_violations': 0} (static XML only; merged truth needs AGP)
+50 included modules; XML/catalog/project references/wrapper checksum/privacy contracts checked.
+This is source validation only. Run Gradle, lint, JVM and device tests separately.
+Pilot entry gates, read-only Files, stable window keys, disabled listener and capture safety source contracts checked.
+Copy broker manifest/routing and historical fixture fingerprint checked (not Android execution).
+
+System run stdout (also asserted by test_r146_system):
+R146_SYSTEM_OK assertions=39 real_zip=true stream_failure=true java2d=true

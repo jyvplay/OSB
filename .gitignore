@@ -3,3 +3,6 @@ node_modules/
 dist/
 *.tsbuildinfo
 .DS_Store
+
+# Local host verification transcripts and build scratch (R146).
+.cache/
