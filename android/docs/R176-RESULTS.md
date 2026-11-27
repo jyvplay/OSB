@@ -33,12 +33,12 @@ has not been executed here**. Six new Activity/MediaStore instrumentation tests
 are authored but uncompiled/unrun, and do not automate DocumentsUI. An Android
 emulator test that was never run is not a successful device test.
 
-## Production repair breadth — 37 files / 24 module owners
+## Production repair breadth — 38 files / 25 module owners
 
 Repairs target actual observed compiler/behavior failures, not new claimed complete
-features. The runtime source-union gate compiles **95 production files + 1 probe**
+features. The runtime source-union gate compiles **120 production files + 1 probe**
 together with Kotlin 2.2.21/JVM17 and `-Werror`. It includes every production Kotlin
-source in model/windowing/index and the 21 shift-repaired sources.
+source in model/windowing/index/commands and the 21 shift-repaired sources.
 
 | Owner(s) | Implemented / repaired | Direct executed evidence / exact limit |
 |---|---|---|
@@ -71,7 +71,7 @@ checks, but it is not the complete Android dependency graph.
 | `python3 tools/check_project.py --keep` | PASS, all prior pins retained; exact new nonexported Activity allowed; permissions unchanged | APK/manifest merge/runtime |
 | `python3 -m unittest discover -s tools -v` before repairs | 3406 tests; 11 failures, 3 errors, 443 skips | Candidate result |
 | Same full suite after repairs | **3575 tests; 0 failures/errors; 443 skips** | Skipped execution or device behavior |
-| `python3 tools/run_r176_checks.py --android-jar <jar> --artifacts <dir>` | **15 tests PASS**; source-union compile; 84 workflow assertions, 26 build-smoke assertions +24 constants; 1039 range /169 decimal /262 geometry /404 search /27 ZIP cases | Full product or statistical universality |
+| `python3 tools/run_r176_checks.py --android-jar <jar> --artifacts <dir>` | **15 tests PASS**; source-union compile; 84 workflow assertions, 32 build-smoke assertions +24 constants; 1039 range /169 decimal /262 geometry /404 search /27 ZIP cases | Full product or statistical universality |
 | R176 native API compile | PASS `-jvm-target 17 -Werror`; actual API35 stubs SHA recorded in PLAN | SDK37/AGP/resources/Compose/APK/device |
 | `python3 tools/run_r43_contracts.py` | PASS 372 assertions /23 historical kernels | Android execution |
 | `python3 tools/run_r146_checks.py` | PASS 314 cases /22 lanes; all four W1–W4 malicious controls caught | Class A |
@@ -140,3 +140,14 @@ No prior working feature was deliberately removed; broad compatibility tests and
 source pins pass. A green host suite cannot establish that every existing Android
 feature survived until the app is built and run. This is the strongest verified
 partial result, with explicit remaining gaps rather than a full-success claim.
+
+## Remote follow-up after first push
+
+Both push/PR `host-contracts` checks passed on `8ce57c6`, including the new R176
+runner. Android assembly reached the repaired model/windowing/index compilation
+but failed at `core/commands/CommandRouter.kt:29`: two parameters named `s`. Device
+annotations explicitly reported no executed cases. This is an actual source
+failure, not attributed to the emulator. R176 repairs that declaration and adds
+all 25 production commands sources to the compile union (120 production +1 probe)
+plus six real routing/name/refusal assertions. Focused rerun passes. Remote results
+for the subsequent commit must not be inferred from the first push's checks.

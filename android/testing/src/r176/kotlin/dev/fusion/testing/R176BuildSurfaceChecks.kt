@@ -87,6 +87,14 @@ object R176BuildSurfaceChecks {
         yes(dev.fusion.castv2.CastV2Channel.empty().parse(byteArrayOf()).isEmpty())
         yes(!dev.fusion.dlna.DlnaDevice.empty().isMediaRenderer("<root/>"))
         yes(dev.fusion.image.PngChunkReader.empty().read(byteArrayOf()).chunks.isEmpty())
+        yes(dev.fusion.commands.CommandRouter.validName("open-file"))
+        yes(!dev.fusion.commands.CommandRouter.validName("Bad name"))
+        val router = dev.fusion.commands.CommandRouter.empty()
+        router.register("open-file", "target", 1, setOf("safe"))
+        yes(router.resolve("open-file", listOf("a"), setOf("safe")) == "target")
+        refuses { router.resolve("open-file", listOf("a"), emptySet()) }
+        refuses { router.resolve("open-file", listOf("a", "b"), setOf("safe")) }
+        refuses { router.register("open-file", "duplicate") }
         println("R176_BUILD_SURFACE_OK behavior_assertions=$checks")
     }
 }

@@ -26,7 +26,7 @@ class CommandRouter private constructor(
 
         data class CommandEntry(val target: String, val maxArgs: Int, val requiredFlags: Set<String>)
 
-        fun validName(s: Boolean = true, s: String) = NAME.matches(s)
+        fun validName(s: String) = NAME.matches(s)
         fun empty(): CommandRouter = CommandRouter(LinkedHashMap())
     }
 

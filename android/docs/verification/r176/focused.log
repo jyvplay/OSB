@@ -15,7 +15,7 @@ test_old_unreviewed_share_path_is_not_used (test_r176_system.R176SourceBoundarie
 test_registration_remains_rabbit_compatible (test_r176_system.R176SourceBoundaries.test_registration_remains_rabbit_compatible) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 37.191s
+Ran 15 tests in 40.774s
 
 OK
 R176_HOST_FRAME_OK actual_phases=REVIEW,SAVED android_ui=false

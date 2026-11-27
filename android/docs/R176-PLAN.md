@@ -127,7 +127,7 @@ remaining full-project build defects. Host protocol proofs cannot close it.
 Modal shortcut: compile each Kotlin-looking kernel alone, then run only its Python
 oracle. It fails because duplicate classes and incompatible caller signatures are
 properties of the source union, invisible to isolated oracles. The new build gate
-compiles the complete model/windowing/index source sets with the 21 repaired files
+compiles the complete model/windowing/index/commands source sets with the 21 repaired files
 and invokes their real APIs; before repair it fails on duplicate declarations,
 invalid C-style `<<`, invalid BigDecimal access and type errors.
 
@@ -196,7 +196,7 @@ claim is structural, never runtime verification.
 
 Actual JVM comparisons: 1039 ranges, 169 decimal calculations, 262 geometry cases,
 404 byte searches, 27 independently built ZIPs. Separate protocol exercise has
-84 assertions, build-surface exercise 26 behavior assertions +24 constant checks.
+84 assertions, build-surface exercise 32 behavior assertions +24 constant checks.
 Do not sum these into a fabricated number of completed features. R43's original
 372 assertions ran too. Local full suite baseline/candidate results in RESULTS.
 Native Activity compiled with `-jvm-target 17 -Werror` against API35; SDK37 target

@@ -3942,7 +3942,7 @@ test_windows_style_path (test_zip_guard.ZipGuardTest.test_windows_style_path) ..
 test_zip_slip_dotdot (test_zip_guard.ZipGuardTest.test_zip_slip_dotdot) ... ok
 
 ----------------------------------------------------------------------
-Ran 3575 tests in 116.254s
+Ran 3575 tests in 120.286s
 
 OK (skipped=443)
 R72 Office ZIP fixtures: 40 actual archives; not Android or full-import acceptance

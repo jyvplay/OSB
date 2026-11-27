@@ -194,10 +194,10 @@
     "app/src/main/java/dev/fusion/shell/DiagnosticExportActivity.kt": "3f9b3f081c13f45ebca3cff68f58c3b752373dfc7b51b9b1f2795b5033df9500",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -392,10 +392,10 @@
     "core/documents/src/main/kotlin/dev/fusion/documents/PlainTextNormalizer.kt": "8245ce030516d97ddbef3fac6d579837c62e2e15ebd20c21815b88f2c371e29b",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -520,10 +520,10 @@
     "core/windowing/src/main/kotlin/dev/fusion/windowing/GeometryClamp.kt": "eabf37d9c464b57625c62c54a127f2de0730f36caaea0369dbae1089a19e5af1",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -640,10 +640,10 @@
     "core/files/src/main/kotlin/dev/fusion/files/BomDetector.kt": "65d16bca54d59b471a2bdddc8505badafa2127ab5c0efc6f6049f954b4002fbd",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -744,10 +744,10 @@
     "core/capabilities/src/main/kotlin/dev/fusion/capabilities/CpuCapabilities.kt": "4d9eeda78ee8ec91efcab266349ce9fc21fcd01a88771c1a385f7faceb7651b9",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -882,17 +882,17 @@
     "tools/r146_vectors.json": "68ad34fe1beecaafc131003b60da904ba35b74ee1efcba8e298cf85fc91663a9",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
    "module": ":core:commands",
    "substantial_testable_subset": true,
    "kind": "behavioral_subset",
-   "behavior": "Immutable bounded locale-stable command search R29 deepens with AliasTable: bounded alias table with cycle-safe argv[0] expansion executed on host JVM. R32 deepens again with ArgSplit: shell-ish argv splitter (quotes, escapes, comments) feeding alias expansion, executed on host JVM. R34 deepens again with PipePlan: pipeline splitter honoring quotes and escapes (empty stages refused) executed on host JVM. R36 deepens again with RedirPlan: shell redirect planning (< > >> 2>, one per stream, source order kept) executed on host JVM. R37 deepens again with ExitCode: exit-status naming across shell conventions, BSD sysexits and 128+N Linux signals executed on host JVM. R41 deepens again with ShlexJoin: POSIX display quoting (the inverse of ArgSplit) agreeing token-for-token with held-out shlex.quote/join, executed on host JVM. R44 deepens again with HistDedup: readline-family ignoredups/erasedups/ignorespace semantics stated precisely and executed, on host JVM. R46 deepens :core:commands with PipeChain: quote-aware command pipeline lexer and bounded stage executor with zero host shell invocation. R47 adds ArgvSpecParser pure-JVM kernel (runtime). R47 adds UndoRedoStack pure-JVM kernel (product_c). R48 adds KeybindingChordTrie pure-JVM kernel. R49 adds ThirdPartyIntentCommandGate pure-JVM kernel. R50 adds ShortcutPresetConflictDetector pure-JVM kernel. R51 adds FuzzyChordCommandPaletteEngine pure-JVM kernel. R52 adds toBottomRightToastEntry Z-stack integration on UndoRedoStack. R52 adds ReversibleBatchCommandJournal pure-JVM kernel. R52 adds StackedUndoNotificationDeck pure-JVM kernel. R53 adds ContextMenuMnemonicKeyNavigator pure-JVM kernel. R53 adds UndoDeckInteractiveFanController pure-JVM kernel.",
+   "behavior": "Immutable bounded locale-stable command search R29 deepens with AliasTable: bounded alias table with cycle-safe argv[0] expansion executed on host JVM. R32 deepens again with ArgSplit: shell-ish argv splitter (quotes, escapes, comments) feeding alias expansion, executed on host JVM. R34 deepens again with PipePlan: pipeline splitter honoring quotes and escapes (empty stages refused) executed on host JVM. R36 deepens again with RedirPlan: shell redirect planning (< > >> 2>, one per stream, source order kept) executed on host JVM. R37 deepens again with ExitCode: exit-status naming across shell conventions, BSD sysexits and 128+N Linux signals executed on host JVM. R41 deepens again with ShlexJoin: POSIX display quoting (the inverse of ArgSplit) agreeing token-for-token with held-out shlex.quote/join, executed on host JVM. R44 deepens again with HistDedup: readline-family ignoredups/erasedups/ignorespace semantics stated precisely and executed, on host JVM. R46 deepens :core:commands with PipeChain: quote-aware command pipeline lexer and bounded stage executor with zero host shell invocation. R47 adds ArgvSpecParser pure-JVM kernel (runtime). R47 adds UndoRedoStack pure-JVM kernel (product_c). R48 adds KeybindingChordTrie pure-JVM kernel. R49 adds ThirdPartyIntentCommandGate pure-JVM kernel. R50 adds ShortcutPresetConflictDetector pure-JVM kernel. R51 adds FuzzyChordCommandPaletteEngine pure-JVM kernel. R52 adds toBottomRightToastEntry Z-stack integration on UndoRedoStack. R52 adds ReversibleBatchCommandJournal pure-JVM kernel. R52 adds StackedUndoNotificationDeck pure-JVM kernel. R53 adds ContextMenuMnemonicKeyNavigator pure-JVM kernel. R53 adds UndoDeckInteractiveFanController pure-JVM kernel. R176 repairs invalid duplicate validName parameters and compiles all 25 commands production sources with actual routing/refusal smoke tests; no whole-module completion claim.",
    "production": [
     "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt",
     "core/commands/src/main/kotlin/dev/fusion/commands/AliasTable.kt",
@@ -912,7 +912,8 @@
     "core/commands/src/main/kotlin/dev/fusion/commands/ReversibleBatchCommandJournal.kt",
     "core/commands/src/main/kotlin/dev/fusion/commands/StackedUndoNotificationDeck.kt",
     "core/commands/src/main/kotlin/dev/fusion/commands/ContextMenuMnemonicKeyNavigator.kt",
-    "core/commands/src/main/kotlin/dev/fusion/commands/UndoDeckInteractiveFanController.kt"
+    "core/commands/src/main/kotlin/dev/fusion/commands/UndoDeckInteractiveFanController.kt",
+    "core/commands/src/main/kotlin/dev/fusion/commands/CommandRouter.kt"
    ],
    "checks": [
     "testing/src/contract/kotlin/dev/fusion/testing/SearchAndGateChecks.kt",
@@ -952,9 +953,11 @@
     "testing/src/r52/kotlin/dev/fusion/testing/R52Checks.kt",
     "tools/test_r52_tools.py",
     "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt",
-    "tools/test_r53_tools.py"
+    "tools/test_r53_tools.py",
+    "tools/test_r176_build_surface.py",
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt"
    ],
-   "command": ":testing:searchAndGateContracts; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r44_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r46_contracts.py; python3 tools/run_r47_contracts.py; python3 tools/run_r48_contracts.py; python3 tools/run_r49_contracts.py; python3 tools/run_r50_contracts.py; python3 tools/run_r51_contracts.py; python3 tools/run_r52_contracts.py; python3 tools/run_r53_contracts.py",
+   "command": ":testing:searchAndGateContracts; python3 tools/run_r29_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r32_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r34_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r36_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r37_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r41_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r44_contracts.py (host, needs KOTLINC/JAVA_HOME); python3 tools/run_r46_contracts.py; python3 tools/run_r47_contracts.py; python3 tools/run_r48_contracts.py; python3 tools/run_r49_contracts.py; python3 tools/run_r50_contracts.py; python3 tools/run_r51_contracts.py; python3 tools/run_r52_contracts.py; python3 tools/run_r53_contracts.py && python3 tools/run_r176_checks.py",
    "limit": "Complete command routing, conflict/remap/keyboard/a11y contracts and integration",
    "sha256": {
     "core/commands/src/main/kotlin/dev/fusion/commands/Registry.kt": "f984f73585bf67e9b1dc8a36335e5410c87eaadeabaac5abb25a3d483aab3938",
@@ -1013,7 +1016,10 @@
     "core/commands/src/main/kotlin/dev/fusion/commands/ContextMenuMnemonicKeyNavigator.kt": "2fe214740973047ff5b71b1952b668a126171fc47301a589ccc5c215cd20a743",
     "core/commands/src/main/kotlin/dev/fusion/commands/UndoDeckInteractiveFanController.kt": "e49433f7eec44700031fb7af43205c492bb38453a974ef1541b63a0a0c7bc134",
     "testing/src/r53/kotlin/dev/fusion/testing/R53Checks.kt": "38f20b969db0df858e47cca3d8d436f27ba42de5736779a871744a686eff787b",
-    "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c"
+    "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546",
+    "core/commands/src/main/kotlin/dev/fusion/commands/CommandRouter.kt": "2157e53a0265ce910d84120f0a55cd0d776ae7f7e73613d295258769457e66e0"
    }
   },
   {
@@ -1126,10 +1132,10 @@
     "core/settings/src/main/kotlin/dev/fusion/settings/SettingsCatalog.kt": "5539e756ed4beb830adeabd899974caee4f2f52ac60ac42714da423a7dd4077a",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -1362,10 +1368,10 @@
     "core/security/src/main/kotlin/dev/fusion/security/diagnostics/DiagnosticSaveWorkflow.kt": "eb468b7ade8428c7cf88266eb6b3d654b781444d2bd760bc50afbf95330df98f",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -1750,10 +1756,10 @@
     "core/index/src/main/kotlin/dev/fusion/index/BoyerMooreSearch.kt": "da14fdaf3e9803f1367c91f71eca7730acff63998e605b71a5d068c10f09c203",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -2226,10 +2232,10 @@
     "feature/editor/src/main/kotlin/dev/fusion/editor/TextSelectionRange.kt": "3b9444fb1f3180dcc90b510af9f0b95b41bb6cff700cf7d99e469a4de06cf17b",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -2998,10 +3004,10 @@
     "feature/terminal/src/main/kotlin/dev/fusion/terminal/AnsiParser.kt": "6a7a917b6b5a34b6b30401cbfd02ef3d11715a7dfeb704bd0054e9207497fb3f",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -3344,10 +3350,10 @@
     "feature/notes/src/main/kotlin/dev/fusion/notes/BacklinkResolver.kt": "b948d466a8781e142c19bb002844afc637a12015cc41f39fd1b45d6874719c78",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -3554,10 +3560,10 @@
     "feature/calc/src/main/kotlin/dev/fusion/calc/Units.kt": "330299b6bc341ce22478c273a898622c1b1aa4b98480712c458a041c73491610",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -3654,10 +3660,10 @@
     "tools/test_r53_tools.py": "f550da16840247b43926163580bbc0d670127f7981e1235f8fc4b194d3db293c",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -4004,10 +4010,10 @@
     "feature/beam/src/main/kotlin/dev/fusion/beam/BeamOfferValidator.kt": "3f68fbb40e210e177afd89708240544fbb10c4112e4474c036082de7478b819f",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -4278,10 +4284,10 @@
     "feature/capture/src/main/kotlin/dev/fusion/capture/CaptureSegmentQuota.kt": "969bd9f4a942181deeb3ab90b00e734c3f857b7629b993c80d44112ae862a51b",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -4386,10 +4392,10 @@
     "feature/backup/src/main/kotlin/dev/fusion/backup/BackupManifest.kt": "3ee22c164d2dedb9a64a2f52af26eed703a3ec46917dd87e9575dcfb89f3d9bd",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -4528,10 +4534,10 @@
     "feature/continuity/src/main/kotlin/dev/fusion/continuity/ClipboardEntryStore.kt": "2bc3bb2dc3563b457adb41d38733fa8ee0a2150cc25b69aaa41f7ce95d49173d",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -4942,10 +4948,10 @@
     "feature/lens/src/main/kotlin/dev/fusion/lens/OcrPreprocessing.kt": "ae57b48a92f7354cd6ef55bf1d21e50be69bead11a0bf90c739b044fb6f9a8cd",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -5296,10 +5302,10 @@
     "feature/automation/src/main/kotlin/dev/fusion/automation/MacroRecorder.kt": "c0415b53a3b86b2378c51dbbba929b4ba058b1de77dc301567cb0479fcad7277",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -6889,10 +6895,10 @@
     "format/image/src/main/kotlin/dev/fusion/image/PngChunkReader.kt": "3a0ef357ab5fcf576db75315fccb6c9d21287f365a6b3e9640b19fd40f38c1a4",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -7179,10 +7185,10 @@
     "cast/dlna/src/main/kotlin/dev/fusion/dlna/DlnaDevice.kt": "0a8165c58f2220a5966632fd7cdbf62057dc99289f8dee28f628495070a0072e",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -7403,10 +7409,10 @@
     "cast/castv2/src/main/kotlin/dev/fusion/castv2/CastV2Channel.kt": "bfb0f6c343ff8d7df258bf3f6b02cc5c9e1f6366d4e8a448c9aaf178c1862c77",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {
@@ -7925,10 +7931,10 @@
     "tools/diagnostic_export.py": "5001fdaa5ddd6927a0ce62b974ea71bdf2b7f9bfa5014d37642ef26b085a2650",
     "tools/run_r176_checks.py": "af95c40b7648471f0076d6406a7d503381da64623c4b3cbb17bbae6b84b90ae2",
     "tools/test_r176_system.py": "a1f0289d19816acd72d21effce48d355d9f5ce5b499a493bf9e713852074f53d",
-    "tools/test_r176_build_surface.py": "c5b525f88e1f76568d2b58981b7db16fb3fd92fb26dfa76a1b777afabd3a660d",
+    "tools/test_r176_build_surface.py": "c651ff19bf7a883ef2bdbc50291c8fef5731ef2275bff386c11897b2209b818d",
     "tools/r176_build_surface.json": "0104f8d4de0b7d5ec3db648e6f1a40a159b3fddb99ea2ea770668cadc9c93641",
     "testing/src/r176/kotlin/dev/fusion/testing/R176Checks.kt": "a32daf4d2d1a03a535ca60a93029d30d4b910ce3b601ba87b184dff1f15198c6",
-    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "9ab7e4dad6a50436cb369a101c477ae7cef4dc7178ef789d456a90e830e43119"
+    "testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt": "d62347eaa981bc11060751aeee81492bed844f919e2a97ff58237ebead016546"
    }
   },
   {

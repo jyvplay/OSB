@@ -47,7 +47,7 @@ class BuildSurfaceExecution(unittest.TestCase):
         cls.addClassCleanup(cls.temp.cleanup)
         cls.dir = Path(cls.temp.name)
         sources = {ROOT / r['path'] for r in LIMITS}
-        for module in ['core/model', 'core/windowing', 'core/index']:
+        for module in ['core/model', 'core/windowing', 'core/index', 'core/commands']:
             sources.update((ROOT / module / 'src/main').rglob('*.kt'))
         sources.add(ROOT / 'testing/src/r176/kotlin/dev/fusion/testing/R176BuildSurfaceChecks.kt')
         cls.source_count = len(sources)
@@ -68,8 +68,8 @@ class BuildSurfaceExecution(unittest.TestCase):
     def test_runtime_caps_and_cross_module_behavior(self):
         text = self.run_probe()
         self.assertEqual(text.count('CONST\t'), 24)
-        self.assertIn('R176_BUILD_SURFACE_OK behavior_assertions=26', text)
-        self.assertGreaterEqual(self.source_count, 90)
+        self.assertIn('R176_BUILD_SURFACE_OK behavior_assertions=32', text)
+        self.assertGreaterEqual(self.source_count, 121)
 
     def test_registered_work_areas_oversized_windows_and_extreme_positions(self):
         rng = random.Random(17680)

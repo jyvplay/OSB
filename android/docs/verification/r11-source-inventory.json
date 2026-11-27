@@ -1616,7 +1616,7 @@
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/CommandRouter.kt",
       "module": ":core:commands",
       "package": "dev.fusion.commands",
-      "sha256": "9dbf0dbc480cfbbca1c7f912d105b9fe61a8f9926a82ab1fe557188422dcffd6"
+      "sha256": "2157e53a0265ce910d84120f0a55cd0d776ae7f7e73613d295258769457e66e0"
     },
     {
       "path": "core/commands/src/main/kotlin/dev/fusion/commands/CommandsFuzzyMatcher.kt",
